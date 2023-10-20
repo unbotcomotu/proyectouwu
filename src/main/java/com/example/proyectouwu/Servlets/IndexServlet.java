@@ -6,11 +6,13 @@ import jakarta.servlet.annotation.*;
 
 import java.io.IOException;
 
-@WebServlet(name = "IndexServlet", value = "/IndexServlet")
+@WebServlet(name = "IndexServlet", value = "")
 public class IndexServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
+        response.setContentType("text/html");
+        RequestDispatcher rd = request.getRequestDispatcher("index.jsp");
+        rd.forward(request,response);
     }
 
     @Override

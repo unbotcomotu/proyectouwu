@@ -11,12 +11,13 @@
     int idActividadDelegatura=(int)request.getAttribute("idActividadDelegatura");
     String vistaActual=(String) request.getAttribute("vistaActual");
     ArrayList<String>listaCorreosDelegadosGenerales=(ArrayList<String>)request.getAttribute("correosDelegadosGenerales");
+    String colorRol;
     if(rolUsuario.equals("Usuario")){
-        String colorRol="";
+        colorRol="";
     }else if(rolUsuario.equals("Delegado de Actividad")){
-        String colorRol="green";
+        colorRol="green";
     }else{
-        String colorRol="orange";
+        colorRol="orange";
     }
     %>
     <meta charset="utf-8">
@@ -1423,6 +1424,7 @@
             <ul class="lista">
                 <%for(int i=0;i<listaCorreosDelegadosGenerales.size();i++){%>
                 <li>Delegado general <%=(i+1)%>: <a href="mailto:<%=listaCorreosDelegadosGenerales.get(i)%>"><%=listaCorreosDelegadosGenerales.get(i)%></a></li>
+                <%}%>
             </ul>
         </div>
         <div class="columna">

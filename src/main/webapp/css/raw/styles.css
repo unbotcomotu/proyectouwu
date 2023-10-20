@@ -11601,11 +11601,7 @@ figure > img {
 }
 
 .product-category-box.category-all {
-  background: url("../fotoVoleyActividades.png") no-repeat right top, linear-gradient(to right, #615dfa, #8d7aff);
-}
 
-.product-category-box.category-all .product-category-box-tag {
-  color: #615dfa;
 }
 
 .product-category-box.category-all .product-category-box-tag {
@@ -11613,7 +11609,7 @@ figure > img {
 }
 
 .product-category-box.category-featured {
-  background: url("../fotoFutsalActividades.png") no-repeat right top, linear-gradient(to right, #417ae1, #5aafff);
+  background: url("../fotoFutsalActividades.png") no-repeat right top, linear-gradient(to right, #48ffee, #46ffc6);
 }
 
 .product-category-box.category-featured .product-category-box-tag {

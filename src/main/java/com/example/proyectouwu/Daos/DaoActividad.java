@@ -5,7 +5,7 @@ import com.example.proyectouwu.Beans.Actividad;
 import java.sql.*;
 import java.util.ArrayList;
 
-public class ListaDeActividadesDao {
+public class DaoActividad {
     private Connection conn;
     {
         try {

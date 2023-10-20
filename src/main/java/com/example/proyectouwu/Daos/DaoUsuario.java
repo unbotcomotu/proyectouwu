@@ -1,11 +1,12 @@
 package com.example.proyectouwu.Daos;
 
-import com.example.proyectouwu.Beans.Actividad;
+import com.example.proyectouwu.Beans.Usuario;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.logging.StreamHandler;
 
-public class DaoGeneral {
+public class DaoUsuario {
     private Connection conn;
     {
         try {
@@ -40,6 +41,18 @@ public class DaoGeneral {
                 }else
                     return "";
             }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public ArrayList<String>listarCorreosDelegadosGenerales(){
+        ArrayList<String>listaCorreosDelegadosGenerales=new ArrayList<>();
+        String sql="select correo from Usuario where rol='Delegado General'";
+        try(ResultSet rs=conn.createStatement().executeQuery(sql)){
+            while(rs.next()){
+                listaCorreosDelegadosGenerales.add(rs.getString(1));
+            }return listaCorreosDelegadosGenerales;
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

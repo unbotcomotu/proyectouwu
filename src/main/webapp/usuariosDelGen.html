@@ -1,0 +1,1610 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <!-- bootstrap 4.3.1 -->
+  <link rel="stylesheet" href="css/vendor/bootstrap.min.css">
+  <!-- styles -->
+  <link rel="stylesheet" href="css/raw/stylesAlex2.css">
+  <!-- simplebar styles -->
+  <link rel="stylesheet" href="css/vendor/simplebar.css">
+  <!-- tiny-slider styles -->
+  <link rel="stylesheet" href="css/vendor/tiny-slider.css">
+  <!-- favicon -->
+  <link rel="icon" href="img/favicon.ico">
+  <title>Usuarios - Siempre Fibra</title>
+  <style>
+    /* Estilo para el overlay del popup */
+    .overlay {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.7);
+        z-index: 10000;
+    }
+
+    /* Estilo para el contenido del popup */
+    .popup {
+        display: none;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        border-radius: 12px;
+        transform: translate(-50%, -50%);
+        background-color: white;
+        padding: 20px;
+        z-index: 10001;
+    }
+
+    /* Estilo para el botón de cerrar */
+    .cerrar-btn {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        cursor: pointer;
+    }
+</style>
+</head>
+<body>
+  <!-- PAGE LOADER -->
+  <div class="page-loader">
+    <!-- PAGE LOADER DECORATION -->
+    <div class="page-loader-decoration">
+      <!-- ICON LOGO -->
+      <img src="css/logoTelito.png" width="400%" alt="">
+      <!-- /ICON LOGO -->
+    </div>
+    <!-- /PAGE LOADER DECORATION -->
+<br>
+    <!-- PAGE LOADER INFO -->
+    <div class="page-loader-info">
+      <!-- PAGE LOADER INFO TITLE -->
+      <p class="page-loader-info-title">SIEMPRE FIBRA</p>
+      <!-- /PAGE LOADER INFO TITLE -->
+
+      <!-- PAGE LOADER INFO TEXT -->
+      <p class="page-loader-info-text">Cargando...</p>
+      <!-- /PAGE LOADER INFO TEXT -->
+    </div>
+    <!-- /PAGE LOADER INFO -->
+    
+    <!-- PAGE LOADER INDICATOR -->
+    <div class="page-loader-indicator loader-bars">
+      <div class="loader-bar"></div>
+      <div class="loader-bar"></div>
+      <div class="loader-bar"></div>
+      <div class="loader-bar"></div>
+      <div class="loader-bar"></div>
+      <div class="loader-bar"></div>
+      <div class="loader-bar"></div>
+      <div class="loader-bar"></div>
+    </div>
+    <!-- /PAGE LOADER INDICATOR -->
+  </div>
+  <!-- /PAGE LOADER -->
+
+  <nav id="navigation-widget-small" class="navigation-widget navigation-widget-desktop closed sidebar left delayed">
+    <!-- USER AVATAR -->
+    <a class="user-avatar small no-outline online">
+      <!-- USER AVATAR CONTENT -->
+      <div class="user-avatar-content">
+        <!-- HEXAGON -->
+        <div class="hexagon-image-30-32" data-src="css/fotoMichi.png"></div>
+        <!-- /HEXAGON -->
+      </div>
+      <!-- /USER AVATAR CONTENT -->
+  
+      <!-- USER AVATAR PROGRESS -->
+      <div class="user-avatar-progress">
+        <!-- HEXAGON -->
+        <div class="hexagon-progress-40-44"></div>
+        <!-- /HEXAGON -->
+      </div>
+      <!-- /USER AVATAR PROGRESS -->
+  
+      <!-- USER AVATAR PROGRESS BORDER -->
+      <div class="user-avatar-progress-border">
+        <!-- HEXAGON -->
+        <div class="hexagon-border-40-44"></div>
+        <!-- /HEXAGON -->
+      </div>
+      <!-- /USER AVATAR PROGRESS BORDER -->
+
+    </a>
+    <!-- /USER AVATAR -->
+
+    <!-- MENU -->
+    <ul class="menu small">
+      <!-- MENU ITEM -->
+      <!-- MENU ITEM -->
+      <!-- MENU ITEM -->
+      <!-- MENU ITEM -->
+      <li class="menu-item active">
+        <!-- MENU ITEM LINK -->
+        <a class="menu-item-link text-tooltip-tfr" href="miCuentaDelGen.html" data-title="Mi cuenta">
+          <!-- MENU ITEM LINK ICON -->
+          <svg class="menu-item-link-icon icon-members">
+            <use xlink:href="#svg-members"></use>
+          </svg>
+          <!-- /MENU ITEM LINK ICON -->
+        </a>
+        <!-- /MENU ITEM LINK -->
+      </li>
+      <!-- /MENU ITEM -->
+      <li class="menu-item">
+        <!-- MENU ITEM LINK -->
+        <a class="menu-item-link text-tooltip-tfr" href="actividadesDelGen.html" data-title="Actividades">
+          <!-- MENU ITEM LINK ICON -->
+          <img src="css/actividadIconoGris.png" class="menu-item-link-icon icon-members" alt="">
+          <!-- /MENU ITEM LINK ICON -->
+        </a>
+        <!-- /MENU ITEM LINK -->
+      </li>
+      <li class="menu-item">
+        <!-- MENU ITEM LINK -->
+        <a class="menu-item-link text-tooltip-tfr text-center" href="analiticas.html" data-title="Analíticas">
+          <!-- MENU ITEM LINK ICON -->
+          <img src="css/analiticasIcono.png" width="70%" alt="">
+          <!-- /MENU ITEM LINK ICON -->
+        </a>
+        <!-- /MENU ITEM LINK -->
+      </li>
+      <!-- /MENU ITEM -->
+      <li class="menu-item">
+        <!-- MENU ITEM LINK -->
+        <a class="menu-item-link text-tooltip-tfr text-center" href="usuariosDelGen.html" data-title="Usuarios">
+          <!-- MENU ITEM LINK ICON -->
+          <img src="css/usuariosIcono.png" width="70%" alt="">
+          <!-- /MENU ITEM LINK ICON -->
+        </a>
+        <!-- /MENU ITEM LINK -->
+      </li>
+      <!-- /MENU ITEM -->
+    </ul>
+    <!-- /MENU -->
+  </nav>
+  <!-- /NAVIGATION WIDGET -->
+
+  <!-- NAVIGATION WIDGET -->
+  <nav id="navigation-widget" class="navigation-widget navigation-widget-desktop sidebar left hidden" data-simplebar>
+    <!-- NAVIGATION WIDGET COVER -->
+    <figure class="navigation-widget-cover liquid">
+
+    </figure>
+    <!-- /NAVIGATION WIDGET COVER -->
+
+    <!-- USER SHORT DESCRIPTION -->
+    <div class="user-short-description">
+      <!-- USER SHORT DESCRIPTION AVATAR -->
+      <a class="user-short-description-avatar user-avatar medium">
+        <!-- USER AVATAR BORDER -->
+        <div class="user-avatar-border">
+          <!-- HEXAGON -->
+          <div class="hexagon-120-132"></div>
+          <!-- /HEXAGON -->
+        </div>
+        <!-- /USER AVATAR BORDER -->
+    
+        <!-- USER AVATAR CONTENT -->
+        <div class="user-avatar-content">
+          <!-- HEXAGON -->
+          <div class="hexagon-image-82-90" data-src="css/fotoMichi.png"></div>
+          <!-- /HEXAGON -->
+        </div>
+        <!-- /USER AVATAR CONTENT -->
+    
+        <!-- USER AVATAR PROGRESS -->
+        <div class="user-avatar-progress">
+          <!-- HEXAGON -->
+          <div class="hexagon-progress-100-110"></div>
+          <!-- /HEXAGON -->
+        </div>
+        <!-- /USER AVATAR PROGRESS -->
+
+        <!-- /USER AVATAR BADGE -->
+      </a>
+      <!-- /USER SHORT DESCRIPTION AVATAR -->
+
+      <!-- USER SHORT DESCRIPTION TITLE -->
+      <p class="user-short-description-title"><a>Josh Yauri</a></p>
+      <!-- /USER SHORT DESCRIPTION TITLE -->
+
+      <!-- USER SHORT DESCRIPTION TEXT -->
+      <p class="user-short-description-text"><a style="color: orange">Delegado general</a></p>
+      <!-- /USER SHORT DESCRIPTION TEXT -->
+    </div>
+    <!-- /USER SHORT DESCRIPTION -->
+
+
+      <hr>
+    <!-- MENU -->
+      <!-- MENU ITEM -->
+      <li class="menu-item active">
+        <!-- MENU ITEM LINK -->
+        <a class="menu-item-link" href="miCuentaDelGen.html">
+          <!-- MENU ITEM LINK ICON -->
+          <svg class="menu-item-link-icon icon-members">
+            <use xlink:href="#svg-members"></use>
+          </svg>
+          <!-- /MENU ITEM LINK ICON -->
+          Mi cuenta
+        </a>
+        <!-- /MENU ITEM LINK -->
+      </li>
+      <!-- /MENU ITEM -->
+
+      <hr>
+      
+      <!-- MENU ITEM -->
+      <li class="menu-item">
+        <!-- MENU ITEM LINK -->
+        <a class="menu-item-link" href="actividadesDelGen.html">
+          <!-- MENU ITEM LINK ICON -->
+          <img src="css/actividadIconoGris.png" width="7%" alt="">
+          <!-- /MENU ITEM LINK ICON -->
+          Actividades
+        </a>
+        <!-- /MENU ITEM LINK -->
+      </li>
+      <!-- /MENU ITEM -->
+      <br>
+      <!-- MENU ITEM -->
+      <li class="menu-item">
+        <!-- MENU ITEM LINK -->
+        <a class="menu-item-link" href="analiticas.html">
+          <!-- MENU ITEM LINK ICON -->
+          <img src="css/analiticasIcono.png" width="7%" alt="">
+          <!-- /MENU ITEM LINK ICON -->
+          Analíticas
+        </a>
+        <!-- /MENU ITEM LINK -->
+      </li>
+      <!-- /MENU ITEM -->
+      <br>
+      <li class="menu-item">
+        <!-- MENU ITEM LINK -->
+        <a class="menu-item-link" href="usuariosDelGen.html">
+          <!-- MENU ITEM LINK ICON -->
+          <img src="css/usuariosIcono.png" width="7%" alt="">
+          <!-- /MENU ITEM LINK ICON -->
+          Usuarios
+        </a>
+        <!-- /MENU ITEM LINK -->
+      </li>
+      <!-- /MENU ITEM -->
+
+    </ul>
+    <!-- /MENU -->
+  </nav>
+  <!-- /NAVIGATION WIDGET -->
+
+  <!-- NAVIGATION WIDGET -->
+  <nav id="navigation-widget-mobile" class="navigation-widget navigation-widget-mobile sidebar left hidden" data-simplebar>
+    <!-- NAVIGATION WIDGET CLOSE BUTTON -->
+    <div class="navigation-widget-close-button">
+      <!-- NAVIGATION WIDGET CLOSE BUTTON ICON -->
+      <svg class="navigation-widget-close-button-icon icon-back-arrow">
+        <use xlink:href="#svg-back-arrow"></use>
+      </svg>
+      <!-- NAVIGATION WIDGET CLOSE BUTTON ICON -->
+    </div>
+    <!-- /NAVIGATION WIDGET CLOSE BUTTON -->
+
+    <!-- NAVIGATION WIDGET INFO WRAP -->
+    <div class="navigation-widget-info-wrap">
+      <!-- NAVIGATION WIDGET INFO -->
+      <div class="navigation-widget-info">
+        <!-- USER AVATAR -->
+        <a class="user-avatar small no-outline">
+          <!-- USER AVATAR CONTENT -->
+          <div class="user-avatar-content">
+            <!-- HEXAGON -->
+            <div class="hexagon-image-30-32" data-src="css/fotoMichi.png"></div>
+            <!-- /HEXAGON -->
+          </div>
+          <!-- /USER AVATAR CONTENT -->
+      
+          <!-- USER AVATAR PROGRESS -->
+          <div class="user-avatar-progress">
+            <!-- HEXAGON -->
+            <div class="hexagon-progress-40-44"></div>
+            <!-- /HEXAGON -->
+          </div>
+          <!-- /USER AVATAR PROGRESS -->
+      
+          <!-- USER AVATAR PROGRESS BORDER -->
+          <div class="user-avatar-progress-border">
+            <!-- HEXAGON -->
+            <div class="hexagon-border-40-44"></div>
+            <!-- /HEXAGON -->
+          </div>
+          <!-- /USER AVATAR PROGRESS BORDER -->
+      
+          <!-- USER AVATAR BADGE -->
+          <div class="user-avatar-badge">
+            <!-- USER AVATAR BADGE BORDER -->
+            <!-- /USER AVATAR BADGE BORDER -->
+          </div>
+          <!-- /USER AVATAR BADGE -->
+        </a>
+        <!-- /USER AVATAR -->
+
+        <!-- NAVIGATION WIDGET INFO TITLE -->
+        <p class="navigation-widget-info-title"><a">Josh Yauri</a></p>
+        <!-- /NAVIGATION WIDGET INFO TITLE -->
+
+        <!-- NAVIGATION WIDGET INFO TEXT -->
+        <p class="navigation-widget-info-text" style="color: orange;">Delegado general</p>
+        <!-- /NAVIGATION WIDGET INFO TEXT -->
+      </div>
+      <!-- /NAVIGATION WIDGET INFO -->
+
+      <!-- NAVIGATION WIDGET BUTTON -->
+      <p class="navigation-widget-info-button button small secondary">Cerrar sesión</p>
+      <!-- /NAVIGATION WIDGET BUTTON -->
+    </div>
+    <!-- /NAVIGATION WIDGET INFO WRAP -->
+
+    <!-- MENU -->
+    <ul class="menu">
+
+
+
+    <!-- NAVIGATION WIDGET SECTION TITLE -->
+    <p class="navigation-widget-section-title">Perfil</p>
+    <!-- /NAVIGATION WIDGET SECTION TITLE -->
+
+    <!-- NAVIGATION WIDGET SECTION LINK -->
+    <a class="navigation-widget-section-link" href="miCuentaDelGen.html">Mi cuenta</a>
+    <!-- /NAVIGATION WIDGET SECTION LINK -->
+
+ 
+    <!-- NAVIGATION WIDGET SECTION TITLE -->
+    <p class="navigation-widget-section-title">Funciones de rol</p>
+    <!-- /NAVIGATION WIDGET SECTION TITLE -->
+
+    <!-- NAVIGATION WIDGET SECTION LINK -->
+    <a class="navigation-widget-section-link" href="actividadesDelGen.html">Actividades</a>
+    <!-- /NAVIGATION WIDGET SECTION LINK -->
+
+    <!-- NAVIGATION WIDGET SECTION LINK -->
+    <a class="navigation-widget-section-link" href="analiticas.html">Analíticas</a>
+    <!-- /NAVIGATION WIDGET SECTION LINK -->
+
+    <!-- NAVIGATION WIDGET SECTION LINK -->
+    <a class="navigation-widget-section-link" href="usuariosDelGen.html">Usuarios</a>
+    <!-- /NAVIGATION WIDGET SECTION LINK -->
+
+  </nav>
+  <!-- /NAVIGATION WIDGET -->
+
+
+
+
+  <!-- HEADER -->
+  <header class="header">
+    <!-- HEADER ACTIONS -->
+    <div class="header-actions">
+      <!-- HEADER BRAND -->
+      <div class="header-brand">
+        <!-- LOGO -->
+        <div class="logo auxResponsiveUwu">
+          <!-- ICON LOGO VIKINGER -->
+          <div class="icon-logo-vikinger small">
+            <img src="css/telitoBlanco.png" width="150%" alt="">
+          </div>
+          <!-- /ICON LOGO VIKINGER -->
+        </div>
+        <!-- /LOGO -->
+
+        <!-- HEADER BRAND TEXT -->
+        <h1 class="header-brand-text">SEMANA DE INGENIERÍA</h1>
+        <!-- /HEADER BRAND TEXT -->
+      </div>
+      <!-- /HEADER BRAND -->
+      <!-- SIDEMENU TRIGGER -->
+      <div class="sidemenu-trigger navigation-widget-trigger">
+        <!-- ICON GRID -->
+        <svg class="icon-grid">
+          <use xlink:href="#svg-grid"></use>
+        </svg>
+        <!-- /ICON GRID -->
+      </div>
+      <!-- /SIDEMENU TRIGGER -->
+
+      <!-- MOBILEMENU TRIGGER -->
+      <div class="mobilemenu-trigger navigation-widget-mobile-trigger">
+        <!-- BURGER ICON -->
+        <div class="burger-icon inverted">
+          <!-- BURGER ICON BAR -->
+          <div class="burger-icon-bar"></div>
+          <!-- /BURGER ICON BAR -->
+
+          <!-- BURGER ICON BAR -->
+          <div class="burger-icon-bar"></div>
+          <!-- /BURGER ICON BAR -->
+
+          <!-- BURGER ICON BAR -->
+          <div class="burger-icon-bar"></div>
+          <!-- /BURGER ICON BAR -->
+        </div>
+        <!-- /BURGER ICON -->
+      </div>
+      <!-- /MOBILEMENU TRIGGER -->
+    </div>
+    <!-- /HEADER ACTIONS -->
+
+    <!-- HEADER ACTIONS -->
+    <div class="header-actions">
+      
+    </div>
+    <!-- /HEADER ACTIONS -->
+
+    <!-- NO BORRAR ESTO-->
+
+    <!-- HEADER ACTIONS -->
+    <div class="header-actions">
+      <!-- PROGRESS STAT -->
+      <div class="progress-stat">
+        <!-- BAR PROGRESS WRAP -->
+        <div class="bar-progress-wrap">
+          <!-- BAR PROGRESS INFO -->
+          <!-- /BAR PROGRESS INFO -->
+        </div>
+        <!-- /BAR PROGRESS WRAP -->
+    
+        <!-- PROGRESS STAT BAR -->
+        <!-- /PROGRESS STAT BAR -->
+      </div>
+      <!-- /PROGRESS STAT -->
+    </div>
+    <!-- /HEADER ACTIONS -->
+
+    <!-- NO BORRAR ESTO-->
+
+    <!-- HEADER ACTIONS -->
+    <div class="header-actions">
+      <!-- ACTION LIST -->
+      <div class="action-list dark"> 
+        <!-- ACTION LIST ITEM WRAP -->
+        <div class="action-list-item-wrap">
+          <!-- ACTION LIST ITEM -->
+          <div class="action-list-item unread header-dropdown-trigger">
+            <!-- ACTION LIST ITEM ICON -->
+            <svg class="action-list-item-icon icon-notification">
+              <use xlink:href="#svg-notification"></use>
+            </svg>
+            <!-- /ACTION LIST ITEM ICON -->
+          </div>
+          <!-- /ACTION LIST ITEM -->
+
+          <!-- DROPDOWN BOX -->
+          <div class="dropdown-box header-dropdown">
+            <!-- DROPDOWN BOX HEADER -->
+            <div class="dropdown-box-header">
+              <!-- DROPDOWN BOX HEADER TITLE -->
+              <p class="dropdown-box-header-title">Notificaciones</p>
+              <!-- /DROPDOWN BOX HEADER TITLE -->
+            </div>
+            <!-- /DROPDOWN BOX HEADER -->
+        
+            <!-- DROPDOWN BOX LIST -->
+            <div class="dropdown-box-list" data-simplebar>
+              <!-- DROPDOWN BOX LIST ITEM -->
+              <div class="dropdown-box-list-item unread">
+                <!-- USER STATUS -->
+                <div class="user-status notification">
+                  <!-- USER STATUS AVATAR -->
+                  <a class="user-status-avatar">
+                    <!-- USER AVATAR -->
+                    <div class="user-avatar small no-outline">
+                      <!-- USER AVATAR CONTENT -->
+                      <div class="user-avatar-content">
+                        <!-- HEXAGON -->
+                        <div class="hexagon-image-30-32" data-src="css/iconoPerfil.png"></div>
+                        <!-- /HEXAGON -->
+                      </div>
+                      <!-- /USER AVATAR CONTENT -->
+                  
+                      <!-- USER AVATAR PROGRESS -->
+                      <div class="user-avatar-progress">
+                        <!-- HEXAGON -->
+                        <div class="hexagon-progress-40-44"></div>
+                        <!-- /HEXAGON -->
+                      </div>
+                      <!-- /USER AVATAR PROGRESS -->
+                  
+                      <!-- USER AVATAR PROGRESS BORDER -->
+                      <div class="user-avatar-progress-border">
+                        <!-- HEXAGON -->
+                        <div class="hexagon-border-40-44"></div>
+                        <!-- /HEXAGON -->
+                      </div>
+                      <!-- /USER AVATAR PROGRESS BORDER -->
+                  
+                      <!-- USER AVATAR BADGE -->
+                      <div class="user-avatar-badge">
+                        <!-- USER AVATAR BADGE BORDER -->
+                        <div class="user-avatar-badge-border">
+                        </div>
+                        <!-- /USER AVATAR BADGE BORDER -->
+                  
+                      </div>
+                      <!-- /USER AVATAR BADGE -->
+                    </div>
+                    <!-- /USER AVATAR -->
+                  </a>
+                  <!-- /USER STATUS AVATAR -->
+              
+                  <!-- USER STATUS TITLE -->
+                  <p class="user-status-title"><a class="bold">Javier Milei</a> está solicitando la aprobación de su <a class="highlighted">registro</a> en la plataforma.</p>
+                  <!-- /USER STATUS TITLE -->
+              
+                  <!-- USER STATUS TIMESTAMP -->
+                  <p class="user-status-timestamp">Hace 20 minutos</p>
+                  <!-- /USER STATUS TIMESTAMP -->
+              
+                  <!-- USER STATUS ICON -->
+                  <div class="user-status-icon">
+                    <!-- ICON COMMENT -->
+                    <img src="css/iconoRegistro.png" width="30px" alt="">
+                    <!-- /ICON COMMENT -->
+                  </div>
+                  <!-- /USER STATUS ICON -->
+                </div>
+                <!-- /USER STATUS -->
+              </div>
+              <!-- /DROPDOWN BOX LIST ITEM -->
+              <!-- DROPDOWN BOX LIST ITEM -->
+              <div class="dropdown-box-list-item unread">
+                <!-- USER STATUS -->
+                <div class="user-status notification">
+                  <!-- USER STATUS AVATAR -->
+                  <a class="user-status-avatar">
+                    <!-- USER AVATAR -->
+                    <div class="user-avatar small no-outline">
+                      <!-- USER AVATAR CONTENT -->
+                      <div class="user-avatar-content">
+                        <!-- HEXAGON -->
+                        <div class="hexagon-image-30-32" data-src="css/fotoAlex.png"></div>
+                        <!-- /HEXAGON -->
+                      </div>
+                      <!-- /USER AVATAR CONTENT -->
+                  
+                      <!-- USER AVATAR PROGRESS -->
+                      <div class="user-avatar-progress">
+                        <!-- HEXAGON -->
+                        <div class="hexagon-progress-40-44"></div>
+                        <!-- /HEXAGON -->
+                      </div>
+                      <!-- /USER AVATAR PROGRESS -->
+                  
+                      <!-- USER AVATAR PROGRESS BORDER -->
+                      <div class="user-avatar-progress-border">
+                        <!-- HEXAGON -->
+                        <div class="hexagon-border-40-44"></div>
+                        <!-- /HEXAGON -->
+                      </div>
+                      <!-- /USER AVATAR PROGRESS BORDER -->
+                  
+                      <!-- USER AVATAR BADGE -->
+                      <div class="user-avatar-badge">
+                        <!-- USER AVATAR BADGE BORDER -->
+                        <div class="user-avatar-badge-border">
+                        </div>
+                        <!-- /USER AVATAR BADGE BORDER -->
+                  
+                      </div>
+                      <!-- /USER AVATAR BADGE -->
+                    </div>
+                    <!-- /USER AVATAR -->
+                  </a>
+                  <!-- /USER STATUS AVATAR -->
+              
+                  <!-- USER STATUS TITLE -->
+                  <p class="user-status-title"><a class="bold">Alex Segovia</a> realizó una  <a class="highlighted">donación</a> de <a style="color: orange;">S/. 3</a>.</p>
+                  <!-- /USER STATUS TITLE -->
+              
+                  <!-- USER STATUS TIMESTAMP -->
+                  <p class="user-status-timestamp">Hace 37 minutos</p>
+                  <!-- /USER STATUS TIMESTAMP -->
+              
+                  <!-- USER STATUS ICON -->
+                  <div class="user-status-icon">
+                    <!-- ICON COMMENT -->
+                    <img src="css/donacionIcono.png" width="30px" alt="">
+                    <!-- /ICON COMMENT -->
+                  </div>
+                  <!-- /USER STATUS ICON -->
+                </div>
+                <!-- /USER STATUS -->
+              </div>
+              <!-- /DROPDOWN BOX LIST ITEM -->
+              <!-- DROPDOWN BOX LIST ITEM -->
+              <div class="dropdown-box-list-item unread">
+                <!-- USER STATUS -->
+                <div class="user-status notification">
+                  <!-- USER STATUS AVATAR -->
+                  <a class="user-status-avatar">
+                    <!-- USER AVATAR -->
+                    <div class="user-avatar small no-outline">
+                      <!-- USER AVATAR CONTENT -->
+                      <div class="user-avatar-content">
+                        <!-- HEXAGON -->
+                        <div class="hexagon-image-30-32" data-src="css/fotoMayte.png"></div>
+                        <!-- /HEXAGON -->
+                      </div>
+                      <!-- /USER AVATAR CONTENT -->
+                  
+                      <!-- USER AVATAR PROGRESS -->
+                      <div class="user-avatar-progress">
+                        <!-- HEXAGON -->
+                        <div class="hexagon-progress-40-44"></div>
+                        <!-- /HEXAGON -->
+                      </div>
+                      <!-- /USER AVATAR PROGRESS -->
+                  
+                      <!-- USER AVATAR PROGRESS BORDER -->
+                      <div class="user-avatar-progress-border">
+                        <!-- HEXAGON -->
+                        <div class="hexagon-border-40-44"></div>
+                        <!-- /HEXAGON -->
+                      </div>
+                      <!-- /USER AVATAR PROGRESS BORDER -->
+                  
+                      <!-- USER AVATAR BADGE -->
+                      <div class="user-avatar-badge">
+                        <!-- USER AVATAR BADGE BORDER -->
+                        <div class="user-avatar-badge-border">
+                        </div>
+                        <!-- /USER AVATAR BADGE BORDER -->
+                  
+                      </div>
+                      <!-- /USER AVATAR BADGE -->
+                    </div>
+                    <!-- /USER AVATAR -->
+                  </a>
+                  <!-- /USER STATUS AVATAR -->
+              
+                  <!-- USER STATUS TITLE -->
+                  <p class="user-status-title"><a class="bold">Mayte Asto</a> realizó una  <a class="highlighted">donación</a> de <a style="color: orange;">S/. 100</a>.</p>
+                  <!-- /USER STATUS TITLE -->
+              
+                  <!-- USER STATUS TIMESTAMP -->
+                  <p class="user-status-timestamp">Hace 54 minutos</p>
+                  <!-- /USER STATUS TIMESTAMP -->
+              
+                  <!-- USER STATUS ICON -->
+                  <div class="user-status-icon">
+                    <!-- ICON COMMENT -->
+                    <img src="css/donacionIcono.png" width="30px" alt="">
+                    <!-- /ICON COMMENT -->
+                  </div>
+                  <!-- /USER STATUS ICON -->
+                </div>
+                <!-- /USER STATUS -->
+              </div>
+              <!-- /DROPDOWN BOX LIST ITEM -->
+              <!-- DROPDOWN BOX LIST ITEM -->
+              <div class="dropdown-box-list-item unread">
+                <!-- USER STATUS -->
+                <div class="user-status notification">
+                  <!-- USER STATUS AVATAR -->
+                  <a class="user-status-avatar">
+                    <!-- USER AVATAR -->
+                    <div class="user-avatar small no-outline">
+                      <!-- USER AVATAR CONTENT -->
+                      <div class="user-avatar-content">
+                        <!-- HEXAGON -->
+                        <div class="hexagon-image-30-32" data-src="css/iconoPerfil.png"></div>
+                        <!-- /HEXAGON -->
+                      </div>
+                      <!-- /USER AVATAR CONTENT -->
+                  
+                      <!-- USER AVATAR PROGRESS -->
+                      <div class="user-avatar-progress">
+                        <!-- HEXAGON -->
+                        <div class="hexagon-progress-40-44"></div>
+                        <!-- /HEXAGON -->
+                      </div>
+                      <!-- /USER AVATAR PROGRESS -->
+                  
+                      <!-- USER AVATAR PROGRESS BORDER -->
+                      <div class="user-avatar-progress-border">
+                        <!-- HEXAGON -->
+                        <div class="hexagon-border-40-44"></div>
+                        <!-- /HEXAGON -->
+                      </div>
+                      <!-- /USER AVATAR PROGRESS BORDER -->
+                  
+                      <!-- USER AVATAR BADGE -->
+                      <div class="user-avatar-badge">
+                        <!-- USER AVATAR BADGE BORDER -->
+                        <div class="user-avatar-badge-border">
+                        </div>
+                        <!-- /USER AVATAR BADGE BORDER -->
+                  
+                      </div>
+                      <!-- /USER AVATAR BADGE -->
+                    </div>
+                    <!-- /USER AVATAR -->
+                  </a>
+                  <!-- /USER STATUS AVATAR -->
+              
+                  <!-- USER STATUS TITLE -->
+                  <p class="user-status-title"><a class="bold">Rubén Agapito</a> está solicitando la aprobación de su <a class="highlighted">registro</a> en la plataforma.</p>
+                  <!-- /USER STATUS TITLE -->
+              
+                  <!-- USER STATUS TIMESTAMP -->
+                  <p class="user-status-timestamp">Hace 1 hora</p>
+                  <!-- /USER STATUS TIMESTAMP -->
+              
+                  <!-- USER STATUS ICON -->
+                  <div class="user-status-icon">
+                    <!-- ICON COMMENT -->
+                    <img src="css/iconoRegistro.png" width="30px" alt="">
+                    <!-- /ICON COMMENT -->
+                  </div>
+                  <!-- /USER STATUS ICON -->
+                </div>
+                <!-- /USER STATUS -->
+              </div>
+              <!-- /DROPDOWN BOX LIST ITEM -->
+              <!-- DROPDOWN BOX LIST ITEM -->
+              <div class="dropdown-box-list-item unread">
+                <!-- USER STATUS -->
+                <div class="user-status notification">
+                  <!-- USER STATUS AVATAR -->
+                  <a class="user-status-avatar">
+                    <!-- USER AVATAR -->
+                    <div class="user-avatar small no-outline">
+                      <!-- USER AVATAR CONTENT -->
+                      <div class="user-avatar-content">
+                        <!-- HEXAGON -->
+                        <div class="hexagon-image-30-32" data-src="css/fotoYarleque.png"></div>
+                        <!-- /HEXAGON -->
+                      </div>
+                      <!-- /USER AVATAR CONTENT -->
+                  
+                      <!-- USER AVATAR PROGRESS -->
+                      <div class="user-avatar-progress">
+                        <!-- HEXAGON -->
+                        <div class="hexagon-progress-40-44"></div>
+                        <!-- /HEXAGON -->
+                      </div>
+                      <!-- /USER AVATAR PROGRESS -->
+                  
+                      <!-- USER AVATAR PROGRESS BORDER -->
+                      <div class="user-avatar-progress-border">
+                        <!-- HEXAGON -->
+                        <div class="hexagon-border-40-44"></div>
+                        <!-- /HEXAGON -->
+                      </div>
+                      <!-- /USER AVATAR PROGRESS BORDER -->
+                  
+                      <!-- USER AVATAR BADGE -->
+                      <div class="user-avatar-badge">
+                        <!-- USER AVATAR BADGE BORDER -->
+                        <div class="user-avatar-badge-border">
+                        </div>
+                        <!-- /USER AVATAR BADGE BORDER -->
+                  
+                      </div>
+                      <!-- /USER AVATAR BADGE -->
+                    </div>
+                    <!-- /USER AVATAR -->
+                  </a>
+                  <!-- /USER STATUS AVATAR -->
+              
+                  <!-- USER STATUS TITLE -->
+                  <p class="user-status-title"><a class="bold">Manuel Yarleque</a> realizó una  <a class="highlighted">donación</a> de <a style="color: orange;">S/. 1</a>.</p>
+                  <!-- /USER STATUS TITLE -->
+              
+                  <!-- USER STATUS TIMESTAMP -->
+                  <p class="user-status-timestamp">Hace 2 horas</p>
+                  <!-- /USER STATUS TIMESTAMP -->
+              
+                  <!-- USER STATUS ICON -->
+                  <div class="user-status-icon">
+                    <!-- ICON COMMENT -->
+                    <img src="css/donacionIcono.png" width="30px" alt="">
+                    <!-- /ICON COMMENT -->
+                  </div>
+                  <!-- /USER STATUS ICON -->
+                </div>
+                <!-- /USER STATUS -->
+              </div>
+              <!-- /DROPDOWN BOX LIST ITEM -->
+            </div>
+            <!-- /DROPDOWN BOX LIST -->
+<!--ARRIBA ESTÁN LAS NOTIFICACIONES-->
+            <!-- DROPDOWN BOX BUTTON -->
+            <a class="dropdown-box-button secondary" href="notificacionesDelGen.html">Ver todas las notificaciones</a>
+            <!-- /DROPDOWN BOX BUTTON -->
+          </div>
+          <!-- /DROPDOWN BOX -->
+        </div>
+        <!-- /ACTION LIST ITEM WRAP -->
+      </div>
+      <!-- /ACTION LIST -->
+
+      <!-- ACTION ITEM WRAP -->
+      <div class="action-item-wrap auxResponsiveUwu">
+        <!-- ACTION ITEM -->
+        <div class="action-item dark header-settings-dropdown-trigger">
+          <!-- ACTION ITEM ICON -->
+          <img src="css/logOut.png" width="30%" alt="">
+          <!-- /ACTION ITEM ICON -->
+        </div>
+        <!-- /ACTION ITEM -->
+
+        <!-- DROPDOWN NAVIGATION -->
+        
+      </div>
+      <!-- /ACTION ITEM WRAP -->
+    </div>
+    <!-- /HEADER ACTIONS -->
+  </header>
+  <!-- /HEADER -->
+
+
+  <!-- CONTENT GRID -->
+  <div class="content-grid">
+    <!-- SECTION BANNER -->
+    <div class="section-banner">
+      <!-- SECTION BANNER ICON -->
+      <img class="section-banner-icon" src="css/telitoNerd.png" width="14%" alt="">
+      <!-- /SECTION BANNER ICON -->
+  
+      <!-- SECTION BANNER TITLE -->
+      <p class="section-banner-title">Usuarios</p>
+      <!-- /SECTION BANNER TITLE -->
+  
+      <!-- SECTION BANNER TEXT -->
+      <p class="section-banner-text">Aquí puedes encontrar toda la información sobre los usuarios registrados en la plataforma</p>
+      <!-- /SECTION BANNER TEXT -->
+    </div>
+    <!-- /SECTION BANNER -->
+
+    <!-- SECTION FILTERS BAR -->
+    <!-- SECTION FILTERS BAR -->
+    <div class="section-filters-bar v4">
+      <!-- SECTION FILTERS BAR ACTIONS -->
+      <div class="section-filters-bar-actions">
+        <!-- FORM -->
+        <form class="form">
+          <!-- FORM ITEM -->
+          <div class="form-item split">
+            <!-- FORM INPUT -->
+            <div class="form-input small">
+              <label for="items-search">Buscar usuario</label>
+              <input type="text" id="items-search" name="items_search">
+            </div>
+            <!-- /FORM INPUT -->
+  
+            <!-- BUTTON -->
+            <button class="button primary">
+              <!-- ICON MAGNIFYING GLASS -->
+              <svg class="icon-magnifying-glass">
+                <use xlink:href="#svg-magnifying-glass"></use>
+              </svg>
+              <!-- /ICON MAGNIFYING GLASS -->
+            </button>
+            <!-- /BUTTON -->
+          </div>
+          <!-- /FORM ITEM -->
+        </form>
+        <!-- /FORM -->
+      </div>
+      <!-- /SECTION FILTERS BAR ACTIONS -->
+  
+      <!-- SECTION FILTERS BAR ACTIONS -->
+      <div class="section-filters-bar-actions">
+        <!-- FORM -->
+        <form class="form">
+          <!-- FORM ITEM -->
+          <div class="form-item split medium">
+            <!-- FORM SELECT -->
+            <div class="form-select small">
+              <label for="items-filter-category">Filtrar por</label>
+              <select id="items-filter-category" name="items_filter_category">
+                <option value="0">Orden alfabético</option>
+                <option value="1">Código PUCP</option>
+                <option value="2">Condición</option>
+                <option value="3">Baneado</option>
+              </select>
+              <!-- FORM SELECT ICON -->
+              <svg class="form-select-icon icon-small-arrow">
+                <use xlink:href="#svg-small-arrow"></use>
+              </svg>
+              <!-- /FORM SELECT ICON -->
+            </div>
+            <!-- /FORM SELECT -->
+    
+            <!-- FORM SELECT -->
+            <div class="form-select small">
+              <label for="items-filter-order">Ordenar por</label>
+              <select id="items-filter-order" name="items_filter_order">
+                <option value="0">Ascendente</option>
+                <option value="1">Descendente</option>
+              </select>
+              <!-- FORM SELECT ICON -->
+              <svg class="form-select-icon icon-small-arrow">
+                <use xlink:href="#svg-small-arrow"></use>
+              </svg>
+              <!-- /FORM SELECT ICON -->
+            </div>
+            <!-- /FORM SELECT -->
+        
+            <!-- BUTTON -->
+            <button class="button secondary">Aplicar filtros</button>
+            <!-- /BUTTON -->
+          </div>
+          <!-- /FORM ITEM -->
+        </form>
+        <!-- /FORM -->
+      </div>
+      <!-- /SECTION FILTERS BAR ACTIONS -->
+    </div>
+    <!-- /SECTION FILTERS BAR -->
+    <!-- GRID -->
+    <div class="grid grid-4-4-4 centered">
+      <!-- USER PREVIEW -->
+      <div class="user-preview">
+        <!-- USER PREVIEW COVER -->
+        <figure class="user-preview-cover liquid" style="background: no-repeat linear-gradient(to right,#094293,#615dfa);"></figure>
+        <!-- /USER PREVIEW COVER -->
+    
+        <!-- USER PREVIEW INFO -->
+        <div class="user-preview-info">
+          <!-- USER SHORT DESCRIPTION -->
+          <div class="user-short-description">
+            <!-- USER SHORT DESCRIPTION AVATAR -->
+            <div class="user-short-description-avatar user-avatar medium">
+              <!-- USER AVATAR BORDER -->
+              <div class="user-avatar-border">
+                <!-- HEXAGON -->
+                <div class="hexagon-120-132"></div>
+                <!-- /HEXAGON -->
+              </div>
+              <!-- /USER AVATAR BORDER -->
+          
+              <!-- USER AVATAR CONTENT -->
+              <div class="user-avatar-content">
+                <!-- HEXAGON -->
+                <div class="hexagon-image-82-90" data-src="css/alex.jpg"></div>
+                <!-- /HEXAGON -->
+              </div>
+              <!-- /USER AVATAR CONTENT -->
+          
+              <!-- USER AVATAR PROGRESS -->
+              <div class="user-avatar-progress">
+                <!-- HEXAGON -->
+                <div class="hexagon-progress-100-110"></div>
+                <!-- /HEXAGON -->
+              </div>
+              <!-- /USER AVATAR PROGRESS -->
+          
+              <!-- USER AVATAR PROGRESS BORDER -->
+              <div class="user-avatar-progress-border">
+                <!-- HEXAGON -->
+                <div class="hexagon-border-100-110"></div>
+                <!-- /HEXAGON -->
+              </div>
+              <!-- /USER AVATAR PROGRESS BORDER -->
+            </div>
+            <!-- /USER SHORT DESCRIPTION AVATAR -->
+      
+            <!-- USER SHORT DESCRIPTION TITLE -->
+            <p class="user-short-description-title">Alex David Segovia Ancajima</p>
+            <!-- /USER SHORT DESCRIPTION TITLE -->
+      
+            <!-- USER SHORT DESCRIPTION TEXT -->
+            <p class="user-short-description-text">Usuario</p>
+            <!-- /USER SHORT DESCRIPTION TEXT -->
+          </div>
+          <!-- /USER SHORT DESCRIPTION -->
+      
+          <!-- USER PREVIEW STATS SLIDES -->
+          <div id="user-preview-stats-slides-01" class="user-preview-stats-slides">
+            <!-- USER PREVIEW STATS SLIDE -->
+            <div class="container-fluid">
+              <!-- USER STATS -->
+              <div class="row">
+                <!-- USER STAT -->
+                <div class="col-sm-6 text-center ms-5 px-5" style="font-family: 'Rajdhani', sans-serif; text-transform: uppercase; font-weight: 700; font-size: 0.875rem;">
+                  <!-- USER STAT TITLE -->
+                  <p>Código: 20213849</p>
+                  <!-- /USER STAT TITLE -->
+                </div>
+                <!-- /USER STAT -->
+                <!-- USER STAT -->
+                <div class="col-sm-6 text-center px-5" style="font-family: 'Rajdhani', sans-serif; text-transform: uppercase; font-weight: 700; font-size: 0.875rem;">
+                  <!-- USER STAT TITLE -->
+                  <p>Condición: Estudiante</p>
+                  <!-- /USER STAT TITLE -->
+                </div>
+                <!-- /USER STAT -->
+              </div>
+              <!-- /USER STATS -->
+            </div>
+            <!-- /USER PREVIEW STATS SLIDE -->
+      
+            <!-- USER PREVIEW STATS SLIDE -->
+            <div class="user-preview-stats-slide">
+              <!-- USER PREVIEW TEXT -->
+              <p class="user-preview-text">Este usuario está apoyando en Valorant como jugador y en Voley como parte de la barra!</p>
+              <!-- /USER PREVIEW TEXT -->
+            </div>
+            <!-- /USER PREVIEW STATS SLIDE -->
+          </div>
+          <!-- /USER PREVIEW STATS SLIDES -->
+    
+          <!-- USER PREVIEW STATS ROSTER -->
+          <div id="user-preview-stats-roster-01" class="user-preview-stats-roster slider-roster">
+            <!-- SLIDER ROSTER ITEM -->
+            <div class="slider-roster-item"></div>
+            <!-- /SLIDER ROSTER ITEM -->
+    
+            <!-- SLIDER ROSTER ITEM -->
+            <div class="slider-roster-item"></div>
+            <!-- /SLIDER ROSTER ITEM -->
+          </div>
+          <!-- /USER PREVIEW STATS ROSTER -->
+    
+          <!-- USER PREVIEW ACTIONS -->
+          <div class="user-preview-actions">
+            <!-- BUTTON -->
+            <button class="button secondary" id="mostrarPopup1">Banear</button>
+            <!-- /BUTTON -->
+          </div>
+          <!-- /USER PREVIEW ACTIONS -->
+        </div>
+        <!-- /USER PREVIEW INFO -->
+      </div>
+      <!-- /USER PREVIEW -->
+
+      <!-- USER PREVIEW -->
+      <div class="user-preview">
+        <!-- USER PREVIEW COVER -->
+        <figure class="user-preview-cover liquid" style="background: no-repeat linear-gradient(to right,#094293,#615dfa);"></figure>
+        <!-- /USER PREVIEW COVER -->
+    
+        <!-- USER PREVIEW INFO -->
+        <div class="user-preview-info">
+          <!-- USER SHORT DESCRIPTION -->
+          <div class="user-short-description">
+            <!-- USER SHORT DESCRIPTION AVATAR -->
+            <div class="user-short-description-avatar user-avatar medium">
+              <!-- USER AVATAR BORDER -->
+              <div class="user-avatar-border">
+                <!-- HEXAGON -->
+                <div class="hexagon-120-132"></div>
+                <!-- /HEXAGON -->
+              </div>
+              <!-- /USER AVATAR BORDER -->
+          
+              <!-- USER AVATAR CONTENT -->
+              <div class="user-avatar-content">
+                <!-- HEXAGON -->
+                <div class="hexagon-image-82-90" data-src="css/josh.jpg"></div>
+                <!-- /HEXAGON -->
+              </div>
+              <!-- /USER AVATAR CONTENT -->
+          
+              <!-- USER AVATAR PROGRESS -->
+              <div class="user-avatar-progress">
+                <!-- HEXAGON -->
+                <div class="hexagon-progress-100-110"></div>
+                <!-- /HEXAGON -->
+              </div>
+              <!-- /USER AVATAR PROGRESS -->
+          
+              <!-- USER AVATAR PROGRESS BORDER -->
+              <div class="user-avatar-progress-border">
+                <!-- HEXAGON -->
+                <div class="hexagon-border-100-110"></div>
+                <!-- /HEXAGON -->
+              </div>
+              <!-- /USER AVATAR PROGRESS BORDER -->
+            </div>
+            <!-- /USER SHORT DESCRIPTION AVATAR -->
+      
+            <!-- USER SHORT DESCRIPTION TITLE -->
+            <p class="user-short-description-title" style="text-decoration: line-through;">Josh Fernando Yauri Salas</p>
+            <!-- /USER SHORT DESCRIPTION TITLE -->
+      
+            <!-- USER SHORT DESCRIPTION TEXT -->
+            <p class="user-short-description-text" style="text-decoration: line-through;">Usuario</p>
+            <!-- /USER SHORT DESCRIPTION TEXT -->
+          </div>
+          <!-- /USER SHORT DESCRIPTION -->
+    
+          <!-- USER PREVIEW STATS SLIDES -->
+          <div id="user-preview-stats-slides-02" class="user-preview-stats-slides">
+            <!-- USER PREVIEW STATS SLIDE -->
+            <div class="container-fluid">
+              <!-- USER STATS -->
+              <div class="row">
+                <!-- USER STAT -->
+                <div class="col-sm-6 text-center px-5" style="font-family: 'Rajdhani', sans-serif; text-transform: uppercase; text-decoration: line-through; font-weight: 700; font-size: 0.875rem;">
+                  <!-- USER STAT TITLE -->
+                  <p>Código: 20213852</p>
+                  <!-- /USER STAT TITLE -->
+                </div>
+                <!-- /USER STAT -->
+
+                <!-- USER STAT -->
+                <div class="col-sm-6 text-center px-5" style="font-family: 'Rajdhani', sans-serif; text-transform: uppercase; text-decoration: line-through; font-weight: 700; font-size: 0.875rem;">
+                  <!-- USER STAT TITLE -->
+                  <p>Condición: Estudiante</p>
+                  <!-- /USER STAT TITLE -->
+                </div>
+                <!-- /USER STAT -->
+              </div>
+              <!-- /USER STATS -->
+            </div>
+            <!-- /USER PREVIEW STATS SLIDE -->
+      
+            <!-- USER PREVIEW STATS SLIDE -->
+            <div class="user-preview-stats-slide">
+              <!-- USER PREVIEW TEXT -->
+              <p class="user-preview-text">Este usuario ha sido baneado.</p>
+              <!-- /USER PREVIEW TEXT -->
+            </div>
+            <!-- /USER PREVIEW STATS SLIDE -->
+          </div>
+          <!-- /USER PREVIEW STATS SLIDES -->
+    
+          <!-- USER PREVIEW STATS ROSTER -->
+          <div id="user-preview-stats-roster-02" class="user-preview-stats-roster slider-roster">
+            <!-- SLIDER ROSTER ITEM -->
+            <div class="slider-roster-item"></div>
+            <!-- /SLIDER ROSTER ITEM -->
+    
+            <!-- SLIDER ROSTER ITEM -->
+            <div class="slider-roster-item"></div>
+            <!-- /SLIDER ROSTER ITEM -->
+          </div>
+          <!-- /USER PREVIEW STATS ROSTER -->
+          
+          <!-- USER PREVIEW ACTIONS -->
+          <div class="user-preview-actions">
+            <!-- BUTTON -->
+            <button class="button secondary" id="boton" style="background-color: #615dfa; opacity: 60%;;">Baneado</button>
+            <!-- /BUTTON -->
+          </div>
+          <!-- /USER PREVIEW ACTIONS -->
+        </div>
+        <!-- /USER PREVIEW INFO -->
+      </div>
+      <!-- /USER PREVIEW -->
+
+      <!-- USER PREVIEW -->
+      <div class="user-preview">
+        <!-- USER PREVIEW COVER -->
+        <figure class="user-preview-cover liquid" style="background: no-repeat linear-gradient(to right,#094293,#615dfa);"></figure>
+        <!-- /USER PREVIEW COVER -->
+    
+        <!-- USER PREVIEW INFO -->
+        <div class="user-preview-info">
+          <!-- USER SHORT DESCRIPTION -->
+          <div class="user-short-description">
+            <!-- USER SHORT DESCRIPTION AVATAR -->
+            <div class="user-short-description-avatar user-avatar medium">
+              <!-- USER AVATAR BORDER -->
+              <div class="user-avatar-border">
+                <!-- HEXAGON -->
+                <div class="hexagon-120-132"></div>
+                <!-- /HEXAGON -->
+              </div>
+              <!-- /USER AVATAR BORDER -->
+          
+              <!-- USER AVATAR CONTENT -->
+              <div class="user-avatar-content">
+                <!-- HEXAGON -->
+                <div class="hexagon-image-82-90" data-src="css/hineill.jpg"></div>
+                <!-- /HEXAGON -->
+              </div>
+              <!-- /USER AVATAR CONTENT -->
+          
+              <!-- USER AVATAR PROGRESS -->
+              <div class="user-avatar-progress">
+                <!-- HEXAGON -->
+                <div class="hexagon-progress-100-110"></div>
+                <!-- /HEXAGON -->
+              </div>
+              <!-- /USER AVATAR PROGRESS -->
+          
+              <!-- USER AVATAR PROGRESS BORDER -->
+              <div class="user-avatar-progress-border">
+                <!-- HEXAGON -->
+                <div class="hexagon-border-100-110"></div>
+                <!-- /HEXAGON -->
+              </div>
+              <!-- /USER AVATAR PROGRESS BORDER -->
+            </div>
+            <!-- /USER SHORT DESCRIPTION AVATAR -->
+      
+            <!-- USER SHORT DESCRIPTION TITLE -->
+            <p class="user-short-description-title">Hineill David Cespedes Espinoza</p>
+            <!-- /USER SHORT DESCRIPTION TITLE -->
+      
+            <!-- USER SHORT DESCRIPTION TEXT -->
+            <p class="user-short-description-text">Delegado de Actividad: Ajedrez</p>
+            <!-- /USER SHORT DESCRIPTION TEXT -->
+          </div>
+          <!-- /USER SHORT DESCRIPTION -->
+          
+          <!-- USER PREVIEW STATS SLIDES -->
+          <div id="user-preview-stats-slides-03" class="user-preview-stats-slides">
+            <!-- USER PREVIEW STATS SLIDE -->
+            <div class="container-fluid">
+              <!-- USER STATS -->
+              <div class="row">
+                <!-- USER STAT -->
+                <div class="col-sm-6 text-center px-5" style="font-family: 'Rajdhani', sans-serif; text-transform: uppercase; font-weight: 700; font-size: 0.875rem;">
+                  <!-- USER STAT TITLE -->
+                  <p>Código: 20213704</p>
+                  <!-- /USER STAT TITLE -->
+                </div>
+                <!-- /USER STAT -->
+          
+                <!-- USER STAT -->
+                <div class="col-sm-6 text-center px-5" style="font-family: 'Rajdhani', sans-serif; text-transform: uppercase; font-weight: 700; font-size: 0.875rem;">
+                  <!-- USER STAT TITLE -->
+                  <p>Condición: Estudiante</p>
+                  <!-- /USER STAT TITLE -->
+                </div>
+                <!-- /USER STAT -->
+              </div>
+              <!-- /USER STATS -->
+            </div>
+            <!-- /USER PREVIEW STATS SLIDE -->
+      
+            <!-- USER PREVIEW STATS SLIDE -->
+            <div class="user-preview-stats-slide">
+              <!-- USER PREVIEW TEXT -->
+              <p class="user-preview-text">Este usuario es Delegado de Actividad de Ajedrez y participa en la Peña!</p>
+              <!-- /USER PREVIEW TEXT -->
+            </div>
+            <!-- /USER PREVIEW STATS SLIDE -->
+          </div>
+          <!-- /USER PREVIEW STATS SLIDES -->
+    
+          <!-- USER PREVIEW STATS ROSTER -->
+          <div id="user-preview-stats-roster-03" class="user-preview-stats-roster slider-roster">
+            <!-- SLIDER ROSTER ITEM -->
+            <div class="slider-roster-item"></div>
+            <!-- /SLIDER ROSTER ITEM -->
+    
+            <!-- SLIDER ROSTER ITEM -->
+            <div class="slider-roster-item"></div>
+            <!-- /SLIDER ROSTER ITEM -->
+          </div>
+          <!-- /USER PREVIEW STATS ROSTER -->
+    
+          <!-- USER PREVIEW ACTIONS -->
+          <div class="user-preview-actions">
+            <!-- BUTTON -->
+            <button class="button secondary" id="mostrarPopup2">Banear</button>
+            <!-- /BUTTON -->
+          </div>
+          <!-- /USER PREVIEW ACTIONS -->
+        </div>
+        <!-- /USER PREVIEW INFO -->
+      </div>
+      <!-- /USER PREVIEW -->
+
+      <!-- USER PREVIEW -->
+      <div class="user-preview">
+        <!-- USER PREVIEW COVER -->
+        <figure class="user-preview-cover liquid" style="background: no-repeat linear-gradient(to right,#094293,#615dfa);"></figure>
+        <!-- /USER PREVIEW COVER -->
+    
+        <!-- USER PREVIEW INFO -->
+        <div class="user-preview-info">
+          <!-- USER SHORT DESCRIPTION -->
+          <div class="user-short-description">
+            <!-- USER SHORT DESCRIPTION AVATAR -->
+            <div class="user-short-description-avatar user-avatar medium">
+              <!-- USER AVATAR BORDER -->
+              <div class="user-avatar-border">
+                <!-- HEXAGON -->
+                <div class="hexagon-120-132"></div>
+                <!-- /HEXAGON -->
+              </div>
+              <!-- /USER AVATAR BORDER -->
+          
+              <!-- USER AVATAR CONTENT -->
+              <div class="user-avatar-content">
+                <!-- HEXAGON -->
+                <div class="hexagon-image-82-90" data-src="css/samuel.jpg"></div>
+                <!-- /HEXAGON -->
+              </div>
+              <!-- /USER AVATAR CONTENT -->
+          
+              <!-- USER AVATAR PROGRESS -->
+              <div class="user-avatar-progress">
+                <!-- HEXAGON -->
+                <div class="hexagon-progress-100-110"></div>
+                <!-- /HEXAGON -->
+              </div>
+              <!-- /USER AVATAR PROGRESS -->
+          
+              <!-- USER AVATAR PROGRESS BORDER -->
+              <div class="user-avatar-progress-border">
+                <!-- HEXAGON -->
+                <div class="hexagon-border-100-110"></div>
+                <!-- /HEXAGON -->
+              </div>
+              <!-- /USER AVATAR PROGRESS BORDER -->
+            </div>
+            <!-- /USER SHORT DESCRIPTION AVATAR -->
+      
+            <!-- USER SHORT DESCRIPTION TITLE -->
+            <p class="user-short-description-title">Samuel Ayala Quispe</p>
+            <!-- /USER SHORT DESCRIPTION TITLE -->
+      
+            <!-- USER SHORT DESCRIPTION TEXT -->
+            <p class="user-short-description-text">Usuario</p>
+            <!-- /USER SHORT DESCRIPTION TEXT -->
+          </div>
+          <!-- /USER SHORT DESCRIPTION -->
+
+          <!-- USER PREVIEW STATS SLIDES -->
+          <div id="user-preview-stats-slides-04" class="user-preview-stats-slides">
+            <!-- USER PREVIEW STATS SLIDE -->
+            <div class="user-preview-stats-slide">
+              <!-- USER STATS -->
+              <div class="user-stats">
+                <!-- USER STAT -->
+                <div class="col-sm-6 text-center px-5" style="font-family: 'Rajdhani', sans-serif; text-transform: uppercase; font-weight: 700; font-size: 0.875rem;">
+                  <!-- USER STAT TITLE -->
+                  <p>Código: 20166262</p>
+                  <!-- /USER STAT TITLE -->
+                </div>
+                <!-- /USER STAT -->
+          
+                <!-- USER STAT -->
+                <div class="col-sm-6 text-center px-5" style="font-family: 'Rajdhani', sans-serif; text-transform: uppercase; font-weight: 700; font-size: 0.875rem;">
+                  <!-- USER STAT TITLE -->
+                  <p>Condición: Egresado</p>
+                  <!-- /USER STAT TITLE -->
+                </div>
+                <!-- /USER STAT -->
+              </div>
+              <!-- /USER STATS -->
+            </div>
+            <!-- /USER PREVIEW STATS SLIDE -->
+      
+            <!-- USER PREVIEW STATS SLIDE -->
+            <div class="user-preview-stats-slide">
+              <!-- USER PREVIEW TEXT -->
+              <p class="user-preview-text">Este usuario es egresado de la carrera y ha donado S/.150 a la Fibra!</p>
+              <!-- /USER PREVIEW TEXT -->
+            </div>
+            <!-- /USER PREVIEW STATS SLIDE -->
+          </div>
+          <!-- /USER PREVIEW STATS SLIDES -->
+    
+          <!-- USER PREVIEW STATS ROSTER -->
+          <div id="user-preview-stats-roster-04" class="user-preview-stats-roster slider-roster">
+            <!-- SLIDER ROSTER ITEM -->
+            <div class="slider-roster-item"></div>
+            <!-- /SLIDER ROSTER ITEM -->
+    
+            <!-- SLIDER ROSTER ITEM -->
+            <div class="slider-roster-item"></div>
+            <!-- /SLIDER ROSTER ITEM -->
+          </div>
+          <!-- /USER PREVIEW STATS ROSTER -->
+    
+          <!-- USER PREVIEW ACTIONS -->
+          <div class="user-preview-actions">
+            <!-- BUTTON -->
+            <button class="button secondary" id="mostrarPopup3">Banear</button>
+            <!-- /BUTTON -->
+          </div>
+          <!-- /USER PREVIEW ACTIONS -->
+        </div>
+        <!-- /USER PREVIEW INFO -->
+      </div>
+      <!-- /USER PREVIEW -->
+    </div>
+    <!-- /GRID -->
+
+    <!-- SECTION PAGER BAR -->
+    <div class="section-pager-bar">
+      <!-- SECTION PAGER -->
+      <div class="section-pager">
+        <!-- SECTION PAGER ITEM -->
+        <div class="section-pager-item active">
+          <!-- SECTION PAGER ITEM TEXT -->
+          <p class="section-pager-item-text">01</p>
+          <!-- /SECTION PAGER ITEM TEXT -->
+        </div>
+        <!-- /SECTION PAGER ITEM -->
+  
+        <!-- SECTION PAGER ITEM -->
+        <div class="section-pager-item">
+          <!-- SECTION PAGER ITEM TEXT -->
+          <p class="section-pager-item-text">02</p>
+          <!-- /SECTION PAGER ITEM TEXT -->
+        </div>
+        <!-- /SECTION PAGER ITEM -->
+  
+        <!-- SECTION PAGER ITEM -->
+        <div class="section-pager-item">
+          <!-- SECTION PAGER ITEM TEXT -->
+          <p class="section-pager-item-text">03</p>
+          <!-- /SECTION PAGER ITEM TEXT -->
+        </div>
+        <!-- /SECTION PAGER ITEM -->
+  
+        <!-- SECTION PAGER ITEM -->
+        <div class="section-pager-item">
+          <!-- SECTION PAGER ITEM TEXT -->
+          <p class="section-pager-item-text">04</p>
+          <!-- /SECTION PAGER ITEM TEXT -->
+        </div>
+        <!-- /SECTION PAGER ITEM -->
+  
+        <!-- SECTION PAGER ITEM -->
+        <div class="section-pager-item">
+          <!-- SECTION PAGER ITEM TEXT -->
+          <p class="section-pager-item-text">05</p>
+          <!-- /SECTION PAGER ITEM TEXT -->
+        </div>
+        <!-- /SECTION PAGER ITEM -->
+  
+        <!-- SECTION PAGER ITEM -->
+        <div class="section-pager-item">
+          <!-- SECTION PAGER ITEM TEXT -->
+          <p class="section-pager-item-text">06</p>
+          <!-- /SECTION PAGER ITEM TEXT -->
+        </div>
+        <!-- /SECTION PAGER ITEM -->
+      </div>
+      <!-- /SECTION PAGER -->
+  
+      <!-- SECTION PAGER CONTROLS -->
+      <div class="section-pager-controls">
+        <!-- SLIDER CONTROL -->
+        <div class="slider-control left disabled">
+          <!-- SLIDER CONTROL ICON -->
+          <svg class="slider-control-icon icon-small-arrow">
+            <use xlink:href="#svg-small-arrow"></use>
+          </svg>
+          <!-- /SLIDER CONTROL ICON -->
+        </div>
+        <!-- /SLIDER CONTROL -->
+  
+        <!-- SLIDER CONTROL -->
+        <div class="slider-control right">
+          <!-- SLIDER CONTROL ICON -->
+          <svg class="slider-control-icon icon-small-arrow">
+            <use xlink:href="#svg-small-arrow"></use>
+          </svg>
+          <!-- /SLIDER CONTROL ICON -->
+        </div>
+        <!-- /SLIDER CONTROL -->
+      </div>
+      <!-- /SECTION PAGER CONTROLS -->
+    </div>
+    <!-- /SECTION PAGER BAR -->
+
+    <!-- SECTION RESULTS TEXT -->
+    <p class="section-results-text">Showing 4 out of 282 members</p>
+    <!-- /SECTION RESULTS TEXT -->
+  </div>
+  <!-- /CONTENT GRID -->
+
+  <div class="overlay" id="overlay"></div>
+  <div class="popup" id="popup">
+      <svg class="cerrar-btn" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M11.4142 10L16.7071 4.70711C17.0976 4.31658 17.0976 3.68342 16.7071 3.29289C16.3166 2.90237 15.6834 2.90237 15.2929 3.29289L10 8.58579L4.70711 3.29289C4.31658 2.90237 3.68342 2.90237 3.29289 3.29289C2.90237 3.68342 2.90237 4.31658 3.29289 4.70711L8.58579 10L3.29289 15.2929C2.90237 15.6834 2.90237 16.3166 3.29289 16.7071C3.68342 17.0976 4.31658 17.0976 4.70711 16.7071L10 11.4142L15.2929 16.7071C15.6834 17.0976 16.3166 17.0976 16.7071 16.7071C17.0976 16.3166 17.0976 15.6834 16.7071 15.2929L11.4142 10Z" fill="black"/>
+      </svg>
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-sm-1"></div>
+          <div class="col-sm-10">
+            <h5 style="text-align: center;">¿Estás seguro de banear a este usuario?</h5>
+          </div>
+          <div class="col-sm-1"></div>
+        </div>
+      </div>
+      <br>
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-sm-6" style="margin-top: 5px;">
+            <button class="button secondary" id="cerrarPopup1">Banear</button>
+          </div>
+          <div class="col-sm-6" style="margin-top: 5px;">
+            <button class="button secondary" id="cerrarPopup2" style="background-color: grey;">Cancelar</button>
+          </div>
+        </div>
+      </div>
+  </div>
+
+  <script>
+    const mostrarPopupBtn1 = document.getElementById('mostrarPopup1');
+    const mostrarPopupBtn2 = document.getElementById('mostrarPopup2');
+    const mostrarPopupBtn3 = document.getElementById('mostrarPopup3');
+    const overlay = document.getElementById('overlay');
+    const popup = document.getElementById('popup');
+    const cerrarPopupBtn1 = document.getElementById('cerrarPopup1');
+    const cerrarPopupBtn2 = document.getElementById('cerrarPopup2');
+    const cerrarBtn = document.querySelector('.cerrar-btn');
+
+    const mostrarPopup = () => {
+      overlay.style.display = 'block';
+      popup.style.display = 'block';
+        // Desactivar el scroll
+      document.body.style.overflow = 'hidden';
+    };
+
+    mostrarPopupBtn1.addEventListener('click', mostrarPopup);
+    mostrarPopupBtn2.addEventListener('click', mostrarPopup);
+    mostrarPopupBtn3.addEventListener('click', mostrarPopup);
+
+    // Función para cerrar el popup
+    const cerrarPopup = () => {
+        overlay.style.display = 'none';
+        popup.style.display = 'none';
+        // Reactivar el scroll
+        document.body.style.overflow = 'auto';
+    };
+
+    cerrarBtn.addEventListener('click', cerrarPopup);
+
+    cerrarPopupBtn1.addEventListener('click', cerrarPopup);
+    cerrarPopupBtn2.addEventListener('click', cerrarPopup);
+
+    overlay.addEventListener('click', (e) => {
+        if (e.target === overlay) {
+            cerrarPopup();
+        }
+    });
+
+    // Cerrar el popup al presionar Escape
+    document.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape') {
+            cerrarPopup();
+        }
+    });
+  </script>
+<!-- app -->
+<script src="js/utils/app.js"></script>
+<!-- page loader -->
+<script src="js/utils/page-loader.js"></script>
+<!-- simplebar -->
+<script src="js/vendor/simplebar.min.js"></script>
+<!-- liquidify -->
+<script src="js/utils/liquidify.js"></script>
+<!-- XM_Plugins -->
+<script src="js/vendor/xm_plugins.min.js"></script>
+<!-- tiny-slider -->
+<script src="js/vendor/tiny-slider.min.js"></script>
+<!-- global.hexagons -->
+<script src="js/global/global.hexagons.js"></script>
+<!-- global.tooltips -->
+<script src="js/global/global.tooltips.js"></script>
+<!-- global.popups -->
+<script src="js/global/global.popups.js"></script>
+<!-- header -->
+<script src="js/header/header.js"></script>
+<!-- sidebar -->
+<script src="js/sidebar/sidebar.js"></script>
+<!-- content -->
+<script src="js/content/content.js"></script>
+<!-- form.utils -->
+<script src="js/form/form.utils.js"></script>
+<!-- SVG icons -->
+<script src="js/utils/svg-loader.js"></script>
+</body>
+</html>

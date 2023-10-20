@@ -1,0 +1,3225 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- bootstrap 4.3.1 -->
+    <link rel="stylesheet" href="css/vendor/bootstrap.min.css">
+    <!-- styles -->
+    <link rel="stylesheet" href="css/raw/styles.css">
+    <!-- simplebar styles -->
+    <link rel="stylesheet" href="css/vendor/simplebar.css">
+    <!-- favicon -->
+    <link rel="icon" href="img/favicon.ico">
+    <title>Voley - Siempre Fibra</title>
+    <style>
+      .text-sticker-aux{
+        height: 32px;
+        padding: 0;
+        border-radius: 200px;
+        background-color: #fff;
+        box-shadow: 3px 5px 20px 0 rgba(94, 92, 154, 0.12);
+        font-size: 0.875rem;
+        font-weight: 700;
+        line-height: 32px;
+      }
+        .text-sticker-aux.round {
+        border-radius: 12px;
+        }
+
+        .text-sticker-aux .highlighted {
+          color: #00c7d9;
+        }
+
+        .text-sticker-aux .text-sticker-icon {
+          margin-right: 4px;
+          fill: #00c7d9;
+        }
+
+        .text-sticker-aux.small-text {
+          font-size: 0.75rem;
+        }
+
+        .text-sticker-aux.small {
+          height: 24px;
+          padding: 0 12px;
+          font-size: 0.75rem;
+          line-height: 24px;
+        }
+
+        .text-sticker-aux.medium {
+          height: 44px;
+          padding: 0 16px;
+          line-height: 44px;
+        }
+
+        .text-sticker-aux.negative {
+          color: #fff;
+          background: #15151f;
+        }
+
+        .text-sticker.aux.void {
+          box-shadow: none;
+          background-color: transparent;
+        }
+        .overlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.7);
+      z-index: 10000;
+    }
+
+    /* Estilo para el contenido del popup */
+    .popup {
+      display: none;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      border-radius: 12px;
+      transform: translate(-50%, -50%);
+      background-color: white;
+      padding: 20px;
+      z-index: 10001;
+    }
+
+    /* Estilo para el botón de cerrar */
+    .cerrar-btn-crear {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      cursor: pointer;
+    }
+
+    .cerrar-btn-editarFTvsHA {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      cursor: pointer;
+    }
+    
+    .cerrar-btn-editarFTvsDA {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      cursor: pointer;
+    }
+
+    .cerrar-btn-editarFTvsPXO {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      cursor: pointer;
+    }
+
+    .cerrar-btn-editarFTvsHuascaminas {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      cursor: pointer;
+    }
+
+    .btn-file1 {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .btn-file1 input[type="file"] {
+      position: absolute;
+      top: 0;
+      right: 0;
+      min-width: 100%;
+      min-height: 100%;
+      font-size: 100px;
+      filter: alpha(opacity=0);
+      opacity: 0;
+      outline: none;
+      background: white;
+      cursor: inherit;
+      display: block;
+    }
+
+    .oculto {
+      display: none;
+    }
+        @media screen and (max-width: 680px) {
+          .auxResponsiveUwu{
+            display: none;
+          }
+        }
+        @media screen and (max-width: 575px) {
+
+        .recuadro {
+          display: flex;
+          justify-content: left !important;
+        }
+
+        .contenedor2 {
+          top: 15px !important;
+        }
+        }
+
+        @media screen and (max-width: 767px) {
+        .recuadroTexto {
+          margin-bottom: 15px;
+          width: 100% !important;
+        }
+        }
+
+        @media screen and (max-width: 777px) {
+        .contenedorCrear {
+          width: 80% !important;
+        }
+        }
+        footer {
+            background-color: #322D31;
+            color: white;
+            font-family: 'Titillium Web', sans-serif;
+            padding: 20px 0;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            text-align: center; /* Centrar el contenido horizontalmente */
+        }
+
+        .fila {
+            width: 100%;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            
+        }
+
+        .columna {
+            width: 30%;
+            padding: 10px;
+            box-sizing: border-box;
+            background-color: #322D31;
+        }
+
+        .columna p {
+            text-align: center;
+            color: white;
+            margin: 0; /* Eliminar el margen por defecto del párrafo */
+        }
+
+        /* Estilo para la lista */
+        .lista {
+            text-align: center;
+            list-style: none;
+            padding: 0;
+            color: #EDE8DF;
+        }
+
+        .lista li {
+            margin: 5px 0;
+            text-align: center;
+            color: #EDE8DF;
+        }
+        .titulo {
+            font-weight: bold;
+            font-size: 1.2em; /* Aumentar el tamaño de fuente del título */
+        }
+        .lista a {
+            text-decoration: none;
+            color: #EDE8DF;
+            font-weight: bold;
+        }
+
+        .lista a:hover {
+            text-decoration: underline; /* Subrayar en el hover */
+        }
+    </style>
+  </head>
+<body>
+  <!-- PAGE LOADER -->
+  <div class="page-loader">
+    <!-- PAGE LOADER DECORATION -->
+    <div class="page-loader-decoration">
+      <!-- ICON LOGO -->
+      <img src="css/logoTelito.png" width="400%" alt="">
+      <!-- /ICON LOGO -->
+    </div>
+    <!-- /PAGE LOADER DECORATION -->
+<br>
+    <!-- PAGE LOADER INFO -->
+    <div class="page-loader-info">
+      <!-- PAGE LOADER INFO TITLE -->
+      <p class="page-loader-info-title">SIEMPRE FIBRA</p>
+      <!-- /PAGE LOADER INFO TITLE -->
+
+      <!-- PAGE LOADER INFO TEXT -->
+      <p class="page-loader-info-text">Cargando...</p>
+      <!-- /PAGE LOADER INFO TEXT -->
+    </div>
+    <!-- /PAGE LOADER INFO -->
+    
+    <!-- PAGE LOADER INDICATOR -->
+    <div class="page-loader-indicator loader-bars">
+      <div class="loader-bar"></div>
+      <div class="loader-bar"></div>
+      <div class="loader-bar"></div>
+      <div class="loader-bar"></div>
+      <div class="loader-bar"></div>
+      <div class="loader-bar"></div>
+      <div class="loader-bar"></div>
+      <div class="loader-bar"></div>
+    </div>
+    <!-- /PAGE LOADER INDICATOR -->
+  </div>
+  <!-- /PAGE LOADER -->
+
+  <nav id="navigation-widget-small" class="navigation-widget navigation-widget-desktop closed sidebar left delayed">
+    <!-- USER AVATAR -->
+    <a class="user-avatar small no-outline online">
+      <!-- USER AVATAR CONTENT -->
+      <div class="user-avatar-content">
+        <!-- HEXAGON -->
+        <div class="hexagon-image-30-32" data-src="css/fotoMichi.png"></div>
+        <!-- /HEXAGON -->
+      </div>
+      <!-- /USER AVATAR CONTENT -->
+  
+      <!-- USER AVATAR PROGRESS -->
+      <div class="user-avatar-progress">
+        <!-- HEXAGON -->
+        <div class="hexagon-progress-40-44"></div>
+        <!-- /HEXAGON -->
+      </div>
+      <!-- /USER AVATAR PROGRESS -->
+  
+      <!-- USER AVATAR PROGRESS BORDER -->
+      <div class="user-avatar-progress-border">
+        <!-- HEXAGON -->
+        <div class="hexagon-border-40-44"></div>
+        <!-- /HEXAGON -->
+      </div>
+      <!-- /USER AVATAR PROGRESS BORDER -->
+  
+      <!-- USER AVATAR BADGE -->
+      <div class="user-avatar-badge">
+        <!-- USER AVATAR BADGE BORDER -->
+        <div class="user-avatar-badge-border">
+          <!-- HEXAGON -->
+          <div class="hexagon-22-24"></div>
+          <!-- /HEXAGON -->
+        </div>
+        <!-- /USER AVATAR BADGE BORDER -->
+  
+        <!-- USER AVATAR BADGE CONTENT -->
+        <div class="user-avatar-badge-content">
+          <!-- HEXAGON -->
+          <div class="hexagon-dark-16-18"></div>
+          <!-- /HEXAGON -->
+        </div>
+        <!-- /USER AVATAR BADGE CONTENT -->
+  
+        <!-- USER AVATAR BADGE TEXT -->
+        <p class="user-avatar-badge-text">24</p>
+        <!-- /USER AVATAR BADGE TEXT -->
+      </div>
+      <!-- /USER AVATAR BADGE -->
+    </a>
+    <!-- /USER AVATAR -->
+
+    <!-- MENU -->
+    <ul class="menu small">
+      <!-- MENU ITEM -->
+      <!-- MENU ITEM -->
+      <!-- MENU ITEM -->
+      <!-- MENU ITEM -->
+      <li class="menu-item active">
+        <!-- MENU ITEM LINK -->
+        <a class="menu-item-link text-tooltip-tfr" href="miCuentaDelAct.html" data-title="Mi cuenta">
+          <!-- MENU ITEM LINK ICON -->
+          <svg class="menu-item-link-icon icon-members">
+            <use xlink:href="#svg-members"></use>
+          </svg>
+          <!-- /MENU ITEM LINK ICON -->
+        </a>
+        <!-- /MENU ITEM LINK -->
+      </li>
+      <li class="menu-item">
+        <!-- MENU ITEM LINK -->
+        <a class="menu-item-link text-tooltip-tfr" href="actividadesDelAct.html" data-title="Actividades">
+          <!-- MENU ITEM LINK ICON -->
+          <img src="css/actividadIconoGris.png" class="menu-item-link-icon icon-members" alt="">
+          <!-- /MENU ITEM LINK ICON -->
+        </a>
+        <!-- /MENU ITEM LINK -->
+      </li>
+      <li class="menu-item">
+        <!-- MENU ITEM LINK -->
+        <a class="menu-item-link text-tooltip-tfr" href="misEventosDelAct.html" data-title="Mis eventos">
+          <!-- MENU ITEM LINK ICON -->
+          <img src="css/misEventosIcono.png" class="menu-item-link-icon icon-members" alt="">
+          <!-- /MENU ITEM LINK ICON -->
+        </a>
+        <!-- /MENU ITEM LINK -->
+      </li>
+      <li class="menu-item">
+        <!-- MENU ITEM LINK -->
+        <a class="menu-item-link text-tooltip-tfr" href="donacionesDelAct.html" data-title="Donaciones">
+          <!-- MENU ITEM LINK ICON -->
+          <img src="css/donacionIcono.png" class="menu-item-link-icon icon-members" style="opacity: 50%;" alt="">
+          <!-- /MENU ITEM LINK ICON -->
+        </a>
+        <!-- /MENU ITEM LINK -->
+      </li>
+    </ul>
+    <!-- /MENU -->
+  </nav>
+  <!-- /NAVIGATION WIDGET -->
+
+  <!-- NAVIGATION WIDGET -->
+  <nav id="navigation-widget" class="navigation-widget navigation-widget-desktop sidebar left hidden" data-simplebar>
+    <!-- NAVIGATION WIDGET COVER -->
+    <figure class="navigation-widget-cover liquid">
+
+    </figure>
+    <!-- /NAVIGATION WIDGET COVER -->
+
+    <!-- USER SHORT DESCRIPTION -->
+    <div class="user-short-description">
+      <!-- USER SHORT DESCRIPTION AVATAR -->
+      <a class="user-short-description-avatar user-avatar medium">
+        <!-- USER AVATAR BORDER -->
+        <div class="user-avatar-border">
+          <!-- HEXAGON -->
+          <div class="hexagon-120-132"></div>
+          <!-- /HEXAGON -->
+        </div>
+        <!-- /USER AVATAR BORDER -->
+    
+        <!-- USER AVATAR CONTENT -->
+        <div class="user-avatar-content">
+          <!-- HEXAGON -->
+          <div class="hexagon-image-82-90" data-src="css/fotoMichi.png"></div>
+          <!-- /HEXAGON -->
+        </div>
+        <!-- /USER AVATAR CONTENT -->
+    
+        <!-- USER AVATAR PROGRESS -->
+        <div class="user-avatar-progress">
+          <!-- HEXAGON -->
+          <div class="hexagon-progress-100-110"></div>
+          <!-- /HEXAGON -->
+        </div>
+        <!-- /USER AVATAR PROGRESS -->
+
+        <!-- /USER AVATAR BADGE -->
+      </a>
+      <!-- /USER SHORT DESCRIPTION AVATAR -->
+
+      <!-- USER SHORT DESCRIPTION TITLE -->
+      <p class="user-short-description-title"><a>Josh Yauri</a></p>
+      <!-- /USER SHORT DESCRIPTION TITLE -->
+
+      <!-- USER SHORT DESCRIPTION TEXT -->
+      <p class="user-short-description-text"><a style="color: green;">Delegado de Actividad</a></p>
+      <!-- /USER SHORT DESCRIPTION TEXT -->
+    </div>
+    <!-- /USER SHORT DESCRIPTION -->
+
+
+      <hr>
+    <!-- MENU -->
+      <!-- MENU ITEM -->
+      <li class="menu-item active">
+        <!-- MENU ITEM LINK -->
+        <a class="menu-item-link" href="miCuentaDelAct.html">
+          <!-- MENU ITEM LINK ICON -->
+          <svg class="menu-item-link-icon icon-members">
+            <use xlink:href="#svg-members"></use>
+          </svg>
+          <!-- /MENU ITEM LINK ICON -->
+          Mi cuenta
+        </a>
+        <!-- /MENU ITEM LINK -->
+      </li>
+      <!-- /MENU ITEM -->
+
+      <hr>
+      <!-- MENU ITEM -->
+      <li class="menu-item">
+        <!-- MENU ITEM LINK -->
+        <a class="menu-item-link" href="actividadesDelAct.html">
+          <!-- MENU ITEM LINK ICON -->
+          <img src="css/actividadIconoGris.png" class="menu-item-link-icon icon-members" alt="">
+          <!-- /MENU ITEM LINK ICON -->
+          Actividades
+        </a>
+        <!-- /MENU ITEM LINK -->
+      </li>
+      <!-- /MENU ITEM -->
+      <br>
+      <!-- MENU ITEM -->
+      <li class="menu-item">
+        <!-- MENU ITEM LINK -->
+        <a class="menu-item-link" href="misEventosDelAct.html">
+          <!-- MENU ITEM LINK ICON -->
+          <img src="css/misEventosIcono.png" class="menu-item-link-icon icon-members" alt="">
+          <!-- /MENU ITEM LINK ICON -->
+          Mis eventos
+        </a>
+        <!-- /MENU ITEM LINK -->
+      </li>
+      <!-- /MENU ITEM -->
+      <br>
+      <!-- MENU ITEM -->
+      <li class="menu-item">
+        <!-- MENU ITEM LINK -->
+        <a class="menu-item-link" href="donacionesDelAct.html">
+          <!-- MENU ITEM LINK ICON -->
+          <img src="css/donacionIcono.png" class="menu-item-link-icon icon-members" style="opacity: 50%;" alt="">
+          <!-- /MENU ITEM LINK ICON -->
+          Donaciones
+        </a>
+        <!-- /MENU ITEM LINK -->
+      </li>
+      <!-- /MENU ITEM -->
+    </ul>
+    <!-- /MENU -->
+  </nav>
+  <!-- /NAVIGATION WIDGET -->
+
+  <!-- NAVIGATION WIDGET -->
+  <nav id="navigation-widget-mobile" class="navigation-widget navigation-widget-mobile sidebar left hidden" data-simplebar>
+    <!-- NAVIGATION WIDGET CLOSE BUTTON -->
+    <div class="navigation-widget-close-button">
+      <!-- NAVIGATION WIDGET CLOSE BUTTON ICON -->
+      <svg class="navigation-widget-close-button-icon icon-back-arrow">
+        <use xlink:href="#svg-back-arrow"></use>
+      </svg>
+      <!-- NAVIGATION WIDGET CLOSE BUTTON ICON -->
+    </div>
+    <!-- /NAVIGATION WIDGET CLOSE BUTTON -->
+
+    <!-- NAVIGATION WIDGET INFO WRAP -->
+    <div class="navigation-widget-info-wrap">
+      <!-- NAVIGATION WIDGET INFO -->
+      <div class="navigation-widget-info">
+        <!-- USER AVATAR -->
+        <a class="user-avatar small no-outline">
+          <!-- USER AVATAR CONTENT -->
+          <div class="user-avatar-content">
+            <!-- HEXAGON -->
+            <div class="hexagon-image-30-32" data-src="css/fotoMichi.png"></div>
+            <!-- /HEXAGON -->
+          </div>
+          <!-- /USER AVATAR CONTENT -->
+      
+          <!-- USER AVATAR PROGRESS -->
+          <div class="user-avatar-progress">
+            <!-- HEXAGON -->
+            <div class="hexagon-progress-40-44"></div>
+            <!-- /HEXAGON -->
+          </div>
+          <!-- /USER AVATAR PROGRESS -->
+      
+          <!-- USER AVATAR PROGRESS BORDER -->
+          <div class="user-avatar-progress-border">
+            <!-- HEXAGON -->
+            <div class="hexagon-border-40-44"></div>
+            <!-- /HEXAGON -->
+          </div>
+          <!-- /USER AVATAR PROGRESS BORDER -->
+      
+          <!-- USER AVATAR BADGE -->
+          <div class="user-avatar-badge">
+            <!-- USER AVATAR BADGE BORDER -->
+            <!-- /USER AVATAR BADGE BORDER -->
+          </div>
+          <!-- /USER AVATAR BADGE -->
+        </a>
+        <!-- /USER AVATAR -->
+
+        <!-- NAVIGATION WIDGET INFO TITLE -->
+        <p class="navigation-widget-info-title"><a>Josh Yauri</a></p>
+        <!-- /NAVIGATION WIDGET INFO TITLE -->
+
+        <!-- NAVIGATION WIDGET INFO TEXT -->
+        <p class="navigation-widget-info-text" style="color: green;">Delegado de Actividad</p>
+        <!-- /NAVIGATION WIDGET INFO TEXT -->
+      </div>
+      <!-- /NAVIGATION WIDGET INFO -->
+
+      <!-- NAVIGATION WIDGET BUTTON -->
+      <a href="inicioSesion.html"><p class="navigation-widget-info-button button small secondary">Cerrar sesión</p></a>
+      <!-- /NAVIGATION WIDGET BUTTON -->
+    </div>
+    <!-- /NAVIGATION WIDGET INFO WRAP -->
+
+    <!-- MENU -->
+    <ul class="menu">
+
+
+
+    <!-- NAVIGATION WIDGET SECTION TITLE -->
+    <p class="navigation-widget-section-title">Perfil</p>
+    <!-- /NAVIGATION WIDGET SECTION TITLE -->
+
+    <!-- NAVIGATION WIDGET SECTION LINK -->
+    <a class="navigation-widget-section-link" href="miCuentaDelAct.html">Mi cuenta</a>
+    <!-- /NAVIGATION WIDGET SECTION LINK -->
+
+    <!-- NAVIGATION WIDGET SECTION TITLE -->
+    <p class="navigation-widget-section-title">Participación</p>
+    <!-- /NAVIGATION WIDGET SECTION TITLE -->
+
+    <!-- NAVIGATION WIDGET SECTION LINK -->
+    <a class="navigation-widget-section-link" href="actividadesDelAct.html">Actividades</a>
+    <!-- /NAVIGATION WIDGET SECTION LINK -->
+
+    <!-- NAVIGATION WIDGET SECTION LINK -->
+    <a class="navigation-widget-section-link" href="misEventosDelAct.html">Mis eventos</a>
+    <!-- /NAVIGATION WIDGET SECTION LINK -->
+
+    <!-- NAVIGATION WIDGET SECTION LINK -->
+    <a class="navigation-widget-section-link" href="donacionesDelAct.html">Donaciones</a>
+    <!-- /NAVIGATION WIDGET SECTION LINK -->
+  </nav>
+  <!-- /NAVIGATION WIDGET -->
+
+
+
+
+  <!-- HEADER -->
+  <header class="header">
+    <!-- HEADER ACTIONS -->
+    <div class="header-actions">
+      <!-- HEADER BRAND -->
+      <div class="header-brand">
+        <!-- LOGO -->
+        <div class="logo auxResponsiveUwu">
+          <!-- ICON LOGO VIKINGER -->
+          <div class="icon-logo-vikinger small">
+            <img src="css/telitoBlanco.png" width="150%" alt="">
+          </div>
+          <!-- /ICON LOGO VIKINGER -->
+        </div>
+        <!-- /LOGO -->
+
+        <!-- HEADER BRAND TEXT -->
+        <h1 class="header-brand-text">SEMANA DE INGENIERÍA</h1>
+        <!-- /HEADER BRAND TEXT -->
+      </div>
+      <!-- /HEADER BRAND -->
+      <!-- SIDEMENU TRIGGER -->
+      <div class="sidemenu-trigger navigation-widget-trigger">
+        <!-- ICON GRID -->
+        <svg class="icon-grid">
+          <use xlink:href="#svg-grid"></use>
+        </svg>
+        <!-- /ICON GRID -->
+      </div>
+      <!-- /SIDEMENU TRIGGER -->
+
+      <!-- MOBILEMENU TRIGGER -->
+      <div class="mobilemenu-trigger navigation-widget-mobile-trigger">
+        <!-- BURGER ICON -->
+        <div class="burger-icon inverted">
+          <!-- BURGER ICON BAR -->
+          <div class="burger-icon-bar"></div>
+          <!-- /BURGER ICON BAR -->
+
+          <!-- BURGER ICON BAR -->
+          <div class="burger-icon-bar"></div>
+          <!-- /BURGER ICON BAR -->
+
+          <!-- BURGER ICON BAR -->
+          <div class="burger-icon-bar"></div>
+          <!-- /BURGER ICON BAR -->
+        </div>
+        <!-- /BURGER ICON -->
+      </div>
+      <!-- /MOBILEMENU TRIGGER -->
+    </div>
+    <!-- /HEADER ACTIONS -->
+
+    <!-- NO BORRAR ESTO-->
+
+    <!-- HEADER ACTIONS -->
+    <div class="header-actions">
+      <!-- PROGRESS STAT -->
+      <div class="progress-stat">
+        <!-- BAR PROGRESS WRAP -->
+        <div class="bar-progress-wrap">
+          <!-- BAR PROGRESS INFO -->
+          <!-- /BAR PROGRESS INFO -->
+        </div>
+        <!-- /BAR PROGRESS WRAP -->
+    
+        <!-- PROGRESS STAT BAR -->
+        <!-- /PROGRESS STAT BAR -->
+      </div>
+      <!-- /PROGRESS STAT -->
+    </div>
+    <!-- /HEADER ACTIONS -->
+
+    <!-- NO BORRAR ESTO-->
+    <!-- HEADER ACTIONS -->
+    <div class="header-actions">
+      <!-- ACTION LIST -->
+      <div class="action-list dark"> 
+        <!-- ACTION LIST ITEM WRAP -->
+        <div class="action-list-item-wrap">
+          <!-- ACTION LIST ITEM -->
+          <div class="action-list-item unread header-dropdown-trigger">
+            <!-- ACTION LIST ITEM ICON -->
+            <svg class="action-list-item-icon icon-notification">
+              <use xlink:href="#svg-notification"></use>
+            </svg>
+            <!-- /ACTION LIST ITEM ICON -->
+          </div>
+          <!-- /ACTION LIST ITEM -->
+
+          <!-- DROPDOWN BOX -->
+          <div class="dropdown-box header-dropdown">
+            <!-- DROPDOWN BOX HEADER -->
+            <div class="dropdown-box-header">
+              <!-- DROPDOWN BOX HEADER TITLE -->
+              <p class="dropdown-box-header-title">Notificaciones</p>
+              <!-- /DROPDOWN BOX HEADER TITLE -->
+            </div>
+            <!-- /DROPDOWN BOX HEADER -->
+        
+            <!-- DROPDOWN BOX LIST -->
+            <div class="dropdown-box-list" data-simplebar>
+              <!-- DROPDOWN BOX LIST ITEM -->
+              <div class="dropdown-box-list-item unread">
+                <!-- USER STATUS -->
+                <div class="user-status notification">
+                  <!-- USER STATUS AVATAR -->
+                  <a class="user-status-avatar">
+                    <!-- USER AVATAR -->
+                    <div class="user-avatar small no-outline">
+                      <!-- USER AVATAR CONTENT -->
+                      <div class="user-avatar-content">
+                        <!-- HEXAGON -->
+                        <div class="hexagon-image-30-32" data-src="css/fabiana.png"></div>
+                        <!-- /HEXAGON -->
+                      </div>
+                      <!-- /USER AVATAR CONTENT -->
+                  
+                      <!-- USER AVATAR PROGRESS -->
+                      <div class="user-avatar-progress">
+                        <!-- HEXAGON -->
+                        <div class="hexagon-progress-40-44"></div>
+                        <!-- /HEXAGON -->
+                      </div>
+                      <!-- /USER AVATAR PROGRESS -->
+                  
+                      <!-- USER AVATAR PROGRESS BORDER -->
+                      <div class="user-avatar-progress-border">
+                        <!-- HEXAGON -->
+                        <div class="hexagon-border-40-44"></div>
+                        <!-- /HEXAGON -->
+                      </div>
+                      <!-- /USER AVATAR PROGRESS BORDER -->
+                  
+                      <!-- USER AVATAR BADGE -->
+                      <div class="user-avatar-badge">
+                        <!-- USER AVATAR BADGE BORDER -->
+                        <div class="user-avatar-badge-border">
+                        </div>
+                        <!-- /USER AVATAR BADGE BORDER -->
+                  
+                      </div>
+                      <!-- /USER AVATAR BADGE -->
+                    </div>
+                    <!-- /USER AVATAR -->
+                  </a>
+                  <!-- /USER STATUS AVATAR -->
+              
+                  <!-- USER STATUS TITLE -->
+                  <p class="user-status-title"><a class="bold">Fabiana Rojas</a> desea apoyar el evento <a class="highlighted">Fibra Tóxica VS Huascaminas</a> dentro de la actividad <a style="color: blueviolet;">Voley</a>.</p>
+                  <!-- /USER STATUS TITLE -->
+              
+                  <!-- USER STATUS TIMESTAMP -->
+                  <p class="user-status-timestamp">Hace 24 minutos</p>
+                  <!-- /USER STATUS TIMESTAMP -->
+              
+                  <!-- USER STATUS ICON -->
+                  <div class="user-status-icon">
+                    <!-- ICON COMMENT -->
+                    <img src="css/voleyIcono.png" width="30px" alt="">
+                    <!-- /ICON COMMENT -->
+                  </div>
+                  <!-- /USER STATUS ICON -->
+                </div>
+                <!-- /USER STATUS -->
+              </div>
+              <!-- /DROPDOWN BOX LIST ITEM -->
+              <!-- DROPDOWN BOX LIST ITEM -->
+              <div class="dropdown-box-list-item unread">
+                <!-- USER STATUS -->
+                <div class="user-status notification">
+                  <!-- USER STATUS AVATAR -->
+                  <a class="user-status-avatar">
+                    <!-- USER AVATAR -->
+                    <div class="user-avatar small no-outline">
+                      <!-- USER AVATAR CONTENT -->
+                      <div class="user-avatar-content">
+                        <!-- HEXAGON -->
+                        <div class="hexagon-image-30-32" data-src="css/edisonFlores.png"></div>
+                        <!-- /HEXAGON -->
+                      </div>
+                      <!-- /USER AVATAR CONTENT -->
+                  
+                      <!-- USER AVATAR PROGRESS -->
+                      <div class="user-avatar-progress">
+                        <!-- HEXAGON -->
+                        <div class="hexagon-progress-40-44"></div>
+                        <!-- /HEXAGON -->
+                      </div>
+                      <!-- /USER AVATAR PROGRESS -->
+                  
+                      <!-- USER AVATAR PROGRESS BORDER -->
+                      <div class="user-avatar-progress-border">
+                        <!-- HEXAGON -->
+                        <div class="hexagon-border-40-44"></div>
+                        <!-- /HEXAGON -->
+                      </div>
+                      <!-- /USER AVATAR PROGRESS BORDER -->
+                  
+                      <!-- USER AVATAR BADGE -->
+                      <div class="user-avatar-badge">
+                        <!-- USER AVATAR BADGE BORDER -->
+                        <div class="user-avatar-badge-border">
+                        </div>
+                        <!-- /USER AVATAR BADGE BORDER -->
+                  
+                      </div>
+                      <!-- /USER AVATAR BADGE -->
+                    </div>
+                    <!-- /USER AVATAR -->
+                  </a>
+                  <!-- /USER STATUS AVATAR -->
+              
+                  <!-- USER STATUS TITLE -->
+                  <p class="user-status-title"><a class="bold">Edison Flores</a> desea apoyar el evento <a class="highlighted">Fibra Tóxica VS PXO Industrial</a> dentro de la actividad <a style="color: blueviolet;">Futsal</a>.</p>
+                  <!-- /USER STATUS TITLE -->
+              
+                  <!-- USER STATUS TIMESTAMP -->
+                  <p class="user-status-timestamp">Hace 1 hora</p>
+                  <!-- /USER STATUS TIMESTAMP -->
+              
+                  <!-- USER STATUS ICON -->
+                  <div class="user-status-icon">
+                    <!-- ICON COMMENT -->
+                    <img src="css/futsalIcono.png" width="30px" alt="">
+                    <!-- /ICON COMMENT -->
+                  </div>
+                  <!-- /USER STATUS ICON -->
+                </div>
+                <!-- /USER STATUS -->
+              </div>
+              <!-- /DROPDOWN BOX LIST ITEM -->
+              <!-- DROPDOWN BOX LIST ITEM -->
+              <div class="dropdown-box-list-item unread">
+                <!-- USER STATUS -->
+                <div class="user-status notification">
+                  <!-- USER STATUS AVATAR -->
+                  <a class="user-status-avatar">
+                    <!-- USER AVATAR -->
+                    <div class="user-avatar small no-outline">
+                      <!-- USER AVATAR CONTENT -->
+                      <div class="user-avatar-content">
+                        <!-- HEXAGON -->
+                        <div class="hexagon-image-30-32" data-src="css/raulRomero.png"></div>
+                        <!-- /HEXAGON -->
+                      </div>
+                      <!-- /USER AVATAR CONTENT -->
+                  
+                      <!-- USER AVATAR PROGRESS -->
+                      <div class="user-avatar-progress">
+                        <!-- HEXAGON -->
+                        <div class="hexagon-progress-40-44"></div>
+                        <!-- /HEXAGON -->
+                      </div>
+                      <!-- /USER AVATAR PROGRESS -->
+                  
+                      <!-- USER AVATAR PROGRESS BORDER -->
+                      <div class="user-avatar-progress-border">
+                        <!-- HEXAGON -->
+                        <div class="hexagon-border-40-44"></div>
+                        <!-- /HEXAGON -->
+                      </div>
+                      <!-- /USER AVATAR PROGRESS BORDER -->
+                  
+                      <!-- USER AVATAR BADGE -->
+                      <div class="user-avatar-badge">
+                        <!-- USER AVATAR BADGE BORDER -->
+                        <div class="user-avatar-badge-border">
+                        </div>
+                        <!-- /USER AVATAR BADGE BORDER -->
+                  
+                      </div>
+                      <!-- /USER AVATAR BADGE -->
+                    </div>
+                    <!-- /USER AVATAR -->
+                  </a>
+                  <!-- /USER STATUS AVATAR -->
+              
+                  <!-- USER STATUS TITLE -->
+                  <p class="user-status-title"><a class="bold">Raul Romero</a> desea apoyar el evento <a class="highlighted">Fibra Tóxica VS Hormigón Armado</a> dentro del evento <a style="color: blueviolet;">Six Pract</a>.</p>
+                  <!-- /USER STATUS TITLE -->
+              
+                  <!-- USER STATUS TIMESTAMP -->
+                  <p class="user-status-timestamp">Hace 2 horas</p>
+                  <!-- /USER STATUS TIMESTAMP -->
+              
+                  <!-- USER STATUS ICON -->
+                  <div class="user-status-icon">
+                    <!-- ICON COMMENT -->
+                    <img src="css/sixPractIcono.png" width="30px" alt="">
+                    <!-- /ICON COMMENT -->
+                  </div>
+                  <!-- /USER STATUS ICON -->
+                </div>
+                <!-- /USER STATUS -->
+              </div>
+              <!-- /DROPDOWN BOX LIST ITEM -->
+            </div>
+            <!-- /DROPDOWN BOX LIST -->
+<!--ARRIBA ESTÁN LAS NOTIFICACIONES-->
+            <!-- DROPDOWN BOX BUTTON -->
+            <a class="dropdown-box-button secondary" href="notificacionesDelAct.html">Ver todas las notificaciones</a>
+            <!-- /DROPDOWN BOX BUTTON -->
+          </div>
+          <!-- /DROPDOWN BOX -->
+        </div>
+        <!-- /ACTION LIST ITEM WRAP -->
+      </div>
+      <!-- /ACTION LIST -->
+
+      <!-- ACTION ITEM WRAP -->
+      <div class="action-item-wrap auxResponsiveUwu">
+        <!-- ACTION ITEM -->
+        <div class="action-item dark header-settings-dropdown-trigger">
+          <!-- ACTION ITEM ICON -->
+          <a href="inicioSesion.html"><img src="css/logOut.png" width="30%" style="margin-left: 25px;" alt=""></a>
+          <!-- /ACTION ITEM ICON -->
+        </div>
+        <!-- /ACTION ITEM -->
+
+        <!-- DROPDOWN NAVIGATION -->
+        
+      </div>
+      <!-- /ACTION ITEM WRAP -->
+    </div>
+    <!-- /HEADER ACTIONS -->
+  </header>
+  <!-- /HEADER -->
+
+
+  <!-- CONTENT GRID -->
+  <div class="content-grid">
+    
+    <!-- SECTION BANNER -->
+    <div class="section-banner">
+      <!-- SECTION BANNER ICON -->
+      <img class="section-banner-icon" src="css/telitoVoley.png" alt="marketplace-icon">
+      <!-- /SECTION BANNER ICON -->
+  
+      <!-- SECTION BANNER TITLE -->
+      <p class="section-banner-title">Voley</p>
+      <!-- /SECTION BANNER TITLE -->
+  
+      <!-- SECTION BANNER TEXT -->
+      <p class="section-banner-text">Encuentra todos los eventos dentro de Voley</p>
+      <!-- /SECTION BANNER TEXT -->
+    </div>
+    <!-- /SECTION BANNER -->
+    <div class="oculto" id="Usuario">
+      <!-- SECTION HEADER -->
+      <div class="section-header">
+        <div class="contanier-fluid" style="width: 100%;">
+          <!-- SECTION HEADER INFO -->
+          <div class="row" style="width: 100%;">
+            <div class="section-header-info col-sm-auto recuadroTexto">
+              <!-- SECTION PRETITLE -->
+              <p class="section-pretitle">Busca los eventos que desees</p>
+              <!-- /SECTION PRETITLE -->
+
+              <!-- SECTION TITLE -->
+              <h2 class="section-title">Lista de eventos</h2>
+              <!-- /SECTION TITLE -->
+            </div>
+            <!-- /SECTION HEADER INFO -->
+            <div class="section-filters-bar-actions col-sm-auto d-flex justify-content-end recuadro recuadroFila" style="width: 150px;">
+              <!-- BUTTON -->
+              <button class="button secondary popup-event-creation-trigger botones" id="opcionEdicion" style="width: 100%;">Vista de edición</button>
+              <!-- /BUTTON -->
+            </div>
+            <div class="section-filters-bar-actions col-sm-auto d-flex justify-content-end recuadro recuadroFila" style="width: 150px;">
+              <!-- BUTTON -->
+              <button class="button secondary popup-event-creation-trigger botones" style="width: 100%;" id="mostrarPopupCrear">Crear evento</button>
+              <!-- /BUTTON -->
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- /SECTION HEADER -->
+      <!-- SECTION FILTERS BAR -->
+    <div class="section-filters-bar v4">
+      <!-- SECTION FILTERS BAR ACTIONS -->
+      <div class="section-filters-bar-actions">
+        <!-- FORM -->
+        <form class="form">
+          <!-- FORM ITEM -->
+          <div class="form-item split">
+            <!-- FORM INPUT -->
+            <div class="form-input small">
+              <label for="items-search">Buscar evento</label>
+              <input type="text" id="items-search" name="items_search">
+            </div>
+            <!-- /FORM INPUT -->
+  
+            <!-- BUTTON -->
+            <button class="button primary">
+              <!-- ICON MAGNIFYING GLASS -->
+              <svg class="icon-magnifying-glass">
+                <use xlink:href="#svg-magnifying-glass"></use>
+              </svg>
+              <!-- /ICON MAGNIFYING GLASS -->
+            </button>
+            <!-- /BUTTON -->
+          </div>
+          <!-- /FORM ITEM -->
+        </form>
+        <!-- /FORM -->
+      </div>
+      <!-- /SECTION FILTERS BAR ACTIONS -->
+  
+      <!-- SECTION FILTERS BAR ACTIONS -->
+      <div class="section-filters-bar-actions">
+        <!-- FORM -->
+        <form class="form">
+          <!-- FORM ITEM -->
+          <div class="form-item split medium">
+            <!-- FORM SELECT -->
+            <div class="form-select small">
+              <label for="items-filter-category">Filtrar por</label>
+              <select id="items-filter-category" name="items_filter_category">
+                <option value="0">Más reciente</option>
+                <option value="1">Orden alfabético</option>
+                <option value="2">Oculto</option>
+              </select>
+              <!-- FORM SELECT ICON -->
+              <svg class="form-select-icon icon-small-arrow">
+                <use xlink:href="#svg-small-arrow"></use>
+              </svg>
+              <!-- /FORM SELECT ICON -->
+            </div>
+            <!-- /FORM SELECT -->
+    
+            <!-- FORM SELECT -->
+            <div class="form-select small">
+              <label for="items-filter-order">Ordenar por</label>
+              <select id="items-filter-order" name="items_filter_order">
+                <option value="0">Ascendente</option>
+                <option value="1">Descendente</option>
+              </select>
+              <!-- FORM SELECT ICON -->
+              <svg class="form-select-icon icon-small-arrow">
+                <use xlink:href="#svg-small-arrow"></use>
+              </svg>
+              <!-- /FORM SELECT ICON -->
+            </div>
+            <!-- /FORM SELECT -->
+        
+            <!-- BUTTON -->
+            <button class="button secondary">Aplicar filtros</button>
+            <!-- /BUTTON -->
+          </div>
+          <!-- /FORM ITEM -->
+        </form>
+        <!-- /FORM -->
+      </div>
+      <!-- /SECTION FILTERS BAR ACTIONS -->
+    </div>
+    <!-- /SECTION FILTERS BAR -->
+
+    <!-- GRID -->
+    <div class="grid grid-3-9 small-space">
+      <!-- MARKETPLACE SIDEBAR -->
+      <div class="marketplace-sidebar">
+        <!-- SIDEBAR BOX -->
+        <div class="sidebar-box">
+          <!-- SIDEBAR BOX TITLE -->
+          <p class="sidebar-box-title">Ubicación</p>
+          <!-- /SIDEBAR BOX TITLE -->
+      
+          <!-- SIDEBAR BOX ITEMS -->
+          <div class="sidebar-box-items">      
+            <!-- CHECKBOX LINE -->
+            <div class="checkbox-line">
+              <!-- CHECKBOX WRAP -->
+              <div class="checkbox-wrap">
+                <input type="checkbox" id="category-psd" name="category_psd">
+                <!-- CHECKBOX BOX -->
+                <div class="checkbox-box">
+                  <!-- ICON CROSS -->
+                  <svg class="icon-cross">
+                    <use xlink:href="#svg-cross"></use>
+                  </svg>
+                  <!-- /ICON CROSS -->
+                </div>
+                <!-- /CHECKBOX BOX -->
+                <label for="category-psd">Cancha de minas</label>
+              </div>
+              <!-- /CHECKBOX WRAP -->
+      
+              <!-- CHECKBOX LINE TEXT -->
+              <p class="checkbox-line-text">3</p>
+              <!-- /CHECKBOX LINE TEXT -->
+            </div>
+            <!-- /CHECKBOX LINE -->
+      
+            <!-- CHECKBOX LINE -->
+            <div class="checkbox-line">
+              <!-- CHECKBOX WRAP -->
+              <div class="checkbox-wrap">
+                <input type="checkbox" id="category-html" name="category_html">
+                <!-- CHECKBOX BOX -->
+                <div class="checkbox-box">
+                  <!-- ICON CROSS -->
+                  <svg class="icon-cross">
+                    <use xlink:href="#svg-cross"></use>
+                  </svg>
+                  <!-- /ICON CROSS -->
+                </div>
+                <!-- /CHECKBOX BOX -->
+                <label for="category-html">V305</label>
+              </div>
+              <!-- /CHECKBOX WRAP -->
+      
+              <!-- CHECKBOX LINE TEXT -->
+              <p class="checkbox-line-text">4</p>
+              <!-- /CHECKBOX LINE TEXT -->
+            </div>
+            <!-- /CHECKBOX LINE -->
+      
+            <!-- CHECKBOX LINE -->
+            <div class="checkbox-line">
+              <!-- CHECKBOX WRAP -->
+              <div class="checkbox-wrap">
+                <input type="checkbox" id="category-wp" name="category_wp">
+                <!-- CHECKBOX BOX -->
+                <div class="checkbox-box">
+                  <!-- ICON CROSS -->
+                  <svg class="icon-cross">
+                    <use xlink:href="#svg-cross"></use>
+                  </svg>
+                  <!-- /ICON CROSS -->
+                </div>
+                <!-- /CHECKBOX BOX -->
+                <label for="category-wp">Polideportivo</label>
+              </div>
+              <!-- /CHECKBOX WRAP -->
+      
+              <!-- CHECKBOX LINE TEXT -->
+              <p class="checkbox-line-text">6</p>
+              <!-- /CHECKBOX LINE TEXT -->
+            </div>
+            <!-- /CHECKBOX LINE -->
+      
+            <!-- CHECKBOX LINE -->
+            <div class="checkbox-line">
+              <!-- CHECKBOX WRAP -->
+              <div class="checkbox-wrap">
+                <input type="checkbox" id="category-illustrations" name="category_illustrations">
+                <!-- CHECKBOX BOX -->
+                <div class="checkbox-box">
+                  <!-- ICON CROSS -->
+                  <svg class="icon-cross">
+                    <use xlink:href="#svg-cross"></use>
+                  </svg>
+                  <!-- /ICON CROSS -->
+                </div>
+                <!-- /CHECKBOX BOX -->
+                <label for="category-illustrations">V306</label>
+              </div>
+              <!-- /CHECKBOX WRAP -->
+      
+              <!-- CHECKBOX LINE TEXT -->
+              <p class="checkbox-line-text">2</p>
+              <!-- /CHECKBOX LINE TEXT -->
+            </div>
+            <!-- /CHECKBOX LINE -->
+      
+            <!-- CHECKBOX LINE -->
+            <div class="checkbox-line">
+              <!-- CHECKBOX WRAP -->
+              <div class="checkbox-wrap">
+                <input type="checkbox" id="category-logos-and-badges" name="category_logos-and-badges">
+                <!-- CHECKBOX BOX -->
+                <div class="checkbox-box">
+                  <!-- ICON CROSS -->
+                  <svg class="icon-cross">
+                    <use xlink:href="#svg-cross"></use>
+                  </svg>
+                  <!-- /ICON CROSS -->
+                </div>
+                <!-- /CHECKBOX BOX -->
+                <label for="category-logos-and-badges">V307</label>
+              </div>
+              <!-- /CHECKBOX WRAP -->
+      
+              <!-- CHECKBOX LINE TEXT -->
+              <p class="checkbox-line-text">1</p>
+              <!-- /CHECKBOX LINE TEXT -->
+            </div>
+            <!-- /CHECKBOX LINE -->
+      
+            <!-- CHECKBOX LINE -->
+            <div class="checkbox-line">
+              <!-- CHECKBOX WRAP -->
+              <div class="checkbox-wrap">
+                <input type="checkbox" id="category-stream-packs" name="category_stream-packs">
+                <!-- CHECKBOX BOX -->
+                <div class="checkbox-box">
+                  <!-- ICON CROSS -->
+                  <svg class="icon-cross">
+                    <use xlink:href="#svg-cross"></use>
+                  </svg>
+                  <!-- /ICON CROSS -->
+                </div>
+                <!-- /CHECKBOX BOX -->
+                <label for="category-stream-packs">Pastos de Psicología</label>
+              </div>
+              <!-- /CHECKBOX WRAP -->
+      
+              <!-- CHECKBOX LINE TEXT -->
+              <p class="checkbox-line-text">3</p>
+              <!-- /CHECKBOX LINE TEXT -->
+            </div>
+            <!-- /CHECKBOX LINE -->
+          </div>
+          <!-- /SIDEBAR BOX ITEMS -->
+      
+          <!-- SIDEBAR BOX TITLE -->
+          <p class="sidebar-box-title">Fecha</p>
+          <!-- /SIDEBAR BOX TITLE -->
+      
+          <!-- SIDEBAR BOX ITEMS -->
+          <div class="sidebar-box-items">
+            <!-- CHECKBOX LINE -->
+            <div class="checkbox-line">
+              <!-- CHECKBOX WRAP -->
+              <div class="checkbox-wrap">
+                <input type="checkbox" id="category-photoshop" name="category_photoshop">
+                <!-- CHECKBOX BOX -->
+                <div class="checkbox-box">
+                  <!-- ICON CROSS -->
+                  <svg class="icon-cross">
+                    <use xlink:href="#svg-cross"></use>
+                  </svg>
+                  <!-- /ICON CROSS -->
+                </div>
+                <!-- /CHECKBOX BOX -->
+                <label for="category-photoshop">Hoy</label>
+              </div>
+              <!-- /CHECKBOX WRAP -->
+      
+              <!-- CHECKBOX LINE TEXT -->
+              <p class="checkbox-line-text">4</p>
+              <!-- /CHECKBOX LINE TEXT -->
+            </div>
+            <!-- /CHECKBOX LINE -->
+      
+            <!-- CHECKBOX LINE -->
+            <div class="checkbox-line">
+              <!-- CHECKBOX WRAP -->
+              <div class="checkbox-wrap">
+                <input type="checkbox" id="category-illustrator" name="category_illustrator">
+                <!-- CHECKBOX BOX -->
+                <div class="checkbox-box">
+                  <!-- ICON CROSS -->
+                  <svg class="icon-cross">
+                    <use xlink:href="#svg-cross"></use>
+                  </svg>
+                  <!-- /ICON CROSS -->
+                </div>
+                <!-- /CHECKBOX BOX -->
+                <label for="category-illustrator">Mañana</label>
+              </div>
+              <!-- /CHECKBOX WRAP -->
+      
+              <!-- CHECKBOX LINE TEXT -->
+              <p class="checkbox-line-text">3</p>
+              <!-- /CHECKBOX LINE TEXT -->
+            </div>
+            <!-- /CHECKBOX LINE -->
+      
+            <!-- CHECKBOX LINE -->
+            <div class="checkbox-line">
+              <!-- CHECKBOX WRAP -->
+              <div class="checkbox-wrap">
+                <input type="checkbox" id="category-sketch" name="category_sketch">
+                <!-- CHECKBOX BOX -->
+                <div class="checkbox-box">
+                  <!-- ICON CROSS -->
+                  <svg class="icon-cross">
+                    <use xlink:href="#svg-cross"></use>
+                  </svg>
+                  <!-- /ICON CROSS -->
+                </div>
+                <!-- /CHECKBOX BOX -->
+                <label for="category-sketch">Pasado mañana</label>
+              </div>
+              <!-- /CHECKBOX WRAP -->
+      
+              <!-- CHECKBOX LINE TEXT -->
+              <p class="checkbox-line-text">2</p>
+              <!-- /CHECKBOX LINE TEXT -->
+            </div>
+            <!-- /CHECKBOX LINE -->
+      
+            <!-- CHECKBOX LINE -->
+            <div class="checkbox-line">
+              <!-- CHECKBOX WRAP -->
+              <div class="checkbox-wrap">
+                <input type="checkbox" id="category-html-css" name="category_html-css">
+                <!-- CHECKBOX BOX -->
+                <div class="checkbox-box">
+                  <!-- ICON CROSS -->
+                  <svg class="icon-cross">
+                    <use xlink:href="#svg-cross"></use>
+                  </svg>
+                  <!-- /ICON CROSS -->
+                </div>
+                <!-- /CHECKBOX BOX -->
+                <label for="category-html-css">En 3 a más días</label>
+              </div>
+              <!-- /CHECKBOX WRAP -->
+      
+              <!-- CHECKBOX LINE TEXT -->
+              <p class="checkbox-line-text">10</p>
+              <!-- /CHECKBOX LINE TEXT -->
+            </div>
+            <!-- /CHECKBOX LINE -->
+          </div>
+          <!-- /SIDEBAR BOX ITEMS -->
+      
+          <!-- SIDEBAR BOX TITLE -->
+          <p class="sidebar-box-title">Rango de horas</p>
+          <!-- /SIDEBAR BOX TITLE -->
+      
+          <!-- SIDEBAR BOX ITEMS -->
+          <div class="sidebar-box-items small-space">
+            <!-- FORM ITEM -->
+            <div class="form-item split">
+              <!-- FORM INPUT -->
+              <div class="form-input small active always-active">
+                <label for="price-from">Desde</label>
+                <input type="text" id="price-from" name="price_from">
+              </div>
+              <!-- /FORM INPUT -->
+      
+              <!-- FORM INPUT -->
+              <div class="form-input small active always-active">
+                <label for="price-to">Hasta</label>
+                <input type="text" id="price-to" name="price_to">
+              </div>
+              <!-- /FORM INPUT -->
+            </div>
+            <!-- /FORM ITEM -->
+          </div>
+          <!-- /SIDEBAR BOX ITEMS -->
+      
+          <!-- BUTTON -->
+          <p class="button small primary">Aplicar filtros de categoría</p>
+          <!-- /BUTTON --> 
+        </div>
+        <!-- /SIDEBAR BOX -->
+      </div>
+      <!-- /MARKETPLACE SIDEBAR -->
+
+      <!-- MARKETPLACE CONTENT -->
+      <div class="marketplace-content">
+        <!-- GRID -->
+        <div class="grid grid-3-3-3 centered">
+          <!-- PRODUCT PREVIEW -->
+          <div class="product-preview">
+            <!-- PRODUCT PREVIEW IMAGE -->
+            <a href="eventoDelAct.html">
+              <figure class="product-preview-image liquid">
+                <img src="css/fibraVShormigonMedio.png" alt="item-01">
+              </figure>
+            </a>
+            <!-- /PRODUCT PREVIEW IMAGE -->
+        
+            <!-- PRODUCT PREVIEW INFO -->
+            <div class="product-preview-info">
+              <!-- TEXT STICKER -->
+              <p class="text-sticker"><span class="highlighted">Fecha: </span> <span style="color: red;">Hoy</span></p>
+              <!-- /TEXT STICKER -->
+        
+              <!-- PRODUCT PREVIEW TITLE -->
+              <p class="product-preview-title"><a>Fibra Tóxica VS Hormigón Armado</a></p>
+              <!-- /PRODUCT PREVIEW TITLE -->
+              
+              <div class="row d-flex justify-content-around">
+                <div class="col-5">
+                  <!-- PRODUCT PREVIEW CATEGORY -->
+                  <p class="product-preview-category digital"><span class="highlighted">Hora: </span> <span style="color: blue;">3PM</span></p>
+                  <!-- /PRODUCT PREVIEW CATEGORY -->
+                </div>
+                <div class="col-7">
+                  <!-- PRODUCT PREVIEW CATEGORY -->
+                  <p class="product-preview-category digital"><span class="highlighted">Lugar: </span> <span style="color: brown">Polideportivo</span></p>
+                  <!-- /PRODUCT PREVIEW CATEGORY -->
+                </div>
+              </div>
+              <!-- PRODUCT PREVIEW TEXT -->
+              <p class="product-preview-text">Mi radar me guía hacia la conquista, mientras tú sigues el camino marcado por otros, hormiga. Se disputan los...</p>
+              <!-- /PRODUCT PREVIEW TEXT -->
+            </div>
+            <!-- /PRODUCT PREVIEW INFO -->      
+          </div>
+          <!-- /PRODUCT PREVIEW -->
+          <!-- PRODUCT PREVIEW -->
+          <div class="product-preview">
+            <!-- PRODUCT PREVIEW IMAGE -->
+            <a href="eventoDelAct.html">
+              <figure class="product-preview-image liquid">
+                <img src="css/fibraVSmecatronicaMedio.png" alt="item-01">
+              </figure>
+            </a>
+            <!-- /PRODUCT PREVIEW IMAGE -->
+        
+            <!-- PRODUCT PREVIEW INFO -->
+            <div class="product-preview-info">
+              <!-- TEXT STICKER -->
+              <p class="text-sticker"><span class="highlighted">Fecha: </span> <span style="color: red;">Hoy</span></p>
+              <!-- /TEXT STICKER -->
+        
+              <!-- PRODUCT PREVIEW TITLE -->
+              <p class="product-preview-title"><a style="font-size: 90%;">Fibra Tóxica VS Descontrol Automático</a></p>
+              <!-- /PRODUCT PREVIEW TITLE -->
+              
+              <div class="row d-flex justify-content-around">
+                <div class="col-5">
+                  <!-- PRODUCT PREVIEW CATEGORY -->
+                  <p class="product-preview-category digital"><span class="highlighted">Hora: </span> <span style="color: blue;">7PM</span></p>
+                  <!-- /PRODUCT PREVIEW CATEGORY -->
+                </div>
+                <div class="col-7">
+                  <!-- PRODUCT PREVIEW CATEGORY -->
+                  <p class="product-preview-category digital"><span class="highlighted">Lugar: </span> <span style="color: brown">C. de Minas</span></p>
+                  <!-- /PRODUCT PREVIEW CATEGORY -->
+                </div>
+              </div>
+              <!-- PRODUCT PREVIEW TEXT -->
+              <p class="product-preview-text">En el mundo de las sombras, soy el maestro y tú eres un intruso, gorila. Para empezar la semana de eventos...</p>
+              <!-- /PRODUCT PREVIEW TEXT -->
+            </div>
+            <!-- /PRODUCT PREVIEW INFO -->      
+          </div>
+          <!-- /PRODUCT PREVIEW -->
+          <!-- PRODUCT PREVIEW -->
+          <div class="product-preview">
+            <!-- PRODUCT PREVIEW IMAGE -->
+            <a href="eventoDelAct.html">
+              <figure class="product-preview-image liquid">
+                <img src="css/fibraVSinduzMedio.png" alt="item-01">
+              </figure>
+            </a>
+            <!-- /PRODUCT PREVIEW IMAGE -->
+        
+            <!-- PRODUCT PREVIEW INFO -->
+            <div class="product-preview-info">
+              <!-- TEXT STICKER -->
+              <p class="text-sticker"><span class="highlighted">Fecha: </span> <span style="color: red;">Hoy</span></p>
+              <!-- /TEXT STICKER -->
+        
+              <!-- PRODUCT PREVIEW TITLE -->
+              <p class="product-preview-title"><a>Fibra Tóxica VS PXO Industrial</a></p>
+              <!-- /PRODUCT PREVIEW TITLE -->
+              
+              <div class="row d-flex justify-content-around">
+                <div class="col-5">
+                  <!-- PRODUCT PREVIEW CATEGORY -->
+                  <p class="product-preview-category digital"><span class="highlighted">Hora: </span> <span style="color: blue;">10PM</span></p>
+                  <!-- /PRODUCT PREVIEW CATEGORY -->
+                </div>
+                <div class="col-7">
+                  <!-- PRODUCT PREVIEW CATEGORY -->
+                  <p class="product-preview-category digital"><span class="highlighted">Lugar: </span> <span style="color: brown">Polideportivo</span></p>
+                  <!-- /PRODUCT PREVIEW CATEGORY -->
+                </div>
+              </div>
+              <!-- PRODUCT PREVIEW TEXT -->
+              <p class="product-preview-text">Mi radar ultrasónico desentraña los secretos del Diablo Azul, llevándome a la victoria. Un evento muy esperado se...</p>
+              <!-- /PRODUCT PREVIEW TEXT -->
+            </div>
+            <!-- /PRODUCT PREVIEW INFO -->      
+          </div>
+          <!-- /PRODUCT PREVIEW -->
+          <!-- PRODUCT PREVIEW -->
+          <div class="product-preview">
+            <!-- PRODUCT PREVIEW IMAGE -->
+            <a href="eventoDelAct.html">
+              <figure class="product-preview-image liquid">
+                <img src="css/fibraVShuascaminasMedio.png" alt="item-01">
+              </figure>
+            </a>
+            <!-- /PRODUCT PREVIEW IMAGE -->
+        
+            <!-- PRODUCT PREVIEW INFO -->
+            <div class="product-preview-info">
+              <!-- TEXT STICKER -->
+              <p class="text-sticker"><span class="highlighted">Fecha: </span> <span style="color: orangered;">Mañana</span></p>
+              <!-- /TEXT STICKER -->
+        
+              <!-- PRODUCT PREVIEW TITLE -->
+              <p class="product-preview-title"><a>Fibra Tóxica VS Huascaminas</a></p>
+              <!-- /PRODUCT PREVIEW TITLE -->
+              
+              <div class="row d-flex justify-content-around">
+                <div class="col-5">
+                  <!-- PRODUCT PREVIEW CATEGORY -->
+                  <p class="product-preview-category digital"><span class="highlighted">Hora: </span> <span style="color: blue;">10AM</span></p>
+                  <!-- /PRODUCT PREVIEW CATEGORY -->
+                </div>
+                <div class="col-7">
+                  <!-- PRODUCT PREVIEW CATEGORY -->
+                  <p class="product-preview-category digital"><span class="highlighted">Lugar: </span> <span style="color: brown">C. de Minas</span></p>
+                  <!-- /PRODUCT PREVIEW CATEGORY -->
+                </div>
+              </div>
+              <!-- PRODUCT PREVIEW TEXT -->
+              <p class="product-preview-text">La oscuridad de la noche es mi aliada, y el blanco de su disfraz solo lo hace más vulnerable. Se espera una victoria por...</p>
+              <!-- /PRODUCT PREVIEW TEXT -->
+            </div>
+            <!-- /PRODUCT PREVIEW INFO -->      
+          </div>
+          <!-- /PRODUCT PREVIEW -->
+          <!-- PRODUCT PREVIEW -->
+          <div class="product-preview">
+            <!-- PRODUCT PREVIEW IMAGE -->
+            <a href="eventoDelAct.html">
+              <figure class="product-preview-image liquid">
+                <img src="css/fibraVShormigonMedio.png" alt="item-01">
+              </figure>
+            </a>
+            <!-- /PRODUCT PREVIEW IMAGE -->
+        
+            <!-- PRODUCT PREVIEW INFO -->
+            <div class="product-preview-info">
+              <!-- TEXT STICKER -->
+              <p class="text-sticker"><span class="highlighted">Fecha: </span> <span style="color: orangered;">Mañana</span></p>
+              <!-- /TEXT STICKER -->
+        
+              <!-- PRODUCT PREVIEW TITLE -->
+              <p class="product-preview-title"><a>Fibra Tóxica VS Hormigón Armado</a></p>
+              <!-- /PRODUCT PREVIEW TITLE -->
+              
+              <div class="row d-flex justify-content-around">
+                <div class="col-5">
+                  <!-- PRODUCT PREVIEW CATEGORY -->
+                  <p class="product-preview-category digital"><span class="highlighted">Hora: </span> <span style="color: blue;">3PM</span></p>
+                  <!-- /PRODUCT PREVIEW CATEGORY -->
+                </div>
+                <div class="col-7">
+                  <!-- PRODUCT PREVIEW CATEGORY -->
+                  <p class="product-preview-category digital"><span class="highlighted">Lugar: </span> <span style="color: brown">Polideportivo</span></p>
+                  <!-- /PRODUCT PREVIEW CATEGORY -->
+                </div>
+              </div>
+              <!-- PRODUCT PREVIEW TEXT -->
+              <p class="product-preview-text">Tus planes siempre fracasan, pero mi vuelo nocturno siempre triunfa. Un evento que se espera muy interesante...</p>
+              <!-- /PRODUCT PREVIEW TEXT -->
+            </div>
+            <!-- /PRODUCT PREVIEW INFO -->      
+          </div>
+          <!-- /PRODUCT PREVIEW -->
+          <!-- PRODUCT PREVIEW -->
+          <div class="product-preview">
+            <!-- PRODUCT PREVIEW IMAGE -->
+            <a href="eventoDelAct.html">
+              <figure class="product-preview-image liquid">
+                <img src="css/fibraVSelectro.png" alt="item-01">
+              </figure>
+            </a>
+            <!-- /PRODUCT PREVIEW IMAGE -->
+        
+            <!-- PRODUCT PREVIEW INFO -->
+            <div class="product-preview-info">
+              <!-- TEXT STICKER -->
+              <p class="text-sticker"><span class="highlighted">Fecha: </span> <span style="color: orange;">En 2 días</span></p>
+              <!-- /TEXT STICKER -->
+        
+              <!-- PRODUCT PREVIEW TITLE -->
+              <p class="product-preview-title"><a>Fibra Tóxica VS Electroshock</a></p>
+              <!-- /PRODUCT PREVIEW TITLE -->
+              
+              <div class="row d-flex justify-content-around">
+                <div class="col-5">
+                  <!-- PRODUCT PREVIEW CATEGORY -->
+                  <p class="product-preview-category digital"><span class="highlighted">Hora: </span> <span style="color: blue;">10AM</span></p>
+                  <!-- /PRODUCT PREVIEW CATEGORY -->
+                </div>
+                <div class="col-7">
+                  <!-- PRODUCT PREVIEW CATEGORY -->
+                  <p class="product-preview-category digital"><span class="highlighted">Lugar: </span> <span style="color: brown">C. de Minas</span></p>
+                  <!-- /PRODUCT PREVIEW CATEGORY -->
+                </div>
+              </div>
+              <!-- PRODUCT PREVIEW TEXT -->
+              <p class="product-preview-text">El rayo en tu frente se apaga mientras mi triunfo en la oscuridad se enciende con cada vuelo. El clásico de los...</p>
+              <!-- /PRODUCT PREVIEW TEXT -->
+            </div>
+            <!-- /PRODUCT PREVIEW INFO -->      
+          </div>
+          <!-- /PRODUCT PREVIEW -->
+          
+
+        </div>
+        <!-- /GRID -->
+
+        <!-- SECTION PAGER BAR WRAP -->
+        <div class="section-pager-bar-wrap align-center">
+          <!-- SECTION PAGER BAR -->
+          <div class="section-pager-bar">
+            <!-- SECTION PAGER -->
+            <div class="section-pager">
+              <!-- SECTION PAGER ITEM -->
+              <div class="section-pager-item active">
+                <!-- SECTION PAGER ITEM TEXT -->
+                <p class="section-pager-item-text">01</p>
+                <!-- /SECTION PAGER ITEM TEXT -->
+              </div>
+              <!-- /SECTION PAGER ITEM -->
+        
+              <!-- SECTION PAGER ITEM -->
+              <div class="section-pager-item">
+                <!-- SECTION PAGER ITEM TEXT -->
+                <p class="section-pager-item-text">02</p>
+                <!-- /SECTION PAGER ITEM TEXT -->
+              </div>
+              <!-- /SECTION PAGER ITEM -->
+        
+              <!-- SECTION PAGER ITEM -->
+              <div class="section-pager-item">
+                <!-- SECTION PAGER ITEM TEXT -->
+                <p class="section-pager-item-text">03</p>
+                <!-- /SECTION PAGER ITEM TEXT -->
+              </div>
+              <!-- /SECTION PAGER ITEM -->
+        
+              <!-- SECTION PAGER ITEM -->
+              <div class="section-pager-item">
+                <!-- SECTION PAGER ITEM TEXT -->
+                <p class="section-pager-item-text">04</p>
+                <!-- /SECTION PAGER ITEM TEXT -->
+              </div>
+              <!-- /SECTION PAGER ITEM -->
+        
+              <!-- SECTION PAGER ITEM -->
+              <div class="section-pager-item">
+                <!-- SECTION PAGER ITEM TEXT -->
+                <p class="section-pager-item-text">05</p>
+                <!-- /SECTION PAGER ITEM TEXT -->
+              </div>
+              <!-- /SECTION PAGER ITEM -->
+        
+              <!-- SECTION PAGER ITEM -->
+              <div class="section-pager-item">
+                <!-- SECTION PAGER ITEM TEXT -->
+                <p class="section-pager-item-text">06</p>
+                <!-- /SECTION PAGER ITEM TEXT -->
+              </div>
+              <!-- /SECTION PAGER ITEM -->
+            </div>
+            <!-- /SECTION PAGER -->
+        
+            <!-- SECTION PAGER CONTROLS -->
+            <div class="section-pager-controls">
+              <!-- SLIDER CONTROL -->
+              <div class="slider-control left disabled">
+                <!-- SLIDER CONTROL ICON -->
+                <svg class="slider-control-icon icon-small-arrow">
+                  <use xlink:href="#svg-small-arrow"></use>
+                </svg>
+                <!-- /SLIDER CONTROL ICON -->
+              </div>
+              <!-- /SLIDER CONTROL -->
+        
+              <!-- SLIDER CONTROL -->
+              <div class="slider-control right">
+                <!-- SLIDER CONTROL ICON -->
+                <svg class="slider-control-icon icon-small-arrow">
+                  <use xlink:href="#svg-small-arrow"></use>
+                </svg>
+                <!-- /SLIDER CONTROL ICON -->
+              </div>
+              <!-- /SLIDER CONTROL -->
+            </div>
+            <!-- /SECTION PAGER CONTROLS -->
+          </div>
+          <!-- /SECTION PAGER BAR -->
+        </div>
+        <!-- /SECTION PAGER BAR WRAP -->
+      </div>
+      <!-- /MARKETPLACE CONTENT -->
+      
+      
+    </div>
+    <!-- /GRID -->
+    </div>
+
+    <div class="oculto" id="Edicion">
+      <!-- SECTION HEADER -->
+      <div class="section-header">
+        <div class="contanier-fluid" style="width: 100%;">
+          <!-- SECTION HEADER INFO -->
+          <div class="row" style="width: 100%;">
+            <div class="section-header-info col-auto">
+              <!-- SECTION PRETITLE -->
+              <p class="section-pretitle">Busca los eventos que desees</p>
+              <!-- /SECTION PRETITLE -->
+
+              <!-- SECTION TITLE -->
+              <h2 class="section-title">Lista de eventos</h2>
+              <!-- /SECTION TITLE -->
+            </div>
+            <!-- /SECTION HEADER INFO -->
+            <div class="section-filters-bar-actions col-auto" style="width: 150px;">
+              <!-- BUTTON -->
+              <button class="button secondary popup-event-creation-trigger botones" id="opcionUsuario" style="width: 100%;">Vista de usuario</button>
+              <!-- /BUTTON -->
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- /SECTION HEADER -->
+    <!-- SECTION FILTERS BAR -->
+    <div class="section-filters-bar v4">
+      <!-- SECTION FILTERS BAR ACTIONS -->
+      <div class="section-filters-bar-actions">
+        <!-- FORM -->
+        <form class="form">
+          <!-- FORM ITEM -->
+          <div class="form-item split">
+            <!-- FORM INPUT -->
+            <div class="form-input small">
+              <label for="items-search">Buscar evento</label>
+              <input type="text" id="items-search" name="items_search">
+            </div>
+            <!-- /FORM INPUT -->
+  
+            <!-- BUTTON -->
+            <button class="button primary">
+              <!-- ICON MAGNIFYING GLASS -->
+              <svg class="icon-magnifying-glass">
+                <use xlink:href="#svg-magnifying-glass"></use>
+              </svg>
+              <!-- /ICON MAGNIFYING GLASS -->
+            </button>
+            <!-- /BUTTON -->
+          </div>
+          <!-- /FORM ITEM -->
+        </form>
+        <!-- /FORM -->
+      </div>
+      <!-- /SECTION FILTERS BAR ACTIONS -->
+  
+      <!-- SECTION FILTERS BAR ACTIONS -->
+      <div class="section-filters-bar-actions">
+        <!-- FORM -->
+        <form class="form">
+          <!-- FORM ITEM -->
+          <div class="form-item split medium">
+            <!-- FORM SELECT -->
+            <div class="form-select small">
+              <label for="items-filter-category">Filtrar por</label>
+              <select id="items-filter-category" name="items_filter_category">
+                <option value="0">Más reciente</option>
+                <option value="1">Orden alfabético</option>
+                <option value="2">Oculto</option>
+              </select>
+              <!-- FORM SELECT ICON -->
+              <svg class="form-select-icon icon-small-arrow">
+                <use xlink:href="#svg-small-arrow"></use>
+              </svg>
+              <!-- /FORM SELECT ICON -->
+            </div>
+            <!-- /FORM SELECT -->
+    
+            <!-- FORM SELECT -->
+            <div class="form-select small">
+              <label for="items-filter-order">Ordenar por</label>
+              <select id="items-filter-order" name="items_filter_order">
+                <option value="0">Ascendente</option>
+                <option value="1">Descendente</option>
+              </select>
+              <!-- FORM SELECT ICON -->
+              <svg class="form-select-icon icon-small-arrow">
+                <use xlink:href="#svg-small-arrow"></use>
+              </svg>
+              <!-- /FORM SELECT ICON -->
+            </div>
+            <!-- /FORM SELECT -->
+        
+            <!-- BUTTON -->
+            <button class="button secondary">Aplicar filtros</button>
+            <!-- /BUTTON -->
+          </div>
+          <!-- /FORM ITEM -->
+        </form>
+        <!-- /FORM -->
+      </div>
+      <!-- /SECTION FILTERS BAR ACTIONS -->
+    </div>
+    <!-- /SECTION FILTERS BAR -->
+
+    <!-- GRID -->
+    <div class="grid grid-3-9 small-space">
+      <!-- MARKETPLACE SIDEBAR -->
+      <div class="marketplace-sidebar">
+        <!-- SIDEBAR BOX -->
+        <div class="sidebar-box">
+          <!-- SIDEBAR BOX TITLE -->
+          <p class="sidebar-box-title">Ubicación</p>
+          <!-- /SIDEBAR BOX TITLE -->
+      
+          <!-- SIDEBAR BOX ITEMS -->
+          <div class="sidebar-box-items">      
+            <!-- CHECKBOX LINE -->
+            <div class="checkbox-line">
+              <!-- CHECKBOX WRAP -->
+              <div class="checkbox-wrap">
+                <input type="checkbox" id="category-psdAux" name="category_psd">
+                <!-- CHECKBOX BOX -->
+                <div class="checkbox-box">
+                  <!-- ICON CROSS -->
+                  <svg class="icon-cross">
+                    <use xlink:href="#svg-cross"></use>
+                  </svg>
+                  <!-- /ICON CROSS -->
+                </div>
+                <!-- /CHECKBOX BOX -->
+                <label for="category-psdAux">Cancha de minas</label>
+              </div>
+              <!-- /CHECKBOX WRAP -->
+      
+              <!-- CHECKBOX LINE TEXT -->
+              <p class="checkbox-line-text">3</p>
+              <!-- /CHECKBOX LINE TEXT -->
+            </div>
+            <!-- /CHECKBOX LINE -->
+      
+            <!-- CHECKBOX LINE -->
+            <div class="checkbox-line">
+              <!-- CHECKBOX WRAP -->
+              <div class="checkbox-wrap">
+                <input type="checkbox" id="category-htmlAux" name="category_html">
+                <!-- CHECKBOX BOX -->
+                <div class="checkbox-box">
+                  <!-- ICON CROSS -->
+                  <svg class="icon-cross">
+                    <use xlink:href="#svg-cross"></use>
+                  </svg>
+                  <!-- /ICON CROSS -->
+                </div>
+                <!-- /CHECKBOX BOX -->
+                <label for="category-htmlAux">V305</label>
+              </div>
+              <!-- /CHECKBOX WRAP -->
+      
+              <!-- CHECKBOX LINE TEXT -->
+              <p class="checkbox-line-text">4</p>
+              <!-- /CHECKBOX LINE TEXT -->
+            </div>
+            <!-- /CHECKBOX LINE -->
+      
+            <!-- CHECKBOX LINE -->
+            <div class="checkbox-line">
+              <!-- CHECKBOX WRAP -->
+              <div class="checkbox-wrap">
+                <input type="checkbox" id="category-wpAux" name="category_wp">
+                <!-- CHECKBOX BOX -->
+                <div class="checkbox-box">
+                  <!-- ICON CROSS -->
+                  <svg class="icon-cross">
+                    <use xlink:href="#svg-cross"></use>
+                  </svg>
+                  <!-- /ICON CROSS -->
+                </div>
+                <!-- /CHECKBOX BOX -->
+                <label for="category-wpAux">Polideportivo</label>
+              </div>
+              <!-- /CHECKBOX WRAP -->
+      
+              <!-- CHECKBOX LINE TEXT -->
+              <p class="checkbox-line-text">6</p>
+              <!-- /CHECKBOX LINE TEXT -->
+            </div>
+            <!-- /CHECKBOX LINE -->
+      
+            <!-- CHECKBOX LINE -->
+            <div class="checkbox-line">
+              <!-- CHECKBOX WRAP -->
+              <div class="checkbox-wrap">
+                <input type="checkbox" id="category-illustrationsAux" name="category_illustrations">
+                <!-- CHECKBOX BOX -->
+                <div class="checkbox-box">
+                  <!-- ICON CROSS -->
+                  <svg class="icon-cross">
+                    <use xlink:href="#svg-cross"></use>
+                  </svg>
+                  <!-- /ICON CROSS -->
+                </div>
+                <!-- /CHECKBOX BOX -->
+                <label for="category-illustrationsAux">V306</label>
+              </div>
+              <!-- /CHECKBOX WRAP -->
+      
+              <!-- CHECKBOX LINE TEXT -->
+              <p class="checkbox-line-text">2</p>
+              <!-- /CHECKBOX LINE TEXT -->
+            </div>
+            <!-- /CHECKBOX LINE -->
+      
+            <!-- CHECKBOX LINE -->
+            <div class="checkbox-line">
+              <!-- CHECKBOX WRAP -->
+              <div class="checkbox-wrap">
+                <input type="checkbox" id="category-logos-and-badgesAux" name="category_logos-and-badges">
+                <!-- CHECKBOX BOX -->
+                <div class="checkbox-box">
+                  <!-- ICON CROSS -->
+                  <svg class="icon-cross">
+                    <use xlink:href="#svg-cross"></use>
+                  </svg>
+                  <!-- /ICON CROSS -->
+                </div>
+                <!-- /CHECKBOX BOX -->
+                <label for="category-logos-and-badgesAux">V307</label>
+              </div>
+              <!-- /CHECKBOX WRAP -->
+      
+              <!-- CHECKBOX LINE TEXT -->
+              <p class="checkbox-line-text">1</p>
+              <!-- /CHECKBOX LINE TEXT -->
+            </div>
+            <!-- /CHECKBOX LINE -->
+      
+            <!-- CHECKBOX LINE -->
+            <div class="checkbox-line">
+              <!-- CHECKBOX WRAP -->
+              <div class="checkbox-wrap">
+                <input type="checkbox" id="category-stream-packsAux" name="category_stream-packs">
+                <!-- CHECKBOX BOX -->
+                <div class="checkbox-box">
+                  <!-- ICON CROSS -->
+                  <svg class="icon-cross">
+                    <use xlink:href="#svg-cross"></use>
+                  </svg>
+                  <!-- /ICON CROSS -->
+                </div>
+                <!-- /CHECKBOX BOX -->
+                <label for="category-stream-packsAux">Pastos de Psicología</label>
+              </div>
+              <!-- /CHECKBOX WRAP -->
+      
+              <!-- CHECKBOX LINE TEXT -->
+              <p class="checkbox-line-text">3</p>
+              <!-- /CHECKBOX LINE TEXT -->
+            </div>
+            <!-- /CHECKBOX LINE -->
+          </div>
+          <!-- /SIDEBAR BOX ITEMS -->
+      
+          <!-- SIDEBAR BOX TITLE -->
+          <p class="sidebar-box-title">Fecha</p>
+          <!-- /SIDEBAR BOX TITLE -->
+      
+          <!-- SIDEBAR BOX ITEMS -->
+          <div class="sidebar-box-items">
+            <!-- CHECKBOX LINE -->
+            <div class="checkbox-line">
+              <!-- CHECKBOX WRAP -->
+              <div class="checkbox-wrap">
+                <input type="checkbox" id="category-photoshopAux" name="category_photoshop">
+                <!-- CHECKBOX BOX -->
+                <div class="checkbox-box">
+                  <!-- ICON CROSS -->
+                  <svg class="icon-cross">
+                    <use xlink:href="#svg-cross"></use>
+                  </svg>
+                  <!-- /ICON CROSS -->
+                </div>
+                <!-- /CHECKBOX BOX -->
+                <label for="category-photoshopAux">Hoy</label>
+              </div>
+              <!-- /CHECKBOX WRAP -->
+      
+              <!-- CHECKBOX LINE TEXT -->
+              <p class="checkbox-line-text">4</p>
+              <!-- /CHECKBOX LINE TEXT -->
+            </div>
+            <!-- /CHECKBOX LINE -->
+      
+            <!-- CHECKBOX LINE -->
+            <div class="checkbox-line">
+              <!-- CHECKBOX WRAP -->
+              <div class="checkbox-wrap">
+                <input type="checkbox" id="category-illustratorAux" name="category_illustrator">
+                <!-- CHECKBOX BOX -->
+                <div class="checkbox-box">
+                  <!-- ICON CROSS -->
+                  <svg class="icon-cross">
+                    <use xlink:href="#svg-cross"></use>
+                  </svg>
+                  <!-- /ICON CROSS -->
+                </div>
+                <!-- /CHECKBOX BOX -->
+                <label for="category-illustratorAux">Mañana</label>
+              </div>
+              <!-- /CHECKBOX WRAP -->
+      
+              <!-- CHECKBOX LINE TEXT -->
+              <p class="checkbox-line-text">3</p>
+              <!-- /CHECKBOX LINE TEXT -->
+            </div>
+            <!-- /CHECKBOX LINE -->
+      
+            <!-- CHECKBOX LINE -->
+            <div class="checkbox-line">
+              <!-- CHECKBOX WRAP -->
+              <div class="checkbox-wrap">
+                <input type="checkbox" id="category-sketchAux" name="category_sketch">
+                <!-- CHECKBOX BOX -->
+                <div class="checkbox-box">
+                  <!-- ICON CROSS -->
+                  <svg class="icon-cross">
+                    <use xlink:href="#svg-cross"></use>
+                  </svg>
+                  <!-- /ICON CROSS -->
+                </div>
+                <!-- /CHECKBOX BOX -->
+                <label for="category-sketchAux">Pasado mañana</label>
+              </div>
+              <!-- /CHECKBOX WRAP -->
+      
+              <!-- CHECKBOX LINE TEXT -->
+              <p class="checkbox-line-text">2</p>
+              <!-- /CHECKBOX LINE TEXT -->
+            </div>
+            <!-- /CHECKBOX LINE -->
+      
+            <!-- CHECKBOX LINE -->
+            <div class="checkbox-line">
+              <!-- CHECKBOX WRAP -->
+              <div class="checkbox-wrap">
+                <input type="checkbox" id="category-html-cssAux" name="category_html-css">
+                <!-- CHECKBOX BOX -->
+                <div class="checkbox-box">
+                  <!-- ICON CROSS -->
+                  <svg class="icon-cross">
+                    <use xlink:href="#svg-cross"></use>
+                  </svg>
+                  <!-- /ICON CROSS -->
+                </div>
+                <!-- /CHECKBOX BOX -->
+                <label for="category-html-cssAux">En 3 a más días</label>
+              </div>
+              <!-- /CHECKBOX WRAP -->
+      
+              <!-- CHECKBOX LINE TEXT -->
+              <p class="checkbox-line-text">10</p>
+              <!-- /CHECKBOX LINE TEXT -->
+            </div>
+            <!-- /CHECKBOX LINE -->
+          </div>
+          <!-- /SIDEBAR BOX ITEMS -->
+      
+          <!-- SIDEBAR BOX TITLE -->
+          <p class="sidebar-box-title">Rango de horas</p>
+          <!-- /SIDEBAR BOX TITLE -->
+      
+          <!-- SIDEBAR BOX ITEMS -->
+          <div class="sidebar-box-items small-space">
+            <!-- FORM ITEM -->
+            <div class="form-item split">
+              <!-- FORM INPUT -->
+              <div class="form-input small active always-active">
+                <label for="price-from">Desde</label>
+                <input type="text" id="price-from" name="price_from">
+              </div>
+              <!-- /FORM INPUT -->
+      
+              <!-- FORM INPUT -->
+              <div class="form-input small active always-active">
+                <label for="price-to">Hasta</label>
+                <input type="text" id="price-to" name="price_to">
+              </div>
+              <!-- /FORM INPUT -->
+            </div>
+            <!-- /FORM ITEM -->
+          </div>
+          <!-- /SIDEBAR BOX ITEMS -->
+      
+          <!-- BUTTON -->
+          <p class="button small primary">Aplicar filtros de categoría</p>
+          <!-- /BUTTON --> 
+        </div>
+        <!-- /SIDEBAR BOX -->
+      </div>
+      <!-- /MARKETPLACE SIDEBAR -->
+
+      <!-- MARKETPLACE CONTENT -->
+      <div class="marketplace-content">
+        <!-- GRID -->
+        <div class="grid grid-3-3-3 centered">
+          <!-- PRODUCT PREVIEW -->
+          <div class="product-preview">
+            <!-- PRODUCT PREVIEW IMAGE -->
+            <a id="editarFTvsHA" style="cursor: pointer;">
+              <figure class="product-preview-image liquid">
+                <img src="css/fibraVShormigonMedio.png" alt="item-01">
+              </figure>
+            </a>
+            <!-- /PRODUCT PREVIEW IMAGE -->
+        
+            <!-- PRODUCT PREVIEW INFO -->
+            <div class="product-preview-info">
+              <!-- TEXT STICKER -->
+              <p class="text-sticker"><span class="highlighted">Fecha: </span> <span style="color: red;">Hoy</span></p>
+              <!-- /TEXT STICKER -->
+        
+              <!-- PRODUCT PREVIEW TITLE -->
+              <p class="product-preview-title"><a>Fibra Tóxica VS Hormigón Armado</a></p>
+              <!-- /PRODUCT PREVIEW TITLE -->
+              
+              <div class="row d-flex justify-content-around">
+                <div class="col-5">
+                  <!-- PRODUCT PREVIEW CATEGORY -->
+                  <p class="product-preview-category digital"><span class="highlighted">Hora: </span> <span style="color: blue;">3PM</span></p>
+                  <!-- /PRODUCT PREVIEW CATEGORY -->
+                </div>
+                <div class="col-7">
+                  <!-- PRODUCT PREVIEW CATEGORY -->
+                  <p class="product-preview-category digital"><span class="highlighted">Lugar: </span> <span style="color: brown">Polideportivo</span></p>
+                  <!-- /PRODUCT PREVIEW CATEGORY -->
+                </div>
+              </div>
+              <!-- PRODUCT PREVIEW TEXT -->
+              <p class="product-preview-text">Mi radar me guía hacia la conquista, mientras tú sigues el camino marcado por otros, hormiga. Se disputan los...</p>
+              <!-- /PRODUCT PREVIEW TEXT -->
+            </div>
+            <!-- /PRODUCT PREVIEW INFO -->      
+          </div>
+          <!-- /PRODUCT PREVIEW -->
+          <!-- PRODUCT PREVIEW -->
+          <div class="product-preview">
+            <!-- PRODUCT PREVIEW IMAGE -->
+            <a id="editarFTvsDA" style="cursor: pointer;">
+              <figure class="product-preview-image liquid">
+                <img src="css/fibraVSmecatronicaMedio.png" alt="item-01">
+              </figure>
+            </a>
+            <!-- /PRODUCT PREVIEW IMAGE -->
+        
+            <!-- PRODUCT PREVIEW INFO -->
+            <div class="product-preview-info">
+              <!-- TEXT STICKER -->
+              <p class="text-sticker"><span class="highlighted">Fecha: </span> <span style="color: red;">Hoy</span></p>
+              <!-- /TEXT STICKER -->
+        
+              <!-- PRODUCT PREVIEW TITLE -->
+              <p class="product-preview-title"><a style="font-size: 90%;">Fibra Tóxica VS Descontrol Automático</a></p>
+              <!-- /PRODUCT PREVIEW TITLE -->
+              
+              <div class="row d-flex justify-content-around">
+                <div class="col-5">
+                  <!-- PRODUCT PREVIEW CATEGORY -->
+                  <p class="product-preview-category digital"><span class="highlighted">Hora: </span> <span style="color: blue;">7PM</span></p>
+                  <!-- /PRODUCT PREVIEW CATEGORY -->
+                </div>
+                <div class="col-7">
+                  <!-- PRODUCT PREVIEW CATEGORY -->
+                  <p class="product-preview-category digital"><span class="highlighted">Lugar: </span> <span style="color: brown">C. de Minas</span></p>
+                  <!-- /PRODUCT PREVIEW CATEGORY -->
+                </div>
+              </div>
+              <!-- PRODUCT PREVIEW TEXT -->
+              <p class="product-preview-text">En el mundo de las sombras, soy el maestro y tú eres un intruso, gorila. Para empezar la semana de eventos...</p>
+              <!-- /PRODUCT PREVIEW TEXT -->
+            </div>
+            <!-- /PRODUCT PREVIEW INFO -->      
+          </div>
+          <!-- /PRODUCT PREVIEW -->
+          <!-- PRODUCT PREVIEW -->
+          <div class="product-preview">
+            <!-- PRODUCT PREVIEW IMAGE -->
+            <a  id="editarFTvsPXO" style="cursor: pointer;">
+              <figure class="product-preview-image liquid">
+                <img src="css/fibraVSinduzMedio.png" alt="item-01">
+              </figure>
+            </a>
+            <!-- /PRODUCT PREVIEW IMAGE -->
+        
+            <!-- PRODUCT PREVIEW INFO -->
+            <div class="product-preview-info">
+              <!-- TEXT STICKER -->
+              <p class="text-sticker"><span class="highlighted">Fecha: </span> <span style="color: red;">Hoy</span></p>
+              <!-- /TEXT STICKER -->
+        
+              <!-- PRODUCT PREVIEW TITLE -->
+              <p class="product-preview-title"><a>Fibra Tóxica VS PXO Industrial</a></p>
+              <!-- /PRODUCT PREVIEW TITLE -->
+              
+              <div class="row d-flex justify-content-around">
+                <div class="col-5">
+                  <!-- PRODUCT PREVIEW CATEGORY -->
+                  <p class="product-preview-category digital"><span class="highlighted">Hora: </span> <span style="color: blue;">10PM</span></p>
+                  <!-- /PRODUCT PREVIEW CATEGORY -->
+                </div>
+                <div class="col-7">
+                  <!-- PRODUCT PREVIEW CATEGORY -->
+                  <p class="product-preview-category digital"><span class="highlighted">Lugar: </span> <span style="color: brown">Polideportivo</span></p>
+                  <!-- /PRODUCT PREVIEW CATEGORY -->
+                </div>
+              </div>
+              <!-- PRODUCT PREVIEW TEXT -->
+              <p class="product-preview-text">Mi radar ultrasónico desentraña los secretos del Diablo Azul, llevándome a la victoria. Un evento muy esperado se...</p>
+              <!-- /PRODUCT PREVIEW TEXT -->
+            </div>
+            <!-- /PRODUCT PREVIEW INFO -->      
+          </div>
+          <!-- /PRODUCT PREVIEW -->
+          <!-- PRODUCT PREVIEW -->
+          <div class="product-preview">
+            <!-- PRODUCT PREVIEW IMAGE -->
+            <a id="editarFTvsHuascaminas" style="cursor: pointer;">
+              <figure class="product-preview-image liquid">
+                <img src="css/fibraVShuascaminasMedio.png" alt="item-01">
+              </figure>
+            </a>
+            <!-- /PRODUCT PREVIEW IMAGE -->
+        
+            <!-- PRODUCT PREVIEW INFO -->
+            <div class="product-preview-info">
+              <!-- TEXT STICKER -->
+              <p class="text-sticker"><span class="highlighted">Fecha: </span> <span style="color: orangered;">Mañana</span></p>
+              <!-- /TEXT STICKER -->
+        
+              <!-- PRODUCT PREVIEW TITLE -->
+              <p class="product-preview-title"><a>Fibra Tóxica VS Huascaminas</a></p>
+              <!-- /PRODUCT PREVIEW TITLE -->
+              
+              <div class="row d-flex justify-content-around">
+                <div class="col-5">
+                  <!-- PRODUCT PREVIEW CATEGORY -->
+                  <p class="product-preview-category digital"><span class="highlighted">Hora: </span> <span style="color: blue;">10AM</span></p>
+                  <!-- /PRODUCT PREVIEW CATEGORY -->
+                </div>
+                <div class="col-7">
+                  <!-- PRODUCT PREVIEW CATEGORY -->
+                  <p class="product-preview-category digital"><span class="highlighted">Lugar: </span> <span style="color: brown">C. de Minas</span></p>
+                  <!-- /PRODUCT PREVIEW CATEGORY -->
+                </div>
+              </div>
+              <!-- PRODUCT PREVIEW TEXT -->
+              <p class="product-preview-text">La oscuridad de la noche es mi aliada, y el blanco de su disfraz solo lo hace más vulnerable. Se espera una victoria por...</p>
+              <!-- /PRODUCT PREVIEW TEXT -->
+            </div>
+            <!-- /PRODUCT PREVIEW INFO -->      
+          </div>
+          <!-- /PRODUCT PREVIEW -->
+          <!-- PRODUCT PREVIEW -->
+          <div class="product-preview">
+            <!-- PRODUCT PREVIEW IMAGE -->
+            <a id="editarFTvsHA_2_" style="cursor: pointer;">
+              <figure class="product-preview-image liquid">
+                <img src="css/fibraVShormigonMedio.png" alt="item-01">
+              </figure>
+            </a>
+            <!-- /PRODUCT PREVIEW IMAGE -->
+        
+            <!-- PRODUCT PREVIEW INFO -->
+            <div class="product-preview-info">
+              <!-- TEXT STICKER -->
+              <p class="text-sticker"><span class="highlighted">Fecha: </span> <span style="color: orangered;">Mañana</span></p>
+              <!-- /TEXT STICKER -->
+        
+              <!-- PRODUCT PREVIEW TITLE -->
+              <p class="product-preview-title"><a>Fibra Tóxica VS Hormigón Armado</a></p>
+              <!-- /PRODUCT PREVIEW TITLE -->
+              
+              <div class="row d-flex justify-content-around">
+                <div class="col-5">
+                  <!-- PRODUCT PREVIEW CATEGORY -->
+                  <p class="product-preview-category digital"><span class="highlighted">Hora: </span> <span style="color: blue;">3PM</span></p>
+                  <!-- /PRODUCT PREVIEW CATEGORY -->
+                </div>
+                <div class="col-7">
+                  <!-- PRODUCT PREVIEW CATEGORY -->
+                  <p class="product-preview-category digital"><span class="highlighted">Lugar: </span> <span style="color: brown">Polideportivo</span></p>
+                  <!-- /PRODUCT PREVIEW CATEGORY -->
+                </div>
+              </div>
+              <!-- PRODUCT PREVIEW TEXT -->
+              <p class="product-preview-text">Tus planes siempre fracasan, pero mi vuelo nocturno siempre triunfa. Un evento que se espera muy interesante...</p>
+              <!-- /PRODUCT PREVIEW TEXT -->
+            </div>
+            <!-- /PRODUCT PREVIEW INFO -->      
+          </div>
+          <!-- /PRODUCT PREVIEW -->
+          <!-- PRODUCT PREVIEW -->
+          <div class="product-preview">
+            <!-- PRODUCT PREVIEW IMAGE -->
+            <a id="editarFTvsElectroshock" style="cursor: pointer;">
+              <figure class="product-preview-image liquid">
+                <img src="css/fibraVSelectro.png" alt="item-01">
+              </figure>
+            </a>
+            <!-- /PRODUCT PREVIEW IMAGE -->
+        
+            <!-- PRODUCT PREVIEW INFO -->
+            <div class="product-preview-info">
+              <!-- TEXT STICKER -->
+              <p class="text-sticker"><span class="highlighted">Fecha: </span> <span style="color: orange;">En 2 días</span></p>
+              <!-- /TEXT STICKER -->
+        
+              <!-- PRODUCT PREVIEW TITLE -->
+              <p class="product-preview-title"><a>Fibra Tóxica VS Electroshock</a></p>
+              <!-- /PRODUCT PREVIEW TITLE -->
+              
+              <div class="row d-flex justify-content-around">
+                <div class="col-5">
+                  <!-- PRODUCT PREVIEW CATEGORY -->
+                  <p class="product-preview-category digital"><span class="highlighted">Hora: </span> <span style="color: blue;">10AM</span></p>
+                  <!-- /PRODUCT PREVIEW CATEGORY -->
+                </div>
+                <div class="col-7">
+                  <!-- PRODUCT PREVIEW CATEGORY -->
+                  <p class="product-preview-category digital"><span class="highlighted">Lugar: </span> <span style="color: brown">C. de Minas</span></p>
+                  <!-- /PRODUCT PREVIEW CATEGORY -->
+                </div>
+              </div>
+              <!-- PRODUCT PREVIEW TEXT -->
+              <p class="product-preview-text">El rayo en tu frente se apaga mientras mi triunfo en la oscuridad se enciende con cada vuelo. El clásico de los...</p>
+              <!-- /PRODUCT PREVIEW TEXT -->
+            </div>
+            <!-- /PRODUCT PREVIEW INFO -->      
+          </div>
+          <!-- /PRODUCT PREVIEW -->
+          
+
+        </div>
+        <!-- /GRID -->
+
+        <!-- SECTION PAGER BAR WRAP -->
+        <div class="section-pager-bar-wrap align-center">
+          <!-- SECTION PAGER BAR -->
+          <div class="section-pager-bar">
+            <!-- SECTION PAGER -->
+            <div class="section-pager">
+              <!-- SECTION PAGER ITEM -->
+              <div class="section-pager-item active">
+                <!-- SECTION PAGER ITEM TEXT -->
+                <p class="section-pager-item-text">01</p>
+                <!-- /SECTION PAGER ITEM TEXT -->
+              </div>
+              <!-- /SECTION PAGER ITEM -->
+        
+              <!-- SECTION PAGER ITEM -->
+              <div class="section-pager-item">
+                <!-- SECTION PAGER ITEM TEXT -->
+                <p class="section-pager-item-text">02</p>
+                <!-- /SECTION PAGER ITEM TEXT -->
+              </div>
+              <!-- /SECTION PAGER ITEM -->
+        
+              <!-- SECTION PAGER ITEM -->
+              <div class="section-pager-item">
+                <!-- SECTION PAGER ITEM TEXT -->
+                <p class="section-pager-item-text">03</p>
+                <!-- /SECTION PAGER ITEM TEXT -->
+              </div>
+              <!-- /SECTION PAGER ITEM -->
+        
+              <!-- SECTION PAGER ITEM -->
+              <div class="section-pager-item">
+                <!-- SECTION PAGER ITEM TEXT -->
+                <p class="section-pager-item-text">04</p>
+                <!-- /SECTION PAGER ITEM TEXT -->
+              </div>
+              <!-- /SECTION PAGER ITEM -->
+        
+              <!-- SECTION PAGER ITEM -->
+              <div class="section-pager-item">
+                <!-- SECTION PAGER ITEM TEXT -->
+                <p class="section-pager-item-text">05</p>
+                <!-- /SECTION PAGER ITEM TEXT -->
+              </div>
+              <!-- /SECTION PAGER ITEM -->
+        
+              <!-- SECTION PAGER ITEM -->
+              <div class="section-pager-item">
+                <!-- SECTION PAGER ITEM TEXT -->
+                <p class="section-pager-item-text">06</p>
+                <!-- /SECTION PAGER ITEM TEXT -->
+              </div>
+              <!-- /SECTION PAGER ITEM -->
+            </div>
+            <!-- /SECTION PAGER -->
+        
+            <!-- SECTION PAGER CONTROLS -->
+            <div class="section-pager-controls">
+              <!-- SLIDER CONTROL -->
+              <div class="slider-control left disabled">
+                <!-- SLIDER CONTROL ICON -->
+                <svg class="slider-control-icon icon-small-arrow">
+                  <use xlink:href="#svg-small-arrow"></use>
+                </svg>
+                <!-- /SLIDER CONTROL ICON -->
+              </div>
+              <!-- /SLIDER CONTROL -->
+        
+              <!-- SLIDER CONTROL -->
+              <div class="slider-control right">
+                <!-- SLIDER CONTROL ICON -->
+                <svg class="slider-control-icon icon-small-arrow">
+                  <use xlink:href="#svg-small-arrow"></use>
+                </svg>
+                <!-- /SLIDER CONTROL ICON -->
+              </div>
+              <!-- /SLIDER CONTROL -->
+            </div>
+            <!-- /SECTION PAGER CONTROLS -->
+          </div>
+          <!-- /SECTION PAGER BAR -->
+        </div>
+        <!-- /SECTION PAGER BAR WRAP -->
+      </div>
+      <!-- /MARKETPLACE CONTENT -->
+      
+    </div>
+    <!-- /GRID -->
+    </div>
+
+
+    
+  </div>
+  <!-- /CONTENT GRID -->
+  <div class="overlay" id="overlay"></div>
+  <div class="popup contenedorCrear" style="width: 700px;" id="popupCrear">
+    <svg class="cerrar-btn-crear" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M11.4142 10L16.7071 4.70711C17.0976 4.31658 17.0976 3.68342 16.7071 3.29289C16.3166 2.90237 15.6834 2.90237 15.2929 3.29289L10 8.58579L4.70711 3.29289C4.31658 2.90237 3.68342 2.90237 3.29289 3.29289C2.90237 3.68342 2.90237 4.31658 3.29289 4.70711L8.58579 10L3.29289 15.2929C2.90237 15.6834 2.90237 16.3166 3.29289 16.7071C3.68342 17.0976 4.31658 17.0976 4.70711 16.7071L10 11.4142L15.2929 16.7071C15.6834 17.0976 16.3166 17.0976 16.7071 16.7071C17.0976 16.3166 17.0976 15.6834 16.7071 15.2929L11.4142 10Z" fill="black"/>
+    </svg>
+    <div class="container-fluid">
+
+      <div class="row"><div class="col"><h5 style="text-align: center;">Crear evento</h5></div></div>
+      <div class="row">
+        <div class="col-sm-7">   
+          <br>
+          <label for="nombreEvento" style="margin-top: 25px;"><b>Nombre del evento:</b></label>
+          <input type="text" id="nombreEvento" placeholder="Fibra Tóxica VS Hormigón Armado" required>
+          <label style="margin-top: 25px;" for="descripcion"><b>Descripción del evento:</b></label>
+          <input type="text" id="descripcion" placeholder="Descripción" required>
+          <div class="row" style="margin-top: 25px;">
+            <div class="col-6">
+              <label for="delegado"><b>Hora:</b></label>
+              <input type="text" multiple id="delegado" list="hora" placeholder="Hora" required>
+              <datalist id="hora">
+                <option value="7:00AM">7:00AM</option>
+                <option value="8:00AM">8:00AM</option>
+                <option value="9:00AM">9:00AM</option>
+                <option value="10:00AM">10:00AM</option>
+                <option value="11:00AM">11:00AM</option>
+                <option value="12:00PM">12:00PM</option>
+                <option value="1:00PM">1:00PM</option>
+                <option value="2:00PM">2:00PM</option>
+                <option value="3:00PM">3:00PM</option>
+                <option value="4:00PM">4:00PM</option>
+                <option value="5:00PM">5:00PM</option>
+                <option value="6:00PM">6:00PM</option>
+                <option value="7:00PM">7:00PM</option>
+                <option value="8:00PM">8:00PM</option>
+                <option value="9:00PM">9:00PM</option>
+                <option value="10:00PM">10:00PM</option>
+                <option value="11:00PM">11:00PM</option>
+              </datalist>
+            </div>
+            <div class="col-6">
+              <label for="delegado"><b>Lugar:</b></label>
+              <input type="text" multiple id="delegado" list="lugar" placeholder="Lugar" required>
+              <datalist id="lugar">
+                <option value="Polideportivo">Polideportivo</option>
+                <option value="Cancha de Minas">Cancha de Minas</option>
+                <option value="Pastos de Psicología">Pastos de Psicología</option>
+                <option value="V305">V305</option>
+                <option value="V306">V306</option>
+                <option value="V307">V307</option>
+            </div>
+          </div>
+          <div class="row" style="margin-top: 25px;">
+            <div class="col-6">
+              <label for="delegado"><b>Fecha:</b></label>
+              <input type="text" multiple id="delegado" placeholder="... de octubre" required>
+            </div>
+            <div class="col-6">
+              <p style="width: 100%;"><b>Ocultar evento:</b></p>
+              <input type="checkbox" style="width: 30%; position: relative; top: 15px; left: 60px;">
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-5 contenedor2" style="top: 140px">
+          <div class="container-fluid btn btn-file1">
+            <img class="img-fluid" src="css/subirArchivo.jpg" style="opacity: 50%;" alt="">
+            <p><b>Foto principal del evento</b></p>
+            <input type="file" style="background-color: white; margin-top: 25px;" accept="image/png, .jpeg, .jpg"></input>
+          </div>
+        </div>
+      </div>
+    </div>
+    <br>
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-sm-6" style="margin-top: 5px;">
+          <button type="submit" class="button secondary" id="cerrarPopupCrear1">Crear</button>
+        </div>
+        <div class="col-sm-6" style="margin-top: 5px;">
+          <button class="button secondary" id="cerrarPopupCrear2" style="background-color: grey;">Cancelar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <div class="popup contenedorCrear" id="popupFTvsHA" style="width: 700px;">
+    <svg class="cerrar-btn-editarFTvsHA" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M11.4142 10L16.7071 4.70711C17.0976 4.31658 17.0976 3.68342 16.7071 3.29289C16.3166 2.90237 15.6834 2.90237 15.2929 3.29289L10 8.58579L4.70711 3.29289C4.31658 2.90237 3.68342 2.90237 3.29289 3.29289C2.90237 3.68342 2.90237 4.31658 3.29289 4.70711L8.58579 10L3.29289 15.2929C2.90237 15.6834 2.90237 16.3166 3.29289 16.7071C3.68342 17.0976 4.31658 17.0976 4.70711 16.7071L10 11.4142L15.2929 16.7071C15.6834 17.0976 16.3166 17.0976 16.7071 16.7071C17.0976 16.3166 17.0976 15.6834 16.7071 15.2929L11.4142 10Z" fill="black"/>
+    </svg>
+    <div class="container-fluid">
+
+      <div class="row"><div class="col"><h5 style="text-align: center;">Editar evento: Fibra Tóxica VS Hormigón Armado</h5></div></div>
+      <div class="row">
+        <div class="col-sm-7">   
+          <br>
+          <label for="nombreEvento" style="margin-top: 25px;"><b>Nombre del evento:</b></label>
+          <input type="text" id="nombreEvento" placeholder="Fibra Tóxica VS Hormigón Armado" required>
+          <label style="margin-top: 25px;" for="descripcion"><b>Descripción del evento:</b></label>
+          <input type="text" id="descripcion" placeholder="Descripción" required>
+          <div class="row" style="margin-top: 25px;">
+            <div class="col-6">
+              <label for="delegado"><b>Hora:</b></label>
+              <input type="text" multiple id="delegado" list="hora" placeholder="3:00PM" required>
+              <datalist id="hora">
+                <option value="7:00AM">7:00AM</option>
+                <option value="8:00AM">8:00AM</option>
+                <option value="9:00AM">9:00AM</option>
+                <option value="10:00AM">10:00AM</option>
+                <option value="11:00AM">11:00AM</option>
+                <option value="12:00PM">12:00PM</option>
+                <option value="1:00PM">1:00PM</option>
+                <option value="2:00PM">2:00PM</option>
+                <option value="3:00PM">3:00PM</option>
+                <option value="4:00PM">4:00PM</option>
+                <option value="5:00PM">5:00PM</option>
+                <option value="6:00PM">6:00PM</option>
+                <option value="7:00PM">7:00PM</option>
+                <option value="8:00PM">8:00PM</option>
+                <option value="9:00PM">9:00PM</option>
+                <option value="10:00PM">10:00PM</option>
+                <option value="11:00PM">11:00PM</option>
+              </datalist>
+            </div>
+            <div class="col-6">
+              <label for="delegado"><b>Lugar:</b></label>
+              <input type="text" multiple id="delegado" list="lugar" placeholder="Polideportivo" required>
+              <datalist id="lugar">
+                <option value="Polideportivo">Polideportivo</option>
+                <option value="Cancha de Minas">Cancha de Minas</option>
+                <option value="Pastos de Psicología">Pastos de Psicología</option>
+                <option value="V305">V305</option>
+                <option value="V306">V306</option>
+                <option value="V307">V307</option>
+            </div>
+          </div>
+          <div class="row" style="margin-top: 25px;">
+            <div class="col-6">
+              <label for="delegado"><b>Fecha:</b></label>
+              <input type="text" multiple id="delegado" placeholder="4 de octubre" required>
+            </div>
+            <div class="col-6">
+              <p style="width: 100%;"><b>Ocultar evento:</b></p>
+              <input type="checkbox" style="width: 30%; position: relative; top: 15px; left: 60px;">
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-5 contenedor2" style="top: 140px">
+          <div class="container-fluid btn btn-file1">
+            <img class="img-fluid" src="css/subirArchivo.jpg" style="opacity: 50%;" alt="">
+            <p><b>Foto principal del evento</b></p>
+            <input type="file" style="background-color: white; margin-top: 25px;" accept="image/png, .jpeg, .jpg"></input>
+          </div>
+        </div>
+      </div>
+    </div>
+    <br>
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-sm-6" style="margin-top: 5px;">
+          <button type="submit" class="button secondary" id="cerrarPopupeditarFTvsHA1">Editar</button>
+        </div>
+        <div class="col-sm-6" style="margin-top: 5px;">
+          <button class="button secondary" id="cerrarPopupeditarFTvsHA2" style="background-color: grey;">Cancelar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="popup contenedorCrear" id="popupFTvsDA" style="width: 700px;">
+    <svg class="cerrar-btn-editarFTvsDA" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M11.4142 10L16.7071 4.70711C17.0976 4.31658 17.0976 3.68342 16.7071 3.29289C16.3166 2.90237 15.6834 2.90237 15.2929 3.29289L10 8.58579L4.70711 3.29289C4.31658 2.90237 3.68342 2.90237 3.29289 3.29289C2.90237 3.68342 2.90237 4.31658 3.29289 4.70711L8.58579 10L3.29289 15.2929C2.90237 15.6834 2.90237 16.3166 3.29289 16.7071C3.68342 17.0976 4.31658 17.0976 4.70711 16.7071L10 11.4142L15.2929 16.7071C15.6834 17.0976 16.3166 17.0976 16.7071 16.7071C17.0976 16.3166 17.0976 15.6834 16.7071 15.2929L11.4142 10Z" fill="black"/>
+    </svg>
+    <div class="container-fluid">
+
+      <div class="row"><div class="col"><h5 style="text-align: center;">Editar actividad: Fibra Tóxica VS Descontrol Automático</h5></div></div>
+      <div class="row">
+        <div class="col-sm-7">   
+          <br>
+          <label for="nombreEvento" style="margin-top: 25px;"><b>Nombre del evento:</b></label>
+          <input type="text" id="nombreEvento" placeholder="Fibra Tóxica VS Descontrol Automático" required>
+          <label style="margin-top: 25px;" for="descripcion"><b>Descripción del evento:</b></label>
+          <input type="text" id="descripcion" placeholder="Descripción" required>
+          <div class="row" style="margin-top: 25px;">
+            <div class="col-6">
+              <label for="delegado"><b>Hora:</b></label>
+              <input type="text" multiple id="delegado" list="hora" placeholder="7:00PM" required>
+              <datalist id="hora">
+                <option value="7:00AM">7:00AM</option>
+                <option value="8:00AM">8:00AM</option>
+                <option value="9:00AM">9:00AM</option>
+                <option value="10:00AM">10:00AM</option>
+                <option value="11:00AM">11:00AM</option>
+                <option value="12:00PM">12:00PM</option>
+                <option value="1:00PM">1:00PM</option>
+                <option value="2:00PM">2:00PM</option>
+                <option value="3:00PM">3:00PM</option>
+                <option value="4:00PM">4:00PM</option>
+                <option value="5:00PM">5:00PM</option>
+                <option value="6:00PM">6:00PM</option>
+                <option value="7:00PM">7:00PM</option>
+                <option value="8:00PM">8:00PM</option>
+                <option value="9:00PM">9:00PM</option>
+                <option value="10:00PM">10:00PM</option>
+                <option value="11:00PM">11:00PM</option>
+              </datalist>
+            </div>
+            <div class="col-6">
+              <label for="delegado"><b>Lugar:</b></label>
+              <input type="text" multiple id="delegado" list="lugar" placeholder="Cancha de Minas" required>
+              <datalist id="lugar">
+                <option value="Polideportivo">Polideportivo</option>
+                <option value="Cancha de Minas">Cancha de Minas</option>
+                <option value="Pastos de Psicología">Pastos de Psicología</option>
+                <option value="V305">V305</option>
+                <option value="V306">V306</option>
+                <option value="V307">V307</option>
+            </div>
+          </div>
+          <div class="row" style="margin-top: 25px;">
+            <div class="col-6">
+              <label for="delegado"><b>Fecha:</b></label>
+              <input type="text" multiple id="delegado" placeholder="4 de octubre" required>
+            </div>
+            <div class="col-6">
+              <p style="width: 100%;"><b>Ocultar evento:</b></p>
+              <input type="checkbox" style="width: 30%; position: relative; top: 15px; left: 60px;">
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-5 contenedor2" style="top: 140px">
+          <div class="container-fluid btn btn-file1">
+            <img class="img-fluid" src="css/subirArchivo.jpg" style="opacity: 50%;" alt="">
+            <p><b>Foto principal del evento</b></p>
+            <input type="file" style="background-color: white; margin-top: 25px;" accept="image/png, .jpeg, .jpg"></input>
+          </div>
+        </div>
+      </div>
+    </div>
+    <br>
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-sm-6" style="margin-top: 5px;">
+          <button type="submit" class="button secondary" id="cerrarPopupeditarFTvsDA1">Editar</button>
+        </div>
+        <div class="col-sm-6" style="margin-top: 5px;">
+          <button class="button secondary" id="cerrarPopupeditarFTvsDA2" style="background-color: grey;">Cancelar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="popup contenedorCrear" id="popupFTvsPXO" style="width: 700px;">
+    <svg class="cerrar-btn-editarFTvsPXO" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M11.4142 10L16.7071 4.70711C17.0976 4.31658 17.0976 3.68342 16.7071 3.29289C16.3166 2.90237 15.6834 2.90237 15.2929 3.29289L10 8.58579L4.70711 3.29289C4.31658 2.90237 3.68342 2.90237 3.29289 3.29289C2.90237 3.68342 2.90237 4.31658 3.29289 4.70711L8.58579 10L3.29289 15.2929C2.90237 15.6834 2.90237 16.3166 3.29289 16.7071C3.68342 17.0976 4.31658 17.0976 4.70711 16.7071L10 11.4142L15.2929 16.7071C15.6834 17.0976 16.3166 17.0976 16.7071 16.7071C17.0976 16.3166 17.0976 15.6834 16.7071 15.2929L11.4142 10Z" fill="black"/>
+    </svg>
+    <div class="container-fluid">
+
+      <div class="row"><div class="col"><h5 style="text-align: center;">Editar actividad: Fibra Tóxica VS PXO Industrial</h5></div></div>
+      <div class="row">
+        <div class="col-sm-7">   
+          <br>
+          <label for="nombreEvento" style="margin-top: 25px;"><b>Nombre del evento:</b></label>
+          <input type="text" id="nombreEvento" placeholder="Fibra Tóxica VS PXO Industrial" required>
+          <label style="margin-top: 25px;" for="descripcion"><b>Descripción del evento:</b></label>
+          <input type="text" id="descripcion" placeholder="Descripción" required>
+          <div class="row" style="margin-top: 25px;">
+            <div class="col-6">
+              <label for="delegado"><b>Hora:</b></label>
+              <input type="text" multiple id="delegado" list="hora" placeholder="10:00PM" required>
+              <datalist id="hora">
+                <option value="7:00AM">7:00AM</option>
+                <option value="8:00AM">8:00AM</option>
+                <option value="9:00AM">9:00AM</option>
+                <option value="10:00AM">10:00AM</option>
+                <option value="11:00AM">11:00AM</option>
+                <option value="12:00PM">12:00PM</option>
+                <option value="1:00PM">1:00PM</option>
+                <option value="2:00PM">2:00PM</option>
+                <option value="3:00PM">3:00PM</option>
+                <option value="4:00PM">4:00PM</option>
+                <option value="5:00PM">5:00PM</option>
+                <option value="6:00PM">6:00PM</option>
+                <option value="7:00PM">7:00PM</option>
+                <option value="8:00PM">8:00PM</option>
+                <option value="9:00PM">9:00PM</option>
+                <option value="10:00PM">10:00PM</option>
+                <option value="11:00PM">11:00PM</option>
+              </datalist>
+            </div>
+            <div class="col-6">
+              <label for="delegado"><b>Lugar:</b></label>
+              <input type="text" multiple id="delegado" list="lugar" placeholder="Polideportivo" required>
+              <datalist id="lugar">
+                <option value="Polideportivo">Polideportivo</option>
+                <option value="Cancha de Minas">Cancha de Minas</option>
+                <option value="Pastos de Psicología">Pastos de Psicología</option>
+                <option value="V305">V305</option>
+                <option value="V306">V306</option>
+                <option value="V307">V307</option>
+            </div>
+          </div>
+          <div class="row" style="margin-top: 25px;">
+            <div class="col-6">
+              <label for="delegado"><b>Fecha:</b></label>
+              <input type="text" multiple id="delegado" placeholder="4 de octubre" required>
+            </div>
+            <div class="col-6">
+              <p style="width: 100%;"><b>Ocultar evento:</b></p>
+              <input type="checkbox" style="width: 30%; position: relative; top: 15px; left: 60px;">
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-5 contenedor2" style="top: 140px">
+          <div class="container-fluid btn btn-file1">
+            <img class="img-fluid" src="css/subirArchivo.jpg" style="opacity: 50%;" alt="">
+            <p><b>Foto principal del evento</b></p>
+            <input type="file" style="background-color: white; margin-top: 25px;" accept="image/png, .jpeg, .jpg"></input>
+          </div>
+        </div>
+      </div>
+    </div>
+    <br>
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-sm-6" style="margin-top: 5px;">
+          <button type="submit" class="button secondary" id="cerrarPopupeditarFTvsPXO1">Editar</button>
+        </div>
+        <div class="col-sm-6" style="margin-top: 5px;">
+          <button class="button secondary" id="cerrarPopupeditarFTvsPXO2" style="background-color: grey;">Cancelar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="popup contenedorCrear" id="popupFTvsHuascaminas" style="width: 700px;">
+    <svg class="cerrar-btn-editarFTvsHuascaminas" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M11.4142 10L16.7071 4.70711C17.0976 4.31658 17.0976 3.68342 16.7071 3.29289C16.3166 2.90237 15.6834 2.90237 15.2929 3.29289L10 8.58579L4.70711 3.29289C4.31658 2.90237 3.68342 2.90237 3.29289 3.29289C2.90237 3.68342 2.90237 4.31658 3.29289 4.70711L8.58579 10L3.29289 15.2929C2.90237 15.6834 2.90237 16.3166 3.29289 16.7071C3.68342 17.0976 4.31658 17.0976 4.70711 16.7071L10 11.4142L15.2929 16.7071C15.6834 17.0976 16.3166 17.0976 16.7071 16.7071C17.0976 16.3166 17.0976 15.6834 16.7071 15.2929L11.4142 10Z" fill="black"/>
+    </svg>
+    <div class="container-fluid">
+
+      <div class="row"><div class="col"><h5 style="text-align: center;">Editar actividad: Fibra Tóxica VS Huascaminas</h5></div></div>
+      <div class="row">
+        <div class="col-sm-7">   
+          <br>
+          <label for="nombreEvento" style="margin-top: 25px;"><b>Nombre del evento:</b></label>
+          <input type="text" id="nombreEvento" placeholder="Fibra Tóxica VS Huascaminas" required>
+          <label style="margin-top: 25px;" for="descripcion"><b>Descripción del evento:</b></label>
+          <input type="text" id="descripcion" placeholder="Descripción" required>
+          <div class="row" style="margin-top: 25px;">
+            <div class="col-6">
+              <label for="delegado"><b>Hora:</b></label>
+              <input type="text" multiple id="delegado" list="hora" placeholder="10:00AM" required>
+              <datalist id="hora">
+                <option value="7:00AM">7:00AM</option>
+                <option value="8:00AM">8:00AM</option>
+                <option value="9:00AM">9:00AM</option>
+                <option value="10:00AM">10:00AM</option>
+                <option value="11:00AM">11:00AM</option>
+                <option value="12:00PM">12:00PM</option>
+                <option value="1:00PM">1:00PM</option>
+                <option value="2:00PM">2:00PM</option>
+                <option value="3:00PM">3:00PM</option>
+                <option value="4:00PM">4:00PM</option>
+                <option value="5:00PM">5:00PM</option>
+                <option value="6:00PM">6:00PM</option>
+                <option value="7:00PM">7:00PM</option>
+                <option value="8:00PM">8:00PM</option>
+                <option value="9:00PM">9:00PM</option>
+                <option value="10:00PM">10:00PM</option>
+                <option value="11:00PM">11:00PM</option>
+              </datalist>
+            </div>
+            <div class="col-6">
+              <label for="delegado"><b>Lugar:</b></label>
+              <input type="text" multiple id="delegado" list="lugar" placeholder="Cancha de Minas" required>
+              <datalist id="lugar">
+                <option value="Polideportivo">Polideportivo</option>
+                <option value="Cancha de Minas">Cancha de Minas</option>
+                <option value="Pastos de Psicología">Pastos de Psicología</option>
+                <option value="V305">V305</option>
+                <option value="V306">V306</option>
+                <option value="V307">V307</option>
+            </div>
+          </div>
+          <div class="row" style="margin-top: 25px;">
+            <div class="col-6">
+              <label for="delegado"><b>Fecha:</b></label>
+              <input type="text" multiple id="delegado" placeholder="5 de octubre" required>
+            </div>
+            <div class="col-6">
+              <p style="width: 100%;"><b>Ocultar evento:</b></p>
+              <input type="checkbox" style="width: 30%; position: relative; top: 15px; left: 60px;">
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-5 contenedor2" style="top: 140px">
+          <div class="container-fluid btn btn-file1">
+            <img class="img-fluid" src="css/subirArchivo.jpg" style="opacity: 50%;" alt="">
+            <p><b>Foto de la actividad</b></p>
+            <input type="file" style="background-color: white; margin-top: 25px;" accept="image/png, .jpeg, .jpg"></input>
+          </div>
+        </div>
+      </div>
+    </div>
+    <br>
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-sm-6" style="margin-top: 5px;">
+          <button type="submit" class="button secondary" id="cerrarPopupeditarFTvsHuascaminas1">Editar</button>
+        </div>
+        <div class="col-sm-6" style="margin-top: 5px;">
+          <button class="button secondary" id="cerrarPopupeditarFTvsHuascaminas2" style="background-color: grey;">Cancelar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="popup contenedorCrear" id="popupFTvsHA_2_" style="width: 700px;">
+    <svg class="cerrar-btn-editarFTvsHA_2_" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M11.4142 10L16.7071 4.70711C17.0976 4.31658 17.0976 3.68342 16.7071 3.29289C16.3166 2.90237 15.6834 2.90237 15.2929 3.29289L10 8.58579L4.70711 3.29289C4.31658 2.90237 3.68342 2.90237 3.29289 3.29289C2.90237 3.68342 2.90237 4.31658 3.29289 4.70711L8.58579 10L3.29289 15.2929C2.90237 15.6834 2.90237 16.3166 3.29289 16.7071C3.68342 17.0976 4.31658 17.0976 4.70711 16.7071L10 11.4142L15.2929 16.7071C15.6834 17.0976 16.3166 17.0976 16.7071 16.7071C17.0976 16.3166 17.0976 15.6834 16.7071 15.2929L11.4142 10Z" fill="black"/>
+    </svg>
+    <div class="container-fluid">
+
+      <div class="row"><div class="col"><h5 style="text-align: center;">Editar actividad: Fibra Tóxica VS Hormigón Armado</h5></div></div>
+      <div class="row">
+        <div class="col-sm-7">   
+          <br>
+          <label for="nombreEvento" style="margin-top: 25px;"><b>Nombre del evento:</b></label>
+          <input type="text" id="nombreEvento" placeholder="Fibra Tóxica VS Hormigón Armado" required>
+          <label style="margin-top: 25px;" for="descripcion"><b>Descripción del evento:</b></label>
+          <input type="text" id="descripcion" placeholder="Descripción" required>
+          <div class="row" style="margin-top: 25px;">
+            <div class="col-6">
+              <label for="delegado"><b>Hora:</b></label>
+              <input type="text" multiple id="delegado" list="hora" placeholder="3:00PM" required>
+              <datalist id="hora">
+                <option value="7:00AM">7:00AM</option>
+                <option value="8:00AM">8:00AM</option>
+                <option value="9:00AM">9:00AM</option>
+                <option value="10:00AM">10:00AM</option>
+                <option value="11:00AM">11:00AM</option>
+                <option value="12:00PM">12:00PM</option>
+                <option value="1:00PM">1:00PM</option>
+                <option value="2:00PM">2:00PM</option>
+                <option value="3:00PM">3:00PM</option>
+                <option value="4:00PM">4:00PM</option>
+                <option value="5:00PM">5:00PM</option>
+                <option value="6:00PM">6:00PM</option>
+                <option value="7:00PM">7:00PM</option>
+                <option value="8:00PM">8:00PM</option>
+                <option value="9:00PM">9:00PM</option>
+                <option value="10:00PM">10:00PM</option>
+                <option value="11:00PM">11:00PM</option>
+              </datalist>
+            </div>
+            <div class="col-6">
+              <label for="delegado"><b>Lugar:</b></label>
+              <input type="text" multiple id="delegado" list="lugar" placeholder="Polideportivo" required>
+              <datalist id="lugar">
+                <option value="Polideportivo">Polideportivo</option>
+                <option value="Cancha de Minas">Cancha de Minas</option>
+                <option value="Pastos de Psicología">Pastos de Psicología</option>
+                <option value="V305">V305</option>
+                <option value="V306">V306</option>
+                <option value="V307">V307</option>
+            </div>
+          </div>
+          <div class="row" style="margin-top: 25px;">
+            <div class="col-6">
+              <label for="delegado"><b>Fecha:</b></label>
+              <input type="text" multiple id="delegado" placeholder="5 de octubre" required>
+            </div>
+            <div class="col-6">
+              <p style="width: 100%;"><b>Ocultar evento:</b></p>
+              <input type="checkbox" style="width: 30%; position: relative; top: 15px; left: 60px;">
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-5 contenedor2" style="top: 140px">
+          <div class="container-fluid btn btn-file1">
+            <img class="img-fluid" src="css/subirArchivo.jpg" style="opacity: 50%;" alt="">
+            <p><b>Foto de la actividad</b></p>
+            <input type="file" style="background-color: white; margin-top: 25px;" accept="image/png, .jpeg, .jpg"></input>
+          </div>
+        </div>
+      </div>
+    </div>
+    <br>
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-sm-6" style="margin-top: 5px;">
+          <button type="submit" class="button secondary" id="cerrarPopupeditarFTvsHA_2_1">Editar</button>
+        </div>
+        <div class="col-sm-6" style="margin-top: 5px;">
+          <button class="button secondary" id="cerrarPopupeditarFTvsHA_2_2" style="background-color: grey;">Cancelar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="popup contenedorCrear" id="popupFTvsElectroshock" style="width: 700px;">
+    <svg class="cerrar-btn-editarFTvsElectroshock" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M11.4142 10L16.7071 4.70711C17.0976 4.31658 17.0976 3.68342 16.7071 3.29289C16.3166 2.90237 15.6834 2.90237 15.2929 3.29289L10 8.58579L4.70711 3.29289C4.31658 2.90237 3.68342 2.90237 3.29289 3.29289C2.90237 3.68342 2.90237 4.31658 3.29289 4.70711L8.58579 10L3.29289 15.2929C2.90237 15.6834 2.90237 16.3166 3.29289 16.7071C3.68342 17.0976 4.31658 17.0976 4.70711 16.7071L10 11.4142L15.2929 16.7071C15.6834 17.0976 16.3166 17.0976 16.7071 16.7071C17.0976 16.3166 17.0976 15.6834 16.7071 15.2929L11.4142 10Z" fill="black"/>
+    </svg>
+    <div class="container-fluid">
+
+      <div class="row"><div class="col"><h5 style="text-align: center;">Editar actividad: Fibra Tóxica VS Electroshock</h5></div></div>
+      <div class="row">
+        <div class="col-sm-7">   
+          <br>
+          <label for="nombreEvento" style="margin-top: 25px;"><b>Nombre del evento:</b></label>
+          <input type="text" id="nombreEvento" placeholder="Fibra Tóxica VS Electroshock" required>
+          <label style="margin-top: 25px;" for="descripcion"><b>Descripción del evento:</b></label>
+          <input type="text" id="descripcion" placeholder="Descripción" required>
+          <div class="row" style="margin-top: 25px;">
+            <div class="col-6">
+              <label for="delegado"><b>Hora:</b></label>
+              <input type="text" multiple id="delegado" list="hora" placeholder="10AM" required>
+              <datalist id="hora">
+                <option value="7:00AM">7:00AM</option>
+                <option value="8:00AM">8:00AM</option>
+                <option value="9:00AM">9:00AM</option>
+                <option value="10:00AM">10:00AM</option>
+                <option value="11:00AM">11:00AM</option>
+                <option value="12:00PM">12:00PM</option>
+                <option value="1:00PM">1:00PM</option>
+                <option value="2:00PM">2:00PM</option>
+                <option value="3:00PM">3:00PM</option>
+                <option value="4:00PM">4:00PM</option>
+                <option value="5:00PM">5:00PM</option>
+                <option value="6:00PM">6:00PM</option>
+                <option value="7:00PM">7:00PM</option>
+                <option value="8:00PM">8:00PM</option>
+                <option value="9:00PM">9:00PM</option>
+                <option value="10:00PM">10:00PM</option>
+                <option value="11:00PM">11:00PM</option>
+              </datalist>
+            </div>
+            <div class="col-6">
+              <label for="delegado"><b>Lugar:</b></label>
+              <input type="text" multiple id="delegado" list="lugar" placeholder="Cancha de Minas" required>
+              <datalist id="lugar">
+                <option value="Polideportivo">Polideportivo</option>
+                <option value="Cancha de Minas">Cancha de Minas</option>
+                <option value="Pastos de Psicología">Pastos de Psicología</option>
+                <option value="V305">V305</option>
+                <option value="V306">V306</option>
+                <option value="V307">V307</option>
+            </div>
+          </div>
+          <div class="row" style="margin-top: 25px;">
+            <div class="col-6">
+              <label for="delegado"><b>Fecha:</b></label>
+              <input type="text" multiple id="delegado" placeholder="6 de octubre" required>
+            </div>
+            <div class="col-6">
+              <p style="width: 100%;"><b>Ocultar evento:</b></p>
+              <input type="checkbox" style="width: 30%; position: relative; top: 15px; left: 60px;">
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-5 contenedor2" style="top: 140px">
+          <div class="container-fluid btn btn-file1">
+            <img class="img-fluid" src="css/subirArchivo.jpg" style="opacity: 50%;" alt="">
+            <p><b>Foto de la actividad</b></p>
+            <input type="file" style="background-color: white; margin-top: 25px;" accept="image/png, .jpeg, .jpg"></input>
+          </div>
+        </div>
+      </div>
+    </div>
+    <br>
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-sm-6" style="margin-top: 5px;">
+          <button type="submit" class="button secondary" id="cerrarPopupeditarFTvsElectroshock1">Editar</button>
+        </div>
+        <div class="col-sm-6" style="margin-top: 5px;">
+          <button class="button secondary" id="cerrarPopupeditarFTvsElectroshock2" style="background-color: grey;">Cancelar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <footer style="font-size: 80%;">
+    <!-- Primera fila -->
+    <div class="fila">
+        <div class="columna">
+            <span class="titulo">Contactos</span>
+            <ul class="lista">
+                <li>Delegado general 1: <a href="mailto:a20210548@pucp.edu.pe">a20210548@pucp.edu.pe</a></li>
+                <li>Delegado general 2: <a href="mailto:a20210751@pucp.edu.pe">a20210751@pucp.edu.pe</a></li>
+                <li>Delegado general 3: <a href="mailto:josh.yauri@pucp.edu.pe">josh.yauri@pucp.edu.pe</a></li>
+            </ul>
+        </div>
+        <div class="columna">
+          <p>© 2023 Fibra tóxica</p>
+          <ul class="lista">
+              <li><a>Política de Privacidad</a></li>
+              <li><a>Términos y Condiciones</a></li>
+            <li><a>Siguenos en: </a> <i class="fab fa-facebook"></i> <i class="fab fa-instagram"></i> <i class="fab fa-youtube"></i></li>
+          </ul>
+        </div>
+        <div class="columna">
+            <span class="titulo">Sobre nosotros</span>
+          <ul class="lista">
+                <li>Somos un grupo de estudiantes que</li>
+                <li>busca conectar a todos los amantes</li>
+            <li>de esta maravillosa carrera</li>
+            </ul>
+        </div>
+    </div>
+  </footer>
+
+  <script>
+    //Función para abrir el popup
+    function mostrarPopup(x) {
+      document.getElementById('overlay').style.display = 'block';
+      x.style.display = 'block';
+      document.body.style.overflow = 'hidden';
+    }
+
+    //Popup de Crear Actividad
+    document.getElementById('mostrarPopupCrear').addEventListener('click', function(){mostrarPopup(document.getElementById('popupCrear'));});
+
+    //Función para cerrar el popup
+    function cerrarPopup(x) {
+      document.getElementById('overlay').style.display = 'none';
+      x.style.display = 'none';
+      document.body.style.overflow = 'auto';
+    }
+
+    //Cerrar popup de Crear Actividad
+    document.getElementById('cerrarPopupCrear1').addEventListener('click', function(){cerrarPopup(document.getElementById('popupCrear'));});
+    document.getElementById('cerrarPopupCrear2').addEventListener('click', function(){cerrarPopup(document.getElementById('popupCrear'));});
+    document.querySelector('.cerrar-btn-crear').addEventListener('click', function(){cerrarPopup(document.getElementById('popupCrear'));});
+
+    document.getElementById('overlay').addEventListener('click', (e) => {
+        if (e.target === document.getElementById('overlay')) {
+          cerrarPopup(document.getElementById('popupCrear'));
+        }
+    });
+
+    //Cerrar el popup al presionar Escape
+    document.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape') {
+          cerrarPopup(document.getElementById('popupCrear'));
+        }
+    });
+
+    function mostrarContenido(opcion){
+      const opciones = ["Usuario","Edicion"];
+      opciones.forEach(op=>{
+        const contenido = document.getElementById(op)
+        if(op === opcion){
+          contenido.style.display = 'block';
+        }else{
+          contenido.style.display = 'none';
+        }
+      });
+    }
+
+    document.getElementById("opcionUsuario").addEventListener("click",function(){mostrarContenido("Usuario");});
+    document.getElementById("opcionEdicion").addEventListener("click",function(){mostrarContenido("Edicion");});
+
+    mostrarContenido("Usuario");
+
+    //Popup de Editar Actividad: Fibra Tóxica VS Hormigón Armado 1
+    document.getElementById('editarFTvsHA').addEventListener('click', function(){mostrarPopup(document.getElementById('popupFTvsHA'))});
+
+    document.getElementById('cerrarPopupeditarFTvsHA1').addEventListener('click', function(){cerrarPopup(document.getElementById('popupFTvsHA'))});
+    document.getElementById('cerrarPopupeditarFTvsHA2').addEventListener('click', function(){cerrarPopup(document.getElementById('popupFTvsHA'))});
+    document.querySelector('.cerrar-btn-editarFTvsHA').addEventListener('click', function(){cerrarPopup(document.getElementById('popupFTvsHA'))});
+
+    // Cerrar el popup al presionar Escape
+    document.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape') {
+          cerrarPopup(document.getElementById('popupFTvsHA'));
+        }
+    });
+
+    document.getElementById('overlay').addEventListener('click', (e) => {
+        if (e.target === document.getElementById('overlay')) {
+          cerrarPopup(document.getElementById('popupFTvsHA'));
+        }
+    });
+
+    //Popup de Editar Actividad: Fibra Tóxica VS Descontrol Automático
+    document.getElementById('editarFTvsDA').addEventListener('click', function(){mostrarPopup(document.getElementById('popupFTvsDA'))});
+
+    document.getElementById('cerrarPopupeditarFTvsDA1').addEventListener('click', function(){cerrarPopup(document.getElementById('popupFTvsDA'))});
+    document.getElementById('cerrarPopupeditarFTvsDA2').addEventListener('click', function(){cerrarPopup(document.getElementById('popupFTvsDA'))});
+    document.querySelector('.cerrar-btn-editarFTvsDA').addEventListener('click', function(){cerrarPopup(document.getElementById('popupFTvsDA'))});
+
+    // Cerrar el popup al presionar Escape
+    document.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape') {
+          cerrarPopup(document.getElementById('popupFTvsDA'));
+        }
+    });
+
+    document.getElementById('overlay').addEventListener('click', (e) => {
+        if (e.target === document.getElementById('overlay')) {
+          cerrarPopup(document.getElementById('popupFTvsDA'));
+        }
+    });
+
+    //Popup de Editar Actividad: Fibra Tóxica VS PXO Industrial
+    document.getElementById('editarFTvsPXO').addEventListener('click', function(){mostrarPopup(document.getElementById('popupFTvsPXO'))});
+
+    document.getElementById('cerrarPopupeditarFTvsPXO1').addEventListener('click', function(){cerrarPopup(document.getElementById('popupFTvsPXO'))});
+    document.getElementById('cerrarPopupeditarFTvsPXO2').addEventListener('click', function(){cerrarPopup(document.getElementById('popupFTvsPXO'))});
+    document.querySelector('.cerrar-btn-editarFTvsPXO').addEventListener('click', function(){cerrarPopup(document.getElementById('popupFTvsPXO'))});
+
+    // Cerrar el popup al presionar Escape
+    document.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape') {
+          cerrarPopup(document.getElementById('popupFTvsPXO'));
+        }
+    });
+
+    document.getElementById('overlay').addEventListener('click', (e) => {
+        if (e.target === document.getElementById('overlay')) {
+          cerrarPopup(document.getElementById('popupFTvsPXO'));
+        }
+    });
+
+    //Popup de Editar Actividad: Fibra Tóxica VS Huascaminas
+    document.getElementById('editarFTvsHuascaminas').addEventListener('click', function(){mostrarPopup(document.getElementById('popupFTvsHuascaminas'))});
+
+    document.getElementById('cerrarPopupeditarFTvsHuascaminas1').addEventListener('click', function(){cerrarPopup(document.getElementById('popupFTvsHuascaminas'))});
+    document.getElementById('cerrarPopupeditarFTvsHuascaminas2').addEventListener('click', function(){cerrarPopup(document.getElementById('popupFTvsHuascaminas'))});
+    document.querySelector('.cerrar-btn-editarFTvsHuascaminas').addEventListener('click', function(){cerrarPopup(document.getElementById('popupFTvsHuascaminas'))});
+
+    // Cerrar el popup al presionar Escape
+    document.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape') {
+          cerrarPopup(document.getElementById('popupFTvsHuascaminas'));
+        }
+    });
+
+    document.getElementById('overlay').addEventListener('click', (e) => {
+        if (e.target === document.getElementById('overlay')) {
+          cerrarPopup(document.getElementById('popupFTvsHuascaminas'));
+        }
+    });
+
+    //Popup de Editar Actividad: Fibra Tóxica VS Hormigón Armado 2
+    document.getElementById('editarFTvsHA_2_').addEventListener('click', function(){mostrarPopup(document.getElementById('popupFTvsHA_2_'))});
+
+    document.getElementById('cerrarPopupeditarFTvsHA_2_1').addEventListener('click', function(){cerrarPopup(document.getElementById('popupFTvsHA_2_'))});
+    document.getElementById('cerrarPopupeditarFTvsHA_2_2').addEventListener('click', function(){cerrarPopup(document.getElementById('popupFTvsHA_2_'))});
+    document.querySelector('.cerrar-btn-editarFTvsHA_2_').addEventListener('click', function(){cerrarPopup(document.getElementById('popupFTvsHA_2_'))});
+
+    // Cerrar el popup al presionar Escape
+    document.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape') {
+          cerrarPopup(document.getElementById('popupFTvsHA_2_'));
+        }
+    });
+
+    document.getElementById('overlay').addEventListener('click', (e) => {
+        if (e.target === document.getElementById('overlay')) {
+          cerrarPopup(document.getElementById('popupFTvsHA_2_'));
+        }
+    });
+
+    //Popup de Editar Actividad: Fibra Tóxica VS Electroshock
+    document.getElementById('editarFTvsElectroshock').addEventListener('click', function(){mostrarPopup(document.getElementById('popupFTvsElectroshock'))});
+
+    document.getElementById('cerrarPopupeditarFTvsElectroshock1').addEventListener('click', function(){cerrarPopup(document.getElementById('popupFTvsElectroshock'))});
+    document.getElementById('cerrarPopupeditarFTvsElectroshock2').addEventListener('click', function(){cerrarPopup(document.getElementById('popupFTvsElectroshock'))});
+    document.querySelector('.cerrar-btn-editarFTvsElectroshock').addEventListener('click', function(){cerrarPopup(document.getElementById('popupFTvsElectroshock'))});
+
+    // Cerrar el popup al presionar Escape
+    document.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape') {
+          cerrarPopup(document.getElementById('popupFTvsElectroshock'));
+        }
+    });
+
+    document.getElementById('overlay').addEventListener('click', (e) => {
+        if (e.target === document.getElementById('overlay')) {
+          cerrarPopup(document.getElementById('popupFTvsElectroshock'));
+        }
+    });
+
+  </script>
+<!-- app -->
+<script src="js/utils/app.js"></script>
+<!-- page loader -->
+<script src="js/utils/page-loader.js"></script>
+<!-- simplebar -->
+<script src="js/vendor/simplebar.min.js"></script>
+<!-- liquidify -->
+<script src="js/utils/liquidify.js"></script>
+<!-- XM_Plugins -->
+<script src="js/vendor/xm_plugins.min.js"></script>
+<!-- global.hexagons -->
+<script src="js/global/global.hexagons.js"></script>
+<!-- global.tooltips -->
+<script src="js/global/global.tooltips.js"></script>
+<!-- header -->
+<script src="js/header/header.js"></script>
+<!-- sidebar -->
+<script src="js/sidebar/sidebar.js"></script>
+<!-- form.utils -->
+<script src="js/form/form.utils.js"></script>
+<!-- SVG icons -->
+<script src="js/utils/svg-loader.js"></script>
+</body>
+</html>

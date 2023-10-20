@@ -1,0 +1,197 @@
+.login {
+  min-height: 100vh;
+}
+
+.login-heading {
+  font-weight: 150%;
+}
+
+.btn-login {
+  font-size: 0.9rem;
+  letter-spacing: 0.05rem;
+  padding: 0.75rem 1rem;
+}
+
+@media screen and (max-width:991px) {
+  #centrar {
+    text-align: center !important;
+  }
+  h3 {
+    text-align: center !important;
+  }
+}
+
+@font-face {
+  font-family: 'Titillium Web';
+  src: url('TitilliumWeb-Regular.ttf');
+}
+
+.imagen{
+  background-image: url('murcielago.jpg');
+  background-repeat: no-repeat;
+  background-size: 100%;
+}
+
+@media screen and (max-width:1500px){
+  .imagen{
+    background-size: auto !important;
+  }
+}
+
+.overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7);
+  z-index: 1;
+}
+
+/* Estilo para el popup */
+.popup {
+  display: none;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: white;
+  padding: 20px;
+  z-index: 2;
+}
+
+/* Estilo para el botón de cerrar */
+.close-button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  cursor: pointer;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Aplicar un fondo a todo el body */
+body {
+
+  background-color: #f2f2f2;
+  font-size: 16px;
+  font-family: 'Titillium Web', sans-serif;
+  overflow-x: hidden;
+}
+
+/* Estilo para el encabezado */
+.login-heading {
+  font-size: 2rem;
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 2rem;
+  color: #333; /* Color de texto */
+}
+
+/* Estilo para los formularios */
+.form-floating {
+  margin-bottom: 1.5rem;
+}
+
+/* Estilo para los botones */
+.btn-login {
+  font-size: 1.2rem;
+  letter-spacing: 0.05rem;
+  padding: 1rem 2rem;
+  background-color: #e74c3c; /* Color de botón rojo */
+  color: #fff;
+  border: none;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.btn-login:hover {
+  background-color: #d64332; /* Color de botón rojo más oscuro al pasar el mouse */
+  box-shadow: 4px 7px 12px 0 rgba(0, 0, 0, 0.2);
+}
+
+/* Estilo para los enlaces */
+.small {
+  font-size: 0.9rem;
+  color: #e65d22; /* Color de enlace naranja */
+  text-decoration: none;
+}
+
+.small:hover {
+  text-decoration: underline;
+}
+
+/* Estilo para el contenedor principal */
+.container-fluid {
+  padding: 0;
+}
+
+/* Estilo para la imagen de fondo */
+.imagen {
+  background-image: url('murcielago.jpg');
+  background-repeat: no-repeat;
+  background-size: cover;
+  min-height: 100vh;
+}
+
+/* Media query para pantallas más pequeñas */
+@media screen and (max-width: 991px) {
+  .login-heading {
+    font-size: 1.5rem;
+  }
+  .btn-login {
+    font-size: 1rem;
+    padding: 0.75rem 1.5rem;
+  }
+  .imagen{
+    display: none;
+  }
+}
+
+/* Estilo para el overlay de fondo oscuro */
+.overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7);
+  z-index: 1;
+}
+
+/* Estilo para el popup */
+.popup {
+  display: none;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #fff;
+  padding: 20px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+  z-index: 2;
+  text-align: center;
+}
+
+/* Estilo para el botón de cerrar */
+.close-button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  font-size: 1.2rem;
+  color: #888; /* Color del botón de cerrar */
+  cursor: pointer;
+}
+
+/* Pie de página */
+footer {
+  text-align: center;
+  padding-top: 1rem;
+  font-size: 0.8rem;
+  color: #888; /* Color del texto del pie de página */
+}

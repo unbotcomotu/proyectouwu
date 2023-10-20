@@ -1,0 +1,1232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- bootstrap 4.3.1 -->
+  <link rel="stylesheet" href="css/vendor/bootstrap.min.css">
+    <link rel="stylesheet" href="css/raw/styles.css">
+    <!-- simplebar styles -->
+    <link rel="stylesheet" href="css/vendor/simplebar.css">
+    <!-- tiny-slider styles -->
+    <link rel="stylesheet" href="css/vendor/tiny-slider.css">
+    <!-- favicon -->
+    <link rel="icon" href="img/favicon.ico">
+    <title>Voley (finalizado) - Siempre Fibra</title>
+    <style>
+
+      .streamerAux-box {
+        background-color: #fff;
+        border-radius: 12px;
+        box-shadow: 0 0 40px 0 rgba(94, 92, 154, 0.06);
+      }
+
+      .streamerAux-box.small .streamerAux-box-cover {
+        height: 48px;
+      }
+
+      .streamerAux-box.small .streamerAux-box-info .streamerAux-box-image {
+        top: -26px;
+      }
+
+      .streamerAux-box.small .streamerAux-box-info .streamerAux-box-title {
+        font-size: 1rem;
+      }
+
+      .streamerAux-box.small .streamerAux-box-info .button {
+        margin-top: 28px;
+      }
+
+      .streamerAux-box.small .streamerAux-box-info .button + .button {
+        margin-top: 12px;
+      }
+
+      .streamerAux-box .streamerAux-box-cover {
+        width: 100%;
+        height: 70px;
+        border-top-right-radius: 12px;
+        border-top-left-radius: 12px;
+      }
+
+      .streamerAux-box .streamerAux-box-info {
+        padding: 20px 20px 20px;
+        text-align: center;
+        position: relative;
+      }
+
+      .streamerAux-box .streamerAux-box-info .streamerAux-box-image {
+        width: 72px;
+        height: 72px;
+        border: 6px solid #fff;
+        border-radius: 50%;
+        position: absolute;
+        top: -30px;
+        left: 50%;
+        margin-left: -36px;
+      }
+
+      .streamerAux-box .streamerAux-box-info .streamerAux-box-title {
+        font-size: 1.125rem;
+        font-weight: 700;
+      }
+
+      .streamerAux-box .streamerAux-box-info .streamerAux-box-text {
+        margin-top: 4px;
+        color: #3e3f5e;
+        font-size: 0.75rem;
+        font-weight: 500;
+      }
+
+      .streamerAux-box .streamerAux-box-info .streamerAux-box-status {
+        margin-top: 10px;
+        display: inline-block;
+        height: 18px;
+        padding: 0 6px;
+        border-radius: 4px;
+        background-color: #adafca;
+        color: #fff;
+        font-size: 0.75rem;
+        font-weight: 700;
+        line-height: 18px;
+        text-transform: uppercase;
+      }
+
+      .streamerAux-box .streamerAux-box-info .streamerAux-box-status.active {
+        background-color: #f1315e;
+      }
+
+      .streamerAux-box .streamerAux-box-info .user-stats {
+        margin-top: 38px;
+      }
+
+      .streamerAux-box .streamerAux-box-info .button {
+        margin-top: 40px;
+        width: 100%;
+      }
+            .carousel {
+          position: relative;
+          overflow: hidden;
+          width: 100%;
+          margin: 0 auto;
+      }
+
+      .carousel-inner {
+          display: flex;
+          transition: all 0.5s ease;
+          width: 100%;
+      }
+
+      .carousel-item {
+          flex: 0 0 100%;
+      }
+
+      .carousel img {
+          width: 100%;
+          height: auto;
+      }
+
+      .carousel-control-prev,
+      .carousel-control-next {
+          position: absolute;
+          top: 50%;
+          transform: translateY(-50%);
+          z-index: 1;
+      }
+
+      .carousel-control-prev {
+          left: 10px;
+      }
+
+      .carousel-control-next {
+          right: 10px;
+      }
+
+      .carousel-control-prev-icon,
+      .carousel-control-next-icon {
+          width: 30px;
+          height: 30px;
+          background-color: rgba(0, 0, 0, 0.5);
+          border-radius: 50%;
+          color: white;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+      }
+
+      .carousel-control-prev-icon::before,
+      .carousel-control-next-icon::before {
+          content: "‹"; /* Puedes ajustar los caracteres de flecha según tu preferencia */
+          font-size: 24px;
+      }
+
+      .carousel-control-next-icon::before {
+          content: "›";
+      }
+      footer {
+            background-color: #322D31;
+            color: white;
+            font-family: 'Titillium Web', sans-serif;
+            padding: 20px 0;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            text-align: center; /* Centrar el contenido horizontalmente */
+        }
+
+        .fila {
+            width: 100%;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            
+        }
+
+        .columna {
+            width: 30%;
+            padding: 10px;
+            box-sizing: border-box;
+            background-color: #322D31;
+        }
+
+        .columna p {
+            text-align: center;
+            color: white;
+            margin: 0; /* Eliminar el margen por defecto del párrafo */
+        }
+
+        /* Estilo para la lista */
+        .lista {
+            text-align: center;
+            list-style: none;
+            padding: 0;
+            color: #EDE8DF;
+        }
+
+        .lista li {
+            margin: 5px 0;
+            text-align: center;
+            color: #EDE8DF;
+        }
+        .titulo {
+            font-weight: bold;
+            font-size: 1.2em; /* Aumentar el tamaño de fuente del título */
+        }
+        .lista a {
+            text-decoration: none;
+            color: #EDE8DF;
+            font-weight: bold;
+        }
+
+        .lista a:hover {
+            text-decoration: underline; /* Subrayar en el hover */
+        }
+      @media screen and (max-width: 680px) {
+          .auxResponsiveUwu{
+            display: none;
+          }
+        }
+    </style>
+</head>
+<body>
+  <!-- PAGE LOADER -->
+  <div class="page-loader">
+    <!-- PAGE LOADER DECORATION -->
+    <div class="page-loader-decoration">
+      <!-- ICON LOGO -->
+      <img src="css/logoTelito.png" width="400%" alt="">
+      <!-- /ICON LOGO -->
+    </div>
+    <!-- /PAGE LOADER DECORATION -->
+<br>
+    <!-- PAGE LOADER INFO -->
+    <div class="page-loader-info">
+      <!-- PAGE LOADER INFO TITLE -->
+      <p class="page-loader-info-title">SIEMPRE FIBRA</p>
+      <!-- /PAGE LOADER INFO TITLE -->
+
+      <!-- PAGE LOADER INFO TEXT -->
+      <p class="page-loader-info-text">Cargando...</p>
+      <!-- /PAGE LOADER INFO TEXT -->
+    </div>
+    <!-- /PAGE LOADER INFO -->
+    
+    <!-- PAGE LOADER INDICATOR -->
+    <div class="page-loader-indicator loader-bars">
+      <div class="loader-bar"></div>
+      <div class="loader-bar"></div>
+      <div class="loader-bar"></div>
+      <div class="loader-bar"></div>
+      <div class="loader-bar"></div>
+      <div class="loader-bar"></div>
+      <div class="loader-bar"></div>
+      <div class="loader-bar"></div>
+    </div>
+    <!-- /PAGE LOADER INDICATOR -->
+  </div>
+  <!-- /PAGE LOADER -->
+
+  <nav id="navigation-widget-small" class="navigation-widget navigation-widget-desktop closed sidebar left delayed">
+    <!-- USER AVATAR -->
+    <a class="user-avatar small no-outline online">
+      <!-- USER AVATAR CONTENT -->
+      <div class="user-avatar-content">
+        <!-- HEXAGON -->
+        <div class="hexagon-image-30-32" data-src="css/fotoMichi.png"></div>
+        <!-- /HEXAGON -->
+      </div>
+      <!-- /USER AVATAR CONTENT -->
+  
+      <!-- USER AVATAR PROGRESS -->
+      <div class="user-avatar-progress">
+        <!-- HEXAGON -->
+        <div class="hexagon-progress-40-44"></div>
+        <!-- /HEXAGON -->
+      </div>
+      <!-- /USER AVATAR PROGRESS -->
+  
+      <!-- USER AVATAR PROGRESS BORDER -->
+      <div class="user-avatar-progress-border">
+        <!-- HEXAGON -->
+        <div class="hexagon-border-40-44"></div>
+        <!-- /HEXAGON -->
+      </div>
+      <!-- /USER AVATAR PROGRESS BORDER -->
+  
+      <!-- USER AVATAR BADGE -->
+      <div class="user-avatar-badge">
+        <!-- USER AVATAR BADGE BORDER -->
+        <div class="user-avatar-badge-border">
+          <!-- HEXAGON -->
+          <div class="hexagon-22-24"></div>
+          <!-- /HEXAGON -->
+        </div>
+        <!-- /USER AVATAR BADGE BORDER -->
+  
+        <!-- USER AVATAR BADGE CONTENT -->
+        <div class="user-avatar-badge-content">
+          <!-- HEXAGON -->
+          <div class="hexagon-dark-16-18"></div>
+          <!-- /HEXAGON -->
+        </div>
+        <!-- /USER AVATAR BADGE CONTENT -->
+  
+        <!-- USER AVATAR BADGE TEXT -->
+        <p class="user-avatar-badge-text">24</p>
+        <!-- /USER AVATAR BADGE TEXT -->
+      </div>
+      <!-- /USER AVATAR BADGE -->
+    </a>
+    <!-- /USER AVATAR -->
+
+    <!-- MENU -->
+    <ul class="menu small">
+      <!-- MENU ITEM -->
+      <!-- MENU ITEM -->
+      <!-- MENU ITEM -->
+      <!-- MENU ITEM -->
+      <li class="menu-item active">
+        <!-- MENU ITEM LINK -->
+        <a class="menu-item-link text-tooltip-tfr" href="miCuentaDelAct.html" data-title="Mi cuenta">
+          <!-- MENU ITEM LINK ICON -->
+          <svg class="menu-item-link-icon icon-members">
+            <use xlink:href="#svg-members"></use>
+          </svg>
+          <!-- /MENU ITEM LINK ICON -->
+        </a>
+        <!-- /MENU ITEM LINK -->
+      </li>
+      <li class="menu-item">
+        <!-- MENU ITEM LINK -->
+        <a class="menu-item-link text-tooltip-tfr" href="actividadesDelAct.html" data-title="Actividades">
+          <!-- MENU ITEM LINK ICON -->
+          <img src="css/actividadIconoGris.png" class="menu-item-link-icon icon-members" alt="">
+          <!-- /MENU ITEM LINK ICON -->
+        </a>
+        <!-- /MENU ITEM LINK -->
+      </li>
+      <li class="menu-item">
+        <!-- MENU ITEM LINK -->
+        <a class="menu-item-link text-tooltip-tfr" href="misEventosDelAct.html" data-title="Mis eventos">
+          <!-- MENU ITEM LINK ICON -->
+          <img src="css/misEventosIcono.png" class="menu-item-link-icon icon-members" alt="">
+          <!-- /MENU ITEM LINK ICON -->
+        </a>
+        <!-- /MENU ITEM LINK -->
+      </li>
+      <li class="menu-item">
+        <!-- MENU ITEM LINK -->
+        <a class="menu-item-link text-tooltip-tfr" href="donacionesDelAct.html" data-title="Donaciones">
+          <!-- MENU ITEM LINK ICON -->
+          <img src="css/donacionIcono.png" class="menu-item-link-icon icon-members" style="opacity: 50%;" alt="">
+          <!-- /MENU ITEM LINK ICON -->
+        </a>
+        <!-- /MENU ITEM LINK -->
+      </li>
+    </ul>
+    <!-- /MENU -->
+  </nav>
+  <!-- /NAVIGATION WIDGET -->
+
+  <!-- NAVIGATION WIDGET -->
+  <nav id="navigation-widget" class="navigation-widget navigation-widget-desktop sidebar left hidden" data-simplebar>
+    <!-- NAVIGATION WIDGET COVER -->
+    <figure class="navigation-widget-cover liquid">
+
+    </figure>
+    <!-- /NAVIGATION WIDGET COVER -->
+
+    <!-- USER SHORT DESCRIPTION -->
+    <div class="user-short-description">
+      <!-- USER SHORT DESCRIPTION AVATAR -->
+      <a class="user-short-description-avatar user-avatar medium">
+        <!-- USER AVATAR BORDER -->
+        <div class="user-avatar-border">
+          <!-- HEXAGON -->
+          <div class="hexagon-120-132"></div>
+          <!-- /HEXAGON -->
+        </div>
+        <!-- /USER AVATAR BORDER -->
+    
+        <!-- USER AVATAR CONTENT -->
+        <div class="user-avatar-content">
+          <!-- HEXAGON -->
+          <div class="hexagon-image-82-90" data-src="css/fotoMichi.png"></div>
+          <!-- /HEXAGON -->
+        </div>
+        <!-- /USER AVATAR CONTENT -->
+    
+        <!-- USER AVATAR PROGRESS -->
+        <div class="user-avatar-progress">
+          <!-- HEXAGON -->
+          <div class="hexagon-progress-100-110"></div>
+          <!-- /HEXAGON -->
+        </div>
+        <!-- /USER AVATAR PROGRESS -->
+
+        <!-- /USER AVATAR BADGE -->
+      </a>
+      <!-- /USER SHORT DESCRIPTION AVATAR -->
+
+      <!-- USER SHORT DESCRIPTION TITLE -->
+      <p class="user-short-description-title"><a>Josh Yauri</a></p>
+      <!-- /USER SHORT DESCRIPTION TITLE -->
+
+      <!-- USER SHORT DESCRIPTION TEXT -->
+      <p class="user-short-description-text"><a style="color: green;">Delegado de Actividad</a></p>
+      <!-- /USER SHORT DESCRIPTION TEXT -->
+    </div>
+    <!-- /USER SHORT DESCRIPTION -->
+
+
+      <hr>
+    <!-- MENU -->
+      <!-- MENU ITEM -->
+      <li class="menu-item active">
+        <!-- MENU ITEM LINK -->
+        <a class="menu-item-link" href="miCuentaDelAct.html">
+          <!-- MENU ITEM LINK ICON -->
+          <svg class="menu-item-link-icon icon-members">
+            <use xlink:href="#svg-members"></use>
+          </svg>
+          <!-- /MENU ITEM LINK ICON -->
+          Mi cuenta
+        </a>
+        <!-- /MENU ITEM LINK -->
+      </li>
+      <!-- /MENU ITEM -->
+
+      <hr>
+      <!-- MENU ITEM -->
+      <li class="menu-item">
+        <!-- MENU ITEM LINK -->
+        <a class="menu-item-link" href="actividadesDelAct.html">
+          <!-- MENU ITEM LINK ICON -->
+          <img src="css/actividadIconoGris.png" class="menu-item-link-icon icon-members" alt="">
+          <!-- /MENU ITEM LINK ICON -->
+          Actividades
+        </a>
+        <!-- /MENU ITEM LINK -->
+      </li>
+      <!-- /MENU ITEM -->
+      <br>
+      <!-- MENU ITEM -->
+      <li class="menu-item">
+        <!-- MENU ITEM LINK -->
+        <a class="menu-item-link" href="misEventosDelAct.html">
+          <!-- MENU ITEM LINK ICON -->
+          <img src="css/misEventosIcono.png" class="menu-item-link-icon icon-members" alt="">
+          <!-- /MENU ITEM LINK ICON -->
+          Mis eventos
+        </a>
+        <!-- /MENU ITEM LINK -->
+      </li>
+      <!-- /MENU ITEM -->
+      <br>
+      <!-- MENU ITEM -->
+      <li class="menu-item">
+        <!-- MENU ITEM LINK -->
+        <a class="menu-item-link" href="donacionesDelAct.html">
+          <!-- MENU ITEM LINK ICON -->
+          <img src="css/donacionIcono.png" class="menu-item-link-icon icon-members" style="opacity: 50%;" alt="">
+          <!-- /MENU ITEM LINK ICON -->
+          Donaciones
+        </a>
+        <!-- /MENU ITEM LINK -->
+      </li>
+      <!-- /MENU ITEM -->
+    </ul>
+    <!-- /MENU -->
+  </nav>
+  <!-- /NAVIGATION WIDGET -->
+
+  <!-- NAVIGATION WIDGET -->
+  <nav id="navigation-widget-mobile" class="navigation-widget navigation-widget-mobile sidebar left hidden" data-simplebar>
+    <!-- NAVIGATION WIDGET CLOSE BUTTON -->
+    <div class="navigation-widget-close-button">
+      <!-- NAVIGATION WIDGET CLOSE BUTTON ICON -->
+      <svg class="navigation-widget-close-button-icon icon-back-arrow">
+        <use xlink:href="#svg-back-arrow"></use>
+      </svg>
+      <!-- NAVIGATION WIDGET CLOSE BUTTON ICON -->
+    </div>
+    <!-- /NAVIGATION WIDGET CLOSE BUTTON -->
+
+    <!-- NAVIGATION WIDGET INFO WRAP -->
+    <div class="navigation-widget-info-wrap">
+      <!-- NAVIGATION WIDGET INFO -->
+      <div class="navigation-widget-info">
+        <!-- USER AVATAR -->
+        <a class="user-avatar small no-outline">
+          <!-- USER AVATAR CONTENT -->
+          <div class="user-avatar-content">
+            <!-- HEXAGON -->
+            <div class="hexagon-image-30-32" data-src="css/fotoMichi.png"></div>
+            <!-- /HEXAGON -->
+          </div>
+          <!-- /USER AVATAR CONTENT -->
+      
+          <!-- USER AVATAR PROGRESS -->
+          <div class="user-avatar-progress">
+            <!-- HEXAGON -->
+            <div class="hexagon-progress-40-44"></div>
+            <!-- /HEXAGON -->
+          </div>
+          <!-- /USER AVATAR PROGRESS -->
+      
+          <!-- USER AVATAR PROGRESS BORDER -->
+          <div class="user-avatar-progress-border">
+            <!-- HEXAGON -->
+            <div class="hexagon-border-40-44"></div>
+            <!-- /HEXAGON -->
+          </div>
+          <!-- /USER AVATAR PROGRESS BORDER -->
+      
+          <!-- USER AVATAR BADGE -->
+          <div class="user-avatar-badge">
+            <!-- USER AVATAR BADGE BORDER -->
+            <!-- /USER AVATAR BADGE BORDER -->
+          </div>
+          <!-- /USER AVATAR BADGE -->
+        </a>
+        <!-- /USER AVATAR -->
+
+        <!-- NAVIGATION WIDGET INFO TITLE -->
+        <p class="navigation-widget-info-title"><a>Josh Yauri</a></p>
+        <!-- /NAVIGATION WIDGET INFO TITLE -->
+
+        <!-- NAVIGATION WIDGET INFO TEXT -->
+        <p class="navigation-widget-info-text" style="color: green;">Delegado de Actividad</p>
+        <!-- /NAVIGATION WIDGET INFO TEXT -->
+      </div>
+      <!-- /NAVIGATION WIDGET INFO -->
+
+      <!-- NAVIGATION WIDGET BUTTON -->
+      <a href="inicioSesion.html"><p class="navigation-widget-info-button button small secondary">Cerrar sesión</p></a>
+      <!-- /NAVIGATION WIDGET BUTTON -->
+    </div>
+    <!-- /NAVIGATION WIDGET INFO WRAP -->
+
+    <!-- MENU -->
+    <ul class="menu">
+
+
+
+    <!-- NAVIGATION WIDGET SECTION TITLE -->
+    <p class="navigation-widget-section-title">Perfil</p>
+    <!-- /NAVIGATION WIDGET SECTION TITLE -->
+
+    <!-- NAVIGATION WIDGET SECTION LINK -->
+    <a class="navigation-widget-section-link" href="miCuentaDelAct.html">Mi cuenta</a>
+    <!-- /NAVIGATION WIDGET SECTION LINK -->
+
+    <!-- NAVIGATION WIDGET SECTION TITLE -->
+    <p class="navigation-widget-section-title">Participación</p>
+    <!-- /NAVIGATION WIDGET SECTION TITLE -->
+
+    <!-- NAVIGATION WIDGET SECTION LINK -->
+    <a class="navigation-widget-section-link" href="actividadesDelAct.html">Actividades</a>
+    <!-- /NAVIGATION WIDGET SECTION LINK -->
+
+    <!-- NAVIGATION WIDGET SECTION LINK -->
+    <a class="navigation-widget-section-link" href="misEventosDelAct.html">Mis eventos</a>
+    <!-- /NAVIGATION WIDGET SECTION LINK -->
+
+    <!-- NAVIGATION WIDGET SECTION LINK -->
+    <a class="navigation-widget-section-link" href="donacionesDelAct.html">Donaciones</a>
+    <!-- /NAVIGATION WIDGET SECTION LINK -->
+  </nav>
+  <!-- /NAVIGATION WIDGET -->
+
+
+
+
+  <!-- HEADER -->
+  <header class="header">
+    <!-- HEADER ACTIONS -->
+    <div class="header-actions">
+      <!-- HEADER BRAND -->
+      <div class="header-brand">
+        <!-- LOGO -->
+        <div class="logo auxResponsiveUwu">
+          <!-- ICON LOGO VIKINGER -->
+          <div class="icon-logo-vikinger small">
+            <img src="css/telitoBlanco.png" width="150%" alt="">
+          </div>
+          <!-- /ICON LOGO VIKINGER -->
+        </div>
+        <!-- /LOGO -->
+
+        <!-- HEADER BRAND TEXT -->
+        <h1 class="header-brand-text">SEMANA DE INGENIERÍA</h1>
+        <!-- /HEADER BRAND TEXT -->
+      </div>
+      <!-- /HEADER BRAND -->
+      <!-- SIDEMENU TRIGGER -->
+      <div class="sidemenu-trigger navigation-widget-trigger">
+        <!-- ICON GRID -->
+        <svg class="icon-grid">
+          <use xlink:href="#svg-grid"></use>
+        </svg>
+        <!-- /ICON GRID -->
+      </div>
+      <!-- /SIDEMENU TRIGGER -->
+
+      <!-- MOBILEMENU TRIGGER -->
+      <div class="mobilemenu-trigger navigation-widget-mobile-trigger">
+        <!-- BURGER ICON -->
+        <div class="burger-icon inverted">
+          <!-- BURGER ICON BAR -->
+          <div class="burger-icon-bar"></div>
+          <!-- /BURGER ICON BAR -->
+
+          <!-- BURGER ICON BAR -->
+          <div class="burger-icon-bar"></div>
+          <!-- /BURGER ICON BAR -->
+
+          <!-- BURGER ICON BAR -->
+          <div class="burger-icon-bar"></div>
+          <!-- /BURGER ICON BAR -->
+        </div>
+        <!-- /BURGER ICON -->
+      </div>
+      <!-- /MOBILEMENU TRIGGER -->
+    </div>
+    <!-- /HEADER ACTIONS -->
+
+    <!-- NO BORRAR ESTO-->
+
+    <!-- HEADER ACTIONS -->
+    <div class="header-actions">
+      <!-- PROGRESS STAT -->
+      <div class="progress-stat">
+        <!-- BAR PROGRESS WRAP -->
+        <div class="bar-progress-wrap">
+          <!-- BAR PROGRESS INFO -->
+          <!-- /BAR PROGRESS INFO -->
+        </div>
+        <!-- /BAR PROGRESS WRAP -->
+    
+        <!-- PROGRESS STAT BAR -->
+        <!-- /PROGRESS STAT BAR -->
+      </div>
+      <!-- /PROGRESS STAT -->
+    </div>
+    <!-- /HEADER ACTIONS -->
+
+    <!-- NO BORRAR ESTO-->
+    <!-- HEADER ACTIONS -->
+    <div class="header-actions">
+      <!-- ACTION LIST -->
+      <div class="action-list dark"> 
+        <!-- ACTION LIST ITEM WRAP -->
+        <div class="action-list-item-wrap">
+          <!-- ACTION LIST ITEM -->
+          <div class="action-list-item unread header-dropdown-trigger">
+            <!-- ACTION LIST ITEM ICON -->
+            <svg class="action-list-item-icon icon-notification">
+              <use xlink:href="#svg-notification"></use>
+            </svg>
+            <!-- /ACTION LIST ITEM ICON -->
+          </div>
+          <!-- /ACTION LIST ITEM -->
+
+          <!-- DROPDOWN BOX -->
+          <div class="dropdown-box header-dropdown">
+            <!-- DROPDOWN BOX HEADER -->
+            <div class="dropdown-box-header">
+              <!-- DROPDOWN BOX HEADER TITLE -->
+              <p class="dropdown-box-header-title">Notificaciones</p>
+              <!-- /DROPDOWN BOX HEADER TITLE -->
+            </div>
+            <!-- /DROPDOWN BOX HEADER -->
+        
+            <!-- DROPDOWN BOX LIST -->
+            <div class="dropdown-box-list" data-simplebar>
+              <!-- DROPDOWN BOX LIST ITEM -->
+              <div class="dropdown-box-list-item unread">
+                <!-- USER STATUS -->
+                <div class="user-status notification">
+                  <!-- USER STATUS AVATAR -->
+                  <a class="user-status-avatar">
+                    <!-- USER AVATAR -->
+                    <div class="user-avatar small no-outline">
+                      <!-- USER AVATAR CONTENT -->
+                      <div class="user-avatar-content">
+                        <!-- HEXAGON -->
+                        <div class="hexagon-image-30-32" data-src="css/fabiana.png"></div>
+                        <!-- /HEXAGON -->
+                      </div>
+                      <!-- /USER AVATAR CONTENT -->
+                  
+                      <!-- USER AVATAR PROGRESS -->
+                      <div class="user-avatar-progress">
+                        <!-- HEXAGON -->
+                        <div class="hexagon-progress-40-44"></div>
+                        <!-- /HEXAGON -->
+                      </div>
+                      <!-- /USER AVATAR PROGRESS -->
+                  
+                      <!-- USER AVATAR PROGRESS BORDER -->
+                      <div class="user-avatar-progress-border">
+                        <!-- HEXAGON -->
+                        <div class="hexagon-border-40-44"></div>
+                        <!-- /HEXAGON -->
+                      </div>
+                      <!-- /USER AVATAR PROGRESS BORDER -->
+                  
+                      <!-- USER AVATAR BADGE -->
+                      <div class="user-avatar-badge">
+                        <!-- USER AVATAR BADGE BORDER -->
+                        <div class="user-avatar-badge-border">
+                        </div>
+                        <!-- /USER AVATAR BADGE BORDER -->
+                  
+                      </div>
+                      <!-- /USER AVATAR BADGE -->
+                    </div>
+                    <!-- /USER AVATAR -->
+                  </a>
+                  <!-- /USER STATUS AVATAR -->
+              
+                  <!-- USER STATUS TITLE -->
+                  <p class="user-status-title"><a class="bold">Fabiana Rojas</a> desea apoyar el evento <a class="highlighted">Fibra Tóxica VS Huascaminas</a> dentro de la actividad <a style="color: blueviolet;">Voley</a>.</p>
+                  <!-- /USER STATUS TITLE -->
+              
+                  <!-- USER STATUS TIMESTAMP -->
+                  <p class="user-status-timestamp">Hace 24 minutos</p>
+                  <!-- /USER STATUS TIMESTAMP -->
+              
+                  <!-- USER STATUS ICON -->
+                  <div class="user-status-icon">
+                    <!-- ICON COMMENT -->
+                    <img src="css/voleyIcono.png" width="30px" alt="">
+                    <!-- /ICON COMMENT -->
+                  </div>
+                  <!-- /USER STATUS ICON -->
+                </div>
+                <!-- /USER STATUS -->
+              </div>
+              <!-- /DROPDOWN BOX LIST ITEM -->
+              <!-- DROPDOWN BOX LIST ITEM -->
+              <div class="dropdown-box-list-item unread">
+                <!-- USER STATUS -->
+                <div class="user-status notification">
+                  <!-- USER STATUS AVATAR -->
+                  <a class="user-status-avatar">
+                    <!-- USER AVATAR -->
+                    <div class="user-avatar small no-outline">
+                      <!-- USER AVATAR CONTENT -->
+                      <div class="user-avatar-content">
+                        <!-- HEXAGON -->
+                        <div class="hexagon-image-30-32" data-src="css/edisonFlores.png"></div>
+                        <!-- /HEXAGON -->
+                      </div>
+                      <!-- /USER AVATAR CONTENT -->
+                  
+                      <!-- USER AVATAR PROGRESS -->
+                      <div class="user-avatar-progress">
+                        <!-- HEXAGON -->
+                        <div class="hexagon-progress-40-44"></div>
+                        <!-- /HEXAGON -->
+                      </div>
+                      <!-- /USER AVATAR PROGRESS -->
+                  
+                      <!-- USER AVATAR PROGRESS BORDER -->
+                      <div class="user-avatar-progress-border">
+                        <!-- HEXAGON -->
+                        <div class="hexagon-border-40-44"></div>
+                        <!-- /HEXAGON -->
+                      </div>
+                      <!-- /USER AVATAR PROGRESS BORDER -->
+                  
+                      <!-- USER AVATAR BADGE -->
+                      <div class="user-avatar-badge">
+                        <!-- USER AVATAR BADGE BORDER -->
+                        <div class="user-avatar-badge-border">
+                        </div>
+                        <!-- /USER AVATAR BADGE BORDER -->
+                  
+                      </div>
+                      <!-- /USER AVATAR BADGE -->
+                    </div>
+                    <!-- /USER AVATAR -->
+                  </a>
+                  <!-- /USER STATUS AVATAR -->
+              
+                  <!-- USER STATUS TITLE -->
+                  <p class="user-status-title"><a class="bold">Edison Flores</a> desea apoyar el evento <a class="highlighted">Fibra Tóxica VS PXO Industrial</a> dentro de la actividad <a style="color: blueviolet;">Futsal</a>.</p>
+                  <!-- /USER STATUS TITLE -->
+              
+                  <!-- USER STATUS TIMESTAMP -->
+                  <p class="user-status-timestamp">Hace 1 hora</p>
+                  <!-- /USER STATUS TIMESTAMP -->
+              
+                  <!-- USER STATUS ICON -->
+                  <div class="user-status-icon">
+                    <!-- ICON COMMENT -->
+                    <img src="css/futsalIcono.png" width="30px" alt="">
+                    <!-- /ICON COMMENT -->
+                  </div>
+                  <!-- /USER STATUS ICON -->
+                </div>
+                <!-- /USER STATUS -->
+              </div>
+              <!-- /DROPDOWN BOX LIST ITEM -->
+              <!-- DROPDOWN BOX LIST ITEM -->
+              <div class="dropdown-box-list-item unread">
+                <!-- USER STATUS -->
+                <div class="user-status notification">
+                  <!-- USER STATUS AVATAR -->
+                  <a class="user-status-avatar">
+                    <!-- USER AVATAR -->
+                    <div class="user-avatar small no-outline">
+                      <!-- USER AVATAR CONTENT -->
+                      <div class="user-avatar-content">
+                        <!-- HEXAGON -->
+                        <div class="hexagon-image-30-32" data-src="css/raulRomero.png"></div>
+                        <!-- /HEXAGON -->
+                      </div>
+                      <!-- /USER AVATAR CONTENT -->
+                  
+                      <!-- USER AVATAR PROGRESS -->
+                      <div class="user-avatar-progress">
+                        <!-- HEXAGON -->
+                        <div class="hexagon-progress-40-44"></div>
+                        <!-- /HEXAGON -->
+                      </div>
+                      <!-- /USER AVATAR PROGRESS -->
+                  
+                      <!-- USER AVATAR PROGRESS BORDER -->
+                      <div class="user-avatar-progress-border">
+                        <!-- HEXAGON -->
+                        <div class="hexagon-border-40-44"></div>
+                        <!-- /HEXAGON -->
+                      </div>
+                      <!-- /USER AVATAR PROGRESS BORDER -->
+                  
+                      <!-- USER AVATAR BADGE -->
+                      <div class="user-avatar-badge">
+                        <!-- USER AVATAR BADGE BORDER -->
+                        <div class="user-avatar-badge-border">
+                        </div>
+                        <!-- /USER AVATAR BADGE BORDER -->
+                  
+                      </div>
+                      <!-- /USER AVATAR BADGE -->
+                    </div>
+                    <!-- /USER AVATAR -->
+                  </a>
+                  <!-- /USER STATUS AVATAR -->
+              
+                  <!-- USER STATUS TITLE -->
+                  <p class="user-status-title"><a class="bold">Raul Romero</a> desea apoyar el evento <a class="highlighted">Fibra Tóxica VS Hormigón Armado</a> dentro del evento <a style="color: blueviolet;">Six Pract</a>.</p>
+                  <!-- /USER STATUS TITLE -->
+              
+                  <!-- USER STATUS TIMESTAMP -->
+                  <p class="user-status-timestamp">Hace 2 horas</p>
+                  <!-- /USER STATUS TIMESTAMP -->
+              
+                  <!-- USER STATUS ICON -->
+                  <div class="user-status-icon">
+                    <!-- ICON COMMENT -->
+                    <img src="css/sixPractIcono.png" width="30px" alt="">
+                    <!-- /ICON COMMENT -->
+                  </div>
+                  <!-- /USER STATUS ICON -->
+                </div>
+                <!-- /USER STATUS -->
+              </div>
+              <!-- /DROPDOWN BOX LIST ITEM -->
+            </div>
+            <!-- /DROPDOWN BOX LIST -->
+<!--ARRIBA ESTÁN LAS NOTIFICACIONES-->
+            <!-- DROPDOWN BOX BUTTON -->
+            <a class="dropdown-box-button secondary" href="notificacionesDelAct.html">Ver todas las notificaciones</a>
+            <!-- /DROPDOWN BOX BUTTON -->
+          </div>
+          <!-- /DROPDOWN BOX -->
+        </div>
+        <!-- /ACTION LIST ITEM WRAP -->
+      </div>
+      <!-- /ACTION LIST -->
+
+      <!-- ACTION ITEM WRAP -->
+      <div class="action-item-wrap auxResponsiveUwu">
+        <!-- ACTION ITEM -->
+        <div class="action-item dark header-settings-dropdown-trigger">
+          <!-- ACTION ITEM ICON -->
+          <a href="inicioSesion.html"><img src="css/logOut.png" width="30%" style="margin-left: 25px;" alt=""></a>
+          <!-- /ACTION ITEM ICON -->
+        </div>
+        <!-- /ACTION ITEM -->
+
+        <!-- DROPDOWN NAVIGATION -->
+        
+      </div>
+      <!-- /ACTION ITEM WRAP -->
+    </div>
+    <!-- /HEADER ACTIONS -->
+  </header>
+  <!-- /HEADER -->
+
+
+  
+    
+  <!-- CHAT WIDGET -->
+  <aside id="chat-widget-messages" class="chat-widget closed sidebar right">
+    <!-- CHAT WIDGET MESSAGES -->
+    <div class="chat-widget-messages" data-simplebar>
+      <!-- CHAT WIDGET CONVERSATION -->
+      <div class="chat-widget-conversation" data-simplebar>
+        <!-- CHAT WIDGET SPEAKER -->
+        <div class="chat-widget-speaker left">
+          <!-- CHAT WIDGET SPEAKER AVATAR -->
+          <div class="chat-widget-speaker-avatar">
+            <!-- USER AVATAR -->
+            <div class="user-avatar tiny no-border">
+              <!-- USER AVATAR CONTENT -->
+              <div class="user-avatar-content">
+                <!-- HEXAGON -->
+                <div class="hexagon-image-24-26" data-src="css/fotoYarleque.png"></div>
+                <!-- /HEXAGON -->
+              </div>
+              <!-- /USER AVATAR CONTENT -->
+            </div>
+            <!-- /USER AVATAR -->
+          </div>
+          <!-- /CHAT WIDGET SPEAKER AVATAR -->
+          <!-- CHAT WIDGET SPEAKER MESSAGE -->
+          <p class="chat-widget-speaker-timestamp">Manuel Yarleque</p>
+          <p class="chat-widget-speaker-message">¡Buenos días chicos! Levántense, vamos a entrenar</p>
+          <!-- /CHAT WIDGET SPEAKER MESSAGE -->
+
+          <!-- CHAT WIDGET SPEAKER TIMESTAMP -->
+          <p class="chat-widget-speaker-timestamp" style="font-size: 60%; margin-left: 100px;">Yesterday at 8:36PM</p>
+          <!-- /CHAT WIDGET SPEAKER TIMESTAMP -->
+        </div>
+        <!-- /CHAT WIDGET SPEAKER -->
+        <br>
+        <!-- CHAT WIDGET SPEAKER -->
+        <div class="chat-widget-speaker right">
+          <!-- CHAT WIDGET SPEAKER MESSAGE -->
+          <p class="chat-widget-speaker-message">Pero es noche profesor :(</p>
+          <!-- /CHAT WIDGET SPEAKER MESSAGE -->
+
+          <!-- CHAT WIDGET SPEAKER MESSAGE -->
+          <p class="chat-widget-speaker-message">Quizás estaría mejor hacerlo mañana temprano</p>
+          <!-- /CHAT WIDGET SPEAKER MESSAGE -->
+
+          <!-- CHAT WIDGET SPEAKER TIMESTAMP -->
+          <p class="chat-widget-speaker-timestamp" style="font-size: 60%;">Yesterday at 9:00PM</p>
+          <!-- /CHAT WIDGET SPEAKER TIMESTAMP -->
+        </div>
+        <!-- /CHAT WIDGET SPEAKER -->
+        <br>
+        <!-- CHAT WIDGET SPEAKER -->
+        <div class="chat-widget-speaker left">
+          <!-- CHAT WIDGET SPEAKER AVATAR -->
+          <div class="chat-widget-speaker-avatar">
+            <!-- USER AVATAR -->
+            <div class="user-avatar tiny no-border">
+              <!-- USER AVATAR CONTENT -->
+              <div class="user-avatar-content">
+                <!-- HEXAGON -->
+                <div class="hexagon-image-24-26" data-src="css/fotoAlex.png"></div>
+                <!-- /HEXAGON -->
+              </div>
+              <!-- /USER AVATAR CONTENT -->
+            </div>
+            <!-- /USER AVATAR -->
+          </div>
+          <!-- /CHAT WIDGET SPEAKER AVATAR -->
+          <!-- CHAT WIDGET SPEAKER MESSAGE -->
+          <p class="chat-widget-speaker-timestamp">Alex Segovia</p>
+          <p class="chat-widget-speaker-message">Opino lo mismo</p>
+          <p class="chat-widget-speaker-message">Además esta noche tenemos que entregar el informe de simulación de propa</p>
+          <!-- /CHAT WIDGET SPEAKER MESSAGE -->
+
+          <!-- CHAT WIDGET SPEAKER TIMESTAMP -->
+          <p class="chat-widget-speaker-timestamp" style="font-size: 60%; margin-left: 100px;">Yesterday at 9:36PM</p>
+          <!-- /CHAT WIDGET SPEAKER TIMESTAMP -->
+        </div>
+        <!-- /CHAT WIDGET SPEAKER -->
+        <br>
+        <!-- CHAT WIDGET SPEAKER -->
+        <div class="chat-widget-speaker right">
+          <!-- CHAT WIDGET SPEAKER MESSAGE -->
+          <p class="chat-widget-speaker-message">Tuvimos un partido muy duro hoy chicos</p>
+          <!-- /CHAT WIDGET SPEAKER MESSAGE -->
+
+          <!-- CHAT WIDGET SPEAKER MESSAGE -->
+          <p class="chat-widget-speaker-message">Una racha también era avaricia. Recuerden que esto no nos quita la oportunidad de ganar el primer lugar</p>
+          <!-- /CHAT WIDGET SPEAKER MESSAGE -->
+
+          <!-- CHAT WIDGET SPEAKER TIMESTAMP -->
+          <p class="chat-widget-speaker-timestamp" style="font-size: 60%;">Yesterday at 9:00PM</p>
+          <!-- /CHAT WIDGET SPEAKER TIMESTAMP -->
+        </div>
+        <!-- /CHAT WIDGET SPEAKER -->
+      </div>
+      <!-- /CHAT WIDGET CONVERSATION -->
+
+      <!-- /CHAT WIDGET HEADER -->
+    </div>
+    <!-- CHAT WIDGET HEADER -->
+    
+    
+    
+    <!-- CHAT WIDGET FORM -->
+    <form class="chat-widget-form">
+      <!-- INTERACTIVE INPUT -->
+      <div class="interactive-input small">
+        <input type="text" id="chat-widget-message-text" name="chat_widget_message_text" placeholder="Escribe un mensaje...">
+        <!-- INTERACTIVE INPUT ICON WRAP -->
+        <div class="interactive-input-icon-wrap">
+          <!-- INTERACTIVE INPUT ICON -->
+          <svg class="interactive-input-icon icon-send-message">
+            <use xlink:href="#svg-send-message"></use>
+          </svg>
+          <!-- /INTERACTIVE INPUT ICON -->
+        </div>
+        <!-- /INTERACTIVE INPUT ICON WRAP -->
+
+        <!-- INTERACTIVE INPUT ACTION -->
+        <div class="interactive-input-action">
+          <!-- INTERACTIVE INPUT ACTION ICON -->
+          <svg class="interactive-input-action-icon icon-cross-thin">
+            <use xlink:href="#svg-cross-thin"></use>
+          </svg>
+          <!-- /INTERACTIVE INPUT ACTION ICON -->
+        </div>
+        <!-- /INTERACTIVE INPUT ACTION -->
+      </div>
+      <!-- /INTERACTIVE INPUT -->
+    </form>
+    <!-- /CHAT WIDGET FORM -->
+
+    
+
+    <!-- CHAT WIDGET BUTTON -->
+    <div class="chat-widget-button">
+      <!-- CHAT WIDGET BUTTON ICON -->
+      <div class="chat-widget-button-icon">
+        <img src="css/chatWhiteIcon.png" width="28px" alt="">
+      </div>
+      <!-- /CHAT WIDGET BUTTON ICON -->
+
+      <!-- CHAT WIDGET BUTTON TEXT -->
+      <p class="chat-widget-button-text" style="font-size: 140%;">Foro del evento</p>
+      <!-- /CHAT WIDGET BUTTON TEXT -->
+    </div>
+    <!-- /CHAT WIDGET BUTTON -->
+  </aside>
+  <!-- /CHAT WIDGET -->
+  <!-- CONTENT GRID -->
+  <div class="content-grid">
+    
+    <div class="section-banner">
+      <!-- SECTION BANNER ICON -->
+      <img class="section-banner-icon" src="https://naucalpan.gob.mx/wp-content/uploads/2020/07/PORTADA.png" width="15%" alt="marketplace-icon">
+      <!-- /SECTION BANNER ICON -->
+  
+      <!-- SECTION BANNER TITLE -->
+      <p class="section-banner-title">Fibra Tóxica VS Electroshock</p>
+      <!-- /SECTION BANNER TITLE -->
+  
+      <!-- SECTION BANNER TEXT -->
+      <p class="section-banner-text ">Voley (finalizado)</p>
+      <!-- /SECTION BANNER TEXT -->
+    </div>
+    <!-- GRID -->
+    <div class="grid grid-9-3">
+      <!-- GRID COLUMN -->
+      
+      <div class="grid-column">
+        <!-- STREAM BOX -->
+        <div class="stream-box big">
+          <!-- STREAM BOX VIDEO -->
+          <div class="carousel">
+            <div class="carousel-inner">
+                <div class="carousel-item active">
+                    <img src="css/fibraVSelectroMedioDerrotaLetra.png" alt="Imagen 1">
+                </div>
+                <div class="carousel-item">
+                    <img src="https://files.pucp.education/puntoedu/wp-content/uploads/2021/01/23021428/dsc_0981-web-920x613-1.jpg" alt="Imagen 2">
+                </div>
+                <div class="carousel-item">
+                    <img src="https://fundeu.fiile.org.ar/uploadsfotos/voley.jpg" alt="Imagen 3">
+                </div>
+            </div>
+            <a class="carousel-control-prev" href="#" role="button" data-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="sr-only">Anterior</span>
+            </a>
+            <a class="carousel-control-next" href="#" role="button" data-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="sr-only">Siguiente</span>
+            </a>
+        </div>
+        <script>
+          document.addEventListener("DOMContentLoaded", function () {
+            const carouselItems = document.querySelectorAll(".carousel-item");
+            const prevButton = document.querySelector(".carousel-control-prev");
+            const nextButton = document.querySelector(".carousel-control-next");
+            let currentIndex = 0;
+
+            function showSlide(index) {
+                carouselItems[currentIndex].classList.remove("active");
+                currentIndex = (index + carouselItems.length) % carouselItems.length;
+                carouselItems[currentIndex].classList.add("active");
+            }
+
+            prevButton.addEventListener("click", function () {
+                showSlide(currentIndex - 1);
+            });
+
+            nextButton.addEventListener("click", function () {
+                showSlide(currentIndex + 1);
+            });
+            showSlide(currentIndex);
+        });
+        </script>
+          <!-- /STREAM BOX VIDEO -->
+        </div>
+        <!-- /STREAM BOX -->
+      </div>
+      <!-- /WIDGET BOX -->
+      <!-- GRID COLUMN -->
+      
+      <div class="grid-column">
+          <div class="streamerAux-box">
+            <div class="streamerAux-box-info">
+              <!-- STREAM BOX TITLE -->
+              <p class="streamerAux-box-title">Resumen del evento:</p>
+              <!-- /STREAM BOX TITLE -->
+              <!-- STREAM BOX CATEGORY -->
+              <p class="streamerAux-box-category mt-3">Una derrota totalmente inesperada, trágica y muy dolorosa ocurrió a 10 minutos de acabar el evento contra Electrito. Todo parecía ir en orden. Nos encontrábamos a punto de conseguir una racha invicta de 6 partidos en Voley hasta que en las últimas rondas jugadas, sufrimos de un bajón repentino que implicó que el equipo enemigo tome ventaja rápidamente. Los nervios del momento debido a la impresión por el resultado que tendía a ser desfavorable provocaron que el equipo no tome el control de la situación y acabemos en el presente resultado. Los chicos jugaron de maravilla y se lucieron como ya venían haciendo en anteriores partidas. Muchas gracias por su apoyo y por siempre confiar en la Fibra.</p>
+              <!-- /STREAM BOX CATEGORY -->
+            </div>
+          </div>
+          <div class="widget-box">
+            <!-- WIDGET BOX CONTENT -->
+            <div class="widget-box-content">
+              <!-- WIDGET BOX TEXT -->
+              <div class="row d-flex justify-content-center" style="font-size: 1.125rem;font-family: 'Titillium Web' !important; font-weight: 700 !important;">
+                <img src="css/reloj.png" width="20px" alt="">
+                <a style="margin-left: 10px;">Hora: 6PM</a>
+              </div>
+              <div class="row d-flex justify-content-center" style="font-size: 1.125rem;font-family: 'Titillium Web' !important; font-weight: 700 !important; margin-top: 20px;">
+                <img src="css/calendario.png" width="20px" alt="">
+                <a style="margin-left: 10px;">Fecha: 06/10/23</a>
+              </div>
+              <div class="row d-flex justify-content-center" style="font-size: 1.125rem;font-family: 'Titillium Web' !important; font-weight: 700 !important; margin-top: 20px;">
+                <img src="css/ubicacion.png" width="20px" alt="">
+                <a style="margin-left: 10px;">Ubicación: C. De Minas</a>
+              </div>
+            </div>
+          </div>
+      </div>
+    </div>
+  </div>
+  <footer style="font-size: 80%;">
+    <!-- Primera fila -->
+    <div class="fila">
+        <div class="columna">
+            <span class="titulo">Contactos</span>
+            <ul class="lista">
+                <li>Delegado general 1: <a href="mailto:a20210548@pucp.edu.pe">a20210548@pucp.edu.pe</a></li>
+                <li>Delegado general 2: <a href="mailto:a20210751@pucp.edu.pe">a20210751@pucp.edu.pe</a></li>
+                <li>Delegado general 3: <a href="mailto:josh.yauri@pucp.edu.pe">josh.yauri@pucp.edu.pe</a></li>
+            </ul>
+        </div>
+        <div class="columna">
+          <p>© 2023 Fibra tóxica</p>
+          <ul class="lista">
+              <li><a>Política de Privacidad</a></li>
+              <li><a>Términos y Condiciones</a></li>
+            <li><a>Siguenos en: </a> <i class="fab fa-facebook"></i> <i class="fab fa-instagram"></i> <i class="fab fa-youtube"></i></li>
+          </ul>
+        </div>
+        <div class="columna">
+            <span class="titulo">Sobre nosotros</span>
+          <ul class="lista">
+                <li>Somos un grupo de estudiantes que</li>
+                <li>busca conectar a todos los amantes</li>
+            <li>de esta maravillosa carrera</li>
+            </ul>
+        </div>
+    </div>
+  </footer>
+    
+
+<!-- app -->
+<script src="js/utils/app.js"></script>
+<!-- page loader -->
+<script src="js/utils/page-loader.js"></script>
+<!-- simplebar -->
+<script src="js/vendor/simplebar.min.js"></script>
+<!-- liquidify -->
+<script src="js/utils/liquidify.js"></script>
+<!-- XM_Plugins -->
+<script src="js/vendor/xm_plugins.min.js"></script>
+<!-- tiny-slider -->
+<script src="js/vendor/tiny-slider.min.js"></script>
+<!-- global.hexagons -->
+<script src="js/global/global.hexagons.js"></script>
+<!-- global.tooltips -->
+<script src="js/global/global.tooltips.js"></script>
+<!-- global.accordions -->
+<script src="js/global/global.accordions.js"></script>
+<!-- header -->
+<script src="js/header/header.js"></script>
+<!-- sidebar -->
+<script src="js/sidebar/sidebar.js"></script>
+<!-- content -->
+<script src="js/content/content.js"></script>
+<!-- form.utils -->
+<script src="js/form/form.utils.js"></script>
+<!-- SVG icons -->
+<script src="js/utils/svg-loader.js"></script>
+</body>
+</html>

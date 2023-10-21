@@ -8,11 +8,11 @@
     String rolUsuario=(String) request.getAttribute("rolUsuario");
     String nombreCompletoUsuario=(String) request.getAttribute("nombreCompletoUsuario");
     ArrayList<Actividad>listaActividades=(ArrayList<Actividad>) request.getAttribute("listaActividades");
-    int idActividadDelegatura=(int)request.getAttribute("idActividadDelegatura");
+    Integer idActividadDelegatura= (Integer) request.getAttribute("idActividadDelegatura");
     String vistaActual=(String) request.getAttribute("vistaActual");
     ArrayList<String>listaCorreosDelegadosGenerales=(ArrayList<String>)request.getAttribute("correosDelegadosGenerales");
     String colorRol;
-    if(rolUsuario.equals("Usuario")){
+    if(rolUsuario.equals("Alumno")){
         colorRol="";
     }else if(rolUsuario.equals("Delegado de Actividad")){
         colorRol="green";
@@ -307,7 +307,7 @@
         <!-- /USER SHORT DESCRIPTION TITLE -->
 
         <!-- USER SHORT DESCRIPTION TEXT -->
-        <p class="user-short-description-text" style="color: <%=colorRol%>;"><a><%=rolUsuario%></a></p>
+        <p class="user-short-description-text"><a style="color: <%=colorRol%>;"><%=rolUsuario%></a></p>
         <!-- /USER SHORT DESCRIPTION TEXT -->
     </div>
     <!-- /USER SHORT DESCRIPTION -->
@@ -1404,7 +1404,8 @@
             <!-- PRODUCT CATEGORY BOX TAG -->
             <p class="product-category-box-tag" style="color: <%=color1%>;">aiuda</p>
             <!-- /PRODUCT CATEGORY BOX TAG -->
-            <%if(idActividadDelegatura==a.getIdActividad()){%>
+            <%if(idActividadDelegatura!=null)
+                if(idActividadDelegatura==a.getIdActividad()){%>
             <!-- PRODUCT CATEGORY BOX TAG -->
             <p class="product-category-box-tag" style="color: <%=color1%>;">Delegado</p>
             <!-- /PRODUCT CATEGORY BOX TAG -->

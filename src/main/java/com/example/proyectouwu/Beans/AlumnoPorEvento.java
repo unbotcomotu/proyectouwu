@@ -8,7 +8,7 @@ public class AlumnoPorEvento {
     private int idAlumno;
     private int idEvento;
     private String estadoApoyo = "En espera";
-    private Date fechaSolicitud;
+    private java.sql.Date fechaSolicitud;
     private Time horaSolicitud;
 
     public int getIdAlumnoPorEvento() {
@@ -47,7 +47,7 @@ public class AlumnoPorEvento {
         return fechaSolicitud;
     }
 
-    public void setFechaSolicitud(Date fechaSolicitud) {
+    public void setFechaSolicitud(java.sql.Date fechaSolicitud) {
         this.fechaSolicitud = fechaSolicitud;
     }
 

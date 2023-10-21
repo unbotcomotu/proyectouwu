@@ -1,2 +1,4 @@
-package com.example.proyectouwu.Daos;public class DaoReporte {
+package com.example.proyectouwu.Daos;
+
+public class DaoReporte {
 }

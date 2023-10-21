@@ -1,2 +1,4 @@
-package com.example.proyectouwu.Daos;public class DaoNotificacionDelegadoGeneral {
+package com.example.proyectouwu.Daos;
+
+public class DaoNotificacionDelegadoGeneral {
 }

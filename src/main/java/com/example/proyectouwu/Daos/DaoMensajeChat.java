@@ -1,2 +1,4 @@
-package com.example.proyectouwu.Daos;public class DaoMensajeChat {
+package com.example.proyectouwu.Daos;
+
+public class DaoMensajeChat {
 }

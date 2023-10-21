@@ -1,2 +1,4 @@
-package com.example.proyectouwu.Daos;public class DaoLugarEvento {
+package com.example.proyectouwu.Daos;
+
+public class DaoLugarEvento {
 }

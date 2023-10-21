@@ -30,6 +30,7 @@ public class ListaDeActividadesServlet extends HttpServlet {
                 }else if(rolUsuario.equals("Delegado de Actividad")){
                     int idActividadDelegatura=new DaoActividad().idDelegaturaPorIdDelegadoDeActividad(idUsuario);
                     request.setAttribute("idActividadDelegatura",idActividadDelegatura);
+                    request.getRequestDispatcher("listaDeActividades.jsp").forward(request,response);
                 }
                 break;
         }

@@ -1,5 +1,6 @@
 <%@ page import="java.util.ArrayList" %>
 <%@ page import="com.example.proyectouwu.Beans.Actividad" %>
+<%@ page import="com.example.proyectouwu.Beans.Donacion" %>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <!DOCTYPE html>
 <html lang="en">
@@ -7,10 +8,10 @@
     <%int idUsuario=(int) request.getAttribute("idUsuario");
     String rolUsuario=(String) request.getAttribute("rolUsuario");
     String nombreCompletoUsuario=(String) request.getAttribute("nombreCompletoUsuario");
-    ArrayList<Actividad>listaActividades=(ArrayList<Actividad>) request.getAttribute("listaActividades");
-    Integer idActividadDelegatura=(Integer)request.getAttribute("idActividadDelegatura");
     String vistaActual=(String) request.getAttribute("vistaActual");
     ArrayList<String>listaCorreosDelegadosGenerales=(ArrayList<String>)request.getAttribute("correosDelegadosGenerales");
+    ArrayList<Donacion>listaDonaciones=(ArrayList<Donacion>)request.getAttribute("listaDonaciones");
+    float totalDonaciones=(float)request.getAttribute("totalDonaciones");
     String colorRol;
     if(rolUsuario.equals("Alumno")){
         colorRol="";
@@ -32,6 +33,138 @@
     <link rel="icon" href="img/favicon.ico">
     <title>Actividades - Siempre Fibra</title>
     <style>
+        @media screen and (max-width: 1500px) and (min-width: 460px){
+            .auxDonaciones{
+                grid-template-areas: 'content sidebar' !important;
+                grid-template-columns: 49% 49% !important;
+            }
+        }
+
+        @media screen and (max-width: 680px) {
+            .auxResponsiveUwu{
+                display: none;
+            }
+        }
+        /* Estilo para el overlay del popup */
+        .overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            z-index: 10000;
+        }
+
+        /* Estilo para el contenido del popup */
+        .popup {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            border-radius: 12px;
+            transform: translate(-50%, -50%);
+            background-color: white;
+            padding: 20px;
+            z-index: 10001;
+        }
+
+        /* Estilo para el botón de cerrar */
+        .cerrar-btn-crear {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            cursor: pointer;
+        }
+
+        .cerrar-btn-editarVoley {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            cursor: pointer;
+        }
+
+        .cerrar-btn-editarFutsal {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            cursor: pointer;
+        }
+
+        .cerrar-btn-editarLOL {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            cursor: pointer;
+        }
+
+        .cerrar-btn-editarValorant {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            cursor: pointer;
+        }
+
+
+
+        .contenedor3 {
+            top: 15px !important;
+        }
+
+
+
+        input[type="number"] {
+            font-family: "Rajdhani", sans-serif;
+            width: 100%;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 700;
+            background-color: #fff;
+            border: 1px solid #dedeea;
+            color: #3e3f5e;
+            transition: border-color .2s ease-in-out;
+            height: 54px;
+            padding: 0 18px;
+        }
+
+        input[type="number"]::-webkit-input-placeholder {
+            color: #adafca;
+            font-size: 0.875rem;
+            font-weight: 500;
+        }
+
+        input[type=number]::-webkit-inner-spin-button,
+        input[type=number]::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+
+        @media screen and (max-width: 680px) {
+            .auxResponsiveUwu{
+                display: none;
+            }
+        }
+        .btn-file1 {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-file1 input[type="file"] {
+            position: absolute;
+            top: 0;
+            right: 0;
+            min-width: 100%;
+            min-height: 100%;
+            filter: alpha(opacity=0);
+            opacity: 0;
+            outline: none;
+            background: white;
+            cursor: inherit;
+            display: block;
+        }
+
         footer {
             background-color: #322D31;
             color: white;
@@ -91,11 +224,8 @@
         .lista a:hover {
             text-decoration: underline; /* Subrayar en el hover */
         }
-        @media screen and (max-width: 680px) {
-            .auxResponsiveUwu{
-                display: none;
-            }
-        }
+
+
     </style>
 </head>
 <body>
@@ -583,7 +713,7 @@
     <!-- /HEADER ACTIONS -->
 
     <!-- NO BORRAR ESTO-->
-    <%if(rolUsuario.equals("Alumno")){%>
+<%if(rolUsuario.equals("Alumno")){%>
     <!-- ACTION ITEM WRAP USUARIO -->
     <div class="action-item-wrap auxResponsiveUwu">
         <!-- ACTION ITEM -->
@@ -598,7 +728,7 @@
 
     </div>
     <!-- /ACTION ITEM WRAP -->
-    <%}else if(rolUsuario.equals("Delegado de Actividad")){%>
+<%}else if(rolUsuario.equals("Delegado de Actividad")){%>
     <!-- HEADER ACTIONS DELEGADO DE ACTIVIDAD -->
     <div class="header-actions">
         <!-- ACTION LIST -->
@@ -851,7 +981,7 @@
         <!-- /ACTION ITEM WRAP -->
     </div>
     <!-- /HEADER ACTIONS -->
-    <%}else{%>
+<%}else{%>
     <!-- HEADER ACTIONS DELEGADO GENERAL -->
     <div class="header-actions">
         <!-- ACTION LIST -->
@@ -1234,27 +1364,27 @@
         <!-- /ACTION ITEM WRAP -->
     </div>
     <!-- /HEADER ACTIONS -->
-    <%}%>
+<%}%>
     <!-- /HEADER ACTIONS -->
 </header>
 <!-- /HEADER -->
 
-
+<!-- CONTENT GRID -->
 
 <!-- CONTENT GRID -->
-<div class="content-grid">
+<div class="content-grid" style="transform: translate(0px, 0px); transition: transform 0.4s ease-in-out 0s; align-items: center;">
     <!-- SECTION BANNER -->
     <div class="section-banner">
         <!-- SECTION BANNER ICON -->
-        <img class="section-banner-icon" src="https://naucalpan.gob.mx/wp-content/uploads/2020/07/PORTADA.png" width="15%" alt="marketplace-icon">
+        <img class="section-banner-icon" src="img/banner/marketplace-icon.png" alt="marketplace-icon">
         <!-- /SECTION BANNER ICON -->
 
         <!-- SECTION BANNER TITLE -->
-        <p class="section-banner-title">Actividades</p>
+        <p class="section-banner-title">Mis Donaciones</p>
         <!-- /SECTION BANNER TITLE -->
 
         <!-- SECTION BANNER TEXT -->
-        <p class="section-banner-text">Encuentra todas las actividades a realizar en Semana de Ingeniería</p>
+        <p class="section-banner-text">¡Tu apoyo a la fibra se siente!</p>
         <!-- /SECTION BANNER TEXT -->
     </div>
     <!-- /SECTION BANNER -->
@@ -1264,158 +1394,173 @@
         <!-- SECTION HEADER INFO -->
         <div class="section-header-info">
             <!-- SECTION PRETITLE -->
-            <p class="section-pretitle">Busca la actividad que desees</p>
+            <p class="section-pretitle"></p>
             <!-- /SECTION PRETITLE -->
 
             <!-- SECTION TITLE -->
-            <h2 class="section-title">Lista de actividades</h2>
+            <h2 class="section-title">¿Ya donaste? ¡La fibra te necesita!</h2>
+
             <!-- /SECTION TITLE -->
         </div>
         <!-- /SECTION HEADER INFO -->
     </div>
     <!-- /SECTION HEADER -->
 
-    <!-- SECTION FILTERS BAR -->
-    <div class="section-filters-bar v4">
-        <!-- SECTION FILTERS BAR ACTIONS -->
-        <div class="section-filters-bar-actions">
-            <!-- FORM -->
-            <form class="form">
-                <!-- FORM ITEM -->
-                <div class="form-item split">
-                    <!-- FORM INPUT -->
-                    <div class="form-input small">
-                        <label for="items-search">Buscar actividad</label>
-                        <input type="text" id="items-search" name="items_search">
-                    </div>
-                    <!-- /FORM INPUT -->
-
-                    <!-- BUTTON -->
-                    <button class="button primary">
-                        <!-- ICON MAGNIFYING GLASS -->
-                        <svg class="icon-magnifying-glass">
-                            <use xlink:href="#svg-magnifying-glass"></use>
-                        </svg>
-                        <!-- /ICON MAGNIFYING GLASS -->
-                    </button>
-                    <!-- /BUTTON -->
-                </div>
-                <!-- /FORM ITEM -->
-            </form>
-            <!-- /FORM -->
-        </div>
-        <!-- /SECTION FILTERS BAR ACTIONS -->
-
-        <!-- SECTION FILTERS BAR ACTIONS -->
-        <div class="section-filters-bar-actions">
-            <!-- FORM -->
-            <form class="form">
-                <!-- FORM ITEM -->
-                <div class="form-item split medium">
-                    <!-- FORM SELECT -->
-                    <div class="form-select small">
-                        <label for="items-filter-category">Ordenar por</label>
-                        <select id="items-filter-category" name="items_filter_category">
-                            <option value="0">Orden alfabético</option>
-                            <option value="1">Cantidad de eventos</option>
-                            <option value="2">Cantidad de puntos por primer lugar</option>
-                            <option value="3">Finalizados primero</option>
-                            <%if(rolUsuario.equals("Delegado General")){%>
-                            <option value="4">Ocultos primero</option>
-                            <%}%>
-                            <%if(rolUsuario.equals("Delegado de Actividad")){%>
-                            <option value="4">Mi delegatura primero</option>
-                            <%}%>
-                        </select>
-                        <!-- FORM SELECT ICON -->
-                        <svg class="form-select-icon icon-small-arrow">
-                            <use xlink:href="#svg-small-arrow"></use>
-                        </svg>
-                        <!-- /FORM SELECT ICON -->
-                    </div>
-                    <!-- /FORM SELECT -->
-
-                    <!-- FORM SELECT -->
-                    <div class="form-select small">
-                        <label for="items-filter-order">Sentido</label>
-                        <select id="items-filter-order" name="items_filter_order">
-                            <option value="0">De mayor a menor</option>
-                            <option value="1">De menor a mayor</option>
-                        </select>
-                        <!-- FORM SELECT ICON -->
-                        <svg class="form-select-icon icon-small-arrow">
-                            <use xlink:href="#svg-small-arrow"></use>
-                        </svg>
-                        <!-- /FORM SELECT ICON -->
-                    </div>
-                    <!-- /FORM SELECT -->
-
-                    <!-- BUTTON -->
-                    <button class="button secondary">Aplicar ajustes</button>
-                    <!-- /BUTTON -->
-                </div>
-                <!-- /FORM ITEM -->
-            </form>
-            <!-- /FORM -->
-        </div>
-        <!-- /SECTION FILTERS BAR ACTIONS -->
-    </div>
-    <!-- /SECTION FILTERS BAR -->
-
     <!-- GRID -->
-    <div class="grid grid-3-3-3-3 centered">
-        <%int aux=0;String color1="";String color2="";
-            for(Actividad a:listaActividades){
-                if(aux==0){
-                    color1="#615dfa";
-                    color2="#8d7aff";
-                }else if(aux==1){
-                    color1="#417ae1";
-                    color2="#5aafff";
-                }else if(aux==2){
-                    color1="#2ebfef";
-                    color2="#4ce4ff";
-                }else if(aux==3){
-                    color1="#17cada";
-                    color2="#2becfe";
-                }else if(aux==4){
-                    color1="#64b9ff";
-                    color2="#8bd7ff";
-                }else if(aux==5){
-                    color1="#598dff";
-                    color2="#81a9ff";
-                }else if(aux==6){
-                    color1="#597aff";
-                    color2="#8981ff";
-                    aux=0;
-                }%>
-        <!-- PRODUCT CATEGORY BOX -->
-        <a class="product-category-box category-all" style="background: url('css/fotoVoleyActividades.png') no-repeat right top, linear-gradient(to right, <%=color1%>, <%=color2%>)" href="<%=request.getContextPath()%>/ListaDeEventosServlet?idActividad=<%=a.getIdActividad()%>">
-            <!-- PRODUCT CATEGORY BOX TITLE -->
-            <p class="product-category-box-title"><%=a.getNombre()%></p>
-            <!-- /PRODUCT CATEGORY BOX TITLE -->
+    <div class=" grid grid-8-4 small-space">
+        <div class="grid-column">
 
-            <!-- PRODUCT CATEGORY BOX TEXT -->
-            <p class="product-category-box-text"><%=a.getCantPuntosPrimerLugar()%> puntos (1er lugar)</p>
-            <!-- /PRODUCT CATEGORY BOX TEXT -->
+            <div class=" grid grid-4-4 auxDonaciones small-space">
 
-            <!-- PRODUCT CATEGORY BOX TAG -->
-            <p class="product-category-box-tag" style="color: <%=color1%>;">aiuda</p>
-            <!-- /PRODUCT CATEGORY BOX TAG -->
+                <div class="badge-item-stat">
+                    <!-- TEXT STICKER -->
 
-            <%if(idActividadDelegatura != null){
-                if(idActividadDelegatura==a.getIdActividad()){%>
-            <!-- PRODUCT CATEGORY BOX TAG -->
-            <p class="product-category-box-tag" style="color: <%=color1%>;">Delegado</p>
-            <!-- /PRODUCT CATEGORY BOX TAG -->
-            <%}}%>
-        </a>
-        <!-- /PRODUCT CATEGORY BOX -->
-        <%aux++;}%>
+                    <!-- /TEXT STICKER -->
+
+                    <!-- BADGE ITEM STAT IMAGE PREVIEW -->
+
+
+                    <!-- BADGE ITEM STAT IMAGE -->
+
+                    <p><img alt="badge-item-stat-image" width="100%"  onmouseout="this.src='css/Yape.png';" onmouseover="this.src='css/QR_YAPE_FINAL.jpeg';" src="css/Yape.png" /></p>
+                    <!-- /BADGE ITEM STAT IMAGE -->
+
+                    <!-- BADGE ITEM STAT TITLE -->
+
+
+                    <p class="badge-item-stat-title">Dona por yape</p>
+                    <!-- /BADGE ITEM STAT TITLE -->
+
+                    <!-- BADGE ITEM STAT TEXT -->
+                    <p class="badge-item-stat-text">Recuerda que si eres egresado debes donar como mínimo 100 para darte un kit teleco</p>
+                    <!-- /BADGE ITEM STAT TEXT -->
+                    <div class="container-fluid btn btn-file1" id = "Ola_yape"  >
+                        <img class="img-fluid "  width = "20%" src="css/Yape.png" style="opacity: 50%;" alt="">
+                        <button style="background-color: white; margin-top: 25px;"></button>
+                    </div>
+
+                    <!-- PROGRESS STAT -->
+
+                    <!-- /PROGRESS STAT -->
+                </div>
+
+                <div class="badge-item-stat">
+                    <!-- TEXT STICKER -->
+
+                    <!-- /TEXT STICKER -->
+
+                    <!-- BADGE ITEM STAT IMAGE PREVIEW -->
+
+
+                    <!-- BADGE ITEM STAT IMAGE -->
+                    <p><img alt="badge-item-stat-image" width="100%"  onmouseout="this.src='css/Plin.png'" onmouseover="this.src='css/QR_PLIN.jpeg'" src="css/Plin.png" /></p>
+                    <!-- /BADGE ITEM STAT IMAGE -->
+
+                    <!-- BADGE ITEM STAT TITLE -->
+                    <p class="badge-item-stat-title">Dona por plin</p>
+                    <!-- /BADGE ITEM STAT TITLE -->
+
+                    <!-- BADGE ITEM STAT TEXT -->
+                    <p class="badge-item-stat-text">Recuerda que si eres egresado debes donar como mínimo 100 para darte un kit teleco </p>
+                    <!-- /BADGE ITEM STAT TEXT -->
+
+                    <!-- PROGRESS STAT -->
+                    <div class="container-fluid btn btn-file1" id = "Ola_plin"  >
+                        <img class="img-fluid "  width = "20%" src="css/Plin.png" style="opacity: 50%;" alt="">
+                        <button style="background-color: white; margin-top: 25px;"></button>
+                    </div>
+                    <!-- /PROGRESS STAT -->
+                </div>
+
+            </div>
+        </div>
+
+
+        <!-- /GRID COLUMN -->
+
+        <!-- GRID COLUMN -->
+        <div class="grid-column">
+            <!-- SIDEBAR BOX -->
+            <div class="sidebar-box">
+                <!-- SIDEBAR BOX TITLE -->
+                <p class="sidebar-box-title" style="text-align:center">Historial de Donaciones</p>
+                <!-- /SIDEBAR BOX TITLE -->
+
+                <!-- SIDEBAR BOX ITEMS -->
+                <div class="sidebar-box-items">
+                    <!-- TOTALS LINE LIST -->
+                    <div class="totals-line-list separator-bottom">
+                        <%for(Donacion d:listaDonaciones){%>
+                        <!-- TOTALS LINE -->
+                        <div class="totals-line">
+                            <div class="totals-line-info">
+                                <p class="totals-line-title"><span class="bold"><%=d.getFecha()%> (<%=d.getMedioPago()%>)</span></p>
+                            </div>
+                            <p class="price-title"><span class="currency">S/.</span> <%=d.getMonto()%></p>
+                        </div>
+                        <!-- /TOTALS LINE -->
+                        <%}%>
+                    </div>
+                    <!-- /PRICE TITLE -->
+                </div>
+
+                <div class="sidebar-totals-line">
+                    <!-- /TOTALS LINE LIST -->
+
+                    <p class="totals-line-title row-1"><span class="bold">‎ </span></p>
+
+                    <p class="price-title big" style="text-align:center"><span class="currency">S/.</span> <%=totalDonaciones%></p>
+                    <p class="totals-line-text" style="text-align:center">Total Donado</p>
+                </div>
+                <!-- /SIDEBAR BOX ITEMS -->
+
+                <!-- SIDEBAR BOX TITLE -->
+
+                <!-- /SIDEBAR BOX ITEMS -->
+            </div>
+            <!-- /SIDEBAR BOX -->
+        </div>
+        <!-- /GRID COLUMN -->
     </div>
-    <!-- /GRID -->
 </div>
+
 <!-- /CONTENT GRID -->
+<div class="overlay" id="overlay" style="display: none;"></div>
+<div class="popup contenedorCrear" style="width: 700px; display: none;" id="popupCrear">
+    <svg class="cerrar-btn-crear" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M11.4142 10L16.7071 4.70711C17.0976 4.31658 17.0976 3.68342 16.7071 3.29289C16.3166 2.90237 15.6834 2.90237 15.2929 3.29289L10 8.58579L4.70711 3.29289C4.31658 2.90237 3.68342 2.90237 3.29289 3.29289C2.90237 3.68342 2.90237 4.31658 3.29289 4.70711L8.58579 10L3.29289 15.2929C2.90237 15.6834 2.90237 16.3166 3.29289 16.7071C3.68342 17.0976 4.31658 17.0976 4.70711 16.7071L10 11.4142L15.2929 16.7071C15.6834 17.0976 16.3166 17.0976 16.7071 16.7071C17.0976 16.3166 17.0976 15.6834 16.7071 15.2929L11.4142 10Z" fill="black"></path>
+    </svg>
+    <div class="container-fluid">
+
+        <div class="row"><div class="col"><h5 style="text-align: center;">Donaciones</h5></div></div>
+        <div class="row">
+            <div class="col-sm-6" style = "top : 20px">
+                <br>
+                <label style="margin-top: 25px;" for="puntajeCrearActividad"><b>Monto a donar:</b></label>
+                <input type="number" id="puntajeCrearActividad" min="1"  placeholder="100" required="">
+            </div>
+            <div class="col-sm-6 contenedor2" style="top: 20px">
+                <div class="container-fluid btn btn-file1">
+                    <img class="img-fluid" src="css/subirArchivo.jpg" style="opacity: 50%;" alt="">
+                    <p><b>Foto del monto donado</b></p>
+                    <input type="file" style="background-color: white; margin-top: 25px;" accept="image/png, .jpeg, .jpg">
+                </div>
+            </div>
+        </div>
+    </div>
+    <br>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-6" style="margin-top: 5px;">
+                <button type="submit" class="button secondary" id="cerrarPopupCrear1" disabled="" style="cursor: default; opacity: 0.5;">Crear</button>
+            </div>
+            <div class="col-sm-6" style="margin-top: 5px;">
+                <button class="button secondary" id="cerrarPopupCrear2" style="background-color: grey;">Cancelar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <footer style="font-size: 80%;">
     <!-- Primera fila -->
     <div class="fila">
@@ -1467,5 +1612,60 @@
 <script src="js/form/form.utils.js"></script>
 <!-- SVG icons -->
 <script src="js/utils/svg-loader.js"></script>
+<script>
+
+    function analizarPopupCrear(monto,boton){
+        if(monto.value === ""){
+            boton.disabled = true;
+            boton.style.cursor = 'default';
+            boton.style.opacity = '50%';
+        }else{
+            boton.disabled = false;
+            boton.style.cursor = 'pointer';
+            boton.style.opacity = '100%';
+        }
+    }
+
+    //Función para abrir el popup de Crear Actividad
+    //Nombre =  monto
+    function mostrarPopupCrear(x,nombre) {
+        document.getElementById('overlay').style.display = 'block';
+        x.style.display = 'block';
+        document.body.style.overflow = 'hidden';
+        nombre.value = "";
+        setInterval(analizarPopupCrear,10,nombre,document.getElementById('cerrarPopupCrear1'));
+    }
+
+
+    //Popup de Crear Actividad
+    document.getElementById('Ola_yape').addEventListener('click', function(){mostrarPopupCrear(document.getElementById('popupCrear'),document.getElementById('puntajeCrearActividad'));});
+    document.getElementById('Ola_plin').addEventListener('click', function(){mostrarPopupCrear(document.getElementById('popupCrear'),document.getElementById('puntajeCrearActividad'));});
+
+    //Función para cerrar el popup
+    function cerrarPopup(x) {
+        document.getElementById('overlay').style.display = 'none';
+        x.style.display = 'none';
+        document.body.style.overflow = 'auto';
+    }
+
+    //Cerrar popup de Crear Actividad
+    document.getElementById('cerrarPopupCrear1').addEventListener('click', function(){cerrarPopup(document.getElementById('popupCrear'));});
+    document.getElementById('cerrarPopupCrear2').addEventListener('click', function(){cerrarPopup(document.getElementById('popupCrear'));});
+    document.querySelector('.cerrar-btn-crear').addEventListener('click', function(){cerrarPopup(document.getElementById('popupCrear'));});
+
+    document.getElementById('overlay').addEventListener('click', (e) => {
+        if (e.target === document.getElementById('overlay')) {
+            cerrarPopup(document.getElementById('popupCrear'));
+        }
+    });
+
+    //Cerrar el popup al presionar Escape
+    document.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape') {
+            cerrarPopup(document.getElementById('popupCrear'));
+        }
+    });
+
+</script>
 </body>
 </html>

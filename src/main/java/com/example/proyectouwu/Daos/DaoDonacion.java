@@ -12,15 +12,15 @@ public class DaoDonacion {
     {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
-            conn= DriverManager.getConnection("jdbc:mysql://localhost:3306/hr","root","root");
+            conn= DriverManager.getConnection("jdbc:mysql://localhost:3306/proyecto","root","root");
         } catch (ClassNotFoundException | SQLException e) {
             throw new RuntimeException(e);
         }
     }
 
-    public ArrayList<Donacion>listarDonaciones(int idUsuario){
+    public ArrayList<Donacion>listarDonacionesVistaUsuario(int idUsuario){
         ArrayList<Donacion>listaDonaciones=new ArrayList<>();
-        String sql="select * from Donacion where idUsuario=?";
+        String sql="select idDonacion,idUsuario,medioPago,monto,date(fechaHora) from Donacion where idUsuario=? and estadoDonacion='Validado' order by fechaHora desc";
         try(PreparedStatement pstmt= conn.prepareStatement(sql)){
             pstmt.setInt(1,idUsuario);
             try(ResultSet rs=pstmt.executeQuery()){
@@ -30,16 +30,24 @@ public class DaoDonacion {
                     d.setIdUsuario(rs.getInt(2));
                     d.setMedioPago(rs.getString(3));
                     d.setMonto(rs.getFloat(4));
-                    String dateTime[]=rs.getString(5).split(" ");
-                    d.setFecha(Date.valueOf(dateTime[0]));
-                    d.setHora(Time.valueOf(dateTime[1]));
-                    d.setCaptura(rs.getBlob(6));
-                    d.setEstadoDonacion((rs.getString(7)));
-                    String dateTime2[]=rs.getString(5).split(" ");
-                    d.setFechaValidacion(Date.valueOf(dateTime2[0]));
-                    d.setHoraValidacion(Time.valueOf(dateTime2[1]));
+                    d.setFecha(Date.valueOf(rs.getString(5)));
                     listaDonaciones.add(d);
                 }return listaDonaciones;
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public float totalDonaciones(int idUsuario){
+        String sql="select sum(monto) from Donacion where idUsuario=? and estadoDonacion='Validado' group by idUsuario";
+        try(PreparedStatement pstmt= conn.prepareStatement(sql)){
+            pstmt.setInt(1,idUsuario);
+            try(ResultSet rs=pstmt.executeQuery()){
+                if(rs.next()){
+                    return rs.getFloat(1);
+                }else
+                    return 0;
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);

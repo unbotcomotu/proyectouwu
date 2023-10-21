@@ -1,5 +1,6 @@
 package com.example.proyectouwu.Servlets;
 
+import com.example.proyectouwu.Beans.Usuario;
 import jakarta.servlet.*;
 import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;

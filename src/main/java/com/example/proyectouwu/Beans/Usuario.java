@@ -1,5 +1,6 @@
 package com.example.proyectouwu.Beans;
 
+import java.sql.Blob;
 import java.sql.Date;
 import java.sql.Time;
 
@@ -15,8 +16,8 @@ public class Usuario {
     private Date fechaRegistro;
     private Time horaRegistro;
     private String condicion;
-    private Foto fotoPerfil;
-    private Foto fotoSeguro;
+    private Blob fotoPerfil;
+    private Blob fotoSeguro;
     private String descripcionPerfil;
     private boolean recibioKit;
 
@@ -108,19 +109,19 @@ public class Usuario {
         this.condicion = condicion;
     }
 
-    public Foto getFotoPerfil() {
+    public Blob getFotoPerfil() {
         return fotoPerfil;
     }
 
-    public void setFotoPerfil(Foto fotoPerfil) {
+    public void setFotoPerfil(Blob fotoPerfil) {
         this.fotoPerfil = fotoPerfil;
     }
 
-    public Foto getFotoSeguro() {
+    public Blob getFotoSeguro() {
         return fotoSeguro;
     }
 
-    public void setFotoSeguro(Foto fotoSeguro) {
+    public void setFotoSeguro(Blob fotoSeguro) {
         this.fotoSeguro = fotoSeguro;
     }
 

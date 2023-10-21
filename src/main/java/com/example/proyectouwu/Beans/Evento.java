@@ -1,5 +1,6 @@
 package com.example.proyectouwu.Beans;
 
+import java.sql.Blob;
 import java.sql.Date;
 import java.sql.Time;
 import java.util.ArrayList;
@@ -14,8 +15,8 @@ public class Evento {
     private Time hora;
     private String descripcionEventoActivo;
     private String fraseMotivacional;
-    private Foto fotoMiniatura;
-    private ArrayList<Foto> carruselFotos;
+    private Blob fotoMiniatura;
+    private ArrayList<Blob> carruselFotos;
     private boolean eventoFinalizado;
     private boolean eventoOculto;
     private String resultadoEvento;
@@ -85,19 +86,19 @@ public class Evento {
         this.fraseMotivacional = fraseMotivacional;
     }
 
-    public Foto getFotoMiniatura() {
+    public Blob getFotoMiniatura() {
         return fotoMiniatura;
     }
 
-    public void setFotoMiniatura(Foto fotoMiniatura) {
+    public void setFotoMiniatura(Blob fotoMiniatura) {
         this.fotoMiniatura = fotoMiniatura;
     }
 
-    public ArrayList<Foto> getCarruselFotos() {
+    public ArrayList<Blob> getCarruselFotos() {
         return carruselFotos;
     }
 
-    public void setCarruselFotos(ArrayList<Foto> carruselFotos) {
+    public void setCarruselFotos(ArrayList<Blob> carruselFotos) {
         this.carruselFotos = carruselFotos;
     }
 

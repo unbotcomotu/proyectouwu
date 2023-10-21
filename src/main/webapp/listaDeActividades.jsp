@@ -307,7 +307,7 @@
         <!-- /USER SHORT DESCRIPTION TITLE -->
 
         <!-- USER SHORT DESCRIPTION TEXT -->
-        <p class="user-short-description-text" style="color: <%=colorRol%>;"><a><%=rolUsuario%></a></p>
+        <p class="user-short-description-text"><a style="color: <%=colorRol%>;"><%=rolUsuario%></a></p>
         <!-- /USER SHORT DESCRIPTION TEXT -->
     </div>
     <!-- /USER SHORT DESCRIPTION -->
@@ -1404,6 +1404,7 @@
             <!-- PRODUCT CATEGORY BOX TAG -->
             <p class="product-category-box-tag" style="color: <%=color1%>;">aiuda</p>
             <!-- /PRODUCT CATEGORY BOX TAG -->
+
             <%if(idActividadDelegatura != null){
                 if(idActividadDelegatura==a.getIdActividad()){%>
             <!-- PRODUCT CATEGORY BOX TAG -->

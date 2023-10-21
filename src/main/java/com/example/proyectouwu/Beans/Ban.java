@@ -1,7 +1,7 @@
 package com.example.proyectouwu.Beans;
 
 import java.sql.Time;
-import java.util.Date;
+import java.sql.Date;
 
 public class Ban {
     private int idBan;

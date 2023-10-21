@@ -17,7 +17,7 @@ public class DaoActividad {
     }
 
     public int idDelegaturaPorIdDelegadoDeActividad(int idDelegadoDeActividad){
-        String sql="select idActividad from Actividad where idDelegadoDeActividad=?";
+        String sql="select idActividad from actividad where idDelegadoDeActividad=?";
         try(PreparedStatement pstmt= conn.prepareStatement(sql)){
             pstmt.setInt(1,idDelegadoDeActividad);
             try(ResultSet rs=pstmt.executeQuery()){
@@ -33,7 +33,7 @@ public class DaoActividad {
 
     public ArrayList<Actividad>listarActividades(){
         ArrayList<Actividad>listaActividades=new ArrayList<>();
-        String sql="select idActividad,idDelegadoDeActividad,nombre,fotoMiniatura,cantidadPuntosPrimerLugar,actividadFinalizada,actividadOculta from Actividad";
+        String sql="select idActividad,idDelegadoDeActividad,nombre,fotoMiniatura,cantidadPuntosPrimerLugar,actividadFinalizada,actividadOculta from actividad";
         try(ResultSet rs=conn.createStatement().executeQuery(sql);){
             while (rs.next()){
                 Actividad a=new Actividad();

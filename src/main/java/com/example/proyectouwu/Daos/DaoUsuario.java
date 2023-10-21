@@ -17,7 +17,7 @@ public class DaoUsuario {
         }
     }
     public String rolUsuarioPorId(int idUsuario){
-        String sql="select rol from Usuario where idUsuario=?";
+        String sql="select rol from usuario where idUsuario=?";
         try(PreparedStatement pstmt= conn.prepareStatement(sql)){
             pstmt.setInt(1,idUsuario);
             try(ResultSet rs=pstmt.executeQuery()){
@@ -32,7 +32,7 @@ public class DaoUsuario {
     }
 
     public String nombreCompletoUsuarioPorId(int idUsuario){
-        String sql="select concat(nombre,' ',apellido) as 'nombreCompleto' from Usuario where idUsuario=?";
+        String sql="select concat(nombre,' ',apellido) as 'nombreCompleto' from usuario where idUsuario=?";
         try(PreparedStatement pstmt= conn.prepareStatement(sql)){
             pstmt.setInt(1,idUsuario);
             try(ResultSet rs=pstmt.executeQuery()){
@@ -48,7 +48,7 @@ public class DaoUsuario {
 
     public ArrayList<String>listarCorreosDelegadosGenerales(){
         ArrayList<String>listaCorreosDelegadosGenerales=new ArrayList<>();
-        String sql="select correo from Usuario where rol='Delegado General'";
+        String sql="select correo from usuario where rol='Delegado General'";
         try(ResultSet rs=conn.createStatement().executeQuery(sql)){
             while(rs.next()){
                 listaCorreosDelegadosGenerales.add(rs.getString(1));

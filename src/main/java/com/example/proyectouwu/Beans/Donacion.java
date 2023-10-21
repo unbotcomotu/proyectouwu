@@ -14,7 +14,7 @@ public class Donacion {
     private Blob captura;
     private Date fechaValidacion;
     private Time horaValidacion;
-    private String estadoDonacion;
+    private String estadoDonacion = "En espera";
 
     public int getIdDonacion() {
         return idDonacion;

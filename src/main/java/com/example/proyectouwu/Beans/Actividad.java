@@ -7,13 +7,11 @@ public class Actividad {
     private int idActividad;
     private int idDelegadoDeActividad;
     private String nombre;
-    private String descripcion;
     private Blob fotoMiniatura;
     private Blob fotoCabecera;
     private int cantPuntosPrimerLugar;
-    private boolean actividadFinalizada;
+    private boolean actividadFinalizada = false;
     private boolean actividadOculta;
-    private String resumenActividad;
 
     public int getIdActividad() {
         return idActividad;
@@ -38,15 +36,6 @@ public class Actividad {
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
-
-    public String getDescripcion() {
-        return descripcion;
-    }
-
-    public void setDescripcion(String descripcion) {
-        this.descripcion = descripcion;
-    }
-
 
     public Blob getFotoMiniatura() {
         return fotoMiniatura;
@@ -88,11 +77,4 @@ public class Actividad {
         this.actividadOculta = actividadOculta;
     }
 
-    public String getResumenActividad() {
-        return resumenActividad;
-    }
-
-    public void setResumenActividad(String resumenActividad) {
-        this.resumenActividad = resumenActividad;
-    }
 }

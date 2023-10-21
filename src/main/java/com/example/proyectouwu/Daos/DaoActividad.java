@@ -10,7 +10,7 @@ public class DaoActividad {
     {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
-            conn= DriverManager.getConnection("jdbc:mysql://localhost:3306/hr","root","root");
+            conn= DriverManager.getConnection("jdbc:mysql://localhost:3306/proyecto","root","root");
         } catch (ClassNotFoundException | SQLException e) {
             throw new RuntimeException(e);
         }

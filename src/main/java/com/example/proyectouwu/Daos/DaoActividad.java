@@ -16,7 +16,7 @@ public class DaoActividad {
         }
     }
 
-    public int idDelegaturaPorIdDelegadoDeActividad(int idDelegadoDeActividad){
+    public Integer idDelegaturaPorIdDelegadoDeActividad(int idDelegadoDeActividad){
         String sql="select idActividad from actividad where idDelegadoDeActividad=?";
         try(PreparedStatement pstmt= conn.prepareStatement(sql)){
             pstmt.setInt(1,idDelegadoDeActividad);
@@ -24,13 +24,27 @@ public class DaoActividad {
                 if(rs.next()){
                     return rs.getInt(1);
                 }else
-                    return -1;
+                    return null;
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
 
+    public Integer idDelegadoDeActividadPorActividad(int idActividad){
+        String sql="select idDelegadoDeActividad from actividad where idActividad=?";
+        try(PreparedStatement pstmt= conn.prepareStatement(sql)){
+            pstmt.setInt(1,idActividad);
+            try(ResultSet rs=pstmt.executeQuery()){
+                if(rs.next()){
+                    return rs.getInt(1);
+                }else
+                    return null;
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
     public ArrayList<Actividad>listarActividades(){
         ArrayList<Actividad>listaActividades=new ArrayList<>();
         String sql="select idActividad,idDelegadoDeActividad,nombre,fotoMiniatura,cantidadPuntosPrimerLugar,actividadFinalizada,actividadOculta from actividad";
@@ -51,4 +65,34 @@ public class DaoActividad {
         }
     }
 
+    public String nombreActividadPorID(int idActividad){
+        String sql="select nombre from Actividad where idActividad=?";
+        try(PreparedStatement pstmt= conn.prepareStatement(sql)){
+            pstmt.setInt(1,idActividad );
+            try(ResultSet rs=pstmt.executeQuery()){
+                if(rs.next()){
+                    return rs.getString(1);
+                }else
+                    return null;
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public String cantidadEventosPorActividad(int idActividad){
+        String sql="select count(idEvento) from Actividad a inner join Evento e on a.idActividad=e.idActividad where a.idActividad=? group by a.idActividad";
+        try(PreparedStatement pstmt= conn.prepareStatement(sql)){
+            pstmt.setInt(1,idActividad);
+            try(ResultSet rs=pstmt.executeQuery()){
+                if(rs.next()){
+                    return rs.getString(1);
+                }else
+                    return null;
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }
+

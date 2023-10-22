@@ -1,25 +1,27 @@
 <%@ page import="java.util.ArrayList" %>
 <%@ page import="com.example.proyectouwu.Beans.Actividad" %>
-<%@ page import="com.example.proyectouwu.Daos.DaoActividad" %>
+<%@ page import="com.example.proyectouwu.Beans.Evento" %>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <%int idUsuario=(int) request.getAttribute("idUsuario");
-    String rolUsuario=(String) request.getAttribute("rolUsuario");
-    String nombreCompletoUsuario=(String) request.getAttribute("nombreCompletoUsuario");
-    ArrayList<Actividad>listaActividades=(ArrayList<Actividad>) request.getAttribute("listaActividades");
-    Integer idActividadDelegatura=(Integer)request.getAttribute("idActividadDelegatura");
-    String vistaActual=(String) request.getAttribute("vistaActual");
-    ArrayList<String>listaCorreosDelegadosGenerales=(ArrayList<String>)request.getAttribute("correosDelegadosGenerales");
-    String colorRol;
-    if(rolUsuario.equals("Alumno")){
-        colorRol="";
-    }else if(rolUsuario.equals("Delegado de Actividad")){
-        colorRol="green";
-    }else{
-        colorRol="orange";
-    }
+        String rolUsuario=(String) request.getAttribute("rolUsuario");
+        String nombreCompletoUsuario=(String) request.getAttribute("nombreCompletoUsuario");
+        String vistaActual=(String) request.getAttribute("vistaActual");
+        ArrayList<String>listaCorreosDelegadosGenerales=(ArrayList<String>)request.getAttribute("correosDelegadosGenerales");
+        Evento e=(Evento)request.getAttribute("evento");
+        String actividadEvento=(String)request.getAttribute("actividad");
+        String estadoApoyo=(String)request.getAttribute("estadoApoyoAlumnoEvento");
+        String lugar=(String)request.getAttribute("lugar");
+        String colorRol;
+        if(rolUsuario.equals("Alumno")){
+            colorRol="";
+        }else if(rolUsuario.equals("Delegado de Actividad")){
+            colorRol="green";
+        }else{
+            colorRol="orange";
+        }
     %>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -33,6 +35,71 @@
     <link rel="icon" href="img/favicon.ico">
     <title>Actividades - Siempre Fibra</title>
     <style>
+        .carousel {
+            position: relative;
+            overflow: hidden;
+            width: 100%;
+            margin: 0 auto;
+        }
+
+        .carousel-inner {
+            display: flex;
+            transition: all 0.5s ease;
+            width: 100%;
+        }
+
+        .carousel-item {
+            flex: 0 0 100%;
+        }
+
+        .carousel img {
+            width: 100%;
+            height: auto;
+        }
+
+        .carousel-control-prev,
+        .carousel-control-next {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 1;
+        }
+
+        .carousel-control-prev {
+            left: 10px;
+        }
+
+        .carousel-control-next {
+            right: 10px;
+        }
+
+        .carousel-control-prev-icon,
+        .carousel-control-next-icon {
+            width: 30px;
+            height: 30px;
+            background-color: rgba(0, 0, 0, 0.5);
+            border-radius: 50%;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .carousel-control-prev-icon::before,
+        .carousel-control-next-icon::before {
+            content: "‹"; /* Puedes ajustar los caracteres de flecha según tu preferencia */
+            font-size: 24px;
+        }
+
+        .carousel-control-next-icon::before {
+            content: "›";
+        }
+
+        @media screen and (max-width: 1000px) {
+            .auxResponsive{
+                display: none;;
+            }
+        }
         .overlay {
             display: none;
             position: fixed;
@@ -46,22 +113,36 @@
 
         /* Estilo para el contenido del popup */
         .popup {
+            padding: 20px;
             display: none;
             position: fixed;
             top: 50%;
             left: 50%;
             border-radius: 12px;
             transform: translate(-50%, -50%);
-            background-color: white;
-            padding: 20px;
             z-index: 10001;
+            width: 100%;
+            max-width: 650px;
+            background-color: #fff;
         }
+
         /* Estilo para el botón de cerrar */
         .cerrarPopup {
-            position: absolute;
-            top: 10px;
-            right: 10px;
+            display: flex;
+            -ms-flex-pack: center;
+            justify-content: center;
+            -ms-flex-align: center;
+            align-items: center;
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            background-color: #45437f;
             cursor: pointer;
+            position: absolute;
+            top: -20px;
+            right: -20px;
+            z-index: 2;
+            transition: background-color .2s ease-in-out;
         }
         footer {
             background-color: #322D31;
@@ -125,15 +206,6 @@
         @media screen and (max-width: 680px) {
             .auxResponsiveUwu{
                 display: none;
-            }
-        }
-        @media screen and (max-width: 777px) {
-            .recuadroTexto {
-                margin-bottom: 15px;
-            }
-
-            .contenedorCrear {
-                width: 80% !important;
             }
         }
     </style>
@@ -1282,203 +1354,390 @@
 
 
 <!-- CONTENT GRID -->
+
 <div class="content-grid">
-    <!-- SECTION BANNER -->
+
     <div class="section-banner">
         <!-- SECTION BANNER ICON -->
         <img class="section-banner-icon" src="https://naucalpan.gob.mx/wp-content/uploads/2020/07/PORTADA.png" width="15%" alt="marketplace-icon">
         <!-- /SECTION BANNER ICON -->
 
         <!-- SECTION BANNER TITLE -->
-        <p class="section-banner-title">Actividades</p>
+        <p class="section-banner-title"><%=e.getTitulo()%></p>
         <!-- /SECTION BANNER TITLE -->
 
         <!-- SECTION BANNER TEXT -->
-        <p class="section-banner-text">Encuentra todas las actividades a realizar en Semana de Ingeniería</p>
+        <p class="section-banner-text "><%=actividadEvento%></p>
         <!-- /SECTION BANNER TEXT -->
     </div>
-    <!-- /SECTION BANNER -->
+    <!-- GRID -->
+    <div class="grid grid-3-9">
+        <!-- GRID COLUMN -->
+        <div class="grid-column">
+            <div class="streamer-box" style="background-image: linear-gradient(rgb(140, 255, 194),rgb(148, 249, 250));">
 
-    <div class="section-header">
-        <div class="container-fluid" style="width: 100%;">
-            <!-- SECTION HEADER INFO -->
-            <div class="row" style="width: 100%;">
-                <div class="section-header-info col-sm-auto recuadroTexto">
-                    <!-- SECTION PRETITLE -->
-                    <p class="section-pretitle">Busca la actividad que desees</p>
-                    <!-- /SECTION PRETITLE -->
+                <%if(estadoApoyo==null){%>
+                <!-- STREAMER BOX INFO -->
+                <div class="streamer-box-info">
+                    <!-- STREAMER BOX TITLE -->
+                    <p class="streamer-box-title" style="font-size: 150%;">APOYA AL EVENTO</p>
+                    <!-- /STREAMER BOX TITLE -->
 
-                    <!-- SECTION TITLE -->
-                    <h2 class="section-title">Lista de actividades</h2>
-                    <!-- /SECTION TITLE -->
-                </div>
-                <%if(rolUsuario.equals("Delegado de Actividad")){%>
-                <!-- /SECTION HEADER INFO -->
-                <div class="section-filters-bar-actions col-sm-auto d-flex justify-content-end recuadro recuadroFila" style="width: 150px;">
+                    <!-- STREAMER BOX STATUS -->
+                    <p class="mt-4">¡Anímate a apoyar a la fibra y pasarás todos los cursos de Yarleque! Podrás ser elegido como:</p>
+                    <!-- /STREAMER BOX STATUS -->
+
+                    <!-- USER STATS -->
+                    <div class="user-stats">
+                        <!-- USER STAT -->
+                        <div class="user-stat">
+                            <!-- USER STAT TITLE -->
+                            <img src="css/barra.png" width="50%">
+                            <!-- /USER STAT TITLE -->
+
+                            <!-- USER STAT TEXT -->
+                            <p class="user-stat-text" style="font-size: 100%;">Barra</p>
+                            <!-- /USER STAT TEXT -->
+                        </div>
+                        <!-- /USER STAT -->
+
+                        <!-- USER STAT -->
+                        <div class="user-stat">
+                            <!-- USER STAT TITLE -->
+                            <!-- /USER STAT TITLE -->
+                            <img src="css/jugar.png" width="50%" alt="">
+                            <!-- USER STAT TEXT -->
+                            <p class="user-stat-text" style="font-size: 100%;">Equipo</p>
+                            <!-- /USER STAT TEXT -->
+                        </div>
+                        <!-- /USER STAT -->
+                    </div>
+                    <!-- /USER STATS -->
+
                     <!-- BUTTON -->
-                    <button class="button secondary popup-event-creation-trigger botones" id="mostrarPopupFinalizar" style="width: 100%;">Finalizar evento</button>
+                    <a class="button small twitch" style="color: white;" id="mostrarPopup1" >Apoyar al evento</a>
                     <!-- /BUTTON -->
                 </div>
-                <%}else if(rolUsuario.equals("Delegado General")){%>
-                <div class="section-filters-bar-actions col-sm-auto d-flex justify-content-end recuadro recuadroFila" style="width: 150px;">
-                    <!-- BUTTON -->
-                    <button class="button secondary popup-event-creation-trigger botones" style="width: 100%;" id="mostrarPopupCrear">Crear actividad</button>
-                    <!-- /BUTTON -->
+                <%}else{%>
+                <div class="streamer-box-info">
+                    <!-- STREAMER BOX TITLE -->
+                    <p class="streamer-box-title" style="font-size: 150%;">GRACIAS POR APOYAR</p>
+                    <!-- /STREAMER BOX TITLE -->
+
+                    <!-- STREAMER BOX STATUS -->
+                    <p class="mt-4" style="font-size: 150%">Actualmente estás apoyando como:</p>
+                    <!-- /STREAMER BOX STATUS -->
+
+                    <!-- USER STATS -->
+                    <div class="user-stats">
+                        <!-- USER STAT -->
+                        <%if(estadoApoyo.equals("Barra")){%>
+                        <div class="user-stat">
+                            <!-- USER STAT TITLE -->
+                            <img src="css/barra.png" width="100%">
+                            <!-- /USER STAT TITLE -->
+
+                            <!-- USER STAT TEXT -->
+                            <p class="user-stat-text" style="font-size: 200%;">Barra</p>
+                            <!-- /USER STAT TEXT -->
+                        </div>
+                        <!-- /USER STAT -->
+                        <%}else{%>
+                        <!-- USER STAT -->
+                        <div class="user-stat">
+                            <!-- USER STAT TITLE -->
+                            <!-- /USER STAT TITLE -->
+                            <img src="css/jugar.png" width="100%" alt="">
+                            <!-- USER STAT TEXT -->
+                            <p class="user-stat-text" style="font-size: 200%;">Equipo</p>
+                            <!-- /USER STAT TEXT -->
+                        </div>
+                        <!-- /USER STAT -->
+                        <%}%>
+                    </div>
+                    <!-- /USER STATS -->
                 </div>
                 <%}%>
+                <!-- /STREAMER BOX INFO -->
+                <img src="css/apoyar2.png" width="100%">
             </div>
-        </div>
-    </div>
+            <!-- /STREAMER BOX -->
+
+            <!-- WIDGET BOX -->
+            <div class="widget-box">
 
 
-    <!-- SECTION FILTERS BAR -->
-    <div class="section-filters-bar v4">
-        <!-- SECTION FILTERS BAR ACTIONS -->
-        <div class="section-filters-bar-actions">
-            <!-- FORM -->
-            <form class="form">
-                <!-- FORM ITEM -->
-                <div class="form-item split">
-                    <!-- FORM INPUT -->
-                    <div class="form-input small">
-                        <label for="items-search">Buscar actividad</label>
-                        <input type="text" id="items-search" name="items_search">
+                <!-- WIDGET BOX TITLE -->
+                <p class="widget-box-title">Consideraciones acerca de apoyar:</p>
+                <!-- /WIDGET BOX TITLE -->
+
+                <!-- WIDGET BOX CONTENT -->
+                <div class="widget-box-content">
+                    <!-- SIMPLE ACCORDION LIST -->
+                    <div class="simple-accordion-list">
+                        <!-- SIMPLE ACCORDION -->
+                        <div class="simple-accordion">
+                            <!-- SIMPLE ACCORDION HEADER -->
+                            <div class="simple-accordion-header accordion-trigger">
+                                <!-- SIMPLE ACCORDION TITLE -->
+                                <p class="simple-accordion-title">¿Qué sucede si no asisto al evento?</p>
+                                <!-- /SIMPLE ACCORDION TITLE -->
+
+                                <!-- SIMPLE ACCORDION ICON -->
+                                <div class="simple-accordion-icon">
+                                    <!-- ICON PLUS SMALL -->
+                                    <svg class="icon-plus-small">
+                                        <use xlink:href="#svg-plus-small"></use>
+                                    </svg>
+                                    <!-- /ICON PLUS SMALL -->
+
+                                    <!-- ICON MINUS SMALL -->
+                                    <svg class="icon-minus-small">
+                                        <use xlink:href="#svg-minus-small"></use>
+                                    </svg>
+                                    <!-- /ICON MINUS SMALL -->
+                                </div>
+                                <!-- /SIMPLE ACCORDION ICON -->
+
+                                <!-- SIMPLE ACCORDION CONTENT -->
+                                <div class="simple-accordion-content accordion-content accordion-open">
+                                    <!-- SIMPLE ACCORDION TEXT -->
+                                    <p class="simple-accordion-text">Si has sido elegido para la barra o el equipo y no asistes el día del evento, el Delegado General será notificado y es posible que seas baneado de la plataforma.</p>
+                                    <!-- /SIMPLE ACCORDION TEXT -->
+                                </div>
+                                <!-- /SIMPLE ACCORDION CONTENT -->
+                            </div>
+                            <!-- /SIMPLE ACCORDION HEADER -->
+                        </div>
+                        <!-- /SIMPLE ACCORDION -->
+
+                        <!-- SIMPLE ACCORDION -->
+                        <div class="simple-accordion">
+                            <!-- SIMPLE ACCORDION HEADER -->
+                            <div class="simple-accordion-header accordion-trigger">
+                                <!-- SIMPLE ACCORDION TITLE -->
+                                <p class="simple-accordion-title">¿Puedo elegir si apoyar en la barra o el equipo?</p>
+                                <!-- /SIMPLE ACCORDION TITLE -->
+
+                                <!-- SIMPLE ACCORDION ICON -->
+                                <div class="simple-accordion-icon">
+                                    <!-- ICON PLUS SMALL -->
+                                    <svg class="icon-plus-small">
+                                        <use xlink:href="#svg-plus-small"></use>
+                                    </svg>
+                                    <!-- /ICON PLUS SMALL -->
+
+                                    <!-- ICON MINUS SMALL -->
+                                    <svg class="icon-minus-small">
+                                        <use xlink:href="#svg-minus-small"></use>
+                                    </svg>
+                                    <!-- /ICON MINUS SMALL -->
+                                </div>
+                                <!-- /SIMPLE ACCORDION ICON -->
+
+                                <!-- SIMPLE ACCORDION CONTENT -->
+                                <div class="simple-accordion-content accordion-content">
+                                    <!-- SIMPLE ACCORDION TEXT -->
+                                    <p class="simple-accordion-text">No. Será finalmente la decisión del Delegado de Actividad si participas en el equipo o como barra.</p>
+                                    <!-- /SIMPLE ACCORDION TEXT -->
+                                </div>
+                                <!-- /SIMPLE ACCORDION CONTENT -->
+                            </div>
+                            <!-- /SIMPLE ACCORDION HEADER -->
+                        </div>
+                        <!-- /SIMPLE ACCORDION -->
+
+                        <!-- SIMPLE ACCORDION -->
+                        <div class="simple-accordion">
+                            <!-- SIMPLE ACCORDION HEADER -->
+                            <div class="simple-accordion-header accordion-trigger">
+                                <!-- SIMPLE ACCORDION TITLE -->
+                                <p class="simple-accordion-title">¿Es posible cancelar mi solicitud de apoyo?</p>
+                                <!-- /SIMPLE ACCORDION TITLE -->
+
+                                <!-- SIMPLE ACCORDION ICON -->
+                                <div class="simple-accordion-icon">
+                                    <!-- ICON PLUS SMALL -->
+                                    <svg class="icon-plus-small">
+                                        <use xlink:href="#svg-plus-small"></use>
+                                    </svg>
+                                    <!-- /ICON PLUS SMALL -->
+
+                                    <!-- ICON MINUS SMALL -->
+                                    <svg class="icon-minus-small">
+                                        <use xlink:href="#svg-minus-small"></use>
+                                    </svg>
+                                    <!-- /ICON MINUS SMALL -->
+                                </div>
+                                <!-- /SIMPLE ACCORDION ICON -->
+
+                                <!-- SIMPLE ACCORDION CONTENT -->
+                                <div class="simple-accordion-content accordion-content">
+                                    <!-- SIMPLE ACCORDION TEXT -->
+                                    <p class="simple-accordion-text">En caso hayas presionado el botón de apoyar por error, puedes contactarte con el Delegado de Actividad directamente mediante el foro de la página.</p>
+                                    <!-- /SIMPLE ACCORDION TEXT -->
+                                </div>
+                                <!-- /SIMPLE ACCORDION CONTENT -->
+                            </div>
+                            <!-- /SIMPLE ACCORDION HEADER -->
+                        </div>
+                        <!-- /SIMPLE ACCORDION -->
+
+                        <!-- SIMPLE ACCORDION -->
+                        <div class="simple-accordion">
+                            <!-- SIMPLE ACCORDION HEADER -->
+                            <div class="simple-accordion-header accordion-trigger">
+                                <!-- SIMPLE ACCORDION TITLE -->
+                                <p class="simple-accordion-title">¿Es cierto que los JPs de la malla dan puntaje extra por apoyar en Semana de Ingeniería?</p>
+                                <!-- /SIMPLE ACCORDION TITLE -->
+
+                                <!-- SIMPLE ACCORDION ICON -->
+                                <div class="simple-accordion-icon">
+                                    <!-- ICON PLUS SMALL -->
+                                    <svg class="icon-plus-small">
+                                        <use xlink:href="#svg-plus-small"></use>
+                                    </svg>
+                                    <!-- /ICON PLUS SMALL -->
+
+                                    <!-- ICON MINUS SMALL -->
+                                    <svg class="icon-minus-small">
+                                        <use xlink:href="#svg-minus-small"></use>
+                                    </svg>
+                                    <!-- /ICON MINUS SMALL -->
+                                </div>
+                                <!-- /SIMPLE ACCORDION ICON -->
+
+                                <!-- SIMPLE ACCORDION CONTENT -->
+                                <div class="simple-accordion-content accordion-content">
+                                    <!-- SIMPLE ACCORDION TEXT -->
+                                    <p class="simple-accordion-text">Ello depende de qué tan bien apoyes a la fibra. Recuerda que varios JPs así como tú fueron alumnos, por lo que la pasión se comparte y es posible que se otorgue como incentivo.</p>
+                                    <!-- /SIMPLE ACCORDION TEXT -->
+                                </div>
+                                <!-- /SIMPLE ACCORDION CONTENT -->
+                            </div>
+                            <!-- /SIMPLE ACCORDION HEADER -->
+                        </div>
+                        <!-- /SIMPLE ACCORDION -->
                     </div>
-                    <!-- /FORM INPUT -->
-
-                    <!-- BUTTON -->
-                    <button class="button primary">
-                        <!-- ICON MAGNIFYING GLASS -->
-                        <svg class="icon-magnifying-glass">
-                            <use xlink:href="#svg-magnifying-glass"></use>
-                        </svg>
-                        <!-- /ICON MAGNIFYING GLASS -->
-                    </button>
-                    <!-- /BUTTON -->
+                    <!-- SIMPLE ACCORDION LIST -->
                 </div>
-                <!-- /FORM ITEM -->
-            </form>
-            <!-- /FORM -->
+                <!-- /WIDGET BOX CONTENT -->
+            </div>
+            <!-- /WIDGET BOX -->
         </div>
-        <!-- /SECTION FILTERS BAR ACTIONS -->
-
-        <!-- SECTION FILTERS BAR ACTIONS -->
-        <div class="section-filters-bar-actions">
-            <!-- FORM -->
-            <form class="form">
-                <!-- FORM ITEM -->
-                <div class="form-item split medium">
-                    <!-- FORM SELECT -->
-                    <div class="form-select small">
-                        <label for="items-filter-category">Ordenar por</label>
-                        <select id="items-filter-category" name="items_filter_category">
-                            <option value="0">Orden alfabético</option>
-                            <option value="1">Cantidad de eventos</option>
-                            <option value="2">Cantidad de puntos por primer lugar</option>
-                            <option value="3">Finalizados primero</option>
-                            <%if(rolUsuario.equals("Delegado General")){%>
-                            <option value="4">Ocultos primero</option>
-                            <%}%>
-                            <%if(rolUsuario.equals("Delegado de Actividad")){%>
-                            <option value="4">Mi delegatura primero</option>
-                            <%}%>
-                        </select>
-                        <!-- FORM SELECT ICON -->
-                        <svg class="form-select-icon icon-small-arrow">
-                            <use xlink:href="#svg-small-arrow"></use>
-                        </svg>
-                        <!-- /FORM SELECT ICON -->
+        <!-- /GRID COLUMN -->
+        <div class="grid-column">
+            <!-- STREAM BOX -->
+            <div class="stream-box big">
+                <!-- STREAM BOX VIDEO -->
+                <div class="carousel">
+                    <div class="carousel-inner">
+                        <div class="carousel-item active">
+                            <img src="css/fibraVSelectroMedio.png" alt="Imagen 1">
+                        </div>
+                        <div class="carousel-item">
+                            <img src="https://files.pucp.education/puntoedu/wp-content/uploads/2021/01/23021428/dsc_0981-web-920x613-1.jpg" alt="Imagen 2">
+                        </div>
+                        <div class="carousel-item">
+                            <img src="https://fundeu.fiile.org.ar/uploadsfotos/voley.jpg" alt="Imagen 3">
+                        </div>
                     </div>
-                    <!-- /FORM SELECT -->
-
-                    <!-- FORM SELECT -->
-                    <div class="form-select small">
-                        <label for="items-filter-order">Sentido</label>
-                        <select id="items-filter-order" name="items_filter_order">
-                            <option value="0">De mayor a menor</option>
-                            <option value="1">De menor a mayor</option>
-                        </select>
-                        <!-- FORM SELECT ICON -->
-                        <svg class="form-select-icon icon-small-arrow">
-                            <use xlink:href="#svg-small-arrow"></use>
-                        </svg>
-                        <!-- /FORM SELECT ICON -->
-                    </div>
-                    <!-- /FORM SELECT -->
-
-                    <!-- BUTTON -->
-                    <button class="button secondary">Aplicar ajustes</button>
-                    <!-- /BUTTON -->
+                    <a class="carousel-control-prev" role="button" data-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="sr-only">Anterior</span>
+                    </a>
+                    <a class="carousel-control-next" role="button" data-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="sr-only">Siguiente</span>
+                    </a>
                 </div>
-                <!-- /FORM ITEM -->
-            </form>
-            <!-- /FORM -->
-        </div>
-        <!-- /SECTION FILTERS BAR ACTIONS -->
-    </div>
-    <!-- /SECTION FILTERS BAR -->
+                <script>
+                    document.addEventListener("DOMContentLoaded", function () {
+                        const carouselItems = document.querySelectorAll(".carousel-item");
+                        const prevButton = document.querySelector(".carousel-control-prev");
+                        const nextButton = document.querySelector(".carousel-control-next");
+                        let currentIndex = 0;
 
-    <!-- GRID -->
-    <div class="grid grid-3-3-3-3 centered">
-        <%int aux=0;String color1="";String color2="";
-            for(Actividad a:listaActividades){
-                if(aux==0){
-                    color1="#615dfa";
-                    color2="#8d7aff";
-                }else if(aux==1){
-                    color1="#417ae1";
-                    color2="#5aafff";
-                }else if(aux==2){
-                    color1="#2ebfef";
-                    color2="#4ce4ff";
-                }else if(aux==3){
-                    color1="#17cada";
-                    color2="#2becfe";
-                }else if(aux==4){
-                    color1="#64b9ff";
-                    color2="#8bd7ff";
-                }else if(aux==5){
-                    color1="#598dff";
-                    color2="#81a9ff";
-                }else if(aux==6){
-                    color1="#597aff";
-                    color2="#8981ff";
-                    aux=0;
-                }%>
-        <!-- PRODUCT CATEGORY BOX -->
-        <a class="product-category-box category-all" style="background: url('css/fotoVoleyActividades.png') no-repeat right top, linear-gradient(to right, <%=color1%>, <%=color2%>) <%if(a.isActividadFinalizada()){%><%=";opacity: 50%;"%><%}%> " href="<%=request.getContextPath()%>/ListaDeEventosServlet?idUsuario=<%=idUsuario%>&idActividad=<%=a.getIdActividad()%>">
-            <!-- PRODUCT CATEGORY BOX TITLE -->
-            <p class="product-category-box-title"><%=a.getNombre()%></p>
-            <!-- /PRODUCT CATEGORY BOX TITLE -->
-            <%if(a.isActividadFinalizada()){%>
-            <!-- PRODUCT CATEGORY BOX TEXT -->
-            <p class="product-category-box-text">FINALIZADO</p>
-            <!-- /PRODUCT CATEGORY BOX TEXT -->
-            <%}else{%>
-            <!-- PRODUCT CATEGORY BOX TEXT -->
-            <p class="product-category-box-text"><%=a.getCantPuntosPrimerLugar()%> puntos (1er lugar)</p>
-            <!-- /PRODUCT CATEGORY BOX TEXT -->
-            <%}%>
-            <!-- PRODUCT CATEGORY BOX TAG -->
-            <%String cantEventos=new DaoActividad().cantidadEventosPorActividad(a.getIdActividad());%>
-            <%if(cantEventos.equals("1")){%>
-            <p class="product-category-box-tag" style="color: <%=color1%>;">1 evento</p>
-            <!-- /PRODUCT CATEGORY BOX TAG -->
-            <%}else{%>
-            <p class="product-category-box-tag" style="color: <%=color1%>;"><%=cantEventos%> eventos</p>
-            <%}%>
-            <%if(idActividadDelegatura != null){
-                if(idActividadDelegatura==a.getIdActividad()){%>
-            <!-- PRODUCT CATEGORY BOX TAG -->
-            <p class="product-category-box-tag" style="color: <%=color1%>;">Delegado</p>
-            <!-- /PRODUCT CATEGORY BOX TAG -->
-            <%}}%>
-        </a>
-        <!-- /PRODUCT CATEGORY BOX -->
-        <%aux++;}%>
+                        function showSlide(index) {
+                            carouselItems[currentIndex].classList.remove("active");
+                            currentIndex = (index + carouselItems.length) % carouselItems.length;
+                            carouselItems[currentIndex].classList.add("active");
+                        }
+
+                        prevButton.addEventListener("click", function () {
+                            showSlide(currentIndex - 1);
+                        });
+
+                        nextButton.addEventListener("click", function () {
+                            showSlide(currentIndex + 1);
+                        });
+
+                        // Inicia el carousel con el primer elemento activo
+                        showSlide(currentIndex);
+                    });
+                </script>
+                <!-- /STREAM BOX VIDEO -->
+
+                <!-- STREAM BOX INFO -->
+                <div class="stream-box-info">
+
+                    <!-- STREAM BOX TITLE -->
+                    <p class="stream-box-title" >"<%=e.getFraseMotivacional()%>"</p>
+                    <!-- /STREAM BOX TITLE -->
+                    <!-- STREAM BOX CATEGORY -->
+                    <p class="stream-box-category mt-3"><%=e.getDescripcionEventoActivo()%></p>
+                    <!-- /STREAM BOX CATEGORY -->
+
+                    <!-- STREAM BOX VIEWS -->
+                    <p class="stream-box-views">¡No falten!</p>
+                    <!-- /STREAM BOX VIEWS -->
+                </div>
+                <!-- /STREAM BOX INFO -->
+            </div>
+            <!-- /STREAM BOX -->
+
+            <!-- WIDGET BOX -->
+            <div class="widget-box">
+                <!-- WIDGET BOX CONTENT -->
+                <div class="widget-box-content">
+                    <!-- WIDGET BOX TEXT -->
+                    <div class="row align-items-around">
+                        <div class="col-4 text-center" style="font-size: 1.125rem;font-family: 'Titillium Web' !important; font-weight: 700 !important;">
+                            <img src="css/reloj.png" width="20%" alt="">
+                            <a class="auxResponsive">Hora: </a>
+                            <%String aux[]=e.getHora().toString().split(":");%>
+                            <a><%=Integer.parseInt(aux[0])+":"+aux[1]%></a>
+                        </div>
+                        <div class="col-4 text-center" style="font-size: 1.125rem;font-family: 'Titillium Web' !important; font-weight: 700 !important;">
+                            <img src="css/calendario.png" width="20%" alt="">
+                            <a class="auxResponsive">Fecha: </a>
+                            <%String aux2[]=e.getFecha().toString().split("-");%>
+                            <a><%=aux2[2]+"/"+aux2[1]+"/"+aux2[0]%></a>
+                        </div>
+                        <div class="col-4 text-center" style="font-size: 1.125rem;font-family: 'Titillium Web' !important; font-weight: 700 !important;">
+                            <img src="css/ubicacion.png" width="20%" alt="">
+                            <a class="auxResponsive">Ubicación: </a>
+                            <%String lugarAux;
+                                if(lugar.length()>14) {
+                                    String aux3[] = lugar.split(" ");
+                                    lugarAux = "" + aux3[0].charAt(0);
+                                    for (int i = 1; i < aux3.length; i++) {
+                                        lugarAux += " " + aux3[i];
+                                    }
+                                }else
+                                    lugarAux=lugar;%>
+                            <a><%=lugarAux%></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- /WIDGET BOX CONTENT -->
+        </div>
+        <!-- /WIDGET BOX -->
     </div>
-    <!-- /GRID -->
+    <!-- /GRID COLUMN -->
 </div>
+
 <!-- /CONTENT GRID -->
 <footer style="font-size: 80%;">
     <!-- Primera fila -->
@@ -1509,160 +1768,57 @@
         </div>
     </div>
 </footer>
-<div class="overlay" id="overlay"></div>
-<%if(rolUsuario.equals("Delegado de Actividad")){%>
-<div class="popup" id="popupFinalizar">
-    <svg class="cerrarPopup" id="cerrarPopupFinalizar" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M11.4142 10L16.7071 4.70711C17.0976 4.31658 17.0976 3.68342 16.7071 3.29289C16.3166 2.90237 15.6834 2.90237 15.2929 3.29289L10 8.58579L4.70711 3.29289C4.31658 2.90237 3.68342 2.90237 3.29289 3.29289C2.90237 3.68342 2.90237 4.31658 3.29289 4.70711L8.58579 10L3.29289 15.2929C2.90237 15.6834 2.90237 16.3166 3.29289 16.7071C3.68342 17.0976 4.31658 17.0976 4.70711 16.7071L10 11.4142L15.2929 16.7071C15.6834 17.0976 16.3166 17.0976 16.7071 16.7071C17.0976 16.3166 17.0976 15.6834 16.7071 15.2929L11.4142 10Z" fill="black"/>
-    </svg>
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-sm-1"></div>
-            <div class="col-sm-10">
-                <label for="delegado"><h5 style="text-align: center;">Seleccione la actividad: </h5></label>
-                <div style="margin-top: 20px;">
-                    <input type="text" multiple id="delegado" list="actividades" placeholder="Actividad" required>
-                    <datalist id="actividades">
-                        <%for(Actividad a:listaActividades){%>
-                        <option value="<%=a.getNombre()%>"><%=a.getNombre()%></option>
-                        <%}%>
-                    </datalist>
-                </div>
-            </div>
-            <div class="col-sm-1"></div>
-        </div>
-    </div>
-    <br>
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-sm-6" style="margin-top: 5px;">
-                <button class="button secondary" style="opacity: 50%;" id="cerrarPopupFinalizar1" disabled="true">Finalizar</button>
-            </div>
-            <div class="col-sm-6" style="margin-top: 5px;">
-                <button class="button secondary" id="cerrarPopupFinalizar2" style="background-color: grey;">Cancelar</button>
-            </div>
-        </div>
+<div class="overlay" id="overlay">
+    <div class="popup" id="popup">
+        <svg class="cerrarPopup" id="cerrarPopup" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M11.4142 10L16.7071 4.70711C17.0976 4.31658 17.0976 3.68342 16.7071 3.29289C16.3166 2.90237 15.6834 2.90237 15.2929 3.29289L10 8.58579L4.70711 3.29289C4.31658 2.90237 3.68342 2.90237 3.29289 3.29289C2.90237 3.68342 2.90237 4.31658 3.29289 4.70711L8.58579 10L3.29289 15.2929C2.90237 15.6834 2.90237 16.3166 3.29289 16.7071C3.68342 17.0976 4.31658 17.0976 4.70711 16.7071L10 11.4142L15.2929 16.7071C15.6834 17.0976 16.3166 17.0976 16.7071 16.7071C17.0976 16.3166 17.0976 15.6834 16.7071 15.2929L11.4142 10Z" fill="black"/>
+        </svg>
+        <p style="font-size: 1.125rem;font-family: 'Titillium Web' !important; font-weight: 500 !important; text-align: center;">Se ha enviado al Delegado de Actividad una solicitud para apoyar.</p>
     </div>
 </div>
-<%}else if(rolUsuario.equals("Delegado General")){%>
-<div class="popup contenedorCrear" style="width: 700px;" id="popupCrear">
-    <svg class="cerrarPopup" id="cerrarPopupCrear" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M11.4142 10L16.7071 4.70711C17.0976 4.31658 17.0976 3.68342 16.7071 3.29289C16.3166 2.90237 15.6834 2.90237 15.2929 3.29289L10 8.58579L4.70711 3.29289C4.31658 2.90237 3.68342 2.90237 3.29289 3.29289C2.90237 3.68342 2.90237 4.31658 3.29289 4.70711L8.58579 10L3.29289 15.2929C2.90237 15.6834 2.90237 16.3166 3.29289 16.7071C3.68342 17.0976 4.31658 17.0976 4.70711 16.7071L10 11.4142L15.2929 16.7071C15.6834 17.0976 16.3166 17.0976 16.7071 16.7071C17.0976 16.3166 17.0976 15.6834 16.7071 15.2929L11.4142 10Z" fill="black"/>
-    </svg>
-    <div class="container-fluid">
-
-        <div class="row"><div class="col"><h5 style="text-align: center;">Crear actividad</h5></div></div>
-        <div class="row">
-            <div class="col-sm-7">
-                <br>
-                <label for="nombreActividad" style="margin-top: 25px;"><b>Nombre de la actividad:</b></label>
-                <input type="text" id="nombreActividad" placeholder="Valorant" required>
-
-                <label style="margin-top: 25px;" for="delegado"><b>Seleccionar delegado de actividad:</b></label>
-                <input type="text" multiple id="delegado" list="alumnos" placeholder="Delegado de actividad" required>
-
-                <datalist id="alumnos">
-                    <option value="Alex Segovia">Alex Segovia</option>
-                    <option value="Gabriel Talledo">Gabriel Talledo</option>
-                    <option value="Hineill Céspedes">Hineill Céspedes</option>
-                    <option value="Jean Piere Ipurre">Jean Piere Ipurre</option>
-                    <option value="Josh Yauri">Josh Yauri</option>
-                    <option value="Mayte Asto">Mayte Asto</option>
-                    <option value="Santiago Yong">Santiago Yong</option>
-                </datalist>
-
-                <label style="margin-top: 25px;" for="descripcion"><b>Descripción de la actividad:</b></label>
-                <input type="text" id="descripcion" placeholder="Descripción" required>
-
-                <div style="display: flex; justify-content: left; margin-top: 25px;">
-                    <p style="width: 32%;"><b>Ocultar actividad</b></p>
-                    <input type="checkbox" style="width: 10%;">
-                </div>
-            </div>
-            <div class="col-sm-5 contenedor2" style="top: 90px">
-                <div class="container-fluid btn btn-file1">
-                    <img class="img-fluid" src="css/subirArchivo.jpg" style="opacity: 50%;" alt="">
-                    <p><b>Foto de la actividad</b></p>
-                    <input type="file" style="background-color: white; margin-top: 25px;" accept="image/png, .jpeg, .jpg"></input>
-                </div>
-            </div>
-        </div>
-    </div>
-    <br>
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-sm-6" style="margin-top: 5px;">
-                <button type="submit" class="button secondary" id="cerrarPopupCrear1">Crear</button>
-            </div>
-            <div class="col-sm-6" style="margin-top: 5px;">
-                <button class="button secondary" id="cerrarPopupCrear2" style="background-color: grey;">Cancelar</button>
-            </div>
-        </div>
-    </div>
-</div>
-<%}%>
 <script>
-    // Obtener elementos del DOM
-    const textElement = document.getElementById('delegado');
-    const buttonElement = document.getElementById('cerrarPopupFinalizar1');
-    const opciones=document.getElementById('actividades').getElementsByTagName('option');
-    // Agregar un evento de escucha al campo de texto y la lista de opciones
-    textElement.addEventListener('input', validarCampo);
-
-    function validarCampo() {
-        const textoIngresado = textElement.value.trim();
-        // Verificar si la opción seleccionada está en el texto ingresado
-
-        for(let i=0; i<opciones.length; i++){
-            if (textoIngresado==opciones[i].value) {
-                buttonElement.removeAttribute('disabled'); // Activar el botón
-                buttonElement.style.opacity="100%";
-                break;
-            } else {
-                buttonElement.setAttribute('disabled', 'true'); // Desactivar el botón
-                buttonElement.style.opacity="50%";
-            }
-        }
+    function blockButton(id){
+        document.getElementById(id).style.pointerEvents = "none";
+        document.getElementById(id).style.opacity = "0.5";
     }
-    //document.getElementById('cerrarPopupFinalizar1').addEventListener('click',document.getElementById(String(textElement.value)).style.opacity = '50%');
-    function popupFunc(popupId,abrirId,cerrarClass){
+
+    function popupFunc(popupId,abrirId,cerrarId){
         const showPopup=document.getElementById(abrirId);
         const overlay=document.getElementById('overlay');
         const popup=document.getElementById(popupId);
+        const closePopup=document.getElementById(cerrarId);
+
         const mostrarPopup = () => {
             overlay.style.display = 'block';
             popup.style.display = 'block';
             // Desactivar el scroll
             document.body.style.overflow = 'hidden';
+            blockButton('mostrarPopup1');
         };
         showPopup.addEventListener('click', mostrarPopup);
         const cerrarPopup = () => {
             overlay.style.display = 'none';
             popup.style.display = 'none';
+            // Reactivar el scroll
             document.body.style.overflow = 'auto';
 
         };
-        for(let i=0;i<cerrarClass.length;i++){
-            document.getElementById(cerrarClass[i]).addEventListener('click', cerrarPopup);
-        }
-
+        closePopup.addEventListener('click', cerrarPopup);
         overlay.addEventListener('click', (e) => {
             if (e.target === overlay) {
                 cerrarPopup();
             }
         });
 
+        // Cerrar el popup al presionar Escape
         document.addEventListener('keydown', (event) => {
             if (event.key === 'Escape') {
                 cerrarPopup();
             }
         });
     }
-    <%if(rolUsuario.equals("Delegado de Actividad")){%>
-    popupFunc('popupFinalizar','mostrarPopupFinalizar',['cerrarPopupFinalizar','cerrarPopupFinalizar1','cerrarPopupFinalizar2']);
-    <%}else if(rolUsuario.equals("Delegado General")){%>
-    popupFunc('popupCrear','mostrarPopupCrear',['cerrarPopupCrear','cerrarPopupCrear1','cerrarPopupCrear2']);
-    <%}%>
+    popupFunc('popup','mostrarPopup1','cerrarPopup');
+
 </script>
 <!-- app -->
 <script src="js/utils/app.js"></script>
@@ -1674,14 +1830,20 @@
 <script src="js/utils/liquidify.js"></script>
 <!-- XM_Plugins -->
 <script src="js/vendor/xm_plugins.min.js"></script>
+<!-- tiny-slider -->
+<script src="js/vendor/tiny-slider.min.js"></script>
 <!-- global.hexagons -->
 <script src="js/global/global.hexagons.js"></script>
 <!-- global.tooltips -->
 <script src="js/global/global.tooltips.js"></script>
+<!-- global.accordions -->
+<script src="js/global/global.accordions.js"></script>
 <!-- header -->
 <script src="js/header/header.js"></script>
 <!-- sidebar -->
 <script src="js/sidebar/sidebar.js"></script>
+<!-- content -->
+<script src="js/content/content.js"></script>
 <!-- form.utils -->
 <script src="js/form/form.utils.js"></script>
 <!-- SVG icons -->

@@ -1,6 +1,7 @@
 package com.example.proyectouwu.Servlets;
 
 import com.example.proyectouwu.Daos.DaoActividad;
+import com.example.proyectouwu.Daos.DaoAlumnoPorEvento;
 import com.example.proyectouwu.Daos.DaoUsuario;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -10,7 +11,7 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 
-@WebServlet(name = "PlantillaServlet", value = "/")
+@WebServlet(name = "", value = "/")
 public class PlantillaServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

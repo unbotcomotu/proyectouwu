@@ -1,25 +1,30 @@
 <%@ page import="java.util.ArrayList" %>
 <%@ page import="com.example.proyectouwu.Beans.Actividad" %>
+<%@ page import="com.example.proyectouwu.Beans.Evento" %>
+<%@ page import="com.example.proyectouwu.Daos.DaoAlumnoPorEvento" %>
 <%@ page import="com.example.proyectouwu.Daos.DaoActividad" %>
+<%@ page import="java.time.LocalDate" %>
+<%@ page import="com.example.proyectouwu.Daos.DaoEvento" %>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <%int idUsuario=(int) request.getAttribute("idUsuario");
-    String rolUsuario=(String) request.getAttribute("rolUsuario");
-    String nombreCompletoUsuario=(String) request.getAttribute("nombreCompletoUsuario");
-    ArrayList<Actividad>listaActividades=(ArrayList<Actividad>) request.getAttribute("listaActividades");
-    Integer idActividadDelegatura=(Integer)request.getAttribute("idActividadDelegatura");
-    String vistaActual=(String) request.getAttribute("vistaActual");
-    ArrayList<String>listaCorreosDelegadosGenerales=(ArrayList<String>)request.getAttribute("correosDelegadosGenerales");
-    String colorRol;
-    if(rolUsuario.equals("Alumno")){
-        colorRol="";
-    }else if(rolUsuario.equals("Delegado de Actividad")){
-        colorRol="green";
-    }else{
-        colorRol="orange";
-    }
+        String rolUsuario=(String) request.getAttribute("rolUsuario");
+        String nombreCompletoUsuario=(String) request.getAttribute("nombreCompletoUsuario");
+        String vistaActual=(String) request.getAttribute("vistaActual");
+        ArrayList<String>listaCorreosDelegadosGenerales=(ArrayList<String>)request.getAttribute("correosDelegadosGenerales");
+        ArrayList<Evento>listaEventos=(ArrayList<Evento>)request.getAttribute("listaEventos");
+        String nombreActividad=(String)request.getAttribute("nombreActividad");
+        int delegadoDeEstaActividadID=(int)request.getAttribute("delegadoDeEstaActividadID");
+        String colorRol;
+        if(rolUsuario.equals("Alumno")){
+            colorRol="";
+        }else if(rolUsuario.equals("Delegado de Actividad")){
+            colorRol="green";
+        }else{
+            colorRol="orange";
+        }
     %>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -31,37 +36,56 @@
     <link rel="stylesheet" href="css/vendor/simplebar.css">
     <!-- favicon -->
     <link rel="icon" href="img/favicon.ico">
-    <title>Actividades - Siempre Fibra</title>
+    <title><%=nombreActividad%> - Siempre Fibra</title>
     <style>
-        .overlay {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.7);
-            z-index: 10000;
+        .text-sticker-aux{
+            height: 32px;
+            padding: 0;
+            border-radius: 200px;
+            background-color: #fff;
+            box-shadow: 3px 5px 20px 0 rgba(94, 92, 154, 0.12);
+            font-size: 0.875rem;
+            font-weight: 700;
+            line-height: 32px;
+        }
+        .text-sticker-aux.round {
+            border-radius: 12px;
         }
 
-        /* Estilo para el contenido del popup */
-        .popup {
-            display: none;
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            border-radius: 12px;
-            transform: translate(-50%, -50%);
-            background-color: white;
-            padding: 20px;
-            z-index: 10001;
+        .text-sticker-aux .highlighted {
+            color: #00c7d9;
         }
-        /* Estilo para el botón de cerrar */
-        .cerrarPopup {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            cursor: pointer;
+
+        .text-sticker-aux .text-sticker-icon {
+            margin-right: 4px;
+            fill: #00c7d9;
+        }
+
+        .text-sticker-aux.small-text {
+            font-size: 0.75rem;
+        }
+
+        .text-sticker-aux.small {
+            height: 24px;
+            padding: 0 12px;
+            font-size: 0.75rem;
+            line-height: 24px;
+        }
+
+        .text-sticker-aux.medium {
+            height: 44px;
+            padding: 0 16px;
+            line-height: 44px;
+        }
+
+        .text-sticker-aux.negative {
+            color: #fff;
+            background: #15151f;
+        }
+
+        .text-sticker.aux.void {
+            box-shadow: none;
+            background-color: transparent;
         }
         footer {
             background-color: #322D31;
@@ -125,15 +149,6 @@
         @media screen and (max-width: 680px) {
             .auxResponsiveUwu{
                 display: none;
-            }
-        }
-        @media screen and (max-width: 777px) {
-            .recuadroTexto {
-                margin-bottom: 15px;
-            }
-
-            .contenedorCrear {
-                width: 80% !important;
             }
         }
     </style>
@@ -1280,56 +1295,41 @@
 <!-- /HEADER -->
 
 
-
 <!-- CONTENT GRID -->
+
 <div class="content-grid">
+
     <!-- SECTION BANNER -->
     <div class="section-banner">
         <!-- SECTION BANNER ICON -->
-        <img class="section-banner-icon" src="https://naucalpan.gob.mx/wp-content/uploads/2020/07/PORTADA.png" width="15%" alt="marketplace-icon">
+        <img class="section-banner-icon" src="css/telitoVoley.png" alt="marketplace-icon">
         <!-- /SECTION BANNER ICON -->
 
         <!-- SECTION BANNER TITLE -->
-        <p class="section-banner-title">Actividades</p>
+        <p class="section-banner-title"><%=nombreActividad%></p>
         <!-- /SECTION BANNER TITLE -->
 
         <!-- SECTION BANNER TEXT -->
-        <p class="section-banner-text">Encuentra todas las actividades a realizar en Semana de Ingeniería</p>
+        <p class="section-banner-text">Encuentra todos los eventos dentro de <%=nombreActividad%></p>
         <!-- /SECTION BANNER TEXT -->
     </div>
     <!-- /SECTION BANNER -->
 
+    <!-- SECTION HEADER -->
     <div class="section-header">
-        <div class="container-fluid" style="width: 100%;">
-            <!-- SECTION HEADER INFO -->
-            <div class="row" style="width: 100%;">
-                <div class="section-header-info col-sm-auto recuadroTexto">
-                    <!-- SECTION PRETITLE -->
-                    <p class="section-pretitle">Busca la actividad que desees</p>
-                    <!-- /SECTION PRETITLE -->
+        <!-- SECTION HEADER INFO -->
+        <div class="section-header-info">
+            <!-- SECTION PRETITLE -->
+            <p class="section-pretitle">Busca los eventos que desees</p>
+            <!-- /SECTION PRETITLE -->
 
-                    <!-- SECTION TITLE -->
-                    <h2 class="section-title">Lista de actividades</h2>
-                    <!-- /SECTION TITLE -->
-                </div>
-                <%if(rolUsuario.equals("Delegado de Actividad")){%>
-                <!-- /SECTION HEADER INFO -->
-                <div class="section-filters-bar-actions col-sm-auto d-flex justify-content-end recuadro recuadroFila" style="width: 150px;">
-                    <!-- BUTTON -->
-                    <button class="button secondary popup-event-creation-trigger botones" id="mostrarPopupFinalizar" style="width: 100%;">Finalizar evento</button>
-                    <!-- /BUTTON -->
-                </div>
-                <%}else if(rolUsuario.equals("Delegado General")){%>
-                <div class="section-filters-bar-actions col-sm-auto d-flex justify-content-end recuadro recuadroFila" style="width: 150px;">
-                    <!-- BUTTON -->
-                    <button class="button secondary popup-event-creation-trigger botones" style="width: 100%;" id="mostrarPopupCrear">Crear actividad</button>
-                    <!-- /BUTTON -->
-                </div>
-                <%}%>
-            </div>
+            <!-- SECTION TITLE -->
+            <h2 class="section-title">Lista de eventos</h2>
+            <!-- /SECTION TITLE -->
         </div>
+        <!-- /SECTION HEADER INFO -->
     </div>
-
+    <!-- /SECTION HEADER -->
 
     <!-- SECTION FILTERS BAR -->
     <div class="section-filters-bar v4">
@@ -1341,7 +1341,7 @@
                 <div class="form-item split">
                     <!-- FORM INPUT -->
                     <div class="form-input small">
-                        <label for="items-search">Buscar actividad</label>
+                        <label for="items-search">Buscar evento</label>
                         <input type="text" id="items-search" name="items_search">
                     </div>
                     <!-- /FORM INPUT -->
@@ -1372,16 +1372,8 @@
                     <div class="form-select small">
                         <label for="items-filter-category">Ordenar por</label>
                         <select id="items-filter-category" name="items_filter_category">
-                            <option value="0">Orden alfabético</option>
-                            <option value="1">Cantidad de eventos</option>
-                            <option value="2">Cantidad de puntos por primer lugar</option>
-                            <option value="3">Finalizados primero</option>
-                            <%if(rolUsuario.equals("Delegado General")){%>
-                            <option value="4">Ocultos primero</option>
-                            <%}%>
-                            <%if(rolUsuario.equals("Delegado de Actividad")){%>
-                            <option value="4">Mi delegatura primero</option>
-                            <%}%>
+                            <option value="0">Más reciente</option>
+                            <option value="1">Orden alfabético</option>
                         </select>
                         <!-- FORM SELECT ICON -->
                         <svg class="form-select-icon icon-small-arrow">
@@ -1395,8 +1387,8 @@
                     <div class="form-select small">
                         <label for="items-filter-order">Sentido</label>
                         <select id="items-filter-order" name="items_filter_order">
-                            <option value="0">De mayor a menor</option>
-                            <option value="1">De menor a mayor</option>
+                            <option value="0">Ascendente</option>
+                            <option value="1">Descendente</option>
                         </select>
                         <!-- FORM SELECT ICON -->
                         <svg class="form-select-icon icon-small-arrow">
@@ -1407,7 +1399,7 @@
                     <!-- /FORM SELECT -->
 
                     <!-- BUTTON -->
-                    <button class="button secondary">Aplicar ajustes</button>
+                    <button class="button secondary">Aplicar filtros</button>
                     <!-- /BUTTON -->
                 </div>
                 <!-- /FORM ITEM -->
@@ -1419,66 +1411,619 @@
     <!-- /SECTION FILTERS BAR -->
 
     <!-- GRID -->
-    <div class="grid grid-3-3-3-3 centered">
-        <%int aux=0;String color1="";String color2="";
-            for(Actividad a:listaActividades){
-                if(aux==0){
-                    color1="#615dfa";
-                    color2="#8d7aff";
-                }else if(aux==1){
-                    color1="#417ae1";
-                    color2="#5aafff";
-                }else if(aux==2){
-                    color1="#2ebfef";
-                    color2="#4ce4ff";
-                }else if(aux==3){
-                    color1="#17cada";
-                    color2="#2becfe";
-                }else if(aux==4){
-                    color1="#64b9ff";
-                    color2="#8bd7ff";
-                }else if(aux==5){
-                    color1="#598dff";
-                    color2="#81a9ff";
-                }else if(aux==6){
-                    color1="#597aff";
-                    color2="#8981ff";
-                    aux=0;
-                }%>
-        <!-- PRODUCT CATEGORY BOX -->
-        <a class="product-category-box category-all" style="background: url('css/fotoVoleyActividades.png') no-repeat right top, linear-gradient(to right, <%=color1%>, <%=color2%>) <%if(a.isActividadFinalizada()){%><%=";opacity: 50%;"%><%}%> " href="<%=request.getContextPath()%>/ListaDeEventosServlet?idUsuario=<%=idUsuario%>&idActividad=<%=a.getIdActividad()%>">
-            <!-- PRODUCT CATEGORY BOX TITLE -->
-            <p class="product-category-box-title"><%=a.getNombre()%></p>
-            <!-- /PRODUCT CATEGORY BOX TITLE -->
-            <%if(a.isActividadFinalizada()){%>
-            <!-- PRODUCT CATEGORY BOX TEXT -->
-            <p class="product-category-box-text">FINALIZADO</p>
-            <!-- /PRODUCT CATEGORY BOX TEXT -->
-            <%}else{%>
-            <!-- PRODUCT CATEGORY BOX TEXT -->
-            <p class="product-category-box-text"><%=a.getCantPuntosPrimerLugar()%> puntos (1er lugar)</p>
-            <!-- /PRODUCT CATEGORY BOX TEXT -->
-            <%}%>
-            <!-- PRODUCT CATEGORY BOX TAG -->
-            <%String cantEventos=new DaoActividad().cantidadEventosPorActividad(a.getIdActividad());%>
-            <%if(cantEventos.equals("1")){%>
-            <p class="product-category-box-tag" style="color: <%=color1%>;">1 evento</p>
-            <!-- /PRODUCT CATEGORY BOX TAG -->
-            <%}else{%>
-            <p class="product-category-box-tag" style="color: <%=color1%>;"><%=cantEventos%> eventos</p>
-            <%}%>
-            <%if(idActividadDelegatura != null){
-                if(idActividadDelegatura==a.getIdActividad()){%>
-            <!-- PRODUCT CATEGORY BOX TAG -->
-            <p class="product-category-box-tag" style="color: <%=color1%>;">Delegado</p>
-            <!-- /PRODUCT CATEGORY BOX TAG -->
-            <%}}%>
-        </a>
-        <!-- /PRODUCT CATEGORY BOX -->
-        <%aux++;}%>
+    <div class="grid grid-3-9 small-space">
+        <!-- MARKETPLACE SIDEBAR -->
+        <div class="marketplace-sidebar">
+            <!-- SIDEBAR BOX -->
+            <div class="sidebar-box">
+                <!-- SIDEBAR BOX TITLE -->
+                <p class="sidebar-box-title">Estado</p>
+                <!-- SIDEBAR BOX TITLE -->
+                <div class="sidebar-box-items">
+                    <!-- CHECKBOX LINE -->
+                    <div class="checkbox-line">
+                        <!-- CHECKBOX WRAP -->
+                        <div class="checkbox-wrap">
+                            <input type="checkbox" id="category-logos-and-badges" name="category_logos-and-badges">
+                            <!-- CHECKBOX BOX -->
+                            <div class="checkbox-box">
+                                <!-- ICON CROSS -->
+                                <svg class="icon-cross">
+                                    <use xlink:href="#svg-cross"></use>
+                                </svg>
+                                <!-- /ICON CROSS -->
+                            </div>
+                            <!-- /CHECKBOX BOX -->
+                            <label for="category-logos-and-badges">Finalizado</label>
+                        </div>
+                        <!-- /CHECKBOX WRAP -->
+                        <!-- CHECKBOX LINE TEXT -->
+                        <p class="checkbox-line-text">1</p>
+                        <!-- /CHECKBOX LINE TEXT -->
+                    </div>
+                    <!-- /CHECKBOX LINE -->
+                    <%if(!rolUsuario.equals("Delegado General")){%>
+                    <!-- CHECKBOX LINE -->
+                    <div class="checkbox-line">
+                        <!-- CHECKBOX WRAP -->
+                        <div class="checkbox-wrap">
+                            <input type="checkbox" id="category-sketch" name="category_sketch">
+                            <!-- CHECKBOX BOX -->
+                            <div class="checkbox-box">
+                                <!-- ICON CROSS -->
+                                <svg class="icon-cross">
+                                    <use xlink:href="#svg-cross"></use>
+                                </svg>
+                                <!-- /ICON CROSS -->
+                            </div>
+                            <!-- /CHECKBOX BOX -->
+                            <label for="category-sketch">Apoyando</label>
+                        </div>
+                        <!-- /CHECKBOX WRAP -->
+
+                        <!-- CHECKBOX LINE TEXT -->
+                        <p class="checkbox-line-text">2</p>
+                        <!-- /CHECKBOX LINE TEXT -->
+                    </div>
+                    <!-- /CHECKBOX LINE -->
+                    <!-- /SIDEBAR BOX TITLE -->
+                    <%}if(delegadoDeEstaActividadID==idUsuario||rolUsuario.equals("Delegado General")){%>
+                    <!-- CHECKBOX LINE -->
+                    <div class="checkbox-line">
+                        <!-- CHECKBOX WRAP -->
+                        <div class="checkbox-wrap">
+                            <input type="checkbox" id="ola" name="ola">
+                            <!-- CHECKBOX BOX -->
+                            <div class="checkbox-box">
+                                <!-- ICON CROSS -->
+                                <svg class="icon-cross">
+                                    <use xlink:href="#svg-cross"></use>
+                                </svg>
+                                <!-- /ICON CROSS -->
+                            </div>
+                            <!-- /CHECKBOX BOX -->
+                            <label for="ola">Oculto</label>
+                        </div>
+                        <!-- /CHECKBOX WRAP -->
+                        <!-- CHECKBOX LINE TEXT -->
+                        <p class="checkbox-line-text">1</p>
+                        <!-- /CHECKBOX LINE TEXT -->
+                    </div>
+                    <!-- /CHECKBOX LINE -->
+                    <%}%>
+                </div>
+                    <!-- SIDEBAR BOX TITLE -->
+                    <p class="sidebar-box-title">Ubicación</p>
+                    <!-- /SIDEBAR BOX TITLE -->
+                <!-- SIDEBAR BOX ITEMS -->
+                <div class="sidebar-box-items">
+                    <!-- CHECKBOX LINE -->
+                    <div class="checkbox-line">
+                        <!-- CHECKBOX WRAP -->
+                        <div class="checkbox-wrap">
+                            <input type="checkbox" id="category-psd" name="category_psd">
+                            <!-- CHECKBOX BOX -->
+                            <div class="checkbox-box">
+                                <!-- ICON CROSS -->
+                                <svg class="icon-cross">
+                                    <use xlink:href="#svg-cross"></use>
+                                </svg>
+                                <!-- /ICON CROSS -->
+                            </div>
+                            <!-- /CHECKBOX BOX -->
+                            <label for="category-psd">Cancha de minas</label>
+                        </div>
+                        <!-- /CHECKBOX WRAP -->
+
+                        <!-- CHECKBOX LINE TEXT -->
+                        <p class="checkbox-line-text">3</p>
+                        <!-- /CHECKBOX LINE TEXT -->
+                    </div>
+                    <!-- /CHECKBOX LINE -->
+
+                    <!-- CHECKBOX LINE -->
+                    <div class="checkbox-line">
+                        <!-- CHECKBOX WRAP -->
+                        <div class="checkbox-wrap">
+                            <input type="checkbox" id="category-html" name="category_html">
+                            <!-- CHECKBOX BOX -->
+                            <div class="checkbox-box">
+                                <!-- ICON CROSS -->
+                                <svg class="icon-cross">
+                                    <use xlink:href="#svg-cross"></use>
+                                </svg>
+                                <!-- /ICON CROSS -->
+                            </div>
+                            <!-- /CHECKBOX BOX -->
+                            <label for="category-html">V305</label>
+                        </div>
+                        <!-- /CHECKBOX WRAP -->
+
+                        <!-- CHECKBOX LINE TEXT -->
+                        <p class="checkbox-line-text">4</p>
+                        <!-- /CHECKBOX LINE TEXT -->
+                    </div>
+                    <!-- /CHECKBOX LINE -->
+
+                    <!-- CHECKBOX LINE -->
+                    <div class="checkbox-line">
+                        <!-- CHECKBOX WRAP -->
+                        <div class="checkbox-wrap">
+                            <input type="checkbox" id="category-wp" name="category_wp">
+                            <!-- CHECKBOX BOX -->
+                            <div class="checkbox-box">
+                                <!-- ICON CROSS -->
+                                <svg class="icon-cross">
+                                    <use xlink:href="#svg-cross"></use>
+                                </svg>
+                                <!-- /ICON CROSS -->
+                            </div>
+                            <!-- /CHECKBOX BOX -->
+                            <label for="category-wp">Polideportivo</label>
+                        </div>
+                        <!-- /CHECKBOX WRAP -->
+
+                        <!-- CHECKBOX LINE TEXT -->
+                        <p class="checkbox-line-text">6</p>
+                        <!-- /CHECKBOX LINE TEXT -->
+                    </div>
+                    <!-- /CHECKBOX LINE -->
+
+                    <!-- CHECKBOX LINE -->
+                    <div class="checkbox-line">
+                        <!-- CHECKBOX WRAP -->
+                        <div class="checkbox-wrap">
+                            <input type="checkbox" id="category-illustrations" name="category_illustrations">
+                            <!-- CHECKBOX BOX -->
+                            <div class="checkbox-box">
+                                <!-- ICON CROSS -->
+                                <svg class="icon-cross">
+                                    <use xlink:href="#svg-cross"></use>
+                                </svg>
+                                <!-- /ICON CROSS -->
+                            </div>
+                            <!-- /CHECKBOX BOX -->
+                            <label for="category-illustrations">V306</label>
+                        </div>
+                        <!-- /CHECKBOX WRAP -->
+
+                        <!-- CHECKBOX LINE TEXT -->
+                        <p class="checkbox-line-text">2</p>
+                        <!-- /CHECKBOX LINE TEXT -->
+                    </div>
+                    <!-- /CHECKBOX LINE -->
+                    <!-- CHECKBOX LINE -->
+                    <div class="checkbox-line">
+                        <!-- CHECKBOX WRAP -->
+                        <div class="checkbox-wrap">
+                            <input type="checkbox" id="category-stream-packs" name="category_stream-packs">
+                            <!-- CHECKBOX BOX -->
+                            <div class="checkbox-box">
+                                <!-- ICON CROSS -->
+                                <svg class="icon-cross">
+                                    <use xlink:href="#svg-cross"></use>
+                                </svg>
+                                <!-- /ICON CROSS -->
+                            </div>
+                            <!-- /CHECKBOX BOX -->
+                            <label for="category-stream-packs">Otros</label>
+                        </div>
+                        <!-- /CHECKBOX WRAP -->
+
+                        <!-- CHECKBOX LINE TEXT -->
+                        <p class="checkbox-line-text">3</p>
+                        <!-- /CHECKBOX LINE TEXT -->
+                    </div>
+                    <!-- /CHECKBOX LINE -->
+                </div>
+                <!-- /SIDEBAR BOX ITEMS -->
+
+                <!-- SIDEBAR BOX TITLE -->
+                <p class="sidebar-box-title">Fecha</p>
+                <!-- /SIDEBAR BOX TITLE -->
+
+                <!-- SIDEBAR BOX ITEMS -->
+                <div class="sidebar-box-items">
+                    <!-- CHECKBOX LINE -->
+                    <div class="checkbox-line">
+                        <!-- CHECKBOX WRAP -->
+                        <div class="checkbox-wrap">
+                            <input type="checkbox" id="category-photoshop" name="category_photoshop">
+                            <!-- CHECKBOX BOX -->
+                            <div class="checkbox-box">
+                                <!-- ICON CROSS -->
+                                <svg class="icon-cross">
+                                    <use xlink:href="#svg-cross"></use>
+                                </svg>
+                                <!-- /ICON CROSS -->
+                            </div>
+                            <!-- /CHECKBOX BOX -->
+                            <label for="category-photoshop">Hoy</label>
+                        </div>
+                        <!-- /CHECKBOX WRAP -->
+
+                        <!-- CHECKBOX LINE TEXT -->
+                        <p class="checkbox-line-text">4</p>
+                        <!-- /CHECKBOX LINE TEXT -->
+                    </div>
+                    <!-- /CHECKBOX LINE -->
+
+                    <!-- CHECKBOX LINE -->
+                    <div class="checkbox-line">
+                        <!-- CHECKBOX WRAP -->
+                        <div class="checkbox-wrap">
+                            <input type="checkbox" id="category-illustrator" name="category_illustrator">
+                            <!-- CHECKBOX BOX -->
+                            <div class="checkbox-box">
+                                <!-- ICON CROSS -->
+                                <svg class="icon-cross">
+                                    <use xlink:href="#svg-cross"></use>
+                                </svg>
+                                <!-- /ICON CROSS -->
+                            </div>
+                            <!-- /CHECKBOX BOX -->
+                            <label for="category-illustrator">Mañana</label>
+                        </div>
+                        <!-- /CHECKBOX WRAP -->
+
+                        <!-- CHECKBOX LINE TEXT -->
+                        <p class="checkbox-line-text">3</p>
+                        <!-- /CHECKBOX LINE TEXT -->
+                    </div>
+                    <!-- /CHECKBOX LINE -->
+
+                    <!-- CHECKBOX LINE -->
+                    <div class="checkbox-line">
+                        <!-- CHECKBOX WRAP -->
+                        <div class="checkbox-wrap">
+                            <input type="checkbox" id="category-html-css" name="category_html-css">
+                            <!-- CHECKBOX BOX -->
+                            <div class="checkbox-box">
+                                <!-- ICON CROSS -->
+                                <svg class="icon-cross">
+                                    <use xlink:href="#svg-cross"></use>
+                                </svg>
+                                <!-- /ICON CROSS -->
+                            </div>
+                            <!-- /CHECKBOX BOX -->
+                            <label for="category-html-css">En 2 a más días</label>
+                        </div>
+                        <!-- /CHECKBOX WRAP -->
+
+                        <!-- CHECKBOX LINE TEXT -->
+                        <p class="checkbox-line-text">10</p>
+                        <!-- /CHECKBOX LINE TEXT -->
+                    </div>
+                    <!-- /CHECKBOX LINE -->
+                </div>
+                <!-- /SIDEBAR BOX ITEMS -->
+
+                <!-- SIDEBAR BOX TITLE -->
+                <p class="sidebar-box-title">Rango de horas</p>
+                <!-- /SIDEBAR BOX TITLE -->
+
+                <!-- SIDEBAR BOX ITEMS -->
+                <div class="sidebar-box-items small-space">
+                    <!-- FORM ITEM -->
+                    <div class="form-item split">
+                        <!-- FORM INPUT -->
+                        <div class="form-input small active always-active">
+                            <label for="price-from">Desde</label>
+                            <input type="text" id="price-from" name="price_from">
+                        </div>
+                        <!-- /FORM INPUT -->
+
+                        <!-- FORM INPUT -->
+                        <div class="form-input small active always-active">
+                            <label for="price-to">Hasta</label>
+                            <input type="text" id="price-to" name="price_to">
+                        </div>
+                        <!-- /FORM INPUT -->
+                    </div>
+                    <!-- /FORM ITEM -->
+                </div>
+                <!-- /SIDEBAR BOX ITEMS -->
+
+                <!-- BUTTON -->
+                <p class="button small primary">Aplicar filtros de categoría</p>
+                <!-- /BUTTON -->
+            </div>
+            <!-- /SIDEBAR BOX -->
+        </div>
+        <!-- /MARKETPLACE SIDEBAR -->
+
+        <!-- MARKETPLACE CONTENT -->
+        <div class="marketplace-content">
+            <!-- GRID -->
+            <div class="grid grid-3-3-3 centered">
+                <%for(Evento e:listaEventos){%>
+                <!-- PRODUCT PREVIEW -->
+                <%if(delegadoDeEstaActividadID==idUsuario||rolUsuario.equals("Delegado General")){%>
+                <div class="product-preview">
+                    <!-- PRODUCT PREVIEW IMAGE -->
+                    <a href="<%=request.getContextPath()%>/EventoServlet?idEvento=<%=e.getIdEvento()%>&idUsuario=<%=idUsuario%>">
+                        <figure class="product-preview-image liquid">
+                            <img src="css/fibraVShormigonMedio.png" alt="item-01">
+                        </figure>
+                    </a>
+                    <!-- /PRODUCT PREVIEW IMAGE -->
+
+                    <!-- PRODUCT PREVIEW INFO -->
+                    <div class="product-preview-info">
+                        <!-- TEXT STICKER -->
+                        <p class="text-sticker" style="right: 180px;">
+                            <%if(e.isEventoOculto()){%>
+                            <span style="color: green;">Oculto</span>
+                            <%}else{%>
+                            <span style="color: brown;">No oculto</span><%}%>
+                        </p>
+                        <p class="text-sticker"><span class="highlighted">Fecha: </span>
+                            <%if(e.isEventoFinalizado()){%>
+                            <span style="color: purple;"><%=Integer.parseInt(e.getFecha().toString().split("-")[2])%> de Octubre</span>
+                            <%}else{%>
+                            <%int diasQueFaltanParaElEvento=new DaoEvento().diferenciaDiasEventoActualidad(e.getIdEvento());
+                                if(diasQueFaltanParaElEvento==0){%>
+                            <span style="color: red;">Hoy</span>
+                            <%}else if(diasQueFaltanParaElEvento==1){%>
+                            <span style="color: orangered;">Mañana</span>
+                            <%}else{%>
+                            <span style="color: orange;">En 2 días</span>
+                            <%}}%>
+                        </p>
+                        <!-- /TEXT STICKER -->
+                        <!-- PRODUCT PREVIEW TITLE -->
+                        <%int tamanoLetraTitulo=0;
+                        if(e.getTitulo().length()>36){
+                            tamanoLetraTitulo=90;
+                        }else if (e.getTitulo().length()>33){
+                            tamanoLetraTitulo=95;
+                        }else if(e.getTitulo().length()>30){
+                            tamanoLetraTitulo=100;
+                        }else{
+                            tamanoLetraTitulo=110;
+                        }%>
+                        <p class="product-preview-title d-flex justify-content-center"><a style="font-size: <%=tamanoLetraTitulo%>%"><%=e.getTitulo()%></a></p>
+                        <!-- /PRODUCT PREVIEW TITLE -->
+
+                        <div class="row d-flex justify-content-around">
+                            <div class="col-5">
+                                <!-- PRODUCT PREVIEW CATEGORY -->
+                                <p class="product-preview-category digital"><span class="highlighted">Hora: </span> <%String aux[]=e.getHora().toString().split(":");%><span style="color: blue"><%=Integer.parseInt(aux[0])+":"+aux[1]%></span></p>
+
+                                <!-- /PRODUCT PREVIEW CATEGORY -->
+                            </div>
+                            <div class="col-7">
+                                <!-- PRODUCT PREVIEW CATEGORY -->
+                                <p class="product-preview-category digital"><span class="highlighted">Lugar: </span>
+                                    <%String lugar=new DaoEvento().lugarPorEventoID(e.getLugarEvento());
+                                        String lugarAux;
+                                        if(lugar.length()>14) {
+                                            String aux3[] = lugar.split(" ");
+                                            lugarAux = aux3[0].charAt(0)+".";
+                                            for (int i = 1; i < aux3.length; i++) {
+                                                lugarAux += " " + aux3[i];
+                                            }
+                                        }else{
+                                            lugarAux=lugar;
+                                        }%>
+                                    <span style="color: brown"><%=lugarAux%></span>
+                                </p>
+                                <!-- /PRODUCT PREVIEW CATEGORY -->
+                            </div>
+                        </div>
+                        <!-- PRODUCT PREVIEW TEXT -->
+                        <%String texto="";
+                            if(e.isEventoFinalizado()){
+                                texto=e.getResumen();
+                            }else {
+                                texto = e.getFraseMotivacional() + " " + e.getDescripcionEventoActivo();
+                            }
+                            String textoAux = "";
+                            if(texto.length()>=107) {
+                                char charAux[] = texto.toCharArray();
+
+                                for (int i = 0; i < 107; i++) {
+                                    textoAux += charAux[i];
+                                }textoAux+="...";
+                            }else{
+                                textoAux=texto;
+                            }
+                        %>
+                        <p class="product-preview-text"><%=textoAux%></p>
+                        <!-- /PRODUCT PREVIEW TEXT -->
+                    </div>
+                    <!-- /PRODUCT PREVIEW INFO -->
+                </div>
+                <!-- /PRODUCT PREVIEW -->
+                <%}else{%>
+                <!-- /PRODUCT PREVIEW -->
+                <div class="product-preview">
+                    <!-- PRODUCT PREVIEW IMAGE -->
+                    <a href="<%=request.getContextPath()%>/EventoServlet?idEvento=<%=e.getIdEvento()%>&idUsuario=<%=idUsuario%>">
+                        <figure class="product-preview-image liquid">
+                            <img src="css/fibraVShormigonMedio.png" alt="item-01">
+                        </figure>
+                    </a>
+                    <!-- /PRODUCT PREVIEW IMAGE -->
+
+                    <!-- PRODUCT PREVIEW INFO -->
+                    <div class="product-preview-info">
+                        <!-- TEXT STICKER -->
+                        <%if(new DaoAlumnoPorEvento().verificarApoyo(e.getIdEvento(),idUsuario)!=null){%>
+                        <p class="text-sticker" style="right: 180px;"><span style="color: green;">Apoyando</span></p>
+                        <%}else{%>
+                        <p class="text-sticker" style="right: 170px;"><span style="color: brown;">No apoyando</span></p>
+                        <%}%>
+                        <p class="text-sticker"><span class="highlighted">Fecha: </span>
+                            <%if(e.isEventoFinalizado()){%>
+                            <span style="color: purple;"><%=Integer.parseInt(e.getFecha().toString().split("-")[2])%> de Octubre</span>
+                            <%}else{%>
+                            <%int diasQueFaltanParaElEvento=new DaoEvento().diferenciaDiasEventoActualidad(e.getIdEvento());
+                                if(diasQueFaltanParaElEvento==0){%>
+                            <span style="color: red;">Hoy</span>
+                            <%}else if(diasQueFaltanParaElEvento==1){%>
+                            <span style="color: orangered;">Mañana</span>
+                            <%}else{%>
+                            <span style="color: orange;">En 2 días</span>
+                            <%}}%>
+                        </p>
+                        <!-- /TEXT STICKER -->
+                        <%int tamanoLetraTitulo=0;
+                            if(e.getTitulo().length()>36){
+                                tamanoLetraTitulo=90;
+                            }else if (e.getTitulo().length()>33){
+                                tamanoLetraTitulo=95;
+                            }else if(e.getTitulo().length()>30){
+                                tamanoLetraTitulo=100;
+                            }else{
+                                tamanoLetraTitulo=110;
+                            }%>
+                        <p class="product-preview-title d-flex justify-content-center"><a style="font-size: <%=tamanoLetraTitulo%>%"><%=e.getTitulo()%></a></p>
+
+                        <div class="row d-flex justify-content-around">
+                            <div class="col-5">
+                                <!-- PRODUCT PREVIEW CATEGORY -->
+                                <p class="product-preview-category digital"><span class="highlighted">Hora: </span> <%String aux[]=e.getHora().toString().split(":");%><span style="color: blue"><%=Integer.parseInt(aux[0])+":"+aux[1]%></span>
+                                </p>
+
+                                <!-- /PRODUCT PREVIEW CATEGORY -->
+                            </div>
+                            <div class="col-7">
+                                <!-- PRODUCT PREVIEW CATEGORY -->
+                                <p class="product-preview-category digital"><span class="highlighted">Lugar: </span>
+                                    <%String lugar=new DaoEvento().lugarPorEventoID(e.getLugarEvento());
+                                        String lugarAux;
+                                        if(lugar.length()>14) {
+                                            String aux3[] = lugar.split(" ");
+                                            lugarAux = aux3[0].charAt(0)+".";
+                                            for (int i = 1; i < aux3.length; i++) {
+                                                lugarAux += " " + aux3[i];
+                                            }
+                                        }else
+                                            lugarAux=lugar;%>
+                                    <span style="color: brown"><%=lugarAux%></span></p>
+                                <!-- /PRODUCT PREVIEW CATEGORY -->
+                            </div>
+                        </div>
+                        <!-- PRODUCT PREVIEW TEXT -->
+                        <%String texto="";
+                            if(e.isEventoFinalizado()){
+                                texto=e.getResumen();
+                            }else {
+                                texto = e.getFraseMotivacional() + " " + e.getDescripcionEventoActivo();
+                            }
+                            String textoAux = "";
+                            if(texto.length()>=107) {
+                                char charAux[] = texto.toCharArray();
+
+                                for (int i = 0; i < 107; i++) {
+                                    textoAux += charAux[i];
+                                }textoAux+="...";
+                            }else{
+                                textoAux=texto;
+                            }
+                        %>
+                        <p class="product-preview-text"><%=textoAux%></p>
+                        <!-- /PRODUCT PREVIEW TEXT -->
+                    </div>
+                    <!-- /PRODUCT PREVIEW INFO -->
+                </div>
+                <!-- PRODUCT PREVIEW -->
+                <%}}%>
+            </div>
+            <!-- /GRID -->
+
+            <!-- SECTION PAGER BAR WRAP -->
+            <div class="section-pager-bar-wrap align-center">
+                <!-- SECTION PAGER BAR -->
+                <div class="section-pager-bar">
+                    <!-- SECTION PAGER -->
+                    <div class="section-pager">
+                        <!-- SECTION PAGER ITEM -->
+                        <div class="section-pager-item active">
+                            <!-- SECTION PAGER ITEM TEXT -->
+                            <p class="section-pager-item-text">01</p>
+                            <!-- /SECTION PAGER ITEM TEXT -->
+                        </div>
+                        <!-- /SECTION PAGER ITEM -->
+
+                        <!-- SECTION PAGER ITEM -->
+                        <div class="section-pager-item">
+                            <!-- SECTION PAGER ITEM TEXT -->
+                            <p class="section-pager-item-text">02</p>
+                            <!-- /SECTION PAGER ITEM TEXT -->
+                        </div>
+                        <!-- /SECTION PAGER ITEM -->
+
+                        <!-- SECTION PAGER ITEM -->
+                        <div class="section-pager-item">
+                            <!-- SECTION PAGER ITEM TEXT -->
+                            <p class="section-pager-item-text">03</p>
+                            <!-- /SECTION PAGER ITEM TEXT -->
+                        </div>
+                        <!-- /SECTION PAGER ITEM -->
+
+                        <!-- SECTION PAGER ITEM -->
+                        <div class="section-pager-item">
+                            <!-- SECTION PAGER ITEM TEXT -->
+                            <p class="section-pager-item-text">04</p>
+                            <!-- /SECTION PAGER ITEM TEXT -->
+                        </div>
+                        <!-- /SECTION PAGER ITEM -->
+
+                        <!-- SECTION PAGER ITEM -->
+                        <div class="section-pager-item">
+                            <!-- SECTION PAGER ITEM TEXT -->
+                            <p class="section-pager-item-text">05</p>
+                            <!-- /SECTION PAGER ITEM TEXT -->
+                        </div>
+                        <!-- /SECTION PAGER ITEM -->
+
+                        <!-- SECTION PAGER ITEM -->
+                        <div class="section-pager-item">
+                            <!-- SECTION PAGER ITEM TEXT -->
+                            <p class="section-pager-item-text">06</p>
+                            <!-- /SECTION PAGER ITEM TEXT -->
+                        </div>
+                        <!-- /SECTION PAGER ITEM -->
+                    </div>
+                    <!-- /SECTION PAGER -->
+
+                    <!-- SECTION PAGER CONTROLS -->
+                    <div class="section-pager-controls">
+                        <!-- SLIDER CONTROL -->
+                        <div class="slider-control left disabled">
+                            <!-- SLIDER CONTROL ICON -->
+                            <svg class="slider-control-icon icon-small-arrow">
+                                <use xlink:href="#svg-small-arrow"></use>
+                            </svg>
+                            <!-- /SLIDER CONTROL ICON -->
+                        </div>
+                        <!-- /SLIDER CONTROL -->
+
+                        <!-- SLIDER CONTROL -->
+                        <div class="slider-control right">
+                            <!-- SLIDER CONTROL ICON -->
+                            <svg class="slider-control-icon icon-small-arrow">
+                                <use xlink:href="#svg-small-arrow"></use>
+                            </svg>
+                            <!-- /SLIDER CONTROL ICON -->
+                        </div>
+                        <!-- /SLIDER CONTROL -->
+                    </div>
+                    <!-- /SECTION PAGER CONTROLS -->
+                </div>
+                <!-- /SECTION PAGER BAR -->
+            </div>
+            <!-- /SECTION PAGER BAR WRAP -->
+        </div>
+        <!-- /MARKETPLACE CONTENT -->
+
     </div>
     <!-- /GRID -->
+
 </div>
+
 <!-- /CONTENT GRID -->
 <footer style="font-size: 80%;">
     <!-- Primera fila -->
@@ -1509,161 +2054,6 @@
         </div>
     </div>
 </footer>
-<div class="overlay" id="overlay"></div>
-<%if(rolUsuario.equals("Delegado de Actividad")){%>
-<div class="popup" id="popupFinalizar">
-    <svg class="cerrarPopup" id="cerrarPopupFinalizar" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M11.4142 10L16.7071 4.70711C17.0976 4.31658 17.0976 3.68342 16.7071 3.29289C16.3166 2.90237 15.6834 2.90237 15.2929 3.29289L10 8.58579L4.70711 3.29289C4.31658 2.90237 3.68342 2.90237 3.29289 3.29289C2.90237 3.68342 2.90237 4.31658 3.29289 4.70711L8.58579 10L3.29289 15.2929C2.90237 15.6834 2.90237 16.3166 3.29289 16.7071C3.68342 17.0976 4.31658 17.0976 4.70711 16.7071L10 11.4142L15.2929 16.7071C15.6834 17.0976 16.3166 17.0976 16.7071 16.7071C17.0976 16.3166 17.0976 15.6834 16.7071 15.2929L11.4142 10Z" fill="black"/>
-    </svg>
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-sm-1"></div>
-            <div class="col-sm-10">
-                <label for="delegado"><h5 style="text-align: center;">Seleccione la actividad: </h5></label>
-                <div style="margin-top: 20px;">
-                    <input type="text" multiple id="delegado" list="actividades" placeholder="Actividad" required>
-                    <datalist id="actividades">
-                        <%for(Actividad a:listaActividades){%>
-                        <option value="<%=a.getNombre()%>"><%=a.getNombre()%></option>
-                        <%}%>
-                    </datalist>
-                </div>
-            </div>
-            <div class="col-sm-1"></div>
-        </div>
-    </div>
-    <br>
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-sm-6" style="margin-top: 5px;">
-                <button class="button secondary" style="opacity: 50%;" id="cerrarPopupFinalizar1" disabled="true">Finalizar</button>
-            </div>
-            <div class="col-sm-6" style="margin-top: 5px;">
-                <button class="button secondary" id="cerrarPopupFinalizar2" style="background-color: grey;">Cancelar</button>
-            </div>
-        </div>
-    </div>
-</div>
-<%}else if(rolUsuario.equals("Delegado General")){%>
-<div class="popup contenedorCrear" style="width: 700px;" id="popupCrear">
-    <svg class="cerrarPopup" id="cerrarPopupCrear" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M11.4142 10L16.7071 4.70711C17.0976 4.31658 17.0976 3.68342 16.7071 3.29289C16.3166 2.90237 15.6834 2.90237 15.2929 3.29289L10 8.58579L4.70711 3.29289C4.31658 2.90237 3.68342 2.90237 3.29289 3.29289C2.90237 3.68342 2.90237 4.31658 3.29289 4.70711L8.58579 10L3.29289 15.2929C2.90237 15.6834 2.90237 16.3166 3.29289 16.7071C3.68342 17.0976 4.31658 17.0976 4.70711 16.7071L10 11.4142L15.2929 16.7071C15.6834 17.0976 16.3166 17.0976 16.7071 16.7071C17.0976 16.3166 17.0976 15.6834 16.7071 15.2929L11.4142 10Z" fill="black"/>
-    </svg>
-    <div class="container-fluid">
-
-        <div class="row"><div class="col"><h5 style="text-align: center;">Crear actividad</h5></div></div>
-        <div class="row">
-            <div class="col-sm-7">
-                <br>
-                <label for="nombreActividad" style="margin-top: 25px;"><b>Nombre de la actividad:</b></label>
-                <input type="text" id="nombreActividad" placeholder="Valorant" required>
-
-                <label style="margin-top: 25px;" for="delegado"><b>Seleccionar delegado de actividad:</b></label>
-                <input type="text" multiple id="delegado" list="alumnos" placeholder="Delegado de actividad" required>
-
-                <datalist id="alumnos">
-                    <option value="Alex Segovia">Alex Segovia</option>
-                    <option value="Gabriel Talledo">Gabriel Talledo</option>
-                    <option value="Hineill Céspedes">Hineill Céspedes</option>
-                    <option value="Jean Piere Ipurre">Jean Piere Ipurre</option>
-                    <option value="Josh Yauri">Josh Yauri</option>
-                    <option value="Mayte Asto">Mayte Asto</option>
-                    <option value="Santiago Yong">Santiago Yong</option>
-                </datalist>
-
-                <label style="margin-top: 25px;" for="descripcion"><b>Descripción de la actividad:</b></label>
-                <input type="text" id="descripcion" placeholder="Descripción" required>
-
-                <div style="display: flex; justify-content: left; margin-top: 25px;">
-                    <p style="width: 32%;"><b>Ocultar actividad</b></p>
-                    <input type="checkbox" style="width: 10%;">
-                </div>
-            </div>
-            <div class="col-sm-5 contenedor2" style="top: 90px">
-                <div class="container-fluid btn btn-file1">
-                    <img class="img-fluid" src="css/subirArchivo.jpg" style="opacity: 50%;" alt="">
-                    <p><b>Foto de la actividad</b></p>
-                    <input type="file" style="background-color: white; margin-top: 25px;" accept="image/png, .jpeg, .jpg"></input>
-                </div>
-            </div>
-        </div>
-    </div>
-    <br>
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-sm-6" style="margin-top: 5px;">
-                <button type="submit" class="button secondary" id="cerrarPopupCrear1">Crear</button>
-            </div>
-            <div class="col-sm-6" style="margin-top: 5px;">
-                <button class="button secondary" id="cerrarPopupCrear2" style="background-color: grey;">Cancelar</button>
-            </div>
-        </div>
-    </div>
-</div>
-<%}%>
-<script>
-    // Obtener elementos del DOM
-    const textElement = document.getElementById('delegado');
-    const buttonElement = document.getElementById('cerrarPopupFinalizar1');
-    const opciones=document.getElementById('actividades').getElementsByTagName('option');
-    // Agregar un evento de escucha al campo de texto y la lista de opciones
-    textElement.addEventListener('input', validarCampo);
-
-    function validarCampo() {
-        const textoIngresado = textElement.value.trim();
-        // Verificar si la opción seleccionada está en el texto ingresado
-
-        for(let i=0; i<opciones.length; i++){
-            if (textoIngresado==opciones[i].value) {
-                buttonElement.removeAttribute('disabled'); // Activar el botón
-                buttonElement.style.opacity="100%";
-                break;
-            } else {
-                buttonElement.setAttribute('disabled', 'true'); // Desactivar el botón
-                buttonElement.style.opacity="50%";
-            }
-        }
-    }
-    //document.getElementById('cerrarPopupFinalizar1').addEventListener('click',document.getElementById(String(textElement.value)).style.opacity = '50%');
-    function popupFunc(popupId,abrirId,cerrarClass){
-        const showPopup=document.getElementById(abrirId);
-        const overlay=document.getElementById('overlay');
-        const popup=document.getElementById(popupId);
-        const mostrarPopup = () => {
-            overlay.style.display = 'block';
-            popup.style.display = 'block';
-            // Desactivar el scroll
-            document.body.style.overflow = 'hidden';
-        };
-        showPopup.addEventListener('click', mostrarPopup);
-        const cerrarPopup = () => {
-            overlay.style.display = 'none';
-            popup.style.display = 'none';
-            document.body.style.overflow = 'auto';
-
-        };
-        for(let i=0;i<cerrarClass.length;i++){
-            document.getElementById(cerrarClass[i]).addEventListener('click', cerrarPopup);
-        }
-
-        overlay.addEventListener('click', (e) => {
-            if (e.target === overlay) {
-                cerrarPopup();
-            }
-        });
-
-        document.addEventListener('keydown', (event) => {
-            if (event.key === 'Escape') {
-                cerrarPopup();
-            }
-        });
-    }
-    <%if(rolUsuario.equals("Delegado de Actividad")){%>
-    popupFunc('popupFinalizar','mostrarPopupFinalizar',['cerrarPopupFinalizar','cerrarPopupFinalizar1','cerrarPopupFinalizar2']);
-    <%}else if(rolUsuario.equals("Delegado General")){%>
-    popupFunc('popupCrear','mostrarPopupCrear',['cerrarPopupCrear','cerrarPopupCrear1','cerrarPopupCrear2']);
-    <%}%>
-</script>
 <!-- app -->
 <script src="js/utils/app.js"></script>
 <!-- page loader -->

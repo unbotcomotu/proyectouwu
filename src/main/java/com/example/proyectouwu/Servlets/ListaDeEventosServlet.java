@@ -2,6 +2,7 @@ package com.example.proyectouwu.Servlets;
 
 import com.example.proyectouwu.Daos.DaoActividad;
 import com.example.proyectouwu.Daos.DaoEvento;
+import com.example.proyectouwu.Daos.DaoLugarEvento;
 import com.example.proyectouwu.Daos.DaoUsuario;
 import jakarta.servlet.*;
 import jakarta.servlet.http.*;
@@ -30,6 +31,7 @@ public class ListaDeEventosServlet extends HttpServlet {
         request.setAttribute("listaEventos",dEvento.listarEventos(idActividad));
         request.setAttribute("nombreActividad",dActividad.nombreActividadPorID(idActividad));
         request.setAttribute("delegadoDeEstaActividadID",dActividad.idDelegadoDeActividadPorActividad(idActividad));
+        request.setAttribute("listaLugares",new DaoLugarEvento().listarLugares());
         String action = request.getParameter("action") == null ? "default" : request.getParameter("action");
         switch (action){
             case "default":

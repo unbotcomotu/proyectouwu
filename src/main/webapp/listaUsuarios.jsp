@@ -1,6 +1,25 @@
+<%@ page import="java.util.ArrayList" %>
+<%@ page import="com.example.proyectouwu.Beans.Usuario" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
   <head>
+    <%int idUsuario=(int) request.getAttribute("idUsuario");
+      String rolUsuario=(String) request.getAttribute("rolUsuario");
+      String nombreCompletoUsuario=(String) request.getAttribute("nombreCompletoUsuario");
+      ArrayList<Usuario>listaUsuarios=(ArrayList<Usuario>) request.getAttribute("listaUsuarios");
+      Integer idActividadDelegatura=(Integer)request.getAttribute("idActividadDelegatura");
+      String vistaActual=(String) request.getAttribute("vistaActual");
+      ArrayList<String> listaCorreosDelegadosGenerales=(ArrayList<String>)request.getAttribute("correosDelegadosGenerales");
+      ArrayList<Usuario>listaIDyNombresDelegadosDeActividad=(ArrayList<Usuario>)request.getAttribute("IDyNombreDelegadosDeActividad");
+      String colorRol;
+      if(rolUsuario.equals("Alumno")){
+        colorRol="";
+      }else if(rolUsuario.equals("Delegado de Actividad")){
+        colorRol="green";
+      }else{
+        colorRol="orange";
+      }
+    %>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <!-- bootstrap 4.3.1 -->
@@ -123,9 +142,9 @@
       <!-- MENU ITEM -->
       <!-- MENU ITEM -->
       <!-- MENU ITEM -->
-      <li class="menu-item active">
+      <li class="menu-item <%if(vistaActual.equals("miCuenta")){%>active<%}%>">
         <!-- MENU ITEM LINK -->
-        <a class="menu-item-link text-tooltip-tfr" href="miCuentaDelGen.html" data-title="Mi cuenta">
+        <a class="menu-item-link text-tooltip-tfr" href="<%=request.getContextPath()%>/MiCuentaServlet?idUsuario=<%=idUsuario%>" data-title="Mi cuenta">
           <!-- MENU ITEM LINK ICON -->
           <svg class="menu-item-link-icon icon-members">
             <use xlink:href="#svg-members"></use>
@@ -135,18 +154,18 @@
         <!-- /MENU ITEM LINK -->
       </li>
       <!-- /MENU ITEM -->
-      <li class="menu-item">
+      <li class="menu-item <%if(vistaActual.equals("listaDeActividades")){%>active<%}%>">
         <!-- MENU ITEM LINK -->
-        <a class="menu-item-link text-tooltip-tfr" href="actividadesDelGen.html" data-title="Actividades">
+        <a class="menu-item-link text-tooltip-tfr" href="<%=request.getContextPath()%>/ListaDeActividadesServlet?idUsuario=<%=idUsuario%>" data-title="Actividades">
           <!-- MENU ITEM LINK ICON -->
           <img src="css/actividadIconoGris.png" class="menu-item-link-icon icon-members" alt="">
           <!-- /MENU ITEM LINK ICON -->
         </a>
         <!-- /MENU ITEM LINK -->
       </li>
-      <li class="menu-item">
+      <li class="menu-item <%if(vistaActual.equals("analiticas")){%>active<%}%>">
         <!-- MENU ITEM LINK -->
-        <a class="menu-item-link text-tooltip-tfr text-center" href="analiticas.html" data-title="Analíticas">
+        <a class="menu-item-link text-tooltip-tfr text-center" href="<%=request.getContextPath()%>/AnaliticasServlet?idUsuario=<%=idUsuario%>" data-title="Analíticas">
           <!-- MENU ITEM LINK ICON -->
           <img src="css/analiticasIcono.png" width="70%" alt="">
           <!-- /MENU ITEM LINK ICON -->
@@ -154,9 +173,9 @@
         <!-- /MENU ITEM LINK -->
       </li>
       <!-- /MENU ITEM -->
-      <li class="menu-item">
+      <li class="menu-item <%if(vistaActual.equals("listaDeUsuarios")){%>active<%}%>">
         <!-- MENU ITEM LINK -->
-        <a class="menu-item-link text-tooltip-tfr text-center" href="usuariosDelGen.html" data-title="Usuarios">
+        <a class="menu-item-link text-tooltip-tfr text-center" href="<%=request.getContextPath()%>/ListaDeUsuariosServlet?idUsuario=<%=idUsuario%>" data-title="Usuarios">
           <!-- MENU ITEM LINK ICON -->
           <img src="css/usuariosIcono.png" width="70%" alt="">
           <!-- /MENU ITEM LINK ICON -->
@@ -210,11 +229,11 @@
       <!-- /USER SHORT DESCRIPTION AVATAR -->
 
       <!-- USER SHORT DESCRIPTION TITLE -->
-      <p class="user-short-description-title"><a>Josh Yauri</a></p>
+      <p class="user-short-description-title"><a><%=nombreCompletoUsuario%></a></p>
       <!-- /USER SHORT DESCRIPTION TITLE -->
 
       <!-- USER SHORT DESCRIPTION TEXT -->
-      <p class="user-short-description-text"><a style="color: orange">Delegado general</a></p>
+      <p class="user-short-description-text"><a style="color: orange"><%=rolUsuario%></a></p>
       <!-- /USER SHORT DESCRIPTION TEXT -->
     </div>
     <!-- /USER SHORT DESCRIPTION -->
@@ -223,9 +242,9 @@
     <hr>
     <!-- MENU -->
     <!-- MENU ITEM -->
-    <li class="menu-item active">
+    <li class="menu-item">
       <!-- MENU ITEM LINK -->
-      <a class="menu-item-link" href="miCuentaDelGen.html">
+      <a class="menu-item-link" href="<%=request.getContextPath()%>/MiCuentaServlet?idUsuario=<%=idUsuario%>">
         <!-- MENU ITEM LINK ICON -->
         <svg class="menu-item-link-icon icon-members">
           <use xlink:href="#svg-members"></use>
@@ -242,7 +261,7 @@
     <!-- MENU ITEM -->
     <li class="menu-item">
       <!-- MENU ITEM LINK -->
-      <a class="menu-item-link" href="actividadesDelGen.html">
+      <a class="menu-item-link" href="<%=request.getContextPath()%>/ListaDeActividadesServlet?idUsuario=<%=idUsuario%>">
         <!-- MENU ITEM LINK ICON -->
         <img src="css/actividadIconoGris.png" width="7%" alt="">
         <!-- /MENU ITEM LINK ICON -->
@@ -255,7 +274,7 @@
     <!-- MENU ITEM -->
     <li class="menu-item">
       <!-- MENU ITEM LINK -->
-      <a class="menu-item-link" href="analiticas.html">
+      <a class="menu-item-link" href="<%=request.getContextPath()%>/AnaliticasServlet?idUsuario=<%=idUsuario%>">
         <!-- MENU ITEM LINK ICON -->
         <img src="css/analiticasIcono.png" width="7%" alt="">
         <!-- /MENU ITEM LINK ICON -->
@@ -267,7 +286,7 @@
     <br>
     <li class="menu-item">
       <!-- MENU ITEM LINK -->
-      <a class="menu-item-link" href="usuariosDelGen.html">
+      <a class="menu-item-link" href="<%=request.getContextPath()%>/ListaDeUsuariosServlet?idUsuario=<%=idUsuario%>">
         <!-- MENU ITEM LINK ICON -->
         <img src="css/usuariosIcono.png" width="7%" alt="">
         <!-- /MENU ITEM LINK ICON -->
@@ -333,17 +352,17 @@
         <!-- /USER AVATAR -->
 
         <!-- NAVIGATION WIDGET INFO TITLE -->
-        <p class="navigation-widget-info-title"><a>Josh Yauri</a></p>
+        <p class="navigation-widget-info-title"><a><%=nombreCompletoUsuario%></a></p>
         <!-- /NAVIGATION WIDGET INFO TITLE -->
 
         <!-- NAVIGATION WIDGET INFO TEXT -->
-        <p class="navigation-widget-info-text" style="color: orange;">Delegado general</p>
+        <p class="navigation-widget-info-text" style="color: orange;"><%=rolUsuario%></p>
         <!-- /NAVIGATION WIDGET INFO TEXT -->
       </div>
       <!-- /NAVIGATION WIDGET INFO -->
 
       <!-- NAVIGATION WIDGET BUTTON -->
-      <p class="navigation-widget-info-button button small secondary">Cerrar sesión</p>
+      <a href="<%=request.getContextPath()%>" class="navigation-widget-info-button button small secondary">Cerrar sesión</a>
       <!-- /NAVIGATION WIDGET BUTTON -->
     </div>
     <!-- /NAVIGATION WIDGET INFO WRAP -->
@@ -358,7 +377,7 @@
       <!-- /NAVIGATION WIDGET SECTION TITLE -->
 
       <!-- NAVIGATION WIDGET SECTION LINK -->
-      <a class="navigation-widget-section-link" href="miCuentaDelGen.html">Mi cuenta</a>
+      <a class="navigation-widget-section-link" href="<%=request.getContextPath()%>/MiCuentaServlet?idUsuario=<%=idUsuario%>">Mi cuenta</a>
       <!-- /NAVIGATION WIDGET SECTION LINK -->
 
 
@@ -367,15 +386,15 @@
       <!-- /NAVIGATION WIDGET SECTION TITLE -->
 
       <!-- NAVIGATION WIDGET SECTION LINK -->
-      <a class="navigation-widget-section-link" href="actividadesDelGen.html">Actividades</a>
+      <a class="navigation-widget-section-link" href="<%=request.getContextPath()%>/ListaDeActividadesServlet?idUsuario=<%=idUsuario%>">Actividades</a>
       <!-- /NAVIGATION WIDGET SECTION LINK -->
 
       <!-- NAVIGATION WIDGET SECTION LINK -->
-      <a class="navigation-widget-section-link" href="analiticas.html">Analíticas</a>
+      <a class="navigation-widget-section-link" href="<%=request.getContextPath()%>/AnaliticasServlet?idUsuario=<%=idUsuario%>">Analíticas</a>
       <!-- /NAVIGATION WIDGET SECTION LINK -->
 
       <!-- NAVIGATION WIDGET SECTION LINK -->
-      <a class="navigation-widget-section-link" href="usuariosDelGen.html">Usuarios</a>
+      <a class="navigation-widget-section-link" href="<%=request.getContextPath()%>/ListaDeUsuariosServlet?idUsuario=<%=idUsuario%>">Usuarios</a>
       <!-- /NAVIGATION WIDGET SECTION LINK -->
     </ul>
   </nav>
@@ -822,7 +841,7 @@
             <!-- /DROPDOWN BOX LIST -->
             <!--ARRIBA ESTÁN LAS NOTIFICACIONES-->
             <!-- DROPDOWN BOX BUTTON -->
-            <a class="dropdown-box-button secondary" href="notificacionesDelGen.html">Ver todas las notificaciones</a>
+            <a class="dropdown-box-button secondary" href="<%=request.getContextPath()%>/Notificaciones?idUsuario=<%=idUsuario%>">Ver todas las notificaciones</a>
             <!-- /DROPDOWN BOX BUTTON -->
           </div>
           <!-- /DROPDOWN BOX -->
@@ -836,7 +855,7 @@
         <!-- ACTION ITEM -->
         <div class="action-item dark header-settings-dropdown-trigger">
           <!-- ACTION ITEM ICON -->
-          <img src="css/logOut.png" width="30%" alt="">
+          <a href="<%=request.getContextPath()%>"><img src="css/logOut.png" width="30%" alt=""></a>
           <!-- /ACTION ITEM ICON -->
         </div>
         <!-- /ACTION ITEM -->
@@ -952,6 +971,9 @@
     <!-- /SECTION FILTERS BAR -->
     <!-- GRID -->
     <div class="grid grid-4-4-4 centered">
+
+      <% for(Usuario usuario: listaUsuarios){ %>
+
       <!-- USER PREVIEW -->
       <div class="user-preview">
         <!-- USER PREVIEW COVER -->
@@ -975,7 +997,7 @@
               <!-- USER AVATAR CONTENT -->
               <div class="user-avatar-content">
                 <!-- HEXAGON -->
-                <div class="hexagon-image-82-90" data-src="css/alex.jpg"></div>
+                <div class="hexagon-image-82-90" data-src="css/sin_foto_De_perfil.jpg"></div>
                 <!-- /HEXAGON -->
               </div>
               <!-- /USER AVATAR CONTENT -->
@@ -999,11 +1021,11 @@
             <!-- /USER SHORT DESCRIPTION AVATAR -->
 
             <!-- USER SHORT DESCRIPTION TITLE -->
-            <p class="user-short-description-title">Alex David Segovia Ancajima</p>
+            <p class="user-short-description-title"><%=usuario.getNombre() + " " + usuario.getApellido()%></p>
             <!-- /USER SHORT DESCRIPTION TITLE -->
 
             <!-- USER SHORT DESCRIPTION TEXT -->
-            <p class="user-short-description-text">Usuario</p>
+            <p class="user-short-description-text"><%=usuario.getRol()%></p>
             <!-- /USER SHORT DESCRIPTION TEXT -->
           </div>
           <!-- /USER SHORT DESCRIPTION -->
@@ -1017,14 +1039,14 @@
                 <!-- USER STAT -->
                 <div class="col-sm-6 text-center ms-5 px-5" style="font-family: 'Rajdhani', sans-serif; text-transform: uppercase; font-weight: 700; font-size: 0.875rem;">
                   <!-- USER STAT TITLE -->
-                  <p>Código: 20213849</p>
+                  <p>Código: <%=usuario.getCodigoPUCP()%></p>
                   <!-- /USER STAT TITLE -->
                 </div>
                 <!-- /USER STAT -->
                 <!-- USER STAT -->
                 <div class="col-sm-6 text-center px-5" style="font-family: 'Rajdhani', sans-serif; text-transform: uppercase; font-weight: 700; font-size: 0.875rem;">
                   <!-- USER STAT TITLE -->
-                  <p>Condición: Estudiante</p>
+                  <p>Condición: <%=usuario.getCondicion()%></p>
                   <!-- /USER STAT TITLE -->
                 </div>
                 <!-- /USER STAT -->
@@ -1036,7 +1058,7 @@
             <!-- USER PREVIEW STATS SLIDE -->
             <div class="user-preview-stats-slide">
               <!-- USER PREVIEW TEXT -->
-              <p class="user-preview-text">Este usuario está apoyando en Valorant como jugador y en Voley como parte de la barra!</p>
+              <p class="user-preview-text"><%=usuario.getDescripcionPerfil()%></p>
               <!-- /USER PREVIEW TEXT -->
             </div>
             <!-- /USER PREVIEW STATS SLIDE -->
@@ -1067,353 +1089,8 @@
       </div>
       <!-- /USER PREVIEW -->
 
-      <!-- USER PREVIEW -->
-      <div class="user-preview">
-        <!-- USER PREVIEW COVER -->
-        <figure class="user-preview-cover liquid" style="background: no-repeat linear-gradient(to right,#094293,#615dfa);"></figure>
-        <!-- /USER PREVIEW COVER -->
+      <%}%>
 
-        <!-- USER PREVIEW INFO -->
-        <div class="user-preview-info">
-          <!-- USER SHORT DESCRIPTION -->
-          <div class="user-short-description">
-            <!-- USER SHORT DESCRIPTION AVATAR -->
-            <div class="user-short-description-avatar user-avatar medium">
-              <!-- USER AVATAR BORDER -->
-              <div class="user-avatar-border">
-                <!-- HEXAGON -->
-                <div class="hexagon-120-132"></div>
-                <!-- /HEXAGON -->
-              </div>
-              <!-- /USER AVATAR BORDER -->
-
-              <!-- USER AVATAR CONTENT -->
-              <div class="user-avatar-content">
-                <!-- HEXAGON -->
-                <div class="hexagon-image-82-90" data-src="css/josh.jpg"></div>
-                <!-- /HEXAGON -->
-              </div>
-              <!-- /USER AVATAR CONTENT -->
-
-              <!-- USER AVATAR PROGRESS -->
-              <div class="user-avatar-progress">
-                <!-- HEXAGON -->
-                <div class="hexagon-progress-100-110"></div>
-                <!-- /HEXAGON -->
-              </div>
-              <!-- /USER AVATAR PROGRESS -->
-
-              <!-- USER AVATAR PROGRESS BORDER -->
-              <div class="user-avatar-progress-border">
-                <!-- HEXAGON -->
-                <div class="hexagon-border-100-110"></div>
-                <!-- /HEXAGON -->
-              </div>
-              <!-- /USER AVATAR PROGRESS BORDER -->
-            </div>
-            <!-- /USER SHORT DESCRIPTION AVATAR -->
-
-            <!-- USER SHORT DESCRIPTION TITLE -->
-            <p class="user-short-description-title" style="text-decoration: line-through;">Josh Fernando Yauri Salas</p>
-            <!-- /USER SHORT DESCRIPTION TITLE -->
-
-            <!-- USER SHORT DESCRIPTION TEXT -->
-            <p class="user-short-description-text" style="text-decoration: line-through;">Usuario</p>
-            <!-- /USER SHORT DESCRIPTION TEXT -->
-          </div>
-          <!-- /USER SHORT DESCRIPTION -->
-
-          <!-- USER PREVIEW STATS SLIDES -->
-          <div id="user-preview-stats-slides-02" class="user-preview-stats-slides">
-            <!-- USER PREVIEW STATS SLIDE -->
-            <div class="container-fluid">
-              <!-- USER STATS -->
-              <div class="row">
-                <!-- USER STAT -->
-                <div class="col-sm-6 text-center px-5" style="font-family: 'Rajdhani', sans-serif; text-transform: uppercase; text-decoration: line-through; font-weight: 700; font-size: 0.875rem;">
-                  <!-- USER STAT TITLE -->
-                  <p>Código: 20213852</p>
-                  <!-- /USER STAT TITLE -->
-                </div>
-                <!-- /USER STAT -->
-
-                <!-- USER STAT -->
-                <div class="col-sm-6 text-center px-5" style="font-family: 'Rajdhani', sans-serif; text-transform: uppercase; text-decoration: line-through; font-weight: 700; font-size: 0.875rem;">
-                  <!-- USER STAT TITLE -->
-                  <p>Condición: Estudiante</p>
-                  <!-- /USER STAT TITLE -->
-                </div>
-                <!-- /USER STAT -->
-              </div>
-              <!-- /USER STATS -->
-            </div>
-            <!-- /USER PREVIEW STATS SLIDE -->
-
-            <!-- USER PREVIEW STATS SLIDE -->
-            <div class="user-preview-stats-slide">
-              <!-- USER PREVIEW TEXT -->
-              <p class="user-preview-text">Este usuario ha sido baneado.</p>
-              <!-- /USER PREVIEW TEXT -->
-            </div>
-            <!-- /USER PREVIEW STATS SLIDE -->
-          </div>
-          <!-- /USER PREVIEW STATS SLIDES -->
-
-          <!-- USER PREVIEW STATS ROSTER -->
-          <div id="user-preview-stats-roster-02" class="user-preview-stats-roster slider-roster">
-            <!-- SLIDER ROSTER ITEM -->
-            <div class="slider-roster-item"></div>
-            <!-- /SLIDER ROSTER ITEM -->
-
-            <!-- SLIDER ROSTER ITEM -->
-            <div class="slider-roster-item"></div>
-            <!-- /SLIDER ROSTER ITEM -->
-          </div>
-          <!-- /USER PREVIEW STATS ROSTER -->
-
-          <!-- USER PREVIEW ACTIONS -->
-          <div class="user-preview-actions">
-            <!-- BUTTON -->
-            <button class="button secondary" id="boton" style="background-color: #615dfa; opacity: 60%;;">Baneado</button>
-            <!-- /BUTTON -->
-          </div>
-          <!-- /USER PREVIEW ACTIONS -->
-        </div>
-        <!-- /USER PREVIEW INFO -->
-      </div>
-      <!-- /USER PREVIEW -->
-
-      <!-- USER PREVIEW -->
-      <div class="user-preview">
-        <!-- USER PREVIEW COVER -->
-        <figure class="user-preview-cover liquid" style="background: no-repeat linear-gradient(to right,#094293,#615dfa);"></figure>
-        <!-- /USER PREVIEW COVER -->
-
-        <!-- USER PREVIEW INFO -->
-        <div class="user-preview-info">
-          <!-- USER SHORT DESCRIPTION -->
-          <div class="user-short-description">
-            <!-- USER SHORT DESCRIPTION AVATAR -->
-            <div class="user-short-description-avatar user-avatar medium">
-              <!-- USER AVATAR BORDER -->
-              <div class="user-avatar-border">
-                <!-- HEXAGON -->
-                <div class="hexagon-120-132"></div>
-                <!-- /HEXAGON -->
-              </div>
-              <!-- /USER AVATAR BORDER -->
-
-              <!-- USER AVATAR CONTENT -->
-              <div class="user-avatar-content">
-                <!-- HEXAGON -->
-                <div class="hexagon-image-82-90" data-src="css/hineill.jpg"></div>
-                <!-- /HEXAGON -->
-              </div>
-              <!-- /USER AVATAR CONTENT -->
-
-              <!-- USER AVATAR PROGRESS -->
-              <div class="user-avatar-progress">
-                <!-- HEXAGON -->
-                <div class="hexagon-progress-100-110"></div>
-                <!-- /HEXAGON -->
-              </div>
-              <!-- /USER AVATAR PROGRESS -->
-
-              <!-- USER AVATAR PROGRESS BORDER -->
-              <div class="user-avatar-progress-border">
-                <!-- HEXAGON -->
-                <div class="hexagon-border-100-110"></div>
-                <!-- /HEXAGON -->
-              </div>
-              <!-- /USER AVATAR PROGRESS BORDER -->
-            </div>
-            <!-- /USER SHORT DESCRIPTION AVATAR -->
-
-            <!-- USER SHORT DESCRIPTION TITLE -->
-            <p class="user-short-description-title">Hineill David Cespedes Espinoza</p>
-            <!-- /USER SHORT DESCRIPTION TITLE -->
-
-            <!-- USER SHORT DESCRIPTION TEXT -->
-            <p class="user-short-description-text">Delegado de Actividad: Ajedrez</p>
-            <!-- /USER SHORT DESCRIPTION TEXT -->
-          </div>
-          <!-- /USER SHORT DESCRIPTION -->
-
-          <!-- USER PREVIEW STATS SLIDES -->
-          <div id="user-preview-stats-slides-03" class="user-preview-stats-slides">
-            <!-- USER PREVIEW STATS SLIDE -->
-            <div class="container-fluid">
-              <!-- USER STATS -->
-              <div class="row">
-                <!-- USER STAT -->
-                <div class="col-sm-6 text-center px-5" style="font-family: 'Rajdhani', sans-serif; text-transform: uppercase; font-weight: 700; font-size: 0.875rem;">
-                  <!-- USER STAT TITLE -->
-                  <p>Código: 20213704</p>
-                  <!-- /USER STAT TITLE -->
-                </div>
-                <!-- /USER STAT -->
-
-                <!-- USER STAT -->
-                <div class="col-sm-6 text-center px-5" style="font-family: 'Rajdhani', sans-serif; text-transform: uppercase; font-weight: 700; font-size: 0.875rem;">
-                  <!-- USER STAT TITLE -->
-                  <p>Condición: Estudiante</p>
-                  <!-- /USER STAT TITLE -->
-                </div>
-                <!-- /USER STAT -->
-              </div>
-              <!-- /USER STATS -->
-            </div>
-            <!-- /USER PREVIEW STATS SLIDE -->
-
-            <!-- USER PREVIEW STATS SLIDE -->
-            <div class="user-preview-stats-slide">
-              <!-- USER PREVIEW TEXT -->
-              <p class="user-preview-text">Este usuario es Delegado de Actividad de Ajedrez y participa en la Peña!</p>
-              <!-- /USER PREVIEW TEXT -->
-            </div>
-            <!-- /USER PREVIEW STATS SLIDE -->
-          </div>
-          <!-- /USER PREVIEW STATS SLIDES -->
-
-          <!-- USER PREVIEW STATS ROSTER -->
-          <div id="user-preview-stats-roster-03" class="user-preview-stats-roster slider-roster">
-            <!-- SLIDER ROSTER ITEM -->
-            <div class="slider-roster-item"></div>
-            <!-- /SLIDER ROSTER ITEM -->
-
-            <!-- SLIDER ROSTER ITEM -->
-            <div class="slider-roster-item"></div>
-            <!-- /SLIDER ROSTER ITEM -->
-          </div>
-          <!-- /USER PREVIEW STATS ROSTER -->
-
-          <!-- USER PREVIEW ACTIONS -->
-          <div class="user-preview-actions">
-            <!-- BUTTON -->
-            <button class="button secondary" id="mostrarPopup2">Banear</button>
-            <!-- /BUTTON -->
-          </div>
-          <!-- /USER PREVIEW ACTIONS -->
-        </div>
-        <!-- /USER PREVIEW INFO -->
-      </div>
-      <!-- /USER PREVIEW -->
-
-      <!-- USER PREVIEW -->
-      <div class="user-preview">
-        <!-- USER PREVIEW COVER -->
-        <figure class="user-preview-cover liquid" style="background: no-repeat linear-gradient(to right,#094293,#615dfa);"></figure>
-        <!-- /USER PREVIEW COVER -->
-
-        <!-- USER PREVIEW INFO -->
-        <div class="user-preview-info">
-          <!-- USER SHORT DESCRIPTION -->
-          <div class="user-short-description">
-            <!-- USER SHORT DESCRIPTION AVATAR -->
-            <div class="user-short-description-avatar user-avatar medium">
-              <!-- USER AVATAR BORDER -->
-              <div class="user-avatar-border">
-                <!-- HEXAGON -->
-                <div class="hexagon-120-132"></div>
-                <!-- /HEXAGON -->
-              </div>
-              <!-- /USER AVATAR BORDER -->
-
-              <!-- USER AVATAR CONTENT -->
-              <div class="user-avatar-content">
-                <!-- HEXAGON -->
-                <div class="hexagon-image-82-90" data-src="css/samuel.jpg"></div>
-                <!-- /HEXAGON -->
-              </div>
-              <!-- /USER AVATAR CONTENT -->
-
-              <!-- USER AVATAR PROGRESS -->
-              <div class="user-avatar-progress">
-                <!-- HEXAGON -->
-                <div class="hexagon-progress-100-110"></div>
-                <!-- /HEXAGON -->
-              </div>
-              <!-- /USER AVATAR PROGRESS -->
-
-              <!-- USER AVATAR PROGRESS BORDER -->
-              <div class="user-avatar-progress-border">
-                <!-- HEXAGON -->
-                <div class="hexagon-border-100-110"></div>
-                <!-- /HEXAGON -->
-              </div>
-              <!-- /USER AVATAR PROGRESS BORDER -->
-            </div>
-            <!-- /USER SHORT DESCRIPTION AVATAR -->
-
-            <!-- USER SHORT DESCRIPTION TITLE -->
-            <p class="user-short-description-title">Samuel Ayala Quispe</p>
-            <!-- /USER SHORT DESCRIPTION TITLE -->
-
-            <!-- USER SHORT DESCRIPTION TEXT -->
-            <p class="user-short-description-text">Usuario</p>
-            <!-- /USER SHORT DESCRIPTION TEXT -->
-          </div>
-          <!-- /USER SHORT DESCRIPTION -->
-
-          <!-- USER PREVIEW STATS SLIDES -->
-          <div id="user-preview-stats-slides-04" class="user-preview-stats-slides">
-            <!-- USER PREVIEW STATS SLIDE -->
-            <div class="user-preview-stats-slide">
-              <!-- USER STATS -->
-              <div class="user-stats">
-                <!-- USER STAT -->
-                <div class="col-sm-6 text-center px-5" style="font-family: 'Rajdhani', sans-serif; text-transform: uppercase; font-weight: 700; font-size: 0.875rem;">
-                  <!-- USER STAT TITLE -->
-                  <p>Código: 20166262</p>
-                  <!-- /USER STAT TITLE -->
-                </div>
-                <!-- /USER STAT -->
-
-                <!-- USER STAT -->
-                <div class="col-sm-6 text-center px-5" style="font-family: 'Rajdhani', sans-serif; text-transform: uppercase; font-weight: 700; font-size: 0.875rem;">
-                  <!-- USER STAT TITLE -->
-                  <p>Condición: Egresado</p>
-                  <!-- /USER STAT TITLE -->
-                </div>
-                <!-- /USER STAT -->
-              </div>
-              <!-- /USER STATS -->
-            </div>
-            <!-- /USER PREVIEW STATS SLIDE -->
-
-            <!-- USER PREVIEW STATS SLIDE -->
-            <div class="user-preview-stats-slide">
-              <!-- USER PREVIEW TEXT -->
-              <p class="user-preview-text">Este usuario es egresado de la carrera y ha donado S/.150 a la Fibra!</p>
-              <!-- /USER PREVIEW TEXT -->
-            </div>
-            <!-- /USER PREVIEW STATS SLIDE -->
-          </div>
-          <!-- /USER PREVIEW STATS SLIDES -->
-
-          <!-- USER PREVIEW STATS ROSTER -->
-          <div id="user-preview-stats-roster-04" class="user-preview-stats-roster slider-roster">
-            <!-- SLIDER ROSTER ITEM -->
-            <div class="slider-roster-item"></div>
-            <!-- /SLIDER ROSTER ITEM -->
-
-            <!-- SLIDER ROSTER ITEM -->
-            <div class="slider-roster-item"></div>
-            <!-- /SLIDER ROSTER ITEM -->
-          </div>
-          <!-- /USER PREVIEW STATS ROSTER -->
-
-          <!-- USER PREVIEW ACTIONS -->
-          <div class="user-preview-actions">
-            <!-- BUTTON -->
-            <button class="button secondary" id="mostrarPopup3">Banear</button>
-            <!-- /BUTTON -->
-          </div>
-          <!-- /USER PREVIEW ACTIONS -->
-        </div>
-        <!-- /USER PREVIEW INFO -->
-      </div>
-      <!-- /USER PREVIEW -->
     </div>
     <!-- /GRID -->
 

@@ -15,6 +15,7 @@
         String estadoApoyo=(String)request.getAttribute("estadoApoyoAlumnoEvento");
         String lugar=(String)request.getAttribute("lugar");
         ArrayList<Integer>cantidadApoyos=(ArrayList<Integer>) request.getAttribute("cantidadApoyos");
+        Integer solicitudesApoyoPendientes=(Integer) request.getAttribute("solicitudesApoyoPendientes");
         int delegadoDeEstaActividadID=(Integer) request.getAttribute("delegadoDeEstaActividadID");
         String colorRol;
         if(rolUsuario.equals("Alumno")){
@@ -602,7 +603,7 @@
         <!-- /NAVIGATION WIDGET INFO -->
 
         <!-- NAVIGATION WIDGET BUTTON -->
-        <a href="inicioSesion.html"><p class="navigation-widget-info-button button small secondary">Cerrar sesión</p></a>
+        <a href="<%=request.getContextPath()%>/IndexServlet"><p class="navigation-widget-info-button button small secondary">Cerrar sesión</p></a>
         <!-- /NAVIGATION WIDGET BUTTON -->
     </div>
     <!-- /NAVIGATION WIDGET INFO WRAP -->
@@ -629,19 +630,19 @@
         <!-- /NAVIGATION WIDGET SECTION LINK -->
         <%if(rolUsuario.equals("Delegado General")){%>
         <!-- NAVIGATION WIDGET SECTION LINK -->
-        <a class="navigation-widget-section-link" href="analiticas.html">Analíticas</a>
+        <a class="navigation-widget-section-link" href="<%=request.getContextPath()%>/AnaliticasServlet?idUsuario=<%=idUsuario%>">Analíticas</a>
         <!-- /NAVIGATION WIDGET SECTION LINK -->
 
         <!-- NAVIGATION WIDGET SECTION LINK -->
-        <a class="navigation-widget-section-link" href="usuariosDelGen.html">Usuarios</a>
+        <a class="navigation-widget-section-link" href="<%=request.getContextPath()%>/ListaDeUsuariosServlet?idUsuario=<%=idUsuario%>">Usuarios</a>
         <!-- /NAVIGATION WIDGET SECTION LINK -->
         <%}else{%>
         <!-- NAVIGATION WIDGET SECTION LINK -->
-        <a class="navigation-widget-section-link" href="misEventosAlumno.html">Mis eventos</a>
+        <a class="navigation-widget-section-link" href="<%=request.getContextPath()%>/MisEventosServlet?idUsuario=<%=idUsuario%>">Mis eventos</a>
         <!-- /NAVIGATION WIDGET SECTION LINK -->
 
         <!-- NAVIGATION WIDGET SECTION LINK -->
-        <a class="navigation-widget-section-link" href="donacionesAlumno.html">Donaciones</a>
+        <a class="navigation-widget-section-link" href="<%=request.getContextPath()%>/MisDonacionesServlet?idUsuario=<%=idUsuario%>">Donaciones</a>
         <!-- /NAVIGATION WIDGET SECTION LINK -->
         <%}%>
     </ul>
@@ -1403,7 +1404,34 @@
         <div class="grid-column">
             <div class="streamer-box" style="background-image: linear-gradient(rgb(140, 255, 194),rgb(148, 249, 250));">
                 <%if(!rolUsuario.equals("Delegado General")){%>
-                <%if(estadoApoyo==null){%>
+                <%if(delegadoDeEstaActividadID==idUsuario){%>
+                <div class="streamer-box-info">
+                    <!-- STREAMER BOX TITLE -->
+                    <p class="streamer-box-title" style="font-size: 150%;">SOLICITUDES DE APOYO</p>
+                    <!-- /STREAMER BOX TITLE -->
+
+                    <!-- STREAMER BOX STATUS -->
+                    <p class="mt-4">Eres el delegado de actividad en la que se encuentra este evento. No olvides de atender las solicitudes de los usuarios que deseen apoyar. Estas se encuentran en la ventana de notificaciones.</p>
+                    <!-- /STREAMER BOX STATUS -->
+
+                    <!-- USER STATS -->
+                    <div class="user-stats">
+                        <!-- USER STAT -->
+                        <div class="user-stat">
+                            <!-- USER STAT TITLE -->
+                            <img src="css/solicitudesPendientes.png" width="50%">
+                            <!-- /USER STAT TITLE -->
+                            <p class="user-stat-text" style="font-size: 100%;"><%=solicitudesApoyoPendientes%></p>
+                            <!-- USER STAT TEXT -->
+                            <p class="user-stat-text" style="font-size: 100%;">Solicitudes pendientes de revisión</p>
+                            <!-- /USER STAT TEXT -->
+                        </div>
+                        <!-- /USER STAT -->
+                    </div>
+                    <!-- /USER STATS -->
+
+                </div>
+                <%}else if(estadoApoyo==null){%>
                 <!-- STREAMER BOX INFO -->
                 <div class="streamer-box-info">
                     <!-- STREAMER BOX TITLE -->

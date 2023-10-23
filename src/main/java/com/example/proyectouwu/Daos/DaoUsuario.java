@@ -1,5 +1,6 @@
 package com.example.proyectouwu.Daos;
 
+import com.example.proyectouwu.Beans.Evento;
 import com.example.proyectouwu.Beans.Usuario;
 
 import java.sql.*;

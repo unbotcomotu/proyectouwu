@@ -525,7 +525,7 @@
         <!-- /NAVIGATION WIDGET INFO -->
 
         <!-- NAVIGATION WIDGET BUTTON -->
-        <a href="inicioSesion.html"><p class="navigation-widget-info-button button small secondary">Cerrar sesión</p></a>
+        <a href="<%=request.getContextPath()%>/IndexServlet"><p class="navigation-widget-info-button button small secondary">Cerrar sesión</p></a>
         <!-- /NAVIGATION WIDGET BUTTON -->
     </div>
     <!-- /NAVIGATION WIDGET INFO WRAP -->
@@ -552,19 +552,19 @@
         <!-- /NAVIGATION WIDGET SECTION LINK -->
         <%if(rolUsuario.equals("Delegado General")){%>
         <!-- NAVIGATION WIDGET SECTION LINK -->
-        <a class="navigation-widget-section-link" href="analiticas.html">Analíticas</a>
+        <a class="navigation-widget-section-link" href="<%=request.getContextPath()%>/AnaliticasServlet?idUsuario=<%=idUsuario%>">Analíticas</a>
         <!-- /NAVIGATION WIDGET SECTION LINK -->
 
         <!-- NAVIGATION WIDGET SECTION LINK -->
-        <a class="navigation-widget-section-link" href="usuariosDelGen.html">Usuarios</a>
+        <a class="navigation-widget-section-link" href="<%=request.getContextPath()%>/ListaDeUsuariosServlet?idUsuario=<%=idUsuario%>">Usuarios</a>
         <!-- /NAVIGATION WIDGET SECTION LINK -->
         <%}else{%>
         <!-- NAVIGATION WIDGET SECTION LINK -->
-        <a class="navigation-widget-section-link" href="misEventosAlumno.html">Mis eventos</a>
+        <a class="navigation-widget-section-link" href="<%=request.getContextPath()%>/MisEventosServlet?idUsuario=<%=idUsuario%>">Mis eventos</a>
         <!-- /NAVIGATION WIDGET SECTION LINK -->
 
         <!-- NAVIGATION WIDGET SECTION LINK -->
-        <a class="navigation-widget-section-link" href="donacionesAlumno.html">Donaciones</a>
+        <a class="navigation-widget-section-link" href="<%=request.getContextPath()%>/MisDonacionesServlet?idUsuario=<%=idUsuario%>">Donaciones</a>
         <!-- /NAVIGATION WIDGET SECTION LINK -->
         <%}%>
     </ul>

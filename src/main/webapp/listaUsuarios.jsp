@@ -1031,7 +1031,7 @@
           <!-- /USER SHORT DESCRIPTION -->
 
           <!-- USER PREVIEW STATS SLIDES -->
-          <div id="user-preview-stats-slides-01" class="user-preview-stats-slides">
+          <div id="user-preview-stats-slides-<%if(listaUsuarios.indexOf(usuario)<9){%>0<%=listaUsuarios.indexOf(usuario)+1%><%}else{%><%=listaUsuarios.indexOf(usuario)+1%><%}%>" class="user-preview-stats-slides">
             <!-- USER PREVIEW STATS SLIDE -->
             <div class="container-fluid">
               <!-- USER STATS -->
@@ -1066,7 +1066,7 @@
           <!-- /USER PREVIEW STATS SLIDES -->
 
           <!-- USER PREVIEW STATS ROSTER -->
-          <div id="user-preview-stats-roster-01" class="user-preview-stats-roster slider-roster">
+          <div id="user-preview-stats-roster-<%if(listaUsuarios.indexOf(usuario)<9){%>0<%=listaUsuarios.indexOf(usuario)+1%><%}else{%><%=listaUsuarios.indexOf(usuario)+1%><%}%>" class="user-preview-stats-roster slider-roster">
             <!-- SLIDER ROSTER ITEM -->
             <div class="slider-roster-item"></div>
             <!-- /SLIDER ROSTER ITEM -->
@@ -1249,6 +1249,31 @@
     <%for(int i=0;i<listaUsuarios.size();i++){%>
     popupFunc('popup<%=i%>','overlay<%=i%>','mostrarPopup<%=i%>',['cerrar-btn<%=i%>','cerrarPopup1<%=i%>','cerrarPopup2<%=i%>']);
     <%}%>
+
+    /*const createUserPreviewStatsSliders = function () {
+      let i = 1;
+
+      while (true) {
+        const j = i < 10 ? `00${i}` : i;
+
+        const upStatsSlider = app.plugins.createSlider({
+          container: `#user-preview-stats-slides-${j}`,
+          loop: false,
+          controls: false,
+          navContainer: `#user-preview-stats-roster-${j}`
+        });
+
+        if (!upStatsSlider) break;
+
+        i++;
+      }
+    };
+
+    createUserPreviewStatsSliders();
+
+    const centerTinySlider = function (sliderInfo, itemWidth, gutterWidth) {
+      sliderInfo.container.style.width = `${sliderInfo.slideCount * itemWidth + (sliderInfo.slideCount - 1) * gutterWidth}px`;
+    };*/
   </script>
   <!-- app -->
   <script src="js/utils/app.js"></script>

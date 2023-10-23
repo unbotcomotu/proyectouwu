@@ -937,7 +937,7 @@
 
     <!-- GRID -->
 
-    <div class= "oculto" id="solicitudesContenido">
+    <div class="oculto" id="solicitudesContenido">
 
         <div class="section-filters-bar v1">
             <!-- SECTION FILTERS BAR ACTIONS -->
@@ -2916,6 +2916,13 @@
     <button class= "mt-3"id="closePopup_1">Cerrar</button>
 </div>
 
+<div class="popup" id="montoPopup"></div>
+<div class="popup-content" id="popupMonto">
+    <label for="nuevoMonto">Nuevo Monto: </label>
+    <input type="text" id="nuevoMonto">
+    <button id="guardarMonto">Guardar</button>
+    <button id="cerrarPopup">Cerrar</button>
+</div>
 
 
     <!-- app -->
@@ -2947,5 +2954,181 @@
     <!-- SVG icons -->
     <script src="js/utils/svg-loader.js"></script>
     <!-- global.accordions -->
+
+
+<script>
+    // Función para alternar entre las opciones y mostrar el contenido correspondiente
+    function mostrarContenido(opcion) {
+        const opciones = ["Solicitudes", "Donaciones", "Reportes"];
+
+        opciones.forEach(op => {
+            const contenido = document.getElementById(op.toLowerCase() + "Contenido");
+            if (op === opcion) {
+                contenido.style.display = 'block';
+            } else {
+                contenido.style.display = 'none';
+            }
+        });
+    }
+
+    // Agregar eventos de clic para cada opción
+    document.getElementById("opcionSolicitudes").addEventListener("click", function() {
+        mostrarContenido("Solicitudes");
+    });
+
+    document.getElementById("opcionDonaciones").addEventListener("click", function() {
+        mostrarContenido("Donaciones");
+    });
+
+    document.getElementById("opcionReportes").addEventListener("click", function() {
+        mostrarContenido("Reportes");
+    });
+
+    // Mostrar la lista de Solicitudes por defecto
+    mostrarContenido("Solicitudes");
+</script>
+
+
+<script>
+    // Función para alternar entre las opciones y mostrar el contenido correspondiente
+    function mostrarContenido(opcion) {
+        const opciones = ["Solicitudes", "Donaciones", "Reportes"];
+
+        opciones.forEach(op => {
+            const contenido = document.getElementById(op.toLowerCase() + "Contenido");
+            if (op === opcion) {
+                contenido.style.display = 'block';
+            } else {
+                contenido.style.display = 'none';
+            }
+        });
+    }
+
+    // Agregar eventos de clic para cada opción
+    document.getElementById("opcionSolicitudes_1").addEventListener("click", function() {
+        mostrarContenido("Solicitudes");
+    });
+
+    document.getElementById("opcionDonaciones_1").addEventListener("click", function() {
+        mostrarContenido("Donaciones");
+    });
+
+    document.getElementById("opcionReportes_1").addEventListener("click", function() {
+        mostrarContenido("Reportes");
+    });
+
+    // Mostrar la lista de Solicitudes por defecto
+    mostrarContenido("Solicitudes");
+</script>
+
+<script>
+    // Función para alternar entre las opciones y mostrar el contenido correspondiente
+    function mostrarContenido(opcion) {
+        const opciones = ["Solicitudes", "Donaciones", "Reportes"];
+
+        opciones.forEach(op => {
+            const contenido = document.getElementById(op.toLowerCase() + "Contenido");
+            if (op === opcion) {
+                contenido.style.display = 'block';
+            } else {
+                contenido.style.display = 'none';
+            }
+        });
+    }
+
+    // Agregar eventos de clic para cada opción
+    document.getElementById("opcionSolicitudes_2").addEventListener("click", function() {
+        mostrarContenido("Solicitudes");
+    });
+
+    document.getElementById("opcionDonaciones_2").addEventListener("click", function() {
+        mostrarContenido("Donaciones");
+    });
+
+    document.getElementById("opcionReportes_2").addEventListener("click", function() {
+        mostrarContenido("Reportes");
+    });
+
+    // Mostrar la lista de Solicitudes por defecto
+    mostrarContenido("Solicitudes");
+</script>
+
+
+<!--Scripts para popups-->
+
+<script>
+    // Obtener referencias a elementos HTML
+    const fondo = document.getElementById('fondo');
+    const showPopup = document.getElementById('showPopup');
+    const imagePopup = document.getElementById('imagePopup');
+    const closePopup = document.getElementById('closePopup');
+
+    // Mostrar el pop-up al hacer clic en "link"
+    showPopup.addEventListener('click', function () {
+        imagePopup.style.display = 'block';
+        fondo.style.display = 'block';
+        document.body.style.overflow = 'hidden';
+    });
+
+    // Cerrar el pop-up al hacer clic en "Cerrar"
+    closePopup.addEventListener('click', function () {
+        imagePopup.style.display = 'none';
+        document.body.style.overflow = 'auto';
+        fondo.style.display = 'none';
+    });
+</script>
+
+<script>
+    // Obtener referencias a elementos HTML
+    const showPopup_1 = document.getElementById('showPopup_1');
+    const imagePopup_1 = document.getElementById('imagePopup_1');
+    const closePopup_1 = document.getElementById('closePopup_1');
+
+    // Mostrar el pop-up al hacer clic en "link"
+    showPopup_1.addEventListener('click', function () {
+        imagePopup_1.style.display = 'block';
+        fondo.style.display = 'block';
+        document.body.style.overflow = 'hidden';
+    });
+
+    // Cerrar el pop-up al hacer clic en "Cerrar"
+    closePopup_1.addEventListener('click', function () {
+        imagePopup_1.style.display = 'none';
+        document.body.style.overflow = 'auto';
+        fondo.style.display = 'none';
+    });
+</script>
+
+<script>
+    // Obtener elementos del DOM
+    const openPopupButton = document.getElementById('openPopup');
+    const montoPopup = document.getElementById('montoPopup');
+    const nuevoMontoInput = document.getElementById('nuevoMonto');
+    const guardarMontoButton = document.getElementById('guardarMonto');
+    const cerrarPopupButton = document.getElementById('cerrarPopup');
+    const botonValor = document.getElementById('openPopup');
+
+    // Función para abrir el popup y mostrar el valor actual
+    openPopupButton.addEventListener('click', function () {
+        montoPopup.style.display = 'block';
+        document.getElementById('popupMonto').style.display = 'block';
+        nuevoMontoInput.value = botonValor.innerText.replace("S/", "");
+    });
+
+    // Función para cerrar el popup
+    cerrarPopupButton.addEventListener('click', () => {
+        montoPopup.style.display = 'none';
+        document.getElementById('popupMonto').style.display = 'none';
+    });
+
+    // Función para guardar el nuevo monto y actualizar el botón
+    guardarMontoButton.addEventListener('click', () => {
+        const nuevoMonto = nuevoMontoInput.value;
+        botonValor.innerText = `S/${nuevoMonto}`;
+        montoPopup.style.display = 'none';
+        document.getElementById('popupMonto').style.display = 'none';
+    });
+</script>
+
 </body>
 </html>

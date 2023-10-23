@@ -32,7 +32,7 @@ public class NotificacionesServlet extends HttpServlet {
                 DaoNotificacionDelegadoGeneral daoNotificacionDelegadoGeneral = new DaoNotificacionDelegadoGeneral();
                 ArrayList<Usuario> listaSolicitudes = daoNotificacionDelegadoGeneral.listarSolicitudesDeRegistro();
 
-                //mandar la lista a la vista -> job/lista.jsp
+                //mandar la lista a la vista
 
                 request.setAttribute("listaSolicitudes",listaSolicitudes);
                 request.getRequestDispatcher("notificacionesDelGeneral.jsp").forward(request,response);

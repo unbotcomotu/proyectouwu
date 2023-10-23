@@ -68,6 +68,66 @@
         right: 10px;
         cursor: pointer;
       }
+
+      footer {
+        background-color: #322D31;
+        color: white;
+        font-family: 'Titillium Web', sans-serif;
+        padding: 20px 0;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        text-align: center; /* Centrar el contenido horizontalmente */
+      }
+
+      .fila {
+        width: 100%;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        margin-bottom: 10px;
+
+      }
+
+      .columna {
+        width: 30%;
+        padding: 10px;
+        box-sizing: border-box;
+        background-color: #322D31;
+      }
+
+      .columna p {
+        text-align: center;
+        color: white;
+        margin: 0; /* Eliminar el margen por defecto del párrafo */
+      }
+
+      /* Estilo para la lista */
+      .lista {
+        text-align: center;
+        list-style: none;
+        padding: 0;
+        color: #EDE8DF;
+      }
+
+      .lista li {
+        margin: 5px 0;
+        text-align: center;
+        color: #EDE8DF;
+      }
+      .titulo {
+        font-weight: bold;
+        font-size: 1.2em; /* Aumentar el tamaño de fuente del título */
+      }
+      .lista a {
+        text-decoration: none;
+        color: #EDE8DF;
+        font-weight: bold;
+      }
+
+      .lista a:hover {
+        text-decoration: underline; /* Subrayar en el hover */
+      }
     </style>
   </head>
   <body>
@@ -974,7 +1034,7 @@
     <!-- GRID -->
     <div class="grid grid-4-4-4 centered">
 
-      <% for(Usuario usuario: listaUsuarios){ if(new DaoUsuario().usuarioRegistradoPorId(usuario.getIdUsuario())){%>
+      <% for(Usuario usuario: listaUsuarios){%>
 
       <!-- USER PREVIEW -->
       <div class="user-preview">
@@ -1100,7 +1160,7 @@
       </div>
       <!-- /USER PREVIEW -->
 
-      <%}}%>
+      <%}%>
 
     </div>
     <!-- /GRID -->
@@ -1190,7 +1250,35 @@
     <!-- /SECTION RESULTS TEXT -->
   </div>
   <!-- /CONTENT GRID -->
-
+  <footer style="font-size: 80%;">
+    <!-- Primera fila -->
+    <div class="fila">
+      <div class="columna">
+        <span class="titulo">Contactos</span>
+        <ul class="lista">
+          <%for(int i=0;i<listaCorreosDelegadosGenerales.size();i++){%>
+          <li>Delegado general <%=(i+1)%>: <a href="mailto:<%=listaCorreosDelegadosGenerales.get(i)%>"><%=listaCorreosDelegadosGenerales.get(i)%></a></li>
+          <%}%>
+        </ul>
+      </div>
+      <div class="columna">
+        <p>© 2023 Fibra tóxica</p>
+        <ul class="lista">
+          <li><a>Política de Privacidad</a></li>
+          <li><a>Términos y Condiciones</a></li>
+          <li><a>Siguenos en: </a> <i class="fab fa-facebook"></i> <i class="fab fa-instagram"></i> <i class="fab fa-youtube"></i></li>
+        </ul>
+      </div>
+      <div class="columna">
+        <span class="titulo">Sobre nosotros</span>
+        <ul class="lista">
+          <li>Somos un grupo de estudiantes que</li>
+          <li>busca conectar a todos los amantes</li>
+          <li>de esta maravillosa carrera</li>
+        </ul>
+      </div>
+    </div>
+  </footer>
   <% for(int i=0;i<listaUsuarios.size();i++){ %>
 
   <div class="overlay" id="overlay<%=i%>"></div>

@@ -77,7 +77,7 @@ public class DaoUsuario {
 
     public ArrayList<Usuario> listarUsuarios(){
         ArrayList<Usuario> lista = new ArrayList<>();
-        String sql = "select idUsuario, nombre, apellido, rol, codigoPUCP, condicion, fotoPerfil, descripcionPerfil from usuario";
+        String sql = "select idUsuario, nombre, apellido, rol, codigoPUCP, condicion, fotoPerfil, descripcionPerfil from usuario where estadoRegistro='Registrado' AND rol!='Delegado General'";
         try(ResultSet rs = conn.prepareStatement(sql).executeQuery()){
             while(rs.next()){
                 Usuario usuario = new Usuario();
@@ -92,26 +92,6 @@ public class DaoUsuario {
                 lista.add(usuario);
             }
             return lista;
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    public boolean usuarioRegistradoPorId(int idUsuario){
-        String sql = "select estadoRegistro from usuario where idUsuario=?";
-        try(PreparedStatement pstmt = conn.prepareStatement(sql)){
-            pstmt.setInt(1,idUsuario);
-            try(ResultSet rs = pstmt.executeQuery()){
-                if(rs.next()){
-                    if(rs.getString(1).equals("Registrado")){
-                        return true;
-                    }else{
-                        return false;
-                    }
-                }else{
-                    return false;
-                }
-            }
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

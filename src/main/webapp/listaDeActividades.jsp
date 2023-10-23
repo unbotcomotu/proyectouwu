@@ -1,6 +1,8 @@
 <%@ page import="java.util.ArrayList" %>
 <%@ page import="com.example.proyectouwu.Beans.Actividad" %>
 <%@ page import="com.example.proyectouwu.Daos.DaoActividad" %>
+<%@ page import="com.example.proyectouwu.Beans.Usuario" %>
+<%@ page import="com.example.proyectouwu.Daos.DaoUsuario" %>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <!DOCTYPE html>
 <html lang="en">
@@ -12,6 +14,7 @@
     Integer idActividadDelegatura=(Integer)request.getAttribute("idActividadDelegatura");
     String vistaActual=(String) request.getAttribute("vistaActual");
     ArrayList<String>listaCorreosDelegadosGenerales=(ArrayList<String>)request.getAttribute("correosDelegadosGenerales");
+    ArrayList<Usuario>listaIDyNombresDelegadosDeActividad=(ArrayList<Usuario>)request.getAttribute("IDyNombreDelegadosDeActividad");
     String colorRol;
     if(rolUsuario.equals("Alumno")){
         colorRol="";
@@ -62,6 +65,25 @@
             top: 10px;
             right: 10px;
             cursor: pointer;
+        }
+        .btn-file1 {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-file1 input[type="file"] {
+            position: absolute;
+            top: 0;
+            right: 0;
+            min-width: 100%;
+            min-height: 100%;
+            font-size: 100px;
+            filter: alpha(opacity=0);
+            opacity: 0;
+            outline: none;
+            background: white;
+            cursor: inherit;
+            display: block;
         }
         footer {
             background-color: #322D31;
@@ -503,7 +525,7 @@
         <!-- /NAVIGATION WIDGET INFO -->
 
         <!-- NAVIGATION WIDGET BUTTON -->
-        <a href="inicioSesion.html"><p class="navigation-widget-info-button button small secondary">Cerrar sesión</p></a>
+        <a href="<%=request.getContextPath()%>/IndexServlet"><p class="navigation-widget-info-button button small secondary">Cerrar sesión</p></a>
         <!-- /NAVIGATION WIDGET BUTTON -->
     </div>
     <!-- /NAVIGATION WIDGET INFO WRAP -->
@@ -530,19 +552,19 @@
         <!-- /NAVIGATION WIDGET SECTION LINK -->
         <%if(rolUsuario.equals("Delegado General")){%>
         <!-- NAVIGATION WIDGET SECTION LINK -->
-        <a class="navigation-widget-section-link" href="analiticas.html">Analíticas</a>
+        <a class="navigation-widget-section-link" href="<%=request.getContextPath()%>/AnaliticasServlet?idUsuario=<%=idUsuario%>">Analíticas</a>
         <!-- /NAVIGATION WIDGET SECTION LINK -->
 
         <!-- NAVIGATION WIDGET SECTION LINK -->
-        <a class="navigation-widget-section-link" href="usuariosDelGen.html">Usuarios</a>
+        <a class="navigation-widget-section-link" href="<%=request.getContextPath()%>/ListaDeUsuariosServlet?idUsuario=<%=idUsuario%>">Usuarios</a>
         <!-- /NAVIGATION WIDGET SECTION LINK -->
         <%}else{%>
         <!-- NAVIGATION WIDGET SECTION LINK -->
-        <a class="navigation-widget-section-link" href="misEventosAlumno.html">Mis eventos</a>
+        <a class="navigation-widget-section-link" href="<%=request.getContextPath()%>/MisEventosServlet?idUsuario=<%=idUsuario%>">Mis eventos</a>
         <!-- /NAVIGATION WIDGET SECTION LINK -->
 
         <!-- NAVIGATION WIDGET SECTION LINK -->
-        <a class="navigation-widget-section-link" href="donacionesAlumno.html">Donaciones</a>
+        <a class="navigation-widget-section-link" href="<%=request.getContextPath()%>/MisDonacionesServlet?idUsuario=<%=idUsuario%>">Donaciones</a>
         <!-- /NAVIGATION WIDGET SECTION LINK -->
         <%}%>
     </ul>
@@ -1322,7 +1344,7 @@
                 <%}else if(rolUsuario.equals("Delegado General")){%>
                 <div class="section-filters-bar-actions col-sm-auto d-flex justify-content-end recuadro recuadroFila" style="width: 150px;">
                     <!-- BUTTON -->
-                    <button class="button secondary popup-event-creation-trigger botones" style="width: 100%;" id="mostrarPopupCrear">Crear actividad</button>
+                    <button class="button secondary popup-event-creation-trigger botones" id="mostrarPopupCrear" style="width: 100%;">Crear actividad</button>
                     <!-- /BUTTON -->
                 </div>
                 <%}%>
@@ -1420,6 +1442,7 @@
 
     <!-- GRID -->
     <div class="grid grid-3-3-3-3 centered">
+        <%if(listaActividades!=null){%>
         <%int aux=0;String color1="";String color2="";
             for(Actividad a:listaActividades){
                 if(aux==0){
@@ -1446,7 +1469,7 @@
                     aux=0;
                 }%>
         <!-- PRODUCT CATEGORY BOX -->
-        <a class="product-category-box category-all" style="background: url('css/fotoVoleyActividades.png') no-repeat right top, linear-gradient(to right, <%=color1%>, <%=color2%>) <%if(a.isActividadFinalizada()){%><%=";opacity: 50%;"%><%}%> " href="<%=request.getContextPath()%>/ListaDeEventosServlet?idUsuario=<%=idUsuario%>&idActividad=<%=a.getIdActividad()%>">
+        <a class="product-category-box category-all" href="<%=request.getContextPath()%>/ListaDeEventosServlet?idUsuario=<%=idUsuario%>&idActividad=<%=a.getIdActividad()%>" style="background: url('css/fotoVoleyActividades.png') no-repeat right top, linear-gradient(to right, <%=color1%>, <%=color2%>) <%if(a.isActividadFinalizada()){%><%=";opacity: 50%;"%><%}%> ">
             <!-- PRODUCT CATEGORY BOX TITLE -->
             <p class="product-category-box-title"><%=a.getNombre()%></p>
             <!-- /PRODUCT CATEGORY BOX TITLE -->
@@ -1466,8 +1489,17 @@
             <!-- /PRODUCT CATEGORY BOX TAG -->
             <%}else{%>
             <p class="product-category-box-tag" style="color: <%=color1%>;"><%=cantEventos%> eventos</p>
-            <%}%>
-            <%if(idActividadDelegatura != null){
+            <%}if(rolUsuario.equals("Delegado General")){%>
+            <p class="product-category-box-tag"><button id="mostrarPopupEditarActividad<%=listaActividades.indexOf(a)%>" style="color: <%=color1%>;font-size: 100%;z-index: 1000">EDITAR</button></p>
+            <script>
+                document.addEventListener("DOMContentLoaded", function() {
+                    var botonDentroDelEnlace = document.getElementById("mostrarPopupEditarActividad<%=listaActividades.indexOf(a)%>");
+                    botonDentroDelEnlace.addEventListener("click", function(e) {
+                        e.preventDefault();
+                    });
+                });
+            </script>
+            <%}if(idActividadDelegatura != null){
                 if(idActividadDelegatura==a.getIdActividad()){%>
             <!-- PRODUCT CATEGORY BOX TAG -->
             <p class="product-category-box-tag" style="color: <%=color1%>;">Delegado</p>
@@ -1475,7 +1507,7 @@
             <%}}%>
         </a>
         <!-- /PRODUCT CATEGORY BOX -->
-        <%aux++;}%>
+        <%aux++;}}%>
     </div>
     <!-- /GRID -->
 </div>
@@ -1509,8 +1541,8 @@
         </div>
     </div>
 </footer>
-<div class="overlay" id="overlay"></div>
 <%if(rolUsuario.equals("Delegado de Actividad")){%>
+<div class="overlay" id="overlayFinalizar"></div>
 <div class="popup" id="popupFinalizar">
     <svg class="cerrarPopup" id="cerrarPopupFinalizar" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path d="M11.4142 10L16.7071 4.70711C17.0976 4.31658 17.0976 3.68342 16.7071 3.29289C16.3166 2.90237 15.6834 2.90237 15.2929 3.29289L10 8.58579L4.70711 3.29289C4.31658 2.90237 3.68342 2.90237 3.29289 3.29289C2.90237 3.68342 2.90237 4.31658 3.29289 4.70711L8.58579 10L3.29289 15.2929C2.90237 15.6834 2.90237 16.3166 3.29289 16.7071C3.68342 17.0976 4.31658 17.0976 4.70711 16.7071L10 11.4142L15.2929 16.7071C15.6834 17.0976 16.3166 17.0976 16.7071 16.7071C17.0976 16.3166 17.0976 15.6834 16.7071 15.2929L11.4142 10Z" fill="black"/>
@@ -1545,6 +1577,7 @@
     </div>
 </div>
 <%}else if(rolUsuario.equals("Delegado General")){%>
+<div class="overlay" id="overlayCrear"></div>
 <div class="popup contenedorCrear" style="width: 700px;" id="popupCrear">
     <svg class="cerrarPopup" id="cerrarPopupCrear" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path d="M11.4142 10L16.7071 4.70711C17.0976 4.31658 17.0976 3.68342 16.7071 3.29289C16.3166 2.90237 15.6834 2.90237 15.2929 3.29289L10 8.58579L4.70711 3.29289C4.31658 2.90237 3.68342 2.90237 3.29289 3.29289C2.90237 3.68342 2.90237 4.31658 3.29289 4.70711L8.58579 10L3.29289 15.2929C2.90237 15.6834 2.90237 16.3166 3.29289 16.7071C3.68342 17.0976 4.31658 17.0976 4.70711 16.7071L10 11.4142L15.2929 16.7071C15.6834 17.0976 16.3166 17.0976 16.7071 16.7071C17.0976 16.3166 17.0976 15.6834 16.7071 15.2929L11.4142 10Z" fill="black"/>
@@ -1556,33 +1589,35 @@
             <div class="col-sm-7">
                 <br>
                 <label for="nombreActividad" style="margin-top: 25px;"><b>Nombre de la actividad:</b></label>
-                <input type="text" id="nombreActividad" placeholder="Valorant" required>
+                <input type="text" id="nombreActividad" placeholder="Actividad" required>
 
-                <label style="margin-top: 25px;" for="delegado"><b>Seleccionar delegado de actividad:</b></label>
+                <label style="margin-top: 25px;"><b>Seleccionar delegado de actividad:</b></label>
                 <input type="text" multiple id="delegado" list="alumnos" placeholder="Delegado de actividad" required>
 
                 <datalist id="alumnos">
-                    <option value="Alex Segovia">Alex Segovia</option>
-                    <option value="Gabriel Talledo">Gabriel Talledo</option>
-                    <option value="Hineill Céspedes">Hineill Céspedes</option>
-                    <option value="Jean Piere Ipurre">Jean Piere Ipurre</option>
-                    <option value="Josh Yauri">Josh Yauri</option>
-                    <option value="Mayte Asto">Mayte Asto</option>
-                    <option value="Santiago Yong">Santiago Yong</option>
+                    <%for(Usuario u:listaIDyNombresDelegadosDeActividad){%>
+                    <option value="<%=u.getNombre()%> <%=u.getApellido()%>"><%=u.getNombre()%> <%=u.getApellido()%></option>
+                    <%}%>
                 </datalist>
 
-                <label style="margin-top: 25px;" for="descripcion"><b>Descripción de la actividad:</b></label>
-                <input type="text" id="descripcion" placeholder="Descripción" required>
+                <label style="margin-top: 25px;" for="puntajeCrearActividad"><b>Puntaje para el 1er lugar:</b></label>
+                <input type="text" id="puntajeCrearActividad" placeholder="###" required>
 
                 <div style="display: flex; justify-content: left; margin-top: 25px;">
                     <p style="width: 32%;"><b>Ocultar actividad</b></p>
                     <input type="checkbox" style="width: 10%;">
                 </div>
             </div>
-            <div class="col-sm-5 contenedor2" style="top: 90px">
+            <div class="col-sm-5 contenedor2" style="top: 30px">
                 <div class="container-fluid btn btn-file1">
-                    <img class="img-fluid" src="css/subirArchivo.jpg" style="opacity: 50%;" alt="">
-                    <p><b>Foto de la actividad</b></p>
+                    <img class="img-fluid" src="css/subirArchivo.jpg" width="80%" style="opacity: 50%;" alt="">
+                    <p><b>Foto de cabecera</b></p>
+                    <input type="file" style="background-color: white; margin-top: 25px;" accept="image/png, .jpeg, .jpg"></input>
+                </div>
+                <br>
+                <div class="container-fluid btn btn-file1">
+                    <img class="img-fluid" src="css/subirArchivo.jpg" width="80%" style="opacity: 50%;" alt="">
+                    <p><b>Foto de miniatura</b></p>
                     <input type="file" style="background-color: white; margin-top: 25px;" accept="image/png, .jpeg, .jpg"></input>
                 </div>
             </div>
@@ -1600,34 +1635,73 @@
         </div>
     </div>
 </div>
-<%}%>
+
+<%if(listaActividades!=null){
+    for(int i=0;i<listaActividades.size();i++){%>
+<div class="overlay" id="overlayEditarActividad<%=i%>"></div>
+<div class="popup contenedorCrear" style="width: 700px;" id="popupEditarActividad<%=i%>">
+    <svg class="cerrarPopup" id="cerrarPopupEditarActividad<%=i%>" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M11.4142 10L16.7071 4.70711C17.0976 4.31658 17.0976 3.68342 16.7071 3.29289C16.3166 2.90237 15.6834 2.90237 15.2929 3.29289L10 8.58579L4.70711 3.29289C4.31658 2.90237 3.68342 2.90237 3.29289 3.29289C2.90237 3.68342 2.90237 4.31658 3.29289 4.70711L8.58579 10L3.29289 15.2929C2.90237 15.6834 2.90237 16.3166 3.29289 16.7071C3.68342 17.0976 4.31658 17.0976 4.70711 16.7071L10 11.4142L15.2929 16.7071C15.6834 17.0976 16.3166 17.0976 16.7071 16.7071C17.0976 16.3166 17.0976 15.6834 16.7071 15.2929L11.4142 10Z" fill="black"/>
+    </svg>
+    <div class="container-fluid">
+
+        <div class="row"><div class="col"><h5 style="text-align: center;">Editar actividad</h5></div></div>
+        <div class="row">
+            <div class="col-sm-7">
+                <br>
+                <label style="margin-top: 25px;"><b>Nombre de la actividad:</b></label>
+                <input type="text" value="<%=listaActividades.get(i).getNombre()%>" placeholder="Actividad" required>
+
+                <label style="margin-top: 25px;"><b>Seleccionar delegado de actividad:</b></label>
+                <input type="text" multiple id="delegado" list="alumnos" value="<%=new DaoUsuario().nombreCompletoUsuarioPorId(listaActividades.get(i).getIdDelegadoDeActividad())%>" placeholder="Delegado de actividad" required>
+
+                <datalist id="alumnos">
+                    <%for(Usuario u:listaIDyNombresDelegadosDeActividad){%>
+                    <option value="<%=u.getNombre()%> <%=u.getApellido()%>"><%=u.getNombre()%> <%=u.getApellido()%></option>
+                    <%}%>
+                </datalist>
+
+                <label style="margin-top: 25px;"><b>Puntaje para el 1er lugar:</b></label>
+                <input type="text" value="<%=listaActividades.get(i).getCantPuntosPrimerLugar()%>" placeholder="###" required>
+
+                <div style="display: flex; justify-content: left; margin-top: 25px;">
+                    <p style="width: 32%;"><b>Ocultar actividad</b></p>
+                    <input type="checkbox" <%if(listaActividades.get(i).isActividadOculta()){%>checked<%}%> style="width: 10%;">
+                </div>
+            </div>
+            <div class="col-sm-5 contenedor2" style="top: 30px">
+                <div class="container-fluid btn btn-file1">
+                    <img class="img-fluid" src="css/subirArchivo.jpg" width="80%" style="opacity: 50%;" alt="">
+                    <p><b>Foto de cabecera</b></p>
+                    <input type="file" style="background-color: white; margin-top: 25px;" accept="image/png, .jpeg, .jpg"></input>
+                </div>
+                <br>
+                <div class="container-fluid btn btn-file1">
+                    <img class="img-fluid" src="css/subirArchivo.jpg" width="80%" style="opacity: 50%;" alt="">
+                    <p><b>Foto de miniatura</b></p>
+                    <input type="file" style="background-color: white; margin-top: 25px;" accept="image/png, .jpeg, .jpg"></input>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-6" style="margin-top: 5px;">
+                <button type="submit" class="button secondary" id="cerrarPopupEditar1Actividad<%=i%>">Crear</button>
+            </div>
+            <div class="col-sm-6" style="margin-top: 5px;">
+                <button class="button secondary" id="cerrarPopupEditar2Actividad<%=i%>" style="background-color: grey;">Cancelar</button>
+            </div>
+        </div>
+    </div>
+</div>
+<%}}}%>
 <script>
-    // Obtener elementos del DOM
-    const textElement = document.getElementById('delegado');
-    const buttonElement = document.getElementById('cerrarPopupFinalizar1');
-    const opciones=document.getElementById('actividades').getElementsByTagName('option');
-    // Agregar un evento de escucha al campo de texto y la lista de opciones
-    textElement.addEventListener('input', validarCampo);
-
-    function validarCampo() {
-        const textoIngresado = textElement.value.trim();
-        // Verificar si la opción seleccionada está en el texto ingresado
-
-        for(let i=0; i<opciones.length; i++){
-            if (textoIngresado==opciones[i].value) {
-                buttonElement.removeAttribute('disabled'); // Activar el botón
-                buttonElement.style.opacity="100%";
-                break;
-            } else {
-                buttonElement.setAttribute('disabled', 'true'); // Desactivar el botón
-                buttonElement.style.opacity="50%";
-            }
-        }
-    }
     //document.getElementById('cerrarPopupFinalizar1').addEventListener('click',document.getElementById(String(textElement.value)).style.opacity = '50%');
-    function popupFunc(popupId,abrirId,cerrarClass){
+    function popupFunc(popupId,abrirId,cerrarClass,overlayId){
         const showPopup=document.getElementById(abrirId);
-        const overlay=document.getElementById('overlay');
+        const overlay=document.getElementById(overlayId);
         const popup=document.getElementById(popupId);
         const mostrarPopup = () => {
             overlay.style.display = 'block';
@@ -1659,11 +1733,37 @@
         });
     }
     <%if(rolUsuario.equals("Delegado de Actividad")){%>
-    popupFunc('popupFinalizar','mostrarPopupFinalizar',['cerrarPopupFinalizar','cerrarPopupFinalizar1','cerrarPopupFinalizar2']);
+    popupFunc('popupFinalizar','mostrarPopupFinalizar',['cerrarPopupFinalizar','cerrarPopupFinalizar1','cerrarPopupFinalizar2'],'overlayFinalizar');
     <%}else if(rolUsuario.equals("Delegado General")){%>
-    popupFunc('popupCrear','mostrarPopupCrear',['cerrarPopupCrear','cerrarPopupCrear1','cerrarPopupCrear2']);
-    <%}%>
+    popupFunc('popupCrear','mostrarPopupCrear',['cerrarPopupCrear','cerrarPopupCrear1','cerrarPopupCrear2'],'overlayCrear');
+    <%if(listaActividades!=null){
+    for(int i=0;i<listaActividades.size();i++){%>
+    popupFunc('popupEditarActividad<%=i%>','mostrarPopupEditarActividad<%=i%>',['cerrarPopupEditarActividad<%=i%>','cerrarPopupEditar1Actividad<%=i%>','cerrarPopupEditar2Actividad<%=i%>'],'overlayEditarActividad<%=i%>');
+    <%}}}%>
+    // Obtener elementos del DOM
+    const textElement = document.getElementById('delegado');
+    const buttonElement = document.getElementById('cerrarPopupFinalizar1');
+    const opciones=document.getElementById('actividades').getElementsByTagName('option');
+    // Agregar un evento de escucha al campo de texto y la lista de opciones
+    textElement.addEventListener('input', validarCampo);
+
+    function validarCampo() {
+        const textoIngresado = textElement.value.trim();
+        // Verificar si la opción seleccionada está en el texto ingresado
+
+        for(let i=0; i<opciones.length; i++){
+            if (textoIngresado==opciones[i].value) {
+                buttonElement.removeAttribute('disabled'); // Activar el botón
+                buttonElement.style.opacity="100%";
+                break;
+            } else {
+                buttonElement.setAttribute('disabled', 'true'); // Desactivar el botón
+                buttonElement.style.opacity="50%";
+            }
+        }
+    }
 </script>
+
 <!-- app -->
 <script src="js/utils/app.js"></script>
 <!-- page loader -->

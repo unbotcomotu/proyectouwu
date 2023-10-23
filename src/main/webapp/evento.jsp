@@ -14,6 +14,9 @@
         String actividadEvento=(String)request.getAttribute("actividad");
         String estadoApoyo=(String)request.getAttribute("estadoApoyoAlumnoEvento");
         String lugar=(String)request.getAttribute("lugar");
+        ArrayList<Integer>cantidadApoyos=(ArrayList<Integer>) request.getAttribute("cantidadApoyos");
+        Integer solicitudesApoyoPendientes=(Integer) request.getAttribute("solicitudesApoyoPendientes");
+        int delegadoDeEstaActividadID=(Integer) request.getAttribute("delegadoDeEstaActividadID");
         String colorRol;
         if(rolUsuario.equals("Alumno")){
             colorRol="";
@@ -202,6 +205,31 @@
 
         .lista a:hover {
             text-decoration: underline; /* Subrayar en el hover */
+        }
+        .bloque-izquierda,
+        .bloque-derecha {
+            position: absolute;
+            width: 48%;
+            height: 100%;
+            background-color: rgb(255, 255, 255);
+            color: rgb(0, 0, 0);
+            opacity: 0;
+            text-align: center;
+            line-height: 100px;
+        }
+
+
+        .bloque-derecha {
+            right: 0;
+            left: initial;
+        }
+
+        .bloque-izquierda:hover {
+            opacity: 0.5;
+        }
+
+        .bloque-derecha:hover {
+            opacity: 0.5;
         }
         @media screen and (max-width: 680px) {
             .auxResponsiveUwu{
@@ -575,7 +603,7 @@
         <!-- /NAVIGATION WIDGET INFO -->
 
         <!-- NAVIGATION WIDGET BUTTON -->
-        <a href="inicioSesion.html"><p class="navigation-widget-info-button button small secondary">Cerrar sesión</p></a>
+        <a href="<%=request.getContextPath()%>/IndexServlet"><p class="navigation-widget-info-button button small secondary">Cerrar sesión</p></a>
         <!-- /NAVIGATION WIDGET BUTTON -->
     </div>
     <!-- /NAVIGATION WIDGET INFO WRAP -->
@@ -602,19 +630,19 @@
         <!-- /NAVIGATION WIDGET SECTION LINK -->
         <%if(rolUsuario.equals("Delegado General")){%>
         <!-- NAVIGATION WIDGET SECTION LINK -->
-        <a class="navigation-widget-section-link" href="analiticas.html">Analíticas</a>
+        <a class="navigation-widget-section-link" href="<%=request.getContextPath()%>/AnaliticasServlet?idUsuario=<%=idUsuario%>">Analíticas</a>
         <!-- /NAVIGATION WIDGET SECTION LINK -->
 
         <!-- NAVIGATION WIDGET SECTION LINK -->
-        <a class="navigation-widget-section-link" href="usuariosDelGen.html">Usuarios</a>
+        <a class="navigation-widget-section-link" href="<%=request.getContextPath()%>/ListaDeUsuariosServlet?idUsuario=<%=idUsuario%>">Usuarios</a>
         <!-- /NAVIGATION WIDGET SECTION LINK -->
         <%}else{%>
         <!-- NAVIGATION WIDGET SECTION LINK -->
-        <a class="navigation-widget-section-link" href="misEventosAlumno.html">Mis eventos</a>
+        <a class="navigation-widget-section-link" href="<%=request.getContextPath()%>/MisEventosServlet?idUsuario=<%=idUsuario%>">Mis eventos</a>
         <!-- /NAVIGATION WIDGET SECTION LINK -->
 
         <!-- NAVIGATION WIDGET SECTION LINK -->
-        <a class="navigation-widget-section-link" href="donacionesAlumno.html">Donaciones</a>
+        <a class="navigation-widget-section-link" href="<%=request.getContextPath()%>/MisDonacionesServlet?idUsuario=<%=idUsuario%>">Donaciones</a>
         <!-- /NAVIGATION WIDGET SECTION LINK -->
         <%}%>
     </ul>
@@ -1375,8 +1403,35 @@
         <!-- GRID COLUMN -->
         <div class="grid-column">
             <div class="streamer-box" style="background-image: linear-gradient(rgb(140, 255, 194),rgb(148, 249, 250));">
+                <%if(!rolUsuario.equals("Delegado General")){%>
+                <%if(delegadoDeEstaActividadID==idUsuario){%>
+                <div class="streamer-box-info">
+                    <!-- STREAMER BOX TITLE -->
+                    <p class="streamer-box-title" style="font-size: 150%;">SOLICITUDES DE APOYO</p>
+                    <!-- /STREAMER BOX TITLE -->
 
-                <%if(estadoApoyo==null){%>
+                    <!-- STREAMER BOX STATUS -->
+                    <p class="mt-4">Eres el delegado de actividad en la que se encuentra este evento. No olvides de atender las solicitudes de los usuarios que deseen apoyar. Estas se encuentran en la ventana de notificaciones.</p>
+                    <!-- /STREAMER BOX STATUS -->
+
+                    <!-- USER STATS -->
+                    <div class="user-stats">
+                        <!-- USER STAT -->
+                        <div class="user-stat">
+                            <!-- USER STAT TITLE -->
+                            <img src="css/solicitudesPendientes.png" width="50%">
+                            <!-- /USER STAT TITLE -->
+                            <p class="user-stat-text" style="font-size: 100%;"><%=solicitudesApoyoPendientes%></p>
+                            <!-- USER STAT TEXT -->
+                            <p class="user-stat-text" style="font-size: 100%;">Solicitudes pendientes de revisión</p>
+                            <!-- /USER STAT TEXT -->
+                        </div>
+                        <!-- /USER STAT -->
+                    </div>
+                    <!-- /USER STATS -->
+
+                </div>
+                <%}else if(estadoApoyo==null){%>
                 <!-- STREAMER BOX INFO -->
                 <div class="streamer-box-info">
                     <!-- STREAMER BOX TITLE -->
@@ -1415,7 +1470,7 @@
                     <!-- /USER STATS -->
 
                     <!-- BUTTON -->
-                    <a class="button small twitch" style="color: white;" id="mostrarPopup1" >Apoyar al evento</a>
+                    <a class="button small twitch" style="color: white;" id="mostrarPopupApoyar" >Apoyar al evento</a>
                     <!-- /BUTTON -->
                 </div>
                 <%}else{%>
@@ -1454,6 +1509,48 @@
                         </div>
                         <!-- /USER STAT -->
                         <%}%>
+                    </div>
+                    <!-- /USER STATS -->
+                </div>
+                <%}}else{%>
+                <div class="streamer-box-info">
+                    <!-- STREAMER BOX TITLE -->
+                    <p class="streamer-box-title" style="font-size: 150%;">ESTADÍSTICAS DE APOYO</p>
+                    <!-- /STREAMER BOX TITLE -->
+
+                    <!-- STREAMER BOX STATUS -->
+                    <p class="mt-4">Dentro de la cantidad total de apoyos se encuentran:</p>
+                    <!-- /STREAMER BOX STATUS -->
+
+                    <!-- USER STATS -->
+                    <div class="user-stats">
+                        <!-- USER STAT -->
+                        <div class="user-stat">
+                            <!-- USER STAT TITLE -->
+                            <img src="css/barra.png" width="50%">
+                            <!-- /USER STAT TITLE -->
+                            <!-- USER STAT TEXT -->
+                            <p class="user-stat-text" style="color: blue ;font-size: 100%;"><%=cantidadApoyos.get(1)%></p>
+                            <!-- /USER STAT TEXT -->
+                            <!-- USER STAT TEXT -->
+                            <p class="user-stat-text" style="font-size: 100%;">Barra</p>
+                            <!-- /USER STAT TEXT -->
+                        </div>
+                        <!-- /USER STAT -->
+
+                        <!-- USER STAT -->
+                        <div class="user-stat">
+                            <!-- USER STAT TITLE -->
+                            <!-- /USER STAT TITLE -->
+                            <img src="css/jugar.png" width="50%" alt="">
+                            <!-- USER STAT TEXT -->
+                            <p class="user-stat-text" style="color:blueviolet ;font-size: 100%;"><%=cantidadApoyos.get(0)%></p>
+                            <!-- /USER STAT TEXT -->
+                            <!-- USER STAT TEXT -->
+                            <p class="user-stat-text" style="font-size: 100%;">Equipo</p>
+                            <!-- /USER STAT TEXT -->
+                        </div>
+                        <!-- /USER STAT -->
                     </div>
                     <!-- /USER STATS -->
                 </div>
@@ -1731,6 +1828,11 @@
                     </div>
                 </div>
             </div>
+            <%if(delegadoDeEstaActividadID==idUsuario){%>
+            <div style="position: relative; text-align: end; bottom:375px; right: 10px;">
+                <img src="css/ajustesEvento.png" id="mostrarPopupImagenes" style="cursor: pointer;" width="10%" alt="">
+            </div>
+            <%}%>
             <!-- /WIDGET BOX CONTENT -->
         </div>
         <!-- /WIDGET BOX -->
@@ -1768,56 +1870,106 @@
         </div>
     </div>
 </footer>
-<div class="overlay" id="overlay">
-    <div class="popup" id="popup">
-        <svg class="cerrarPopup" id="cerrarPopup" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+<%if(!rolUsuario.equals("Delegado General")){%>
+<div class="overlay" id="overlayApoyar">
+    <div class="popup" id="popupApoyar">
+        <svg class="cerrarPopup" id="cerrarPopupApoyar" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M11.4142 10L16.7071 4.70711C17.0976 4.31658 17.0976 3.68342 16.7071 3.29289C16.3166 2.90237 15.6834 2.90237 15.2929 3.29289L10 8.58579L4.70711 3.29289C4.31658 2.90237 3.68342 2.90237 3.29289 3.29289C2.90237 3.68342 2.90237 4.31658 3.29289 4.70711L8.58579 10L3.29289 15.2929C2.90237 15.6834 2.90237 16.3166 3.29289 16.7071C3.68342 17.0976 4.31658 17.0976 4.70711 16.7071L10 11.4142L15.2929 16.7071C15.6834 17.0976 16.3166 17.0976 16.7071 16.7071C17.0976 16.3166 17.0976 15.6834 16.7071 15.2929L11.4142 10Z" fill="black"/>
         </svg>
         <p style="font-size: 1.125rem;font-family: 'Titillium Web' !important; font-weight: 500 !important; text-align: center;">Se ha enviado al Delegado de Actividad una solicitud para apoyar.</p>
     </div>
 </div>
+<%}if(delegadoDeEstaActividadID==idUsuario){%>
+<div class="overlay" id="overlayEditarImagenes"></div>
+<div class="popup" style="max-width: 100%;width: 80%!important" id="popupImagenes">
+    <svg class="cerrarPopup" id="cerrarPopupImagenes" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M11.4142 10L16.7071 4.70711C17.0976 4.31658 17.0976 3.68342 16.7071 3.29289C16.3166 2.90237 15.6834 2.90237 15.2929 3.29289L10 8.58579L4.70711 3.29289C4.31658 2.90237 3.68342 2.90237 3.29289 3.29289C2.90237 3.68342 2.90237 4.31658 3.29289 4.70711L8.58579 10L3.29289 15.2929C2.90237 15.6834 2.90237 16.3166 3.29289 16.7071C3.68342 17.0976 4.31658 17.0976 4.70711 16.7071L10 11.4142L15.2929 16.7071C15.6834 17.0976 16.3166 17.0976 16.7071 16.7071C17.0976 16.3166 17.0976 15.6834 16.7071 15.2929L11.4142 10Z" fill="black"/>
+    </svg>
+    <div class="row">
+        <div class="col-sm-4">
+            <div class="bloque-izquierda btn-file1 d-flex align-items-center justify-content-center" style="position: absolute;">
+                <a style="font-size: 200%; cursor: pointer;">Cambiar</a>
+                <input type="file" style="background-color: white; margin-top: 25px;" accept="image/png, .jpeg, .jpg"></input>
+            </div>
+            <a class="bloque-derecha d-flex align-items-center justify-content-center" id="borrarImagen1" style="font-size: 200%; cursor: pointer;">Borrar</a>
+            <img src="https://cdn.www.gob.pe/uploads/document/file/965350/standard_310867105bd77816115eb8beca878465_L20200708-22286-1yuo6tw.jpg" id="imagen1" width="100%" height="auto">
+
+        </div>
+        <div class="col-sm-4">
+            <div class="bloque-izquierda btn-file1 d-flex align-items-center justify-content-center" style="position: absolute;">
+                <a style="font-size: 200%; cursor: pointer;">Cambiar</a>
+                <input type="file" style="background-color: white; margin-top: 25px;" accept="image/png, .jpeg, .jpg"></input>
+            </div>
+            <a class="bloque-derecha d-flex align-items-center justify-content-center" style="font-size: 200%; cursor: pointer;">Borrar</a>
+            <img src="https://cdn.www.gob.pe/uploads/document/file/965350/standard_310867105bd77816115eb8beca878465_L20200708-22286-1yuo6tw.jpg" width="100%" height="auto">
+
+        </div>
+        <div class="col-sm-4">
+            <div class="bloque-izquierda btn-file1 d-flex align-items-center justify-content-center" style="position: absolute;">
+                <a style="font-size: 200%; cursor: pointer;">Cambiar</a>
+                <input type="file" style="background-color: white; margin-top: 25px;" accept="image/png, .jpeg, .jpg"></input>
+            </div>
+            <a class="bloque-derecha d-flex align-items-center justify-content-center" style="font-size: 200%; cursor: pointer;">Borrar</a>
+            <img src="https://cdn.www.gob.pe/uploads/document/file/965350/standard_310867105bd77816115eb8beca878465_L20200708-22286-1yuo6tw.jpg" width="100%" height="auto">
+
+        </div>
+    </div>
+    <div class="row d-flex justify-content-center" style="margin-top: 10px;">
+        <div class="col-sm-6" style="margin-top: 5px;">
+            <button type="submit" class="button secondary" id="cerrarPopupImagenes1">Confirmar cambios</button>
+        </div>
+        <div class="col-sm-6" style="margin-top: 5px;">
+            <button class="button secondary" id="cerrarPopupImagenes2" style="background-color: grey;">Cancelar</button>
+        </div>
+    </div>
+</div>
+<%}%>
 <script>
     function blockButton(id){
         document.getElementById(id).style.pointerEvents = "none";
         document.getElementById(id).style.opacity = "0.5";
     }
 
-    function popupFunc(popupId,abrirId,cerrarId){
+    function popupFunc(popupId,abrirId,cerrarClass,overlayId){
         const showPopup=document.getElementById(abrirId);
-        const overlay=document.getElementById('overlay');
+        const overlay=document.getElementById(overlayId);
         const popup=document.getElementById(popupId);
-        const closePopup=document.getElementById(cerrarId);
-
         const mostrarPopup = () => {
             overlay.style.display = 'block';
             popup.style.display = 'block';
             // Desactivar el scroll
             document.body.style.overflow = 'hidden';
-            blockButton('mostrarPopup1');
         };
         showPopup.addEventListener('click', mostrarPopup);
         const cerrarPopup = () => {
             overlay.style.display = 'none';
             popup.style.display = 'none';
-            // Reactivar el scroll
             document.body.style.overflow = 'auto';
-
+            if(popupId=='popupApoyar'){
+                blockButton('mostrarPopupApoyar');
+            }
         };
-        closePopup.addEventListener('click', cerrarPopup);
+        for(let i=0;i<cerrarClass.length;i++){
+            document.getElementById(cerrarClass[i]).addEventListener('click', cerrarPopup);
+        }
+
         overlay.addEventListener('click', (e) => {
             if (e.target === overlay) {
                 cerrarPopup();
             }
         });
 
-        // Cerrar el popup al presionar Escape
         document.addEventListener('keydown', (event) => {
             if (event.key === 'Escape') {
                 cerrarPopup();
             }
         });
     }
-    popupFunc('popup','mostrarPopup1','cerrarPopup');
+    <%if(!rolUsuario.equals("Delegado General"))%>
+    popupFunc('popupApoyar','mostrarPopupApoyar',['cerrarPopupApoyar'],'overlayApoyar');
+    <%if(delegadoDeEstaActividadID==idUsuario){%>
+    popupFunc('popupImagenes','mostrarPopupImagenes',['cerrarPopupImagenes','cerrarPopupImagenes1','cerrarPopupImagenes2'],'overlayEditarImagenes');
+    <%}%>
 
 </script>
 <!-- app -->

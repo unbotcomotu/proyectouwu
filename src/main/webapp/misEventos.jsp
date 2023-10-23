@@ -1,5 +1,9 @@
 <%@ page import="java.util.ArrayList" %>
 <%@ page import="com.example.proyectouwu.Beans.Actividad" %>
+<%@ page import="com.example.proyectouwu.Daos.DaoEvento" %>
+<%@ page import="com.example.proyectouwu.Beans.Evento" %>
+<%@ page import="com.example.proyectouwu.Daos.DaoLugarEvento" %>
+<%@ page import="com.example.proyectouwu.Daos.DaoAlumnoPorEvento" %>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <!DOCTYPE html>
 <html lang="en">
@@ -9,6 +13,9 @@
     String nombreCompletoUsuario=(String) request.getAttribute("nombreCompletoUsuario");
     String vistaActual=(String) request.getAttribute("vistaActual");
     ArrayList<String>listaCorreosDelegadosGenerales=(ArrayList<String>)request.getAttribute("correosDelegadosGenerales");
+    int diaActual=(int) request.getAttribute("diaActual");
+    ArrayList<Evento>listaEventos=(ArrayList<Evento>)request.getAttribute("listaEventos");
+    String colorPorActividad[]={"#23d2e2","#615dfa","blue","pink","#0c5460","#0b2e13","#00e194","#1df377","#4e4ac8","#4f8dff","#2e2e47","#1e7e34","#2ebfef","#8fd19e","#122d5c","#b1dfbb","#491217"};
     String colorRol;
     if(rolUsuario.equals("Alumno")){
         colorRol="";
@@ -30,6 +37,125 @@
     <link rel="icon" href="img/favicon.ico">
     <title>Actividades - Siempre Fibra</title>
     <style>
+        /* Estilo para el overlay del popup */
+        .overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            z-index: 10000;
+        }
+
+        /* Estilo para el contenido del popup */
+        .popup {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            border-radius: 12px;
+            transform: translate(-50%, -50%);
+            z-index: 10001;
+            width: 90%;
+            max-width: 584px;
+            background-color: #fff;
+        }
+
+        /* Estilo para el botón de cerrar */
+        .cerrarPopup {
+            display: flex;
+            -ms-flex-pack: center;
+            justify-content: center;
+            -ms-flex-align: center;
+            align-items: center;
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            background-color: #45437f;
+            cursor: pointer;
+            position: absolute;
+            top: -20px;
+            right: -20px;
+            z-index: 2;
+            transition: background-color .2s ease-in-out;
+        }
+
+        .popupAux-event-cover {
+            width: 100%;
+            border-top-left-radius: 12px;
+            border-top-right-radius: 12px;
+        }
+
+        .popupAux-event-info {
+            padding: 32px 28px;
+            position: relative;
+        }
+
+        .popupAux-event-info .user-avatar-list {
+            margin-top: 18px;
+        }
+
+        .popupAux-event-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        .popupAux-event-subtitle {
+            margin-top: 32px;
+            font-size: 1rem;
+            font-weight: 700;
+        }
+
+        .popupAux-event-text {
+            margin-top: 16px;
+            font-size: 0.875rem;
+            line-height: 1.7142857143em;
+            font-weight: 500;
+            color: #3e3f5e;
+        }
+
+        .decorated-feature-list {
+            margin-top: 14px;
+        }
+
+        .popupAux-event-button {
+            width: 200px;
+            position: absolute;
+            top: -30px;
+            right: 28px;
+        }
+
+        /*---------------------------------
+            48. popupAux CLOSE BUTTON
+        ---------------------------------*/
+        .popupAux-close-button {
+            display: flex;
+            -ms-flex-pack: center;
+            justify-content: center;
+            -ms-flex-align: center;
+            align-items: center;
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            background-color: #45437f;
+            cursor: pointer;
+            position: absolute;
+            top: -20px;
+            right: -20px;
+            z-index: 2;
+            transition: background-color .2s ease-in-out;
+        }
+
+        .popupAux-close-button:hover {
+            background-color: #23d2e2;
+        }
+
+        .popupAux-close-button .popupAux-close-button-icon {
+            pointer-events: none;
+
+        }
         footer {
             background-color: #322D31;
             color: white;
@@ -1241,6 +1367,154 @@
 
 <!-- CONTENT GRID -->
 
+<div class="content-grid">
+    <!-- SECTION BANNER -->
+    <div class="section-banner">
+        <!-- SECTION BANNER ICON -->
+        <img class="section-banner-icon" src="img/banner/events-icon.png" alt="events-icon">
+        <!-- /SECTION BANNER ICON -->
+
+        <!-- SECTION BANNER TITLE -->
+        <p class="section-banner-title">Mis eventos</p>
+        <!-- /SECTION BANNER TITLE -->
+
+        <!-- SECTION BANNER TEXT -->
+        <p class="section-banner-text">Organiza tus semanas y revisa qué eventos se acercan</p>
+        <!-- /SECTION BANNER TEXT -->
+    </div>
+    <!-- /SECTION BANNER -->
+
+    <!-- SECTION HEADER -->
+    <div class="section-header">
+        <!-- SECTION HEADER INFO -->
+        <div class="section-header-info">
+            <!-- SECTION PRETITLE -->
+            <p class="section-pretitle">Echa un vistazo rápido</p>
+            <!-- /SECTION PRETITLE -->
+
+            <!-- SECTION TITLE -->
+            <h2 class="section-title">Calendario de eventos</h2>
+            <!-- /SECTION TITLE -->
+        </div>
+        <!-- /SECTION HEADER INFO -->
+    </div>
+    <!-- /SECTION HEADER -->
+
+
+    <!-- CALENDAR WIDGET -->
+    <div class="calendar-widget">
+        <!-- CALENDAR WIDGET HEADER -->
+        <div class="calendar-widget-header">
+            <!-- CALENDAR WIDGET HEADER ACTIONS -->
+            <div class="calendar-widget-header-actions d-flex justify-content-around" style="width: 100%;">
+                <!-- CALENDAR WIDGET TITLE -->
+                <div class="col-auto">
+                    <p class="calendar-widget-title">Octubre 2023</p>
+                </div>
+                <div class="col-auto" >
+
+                    <p class="calendar-widget-title" style="font-size: 75%;">Actividades:
+                        <%ArrayList<Integer>IDsActividadesContadas=new ArrayList<Integer>();
+                            aux:for(Evento e:listaEventos){
+                                for(Integer i:IDsActividadesContadas){
+                                    if(e.getIdActividad()==i){
+                                        continue aux;
+                                    }
+                                }%><a style="color: <%=colorPorActividad[e.getIdActividad()]%>"><%=new DaoEvento().actividadDeEventoPorID(e.getIdEvento())%></a>
+                                    <%IDsActividadesContadas.add(e.getIdActividad());%>
+                            <%}%>
+                    </p>
+                </div>
+                <!-- /CALENDAR WIDGET TITLE -->
+            </div>
+            <!-- /CALENDAR WIDGET HEADER ACTIONS -->
+        </div>
+        <!-- /CALENDAR WIDGET HEADER -->
+
+        <!-- CALENDAR -->
+        <div class="calendar full">
+            <!-- CALENDAR WEEK -->
+            <div class="calendar-week">
+                <!-- CALENDAR WEEK DAY -->
+                <p class="calendar-week-day"><span class="week-day-short">Dom</span><span class="week-day-long">Domingo</span></p>
+                <!-- /CALENDAR WEEK DAY -->
+
+                <!-- CALENDAR WEEK DAY -->
+                <p class="calendar-week-day"><span class="week-day-short">Lun</span><span class="week-day-long">Lunes</span></p>
+                <!-- /CALENDAR WEEK DAY -->
+
+                <!-- CALENDAR WEEK DAY -->
+                <p class="calendar-week-day"><span class="week-day-short">Mar</span><span class="week-day-long">Martes</span></p>
+                <!-- /CALENDAR WEEK DAY -->
+
+                <!-- CALENDAR WEEK DAY -->
+                <p class="calendar-week-day"><span class="week-day-short">Mie</span><span class="week-day-long">Miércoles</span></p>
+                <!-- /CALENDAR WEEK DAY -->
+
+                <!-- CALENDAR WEEK DAY -->
+                <p class="calendar-week-day"><span class="week-day-short">Jue</span><span class="week-day-long">Jueves</span></p>
+                <!-- /CALENDAR WEEK DAY -->
+
+                <!-- CALENDAR WEEK DAY -->
+                <p class="calendar-week-day"><span class="week-day-short">Vie</span><span class="week-day-long">Viernes</span></p>
+                <!-- /CALENDAR WEEK DAY -->
+
+                <!-- CALENDAR WEEK DAY -->
+                <p class="calendar-week-day"><span class="week-day-short">Sab</span><span class="week-day-long">Sábado</span></p>
+                <!-- /CALENDAR WEEK DAY -->
+            </div>
+            <!-- /CALENDAR WEEK -->
+
+            <!-- CALENDAR DAYS -->
+            <div class="calendar-days">
+                <%for(int j=0;j<5;j++){%>
+                <!-- CALENDAR DAY ROW -->
+                <div class="calendar-day-row">
+                    <%for(int i=1;i<=7;i++){
+                        int dia=7*j+i;
+                    %>
+                    <div class="calendar-day
+                    <%if(dia>31){
+                        dia-=31;
+                        %> inactive<%}%>">
+                        <%if(diaActual==dia){%>
+                        <p class="calendar-day-number" style="color: red"><%=dia%> (Hoy)</p>
+                        <%}else{%>
+                        <p class="calendar-day-number"><%=dia%></p>
+                        <%}%>
+                        <!-- /CALENDAR DAY NUMBER -->
+                        <%boolean aux=true;
+                            String titulo;
+                            for(Evento e:listaEventos){
+                                if(Integer.parseInt(e.getFecha().toString().split("-")[2])==dia){
+                                    if(aux){%>
+                        <div class="calendar-day-events">
+                            <%aux=false;
+                            }String tituloAux[]=e.getTitulo().split(" ");
+                                titulo="";
+                                for(int k=3;k<tituloAux.length;k++){
+                                    titulo+=tituloAux[k]+" ";
+                                }
+                            %>
+                            <p class="calendar-day-event popup-event-information-trigger" style="background-color: <%=colorPorActividad[e.getIdActividad()]%>" id="mostrarPopupEvento<%=listaEventos.indexOf(e)%>"><span class="calendar-day-event-text">⚔️<%=titulo%></span></p>
+
+                        <!-- /CALENDAR DAY -->
+                        <%}}if(!aux){%>
+                        </div>
+                            <%aux=true;
+                            }%>
+                    </div>
+                    <%}%>
+                </div>
+                <%}%>
+            </div>
+        </div>
+            <!-- /CALENDAR DAYS -->
+    </div>
+        <!-- /CALENDAR -->
+</div>
+    <!-- /CALENDAR WIDGET -->
+
 
 
 <!-- /CONTENT GRID -->
@@ -1273,6 +1547,259 @@
         </div>
     </div>
 </footer>
+<%for(Evento e:listaEventos){%>
+<div class="overlay" id="overlayEvento<%=listaEventos.indexOf(e)%>"></div>
+<div class="popup" id="popupEvento<%=listaEventos.indexOf(e)%>">
+    <svg class="cerrarPopup" id="cerrarPopupEvento<%=listaEventos.indexOf(e)%>" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M11.4142 10L16.7071 4.70711C17.0976 4.31658 17.0976 3.68342 16.7071 3.29289C16.3166 2.90237 15.6834 2.90237 15.2929 3.29289L10 8.58579L4.70711 3.29289C4.31658 2.90237 3.68342 2.90237 3.29289 3.29289C2.90237 3.68342 2.90237 4.31658 3.29289 4.70711L8.58579 10L3.29289 15.2929C2.90237 15.6834 2.90237 16.3166 3.29289 16.7071C3.68342 17.0976 4.31658 17.0976 4.70711 16.7071L10 11.4142L15.2929 16.7071C15.6834 17.0976 16.3166 17.0976 16.7071 16.7071C17.0976 16.3166 17.0976 15.6834 16.7071 15.2929L11.4142 10Z" fill="black"/>
+    </svg>
+    <div>
+        <!-- POPUP EVENT COVER -->
+        <figure class="popupAux-event-cover liquid">
+            <img src="css/fibraVShormigonLargo.png" alt="cover-33">
+        </figure>
+        <!-- /POPUP EVENT COVER -->
+
+        <!-- POPUP EVENT INFO -->
+        <div class="popupAux-event-info">
+            <!-- POPUP EVENT TITLE -->
+            <p class="popupAux-event-title" style="font-size: 180%"><%=e.getTitulo()%>
+                <%if(e.isEventoFinalizado()){
+                if(e.getResultadoEvento().equals("Victoria")){%>
+                <span style="color: green"> (Victoria)</span>
+                <%}else{%>
+                <span style="color: red"> (Derrota)</span>
+                <%}}%>
+            </p>
+            <!-- /POPUP EVENT TITLE -->
+
+            <!-- DECORATED FEATURE LIST -->
+            <div class="decorated-feature-list">
+                <!-- DECORATED FEATURE -->
+                <div class="decorated-feature">
+                    <!-- DECORATED FEATURE ICON -->
+                    <svg class="decorated-feature-icon icon-events">
+                        <use xlink:href="#svg-events"></use>
+                    </svg>
+                    <!-- /DECORATED FEATURE ICON -->
+
+                    <!-- DECORATED FEATURE INFO -->
+                    <div class="decorated-feature-info">
+                        <%if(e.isEventoFinalizado()){%>
+                        <p class="decorated-feature-title" style="color: purple;"><%=Integer.parseInt(e.getFecha().toString().split("-")[2])%> de Octubre</p>
+                        <%}else{%>
+                        <%int diasQueFaltanParaElEvento=new DaoEvento().diferenciaDiasEventoActualidad(e.getIdEvento());
+                        if(diasQueFaltanParaElEvento==0){%>
+                        <p class="decorated-feature-title" style="color: red;">Hoy</p>
+                        <%}else if(diasQueFaltanParaElEvento==1){%>
+                        <p class="decorated-feature-title" style="color: orangered;">Mañana</p>
+                        <%}else if(diasQueFaltanParaElEvento==2){%>
+                        <p class="decorated-feature-title" style="color: orange;">En 2 días</p>
+                        <%}else{%>
+                        <p class="decorated-feature-title" style="color: purple;"><%=Integer.parseInt(e.getFecha().toString().split("-")[2])%> de Octubre</p>
+                        <%}}%>
+                        <!-- DECORATED FEATURE TEXT -->
+                        <%String aux[]=e.getHora().toString().split(":");%>
+                        <p class="decorated-feature-text"><%=Integer.parseInt(aux[0])+":"+aux[1]%></p>
+                        <!-- /DECORATED FEATURE TEXT -->
+                    </div>
+                    <!-- /DECORATED FEATURE INFO -->
+                </div>
+                <!-- /DECORATED FEATURE -->
+
+                <!-- DECORATED FEATURE -->
+                <div class="decorated-feature">
+                    <!-- DECORATED FEATURE ICON -->
+                    <svg class="decorated-feature-icon icon-pin">
+                        <use xlink:href="#svg-pin"></use>
+                    </svg>
+                    <!-- /DECORATED FEATURE ICON -->
+
+                    <!-- DECORATED FEATURE INFO -->
+                    <div class="decorated-feature-info">
+                        <!-- DECORATED FEATURE TITLE -->
+                        <p class="decorated-feature-title"><%=new DaoLugarEvento().lugarPorID(e.getLugarEvento())%></p>
+                        <!-- /DECORATED FEATURE TITLE -->
+
+                        <!-- DECORATED FEATURE TEXT -->
+                        <p class="decorated-feature-text">Ubicación</p>
+                        <!-- /DECORATED FEATURE TEXT -->
+                    </div>
+                    <!-- /DECORATED FEATURE INFO -->
+                </div>
+                <!-- /DECORATED FEATURE -->
+
+                <!-- DECORATED FEATURE -->
+                <div class="decorated-feature">
+                    <!-- DECORATED FEATURE ICON -->
+                    <img src="css/apoyoIconoCeleste.png" height="20px" alt="">
+                    <!-- /DECORATED FEATURE ICON -->
+                    <!-- DECORATED FEATURE INFO -->
+                    <div class="decorated-feature-info">
+                        <!-- DECORATED FEATURE TITLE -->
+                        <p class="decorated-feature-title"><%=new DaoAlumnoPorEvento().verificarApoyo(e.getIdEvento(),idUsuario)%></p>
+                        <!-- /DECORATED FEATURE TITLE -->
+
+                        <!-- DECORATED FEATURE TEXT -->
+                        <p class="decorated-feature-text">Apoyo</p>
+                        <!-- /DECORATED FEATURE TEXT -->
+                    </div>
+                    <!-- /DECORATED FEATURE INFO -->
+                </div>
+                <!-- /DECORATED FEATURE -->
+
+                <!-- DECORATED FEATURE -->
+                <div class="decorated-feature">
+                    <!-- DECORATED FEATURE ICON -->
+                    <img src="css/actividadIcono.png" height="20px" alt="">
+                    <!-- /DECORATED FEATURE ICON -->
+
+                    <!-- DECORATED FEATURE INFO -->
+                    <div class="decorated-feature-info">
+                        <!-- DECORATED FEATURE TITLE -->
+                        <p class="decorated-feature-title"><%=new DaoEvento().actividadDeEventoPorID(e.getIdEvento())%></p>
+                        <!-- /DECORATED FEATURE TITLE -->
+
+                        <!-- DECORATED FEATURE TEXT -->
+                        <p class="decorated-feature-text">Actividad</p>
+                        <!-- /DECORATED FEATURE TEXT -->
+                    </div>
+                    <!-- /DECORATED FEATURE INFO -->
+                </div>
+                <!-- /DECORATED FEATURE -->
+
+
+            </div>
+            <!-- /DECORATED FEATURE LIST -->
+            <%if(e.isEventoFinalizado()){%>
+            <!-- POPUP EVENT SUBTITLE -->
+            <p class="popupAux-event-subtitle">Resumen</p>
+            <!-- /POPUP EVENT SUBTITLE -->
+
+            <!-- POPUP EVENT TEXT -->
+            <p class="popupAux-event-text"><%=e.getResumen()%></p>
+            <!-- /POPUP EVENT TEXT -->
+            <%}else{%>
+            <!-- POPUP EVENT SUBTITLE -->
+            <p class="popupAux-event-subtitle">Descripción</p>
+            <!-- /POPUP EVENT SUBTITLE -->
+
+            <!-- POPUP EVENT TEXT -->
+            <p class="popupAux-event-text">"<%=e.getFraseMotivacional()%>" <%=e.getDescripcionEventoActivo()%></p>
+            <!-- /POPUP EVENT TEXT -->
+            <%}%>
+
+            <!-- POPUP EVENT BUTTON -->
+            <a href="<%=request.getContextPath()%>/EventoServlet?idUsuario=<%=idUsuario%>&idEvento=<%=e.getIdEvento()%>"><p class="popupAux-event-button button cerrar-btn">Ingresar a la página del evento</p></a>
+            <!-- /POPUP EVENT BUTTON -->
+        </div>
+        <!-- /POPUP EVENT INFO -->
+
+        <p class="popupAux-event-subtitle" style="margin-left: 27px;">Último mensaje en el foro</p>
+
+        <!-- POST COMMENT -->
+        <div class="post-comment">
+
+            <!-- USER AVATAR -->
+            <a class="user-avatar small no-outline">
+                <!-- USER AVATAR CONTENT -->
+                <div class="user-avatar-content">
+                    <!-- HEXAGON -->
+                    <div class="hexagon-image-30-32" data-src="css/prudencio.png"></div>
+                    <!-- /HEXAGON -->
+                </div>
+                <!-- /USER AVATAR CONTENT -->
+
+                <!-- USER AVATAR PROGRESS -->
+                <div class="user-avatar-progress">
+                    <!-- HEXAGON -->
+                    <div class="hexagon-progress-40-44"></div>
+                    <!-- /HEXAGON -->
+                </div>
+                <!-- /USER AVATAR PROGRESS -->
+
+                <!-- USER AVATAR PROGRESS BORDER -->
+                <div class="user-avatar-progress-border">
+                    <!-- HEXAGON -->
+                    <div class="hexagon-border-40-44"></div>
+                    <!-- /HEXAGON -->
+                </div>
+                <!-- /USER AVATAR PROGRESS BORDER -->
+
+                <!-- USER AVATAR BADGE -->
+                <div class="user-avatar-badge">
+                    <!-- USER AVATAR BADGE BORDER -->
+                    <div class="user-avatar-badge-border">
+                        <!-- HEXAGON -->
+                        <div class="hexagon-22-24"></div>
+                        <!-- /HEXAGON -->
+                    </div>
+                    <!-- /USER AVATAR BADGE BORDER -->
+
+                    <!-- USER AVATAR BADGE CONTENT -->
+                    <div class="user-avatar-badge-content">
+                        <!-- HEXAGON -->
+                        <div class="hexagon-dark-16-18"></div>
+                        <!-- /HEXAGON -->
+                    </div>
+                    <!-- /USER AVATAR BADGE CONTENT -->
+
+                    <!-- USER AVATAR BADGE TEXT -->
+                    <p class="user-avatar-badge-text">19</p>
+                    <!-- /USER AVATAR BADGE TEXT -->
+                </div>
+                <!-- /USER AVATAR BADGE -->
+            </a>
+            <!-- /USER AVATAR -->
+
+            <!-- POST COMMENT TEXT -->
+            <p class="post-comment-text"><a class="post-comment-text-author">Rodrigo Prudencio</a>TelecozZz</p>
+            <!-- /POST COMMENT TEXT -->
+        </div>
+        <!-- /POST COMMENT LIST -->
+    </div>
+    <br>
+
+</div>
+<%}%>
+<script>
+    function popupFunc(popupId,abrirId,cerrarId,overlayId){
+        const showPopup=document.getElementById(abrirId);
+        const overlay=document.getElementById(overlayId);
+        const popup=document.getElementById(popupId);
+        const closePopup=document.getElementById(cerrarId);
+        const mostrarPopup = () => {
+            overlay.style.display = 'block';
+            popup.style.display = 'block';
+            // Desactivar el scroll
+            document.body.style.overflow = 'hidden';
+        };
+        showPopup.addEventListener('click', mostrarPopup);
+        const cerrarPopup = () => {
+            overlay.style.display = 'none';
+            popup.style.display = 'none';
+            // Reactivar el scroll
+            document.body.style.overflow = 'auto';
+        };
+        closePopup.addEventListener('click', cerrarPopup);
+        overlay.addEventListener('click', (e) => {
+            if (e.target === overlay) {
+                cerrarPopup();
+            }
+        });
+
+        // Cerrar el popup al presionar Escape
+        document.addEventListener('keydown', (event) => {
+            if (event.key === 'Escape') {
+                cerrarPopup();
+            }
+        });
+    }
+    <%for(int i=0;i<listaEventos.size();i++){%>
+    popupFunc('popupEvento<%=i%>','mostrarPopupEvento<%=i%>','cerrarPopupEvento<%=i%>','overlayEvento<%=i%>');
+    <%}%>
+</script>
+
 <!-- app -->
 <script src="js/utils/app.js"></script>
 <!-- page loader -->

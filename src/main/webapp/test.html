@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            var enlaceConBoton = document.getElementById("enlace-con-boton");
+            var botonDentroDelEnlace = document.getElementById("boton-dentro-del-enlace");
+
+            botonDentroDelEnlace.addEventListener("click", function(e) {
+
+                e.preventDefault();
+                // Aquí puedes ejecutar la acción del botón
+                alert("Acción del botón ejecutada.");
+            });
+        });
+    </script>
+</head>
+<body>
+<a href="https://www.ejemplo.com" id="enlace-con-boton">aaaaaaaaaaaaaaaaaaaa
+    <button id="boton-dentro-del-enlace">Clic aquí</button>
+</a>
+</body>
+</html>

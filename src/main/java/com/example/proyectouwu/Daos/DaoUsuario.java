@@ -1,5 +1,6 @@
 package com.example.proyectouwu.Daos;
 
+import com.example.proyectouwu.Beans.Evento;
 import com.example.proyectouwu.Beans.Usuario;
 
 import java.sql.*;
@@ -11,7 +12,7 @@ public class DaoUsuario {
     {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
-            conn= DriverManager.getConnection("jdbc:mysql://localhost:3306/proyecto","root","root");
+            conn= DriverManager.getConnection("jdbc:mysql://localhost:3306/proyecto","root","23042004");
         } catch (ClassNotFoundException | SQLException e) {
             throw new RuntimeException(e);
         }
@@ -53,6 +54,22 @@ public class DaoUsuario {
             while(rs.next()){
                 listaCorreosDelegadosGenerales.add(rs.getString(1));
             }return listaCorreosDelegadosGenerales;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public ArrayList<Usuario>listarIDyNombreDelegadosDeActividad(){
+        ArrayList<Usuario>listaDelegadosDeActividad=new ArrayList<>();
+        String sql="select idUsuario,nombre,apellido from usuario where rol='Delegado de Actividad'";
+        try(ResultSet rs=conn.createStatement().executeQuery(sql)){
+            while(rs.next()){
+                Usuario u=new Usuario();
+                u.setIdUsuario(rs.getInt(1));
+                u.setNombre(rs.getString(2));
+                u.setApellido(rs.getString(3));
+                listaDelegadosDeActividad.add(u);
+            }return listaDelegadosDeActividad;
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

@@ -12,7 +12,7 @@ public class Usuario {
     private String correo;
     private String contrasena;
     private String codigoPUCP;
-    private String estadoRegistro = "En espera";
+    private String estadoRegistro = "Pendiente";
     private Date fechaRegistro;
     private Time horaRegistro;
     private String condicion;

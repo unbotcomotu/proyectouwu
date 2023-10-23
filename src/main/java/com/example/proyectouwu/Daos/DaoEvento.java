@@ -125,4 +125,65 @@ public class DaoEvento {
         }
     }
 
+    public Integer idDelegadoDeActividadPorEvento(int idEvento){
+        String sql="select a.idDelegadoDeActividad from Actividad a inner join Evento e on e.idActividad=a.idActividad where idEvento=?";
+        try(PreparedStatement pstmt= conn.prepareStatement(sql)){
+            pstmt.setInt(1,idEvento);
+            try(ResultSet rs=pstmt.executeQuery()){
+                if(rs.next()){
+                    return rs.getInt(1);
+                }else {
+                    return null;
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public ArrayList<Integer> cantidadApoyosBarraEquipoPorEvento(int idEvento){
+        ArrayList<Integer>cantidadApoyos=new ArrayList<>();
+        String sql="select count(estadoApoyo) from AlumnoPorEvento where idEvento=? group by estadoApoyo having estadoApoyo='Equipo'";
+        try(PreparedStatement pstmt= conn.prepareStatement(sql)){
+            pstmt.setInt(1,idEvento);
+            try(ResultSet rs=pstmt.executeQuery()){
+                if(rs.next()){
+                    cantidadApoyos.add(rs.getInt(1));
+                }else {
+                    cantidadApoyos.add(0);
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        sql="select count(estadoApoyo) from AlumnoPorEvento where idEvento=? group by estadoApoyo having estadoApoyo='Barra'";
+        try(PreparedStatement pstmt= conn.prepareStatement(sql)){
+            pstmt.setInt(1,idEvento);
+            try(ResultSet rs=pstmt.executeQuery()){
+                if(rs.next()){
+                    cantidadApoyos.add(rs.getInt(1));
+                }else {
+                    cantidadApoyos.add(0);
+                }
+            }return cantidadApoyos;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public Integer solicitudesSinAtenderPorEvento(int idEvento){
+        String sql="select count(idAlumnoPorEvento) from AlumnoPorEvento where idEvento=? group by estadoApoyo having estadoApoyo='Pendiente'";
+        try(PreparedStatement pstmt= conn.prepareStatement(sql)){
+            pstmt.setInt(1,idEvento);
+            try(ResultSet rs=pstmt.executeQuery()){
+                if(rs.next()){
+                    return rs.getInt(1);
+                }else {
+                    return 0;
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }

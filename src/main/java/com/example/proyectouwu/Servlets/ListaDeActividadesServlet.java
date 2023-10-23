@@ -22,6 +22,7 @@ public class ListaDeActividadesServlet extends HttpServlet {
         request.setAttribute("listaActividades",new DaoActividad().listarActividades());
         request.setAttribute("vistaActual","listaDeActividades");
         request.setAttribute("correosDelegadosGenerales",dUsuario.listarCorreosDelegadosGenerales());
+        request.setAttribute("IDyNombreDelegadosDeActividad",dUsuario.listarIDyNombreDelegadosDeActividad());
         String action = request.getParameter("action") == null ? "default" : request.getParameter("action");
         switch (action){
             case "default":

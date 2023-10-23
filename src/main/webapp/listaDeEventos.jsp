@@ -5,6 +5,8 @@
 <%@ page import="com.example.proyectouwu.Daos.DaoActividad" %>
 <%@ page import="java.time.LocalDate" %>
 <%@ page import="com.example.proyectouwu.Daos.DaoEvento" %>
+<%@ page import="com.example.proyectouwu.Beans.LugarEvento" %>
+<%@ page import="com.example.proyectouwu.Daos.DaoLugarEvento" %>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <!DOCTYPE html>
 <html lang="en">
@@ -16,6 +18,7 @@
         ArrayList<String>listaCorreosDelegadosGenerales=(ArrayList<String>)request.getAttribute("correosDelegadosGenerales");
         ArrayList<Evento>listaEventos=(ArrayList<Evento>)request.getAttribute("listaEventos");
         String nombreActividad=(String)request.getAttribute("nombreActividad");
+        ArrayList<LugarEvento>listaLugares=(ArrayList<LugarEvento>) request.getAttribute("listaLugares");
         int delegadoDeEstaActividadID=(int)request.getAttribute("delegadoDeEstaActividadID");
         String colorRol;
         if(rolUsuario.equals("Alumno")){
@@ -38,6 +41,55 @@
     <link rel="icon" href="img/favicon.ico">
     <title><%=nombreActividad%> - Siempre Fibra</title>
     <style>
+        .overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            z-index: 10000;
+        }
+
+        /* Estilo para el contenido del popup */
+        .popup {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            border-radius: 12px;
+            transform: translate(-50%, -50%);
+            background-color: white;
+            padding: 20px;
+            z-index: 10001;
+        }
+        /* Estilo para el botón de cerrar */
+        .cerrarPopup {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            cursor: pointer;
+        }
+        .btn-file1 {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-file1 input[type="file"] {
+            position: absolute;
+            top: 0;
+            right: 0;
+            min-width: 100%;
+            min-height: 100%;
+            font-size: 100px;
+            filter: alpha(opacity=0);
+            opacity: 0;
+            outline: none;
+            background: white;
+            cursor: inherit;
+            display: block;
+        }
         .text-sticker-aux{
             height: 32px;
             padding: 0;
@@ -146,9 +198,23 @@
         .lista a:hover {
             text-decoration: underline; /* Subrayar en el hover */
         }
+        @media screen and (max-width: 577px) {
+            .contenedor2{
+                top:20px !important;
+            }
+        }
         @media screen and (max-width: 680px) {
             .auxResponsiveUwu{
                 display: none;
+            }
+        }
+        @media screen and (max-width: 777px) {
+            .recuadroTexto {
+                margin-bottom: 15px;
+            }
+
+            .contenedorCrear {
+                width: 80% !important;
             }
         }
     </style>
@@ -518,7 +584,7 @@
         <!-- /NAVIGATION WIDGET INFO -->
 
         <!-- NAVIGATION WIDGET BUTTON -->
-        <a href="inicioSesion.html"><p class="navigation-widget-info-button button small secondary">Cerrar sesión</p></a>
+        <a href="<%=request.getContextPath()%>/IndexServlet"><p class="navigation-widget-info-button button small secondary">Cerrar sesión</p></a>
         <!-- /NAVIGATION WIDGET BUTTON -->
     </div>
     <!-- /NAVIGATION WIDGET INFO WRAP -->
@@ -545,19 +611,19 @@
         <!-- /NAVIGATION WIDGET SECTION LINK -->
         <%if(rolUsuario.equals("Delegado General")){%>
         <!-- NAVIGATION WIDGET SECTION LINK -->
-        <a class="navigation-widget-section-link" href="analiticas.html">Analíticas</a>
+        <a class="navigation-widget-section-link" href="<%=request.getContextPath()%>/AnaliticasServlet?idUsuario=<%=idUsuario%>">Analíticas</a>
         <!-- /NAVIGATION WIDGET SECTION LINK -->
 
         <!-- NAVIGATION WIDGET SECTION LINK -->
-        <a class="navigation-widget-section-link" href="usuariosDelGen.html">Usuarios</a>
+        <a class="navigation-widget-section-link" href="<%=request.getContextPath()%>/ListaDeUsuariosServlet?idUsuario=<%=idUsuario%>">Usuarios</a>
         <!-- /NAVIGATION WIDGET SECTION LINK -->
         <%}else{%>
         <!-- NAVIGATION WIDGET SECTION LINK -->
-        <a class="navigation-widget-section-link" href="misEventosAlumno.html">Mis eventos</a>
+        <a class="navigation-widget-section-link" href="<%=request.getContextPath()%>/MisEventosServlet?idUsuario=<%=idUsuario%>">Mis eventos</a>
         <!-- /NAVIGATION WIDGET SECTION LINK -->
 
         <!-- NAVIGATION WIDGET SECTION LINK -->
-        <a class="navigation-widget-section-link" href="donacionesAlumno.html">Donaciones</a>
+        <a class="navigation-widget-section-link" href="<%=request.getContextPath()%>/MisDonacionesServlet?idUsuario=<%=idUsuario%>">Donaciones</a>
         <!-- /NAVIGATION WIDGET SECTION LINK -->
         <%}%>
     </ul>
@@ -1317,17 +1383,33 @@
 
     <!-- SECTION HEADER -->
     <div class="section-header">
-        <!-- SECTION HEADER INFO -->
-        <div class="section-header-info">
-            <!-- SECTION PRETITLE -->
-            <p class="section-pretitle">Busca los eventos que desees</p>
-            <!-- /SECTION PRETITLE -->
+        <div class="container-fluid" style="width: 100%;">
+            <!-- SECTION HEADER INFO -->
+            <div class="row" style="width: 100%;">
+                <div class="section-header-info col-sm-auto recuadroTexto">
+                    <!-- SECTION PRETITLE -->
+                    <p class="section-pretitle">Busca los eventos que desees</p>
+                    <!-- /SECTION PRETITLE -->
 
-            <!-- SECTION TITLE -->
-            <h2 class="section-title">Lista de eventos</h2>
-            <!-- /SECTION TITLE -->
+                    <!-- SECTION TITLE -->
+                    <h2 class="section-title">Lista de eventos</h2>
+                    <!-- /SECTION TITLE -->
+                </div>
+                <%if(delegadoDeEstaActividadID==idUsuario){%>
+                <div class="section-filters-bar-actions col-sm-auto d-flex justify-content-end recuadro recuadroFila" style="width: 150px;">
+                    <!-- BUTTON -->
+                    <button class="button secondary popup-event-creation-trigger botones" style="width: 100%;" id="mostrarPopupCrear">Crear evento</button>
+                    <!-- /BUTTON -->
+                </div>
+                <!-- /SECTION HEADER INFO -->
+                <div class="section-filters-bar-actions col-sm-auto d-flex justify-content-end recuadro recuadroFila" style="width: 150px;">
+                    <!-- BUTTON -->
+                    <button class="button secondary popup-event-creation-trigger botones" id="mostrarPopupFinalizar" style="width: 100%;">Finalizar evento</button>
+                    <!-- /BUTTON -->
+                </div>
+                <%}%>
+            </div>
         </div>
-        <!-- /SECTION HEADER INFO -->
     </div>
     <!-- /SECTION HEADER -->
 
@@ -1736,16 +1818,22 @@
         <div class="marketplace-content">
             <!-- GRID -->
             <div class="grid grid-3-3-3 centered">
+                <%if(listaEventos!=null){%>
                 <%for(Evento e:listaEventos){%>
                 <!-- PRODUCT PREVIEW -->
                 <%if(delegadoDeEstaActividadID==idUsuario||rolUsuario.equals("Delegado General")){%>
                 <div class="product-preview">
                     <!-- PRODUCT PREVIEW IMAGE -->
-                    <a href="<%=request.getContextPath()%>/EventoServlet?idEvento=<%=e.getIdEvento()%>&idUsuario=<%=idUsuario%>">
-                        <figure class="product-preview-image liquid">
-                            <img src="css/fibraVShormigonMedio.png" alt="item-01">
-                        </figure>
-                    </a>
+                    <figure class="product-preview-image liquid" style="position: relative">
+                        <a href="<%=request.getContextPath()%>/EventoServlet?idEvento=<%=e.getIdEvento()%>&idUsuario=<%=idUsuario%>">
+                            <img src="css/fibraVShormigonMedio.png" style="position: absolute; z-index: 0" height="100%" alt="item-01">
+                        </a>
+                        <%if(delegadoDeEstaActividadID==idUsuario){%>
+                        <a id="mostrarPopupEditarEvento<%=listaEventos.indexOf(e)%>">
+                            <img src="css/ajustesEvento.png" style="position: absolute;left: 82%; z-index: 100;height: 50px;width: 50px;cursor: pointer" alt="">
+                        </a>
+                        <%}%>
+                    </figure>
                     <!-- /PRODUCT PREVIEW IMAGE -->
 
                     <!-- PRODUCT PREVIEW INFO -->
@@ -1766,8 +1854,10 @@
                             <span style="color: red;">Hoy</span>
                             <%}else if(diasQueFaltanParaElEvento==1){%>
                             <span style="color: orangered;">Mañana</span>
-                            <%}else{%>
+                            <%}else if(diasQueFaltanParaElEvento==2){%>
                             <span style="color: orange;">En 2 días</span>
+                            <%}else{%>
+                            <span style="color: purple;"><%=Integer.parseInt(e.getFecha().toString().split("-")[2])%> de Octubre</span>
                             <%}}%>
                         </p>
                         <!-- /TEXT STICKER -->
@@ -1835,7 +1925,7 @@
                     <!-- /PRODUCT PREVIEW INFO -->
                 </div>
                 <!-- /PRODUCT PREVIEW -->
-                <%}else{%>
+                <%}else if(!e.isEventoOculto()){%>
                 <!-- /PRODUCT PREVIEW -->
                 <div class="product-preview">
                     <!-- PRODUCT PREVIEW IMAGE -->
@@ -1863,8 +1953,10 @@
                             <span style="color: red;">Hoy</span>
                             <%}else if(diasQueFaltanParaElEvento==1){%>
                             <span style="color: orangered;">Mañana</span>
-                            <%}else{%>
+                            <%}else if(diasQueFaltanParaElEvento==2){%>
                             <span style="color: orange;">En 2 días</span>
+                            <%}else{%>
+                            <span style="color: purple;"><%=Integer.parseInt(e.getFecha().toString().split("-")[2])%> de Octubre</span>
                             <%}}%>
                         </p>
                         <!-- /TEXT STICKER -->
@@ -1929,7 +2021,7 @@
                     <!-- /PRODUCT PREVIEW INFO -->
                 </div>
                 <!-- PRODUCT PREVIEW -->
-                <%}}%>
+                <%}}}%>
             </div>
             <!-- /GRID -->
 
@@ -2021,9 +2113,7 @@
 
     </div>
     <!-- /GRID -->
-
 </div>
-
 <!-- /CONTENT GRID -->
 <footer style="font-size: 80%;">
     <!-- Primera fila -->
@@ -2054,6 +2144,262 @@
         </div>
     </div>
 </footer>
+<%if(delegadoDeEstaActividadID==idUsuario){%>
+<div class="overlay" id="overlayCrear"></div>
+<div class="popup contenedorCrear" style="width: 700px;" id="popupCrear">
+    <svg class="cerrarPopup" id="cerrarPopupCrear" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M11.4142 10L16.7071 4.70711C17.0976 4.31658 17.0976 3.68342 16.7071 3.29289C16.3166 2.90237 15.6834 2.90237 15.2929 3.29289L10 8.58579L4.70711 3.29289C4.31658 2.90237 3.68342 2.90237 3.29289 3.29289C2.90237 3.68342 2.90237 4.31658 3.29289 4.70711L8.58579 10L3.29289 15.2929C2.90237 15.6834 2.90237 16.3166 3.29289 16.7071C3.68342 17.0976 4.31658 17.0976 4.70711 16.7071L10 11.4142L15.2929 16.7071C15.6834 17.0976 16.3166 17.0976 16.7071 16.7071C17.0976 16.3166 17.0976 15.6834 16.7071 15.2929L11.4142 10Z" fill="black"/>
+    </svg>
+    <div class="container-fluid">
+
+        <div class="row"><div class="col"><h5 style="text-align: center;">Crear evento</h5></div></div>
+        <div class="row">
+            <div class="col-sm-7">
+                <br>
+                <label style="margin-top: 25px;"><b>Nombre del evento:</b></label>
+                <input type="text" placeholder="Fibra Tóxica VS *" required>
+                <label style="margin-top: 25px;" ><b>Frase motivacional:</b></label>
+                <input type="text" placeholder="Frase motivacional" required>
+                <label style="margin-top: 25px;"><b>Descripción del evento:</b></label>
+                <input type="text" placeholder="Descripción" required>
+                <div class="row" style="margin-top: 25px;">
+                    <div class="col-6">
+                        <label for="delegado"><b>Hora (HH:MM):</b></label>
+                        <input type="text" placeholder="00:00" required>
+                    </div>
+                    <div class="col-6">
+                        <label for="delegado"><b>Lugar:</b></label>
+                        <input type="text" list="lugar" placeholder="Lugar" required>
+                        <datalist id="lugar">
+                            <%for(LugarEvento l:listaLugares){%>
+                            <option value="<%=l.getLugar()%>"><%=l.getLugar()%></option>
+                            <%}%>
+                        </datalist>
+                    </div>
+                </div>
+                <div class="row" style="margin-top: 25px;">
+                    <div class="col-6">
+                        <label for="delegado"><b>Fecha (día):</b></label>
+                        <input type="text" multiple id="delegado" placeholder="... de Octubre" required>
+                    </div>
+                    <div class="col-6">
+                        <p style="width: 100%;"><b>Ocultar evento:</b></p>
+                        <input type="checkbox" style="width: 30%; position: relative; top: 15px; left: 60px;">
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-5 contenedor2" style="top: 140px">
+                <div class="container-fluid btn btn-file1">
+                    <img class="img-fluid" src="css/subirArchivo.jpg" style="opacity: 50%;" alt="">
+                    <p><b>Foto principal del evento</b></p>
+                    <input type="file" style="background-color: white; margin-top: 25px;" accept="image/png, .jpeg, .jpg"></input>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-6" style="margin-top: 5px;">
+                <button type="submit" class="button secondary" id="cerrarPopupCrear1">Crear</button>
+            </div>
+            <div class="col-sm-6" style="margin-top: 5px;">
+                <button class="button secondary" id="cerrarPopupCrear2" style="background-color: grey;">Cancelar</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="overlay" id="overlayFinalizar"></div>
+<div class="popup" style="width: 500px;" id="popupFinalizar">
+    <svg class="cerrarPopup" id="cerrarPopupFinalizar" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M11.4142 10L16.7071 4.70711C17.0976 4.31658 17.0976 3.68342 16.7071 3.29289C16.3166 2.90237 15.6834 2.90237 15.2929 3.29289L10 8.58579L4.70711 3.29289C4.31658 2.90237 3.68342 2.90237 3.29289 3.29289C2.90237 3.68342 2.90237 4.31658 3.29289 4.70711L8.58579 10L3.29289 15.2929C2.90237 15.6834 2.90237 16.3166 3.29289 16.7071C3.68342 17.0976 4.31658 17.0976 4.70711 16.7071L10 11.4142L15.2929 16.7071C15.6834 17.0976 16.3166 17.0976 16.7071 16.7071C17.0976 16.3166 17.0976 15.6834 16.7071 15.2929L11.4142 10Z" fill="black"/>
+    </svg>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-1"></div>
+            <div class="col-sm-10">
+                <label for="eventoFinalizar"><h5 style="text-align: center;">Seleccione el evento: </h5></label>
+                <div style="margin-top: 20px;">
+                    <input type="text" multiple id="eventoFinalizar" list="eventos" placeholder="Título" required>
+                    <datalist id="eventos">
+                        <%for(Evento e:listaEventos){
+                        if(!e.isEventoFinalizado()){%>
+                        <option value="<%=e.getTitulo()%>"><%=e.getTitulo()%></option>
+                        <%}}%>
+                    </datalist>
+                </div>
+                <label style="margin-top: 25px;"><b>Resumen:</b></label>
+                <input type="text" placeholder="Resumen" required>
+                <label style="margin-top: 25px;"><b>Resultado:</b></label>
+                <select style="padding: 12.5px" id="resultado" required>
+                    <option value="Victoria">Victoria</option>
+                    <option value="Derrota">Derrota</option>
+                </select>
+            </div>
+            <div class="col-sm-1"></div>
+        </div>
+    </div>
+    <br>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-6" style="margin-top: 5px;">
+                <button class="button secondary" style="opacity: 50%;" id="cerrarPopupFinalizar1" disabled="true">Finalizar</button>
+            </div>
+            <div class="col-sm-6" style="margin-top: 5px;">
+                <button class="button secondary" id="cerrarPopupFinalizar2" style="background-color: grey;">Cancelar</button>
+            </div>
+        </div>
+    </div>
+</div>
+<%if(!listaEventos.isEmpty()){
+    for(Evento e:listaEventos){%>
+<div class="overlay" id="overlayEditarEvento<%=listaEventos.indexOf(e)%>"></div>
+<div class="popup contenedorCrear" style="width: 700px;" id="popupEditarEvento<%=listaEventos.indexOf(e)%>">
+    <svg class="cerrarPopup" id="cerrarPopupEditarEvento<%=listaEventos.indexOf(e)%>" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M11.4142 10L16.7071 4.70711C17.0976 4.31658 17.0976 3.68342 16.7071 3.29289C16.3166 2.90237 15.6834 2.90237 15.2929 3.29289L10 8.58579L4.70711 3.29289C4.31658 2.90237 3.68342 2.90237 3.29289 3.29289C2.90237 3.68342 2.90237 4.31658 3.29289 4.70711L8.58579 10L3.29289 15.2929C2.90237 15.6834 2.90237 16.3166 3.29289 16.7071C3.68342 17.0976 4.31658 17.0976 4.70711 16.7071L10 11.4142L15.2929 16.7071C15.6834 17.0976 16.3166 17.0976 16.7071 16.7071C17.0976 16.3166 17.0976 15.6834 16.7071 15.2929L11.4142 10Z" fill="black"/>
+    </svg>
+    <div class="container-fluid">
+
+        <div class="row"><div class="col"><h5 style="text-align: center;">Editar evento</h5></div></div>
+        <div class="row">
+            <div class="col-sm-7">
+                <br>
+                <label style="margin-top: 25px;"><b>Nombre del evento:</b></label>
+                <input type="text" placeholder="Fibra Tóxica VS *" value="<%=e.getTitulo()%>" required>
+                <%if(e.isEventoFinalizado()){%>
+                <label style="margin-top: 25px;" ><b>Resumen:</b></label>
+                <input type="text" placeholder="Resumen" value="<%=e.getResumen()%>" required>
+                <label style="margin-top: 25px;" ><b>Resultado:</b></label>
+                <select style="padding: 12.5px" id="resultado" required>
+                    <%if(e.getResultadoEvento().equals("Derrota")){%>
+                    <option value="Derrota">Derrota</option>
+                    <option value="Victoria">Victoria</option>
+                    <%}else{%>
+                    <option value="Victoria">Victoria</option>
+                    <option value="Derrota">Derrota</option>
+                    <%}%>
+                </select>
+                <p style="width: 100%; margin-top: 25px;"><b>Ocultar evento:</b></p>
+                <input type="checkbox" style="width: 30%; position: relative; top: 15px; left: 120px;" <%if(e.isEventoOculto()){%>checked<%}%>>
+                <%}else{%>
+                <label style="margin-top: 25px;" ><b>Frase motivacional:</b></label>
+                <input type="text" placeholder="Frase motivacional" value="<%=e.getFraseMotivacional()%>" required>
+                <label style="margin-top: 25px;"><b>Descripción del evento:</b></label>
+                <input type="text" placeholder="Descripción" value="<%=e.getDescripcionEventoActivo()%>" required>
+                <div class="row" style="margin-top: 25px;">
+                    <div class="col-6">
+                        <label for="delegado"><b>Hora (HH:MM):</b></label>
+                        <input type="text" placeholder="00:00" value="<%=Integer.parseInt(e.getHora().toString().split(":")[0])+":"+e.getHora().toString().split(":")[1]%>" required>
+                    </div>
+                    <div class="col-6">
+                        <label for="delegado"><b>Lugar:</b></label>
+                        <input type="text" list="lugar" placeholder="Lugar" value="<%=new DaoLugarEvento().lugarPorID(e.getLugarEvento())%>" required>
+                        <datalist id="lugar">
+                            <%for(LugarEvento l:listaLugares){%>
+                            <option value="<%=l.getLugar()%>"><%=l.getLugar()%></option>
+                            <%}%>
+                        </datalist>
+                    </div>
+                </div>
+                <div class="row" style="margin-top: 25px;">
+                    <div class="col-6">
+                        <label for="delegado"><b>Fecha (día):</b></label>
+                        <input type="text" multiple id="delegado" placeholder="... de Octubre" value="<%=Integer.parseInt(e.getFecha().toString().split("-")[2])%> de Octubre" required>
+                    </div>
+                    <div class="col-6">
+                        <p style="width: 100%;"><b>Ocultar evento:</b></p>
+                        <input type="checkbox" style="width: 30%; position: relative; top: 15px; left: 60px;" <%if(e.isEventoOculto()){%>checked<%}%>>
+                    </div>
+                </div>
+                <%}%>
+            </div>
+            <div class="col-sm-5 contenedor2" style="top: 140px">
+                <div class="container-fluid btn btn-file1">
+                    <img class="img-fluid" src="css/subirArchivo.jpg" style="opacity: 50%;" alt="">
+                    <p><b>Foto principal del evento</b></p>
+                    <input type="file" style="background-color: white; margin-top: 25px;" accept="image/png, .jpeg, .jpg"></input>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-6" style="margin-top: 5px;">
+                <button type="submit" class="button secondary" id="cerrarPopupEditar1Evento<%=listaEventos.indexOf(e)%>">Crear</button>
+            </div>
+            <div class="col-sm-6" style="margin-top: 5px;">
+                <button class="button secondary" id="cerrarPopupEditar2Evento<%=listaEventos.indexOf(e)%>" style="background-color: grey;">Cancelar</button>
+            </div>
+        </div>
+    </div>
+</div>
+<%}}}%>
+<script>
+    function popupFunc(popupId,abrirId,cerrarClass,overlayId){
+        const showPopup=document.getElementById(abrirId);
+        const overlay=document.getElementById(overlayId);
+        const popup=document.getElementById(popupId);
+        const mostrarPopup = () => {
+            overlay.style.display = 'block';
+            popup.style.display = 'block';
+            // Desactivar el scroll
+            document.body.style.overflow = 'hidden';
+        };
+        showPopup.addEventListener('click', mostrarPopup);
+        const cerrarPopup = () => {
+            overlay.style.display = 'none';
+            popup.style.display = 'none';
+            document.body.style.overflow = 'auto';
+
+        };
+        for(let i=0;i<cerrarClass.length;i++){
+            document.getElementById(cerrarClass[i]).addEventListener('click', cerrarPopup);
+        }
+
+        overlay.addEventListener('click', (e) => {
+            if (e.target === overlay) {
+                cerrarPopup();
+            }
+        });
+
+        document.addEventListener('keydown', (event) => {
+            if (event.key === 'Escape') {
+                cerrarPopup();
+            }
+        });
+    }
+    <%if(delegadoDeEstaActividadID==idUsuario){%>
+    popupFunc('popupCrear','mostrarPopupCrear',['cerrarPopupCrear','cerrarPopupCrear1','cerrarPopupCrear2'],'overlayCrear');
+    popupFunc('popupFinalizar','mostrarPopupFinalizar',['cerrarPopupFinalizar','cerrarPopupFinalizar1','cerrarPopupFinalizar2'],'overlayFinalizar');
+    <%if(listaEventos!=null){
+    for(int i=0;i<listaEventos.size();i++){%>
+    popupFunc('popupEditarEvento<%=i%>','mostrarPopupEditarEvento<%=i%>',['cerrarPopupEditarEvento<%=i%>','cerrarPopupEditar1Evento<%=i%>','cerrarPopupEditar2Evento<%=i%>'],'overlayEditarEvento<%=i%>');
+    <%}}%>
+    // Obtener elementos del DOM
+    const textElement = document.getElementById('eventoFinalizar');
+    const buttonElement = document.getElementById('cerrarPopupFinalizar1');
+    const opciones=document.getElementById('eventos').getElementsByTagName('option');
+    // Agregar un evento de escucha al campo de texto y la lista de opciones
+    textElement.addEventListener('input', validarCampo);
+
+    function validarCampo() {
+        const textoIngresado = textElement.value.trim();
+        // Verificar si la opción seleccionada está en el texto ingresado
+
+        for(let i=0; i<opciones.length; i++){
+            if (textoIngresado==opciones[i].value) {
+                buttonElement.removeAttribute('disabled'); // Activar el botón
+                buttonElement.style.opacity="100%";
+                break;
+            } else {
+                buttonElement.setAttribute('disabled', 'true'); // Desactivar el botón
+                buttonElement.style.opacity="50%";
+            }
+        }
+    }
+    <%}%>
+</script>
 <!-- app -->
 <script src="js/utils/app.js"></script>
 <!-- page loader -->

@@ -8,6 +8,7 @@ import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 
 @WebServlet(name = "EventoServlet", value = "/EventoServlet")
 public class EventoServlet extends HttpServlet {
@@ -28,6 +29,9 @@ public class EventoServlet extends HttpServlet {
         request.setAttribute("actividad",dEvento.actividadDeEventoPorID(idEvento));
         request.setAttribute("estadoApoyoAlumnoEvento",new DaoAlumnoPorEvento().verificarApoyo(idEvento,idUsuario));
         request.setAttribute("lugar",dEvento.lugarPorEventoID(idEvento));
+        request.setAttribute("delegadoDeEstaActividadID",dEvento.idDelegadoDeActividadPorEvento(idEvento));
+        request.setAttribute("cantidadApoyos",dEvento.cantidadApoyosBarraEquipoPorEvento(idEvento));
+        request.setAttribute("solicitudesApoyoPendientes",dEvento.solicitudesSinAtenderPorEvento(idUsuario));
         String action = request.getParameter("action") == null ? "default" : request.getParameter("action");
         switch (action){
             case "default":

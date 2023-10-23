@@ -19,7 +19,7 @@ public class DaoNotificacionDelegadoGeneral {
 
         String url = "jdbc:mysql://localhost:3306/proyecto";
         String username = "root";
-        String password = "23042004"; //Cambiar segun tu contraseña
+        String password = "root"; //Cambiar segun tu contraseña
 
         String sql = "select nombre, apellido, correo, codigoPUCP, condicion  from Usuario where estadoRegistro = 'Pendiente'";
 

@@ -1,5 +1,6 @@
 <%@ page import="java.util.ArrayList" %>
 <%@ page import="com.example.proyectouwu.Beans.Usuario" %>
+<%@ page import="com.example.proyectouwu.Daos.DaoBan" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
   <head>
@@ -1058,7 +1059,11 @@
             <!-- USER PREVIEW STATS SLIDE -->
             <div class="user-preview-stats-slide">
               <!-- USER PREVIEW TEXT -->
+              <%if(new DaoBan().usuarioBaneadoPorId(usuario.getIdUsuario())){%>
+              <p class="user-preview-text">Este usuario ha sido baneado debido a que <%=new DaoBan().obtenerMotivoBanPorId(usuario.getIdUsuario()).toLowerCase()%></p>
+              <%}else{%>
               <p class="user-preview-text"><%=usuario.getDescripcionPerfil()%></p>
+              <%}%>
               <!-- /USER PREVIEW TEXT -->
             </div>
             <!-- /USER PREVIEW STATS SLIDE -->
@@ -1080,7 +1085,11 @@
           <!-- USER PREVIEW ACTIONS -->
           <div class="user-preview-actions">
             <!-- BUTTON -->
+            <%if(new DaoBan().usuarioBaneadoPorId(usuario.getIdUsuario())){%>
+            <button class="button secondary" id="boton" style="background-color: #615dfa; opacity: 60%;">Baneado</button>
+            <%}else{%>
             <button class="button secondary" id="mostrarPopup<%=listaUsuarios.indexOf(usuario)%>">Banear</button>
+            <%}%>
             <!-- /BUTTON -->
 
           </div>

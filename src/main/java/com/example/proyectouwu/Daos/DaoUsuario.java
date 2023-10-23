@@ -96,4 +96,5 @@ public class DaoUsuario {
             throw new RuntimeException(e);
         }
     }
+
 }

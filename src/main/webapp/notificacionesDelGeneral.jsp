@@ -270,6 +270,7 @@
 
             <div class="grid grid-4-4-4 centered">
                 <!-- USER PREVIEW -->
+                <% for () { %>
                 <div class="user-preview">
                     <!-- USER PREVIEW COVER -->
                     <figure class="user-preview-cover liquid" style="background: linear-gradient(#122d5c,#07559d);"></figure>
@@ -381,7 +382,7 @@
                     <!-- /USER PREVIEW INFO -->
                 </div>
                 <!-- /USER PREVIEW -->
-
+                <%}%>
 
             </div>
             <!-- /GRID -->

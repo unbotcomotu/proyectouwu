@@ -59,5 +59,4 @@ public class NotificacionDelegadoGeneral {
         this.idUsuario = idUsuario;
     }
 
-
     }

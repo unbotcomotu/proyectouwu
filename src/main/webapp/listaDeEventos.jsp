@@ -2194,7 +2194,7 @@
             <div class="col-sm-5 contenedor2" style="top: 140px">
                 <div class="container-fluid btn btn-file1">
                     <img class="img-fluid" src="css/subirArchivo.jpg" style="opacity: 50%;" alt="">
-                    <p><b>Foto principal del evento</b></p>
+                    <p style="margin-top: 10px"><b>Agregar foto miniatura</b></p>
                     <input type="file" style="background-color: white; margin-top: 25px;" accept="image/png, .jpeg, .jpg"></input>
                 </div>
             </div>
@@ -2318,8 +2318,8 @@
             </div>
             <div class="col-sm-5 contenedor2" style="top: 140px">
                 <div class="container-fluid btn btn-file1">
-                    <img class="img-fluid" src="css/subirArchivo.jpg" style="opacity: 50%;" alt="">
-                    <p><b>Foto principal del evento</b></p>
+                    <img class="img-fluid" src="css/fibraVShormigon.png" alt="">
+                    <p style="margin-top: 10px"><b>Editar foto miniatura</b></p>
                     <input type="file" style="background-color: white; margin-top: 25px;" accept="image/png, .jpeg, .jpg"></input>
                 </div>
             </div>
@@ -2329,7 +2329,7 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-sm-6" style="margin-top: 5px;">
-                <button type="submit" class="button secondary" id="cerrarPopupEditar1Evento<%=listaEventos.indexOf(e)%>">Crear</button>
+                <button type="submit" class="button secondary" id="cerrarPopupEditar1Evento<%=listaEventos.indexOf(e)%>">Editar</button>
             </div>
             <div class="col-sm-6" style="margin-top: 5px;">
                 <button class="button secondary" id="cerrarPopupEditar2Evento<%=listaEventos.indexOf(e)%>" style="background-color: grey;">Cancelar</button>

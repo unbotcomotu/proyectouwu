@@ -1617,13 +1617,13 @@
             <div class="col-sm-5 contenedor2" style="top: 30px">
                 <div class="container-fluid btn btn-file1">
                     <img class="img-fluid" src="css/subirArchivo.jpg" width="80%" style="opacity: 50%;" alt="">
-                    <p><b>Foto de cabecera</b></p>
+                    <p><b>Agregar foto de cabecera</b></p>
                     <input type="file" style="background-color: white; margin-top: 25px;" accept="image/png, .jpeg, .jpg"></input>
                 </div>
                 <br>
                 <div class="container-fluid btn btn-file1">
                     <img class="img-fluid" src="css/subirArchivo.jpg" width="80%" style="opacity: 50%;" alt="">
-                    <p><b>Foto de miniatura</b></p>
+                    <p><b>Agregar foto de miniatura</b></p>
                     <input type="file" style="background-color: white; margin-top: 25px;" accept="image/png, .jpeg, .jpg"></input>
                 </div>
             </div>
@@ -1677,14 +1677,14 @@
             </div>
             <div class="col-sm-5 contenedor2" style="top: 30px">
                 <div class="container-fluid btn btn-file1">
-                    <img class="img-fluid" src="css/subirArchivo.jpg" width="80%" style="opacity: 50%;" alt="">
-                    <p><b>Foto de cabecera</b></p>
+                    <img class="img-fluid" src="css/telitoVoley.png" width="80%" alt="">
+                    <p><b>Editar foto de cabecera</b></p>
                     <input type="file" style="background-color: white; margin-top: 25px;" accept="image/png, .jpeg, .jpg"></input>
                 </div>
                 <br>
                 <div class="container-fluid btn btn-file1">
-                    <img class="img-fluid" src="css/subirArchivo.jpg" width="80%" style="opacity: 50%;" alt="">
-                    <p><b>Foto de miniatura</b></p>
+                    <img class="img-fluid" src="css/fotoVoleyActividades.png" width="80%" alt="">
+                    <p><b>Editar foto de miniatura</b></p>
                     <input type="file" style="background-color: white; margin-top: 25px;" accept="image/png, .jpeg, .jpg"></input>
                 </div>
             </div>
@@ -1694,7 +1694,7 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-sm-6" style="margin-top: 5px;">
-                <button type="submit" class="button secondary" id="cerrarPopupEditar1Actividad<%=i%>">Crear</button>
+                <button type="submit" class="button secondary" id="cerrarPopupEditar1Actividad<%=i%>">Editar</button>
             </div>
             <div class="col-sm-6" style="margin-top: 5px;">
                 <button class="button secondary" id="cerrarPopupEditar2Actividad<%=i%>" style="background-color: grey;">Cancelar</button>

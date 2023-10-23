@@ -1876,7 +1876,7 @@
         </div>
     </div>
 </footer>
-<%if(!rolUsuario.equals("Delegado General")){%>
+<%if(!rolUsuario.equals("Delegado General")&&delegadoDeEstaActividadID!=idUsuario){%>
 <div class="overlay" id="overlayApoyar">
     <div class="popup" id="popupApoyar">
         <svg class="cerrarPopup" id="cerrarPopupApoyar" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -1971,9 +1971,9 @@
             }
         });
     }
-    <%if(!rolUsuario.equals("Delegado General"))%>
+    <%if(!(rolUsuario.equals("Delegado General")||delegadoDeEstaActividadID==idUsuario)){%>
     popupFunc('popupApoyar','mostrarPopupApoyar',['cerrarPopupApoyar'],'overlayApoyar');
-    <%if(delegadoDeEstaActividadID==idUsuario){%>
+    <%}if(delegadoDeEstaActividadID==idUsuario){%>
     popupFunc('popupImagenes','mostrarPopupImagenes',['cerrarPopupImagenes','cerrarPopupImagenes1','cerrarPopupImagenes2'],'overlayEditarImagenes');
     <%}%>
 

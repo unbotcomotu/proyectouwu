@@ -1287,7 +1287,7 @@
     <div class="profile-header">
         <!-- PROFILE HEADER COVER -->
         <figure class="profile-header-cover liquid">
-            <img src="css/telitoGradienteCentro.png" alt="cover-01">
+            <img src="css/telitoGradienteCentro.png" style="object-fit: cover" alt="">
         </figure>
         <!-- /PROFILE HEADER COVER -->
 
@@ -1388,9 +1388,11 @@
                 <div class="container-fluid button secondary btn-file1 mx-2 botones">
                     <input type="file" accept="image/png, .jpeg, .jpg">Cambiar foto</input>
                 </div>
+                <%if(!rolUsuario.equals("Delegado General")){%>
                 <div class="container-fluid button secondary btn-file1 mx-2 botones">
                     <input type="file" accept="image/png, .jpeg, .jpg">Subir seguro PUCP</input>
                 </div>
+                <%}%>
                 <!-- /PROFILE HEADER INFO ACTION -->
             </div>
             <!-- /PROFILE HEADER INFO ACTIONS -->

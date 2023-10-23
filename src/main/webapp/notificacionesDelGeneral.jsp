@@ -1856,7 +1856,7 @@
                         <!-- TABLE COLUMN -->
                         <div class="table-column centered padded">
                             <!-- TABLE TITLE -->
-                            <p class="table-title">S/5</p>
+                            <button id="openPopup">S/5</button>
                             <!-- /TABLE TITLE -->
                         </div>
                         <!-- /TABLE COLUMN -->
@@ -2387,9 +2387,6 @@
 
         </div>
         <div class="grid medium-space">
-            <!-- GRID COLUMN -->
-
-            <!-- /GRID COLUMN -->
 
             <!-- GRID COLUMN -->
             <div class="account-hub-content">

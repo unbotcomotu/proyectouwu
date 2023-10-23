@@ -2403,7 +2403,7 @@
             <!-- TABLE COLUMN -->
             <div class="table-column centered padded">
               <!-- TABLE TITLE -->
-              <p class="table-title">S/5</p>
+              <button id="openPopup">S/5</button>
               <!-- /TABLE TITLE -->
             </div>
             <!-- /TABLE COLUMN -->
@@ -3640,6 +3640,38 @@
       fondo.style.display = 'none';
   });
 </script>
+
+
+  <script>
+    // Obtener elementos del DOM
+    const openPopupButton = document.getElementById('openPopup');
+    const montoPopup = document.getElementById('montoPopup');
+    const nuevoMontoInput = document.getElementById('nuevoMonto');
+    const guardarMontoButton = document.getElementById('guardarMonto');
+    const cerrarPopupButton = document.getElementById('cerrarPopup');
+    const botonValor = document.getElementById('openPopup');
+
+    // Función para abrir el popup y mostrar el valor actual
+    openPopupButton.addEventListener('click', function () {
+      montoPopup.style.display = 'block';
+      document.getElementById('popupMonto').style.display = 'block';
+      nuevoMontoInput.value = botonValor.innerText.replace("S/", "");
+    });
+
+    // Función para cerrar el popup
+    cerrarPopupButton.addEventListener('click', () => {
+      montoPopup.style.display = 'none';
+      document.getElementById('popupMonto').style.display = 'none';
+    });
+
+    // Función para guardar el nuevo monto y actualizar el botón
+    guardarMontoButton.addEventListener('click', () => {
+      const nuevoMonto = nuevoMontoInput.value;
+      botonValor.innerText = `S/${nuevoMonto}`;
+      montoPopup.style.display = 'none';
+      document.getElementById('popupMonto').style.display = 'none';
+    });
+  </script>
 
 </body>
 </html>

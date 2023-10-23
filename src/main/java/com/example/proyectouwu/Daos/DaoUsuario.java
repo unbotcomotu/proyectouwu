@@ -96,4 +96,48 @@ public class DaoUsuario {
             throw new RuntimeException(e);
         }
     }
+
+    public boolean usuarioEsDelegadoDeActividad(int idUsuario){
+        String sql = "select rol from usuario where idUsuario=?";
+        try(PreparedStatement pstmt = conn.prepareStatement(sql)){
+            pstmt.setInt(1,idUsuario);
+            try(ResultSet rs = pstmt.executeQuery()){
+                if(rs.next()){
+                    if(rs.getString(1).equals("Delegado de Actividad")){
+                        return true;
+                    }else{
+                        return false;
+                    }
+                }else{
+                    return false;
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public String obtenerDelegaturaPorId(int idUsuario){
+        try{
+            Class.forName("com.mysql.cj.jdbc.Driver");
+        }catch (ClassNotFoundException e){
+            throw new RuntimeException(e);
+        }
+
+        String sql = "select nombre from actividad where idDelegadoDeActividad=?";
+
+        try(Connection conn=DriverManager.getConnection("jdbc:mysql://localhost:3306/proyecto","root","root");
+            PreparedStatement pstmt=conn.prepareStatement(sql)){
+            pstmt.setInt(1,idUsuario);
+            try(ResultSet rs = pstmt.executeQuery()){
+                if(rs.next()){
+                    return rs.getString(1);
+                }else{
+                    return "";
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }

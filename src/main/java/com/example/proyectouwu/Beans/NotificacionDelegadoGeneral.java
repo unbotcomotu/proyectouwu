@@ -1,7 +1,7 @@
 package com.example.proyectouwu.Beans;
 
-import java.sql.Time;
-import java.sql.Date;
+import java.sql.*;
+import java.util.ArrayList;
 
 public class NotificacionDelegadoGeneral {
     private int idNotificacion;
@@ -58,4 +58,6 @@ public class NotificacionDelegadoGeneral {
     public void setIdUsuario(int idUsuario) {
         this.idUsuario = idUsuario;
     }
-}
+
+
+    }

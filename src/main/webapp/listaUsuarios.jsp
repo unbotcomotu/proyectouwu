@@ -1082,14 +1082,7 @@
             <!-- BUTTON -->
             <button class="button secondary" id="mostrarPopup<%=listaUsuarios.indexOf(usuario)%>">Banear</button>
             <!-- /BUTTON -->
-            <script>
-              document.addEventListener("DOMContentLoaded", function() {
-                var botonDentroDelEnlace = document.getElementById("mostrarPopup<%=listaUsuarios.indexOf(usuario)%>");
-                botonDentroDelEnlace.addEventListener("click", function(e) {
-                  e.preventDefault();
-                });
-              });
-            </script>
+
           </div>
           <!-- /USER PREVIEW ACTIONS -->
         </div>

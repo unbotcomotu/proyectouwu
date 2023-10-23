@@ -6,7 +6,11 @@
         <entry key="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/listaDeActividades.jsp" value="file://$PROJECT_DIR$/src/main/webapp/WEB-INF" />
         <entry key="file://$PROJECT_DIR$/src/main/webapp/actividadesDelGen.html" value="file://$PROJECT_DIR$/src/main/webapp" />
         <entry key="file://$PROJECT_DIR$/src/main/webapp/listaDeActividades.jsp" value="file://$PROJECT_DIR$/src/main/webapp" />
+<<<<<<< HEAD
         <entry key="file://$PROJECT_DIR$/src/main/webapp/notificacionesDelGen.html" value="file://$PROJECT_DIR$/src/main/webapp" />
+=======
+        <entry key="file://$PROJECT_DIR$/src/main/webapp/listaDeEventos.jsp" value="file://$PROJECT_DIR$/src/main/webapp" />
+>>>>>>> f5dc1450568e4e5dffcf6e0cf6e17046d4e439c1
         <entry key="file://$PROJECT_DIR$/src/main/webapp/plantilla.jsp" value="file://$PROJECT_DIR$/src/main/webapp" />
       </map>
     </option>

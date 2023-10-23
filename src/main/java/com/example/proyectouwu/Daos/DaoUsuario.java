@@ -57,4 +57,20 @@ public class DaoUsuario {
             throw new RuntimeException(e);
         }
     }
+
+    public ArrayList<Usuario>listarIDyNombreDelegadosDeActividad(){
+        ArrayList<Usuario>listaDelegadosDeActividad=new ArrayList<>();
+        String sql="select idUsuario,nombre,apellido from usuario where rol='Delegado de Actividad'";
+        try(ResultSet rs=conn.createStatement().executeQuery(sql)){
+            while(rs.next()){
+                Usuario u=new Usuario();
+                u.setIdUsuario(rs.getInt(1));
+                u.setNombre(rs.getString(2));
+                u.setApellido(rs.getString(3));
+                listaDelegadosDeActividad.add(u);
+            }return listaDelegadosDeActividad;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }

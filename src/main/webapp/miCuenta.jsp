@@ -1425,8 +1425,6 @@
         <div class="columna">
             <p>© 2023 Fibra tóxica</p>
             <ul class="lista">
-                <li><a>Política de Privacidad</a></li>
-                <li><a>Términos y Condiciones</a></li>
                 <li><a>Siguenos en: </a> <i class="fab fa-facebook"></i> <i class="fab fa-instagram"></i> <i class="fab fa-youtube"></i></li>
             </ul>
         </div>

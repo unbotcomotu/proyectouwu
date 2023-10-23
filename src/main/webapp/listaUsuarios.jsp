@@ -855,7 +855,7 @@
         <!-- ACTION ITEM -->
         <div class="action-item dark header-settings-dropdown-trigger">
           <!-- ACTION ITEM ICON -->
-          <a href="<%=request.getContextPath()%>"><img src="css/logOut.png" width="30%" alt=""></a>
+          <a href="<%=request.getContextPath()%>"><img src="css/logOut.png" width="30%" style="margin-left: 25px;" alt=""></a>
           <!-- /ACTION ITEM ICON -->
         </div>
         <!-- /ACTION ITEM -->
@@ -1080,8 +1080,16 @@
           <!-- USER PREVIEW ACTIONS -->
           <div class="user-preview-actions">
             <!-- BUTTON -->
-            <button class="button secondary" id="mostrarPopup1">Banear</button>
+            <button class="button secondary" id="mostrarPopup<%=listaUsuarios.indexOf(usuario)%>">Banear</button>
             <!-- /BUTTON -->
+            <script>
+              document.addEventListener("DOMContentLoaded", function() {
+                var botonDentroDelEnlace = document.getElementById("mostrarPopup<%=listaUsuarios.indexOf(usuario)%>");
+                botonDentroDelEnlace.addEventListener("click", function(e) {
+                  e.preventDefault();
+                });
+              });
+            </script>
           </div>
           <!-- /USER PREVIEW ACTIONS -->
         </div>
@@ -1175,14 +1183,16 @@
     <!-- /SECTION PAGER BAR -->
 
     <!-- SECTION RESULTS TEXT -->
-    <p class="section-results-text">Showing 4 out of 282 members</p>
+    <p class="section-results-text">Mostrando 4 de 282 usuarios</p>
     <!-- /SECTION RESULTS TEXT -->
   </div>
   <!-- /CONTENT GRID -->
 
-  <div class="overlay" id="overlay"></div>
-  <div class="popup" id="popup">
-    <svg class="cerrar-btn" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <% for(int i=0;i<listaUsuarios.size();i++){ %>
+
+  <div class="overlay" id="overlay<%=i%>"></div>
+  <div class="popup" id="popup<%=i%>">
+    <svg class="cerrar-btn" id="cerrar-btn<%=i%>" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
       <path d="M11.4142 10L16.7071 4.70711C17.0976 4.31658 17.0976 3.68342 16.7071 3.29289C16.3166 2.90237 15.6834 2.90237 15.2929 3.29289L10 8.58579L4.70711 3.29289C4.31658 2.90237 3.68342 2.90237 3.29289 3.29289C2.90237 3.68342 2.90237 4.31658 3.29289 4.70711L8.58579 10L3.29289 15.2929C2.90237 15.6834 2.90237 16.3166 3.29289 16.7071C3.68342 17.0976 4.31658 17.0976 4.70711 16.7071L10 11.4142L15.2929 16.7071C15.6834 17.0976 16.3166 17.0976 16.7071 16.7071C17.0976 16.3166 17.0976 15.6834 16.7071 15.2929L11.4142 10Z" fill="black"/>
     </svg>
     <div class="container-fluid">
@@ -1198,61 +1208,54 @@
     <div class="container-fluid">
       <div class="row">
         <div class="col-sm-6" style="margin-top: 5px;">
-          <button class="button secondary" id="cerrarPopup1">Banear</button>
+          <button class="button secondary" id="cerrarPopup1<%=i%>">Banear</button>
         </div>
         <div class="col-sm-6" style="margin-top: 5px;">
-          <button class="button secondary" id="cerrarPopup2" style="background-color: grey;">Cancelar</button>
+          <button class="button secondary" id="cerrarPopup2<%=i%>" style="background-color: grey;">Cancelar</button>
         </div>
       </div>
     </div>
   </div>
 
+  <%}%>
+
   <script>
-    const mostrarPopupBtn1 = document.getElementById('mostrarPopup1');
-    const mostrarPopupBtn2 = document.getElementById('mostrarPopup2');
-    const mostrarPopupBtn3 = document.getElementById('mostrarPopup3');
-    const overlay = document.getElementById('overlay');
-    const popup = document.getElementById('popup');
-    const cerrarPopupBtn1 = document.getElementById('cerrarPopup1');
-    const cerrarPopupBtn2 = document.getElementById('cerrarPopup2');
-    const cerrarBtn = document.querySelector('.cerrar-btn');
-
-    const mostrarPopup = () => {
-      overlay.style.display = 'block';
-      popup.style.display = 'block';
-      // Desactivar el scroll
-      document.body.style.overflow = 'hidden';
-    };
-
-    mostrarPopupBtn1.addEventListener('click', mostrarPopup);
-    mostrarPopupBtn2.addEventListener('click', mostrarPopup);
-    mostrarPopupBtn3.addEventListener('click', mostrarPopup);
-
-    // Función para cerrar el popup
-    const cerrarPopup = () => {
-      overlay.style.display = 'none';
-      popup.style.display = 'none';
-      // Reactivar el scroll
-      document.body.style.overflow = 'auto';
-    };
-
-    cerrarBtn.addEventListener('click', cerrarPopup);
-
-    cerrarPopupBtn1.addEventListener('click', cerrarPopup);
-    cerrarPopupBtn2.addEventListener('click', cerrarPopup);
-
-    overlay.addEventListener('click', (e) => {
-      if (e.target === overlay) {
-        cerrarPopup();
+    function popupFunc(popup,overlay,mostrar,cerrar){
+      const mostrarPopupBtn = document.getElementById(mostrar);
+      const overlayConst = document.getElementById(overlay);
+      const popupConst = document.getElementById(popup);
+      const mostrarPopup = () => {
+        overlayConst.style.display = 'block';
+        popupConst.style.display = 'block';
+        // Desactivar el scroll
+        document.body.style.overflow = 'hidden';
+      };
+      mostrarPopupBtn.addEventListener('click', mostrarPopup);
+      // Función para cerrar el popup
+      const cerrarPopup = () => {
+        overlayConst.style.display = 'none';
+        popupConst.style.display = 'none';
+        // Reactivar el scroll
+        document.body.style.overflow = 'auto';
+      };
+      for(let i=0;i<cerrar.length;i++){
+        document.getElementById(cerrar[i]).addEventListener('click', cerrarPopup);
       }
-    });
-
-    // Cerrar el popup al presionar Escape
-    document.addEventListener('keydown', (event) => {
-      if (event.key === 'Escape') {
-        cerrarPopup();
-      }
-    });
+      overlayConst.addEventListener('click', (e) => {
+        if (e.target === overlayConst) {
+          cerrarPopup();
+        }
+      });
+      // Cerrar el popup al presionar Escape
+      document.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape') {
+          cerrarPopup();
+        }
+      });
+    }
+    <%for(int i=0;i<listaUsuarios.size();i++){%>
+    popupFunc('popup<%=i%>','overlay<%=i%>','mostrarPopup<%=i%>',['cerrar-btn<%=i%>','cerrarPopup1<%=i%>','cerrarPopup2<%=i%>']);
+    <%}%>
   </script>
   <!-- app -->
   <script src="js/utils/app.js"></script>

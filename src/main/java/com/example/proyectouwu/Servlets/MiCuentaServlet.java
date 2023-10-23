@@ -18,6 +18,7 @@ public class MiCuentaServlet extends HttpServlet {
         request.setAttribute("idUsuario",idUsuario);
         request.setAttribute("rolUsuario",rolUsuario);
         request.setAttribute("nombreCompletoUsuario",dUsuario.nombreCompletoUsuarioPorId(idUsuario));
+        request.setAttribute("listaInfo",dUsuario.obtenerInfoPorId(idUsuario));
         request.setAttribute("vistaActual","miCuenta");
         request.setAttribute("correosDelegadosGenerales",dUsuario.listarCorreosDelegadosGenerales());
         request.setAttribute("IDyNombreDelegadosDeActividad",dUsuario.listarIDyNombreDelegadosDeActividad());

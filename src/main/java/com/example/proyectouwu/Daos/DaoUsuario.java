@@ -118,16 +118,9 @@ public class DaoUsuario {
     }
 
     public String obtenerDelegaturaPorId(int idUsuario){
-        try{
-            Class.forName("com.mysql.cj.jdbc.Driver");
-        }catch (ClassNotFoundException e){
-            throw new RuntimeException(e);
-        }
-
         String sql = "select nombre from actividad where idDelegadoDeActividad=?";
 
-        try(Connection conn=DriverManager.getConnection("jdbc:mysql://localhost:3306/proyecto","root","root");
-            PreparedStatement pstmt=conn.prepareStatement(sql)){
+        try(PreparedStatement pstmt=conn.prepareStatement(sql)){
             pstmt.setInt(1,idUsuario);
             try(ResultSet rs = pstmt.executeQuery()){
                 if(rs.next()){
@@ -135,6 +128,24 @@ public class DaoUsuario {
                 }else{
                     return "";
                 }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public ArrayList<String> obtenerInfoPorId(int idUsuario){
+        ArrayList<String> listaInfo = new ArrayList<>();
+        String sql = "select codigoPUCP, correo, condicion from usuario where idUsuario=?";
+        try(PreparedStatement pstmt=conn.prepareStatement(sql)){
+            pstmt.setInt(1,idUsuario);
+            try(ResultSet rs = pstmt.executeQuery()){
+                if(rs.next()){
+                    listaInfo.add(rs.getString(1));
+                    listaInfo.add(rs.getString(2));
+                    listaInfo.add(rs.getString(3));
+                }
+                return listaInfo;
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);

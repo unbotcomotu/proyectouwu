@@ -1405,7 +1405,11 @@
         <div class="row d-flex justify-content-center">
             <div class="col-sm-4 d-flex align-items-center justify-content-center py-4 columnas" style="font-family: 'Rajdhani',sans-serif; font-size: 110%;"><img src="css/codigo.png" style="width: 20%; margin-right: 15px;"><p style="text-align: left;"><b><%=listaInfo.get(0)%></b></p></div>
             <div class="col-sm-4 d-flex align-items-center justify-content-center py-4 columnas" style="font-family: 'Rajdhani',sans-serif; font-size: 110%;"><img src="css/correo.png" style="width: 20%; margin-right: 15px;"><p style="text-align: center;"><b><%=listaInfo.get(1)%></b></p></div>
+            <%if(listaInfo.get(2).equals("Estudiante")){%>
             <div class="col-sm-4 d-flex align-items-center justify-content-center py-4 columnas" style="font-family: 'Rajdhani',sans-serif; font-size: 110%;"><img src="css/estudiante.png" style="width: 20%; margin-right: 15px;"><p style="text-align: right;"><b><%=listaInfo.get(2)%></b></p></div>
+            <%}else{%>
+            <div class="col-sm-4 d-flex align-items-center justify-content-center py-4 columnas" style="font-family: 'Rajdhani',sans-serif; font-size: 110%;"><img src="css/egresado.png" style="width: 20%; margin-right: 15px;"><p style="text-align: right;"><b><%=listaInfo.get(2)%></b></p></div>
+            <%}%>
         </div>
     </div>
 

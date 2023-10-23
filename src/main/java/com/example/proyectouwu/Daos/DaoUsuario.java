@@ -97,4 +97,23 @@ public class DaoUsuario {
         }
     }
 
+    public boolean usuarioRegistradoPorId(int idUsuario){
+        String sql = "select estadoRegistro from usuario where idUsuario=?";
+        try(PreparedStatement pstmt = conn.prepareStatement(sql)){
+            pstmt.setInt(1,idUsuario);
+            try(ResultSet rs = pstmt.executeQuery()){
+                if(rs.next()){
+                    if(rs.getString(1).equals("Registrado")){
+                        return true;
+                    }else{
+                        return false;
+                    }
+                }else{
+                    return false;
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }

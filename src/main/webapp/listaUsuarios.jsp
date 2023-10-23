@@ -1,6 +1,7 @@
 <%@ page import="java.util.ArrayList" %>
 <%@ page import="com.example.proyectouwu.Beans.Usuario" %>
 <%@ page import="com.example.proyectouwu.Daos.DaoBan" %>
+<%@ page import="com.example.proyectouwu.Daos.DaoUsuario" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
   <head>
@@ -973,7 +974,7 @@
     <!-- GRID -->
     <div class="grid grid-4-4-4 centered">
 
-      <% for(Usuario usuario: listaUsuarios){ %>
+      <% for(Usuario usuario: listaUsuarios){ if(new DaoUsuario().usuarioRegistradoPorId(usuario.getIdUsuario())){%>
 
       <!-- USER PREVIEW -->
       <div class="user-preview">
@@ -1099,7 +1100,7 @@
       </div>
       <!-- /USER PREVIEW -->
 
-      <%}%>
+      <%}}%>
 
     </div>
     <!-- /GRID -->

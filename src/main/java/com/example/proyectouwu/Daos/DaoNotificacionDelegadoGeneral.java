@@ -93,7 +93,7 @@ public class DaoNotificacionDelegadoGeneral {
         String username = "root";
         String password = "root";
 
-        String sql = "SELECT idUsuairo, medioPago, monto,fechaHora,estadoDonacion FROM donacion";
+        String sql = "SELECT idUsuario, medioPago, monto,fechaHora,estadoDonacion FROM donacion";
         try (Connection conn = DriverManager.getConnection(url, username, password);
              Statement stmt = conn.createStatement();
              ResultSet rs = stmt.executeQuery(sql)) {

@@ -164,41 +164,6 @@
 
 <!-- PAGE LOADER -->
 <!-- PAGE LOADER -->
-<div class="page-loader">
-    <!-- PAGE LOADER DECORATION -->
-    <div class="page-loader-decoration">
-        <!-- ICON LOGO -->
-        <img src="css/logoTelito.png" width="400%" alt="">
-        <!-- /ICON LOGO -->
-    </div>
-    <!-- /PAGE LOADER DECORATION -->
-    <br>
-    <!-- PAGE LOADER INFO -->
-    <div class="page-loader-info">
-        <!-- PAGE LOADER INFO TITLE -->
-        <p class="page-loader-info-title">SIEMPRE FIBRA</p>
-        <!-- /PAGE LOADER INFO TITLE -->
-
-        <!-- PAGE LOADER INFO TEXT -->
-        <p class="page-loader-info-text">Cargando...</p>
-        <!-- /PAGE LOADER INFO TEXT -->
-    </div>
-    <!-- /PAGE LOADER INFO -->
-
-    <!-- PAGE LOADER INDICATOR -->
-    <div class="page-loader-indicator loader-bars">
-        <div class="loader-bar"></div>
-        <div class="loader-bar"></div>
-        <div class="loader-bar"></div>
-        <div class="loader-bar"></div>
-        <div class="loader-bar"></div>
-        <div class="loader-bar"></div>
-        <div class="loader-bar"></div>
-        <div class="loader-bar"></div>
-    </div>
-    <!-- /PAGE LOADER INDICATOR -->
-</div>
-<!-- /PAGE LOADER -->
 
 <nav id="navigation-widget-small" class="navigation-widget navigation-widget-desktop closed sidebar left delayed">
     <!-- USER AVATAR -->

@@ -1,5 +1,6 @@
 package com.example.proyectouwu.Servlets;
 
+import com.example.proyectouwu.Beans.Reporte;
 import com.example.proyectouwu.Beans.Usuario;
 import com.example.proyectouwu.Daos.DaoNotificacionDelegadoGeneral;
 import com.example.proyectouwu.Daos.DaoUsuario;
@@ -31,10 +32,11 @@ public class NotificacionesServlet extends HttpServlet {
                 //saca del modelo
                 DaoNotificacionDelegadoGeneral daoNotificacionDelegadoGeneral = new DaoNotificacionDelegadoGeneral();
                 ArrayList<Usuario> listaSolicitudes = daoNotificacionDelegadoGeneral.listarSolicitudesDeRegistro();
-
+                ArrayList<Reporte> reportList = daoNotificacionDelegadoGeneral.listarNotificacionesReporte();
                 //mandar la lista a la vista
 
                 request.setAttribute("listaSolicitudes",listaSolicitudes);
+                request.setAttribute("reportList", reportList);
                 request.getRequestDispatcher("notificacionesDelGeneral.jsp").forward(request,response);
 
         }

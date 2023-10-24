@@ -11,6 +11,26 @@ public class Reporte {
     private Date fecha;
     private Time hora;
 
+    public String getNombreReportado() {
+        return nombreReportado;
+    }
+
+    public void setNombreReportado(String nombreReportado) {
+        this.nombreReportado = nombreReportado;
+    }
+
+    public String getNombreReportante() {
+        return nombreReportante;
+    }
+
+    public void setNombreReportante(String nombreReportante) {
+        this.nombreReportante = nombreReportante;
+    }
+
+    private String nombreReportado;
+
+    private String nombreReportante;
+
     public int getIdReporte() {
         return idReporte;
     }

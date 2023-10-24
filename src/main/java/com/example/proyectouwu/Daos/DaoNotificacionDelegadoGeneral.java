@@ -1,6 +1,6 @@
 package com.example.proyectouwu.Daos;
 
-import com.example.proyectouwu.Beans.NotificacionDelegadoGeneral;
+import com.example.proyectouwu.Beans.Reporte;
 import com.example.proyectouwu.Beans.Usuario;
 import java.sql.*;
 import java.util.ArrayList;
@@ -28,15 +28,7 @@ public class DaoNotificacionDelegadoGeneral {
              Statement stmt = conn.createStatement();
              ResultSet rs = stmt.executeQuery(sql)) {
 
-            while (rs.next()) {
-                Usuario usuarioPendiente = new Usuario();
-                usuarioPendiente.setNombre(rs.getString(1));
-                usuarioPendiente.setApellido(rs.getString(2));
-                usuarioPendiente.setCorreo(rs.getString(3));
-                usuarioPendiente.setCodigoPUCP(rs.getString(4));
-                usuarioPendiente.setCondicion(rs.getString(5));
-                listaSolicitudes.add(usuarioPendiente);
-            }
+
 
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -45,4 +37,37 @@ public class DaoNotificacionDelegadoGeneral {
         return listaSolicitudes;
     }
 
+    public ArrayList<Reporte> listarNotificacionesReporte( ){
+
+        ArrayList<Reporte> reportList= new ArrayList<>();
+
+        try{
+            Class.forName("com.mysql.cj.jdbc.Driver");
+        }catch (ClassNotFoundException e){
+            throw new RuntimeException(e);
+        }
+
+        String url = "jdbc:mysql://localhost:3306/proyecto";
+        String username = "root";
+        String password = "root";
+
+        String sql = "select  concat(ur.nombre, ' ', ur.apellido) as 'Reportado',concat(uqr.nombre, ' ', uqr.apellido) as 'Reportante', r.motivoReporte, r.fechaHora from reporte r inner join usuario ur on ur.idUsuario = r.idUsuarioReportado inner join usuario uqr on uqr.idUsuario = r.idUsuarioQueReporta ORDER BY ur.nombre;";
+        try (Connection conn = DriverManager.getConnection(url, username, password);
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(sql)) {
+
+            while (rs.next()) {
+                Reporte report = new Reporte();
+                report.setNombreReportado(rs.getString(1));
+                report.setNombreReportante(rs.getString(2));
+                report.setMotivoReporte(rs.getString(3));
+                report.setFecha(rs.getDate(4));
+                reportList.add(report);
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return reportList;
+    }
 }

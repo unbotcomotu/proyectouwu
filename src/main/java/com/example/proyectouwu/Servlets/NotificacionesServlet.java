@@ -41,21 +41,18 @@ public class NotificacionesServlet extends HttpServlet {
 
                     request.setAttribute("listaSolicitudes",listaSolicitudes);
                     request.setAttribute("reportList", reportList);
-                    request.setAttribute("donaciontList",donacionList);
+                    request.setAttribute("donacionList",donacionList);
                     request.getRequestDispatcher("notificacionesDelGeneral.jsp").forward(request,response);
-                }else
-                    if (rolUsuario.equals("Delegado Actividad")){
+                }else if (rolUsuario.equals("Delegado de Actividad")){
 
                         DaoNotificacionesDeleActividad daoNotificacionesDeleActividad = new DaoNotificacionesDeleActividad();
                         ArrayList<AlumnoPorEvento> listaSolicitudesApoyo = daoNotificacionesDeleActividad.listarSolicitudesDeApoyo();
 
                         request.setAttribute("listaSolicitudesApoyo",listaSolicitudesApoyo);
                         request.getRequestDispatcher("NotificacionesDelActividad.jsp").forward(request,response);
-                    }else
-
-                        {
+                }else{
                             response.sendRedirect(request.getContextPath());
-                        }
+                }
 
 
         }

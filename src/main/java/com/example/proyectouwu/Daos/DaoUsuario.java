@@ -48,7 +48,7 @@ public class DaoUsuario {
     }
 
     public String condicionUsuarioPorId(int idUsuario){
-        String sql="select condicon from usuario where idUsuario=?";
+        String sql="select condicion from usuario where idUsuario=?";
         try(PreparedStatement pstmt= conn.prepareStatement(sql)){
             pstmt.setInt(1,idUsuario);
             try(ResultSet rs=pstmt.executeQuery()){

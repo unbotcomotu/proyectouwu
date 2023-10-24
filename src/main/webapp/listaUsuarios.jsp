@@ -893,7 +893,7 @@
           <!-- /DROPDOWN BOX LIST -->
           <!--ARRIBA ESTÁN LAS NOTIFICACIONES-->
           <!-- DROPDOWN BOX BUTTON -->
-          <a class="dropdown-box-button secondary" href="<%=request.getContextPath()%>/Notificaciones?idUsuario=<%=idUsuario%>">Ver todas las notificaciones</a>
+          <a class="dropdown-box-button secondary" href="<%=request.getContextPath()%>/NotificacionesServlet?idUsuario=<%=idUsuario%>">Ver todas las notificaciones</a>
           <!-- /DROPDOWN BOX BUTTON -->
         </div>
         <!-- /DROPDOWN BOX -->

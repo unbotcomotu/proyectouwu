@@ -6,6 +6,12 @@ import com.example.proyectouwu.Beans.Usuario;
 import java.sql.*;
 import java.util.ArrayList;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Calendar;
+import java.time.Period;
+import java.time.LocalDate;
 public class DaoNotificacionDelegadoGeneral {
 
     public ArrayList<Usuario>listarSolicitudesDeRegistro(){
@@ -113,4 +119,54 @@ public class DaoNotificacionDelegadoGeneral {
         }
         return donacionList;
     }
+    public ArrayList<Integer> diferenciaFechaActualReporte(){
+        DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+        Date dateNow = Calendar.getInstance().getTime();
+        ArrayList<Integer> listaSegundoMinutoHoraDiaMes= new ArrayList<>();
+        try{
+            Class.forName("com.mysql.cj.jdbc.Driver");
+        }catch (ClassNotFoundException e){
+            throw new RuntimeException(e);
+        }
+
+        String url = "jdbc:mysql://localhost:3306/proyecto";
+        String username = "root";
+        String password = "root";
+
+        String sql = "SELECT fechaHora FROM donacion";
+        try (Connection conn = DriverManager.getConnection(url, username, password);
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(sql)) {
+
+            if (rs.next()) {
+                Date fechaReporte = rs.getDate(1);
+                String stringFechaReporte = dateFormat.format(rs.getDate(1));
+                String stringDateNow = dateFormat.format(dateNow);
+
+                //Separa la parte de hora minuto segundo con año, mes y día
+                String[] partsFReport = stringFechaReporte.split(" ");
+                String[] partsDateNow = stringDateNow.split(" ");
+
+                //Hora minuto y segundo para reporte y Tiempo actual
+                String[] horaMinutoSegundoReport = partsFReport[1].split(":");
+                String[] horaMinutoSegundoNow = partsFReport[1].split(":");
+
+                listaSegundoMinutoHoraDiaMes.add(Integer.parseInt(horaMinutoSegundoNow[2])-Integer.parseInt(horaMinutoSegundoReport[2]));//segundo
+                listaSegundoMinutoHoraDiaMes.add(Integer.parseInt(horaMinutoSegundoNow[1])-Integer.parseInt(horaMinutoSegundoReport[1]));//minuto
+                listaSegundoMinutoHoraDiaMes.add(Integer.parseInt(horaMinutoSegundoNow[0])-Integer.parseInt(horaMinutoSegundoReport[0]));//hora
+
+                //Año mes y día para reporte y Tiempo actual;
+                String[] anioMesDiaReport = partsFReport[0].split("/");
+                String[] anioMesDiaNow = partsDateNow[0].split("/");
+
+                listaSegundoMinutoHoraDiaMes.add(Integer.parseInt(anioMesDiaNow[2])-Integer.parseInt(anioMesDiaReport[2]));//dia
+                listaSegundoMinutoHoraDiaMes.add(Integer.parseInt(anioMesDiaNow[1])-Integer.parseInt(anioMesDiaReport[1]));//mes
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return listaSegundoMinutoHoraDiaMes; //Devuelve la diferencia en segundo, minuto, hora, dia y mes
+    }
+
 }

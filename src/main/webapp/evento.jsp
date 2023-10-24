@@ -452,6 +452,7 @@
         <p class="user-short-description-text"><a style="color: <%=colorRol%>;"><%=rolUsuario + ": " + new DaoUsuario().obtenerDelegaturaPorId(idUsuario)%></a></p>
         <%}else{%>
         <p class="user-short-description-text"><a style="color: <%=colorRol%>;"><%=rolUsuario%></a></p>
+        <%}%>
         <!-- /USER SHORT DESCRIPTION TEXT -->
     </div>
     <!-- /USER SHORT DESCRIPTION -->

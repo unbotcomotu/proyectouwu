@@ -11,7 +11,7 @@ import jakarta.servlet.annotation.*;
 import java.io.IOException;
 import java.util.ArrayList;
 
-@WebServlet(name = "Notificaciones", value = "/Notificaciones")
+@WebServlet(name = "NotificacionesServlet", value = "/NotificacionesServlet")
 public class NotificacionesServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -28,16 +28,20 @@ public class NotificacionesServlet extends HttpServlet {
         String action = request.getParameter("action") == null ? "default" : request.getParameter("action");
         switch (action){
             case "default":
+                if (rolUsuario.equals("Delegado General")){
+                    //saca del modelo
+                    DaoNotificacionDelegadoGeneral daoNotificacionDelegadoGeneral = new DaoNotificacionDelegadoGeneral();
+                    ArrayList<Usuario> listaSolicitudes = daoNotificacionDelegadoGeneral.listarSolicitudesDeRegistro();
+                    ArrayList<Reporte> reportList = daoNotificacionDelegadoGeneral.listarNotificacionesReporte();
+                    //mandar la lista a la vista
 
-                //saca del modelo
-                DaoNotificacionDelegadoGeneral daoNotificacionDelegadoGeneral = new DaoNotificacionDelegadoGeneral();
-                ArrayList<Usuario> listaSolicitudes = daoNotificacionDelegadoGeneral.listarSolicitudesDeRegistro();
-                ArrayList<Reporte> reportList = daoNotificacionDelegadoGeneral.listarNotificacionesReporte();
-                //mandar la lista a la vista
+                    request.setAttribute("listaSolicitudes",listaSolicitudes);
+                    request.setAttribute("reportList", reportList);
+                    request.getRequestDispatcher("notificacionesDelGeneral.jsp").forward(request,response);
+                }else {
+                    response.sendRedirect(request.getContextPath());
+                }
 
-                request.setAttribute("listaSolicitudes",listaSolicitudes);
-                request.setAttribute("reportList", reportList);
-                request.getRequestDispatcher("notificacionesDelGeneral.jsp").forward(request,response);
 
         }
 

@@ -27,9 +27,15 @@ public class DaoNotificacionDelegadoGeneral {
         try (Connection conn = DriverManager.getConnection(url, username, password);
              Statement stmt = conn.createStatement();
              ResultSet rs = stmt.executeQuery(sql)) {
-
-
-
+            while (rs.next()){
+                Usuario u=new Usuario();
+                u.setNombre(rs.getString(1));
+                u.setApellido(rs.getString(2));
+                u.setCorreo(rs.getString(3));
+                u.setCodigoPUCP(rs.getString(4));
+                u.setCondicion(rs.getString(5));
+                listaSolicitudes.add(u);
+            }
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

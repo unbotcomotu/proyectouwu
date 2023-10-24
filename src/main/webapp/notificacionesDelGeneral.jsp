@@ -113,6 +113,7 @@
 <body>
 
 <!-- PAGE LOADER -->
+<!-- PAGE LOADER -->
 <div class="page-loader">
     <!-- PAGE LOADER DECORATION -->
     <div class="page-loader-decoration">
@@ -176,6 +177,29 @@
         </div>
         <!-- /USER AVATAR PROGRESS BORDER -->
 
+        <!-- USER AVATAR BADGE -->
+        <div class="user-avatar-badge">
+            <!-- USER AVATAR BADGE BORDER -->
+            <div class="user-avatar-badge-border">
+                <!-- HEXAGON -->
+                <div class="hexagon-22-24"></div>
+                <!-- /HEXAGON -->
+            </div>
+            <!-- /USER AVATAR BADGE BORDER -->
+
+            <!-- USER AVATAR BADGE CONTENT -->
+            <div class="user-avatar-badge-content">
+                <!-- HEXAGON -->
+                <div class="hexagon-dark-16-18"></div>
+                <!-- /HEXAGON -->
+            </div>
+            <!-- /USER AVATAR BADGE CONTENT -->
+
+            <!-- USER AVATAR BADGE TEXT -->
+            <p class="user-avatar-badge-text">24</p>
+            <!-- /USER AVATAR BADGE TEXT -->
+        </div>
+        <!-- /USER AVATAR BADGE -->
     </a>
     <!-- /USER AVATAR -->
 
@@ -185,9 +209,9 @@
         <!-- MENU ITEM -->
         <!-- MENU ITEM -->
         <!-- MENU ITEM -->
-        <li class="menu-item active">
+        <li class="menu-item <%if(vistaActual.equals("miCuenta")){%>active<%}%>">
             <!-- MENU ITEM LINK -->
-            <a class="menu-item-link text-tooltip-tfr" href="miCuentaDelGen.html" data-title="Mi cuenta">
+            <a class="menu-item-link text-tooltip-tfr" href="<%=request.getContextPath()%>/MiCuentaServlet?idUsuario=<%=idUsuario%>" data-title="Mi cuenta">
                 <!-- MENU ITEM LINK ICON -->
                 <svg class="menu-item-link-icon icon-members">
                     <use xlink:href="#svg-members"></use>
@@ -196,19 +220,19 @@
             </a>
             <!-- /MENU ITEM LINK -->
         </li>
-        <!-- /MENU ITEM -->
-        <li class="menu-item">
+        <li class="menu-item <%if(vistaActual.equals("listaDeActividades")){%>active<%}%>">
             <!-- MENU ITEM LINK -->
-            <a class="menu-item-link text-tooltip-tfr" href="actividadesDelGen.html" data-title="Actividades">
+            <a class="menu-item-link text-tooltip-tfr" href="<%=request.getContextPath()%>/ListaDeActividadesServlet?idUsuario=<%=idUsuario%>" data-title="Actividades">
                 <!-- MENU ITEM LINK ICON -->
                 <img src="css/actividadIconoGris.png" class="menu-item-link-icon icon-members" alt="">
                 <!-- /MENU ITEM LINK ICON -->
             </a>
             <!-- /MENU ITEM LINK -->
         </li>
-        <li class="menu-item">
+        <%if(rolUsuario.equals("Delegado General")){%>
+        <li class="menu-item <%if(vistaActual.equals("analiticas")){%>active<%}%>">
             <!-- MENU ITEM LINK -->
-            <a class="menu-item-link text-tooltip-tfr text-center" href="analiticas.html" data-title="Analíticas">
+            <a class="menu-item-link text-tooltip-tfr text-center" href="<%=request.getContextPath()%>/AnaliticasServlet?idUsuario=<%=idUsuario%>" data-title="Analíticas">
                 <!-- MENU ITEM LINK ICON -->
                 <img src="css/analiticasIcono.png" width="70%" alt="">
                 <!-- /MENU ITEM LINK ICON -->
@@ -216,16 +240,35 @@
             <!-- /MENU ITEM LINK -->
         </li>
         <!-- /MENU ITEM -->
-        <li class="menu-item">
+        <li class="menu-item <%if(vistaActual.equals("listaDeUsuarios")){%>active<%}%>">
             <!-- MENU ITEM LINK -->
-            <a class="menu-item-link text-tooltip-tfr text-center" href="usuariosDelGen.html" data-title="Usuarios">
+            <a class="menu-item-link text-tooltip-tfr text-center" href="<%=request.getContextPath()%>/ListaDeUsuariosServlet?idUsuario=<%=idUsuario%>" data-title="Usuarios">
                 <!-- MENU ITEM LINK ICON -->
                 <img src="css/usuariosIcono.png" width="70%" alt="">
                 <!-- /MENU ITEM LINK ICON -->
             </a>
             <!-- /MENU ITEM LINK -->
         </li>
-        <!-- /MENU ITEM -->
+        <%}else{%>
+        <li class="menu-item <%if(vistaActual.equals("misEventos")){%>active<%}%>">
+            <!-- MENU ITEM LINK -->
+            <a class="menu-item-link text-tooltip-tfr" href="<%=request.getContextPath()%>/MisEventosServlet?idUsuario=<%=idUsuario%>" data-title="Mis eventos">
+                <!-- MENU ITEM LINK ICON -->
+                <img src="css/misEventosIcono.png" class="menu-item-link-icon icon-members" alt="">
+                <!-- /MENU ITEM LINK ICON -->
+            </a>
+            <!-- /MENU ITEM LINK -->
+        </li>
+        <li class="menu-item <%if(vistaActual.equals("misDonaciones")){%>active<%}%>">
+            <!-- MENU ITEM LINK -->
+            <a class="menu-item-link text-tooltip-tfr" href="<%=request.getContextPath()%>/MisDonacionesServlet?idUsuario=<%=idUsuario%>" data-title="Donaciones">
+                <!-- MENU ITEM LINK ICON -->
+                <img src="css/donacionIcono.png" class="menu-item-link-icon icon-members" style="opacity: 50%;" alt="">
+                <!-- /MENU ITEM LINK ICON -->
+            </a>
+            <!-- /MENU ITEM LINK -->
+        </li>
+        <%}%>
     </ul>
     <!-- /MENU -->
 </nav>
@@ -272,11 +315,15 @@
         <!-- /USER SHORT DESCRIPTION AVATAR -->
 
         <!-- USER SHORT DESCRIPTION TITLE -->
-        <p class="user-short-description-title"><a>Josh Yauri</a></p>
+        <p class="user-short-description-title"><a><%=nombreCompletoUsuario%></a></p>
         <!-- /USER SHORT DESCRIPTION TITLE -->
 
         <!-- USER SHORT DESCRIPTION TEXT -->
-        <p class="user-short-description-text"><a style="color: orange">Delegado general</a></p>
+        <% if(new DaoUsuario().usuarioEsDelegadoDeActividad(idUsuario)){ %>
+        <p class="user-short-description-text"><a style="color: <%=colorRol%>;"><%=rolUsuario + ": " + new DaoUsuario().obtenerDelegaturaPorId(idUsuario)%></a></p>
+        <%}else{%>
+        <p class="user-short-description-text"><a style="color: <%=colorRol%>;"><%=rolUsuario%></a></p>
+        <%}%>
         <!-- /USER SHORT DESCRIPTION TEXT -->
     </div>
     <!-- /USER SHORT DESCRIPTION -->
@@ -285,9 +332,9 @@
     <hr>
     <!-- MENU -->
     <!-- MENU ITEM -->
-    <li class="menu-item active">
+    <li class="menu-item">
         <!-- MENU ITEM LINK -->
-        <a class="menu-item-link" href="miCuentaDelGen.html">
+        <a class="menu-item-link" href="<%=request.getContextPath()%>/MiCuentaServlet?idUsuario=<%=idUsuario%>">
             <!-- MENU ITEM LINK ICON -->
             <svg class="menu-item-link-icon icon-members">
                 <use xlink:href="#svg-members"></use>
@@ -300,13 +347,12 @@
     <!-- /MENU ITEM -->
 
     <hr>
-
     <!-- MENU ITEM -->
     <li class="menu-item">
         <!-- MENU ITEM LINK -->
-        <a class="menu-item-link" href="actividadesDelGen.html">
+        <a class="menu-item-link" href="<%=request.getContextPath()%>/ListaDeActividadesServlet?idUsuario=<%=idUsuario%>">
             <!-- MENU ITEM LINK ICON -->
-            <img src="css/actividadIconoGris.png" width="7%" alt="">
+            <img src="css/actividadIconoGris.png" class="menu-item-link-icon icon-members" alt="">
             <!-- /MENU ITEM LINK ICON -->
             Actividades
         </a>
@@ -314,10 +360,11 @@
     </li>
     <!-- /MENU ITEM -->
     <br>
+    <%if(rolUsuario.equals("Delegado General")){%>
     <!-- MENU ITEM -->
     <li class="menu-item">
         <!-- MENU ITEM LINK -->
-        <a class="menu-item-link" href="analiticas.html">
+        <a class="menu-item-link" href="<%=request.getContextPath()%>/AnaliticasServlet?idUsuario=<%=idUsuario%>">
             <!-- MENU ITEM LINK ICON -->
             <img src="css/analiticasIcono.png" width="7%" alt="">
             <!-- /MENU ITEM LINK ICON -->
@@ -329,7 +376,7 @@
     <br>
     <li class="menu-item">
         <!-- MENU ITEM LINK -->
-        <a class="menu-item-link" href="usuariosDelGen.html">
+        <a class="menu-item-link" href="<%=request.getContextPath()%>/ListaDeUsuariosServlet?idUsuario=<%=idUsuario%>">
             <!-- MENU ITEM LINK ICON -->
             <img src="css/usuariosIcono.png" width="7%" alt="">
             <!-- /MENU ITEM LINK ICON -->
@@ -338,7 +385,33 @@
         <!-- /MENU ITEM LINK -->
     </li>
     <!-- /MENU ITEM -->
-
+    <%}else{%>
+    <!-- MENU ITEM -->
+    <li class="menu-item">
+        <!-- MENU ITEM LINK -->
+        <a class="menu-item-link" href="<%=request.getContextPath()%>/MisEventosServlet?idUsuario=<%=idUsuario%>">
+            <!-- MENU ITEM LINK ICON -->
+            <img src="css/misEventosIcono.png" class="menu-item-link-icon icon-members" alt="">
+            <!-- /MENU ITEM LINK ICON -->
+            Mis eventos
+        </a>
+        <!-- /MENU ITEM LINK -->
+    </li>
+    <!-- /MENU ITEM -->
+    <br>
+    <!-- MENU ITEM -->
+    <li class="menu-item">
+        <!-- MENU ITEM LINK -->
+        <a class="menu-item-link" href="<%=request.getContextPath()%>/MisDonacionesServlet?idUsuario=<%=idUsuario%>">
+            <!-- MENU ITEM LINK ICON -->
+            <img src="css/donacionIcono.png" class="menu-item-link-icon icon-members" style="opacity: 50%;" alt="">
+            <!-- /MENU ITEM LINK ICON -->
+            Donaciones
+        </a>
+        <!-- /MENU ITEM LINK -->
+    </li>
+    <!-- /MENU ITEM -->
+    <%}%>
     </ul>
     <!-- /MENU -->
 </nav>
@@ -396,17 +469,21 @@
             <!-- /USER AVATAR -->
 
             <!-- NAVIGATION WIDGET INFO TITLE -->
-            <p class="navigation-widget-info-title"><a>Josh Yauri</a></p>
+            <p class="navigation-widget-info-title"><a><%=nombreCompletoUsuario%></a></p>
             <!-- /NAVIGATION WIDGET INFO TITLE -->
 
             <!-- NAVIGATION WIDGET INFO TEXT -->
-            <p class="navigation-widget-info-text" style="color: orange;">Delegado general</p>
+            <% if(new DaoUsuario().usuarioEsDelegadoDeActividad(idUsuario)){ %>
+            <p class="navigation-widget-info-text" style="color: <%=colorRol%>"><%=rolUsuario + ": " + new DaoUsuario().obtenerDelegaturaPorId(idUsuario)%></p>
+            <%}else{%>
+            <p class="navigation-widget-info-text" style="color: <%=colorRol%>"><%=rolUsuario%></p>
+            <%}%>
             <!-- /NAVIGATION WIDGET INFO TEXT -->
         </div>
         <!-- /NAVIGATION WIDGET INFO -->
 
         <!-- NAVIGATION WIDGET BUTTON -->
-        <p class="navigation-widget-info-button button small secondary">Cerrar sesión</p>
+        <a href="<%=request.getContextPath()%>/IndexServlet"><p class="navigation-widget-info-button button small secondary">Cerrar sesión</p></a>
         <!-- /NAVIGATION WIDGET BUTTON -->
     </div>
     <!-- /NAVIGATION WIDGET INFO WRAP -->
@@ -421,26 +498,33 @@
         <!-- /NAVIGATION WIDGET SECTION TITLE -->
 
         <!-- NAVIGATION WIDGET SECTION LINK -->
-        <a class="navigation-widget-section-link" href="miCuentaDelGen.html">Mi cuenta</a>
+        <a class="navigation-widget-section-link" href="<%=request.getContextPath()%>/MiCuentaServlet?idUsuario=<%=idUsuario%>">Mi cuenta</a>
         <!-- /NAVIGATION WIDGET SECTION LINK -->
 
-
         <!-- NAVIGATION WIDGET SECTION TITLE -->
-        <p class="navigation-widget-section-title">Funciones de rol</p>
+        <p class="navigation-widget-section-title">Funciones</p>
         <!-- /NAVIGATION WIDGET SECTION TITLE -->
 
         <!-- NAVIGATION WIDGET SECTION LINK -->
-        <a class="navigation-widget-section-link" href="actividadesDelGen.html">Actividades</a>
+        <a class="navigation-widget-section-link" href="<%=request.getContextPath()%>/ListaDeActividadesServlet?idUsuario=<%=idUsuario%>">Actividades</a>
+        <!-- /NAVIGATION WIDGET SECTION LINK -->
+        <%if(rolUsuario.equals("Delegado General")){%>
+        <!-- NAVIGATION WIDGET SECTION LINK -->
+        <a class="navigation-widget-section-link" href="<%=request.getContextPath()%>/AnaliticasServlet?idUsuario=<%=idUsuario%>">Analíticas</a>
         <!-- /NAVIGATION WIDGET SECTION LINK -->
 
         <!-- NAVIGATION WIDGET SECTION LINK -->
-        <a class="navigation-widget-section-link" href="analiticas.html">Analíticas</a>
+        <a class="navigation-widget-section-link" href="<%=request.getContextPath()%>/ListaDeUsuariosServlet?idUsuario=<%=idUsuario%>">Usuarios</a>
+        <!-- /NAVIGATION WIDGET SECTION LINK -->
+        <%}else{%>
+        <!-- NAVIGATION WIDGET SECTION LINK -->
+        <a class="navigation-widget-section-link" href="<%=request.getContextPath()%>/MisEventosServlet?idUsuario=<%=idUsuario%>">Mis eventos</a>
         <!-- /NAVIGATION WIDGET SECTION LINK -->
 
         <!-- NAVIGATION WIDGET SECTION LINK -->
-        <a class="navigation-widget-section-link" href="usuariosDelGen.html">Usuarios</a>
+        <a class="navigation-widget-section-link" href="<%=request.getContextPath()%>/MisDonacionesServlet?idUsuario=<%=idUsuario%>">Donaciones</a>
         <!-- /NAVIGATION WIDGET SECTION LINK -->
-
+        <%}%>
     </ul>
 </nav>
 <!-- /NAVIGATION WIDGET -->
@@ -501,16 +585,6 @@
     </div>
     <!-- /HEADER ACTIONS -->
 
-    <!-- Me QUEDE ACA -->
-
-
-
-    <!-- HEADER ACTIONS -->
-    <div class="header-actions">
-
-    </div>
-    <!-- /HEADER ACTIONS -->
-
     <!-- NO BORRAR ESTO-->
 
     <!-- HEADER ACTIONS -->
@@ -523,17 +597,282 @@
                 <!-- /BAR PROGRESS INFO -->
             </div>
             <!-- /BAR PROGRESS WRAP -->
-
-            <!-- PROGRESS STAT BAR -->
-            <!-- /PROGRESS STAT BAR -->
         </div>
         <!-- /PROGRESS STAT -->
     </div>
     <!-- /HEADER ACTIONS -->
 
     <!-- NO BORRAR ESTO-->
+    <%if(rolUsuario.equals("Alumno")){%>
+    <!-- ACTION ITEM WRAP USUARIO -->
+    <div class="action-item-wrap auxResponsiveUwu">
+        <!-- ACTION ITEM -->
+        <div class="action-item dark header-settings-dropdown-trigger">
+            <!-- ACTION ITEM ICON -->
+            <a href="<%=request.getContextPath()%>"><img src="css/logOut.png" width="30%" alt=""></a>
+            <!-- /ACTION ITEM ICON -->
+        </div>
+        <!-- /ACTION ITEM -->
 
-    <!-- HEADER ACTIONS -->
+        <!-- DROPDOWN NAVIGATION -->
+
+    </div>
+    <!-- /ACTION ITEM WRAP -->
+    <%}else if(rolUsuario.equals("Delegado de Actividad")){%>
+    <!-- HEADER ACTIONS DELEGADO DE ACTIVIDAD -->
+    <div class="header-actions">
+        <!-- ACTION LIST -->
+        <div class="action-list dark">
+            <!-- ACTION LIST ITEM WRAP -->
+            <div class="action-list-item-wrap">
+                <!-- ACTION LIST ITEM -->
+                <div class="action-list-item unread header-dropdown-trigger">
+                    <!-- ACTION LIST ITEM ICON -->
+                    <svg class="action-list-item-icon icon-notification">
+                        <use xlink:href="#svg-notification"></use>
+                    </svg>
+                    <!-- /ACTION LIST ITEM ICON -->
+                </div>
+                <!-- /ACTION LIST ITEM -->
+
+                <!-- DROPDOWN BOX -->
+                <div class="dropdown-box header-dropdown">
+                    <!-- DROPDOWN BOX HEADER -->
+                    <div class="dropdown-box-header">
+                        <!-- DROPDOWN BOX HEADER TITLE -->
+                        <p class="dropdown-box-header-title">Notificaciones</p>
+                        <!-- /DROPDOWN BOX HEADER TITLE -->
+                    </div>
+                    <!-- /DROPDOWN BOX HEADER -->
+
+                    <!-- DROPDOWN BOX LIST -->
+                    <div class="dropdown-box-list" data-simplebar>
+                        <!-- DROPDOWN BOX LIST ITEM -->
+                        <div class="dropdown-box-list-item unread">
+                            <!-- USER STATUS -->
+                            <div class="user-status notification">
+                                <!-- USER STATUS AVATAR -->
+                                <a class="user-status-avatar">
+                                    <!-- USER AVATAR -->
+                                    <div class="user-avatar small no-outline">
+                                        <!-- USER AVATAR CONTENT -->
+                                        <div class="user-avatar-content">
+                                            <!-- HEXAGON -->
+                                            <div class="hexagon-image-30-32" data-src="css/fabiana.png"></div>
+                                            <!-- /HEXAGON -->
+                                        </div>
+                                        <!-- /USER AVATAR CONTENT -->
+
+                                        <!-- USER AVATAR PROGRESS -->
+                                        <div class="user-avatar-progress">
+                                            <!-- HEXAGON -->
+                                            <div class="hexagon-progress-40-44"></div>
+                                            <!-- /HEXAGON -->
+                                        </div>
+                                        <!-- /USER AVATAR PROGRESS -->
+
+                                        <!-- USER AVATAR PROGRESS BORDER -->
+                                        <div class="user-avatar-progress-border">
+                                            <!-- HEXAGON -->
+                                            <div class="hexagon-border-40-44"></div>
+                                            <!-- /HEXAGON -->
+                                        </div>
+                                        <!-- /USER AVATAR PROGRESS BORDER -->
+
+                                        <!-- USER AVATAR BADGE -->
+                                        <div class="user-avatar-badge">
+                                            <!-- USER AVATAR BADGE BORDER -->
+                                            <div class="user-avatar-badge-border">
+                                            </div>
+                                            <!-- /USER AVATAR BADGE BORDER -->
+
+                                        </div>
+                                        <!-- /USER AVATAR BADGE -->
+                                    </div>
+                                    <!-- /USER AVATAR -->
+                                </a>
+                                <!-- /USER STATUS AVATAR -->
+
+                                <!-- USER STATUS TITLE -->
+                                <p class="user-status-title"><a class="bold">Fabiana Rojas</a> desea apoyar el evento <a class="highlighted">Fibra Tóxica VS Huascaminas</a> dentro de la actividad <a style="color: blueviolet;">Voley</a>.</p>
+                                <!-- /USER STATUS TITLE -->
+
+                                <!-- USER STATUS TIMESTAMP -->
+                                <p class="user-status-timestamp">Hace 24 minutos</p>
+                                <!-- /USER STATUS TIMESTAMP -->
+
+                                <!-- USER STATUS ICON -->
+                                <div class="user-status-icon">
+                                    <!-- ICON COMMENT -->
+                                    <img src="css/voleyIcono.png" width="30px" alt="">
+                                    <!-- /ICON COMMENT -->
+                                </div>
+                                <!-- /USER STATUS ICON -->
+                            </div>
+                            <!-- /USER STATUS -->
+                        </div>
+                        <!-- /DROPDOWN BOX LIST ITEM -->
+                        <!-- DROPDOWN BOX LIST ITEM -->
+                        <div class="dropdown-box-list-item unread">
+                            <!-- USER STATUS -->
+                            <div class="user-status notification">
+                                <!-- USER STATUS AVATAR -->
+                                <a class="user-status-avatar">
+                                    <!-- USER AVATAR -->
+                                    <div class="user-avatar small no-outline">
+                                        <!-- USER AVATAR CONTENT -->
+                                        <div class="user-avatar-content">
+                                            <!-- HEXAGON -->
+                                            <div class="hexagon-image-30-32" data-src="css/edisonFlores.png"></div>
+                                            <!-- /HEXAGON -->
+                                        </div>
+                                        <!-- /USER AVATAR CONTENT -->
+
+                                        <!-- USER AVATAR PROGRESS -->
+                                        <div class="user-avatar-progress">
+                                            <!-- HEXAGON -->
+                                            <div class="hexagon-progress-40-44"></div>
+                                            <!-- /HEXAGON -->
+                                        </div>
+                                        <!-- /USER AVATAR PROGRESS -->
+
+                                        <!-- USER AVATAR PROGRESS BORDER -->
+                                        <div class="user-avatar-progress-border">
+                                            <!-- HEXAGON -->
+                                            <div class="hexagon-border-40-44"></div>
+                                            <!-- /HEXAGON -->
+                                        </div>
+                                        <!-- /USER AVATAR PROGRESS BORDER -->
+
+                                        <!-- USER AVATAR BADGE -->
+                                        <div class="user-avatar-badge">
+                                            <!-- USER AVATAR BADGE BORDER -->
+                                            <div class="user-avatar-badge-border">
+                                            </div>
+                                            <!-- /USER AVATAR BADGE BORDER -->
+
+                                        </div>
+                                        <!-- /USER AVATAR BADGE -->
+                                    </div>
+                                    <!-- /USER AVATAR -->
+                                </a>
+                                <!-- /USER STATUS AVATAR -->
+
+                                <!-- USER STATUS TITLE -->
+                                <p class="user-status-title"><a class="bold">Edison Flores</a> desea apoyar el evento <a class="highlighted">Fibra Tóxica VS PXO Industrial</a> dentro de la actividad <a style="color: blueviolet;">Futsal</a>.</p>
+                                <!-- /USER STATUS TITLE -->
+
+                                <!-- USER STATUS TIMESTAMP -->
+                                <p class="user-status-timestamp">Hace 1 hora</p>
+                                <!-- /USER STATUS TIMESTAMP -->
+
+                                <!-- USER STATUS ICON -->
+                                <div class="user-status-icon">
+                                    <!-- ICON COMMENT -->
+                                    <img src="css/futsalIcono.png" width="30px" alt="">
+                                    <!-- /ICON COMMENT -->
+                                </div>
+                                <!-- /USER STATUS ICON -->
+                            </div>
+                            <!-- /USER STATUS -->
+                        </div>
+                        <!-- /DROPDOWN BOX LIST ITEM -->
+                        <!-- DROPDOWN BOX LIST ITEM -->
+                        <div class="dropdown-box-list-item unread">
+                            <!-- USER STATUS -->
+                            <div class="user-status notification">
+                                <!-- USER STATUS AVATAR -->
+                                <a class="user-status-avatar">
+                                    <!-- USER AVATAR -->
+                                    <div class="user-avatar small no-outline">
+                                        <!-- USER AVATAR CONTENT -->
+                                        <div class="user-avatar-content">
+                                            <!-- HEXAGON -->
+                                            <div class="hexagon-image-30-32" data-src="css/raulRomero.png"></div>
+                                            <!-- /HEXAGON -->
+                                        </div>
+                                        <!-- /USER AVATAR CONTENT -->
+
+                                        <!-- USER AVATAR PROGRESS -->
+                                        <div class="user-avatar-progress">
+                                            <!-- HEXAGON -->
+                                            <div class="hexagon-progress-40-44"></div>
+                                            <!-- /HEXAGON -->
+                                        </div>
+                                        <!-- /USER AVATAR PROGRESS -->
+
+                                        <!-- USER AVATAR PROGRESS BORDER -->
+                                        <div class="user-avatar-progress-border">
+                                            <!-- HEXAGON -->
+                                            <div class="hexagon-border-40-44"></div>
+                                            <!-- /HEXAGON -->
+                                        </div>
+                                        <!-- /USER AVATAR PROGRESS BORDER -->
+
+                                        <!-- USER AVATAR BADGE -->
+                                        <div class="user-avatar-badge">
+                                            <!-- USER AVATAR BADGE BORDER -->
+                                            <div class="user-avatar-badge-border">
+                                            </div>
+                                            <!-- /USER AVATAR BADGE BORDER -->
+
+                                        </div>
+                                        <!-- /USER AVATAR BADGE -->
+                                    </div>
+                                    <!-- /USER AVATAR -->
+                                </a>
+                                <!-- /USER STATUS AVATAR -->
+
+                                <!-- USER STATUS TITLE -->
+                                <p class="user-status-title"><a class="bold">Raul Romero</a> desea apoyar el evento <a class="highlighted">Fibra Tóxica VS Hormigón Armado</a> dentro del evento <a style="color: blueviolet;">Six Pract</a>.</p>
+                                <!-- /USER STATUS TITLE -->
+
+                                <!-- USER STATUS TIMESTAMP -->
+                                <p class="user-status-timestamp">Hace 2 horas</p>
+                                <!-- /USER STATUS TIMESTAMP -->
+
+                                <!-- USER STATUS ICON -->
+                                <div class="user-status-icon">
+                                    <!-- ICON COMMENT -->
+                                    <img src="css/sixPractIcono.png" width="30px" alt="">
+                                    <!-- /ICON COMMENT -->
+                                </div>
+                                <!-- /USER STATUS ICON -->
+                            </div>
+                            <!-- /USER STATUS -->
+                        </div>
+                        <!-- /DROPDOWN BOX LIST ITEM -->
+                    </div>
+                    <!-- /DROPDOWN BOX LIST -->
+                    <!--ARRIBA ESTÁN LAS NOTIFICACIONES-->
+                    <!-- DROPDOWN BOX BUTTON -->
+                    <a class="dropdown-box-button secondary" href="<%=request.getContextPath()%>/NotificacionesServlet?idUsuario=<%=idUsuario%>">Ver todas las notificaciones</a>
+                    <!-- /DROPDOWN BOX BUTTON -->
+                </div>
+                <!-- /DROPDOWN BOX -->
+            </div>
+            <!-- /ACTION LIST ITEM WRAP -->
+        </div>
+        <!-- /ACTION LIST -->
+
+        <!-- ACTION ITEM WRAP -->
+        <div class="action-item-wrap auxResponsiveUwu">
+            <!-- ACTION ITEM -->
+            <div class="action-item dark header-settings-dropdown-trigger">
+                <!-- ACTION ITEM ICON -->
+                <a href="<%=request.getContextPath()%>"><img src="css/logOut.png" width="30%" style="margin-left: 25px;" alt=""></a>
+                <!-- /ACTION ITEM ICON -->
+            </div>
+            <!-- /ACTION ITEM -->
+
+            <!-- DROPDOWN NAVIGATION -->
+
+        </div>
+        <!-- /ACTION ITEM WRAP -->
+    </div>
+    <!-- /HEADER ACTIONS -->
+    <%}else{%>
+    <!-- HEADER ACTIONS DELEGADO GENERAL -->
     <div class="header-actions">
         <!-- ACTION LIST -->
         <div class="action-list dark">
@@ -890,7 +1229,7 @@
                     <!-- /DROPDOWN BOX LIST -->
                     <!--ARRIBA ESTÁN LAS NOTIFICACIONES-->
                     <!-- DROPDOWN BOX BUTTON -->
-                    <a class="dropdown-box-button secondary" href="notificacionesDelGen.html">Ver todas las notificaciones</a>
+                    <a class="dropdown-box-button secondary" href="<%=request.getContextPath()%>/NotificacionesServlet?idUsuario=<%=idUsuario%>">Ver todas las notificaciones</a>
                     <!-- /DROPDOWN BOX BUTTON -->
                 </div>
                 <!-- /DROPDOWN BOX -->
@@ -904,7 +1243,7 @@
             <!-- ACTION ITEM -->
             <div class="action-item dark header-settings-dropdown-trigger">
                 <!-- ACTION ITEM ICON -->
-                <img src="css/logOut.png" width="30%" alt="">
+                <a href="<%=request.getContextPath()%>"><img src="css/logOut.png" width="30%" style="margin-left: 25px;" alt=""></a>
                 <!-- /ACTION ITEM ICON -->
             </div>
             <!-- /ACTION ITEM -->
@@ -914,6 +1253,8 @@
         </div>
         <!-- /ACTION ITEM WRAP -->
     </div>
+    <!-- /HEADER ACTIONS -->
+    <%}%>
     <!-- /HEADER ACTIONS -->
 </header>
 <!-- /HEADER -->
@@ -1067,7 +1408,7 @@
                         <!-- /USER SHORT DESCRIPTION TITLE -->
 
                         <!-- USER SHORT DESCRIPTION TEXT -->
-                        <p class="user-short-description-text" style="text-transform: lowercase;"><%=usuario_pendiente.getCorreo()%>/p>
+                        <p class="user-short-description-text" style="text-transform: lowercase;"><%=usuario_pendiente.getCorreo()%></p>
                         <!-- /USER SHORT DESCRIPTION TEXT -->
                     </div>
                     <!-- /USER SHORT DESCRIPTION -->
@@ -2515,7 +2856,33 @@
     </div>
 
 </div> <!--GRID-->
-
+<footer style="font-size: 80%;">
+    <!-- Primera fila -->
+    <div class="fila">
+        <div class="columna">
+            <span class="titulo">Contactos</span>
+            <ul class="lista">
+                <%for(int i=0;i<listaCorreosDelegadosGenerales.size();i++){%>
+                <li>Delegado general <%=(i+1)%>: <a href="mailto:<%=listaCorreosDelegadosGenerales.get(i)%>"><%=listaCorreosDelegadosGenerales.get(i)%></a></li>
+                <%}%>
+            </ul>
+        </div>
+        <div class="columna">
+            <p>© 2023 Fibra tóxica</p>
+            <ul class="lista">
+                <li><a>Siguenos en: </a> <i class="fab fa-facebook"></i> <i class="fab fa-instagram"></i> <i class="fab fa-youtube"></i></li>
+            </ul>
+        </div>
+        <div class="columna">
+            <span class="titulo">Sobre nosotros</span>
+            <ul class="lista">
+                <li>Somos un grupo de estudiantes que</li>
+                <li>busca conectar a todos los amantes</li>
+                <li>de esta maravillosa carrera</li>
+            </ul>
+        </div>
+    </div>
+</footer>
 <div class="popup" id="fondo">
 </div>
 

@@ -220,6 +220,9 @@
             .auxResponsiveUwu{
                 display: none;
             }
+            .eventosAux{
+                padding-bottom: 18px !important;
+            }
         }
     </style>
 </head>
@@ -1441,7 +1444,7 @@
         <!-- /CALENDAR WIDGET HEADER -->
 
         <!-- CALENDAR -->
-        <div class="calendar full">
+        <div class="calendar full eventosAux">
             <!-- CALENDAR WEEK -->
             <div class="calendar-week">
                 <!-- CALENDAR WEEK DAY -->

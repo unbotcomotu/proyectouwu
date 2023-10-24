@@ -1,5 +1,8 @@
 <%@ page import="com.example.proyectouwu.Beans.Usuario" %>
-<%@ page import="java.util.ArrayList" %><%--
+<%@ page import="java.util.ArrayList" %>
+<%@ page import="com.example.proyectouwu.Beans.Reporte" %>
+<%@ page import="com.example.proyectouwu.Daos.DaoUsuario" %>
+<%--
   Created by IntelliJ IDEA.
   User: Santiago
   Date: 22/10/2023
@@ -14,6 +17,7 @@
         String rolUsuario=(String) request.getAttribute("rolUsuario");
         String nombreCompletoUsuario=(String) request.getAttribute("nombreCompletoUsuario");
         ArrayList<Usuario> listaSolicitudes=(ArrayList<Usuario>) request.getAttribute("listaSolicitudes");
+        ArrayList<Reporte> reportList = (ArrayList<Reporte>) request.getAttribute("reportList");
         Integer idActividadDelegatura=(Integer)request.getAttribute("idActividadDelegatura");
         String vistaActual=(String) request.getAttribute("vistaActual");
         ArrayList<String>listaCorreosDelegadosGenerales=(ArrayList<String>)request.getAttribute("correosDelegadosGenerales");
@@ -2414,6 +2418,8 @@
                 <!-- NOTIFICATION BOX LIST -->
                 <div class="notification-box-list">
                     <!-- NOTIFICATION BOX -->
+                    <% for (Reporte reporteNuevo : reportList ){%>
+
                     <div class="notification-box">
                         <!-- USER STATUS -->
                         <div class="user-status notification">
@@ -2450,11 +2456,15 @@
                             <!-- /USER STATUS AVATAR -->
 
                             <!-- USER STATUS TITLE -->
-                            <p class="user-status-title"><a class="bold" >Alex Segovia</a> ha reportado a <a class="highlighted" >Josh Yauri</a> por actitudes indebidas en el foro de la actividad de volleyball.</p>
+                            <%
+                                DaoUsuario daoUser = new DaoUsuario();
+
+                            %>
+                            <p class="user-status-title"><a class="bold" ><%=daoUser.nombreCompletoUsuarioPorId(reporteNuevo.getIdUsuarioQueReporta())%></a> ha reportado a <a class="highlighted" ><%=daoUser.nombreCompletoUsuarioPorId(reporteNuevo.getIdUsuarioReportado())%></a> <%= reporteNuevo.getMotivoReporte()%></p>
                             <!-- /USER STATUS TITLE -->
 
                             <!-- USER STATUS TIMESTAMP -->
-                            <p class="user-status-timestamp small-space">Hace 2 minutos</p>
+                            <p class="user-status-timestamp small-space"><%=reporteNuevo.getFecha()%></p>
                             <!-- /USER STATUS TIMESTAMP -->
 
                             <!-- /USER STATUS ICON -->
@@ -2475,403 +2485,9 @@
                         <div class="mark-unread-button"></div>
                         <!-- /MARK UNREAD BUTTON -->
                     </div>
+                    <%}%>
                     <!-- /NOTIFICATION BOX -->
 
-                    <!-- NOTIFICATION BOX -->
-                    <div class="notification-box unread">
-                        <!-- USER STATUS -->
-                        <div class="user-status notification">
-                            <!-- USER STATUS AVATAR -->
-                            <a class="user-status-avatar" >
-                                <!-- USER AVATAR -->
-                                <div class="user-avatar small no-outline">
-                                    <!-- USER AVATAR CONTENT -->
-                                    <div class="user-avatar-content">
-                                        <!-- HEXAGON -->
-                                        <div class="hexagon-image-30-32" data-src="css\fotoMayte.png"></div>
-                                        <!-- /HEXAGON -->
-                                    </div>
-                                    <!-- /USER AVATAR CONTENT -->
-
-                                    <!-- USER AVATAR PROGRESS -->
-                                    <div class="user-avatar-progress">
-                                        <!-- HEXAGON -->
-                                        <div class="hexagon-progress-40-44"></div>
-                                        <!-- /HEXAGON -->
-                                    </div>
-                                    <!-- /USER AVATAR PROGRESS -->
-
-                                    <!-- USER AVATAR PROGRESS BORDER -->
-                                    <div class="user-avatar-progress-border">
-                                        <!-- HEXAGON -->
-                                        <div class="hexagon-border-40-44"></div>
-                                        <!-- /HEXAGON -->
-                                    </div>
-                                </div>
-                                <!-- /USER AVATAR -->
-                            </a>
-                            <!-- /USER STATUS AVATAR -->
-
-                            <!-- USER STATUS TITLE -->
-                            <p class="user-status-title"><a class="bold" >Mayte Asto</a> ha reportado a <a class="highlighted" >Josh Yauri</a> por acosar al alumno Hineill Cespedes.</p>
-
-                            <!--<img class="reaction" src="img/reaction/like.png" alt="reaction-like">-->
-                            <!-- /USER STATUS TITLE -->
-
-                            <!-- USER STATUS TIMESTAMP -->
-                            <p class="user-status-timestamp small-space">Hace 17 minutos</p>
-                            <!-- /USER STATUS TIMESTAMP -->
-                            <!-- /USER STATUS ICON -->
-                        </div>
-                        <!-- /USER STATUS -->
-
-                        <!-- NOTIFICATION BOX CLOSE BUTTON -->
-                        <div class="notification-box-close-button">
-                            <!-- NOTIFICATION BOX CLOSE BUTTON ICON -->
-                            <svg class="notification-box-close-button-icon icon-cross">
-                                <use xlink:href="#svg-cross"></use>
-                            </svg>
-                            <!-- /NOTIFICATION BOX CLOSE BUTTON ICON -->
-                        </div>
-                        <!-- /NOTIFICATION BOX CLOSE BUTTON -->
-
-                        <!-- MARK READ BUTTON -->
-                        <div class="mark-read-button"></div>
-                        <!-- /MARK READ BUTTON -->
-                    </div>
-                    <!-- /NOTIFICATION BOX -->
-
-                    <!-- NOTIFICATION BOX -->
-                    <div class="notification-box">
-                        <!-- USER STATUS -->
-                        <div class="user-status notification">
-                            <!-- USER STATUS AVATAR -->
-                            <a class="user-status-avatar" >
-                                <!-- USER AVATAR -->
-                                <div class="user-avatar small no-outline">
-                                    <!-- USER AVATAR CONTENT -->
-                                    <div class="user-avatar-content">
-                                        <!-- HEXAGON -->
-                                        <div class="hexagon-image-30-32" data-src="css\Hineill_2.png"></div>
-                                        <!-- /HEXAGON -->
-                                    </div>
-                                    <!-- /USER AVATAR CONTENT -->
-
-                                    <!-- USER AVATAR PROGRESS -->
-                                    <div class="user-avatar-progress">
-                                        <!-- HEXAGON -->
-                                        <div class="hexagon-progress-40-44"></div>
-                                        <!-- /HEXAGON -->
-                                    </div>
-                                    <!-- /USER AVATAR PROGRESS -->
-
-                                    <!-- USER AVATAR PROGRESS BORDER -->
-                                    <div class="user-avatar-progress-border">
-                                        <!-- HEXAGON -->
-                                        <div class="hexagon-border-40-44"></div>
-                                        <!-- /HEXAGON -->
-                                    </div>
-                                    <!-- /USER AVATAR PROGRESS BORDER -->
-
-                                    <!-- USER AVATAR BADGE -->
-
-                                    <!-- /USER AVATAR BADGE -->
-                                </div>
-                                <!-- /USER AVATAR -->
-                            </a>
-                            <!-- /USER STATUS AVATAR -->
-
-                            <!-- USER STATUS TITLE -->
-                            <p class="user-status-title"><a class="bold" >Hineill Cespedes</a> ha reportado a <a class="highlighted" href="profile-photos.html">Josh Yauri</a> por acosarlo.</p>
-                            <!-- /USER STATUS TITLE -->
-
-                            <!-- USER STATUS TIMESTAMP -->
-                            <p class="user-status-timestamp small-space">Hace 20 minutos</p>
-                            <!-- /USER STATUS TIMESTAMP -->
-                            <!-- /USER STATUS ICON -->
-                        </div>
-                        <!-- /USER STATUS -->
-
-                        <!-- NOTIFICATION BOX CLOSE BUTTON -->
-                        <div class="notification-box-close-button">
-                            <!-- NOTIFICATION BOX CLOSE BUTTON ICON -->
-                            <svg class="notification-box-close-button-icon icon-cross">
-                                <use xlink:href="#svg-cross"></use>
-                            </svg>
-                            <!-- /NOTIFICATION BOX CLOSE BUTTON ICON -->
-                        </div>
-                        <!-- /NOTIFICATION BOX CLOSE BUTTON -->
-
-                        <!-- MARK UNREAD BUTTON -->
-                        <div class="mark-unread-button"></div>
-                        <!-- /MARK UNREAD BUTTON -->
-                    </div>
-                    <!-- /NOTIFICATION BOX -->
-
-                    <!-- NOTIFICATION BOX -->
-                    <div class="notification-box">
-                        <!-- USER STATUS -->
-                        <div class="user-status notification">
-                            <!-- USER STATUS AVATAR -->
-                            <a class="user-status-avatar" >
-                                <!-- USER AVATAR -->
-                                <div class="user-avatar small no-outline">
-                                    <!-- USER AVATAR CONTENT -->
-                                    <div class="user-avatar-content">
-                                        <!-- HEXAGON -->
-                                        <div class="hexagon-image-30-32" data-src="css\Santi.png"></div>
-                                        <!-- /HEXAGON -->
-                                    </div>
-                                    <!-- /USER AVATAR CONTENT -->
-
-                                    <!-- USER AVATAR PROGRESS -->
-                                    <div class="user-avatar-progress">
-                                        <!-- HEXAGON -->
-                                        <div class="hexagon-progress-40-44"></div>
-                                        <!-- /HEXAGON -->
-                                    </div>
-                                    <!-- /USER AVATAR PROGRESS -->
-
-                                    <!-- USER AVATAR PROGRESS BORDER -->
-                                    <div class="user-avatar-progress-border">
-                                        <!-- HEXAGON -->
-                                        <div class="hexagon-border-40-44"></div>
-                                        <!-- /HEXAGON -->
-                                    </div>
-                                    <!-- /USER AVATAR PROGRESS BORDER -->
-
-                                    <!-- /USER AVATAR BADGE -->
-                                </div>
-                                <!-- /USER AVATAR -->
-                            </a>
-                            <!-- /USER STATUS AVATAR -->
-
-                            <!-- USER STATUS TITLE -->
-                            <p class="user-status-title"><a class="bold" >Santiago Yong</a> ha reportado a <a class="highlighted" >Josh Yauri</a> por lanzar un penny contra el profesor Stefano Romero.</p>
-                            <!-- /USER STATUS TITLE -->
-
-                            <!-- USER STATUS TIMESTAMP -->
-                            <p class="user-status-timestamp small-space">Hace 1 hora</p>
-                            <!-- /USER STATUS TIMESTAMP -->
-
-                            <!-- /USER STATUS ICON -->
-                        </div>
-                        <!-- /USER STATUS -->
-
-                        <!-- NOTIFICATION BOX CLOSE BUTTON -->
-                        <div class="notification-box-close-button">
-                            <!-- NOTIFICATION BOX CLOSE BUTTON ICON -->
-                            <svg class="notification-box-close-button-icon icon-cross">
-                                <use xlink:href="#svg-cross"></use>
-                            </svg>
-                            <!-- /NOTIFICATION BOX CLOSE BUTTON ICON -->
-                        </div>
-                        <!-- /NOTIFICATION BOX CLOSE BUTTON -->
-
-                        <!-- MARK UNREAD BUTTON -->
-                        <div class="mark-unread-button"></div>
-                        <!-- /MARK UNREAD BUTTON -->
-                    </div>
-                    <!-- /NOTIFICATION BOX -->
-
-                    <!-- NOTIFICATION BOX -->
-                    <div class="notification-box">
-                        <!-- USER STATUS -->
-                        <div class="user-status notification">
-                            <!-- USER STATUS AVATAR -->
-                            <a class="user-status-avatar" >
-                                <!-- USER AVATAR -->
-                                <div class="user-avatar small no-outline">
-                                    <!-- USER AVATAR CONTENT -->
-                                    <div class="user-avatar-content">
-                                        <!-- HEXAGON -->
-                                        <div class="hexagon-image-30-32" data-src="css/JP_BUENO.png"></div>
-                                        <!-- /HEXAGON -->
-                                    </div>
-                                    <!-- /USER AVATAR CONTENT -->
-
-                                    <!-- USER AVATAR PROGRESS -->
-                                    <div class="user-avatar-progress">
-                                        <!-- HEXAGON -->
-                                        <div class="hexagon-progress-40-44"></div>
-                                        <!-- /HEXAGON -->
-                                    </div>
-                                    <!-- /USER AVATAR PROGRESS -->
-
-                                    <!-- USER AVATAR PROGRESS BORDER -->
-                                    <div class="user-avatar-progress-border">
-                                        <!-- HEXAGON -->
-                                        <div class="hexagon-border-40-44"></div>
-                                        <!-- /HEXAGON -->
-                                    </div>
-                                    <!-- /USER AVATAR PROGRESS BORDER -->
-
-                                    <!-- /USER AVATAR BADGE -->
-                                </div>
-                                <!-- /USER AVATAR -->
-                            </a>
-                            <!-- /USER STATUS AVATAR -->
-
-                            <!-- USER STATUS TITLE -->
-                            <p class="user-status-title"><a class="bold" >Gabriel Talledo</a> ha reportado a <a class="highlighted" >Jean Ipurre</a> por comentarios ofensivos en el foro de Valorant.</p>
-                            <!--<img class="reaction" src="img/reaction/love.png" alt="reaction-love">-->
-                            <!-- /USER STATUS TITLE -->
-
-                            <!-- USER STATUS TIMESTAMP -->
-                            <p class="user-status-timestamp small-space">Hace 40 minutos</p>
-                            <!-- /USER STATUS TIMESTAMP -->
-
-                            <!-- /USER STATUS ICON -->
-                        </div>
-                        <!-- /USER STATUS -->
-
-                        <!-- NOTIFICATION BOX CLOSE BUTTON -->
-                        <div class="notification-box-close-button">
-                            <!-- NOTIFICATION BOX CLOSE BUTTON ICON -->
-                            <svg class="notification-box-close-button-icon icon-cross">
-                                <use xlink:href="#svg-cross"></use>
-                            </svg>
-                            <!-- /NOTIFICATION BOX CLOSE BUTTON ICON -->
-                        </div>
-                        <!-- /NOTIFICATION BOX CLOSE BUTTON -->
-
-                        <!-- MARK UNREAD BUTTON -->
-                        <div class="mark-unread-button"></div>
-                        <!-- /MARK UNREAD BUTTON -->
-                    </div>
-                    <!-- /NOTIFICATION BOX -->
-
-                    <!-- NOTIFICATION BOX -->
-                    <div class="notification-box unread">
-                        <!-- USER STATUS -->
-                        <div class="user-status notification">
-                            <!-- USER STATUS AVATAR -->
-                            <a class="user-status-avatar" >
-                                <!-- USER AVATAR -->
-                                <div class="user-avatar small no-outline">
-                                    <!-- USER AVATAR CONTENT -->
-                                    <div class="user-avatar-content">
-                                        <!-- HEXAGON -->
-                                        <div class="hexagon-image-30-32" data-src="css/david.png"></div>
-                                        <!-- /HEXAGON -->
-                                    </div>
-                                    <!-- /USER AVATAR CONTENT -->
-
-                                    <!-- USER AVATAR PROGRESS -->
-                                    <div class="user-avatar-progress">
-                                        <!-- HEXAGON -->
-                                        <div class="hexagon-progress-40-44"></div>
-                                        <!-- /HEXAGON -->
-                                    </div>
-                                    <!-- /USER AVATAR PROGRESS -->
-
-                                    <!-- USER AVATAR PROGRESS BORDER -->
-                                    <div class="user-avatar-progress-border">
-                                        <!-- HEXAGON -->
-                                        <div class="hexagon-border-40-44"></div>
-                                        <!-- /HEXAGON -->
-                                    </div>
-                                    <!-- /USER AVATAR PROGRESS BORDER -->
-
-                                    <!-- /USER AVATAR BADGE -->
-                                </div>
-                                <!-- /USER AVATAR -->
-                            </a>
-                            <!-- /USER STATUS AVATAR -->
-
-                            <!-- USER STATUS TITLE -->
-                            <p class="user-status-title"><a class="bold" >David Escobedo</a> ha reportado a <a class="highlighted" >Jorge Coronado</a> por insultos en el foro de futsal.</p>
-                            <!-- /USER STATUS TITLE -->
-
-                            <!-- USER STATUS TIMESTAMP -->
-                            <p class="user-status-timestamp small-space">Hace 2 horas</p>
-                            <!-- /USER STATUS TIMESTAMP -->
-
-                            <!-- /USER STATUS ICON -->
-                        </div>
-                        <!-- /USER STATUS -->
-
-                        <!-- NOTIFICATION BOX CLOSE BUTTON -->
-                        <div class="notification-box-close-button">
-                            <!-- NOTIFICATION BOX CLOSE BUTTON ICON -->
-                            <svg class="notification-box-close-button-icon icon-cross">
-                                <use xlink:href="#svg-cross"></use>
-                            </svg>
-                            <!-- /NOTIFICATION BOX CLOSE BUTTON ICON -->
-                        </div>
-                        <!-- /NOTIFICATION BOX CLOSE BUTTON -->
-
-                        <!-- MARK READ BUTTON -->
-                        <div class="mark-read-button"></div>
-                        <!-- /MARK READ BUTTON -->
-                    </div>
-                    <!-- /NOTIFICATION BOX -->
-
-                    <!-- NOTIFICATION BOX -->
-                    <div class="notification-box">
-                        <!-- USER STATUS -->
-                        <div class="user-status notification">
-                            <!-- USER STATUS AVATAR -->
-                            <a class="user-status-avatar">
-                                <!-- USER AVATAR -->
-                                <div class="user-avatar small no-outline">
-                                    <!-- USER AVATAR CONTENT -->
-                                    <div class="user-avatar-content">
-                                        <!-- HEXAGON -->
-                                        <div class="hexagon-image-30-32" data-src="css/fotoMayte.png"></div>
-                                        <!-- /HEXAGON -->
-                                    </div>
-                                    <!-- /USER AVATAR CONTENT -->
-
-                                    <!-- USER AVATAR PROGRESS -->
-                                    <div class="user-avatar-progress">
-                                        <!-- HEXAGON -->
-                                        <div class="hexagon-progress-40-44"></div>
-                                        <!-- /HEXAGON -->
-                                    </div>
-                                    <!-- /USER AVATAR PROGRESS -->
-
-                                    <!-- USER AVATAR PROGRESS BORDER -->
-                                    <div class="user-avatar-progress-border">
-                                        <!-- HEXAGON -->
-                                        <div class="hexagon-border-40-44"></div>
-                                        <!-- /HEXAGON -->
-                                    </div>
-
-                                </div>
-                                <!-- /USER AVATAR -->
-                            </a>
-                            <!-- /USER STATUS AVATAR -->
-
-                            <!-- USER STATUS TITLE -->
-                            <p class="user-status-title"><a class="bold">Mayte Asto</a> ha reportado a <a class="highlighted" >Carlos Minaya </a>por fomentar la violencia en el foro de futbol.</p>
-                            <!-- /USER STATUS TITLE -->
-
-                            <!-- USER STATUS TIMESTAMP -->
-                            <p class="user-status-timestamp small-space">Hace 2 horas</p>
-                            <!-- /USER STATUS TIMESTAMP -->
-
-                            <!-- USER STATUS ICON -->
-
-                            <!-- /USER STATUS ICON -->
-                        </div>
-                        <!-- /USER STATUS -->
-
-                        <!-- NOTIFICATION BOX CLOSE BUTTON -->
-                        <div class="notification-box-close-button">
-                            <!-- NOTIFICATION BOX CLOSE BUTTON ICON -->
-                            <svg class="notification-box-close-button-icon icon-cross">
-                                <use xlink:href="#svg-cross"></use>
-                            </svg>
-                            <!-- /NOTIFICATION BOX CLOSE BUTTON ICON -->
-                        </div>
-                        <!-- /NOTIFICATION BOX CLOSE BUTTON -->
-
-                        <!-- MARK UNREAD BUTTON -->
-                        <div class="mark-unread-button"></div>
-                        <!-- /MARK UNREAD BUTTON -->
-                    </div>
-                    <!-- /NOTIFICATION BOX -->
 
                     <!-- NOTIFICATION BOX -->
 

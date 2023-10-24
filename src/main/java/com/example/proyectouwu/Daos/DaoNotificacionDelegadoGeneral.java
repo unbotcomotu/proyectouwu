@@ -51,15 +51,15 @@ public class DaoNotificacionDelegadoGeneral {
         String username = "root";
         String password = "root";
 
-        String sql = "select  concat(ur.nombre, ' ', ur.apellido) as 'Reportado',concat(uqr.nombre, ' ', uqr.apellido) as 'Reportante', r.motivoReporte, r.fechaHora from reporte r inner join usuario ur on ur.idUsuario = r.idUsuarioReportado inner join usuario uqr on uqr.idUsuario = r.idUsuarioQueReporta ORDER BY ur.nombre;";
+        String sql = "SELECT idUsuarioReportado, idUsuarioQueReporta, motivoReporte,fechaHora FROM reporte";
         try (Connection conn = DriverManager.getConnection(url, username, password);
              Statement stmt = conn.createStatement();
              ResultSet rs = stmt.executeQuery(sql)) {
 
             while (rs.next()) {
                 Reporte report = new Reporte();
-                report.setNombreReportado(rs.getString(1));
-                report.setNombreReportante(rs.getString(2));
+                report.setIdUsuarioReportado(rs.getInt(1));
+                report.setIdUsuarioQueReporta(rs.getInt(2));
                 report.setMotivoReporte(rs.getString(3));
                 report.setFecha(rs.getDate(4));
                 reportList.add(report);

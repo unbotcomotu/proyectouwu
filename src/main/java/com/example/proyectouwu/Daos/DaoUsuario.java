@@ -47,6 +47,22 @@ public class DaoUsuario {
         }
     }
 
+    public String condicionUsuarioPorId(int idUsuario){
+        String sql="select condicon from usuario where idUsuario=?";
+        try(PreparedStatement pstmt= conn.prepareStatement(sql)){
+            pstmt.setInt(1,idUsuario);
+            try(ResultSet rs=pstmt.executeQuery()){
+                if(rs.next()){
+                    return rs.getString(1);
+                }else
+                    return "";
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+
     public ArrayList<String>listarCorreosDelegadosGenerales(){
         ArrayList<String>listaCorreosDelegadosGenerales=new ArrayList<>();
         String sql="select correo from usuario where rol='Delegado General'";

@@ -1,5 +1,6 @@
 package com.example.proyectouwu.Daos;
 
+import com.example.proyectouwu.Beans.Donacion;
 import com.example.proyectouwu.Beans.Reporte;
 import com.example.proyectouwu.Beans.Usuario;
 import java.sql.*;
@@ -75,5 +76,41 @@ public class DaoNotificacionDelegadoGeneral {
             throw new RuntimeException(e);
         }
         return reportList;
+    }
+
+
+    public ArrayList<Donacion> listarNotificacionesDonaciones( ){
+
+        ArrayList<Donacion> donacionList= new ArrayList<>();
+
+        try{
+            Class.forName("com.mysql.cj.jdbc.Driver");
+        }catch (ClassNotFoundException e){
+            throw new RuntimeException(e);
+        }
+
+        String url = "jdbc:mysql://localhost:3306/proyecto";
+        String username = "root";
+        String password = "root";
+
+        String sql = "SELECT idUsuairo, medioPago, monto,fechaHora,estadoDonacion FROM donacion";
+        try (Connection conn = DriverManager.getConnection(url, username, password);
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(sql)) {
+
+            while (rs.next()) {
+                Donacion donacion = new Donacion();
+                donacion.setIdUsuario(rs.getInt(1));
+                donacion.setMedioPago(rs.getString(2));
+                donacion.setMonto(rs.getFloat(3));
+                donacion.setFecha(rs.getDate(4));
+                donacion.setEstadoDonacion(rs.getString(5));
+                donacionList.add(donacion);
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return donacionList;
     }
 }

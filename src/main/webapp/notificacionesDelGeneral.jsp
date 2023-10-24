@@ -2,6 +2,7 @@
 <%@ page import="java.util.ArrayList" %>
 <%@ page import="com.example.proyectouwu.Beans.Reporte" %>
 <%@ page import="com.example.proyectouwu.Daos.DaoUsuario" %>
+<%@ page import="com.example.proyectouwu.Beans.Donacion" %>
 <%--
   Created by IntelliJ IDEA.
   User: Santiago
@@ -18,6 +19,7 @@
         String nombreCompletoUsuario=(String) request.getAttribute("nombreCompletoUsuario");
         ArrayList<Usuario> listaSolicitudes=(ArrayList<Usuario>) request.getAttribute("listaSolicitudes");
         ArrayList<Reporte> reportList = (ArrayList<Reporte>) request.getAttribute("reportList");
+        ArrayList<Donacion> donacionList = (ArrayList<Donacion>) request.getAttribute("donacionList");
         Integer idActividadDelegatura=(Integer)request.getAttribute("idActividadDelegatura");
         String vistaActual=(String) request.getAttribute("vistaActual");
         ArrayList<String>listaCorreosDelegadosGenerales=(ArrayList<String>)request.getAttribute("correosDelegadosGenerales");
@@ -1259,9 +1261,7 @@
 </header>
 <!-- /HEADER -->
 
-
 <!-- CONTENT GRID -->
-
 <div class="content-grid">
 
     <!-- SECTION BANNER -->
@@ -1751,7 +1751,11 @@
                     <!-- /TABLE HEADER COLUMN -->
 
                     <!-- TABLE HEADER COLUMN -->
-                    <div class="table-header-column padded-left"></div>
+                    <div class="table-header-column centered padded">
+                        <!-- TABLE HEADER TITLE -->
+                        <p class="table-header-title">Estado</p>
+                        <!-- /TABLE HEADER TITLE -->
+                    </div>
 
 
                     <!-- /TABLE HEADER COLUMN -->
@@ -1760,20 +1764,25 @@
 
                 <!-- TABLE BODY -->
                 <div class="table-body same-color-rows">
+
+
+                    <%for (Donacion donacion : donacionList){%>
                     <!-- TABLE ROW -->
                     <div class="table-row micro">
                         <!-- TABLE COLUMN -->
                         <div class="table-column">
                             <!-- TABLE TEXT -->
-                            <p class="table-text"><span class="light">02/10/2023</span></p>
+                            <p class="table-text"><span class="light"><%=donacion.getFecha()%></span></p>
                             <!-- /TABLE TEXT -->
                         </div>
                         <!-- /TABLE COLUMN -->
 
                         <!-- TABLE COLUMN -->
                         <div class="table-column padded-left">
+
+                            <%DaoUsuario usuarioUwu = new DaoUsuario();%>
                             <!-- TABLE LINK -->
-                            <a class="table-link" href="marketplace-product.html"><span class="highlighted">Brandon Rafael Tacuri Flores</span></a>
+                            <a class="table-link" href="marketplace-product.html"><span class="highlighted"> <%=usuarioUwu.nombreCompletoUsuarioPorId(donacion.getIdUsuario())%>  </span></a>
                             <!-- /TABLE LINK -->
                         </div>
                         <!-- /TABLE COLUMN -->
@@ -1781,21 +1790,21 @@
                         <!-- TABLE COLUMN -->
                         <div class="table-column centered padded">
                             <!-- TABLE TITLE -->
-                            <p class="table-title">Plin</p>
+                            <p class="table-title"> <%=donacion.getMedioPago()%> </p>
                             <!-- /TABLE TITLE -->
                         </div>
 
                         <!-- TABLE COLUMN -->
                         <div class="table-column centered padded">
                             <!-- TABLE TITLE -->
-                            <p class="table-title">S/26</p>
+                            <p class="table-title">S/<%=donacion.getMonto()%></p>
                             <!-- /TABLE TITLE -->
                         </div>
                         <!-- /TABLE COLUMN -->
 
                         <div class="table-column centered padded">
                             <!-- TABLE TITLE -->
-                            <p class="table-title">Alumno</p>
+                            <p class="table-title"> <%= usuarioUwu.condicionUsuarioPorId(donacion.getIdUsuario())%> </p>
                             <!-- /TABLE TITLE -->
                         </div>
 
@@ -1810,764 +1819,19 @@
                         <!-- /TABLE COLUMN -->
 
                         <!-- TABLE COLUMN -->
-                        <div class="table-column padded-left">
-                            <!-- PERCENTAGE DIFF ICON WRAP -->
-                            <div class="percentage-diff-icon-wrap positive">
-                                <!-- PERCENTAGE DIFF ICON -->
-                                <svg class="percentage-diff-icon icon-plus-small">
-                                    <use xlink:href="#svg-plus-small"></use>
-                                </svg>
-                                <!-- /PERCENTAGE DIFF ICON -->
-                            </div>
-                            <!-- /PERCENTAGE DIFF ICON WRAP -->
+                        <div class="table-column centered padded">
+                            <!-- TABLE TITLE -->
+                            <p class="table-title"> <%=donacion.getEstadoDonacion()%> </p>
+                            <!-- /TABLE TITLE -->
                         </div>
 
                         <!-- /TABLE COLUMN -->
                     </div>
                     <!-- /TABLE ROW -->
 
-                    <!-- TABLE ROW -->
-                    <div class="table-row micro">
-                        <!-- TABLE COLUMN -->
-                        <div class="table-column">
-                            <!-- TABLE TEXT -->
-                            <p class="table-text"><span class="light">02/10/2023</span></p>
-                            <!-- /TABLE TEXT -->
-                        </div>
-                        <!-- /TABLE COLUMN -->
+                    <%}%>
 
-                        <!-- TABLE COLUMN -->
-                        <div class="table-column padded-left">
-                            <!-- TABLE LINK -->
-                            <a class="table-link" href="marketplace-product.html"><span class="highlighted">Nadia Michelle Hernandez Botiquin</span></a>
-                            <!-- /TABLE LINK -->
-                        </div>
-                        <!-- /TABLE COLUMN -->
 
-                        <!-- TABLE COLUMN -->
-                        <div class="table-column centered padded">
-                            <!-- TABLE TITLE -->
-                            <p class="table-title">Yape</p>
-                            <!-- /TABLE TITLE -->
-                        </div>
-                        <!-- /TABLE COLUMN -->
-
-                        <!-- TABLE COLUMN -->
-
-                        <!-- /TABLE COLUMN -->
-
-                        <!-- TABLE COLUMN -->
-                        <div class="table-column centered padded">
-                            <!-- TABLE TITLE -->
-                            <p class="table-title">S/12</p>
-                            <!-- /TABLE TITLE -->
-                        </div>
-                        <!-- /TABLE COLUMN -->
-
-                        <div class="table-column centered padded">
-                            <!-- TABLE TITLE -->
-                            <p class="table-title">Alumno</p>
-                            <!-- /TABLE TITLE -->
-                        </div>
-
-                        <!-- /TABLE COLUMN -->
-
-                        <!-- TABLE COLUMN -->
-                        <div class="table-column centered padded">
-                            <!-- TABLE TITLE -->
-                            <p class="table-title"><span class="highlighted">pulse aquí</span></p>
-                            <!-- /TABLE TITLE -->
-                        </div>
-                        <!-- /TABLE COLUMN -->
-
-                        <!-- TABLE COLUMN -->
-                        <div class="table-column padded-left">
-                            <!-- PERCENTAGE DIFF ICON WRAP -->
-                            <div class="percentage-diff-icon-wrap positive">
-                                <!-- PERCENTAGE DIFF ICON -->
-                                <svg class="percentage-diff-icon icon-plus-small">
-                                    <use xlink:href="#svg-plus-small"></use>
-                                </svg>
-                                <!-- /PERCENTAGE DIFF ICON -->
-                            </div>
-                            <!-- /PERCENTAGE DIFF ICON WRAP -->
-                        </div>
-                        <!-- /TABLE COLUMN -->
-                    </div>
-                    <!-- /TABLE ROW -->
-
-                    <!-- TABLE ROW -->
-                    <div class="table-row micro">
-                        <!-- TABLE COLUMN -->
-                        <div class="table-column">
-                            <!-- TABLE TEXT -->
-                            <p class="table-text"><span class="light">03/10/2023</span></p>
-                            <!-- /TABLE TEXT -->
-                        </div>
-                        <!-- /TABLE COLUMN -->
-
-                        <!-- TABLE COLUMN -->
-                        <div class="table-column padded-left">
-                            <!-- TABLE LINK -->
-                            <a class="table-link" href="marketplace-product.html"><span class="highlighted">Alex David Segovia Ancajima</span></a>
-                            <!-- /TABLE LINK -->
-                        </div>
-                        <!-- /TABLE COLUMN -->
-
-                        <!-- TABLE COLUMN -->
-                        <div class="table-column centered padded">
-                            <!-- TABLE TITLE -->
-                            <p class="table-title">Yape</p>
-                            <!-- /TABLE TITLE -->
-                        </div>
-                        <!-- /TABLE COLUMN -->
-
-                        <!-- TABLE COLUMN -->
-
-                        <!-- /TABLE COLUMN -->
-
-                        <!-- TABLE COLUMN -->
-                        <div class="table-column centered padded">
-                            <!-- TABLE TITLE -->
-                            <p class="table-title">S/26</p>
-                            <!-- /TABLE TITLE -->
-                        </div>
-                        <!-- /TABLE COLUMN -->
-                        <!-- /TABLE COLUMN -->
-
-                        <div class="table-column centered padded">
-                            <!-- TABLE TITLE -->
-                            <p class="table-title">Alumno</p>
-                            <!-- /TABLE TITLE -->
-                        </div>
-
-                        <!-- TABLE COLUMN -->
-                        <div class="table-column centered padded">
-                            <!-- TABLE TITLE -->
-                            <p class="table-title"><span class="highlighted">pulse aquí</span></p>
-                            <!-- /TABLE TITLE -->
-                        </div>
-                        <!-- /TABLE COLUMN -->
-
-                        <!-- TABLE COLUMN -->
-                        <div class="table-column padded-left">
-                            <!-- PERCENTAGE DIFF ICON WRAP -->
-                            <div class="percentage-diff-icon-wrap positive">
-                                <!-- PERCENTAGE DIFF ICON -->
-                                <svg class="percentage-diff-icon icon-plus-small">
-                                    <use xlink:href="#svg-plus-small"></use>
-                                </svg>
-                                <!-- /PERCENTAGE DIFF ICON -->
-                            </div>
-                            <!-- /PERCENTAGE DIFF ICON WRAP -->
-                        </div>
-                        <!-- /TABLE COLUMN -->
-                    </div>
-                    <!-- /TABLE ROW -->
-
-                    <!-- TABLE ROW -->
-                    <div class="table-row micro">
-                        <!-- TABLE COLUMN -->
-                        <div class="table-column">
-                            <!-- TABLE TEXT -->
-                            <p class="table-text"><span class="light">04/10/2023</span></p>
-                            <!-- /TABLE TEXT -->
-                        </div>
-                        <!-- /TABLE COLUMN -->
-
-                        <!-- TABLE COLUMN -->
-                        <div class="table-column padded-left">
-                            <!-- TABLE LINK -->
-                            <a class="table-link" href="marketplace-product.html"><span class="highlighted">Carlos Guillermo Minaya Orihuela</span></a>
-                            <!-- /TABLE LINK -->
-                        </div>
-                        <!-- /TABLE COLUMN -->
-
-                        <!-- TABLE COLUMN -->
-                        <div class="table-column centered padded">
-                            <!-- TABLE TITLE -->
-                            <p class="table-title">Yape</p>
-                            <!-- /TABLE TITLE -->
-                        </div>
-                        <!-- /TABLE COLUMN -->
-
-                        <!-- TABLE COLUMN -->
-
-                        <!-- /TABLE COLUMN -->
-
-                        <!-- TABLE COLUMN -->
-                        <div class="table-column centered padded">
-                            <!-- TABLE TITLE -->
-                            <p class="table-title">S/120</p>
-                            <!-- /TABLE TITLE -->
-                        </div>
-                        <!-- /TABLE COLUMN -->
-
-                        <div class="table-column centered padded">
-                            <!-- TABLE TITLE -->
-                            <p class="table-title">Egresado</p>
-                            <!-- /TABLE TITLE -->
-                        </div>
-
-                        <!-- /TABLE COLUMN -->
-
-                        <!-- TABLE COLUMN -->
-                        <div class="table-column centered padded">
-                            <!-- TABLE TITLE -->
-                            <p class="table-title"><span class="highlighted">pulse aquí</span></p>
-                            <!-- /TABLE TITLE -->
-                        </div>
-                        <!-- /TABLE COLUMN -->
-
-                        <!-- TABLE COLUMN -->
-                        <div class="table-column padded-left">
-                            <!-- PERCENTAGE DIFF ICON WRAP -->
-                            <div class="percentage-diff-icon-wrap positive">
-                                <!-- PERCENTAGE DIFF ICON -->
-                                <svg class="percentage-diff-icon icon-plus-small">
-                                    <use xlink:href="#svg-plus-small"></use>
-                                </svg>
-                                <!-- /PERCENTAGE DIFF ICON -->
-                            </div>
-                            <!-- /PERCENTAGE DIFF ICON WRAP -->
-                        </div>
-                        <!-- /TABLE COLUMN -->
-                    </div>
-                    <!-- /TABLE ROW -->
-
-                    <!-- TABLE ROW -->
-                    <div class="table-row micro">
-                        <!-- TABLE COLUMN -->
-                        <div class="table-column">
-                            <!-- TABLE TEXT -->
-                            <p class="table-text"><span class="light">05/10/2023</span></p>
-                            <!-- /TABLE TEXT -->
-                        </div>
-                        <!-- /TABLE COLUMN -->
-
-                        <!-- TABLE COLUMN -->
-                        <div class="table-column padded-left">
-                            <!-- TABLE LINK -->
-                            <a class="table-link" href="marketplace-product.html"><span class="highlighted">Josh Fernando Yauri Salas</span></a>
-                            <!-- /TABLE LINK -->
-                        </div>
-                        <!-- /TABLE COLUMN -->
-
-                        <!-- TABLE COLUMN -->
-                        <div class="table-column centered padded">
-                            <!-- TABLE TITLE -->
-                            <p class="table-title">Plin</p>
-                            <!-- /TABLE TITLE -->
-                        </div>
-
-
-                        <!-- TABLE COLUMN -->
-                        <div class="table-column centered padded">
-                            <!-- TABLE TITLE -->
-                            <p class="table-title">S/45</p>
-                            <!-- /TABLE TITLE -->
-                        </div>
-                        <!-- /TABLE COLUMN -->
-
-
-                        <div class="table-column centered padded">
-                            <!-- TABLE TITLE -->
-                            <p class="table-title">Alumno</p>
-                            <!-- /TABLE TITLE -->
-                        </div>
-
-                        <!-- /TABLE COLUMN -->
-
-                        <!-- TABLE COLUMN -->
-                        <div class="table-column centered padded">
-                            <!-- TABLE TITLE -->
-                            <p class="table-title" id = "showPopup"><span class="highlighted">pulse aquí</span></p>
-                            <!-- /TABLE TITLE -->
-                        </div>
-
-
-                        <!-- /TABLE COLUMN -->
-
-                        <!-- TABLE COLUMN -->
-                        <div class="table-column padded-left">
-                            <!-- PERCENTAGE DIFF ICON WRAP -->
-                            <div class="percentage-diff-icon-wrap positive">
-                                <!-- PERCENTAGE DIFF ICON -->
-                                <svg class="percentage-diff-icon icon-plus-small">
-                                    <use xlink:href="#svg-plus-small"></use>
-                                </svg>
-                                <!-- /PERCENTAGE DIFF ICON -->
-                            </div>
-                            <!-- /PERCENTAGE DIFF ICON WRAP -->
-                        </div>
-                        <!-- /TABLE COLUMN -->
-                    </div>
-                    <!-- /TABLE ROW -->
-
-                    <!-- TABLE ROW -->
-                    <div class="table-row micro">
-                        <!-- TABLE COLUMN -->
-                        <div class="table-column">
-                            <!-- TABLE TEXT -->
-                            <p class="table-text"><span class="light">05/10/2023</span></p>
-                            <!-- /TABLE TEXT -->
-                        </div>
-                        <!-- /TABLE COLUMN -->
-
-                        <!-- TABLE COLUMN -->
-                        <div class="table-column padded-left">
-                            <!-- TABLE LINK -->
-                            <a class="table-link" href="marketplace-product.html"><span class="highlighted">Hineill David Cespedes Espinoza</span></a>
-                            <!-- /TABLE LINK -->
-                        </div>
-                        <!-- /TABLE COLUMN -->
-
-                        <!-- TABLE COLUMN -->
-                        <div class="table-column centered padded">
-                            <!-- TABLE TITLE -->
-                            <p class="table-title">Yape</p>
-                            <!-- /TABLE TITLE -->
-                        </div>
-                        <!-- /TABLE COLUMN -->
-
-                        <!-- TABLE COLUMN -->
-
-                        <!-- /TABLE COLUMN -->
-
-                        <!-- TABLE COLUMN -->
-                        <div class="table-column centered padded">
-                            <!-- TABLE TITLE -->
-                            <p class="table-title">S/6</p>
-                            <!-- /TABLE TITLE -->
-                        </div>
-                        <!-- /TABLE COLUMN -->
-                        <!-- /TABLE COLUMN -->
-                        <div class="table-column centered padded">
-                            <!-- TABLE TITLE -->
-                            <p class="table-title">Alumno</p>
-                            <!-- /TABLE TITLE -->
-                        </div>
-
-                        <!-- TABLE COLUMN -->
-                        <div class="table-column centered padded">
-                            <!-- TABLE TITLE -->
-                            <p class="table-title" id="showPopup_1"><span class="highlighted">pulse aquí</span></p>
-                            <!-- /TABLE TITLE -->
-                        </div>
-                        <!-- /TABLE COLUMN -->
-
-                        <!-- TABLE COLUMN -->
-                        <div class="table-column padded-left">
-                            <!-- PERCENTAGE DIFF ICON WRAP -->
-                            <div class="percentage-diff-icon-wrap negative">
-                                <!-- PERCENTAGE DIFF ICON -->
-                                <svg class="percentage-diff-icon icon-minus-small">
-                                    <use xlink:href="#svg-minus-small"></use>
-                                </svg>
-                                <!-- /PERCENTAGE DIFF ICON -->
-                            </div>
-                            <!-- /PERCENTAGE DIFF ICON WRAP -->
-                        </div>
-                        <!-- /TABLE COLUMN -->
-                    </div>
-                    <!-- /TABLE ROW -->
-
-                    <!-- TABLE ROW -->
-                    <div class="table-row micro">
-                        <!-- TABLE COLUMN -->
-                        <div class="table-column">
-                            <!-- TABLE TEXT -->
-                            <p class="table-text"><span class="light">06/10/2023</span></p>
-                            <!-- /TABLE TEXT -->
-                        </div>
-                        <!-- /TABLE COLUMN -->
-
-                        <!-- TABLE COLUMN -->
-                        <div class="table-column padded-left">
-                            <!-- TABLE LINK -->
-                            <a class="table-link" href="marketplace-product.html"><span class="highlighted">Santiago Fabricio Yong Lema</span></a>
-                            <!-- /TABLE LINK -->
-                        </div>
-                        <!-- /TABLE COLUMN -->
-
-                        <!-- TABLE COLUMN -->
-                        <div class="table-column centered padded">
-                            <!-- TABLE TITLE -->
-                            <p class="table-title">Yape</p>
-                            <!-- /TABLE TITLE -->
-                        </div>
-                        <!-- /TABLE COLUMN -->
-
-                        <!-- TABLE COLUMN -->
-                        <div class="table-column centered padded">
-                            <!-- TABLE TITLE -->
-                            <button id="openPopup">S/5</button>
-                            <!-- /TABLE TITLE -->
-                        </div>
-                        <!-- /TABLE COLUMN -->
-
-                        <div class="table-column centered padded">
-                            <!-- TABLE TITLE -->
-                            <p class="table-title">Alumno</p>
-                            <!-- /TABLE TITLE -->
-                        </div>
-                        <!-- /TABLE COLUMN -->
-
-                        <!-- TABLE COLUMN -->
-                        <div class="table-column centered padded">
-                            <!-- TABLE TITLE -->
-                            <p class="table-title"><span class="highlighted">pulse aquí</span></p>
-                            <!-- /TABLE TITLE -->
-                        </div>
-                        <!-- /TABLE COLUMN -->
-
-                        <!-- TABLE COLUMN -->
-                        <div class="table-column padded-left">
-                            <!-- PERCENTAGE DIFF ICON WRAP -->
-                            <div class="percentage-diff-icon-wrap negative">
-                                <!-- PERCENTAGE DIFF ICON -->
-                                <svg class="percentage-diff-icon icon-minus-small">
-                                    <use xlink:href="#svg-minus-small"></use>
-                                </svg>
-                                <!-- /PERCENTAGE DIFF ICON -->
-                            </div>
-                            <!-- /PERCENTAGE DIFF ICON WRAP -->
-                        </div>
-                        <!-- /TABLE COLUMN -->
-                    </div>
-                    <!-- /TABLE ROW -->
-
-                    <!-- TABLE ROW -->
-                    <div class="table-row micro">
-                        <!-- TABLE COLUMN -->
-                        <div class="table-column">
-                            <!-- TABLE TEXT -->
-                            <p class="table-text"><span class="light">09/10/2023</span></p>
-                            <!-- /TABLE TEXT -->
-                        </div>
-                        <!-- /TABLE COLUMN -->
-
-                        <!-- TABLE COLUMN -->
-                        <div class="table-column padded-left">
-                            <!-- TABLE LINK -->
-                            <a class="table-link" href="marketplace-product.html"><span class="highlighted">Mayte Teresa Asto Clemente</span></a>
-                            <!-- /TABLE LINK -->
-                        </div>
-                        <!-- /TABLE COLUMN -->
-
-                        <!-- TABLE COLUMN -->
-                        <div class="table-column centered padded">
-                            <!-- TABLE TITLE -->
-                            <p class="table-title">Yape</p>
-                            <!-- /TABLE TITLE -->
-                        </div>
-
-
-                        <!-- TABLE COLUMN -->
-                        <div class="table-column centered padded">
-                            <!-- TABLE TITLE -->
-                            <p class="table-title">S/26</p>
-                            <!-- /TABLE TITLE -->
-                        </div>
-                        <!-- /TABLE COLUMN -->
-                        <div class="table-column centered padded">
-                            <!-- TABLE TITLE -->
-                            <p class="table-title">Alumno</p>
-                            <!-- /TABLE TITLE -->
-                        </div>
-                        <!-- /TABLE COLUMN -->
-
-                        <!-- TABLE COLUMN -->
-                        <div class="table-column centered padded">
-                            <!-- TABLE TITLE -->
-                            <p class="table-title"><span class="highlighted">pulse aquí</span></p>
-                            <!-- /TABLE TITLE -->
-                        </div>
-                        <!-- /TABLE COLUMN -->
-
-                        <!-- TABLE COLUMN -->
-                        <div class="table-column padded-left">
-                            <!-- PERCENTAGE DIFF ICON WRAP -->
-                            <div class="percentage-diff-icon-wrap positive">
-                                <!-- PERCENTAGE DIFF ICON -->
-                                <svg class="percentage-diff-icon icon-plus-small">
-                                    <use xlink:href="#svg-plus-small"></use>
-                                </svg>
-                                <!-- /PERCENTAGE DIFF ICON -->
-                            </div>
-                            <!-- /PERCENTAGE DIFF ICON WRAP -->
-                        </div>
-                        <!-- /TABLE COLUMN -->
-                    </div>
-                    <!-- /TABLE ROW -->
-
-                    <!-- TABLE ROW -->
-                    <div class="table-row micro">
-                        <!-- TABLE COLUMN -->
-                        <div class="table-column">
-                            <!-- TABLE TEXT -->
-                            <p class="table-text"><span class="light">10/10/2023</span></p>
-                            <!-- /TABLE TEXT -->
-                        </div>
-                        <!-- /TABLE COLUMN -->
-
-                        <!-- TABLE COLUMN -->
-                        <div class="table-column padded-left">
-                            <!-- TABLE LINK -->
-                            <a class="table-link" href="marketplace-product.html"><span class="highlighted">Jean Piere Ipurre Saccatoma</span></a>
-                            <!-- /TABLE LINK -->
-                        </div>
-                        <!-- /TABLE COLUMN -->
-
-                        <!-- TABLE COLUMN -->
-                        <div class="table-column centered padded">
-                            <!-- TABLE TITLE -->
-                            <p class="table-title">Plin</p>
-                            <!-- /TABLE TITLE -->
-                        </div>
-
-
-                        <!-- TABLE COLUMN -->
-                        <div class="table-column centered padded">
-                            <!-- TABLE TITLE -->
-                            <p class="table-title">S/24</p>
-                            <!-- /TABLE TITLE -->
-                        </div>
-                        <!-- /TABLE COLUMN -->
-
-                        <div class="table-column centered padded">
-                            <!-- TABLE TITLE -->
-                            <p class="table-title">Alumno</p>
-                            <!-- /TABLE TITLE -->
-                        </div>
-
-                        <!-- /TABLE COLUMN -->
-
-                        <!-- TABLE COLUMN -->
-                        <div class="table-column centered padded">
-                            <!-- TABLE TITLE -->
-                            <p class="table-title"><span class="highlighted">pulse aquí</span></p>
-                            <!-- /TABLE TITLE -->
-                        </div>
-                        <!-- /TABLE COLUMN -->
-
-                        <!-- TABLE COLUMN -->
-                        <div class="table-column padded-left">
-                            <!-- PERCENTAGE DIFF ICON WRAP -->
-                            <div class="percentage-diff-icon-wrap positive">
-                                <!-- PERCENTAGE DIFF ICON -->
-                                <svg class="percentage-diff-icon icon-plus-small">
-                                    <use xlink:href="#svg-plus-small"></use>
-                                </svg>
-                                <!-- /PERCENTAGE DIFF ICON -->
-                            </div>
-                            <!-- /PERCENTAGE DIFF ICON WRAP -->
-                        </div>
-                        <!-- /TABLE COLUMN -->
-                    </div>
-                    <!-- /TABLE ROW -->
-
-                    <!-- TABLE ROW -->
-                    <div class="table-row micro">
-                        <!-- TABLE COLUMN -->
-                        <div class="table-column">
-                            <!-- TABLE TEXT -->
-                            <p class="table-text"><span class="light">10/10/2023</span></p>
-                            <!-- /TABLE TEXT -->
-                        </div>
-                        <!-- /TABLE COLUMN -->
-
-                        <!-- TABLE COLUMN -->
-                        <div class="table-column padded-left">
-                            <!-- TABLE LINK -->
-                            <a class="table-link" href="marketplace-product.html"><span class="highlighted">Gabriel Alejandro Talledo Meneses</span></a>
-                            <!-- /TABLE LINK -->
-                        </div>
-                        <!-- /TABLE COLUMN -->
-
-                        <!-- TABLE COLUMN -->
-                        <div class="table-column centered padded">
-                            <!-- TABLE TITLE -->
-                            <p class="table-title">Plin</p>
-                            <!-- /TABLE TITLE -->
-                        </div>
-                        <!-- /TABLE COLUMN -->
-
-                        <!-- TABLE COLUMN -->
-
-                        <!-- /TABLE COLUMN -->
-
-                        <!-- TABLE COLUMN -->
-                        <div class="table-column centered padded">
-                            <!-- TABLE TITLE -->
-                            <p class="table-title">S/26</p>
-                            <!-- /TABLE TITLE -->
-                        </div>
-                        <!-- /TABLE COLUMN -->
-                        <div class="table-column centered padded">
-                            <!-- TABLE TITLE -->
-                            <p class="table-title">Alumno</p>
-                            <!-- /TABLE TITLE -->
-                        </div>
-
-                        <!-- /TABLE COLUMN -->
-
-                        <!-- TABLE COLUMN -->
-                        <div class="table-column centered padded">
-                            <!-- TABLE TITLE -->
-                            <p class="table-title"><span class="highlighted">pulse aquí</span></p>
-                            <!-- /TABLE TITLE -->
-                        </div>
-                        <!-- /TABLE COLUMN -->
-
-                        <!-- TABLE COLUMN -->
-                        <div class="table-column padded-left">
-                            <!-- PERCENTAGE DIFF ICON WRAP -->
-                            <div class="percentage-diff-icon-wrap positive">
-                                <!-- PERCENTAGE DIFF ICON -->
-                                <svg class="percentage-diff-icon icon-plus-small">
-                                    <use xlink:href="#svg-plus-small"></use>
-                                </svg>
-                                <!-- /PERCENTAGE DIFF ICON -->
-                            </div>
-                            <!-- /PERCENTAGE DIFF ICON WRAP -->
-                        </div>
-                        <!-- /TABLE COLUMN -->
-                    </div>
-                    <!-- /TABLE ROW -->
-
-                    <!-- TABLE ROW -->
-                    <div class="table-row micro">
-                        <!-- TABLE COLUMN -->
-                        <div class="table-column">
-                            <!-- TABLE TEXT -->
-                            <p class="table-text"><span class="light">11/10/2023</span></p>
-                            <!-- /TABLE TEXT -->
-                        </div>
-                        <!-- /TABLE COLUMN -->
-
-                        <!-- TABLE COLUMN -->
-                        <div class="table-column padded-left">
-                            <!-- TABLE LINK -->
-                            <a class="table-link" href="marketplace-product.html"><span class="highlighted">David Alonso Escobedo Cerron</span></a>
-                            <!-- /TABLE LINK -->
-                        </div>
-                        <!-- /TABLE COLUMN -->
-
-                        <!-- TABLE COLUMN -->
-                        <div class="table-column centered padded">
-                            <!-- TABLE TITLE -->
-                            <p class="table-title">Plin</p>
-                            <!-- /TABLE TITLE -->
-                        </div>
-                        <!-- /TABLE COLUMN -->
-
-
-                        <!-- TABLE COLUMN -->
-                        <div class="table-column centered padded">
-                            <!-- TABLE TITLE -->
-                            <p class="table-title">S/12</p>
-                            <!-- /TABLE TITLE -->
-                        </div>
-                        <!-- /TABLE COLUMN -->
-                        <div class="table-column centered padded">
-                            <!-- TABLE TITLE -->
-                            <p class="table-title">Alumno</p>
-                            <!-- /TABLE TITLE -->
-                        </div>
-
-                        <!-- /TABLE COLUMN -->
-
-                        <!-- TABLE COLUMN -->
-                        <div class="table-column centered padded">
-                            <!-- TABLE TITLE -->
-                            <p class="table-title"><span class="highlighted">pulse aquí</span></p>
-                            <!-- /TABLE TITLE -->
-                        </div>
-                        <!-- /TABLE COLUMN -->
-
-                        <!-- TABLE COLUMN -->
-                        <div class="table-column padded-left">
-                            <!-- PERCENTAGE DIFF ICON WRAP -->
-                            <div class="percentage-diff-icon-wrap positive">
-                                <!-- PERCENTAGE DIFF ICON -->
-                                <svg class="percentage-diff-icon icon-plus-small">
-                                    <use xlink:href="#svg-plus-small"></use>
-                                </svg>
-                                <!-- /PERCENTAGE DIFF ICON -->
-                            </div>
-                            <!-- /PERCENTAGE DIFF ICON WRAP -->
-                        </div>
-                        <!-- /TABLE COLUMN -->
-                    </div>
-                    <!-- /TABLE ROW -->
-
-                    <!-- TABLE ROW -->
-                    <div class="table-row micro">
-                        <!-- TABLE COLUMN -->
-                        <div class="table-column">
-                            <!-- TABLE TEXT -->
-                            <p class="table-text"><span class="light">11/10/2023</span></p>
-                            <!-- /TABLE TEXT -->
-                        </div>
-                        <!-- /TABLE COLUMN -->
-
-                        <!-- TABLE COLUMN -->
-                        <div class="table-column padded-left">
-                            <!-- TABLE LINK -->
-                            <a class="table-link" href="marketplace-product.html"><span class="highlighted">Julio Renato Carrion Pardo</span></a>
-                            <!-- /TABLE LINK -->
-                        </div>
-                        <!-- /TABLE COLUMN -->
-
-                        <!-- TABLE COLUMN -->
-                        <div class="table-column centered padded">
-                            <!-- TABLE TITLE -->
-                            <p class="table-title">Yape</p>
-                            <!-- /TABLE TITLE -->
-                        </div>
-                        <!-- /TABLE COLUMN -->
-
-                        <!-- TABLE COLUMN -->
-                        <div class="table-column centered padded">
-                            <!-- TABLE TITLE -->
-                            <p class="table-title">S/60</p>
-                            <!-- /TABLE TITLE -->
-                        </div>
-                        <!-- /TABLE COLUMN -->
-
-                        <div class="table-column centered padded">
-                            <!-- TABLE TITLE -->
-                            <p class="table-title">Egresado</p>
-                            <!-- /TABLE TITLE -->
-                        </div>
-                        <!-- TABLE COLUMN -->
-
-                        <!-- /TABLE COLUMN -->
-
-                        <!-- TABLE COLUMN -->
-                        <div class="table-column centered padded">
-                            <!-- TABLE TITLE -->
-                            <p class="table-title"><span class="highlighted">pulse aquí</span></p>
-                            <!-- /TABLE TITLE -->
-                        </div>
-                        <!-- /TABLE COLUMN -->
-
-                        <!-- TABLE COLUMN -->
-                        <div class="table-column padded-left">
-                            <!-- PERCENTAGE DIFF ICON WRAP -->
-                            <div class="percentage-diff-icon-wrap negative">
-                                <!-- PERCENTAGE DIFF ICON -->
-                                <svg class="percentage-diff-icon icon-minus-small">
-                                    <use xlink:href="#svg-minus-small"></use>
-                                </svg>
-                                <!-- /PERCENTAGE DIFF ICON -->
-                            </div>
-                            <!-- /PERCENTAGE DIFF ICON WRAP -->
-                        </div>
-                        <!-- /TABLE COLUMN -->
-                    </div>
-                    <!-- /TABLE ROW -->
                 </div>
                 <!-- /TABLE BODY -->
             </div>

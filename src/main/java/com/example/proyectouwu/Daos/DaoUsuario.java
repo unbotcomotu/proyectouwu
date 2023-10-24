@@ -96,4 +96,59 @@ public class DaoUsuario {
             throw new RuntimeException(e);
         }
     }
+
+    public boolean usuarioEsDelegadoDeActividad(int idUsuario){
+        String sql = "select rol from usuario where idUsuario=?";
+        try(PreparedStatement pstmt = conn.prepareStatement(sql)){
+            pstmt.setInt(1,idUsuario);
+            try(ResultSet rs = pstmt.executeQuery()){
+                if(rs.next()){
+                    if(rs.getString(1).equals("Delegado de Actividad")){
+                        return true;
+                    }else{
+                        return false;
+                    }
+                }else{
+                    return false;
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public String obtenerDelegaturaPorId(int idUsuario){
+        String sql = "select nombre from actividad where idDelegadoDeActividad=?";
+
+        try(PreparedStatement pstmt=conn.prepareStatement(sql)){
+            pstmt.setInt(1,idUsuario);
+            try(ResultSet rs = pstmt.executeQuery()){
+                if(rs.next()){
+                    return rs.getString(1);
+                }else{
+                    return "";
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public ArrayList<String> obtenerInfoPorId(int idUsuario){
+        ArrayList<String> listaInfo = new ArrayList<>();
+        String sql = "select codigoPUCP, correo, condicion from usuario where idUsuario=?";
+        try(PreparedStatement pstmt=conn.prepareStatement(sql)){
+            pstmt.setInt(1,idUsuario);
+            try(ResultSet rs = pstmt.executeQuery()){
+                if(rs.next()){
+                    listaInfo.add(rs.getString(1));
+                    listaInfo.add(rs.getString(2));
+                    listaInfo.add(rs.getString(3));
+                }
+                return listaInfo;
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }

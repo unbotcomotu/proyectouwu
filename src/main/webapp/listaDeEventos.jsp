@@ -1,12 +1,9 @@
 <%@ page import="java.util.ArrayList" %>
 <%@ page import="com.example.proyectouwu.Beans.Actividad" %>
 <%@ page import="com.example.proyectouwu.Beans.Evento" %>
-<%@ page import="com.example.proyectouwu.Daos.DaoAlumnoPorEvento" %>
-<%@ page import="com.example.proyectouwu.Daos.DaoActividad" %>
 <%@ page import="java.time.LocalDate" %>
-<%@ page import="com.example.proyectouwu.Daos.DaoEvento" %>
 <%@ page import="com.example.proyectouwu.Beans.LugarEvento" %>
-<%@ page import="com.example.proyectouwu.Daos.DaoLugarEvento" %>
+<%@ page import="com.example.proyectouwu.Daos.*" %>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <!DOCTYPE html>
 <html lang="en">
@@ -428,7 +425,11 @@
         <!-- /USER SHORT DESCRIPTION TITLE -->
 
         <!-- USER SHORT DESCRIPTION TEXT -->
+        <% if(new DaoUsuario().usuarioEsDelegadoDeActividad(idUsuario)){ %>
+        <p class="user-short-description-text"><a style="color: <%=colorRol%>;"><%=rolUsuario + ": " + new DaoUsuario().obtenerDelegaturaPorId(idUsuario)%></a></p>
+        <%}else{%>
         <p class="user-short-description-text"><a style="color: <%=colorRol%>;"><%=rolUsuario%></a></p>
+        <%}%>
         <!-- /USER SHORT DESCRIPTION TEXT -->
     </div>
     <!-- /USER SHORT DESCRIPTION -->
@@ -578,7 +579,11 @@
             <!-- /NAVIGATION WIDGET INFO TITLE -->
 
             <!-- NAVIGATION WIDGET INFO TEXT -->
-            <p class="navigation-widget-info-text" style="color: <%=colorRol%>;"><%=rolUsuario%></p>
+            <% if(new DaoUsuario().usuarioEsDelegadoDeActividad(idUsuario)){ %>
+            <p class="navigation-widget-info-text" style="color: <%=colorRol%>"><%=rolUsuario + ": " + new DaoUsuario().obtenerDelegaturaPorId(idUsuario)%></p>
+            <%}else{%>
+            <p class="navigation-widget-info-text" style="color: <%=colorRol%>"><%=rolUsuario%></p>
+            <%}%>
             <!-- /NAVIGATION WIDGET INFO TEXT -->
         </div>
         <!-- /NAVIGATION WIDGET INFO -->
@@ -2129,8 +2134,6 @@
         <div class="columna">
             <p>© 2023 Fibra tóxica</p>
             <ul class="lista">
-                <li><a>Política de Privacidad</a></li>
-                <li><a>Términos y Condiciones</a></li>
                 <li><a>Siguenos en: </a> <i class="fab fa-facebook"></i> <i class="fab fa-instagram"></i> <i class="fab fa-youtube"></i></li>
             </ul>
         </div>
@@ -2191,7 +2194,7 @@
             <div class="col-sm-5 contenedor2" style="top: 140px">
                 <div class="container-fluid btn btn-file1">
                     <img class="img-fluid" src="css/subirArchivo.jpg" style="opacity: 50%;" alt="">
-                    <p><b>Foto principal del evento</b></p>
+                    <p style="margin-top: 10px"><b>Agregar foto miniatura</b></p>
                     <input type="file" style="background-color: white; margin-top: 25px;" accept="image/png, .jpeg, .jpg"></input>
                 </div>
             </div>
@@ -2315,8 +2318,8 @@
             </div>
             <div class="col-sm-5 contenedor2" style="top: 140px">
                 <div class="container-fluid btn btn-file1">
-                    <img class="img-fluid" src="css/subirArchivo.jpg" style="opacity: 50%;" alt="">
-                    <p><b>Foto principal del evento</b></p>
+                    <img class="img-fluid" src="css/fibraVShormigon.png" alt="">
+                    <p style="margin-top: 10px"><b>Editar foto miniatura</b></p>
                     <input type="file" style="background-color: white; margin-top: 25px;" accept="image/png, .jpeg, .jpg"></input>
                 </div>
             </div>
@@ -2326,7 +2329,7 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-sm-6" style="margin-top: 5px;">
-                <button type="submit" class="button secondary" id="cerrarPopupEditar1Evento<%=listaEventos.indexOf(e)%>">Crear</button>
+                <button type="submit" class="button secondary" id="cerrarPopupEditar1Evento<%=listaEventos.indexOf(e)%>">Editar</button>
             </div>
             <div class="col-sm-6" style="margin-top: 5px;">
                 <button class="button secondary" id="cerrarPopupEditar2Evento<%=listaEventos.indexOf(e)%>" style="background-color: grey;">Cancelar</button>

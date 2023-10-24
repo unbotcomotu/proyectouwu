@@ -1,7 +1,8 @@
 <%@ page import="com.example.proyectouwu.Beans.AlumnoPorEvento" %>
 <%@ page import="com.example.proyectouwu.Beans.Usuario" %>
 <%@ page import="com.example.proyectouwu.Daos.DaoUsuario" %>
-<%@ page import="java.util.ArrayList" %><%--
+<%@ page import="java.util.ArrayList" %>
+<%@ page import="com.example.proyectouwu.Daos.DaoNotificacionDelegadoGeneral" %><%--
   Created by IntelliJ IDEA.
   User: Santiago
   Date: 24/10/2023
@@ -902,13 +903,14 @@
                         <!-- /USER AVATAR PROGRESS BORDER -->
                     </div>
                     <!-- /USER SHORT DESCRIPTION AVATAR -->
+                    <%DaoUsuario usuarioOWO = new DaoUsuario();%>
 
                     <!-- USER SHORT DESCRIPTION TITLE -->
-                    <p class="user-short-description-title" style="color: rgb(22, 143, 143);">Alex David Segovia Ancajima</p>
+                    <p class="user-short-description-title" style="color: rgb(22, 143, 143);"> <%= usuarioOWO.nombreCompletoUsuarioPorId(alumnoPorEvento.getIdAlumno())%> </p>
                     <!-- /USER SHORT DESCRIPTION TITLE -->
 
                     <!-- USER SHORT DESCRIPTION TEXT -->
-                    <p class="user-short-description-text" style="text-transform: lowercase;">a20213849@pucp.edu.pe</p>
+                    <p class="user-short-description-text" style="text-transform: lowercase;"> <%= usuarioOWO.correoUsuarioPorId(alumnoPorEvento.getIdAlumno())%>  </p>
                     <!-- /USER SHORT DESCRIPTION TEXT -->
                 </div>
                 <!-- /USER SHORT DESCRIPTION -->
@@ -924,13 +926,13 @@
 
                                 <div class="col-sm-6 px-5" style="text-align: center;">
 
-                                    <p style="font-family: 'Rajdhani', sans-serif; text-transform: uppercase; font-weight: 700; font-size: 0.875rem;" >Código: 20213849</p>
+                                    <p style="font-family: 'Rajdhani', sans-serif; text-transform: uppercase; font-weight: 700; font-size: 0.875rem;" >Código: <%= usuarioOWO.codigoUsuarioPorId(alumnoPorEvento.getIdAlumno())%> </p>
 
                                 </div>
 
                                 <div class="col-sm-6 px-5" style="text-align: center;">
 
-                                    <p style="font-family: 'Rajdhani', sans-serif; text-transform: uppercase; font-weight: 700; font-size: 0.875rem;" >Condición: Estudiante</p>
+                                    <p style="font-family: 'Rajdhani', sans-serif; text-transform: uppercase; font-weight: 700; font-size: 0.875rem;" >Condición: <%= usuarioOWO.condicionUsuarioPorId(alumnoPorEvento.getIdAlumno())%> </p>
 
                                 </div>
                             </div>

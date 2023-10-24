@@ -5,7 +5,6 @@ import com.example.proyectouwu.Beans.Donacion;
 import com.example.proyectouwu.Beans.Reporte;
 import com.example.proyectouwu.Beans.Usuario;
 import com.example.proyectouwu.Daos.DaoNotificacionDelegadoGeneral;
-import com.example.proyectouwu.Daos.DaoNotificacionesDeleActividad;
 import com.example.proyectouwu.Daos.DaoUsuario;
 import jakarta.servlet.*;
 import jakarta.servlet.http.*;
@@ -45,7 +44,7 @@ public class NotificacionesServlet extends HttpServlet {
                     request.getRequestDispatcher("notificacionesDelGeneral.jsp").forward(request,response);
                 }else if (rolUsuario.equals("Delegado de Actividad")){
 
-                        DaoNotificacionesDeleActividad daoNotificacionesDeleActividad = new DaoNotificacionesDeleActividad();
+                        DaoNotificacionDelegadoGeneral daoNotificacionesDeleActividad = new DaoNotificacionDelegadoGeneral();
                         ArrayList<AlumnoPorEvento> listaSolicitudesApoyo = daoNotificacionesDeleActividad.listarSolicitudesDeApoyo();
 
                         request.setAttribute("listaSolicitudesApoyo",listaSolicitudesApoyo);

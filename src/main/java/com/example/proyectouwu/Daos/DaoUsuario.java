@@ -198,4 +198,20 @@ public class DaoUsuario {
             throw new RuntimeException(e);
         }
     }
+
+    public String obtenerDescripcionPorId(int idUsuario){
+        String descripcion="";
+        String sql = "select descripcionPerfil from usuario where idUsuario=?";
+        try(PreparedStatement pstmt=conn.prepareStatement(sql)){
+            pstmt.setInt(1,idUsuario);
+            try(ResultSet rs = pstmt.executeQuery()){
+                if(rs.next()){
+                    descripcion = rs.getString(1);
+                }
+                return descripcion;
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }

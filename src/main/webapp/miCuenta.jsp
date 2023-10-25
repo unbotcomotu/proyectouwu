@@ -52,7 +52,53 @@
             overflow: hidden;
         }
 
+        .overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            z-index: 10000;
+        }
+
+        /* Estilo para el contenido del popup */
+        .popup {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            border-radius: 12px;
+            transform: translate(-50%, -50%);
+            background-color: white;
+            padding: 20px;
+            z-index: 10001;
+        }
+        /* Estilo para el botón de cerrar */
+        .cerrarPopup {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            cursor: pointer;
+        }
+
         .btn-file1 input[type="file"] {
+            position: absolute;
+            top: 0;
+            right: 0;
+            min-width: 100%;
+            min-height: 100%;
+            font-size: 100px;
+            filter: alpha(opacity=0);
+            opacity: 0;
+            outline: none;
+            background: white;
+            cursor: inherit;
+            display: block;
+        }
+
+        .btn-file1 input[type="button"] {
             position: absolute;
             top: 0;
             right: 0;
@@ -249,7 +295,6 @@
                 <!-- /MENU ITEM LINK ICON -->
             </a>
             <!-- /MENU ITEM LINK -->
-        </li>
         <%if(rolUsuario.equals("Delegado General")){%>
         <li class="menu-item <%if(vistaActual.equals("analiticas")){%>active<%}%>">
             <!-- MENU ITEM LINK -->
@@ -278,8 +323,7 @@
                 <img src="css/misEventosIcono.png" class="menu-item-link-icon icon-members" alt="">
                 <!-- /MENU ITEM LINK ICON -->
             </a>
-            <!-- /MENU ITEM LINK -->
-        </li>
+
         <li class="menu-item <%if(vistaActual.equals("misDonaciones")){%>active"<%}%>">
             <!-- MENU ITEM LINK -->
             <a class="menu-item-link text-tooltip-tfr" href="<%=request.getContextPath()%>/MisDonacionesServlet?idUsuario=<%=idUsuario%>" data-title="Donaciones">
@@ -288,7 +332,6 @@
                 <!-- /MENU ITEM LINK ICON -->
             </a>
             <!-- /MENU ITEM LINK -->
-        </li>
         <%}%>
     </ul>
     <!-- /MENU -->
@@ -1388,6 +1431,9 @@
                 <div class="container-fluid button secondary btn-file1 mx-2 botones">
                     <input type="file" accept="image/png, .jpeg, .jpg">Cambiar foto</input>
                 </div>
+                <div class="container-fluid button secondary btn-file1 mx-2 botones">
+                    <input type="button" id="botonDescripcion">Descripción</input>
+                </div>
                 <%if(!rolUsuario.equals("Delegado General")){%>
                 <div class="container-fluid button secondary btn-file1 mx-2 botones">
                     <input type="file" accept="image/png, .jpeg, .jpg">Subir seguro PUCP</input>
@@ -1403,13 +1449,19 @@
 
     <div class="container-fluid my-4" style="border-radius: 12px; background-color: #fff; box-shadow: 0 0 40px 0 rgba(94, 92, 154, 0.06);">
         <div class="row d-flex justify-content-center">
-            <div class="col-sm-4 d-flex align-items-center justify-content-center py-4 columnas" style="font-family: 'Rajdhani',sans-serif; font-size: 110%;"><img src="css/codigo.png" style="width: 20%; margin-right: 15px;"><p style="text-align: left;"><b><%=listaInfo.get(0)%></b></p></div>
-            <div class="col-sm-4 d-flex align-items-center justify-content-center py-4 columnas" style="font-family: 'Rajdhani',sans-serif; font-size: 110%;"><img src="css/correo.png" style="width: 20%; margin-right: 15px;"><p style="text-align: center;"><b><%=listaInfo.get(1)%></b></p></div>
+            <div class="col-sm-4 d-flex align-items-center justify-content-center py-4 columnas" style="font-family: 'Rajdhani',sans-serif; font-size: 110%;"><img src="css/codigo.png" style="width: 20%; margin-right: 15px;" alt=""><p style="text-align: left;"><b><%=listaInfo.get(0)%></b></p></div>
+            <div class="col-sm-4 d-flex align-items-center justify-content-center py-4 columnas" style="font-family: 'Rajdhani',sans-serif; font-size: 110%;"><img src="css/correo.png" style="width: 20%; margin-right: 15px;" alt=""><p style="text-align: center;"><b><%=listaInfo.get(1)%></b></p></div>
             <%if(listaInfo.get(2).equals("Estudiante")){%>
-            <div class="col-sm-4 d-flex align-items-center justify-content-center py-4 columnas" style="font-family: 'Rajdhani',sans-serif; font-size: 110%;"><img src="css/estudiante.png" style="width: 20%; margin-right: 15px;"><p style="text-align: right;"><b><%=listaInfo.get(2)%></b></p></div>
+            <div class="col-sm-4 d-flex align-items-center justify-content-center py-4 columnas" style="font-family: 'Rajdhani',sans-serif; font-size: 110%;"><img src="css/estudiante.png" style="width: 20%; margin-right: 15px;" alt=""><p style="text-align: right;"><b><%=listaInfo.get(2)%></b></p></div>
             <%}else{%>
-            <div class="col-sm-4 d-flex align-items-center justify-content-center py-4 columnas" style="font-family: 'Rajdhani',sans-serif; font-size: 110%;"><img src="css/egresado.png" style="width: 20%; margin-right: 15px;"><p style="text-align: right;"><b><%=listaInfo.get(2)%></b></p></div>
+            <div class="col-sm-4 d-flex align-items-center justify-content-center py-4 columnas" style="font-family: 'Rajdhani',sans-serif; font-size: 110%;"><img src="css/egresado.png" style="width: 20%; margin-right: 15px;" alt=""><p style="text-align: right;"><b><%=listaInfo.get(2)%></b></p></div>
             <%}%>
+        </div>
+    </div>
+
+    <div class="container-fluid my-4" style="border-radius: 12px; background-color: #fff; box-shadow: 0 0 40px 0 rgba(94, 92, 154, 0.06);">
+        <div class="row d-flex justify-content-center">
+            <div class="col-sm-4 d-flex align-items-center justify-content-center py-4 columnas" style="font-family: 'Rajdhani',sans-serif; font-size: 110%;"><p style="text-align: left;"><b><%=new DaoUsuario().obtenerDescripcionPorId(idUsuario)%></b></p></div>
         </div>
     </div>
 
@@ -1442,6 +1494,72 @@
         </div>
     </div>
 </footer>
+
+<div class="overlay" id="overlayDescripcion"></div>
+<div class="popup" style="width: 700px;" id="popupDescripcion">
+    <svg class="cerrarPopup" id="cerrarPopupDescripcion" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M11.4142 10L16.7071 4.70711C17.0976 4.31658 17.0976 3.68342 16.7071 3.29289C16.3166 2.90237 15.6834 2.90237 15.2929 3.29289L10 8.58579L4.70711 3.29289C4.31658 2.90237 3.68342 2.90237 3.29289 3.29289C2.90237 3.68342 2.90237 4.31658 3.29289 4.70711L8.58579 10L3.29289 15.2929C2.90237 15.6834 2.90237 16.3166 3.29289 16.7071C3.68342 17.0976 4.31658 17.0976 4.70711 16.7071L10 11.4142L15.2929 16.7071C15.6834 17.0976 16.3166 17.0976 16.7071 16.7071C17.0976 16.3166 17.0976 15.6834 16.7071 15.2929L11.4142 10Z" fill="black"/>
+    </svg>
+    <div class="container-fluid">
+
+        <div class="row"><div class="col"><h5 style="text-align: center;">Editar descripción:</h5></div></div>
+        <div class="row">
+            <div class="col-sm-12">
+                <br>
+                <label for="descripcionPerfil" style="margin-top: 25px;"><b>Descripción:</b></label>
+                <input type="text" id="descripcionPerfil" placeholder="Descripcion" required value="<%=new DaoUsuario().obtenerDescripcionPorId(idUsuario)%>">
+            </div>
+        </div>
+    </div>
+    <br>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-6" style="margin-top: 5px;">
+                <button type="submit" class="button secondary" id="botonEditar">Editar</button>
+            </div>
+            <div class="col-sm-6" style="margin-top: 5px;">
+                <button class="button secondary" id="botonCerrar" style="background-color: grey;">Cancelar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function popupFunc(popupId,abrirId,cerrarClass,overlayId){
+        const showPopup=document.getElementById(abrirId);
+        const overlay=document.getElementById(overlayId);
+        const popup=document.getElementById(popupId);
+        const mostrarPopup = () => {
+            overlay.style.display = 'block';
+            popup.style.display = 'block';
+            // Desactivar el scroll
+            document.body.style.overflow = 'hidden';
+        };
+        showPopup.addEventListener('click', mostrarPopup);
+        const cerrarPopup = () => {
+            overlay.style.display = 'none';
+            popup.style.display = 'none';
+            document.body.style.overflow = 'auto';
+
+        };
+        for(let i=0;i<cerrarClass.length;i++){
+            document.getElementById(cerrarClass[i]).addEventListener('click', cerrarPopup);
+        }
+
+        overlay.addEventListener('click', (e) => {
+            if (e.target === overlay) {
+                cerrarPopup();
+            }
+        });
+
+        document.addEventListener('keydown', (event) => {
+            if (event.key === 'Escape') {
+                cerrarPopup();
+            }
+        });}
+    popupFunc('popupDescripcion','botonDescripcion',['cerrarPopupDescripcion','botonEditar','botonCerrar'],'overlayDescripcion');
+</script>
+
 <!-- app -->
 <script src="js/utils/app.js"></script>
 <!-- page loader -->

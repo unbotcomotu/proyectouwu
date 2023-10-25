@@ -135,7 +135,7 @@ public class DaoNotificacionDelegadoGeneral {
         String username = "root";
         String password = "root"; //Cambiar segun tu contraseña
 
-        String sql = "select idAlumno from AlumnoPorEvento where estadoApoyo = 'En espera'";
+        String sql = "select idAlumno from alumnoporevento where estadoApoyo = 'En espera'";
 
 
         try (Connection conn = DriverManager.getConnection(url, username, password);

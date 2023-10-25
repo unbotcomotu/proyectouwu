@@ -2093,10 +2093,6 @@
                     <%}%>
                     <!-- /NOTIFICATION BOX -->
 
-
-                    <!-- NOTIFICATION BOX -->
-
-                    <!-- /NOTIFICATION BOX -->
                 </div>
                 <!-- /NOTIFICATION BOX LIST -->
 

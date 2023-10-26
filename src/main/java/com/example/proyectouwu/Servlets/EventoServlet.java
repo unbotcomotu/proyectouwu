@@ -31,7 +31,7 @@ public class EventoServlet extends HttpServlet {
         request.setAttribute("lugar",dEvento.lugarPorEventoID(idEvento));
         request.setAttribute("delegadoDeEstaActividadID",dEvento.idDelegadoDeActividadPorEvento(idEvento));
         request.setAttribute("cantidadApoyos",dEvento.cantidadApoyosBarraEquipoPorEvento(idEvento));
-        request.setAttribute("solicitudesApoyoPendientes",dEvento.solicitudesSinAtenderPorEvento(idUsuario));
+        request.setAttribute("solicitudesApoyoPendientes",dEvento.solicitudesSinAtenderPorEvento(idEvento));
         String action = request.getParameter("action") == null ? "default" : request.getParameter("action");
         switch (action){
             case "default":

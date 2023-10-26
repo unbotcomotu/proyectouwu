@@ -17,9 +17,9 @@
                     <div class="row">
                         <div class="col-md-9 mx-auto">
                             <h1 class="login-heading mb-5" style="font-size: 150%">Bienvenido a la Semana de Ingeniería</h1>
-                            <div class="text-center my-4"><a class="btn btn-primary" href="ListaDeActividadesServlet?idUsuario=6">Vista de Usuario</a></div>
-                            <div class="text-center my-4"><a class="btn btn-primary" href="ListaDeActividadesServlet?idUsuario=4">Vista de Delegado de Actividad</a></div>
-                            <div class="text-center my-4"><a class="btn btn-primary" href="ListaDeActividadesServlet?idUsuario=3">Vista de Delegado General</a></div>
+                            <div class="text-center my-4"><a class="btn btn-primary" href="ListaDeActividadesServlet?idUsuario=17">Vista de Usuario</a></div>
+                            <div class="text-center my-4"><a class="btn btn-primary" href="ListaDeActividadesServlet?idUsuario=5">Vista de Delegado de Actividad</a></div>
+                            <div class="text-center my-4"><a class="btn btn-primary" href="ListaDeActividadesServlet?idUsuario=1">Vista de Delegado General</a></div>
                             <footer class="my-1 pt-4 text-muted text-center text-small" style="font-size: 70%;">
                                 <p>&copy; 2023 Fibra Tóxica</p>
                             </footer>

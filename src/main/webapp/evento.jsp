@@ -1783,7 +1783,23 @@
                     });
                 </script>
                 <!-- /STREAM BOX VIDEO -->
+                <%if(e.isEventoFinalizado()){%>
+                <!-- STREAM BOX INFO -->
+                <div class="stream-box-info">
 
+                    <!-- STREAM BOX TITLE -->
+                    <p class="stream-box-title" >"<%=e.getResultadoEvento()%>"</p>
+                    <!-- /STREAM BOX TITLE -->
+                    <!-- STREAM BOX CATEGORY -->
+                    <p class="stream-box-category mt-3"><%=e.getResumen()%></p>
+                    <!-- /STREAM BOX CATEGORY -->
+
+                    <!-- STREAM BOX VIEWS -->
+                    <p class="stream-box-views">¡No falten!</p>
+                    <!-- /STREAM BOX VIEWS -->
+                </div>
+                <!-- /STREAM BOX INFO -->
+                <%}else{%>
                 <!-- STREAM BOX INFO -->
                 <div class="stream-box-info">
 
@@ -1799,6 +1815,7 @@
                     <!-- /STREAM BOX VIEWS -->
                 </div>
                 <!-- /STREAM BOX INFO -->
+                <%}%>
             </div>
             <!-- /STREAM BOX -->
 

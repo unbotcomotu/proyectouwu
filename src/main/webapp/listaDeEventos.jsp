@@ -1824,6 +1824,7 @@
             <!-- GRID -->
             <div class="grid grid-3-3-3 centered">
                 <%if(listaEventos!=null){%>
+                <%if(listaEventos!=null){%>
                 <%for(Evento e:listaEventos){%>
                 <!-- PRODUCT PREVIEW -->
                 <%if(delegadoDeEstaActividadID==idUsuario||rolUsuario.equals("Delegado General")){%>
@@ -2026,7 +2027,7 @@
                     <!-- /PRODUCT PREVIEW INFO -->
                 </div>
                 <!-- PRODUCT PREVIEW -->
-                <%}}}%>
+                <%}}}}%>
             </div>
             <!-- /GRID -->
 

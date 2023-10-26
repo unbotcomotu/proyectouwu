@@ -12,7 +12,7 @@ public class DaoBan {
 
         String sql = "select * from ban where idUsuario=?";
 
-        try(Connection conn=DriverManager.getConnection("jdbc:mysql://localhost:3306/proyecto","root","root");
+        try(Connection conn=DriverManager.getConnection("jdbc:mysql://localhost:3306/proyecto","root","123456");
             PreparedStatement pstmt=conn.prepareStatement(sql)){
             pstmt.setInt(1,idUsuario);
             try(ResultSet rs = pstmt.executeQuery()){
@@ -36,7 +36,7 @@ public class DaoBan {
 
         String sql = "select motivoBan from ban where idUsuario=?";
 
-        try(Connection conn=DriverManager.getConnection("jdbc:mysql://localhost:3306/proyecto","root","root");
+        try(Connection conn=DriverManager.getConnection("jdbc:mysql://localhost:3306/proyecto","root","123456");
             PreparedStatement pstmt=conn.prepareStatement(sql)){
             pstmt.setInt(1,idUsuario);
             try(ResultSet rs = pstmt.executeQuery()){

@@ -27,7 +27,7 @@ public class DaoNotificacionDelegadoGeneral {
 
         String url = "jdbc:mysql://localhost:3306/proyecto";
         String username = "root";
-        String password = "root"; //Cambiar segun tu contraseña
+        String password = "123456"; //Cambiar segun tu contraseña
 
         String sql = "select nombre, apellido, correo, codigoPUCP, condicion  from Usuario where estadoRegistro = 'Pendiente'";
 
@@ -63,7 +63,7 @@ public class DaoNotificacionDelegadoGeneral {
 
         String url = "jdbc:mysql://localhost:3306/proyecto";
         String username = "root";
-        String password = "root";
+        String password = "123456";
 
         String sql = "SELECT idUsuarioReportado, idUsuarioQueReporta, motivoReporte,fechaHora FROM reporte";
         try (Connection conn = DriverManager.getConnection(url, username, password);
@@ -98,7 +98,7 @@ public class DaoNotificacionDelegadoGeneral {
 
         String url = "jdbc:mysql://localhost:3306/proyecto";
         String username = "root";
-        String password = "root";
+        String password = "123456";
 
         String sql = "SELECT idUsuario, medioPago, monto,fechaHora,estadoDonacion FROM donacion";
         try (Connection conn = DriverManager.getConnection(url, username, password);
@@ -133,7 +133,7 @@ public class DaoNotificacionDelegadoGeneral {
 
         String url = "jdbc:mysql://localhost:3306/proyecto";
         String username = "root";
-        String password = "root"; //Cambiar segun tu contraseña
+        String password = "123456"; //Cambiar segun tu contraseña
 
         String sql = "select idAlumno from alumnoporevento where estadoApoyo = 'En espera'";
 
@@ -166,7 +166,7 @@ public class DaoNotificacionDelegadoGeneral {
 
         String url = "jdbc:mysql://localhost:3306/proyecto";
         String username = "root";
-        String password = "root";
+        String password = "123456";
 
         String sql = "SELECT fechaHora FROM donacion";
         try (Connection conn = DriverManager.getConnection(url, username, password);

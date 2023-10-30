@@ -1331,18 +1331,20 @@
         <!-- SECTION FILTERS BAR ACTIONS -->
         <div class="section-filters-bar-actions">
             <!-- FORM -->
-            <form class="form">
+            <form method="post" action="<%=request.getContextPath()%>/ListaDeActividadesServlet?action=buscarActividad" class="form">
+                <input type="hidden" name="idUsuario" value="<%=idUsuario%>">
                 <!-- FORM ITEM -->
                 <div class="form-item split">
                     <!-- FORM INPUT -->
+                    <%String actividad=(String) request.getAttribute("actividad");%>
                     <div class="form-input small">
                         <label for="items-search">Buscar actividad</label>
-                        <input type="text" id="items-search" name="items_search">
+                        <input type="text" id="items-search" name="actividad" <%if(actividad!=null){%> value="<%=actividad%>"<%}%>>
                     </div>
                     <!-- /FORM INPUT -->
 
                     <!-- BUTTON -->
-                    <button class="button primary">
+                    <button type="submit" class="button primary">
                         <!-- ICON MAGNIFYING GLASS -->
                         <svg class="icon-magnifying-glass">
                             <use xlink:href="#svg-magnifying-glass"></use>
@@ -1360,22 +1362,24 @@
         <!-- SECTION FILTERS BAR ACTIONS -->
         <div class="section-filters-bar-actions">
             <!-- FORM -->
-            <form class="form">
+            <form method="post" action="<%=request.getContextPath()%>/ListaDeActividadesServlet?action=filtroActividad" class="form">
+                <input type="hidden" name="idUsuario" value="<%=idUsuario%>">
                 <!-- FORM ITEM -->
                 <div class="form-item split medium">
+                    <%Integer idFiltroActividades=(Integer) request.getAttribute("idFiltroActividades");%>
                     <!-- FORM SELECT -->
                     <div class="form-select small">
                         <label for="items-filter-category">Ordenar por</label>
-                        <select id="items-filter-category" name="items_filter_category">
-                            <option value="0">Orden alfabético</option>
-                            <option value="1">Cantidad de eventos</option>
-                            <option value="2">Cantidad de puntos por primer lugar</option>
-                            <option value="3">Finalizados primero</option>
+                        <select id="items-filter-category" name="idFiltroActividades">
+                            <option value="0" <%if(idFiltroActividades!=null && idFiltroActividades==0){%>selected<%}%>>Orden alfabético</option>
+                            <option value="1" <%if(idFiltroActividades!=null && idFiltroActividades==1){%>selected<%}%>>Cantidad de eventos</option>
+                            <option value="2" <%if(idFiltroActividades!=null && idFiltroActividades==2){%>selected<%}%>>Cantidad de puntos por primer lugar</option>
+                            <option value="3" <%if(idFiltroActividades!=null && idFiltroActividades==3){%>selected<%}%>>Finalizados primero</option>
                             <%if(rolUsuario.equals("Delegado General")){%>
-                            <option value="4">Ocultos primero</option>
+                            <option value="4" <%if(idFiltroActividades!=null && idFiltroActividades==4){%>selected<%}%>>Ocultos primero</option>
                             <%}%>
                             <%if(rolUsuario.equals("Delegado de Actividad")){%>
-                            <option value="4">Mi delegatura primero</option>
+                            <option value="5" <%if(idFiltroActividades!=null && idFiltroActividades==5){%>selected<%}%>>Mi delegatura primero</option>
                             <%}%>
                         </select>
                         <!-- FORM SELECT ICON -->
@@ -1385,13 +1389,13 @@
                         <!-- /FORM SELECT ICON -->
                     </div>
                     <!-- /FORM SELECT -->
-
+                    <%Integer idOrdenarActividades=(Integer)request.getAttribute("idOrdenarActividades");%>
                     <!-- FORM SELECT -->
                     <div class="form-select small">
                         <label for="items-filter-order">Sentido</label>
-                        <select id="items-filter-order" name="items_filter_order">
-                            <option value="0">De mayor a menor</option>
-                            <option value="1">De menor a mayor</option>
+                        <select id="items-filter-order" name="idOrdenarActividades">
+                            <option value="0" <%if(idOrdenarActividades!=null){if(idOrdenarActividades==0){%>selected<%}}%>>De mayor a menor</option>
+                            <option value="1" <%if(idOrdenarActividades!=null){if(idOrdenarActividades==1){%>selected<%}}%>>De menor a mayor</option>
                         </select>
                         <!-- FORM SELECT ICON -->
                         <svg class="form-select-icon icon-small-arrow">
@@ -1402,7 +1406,7 @@
                     <!-- /FORM SELECT -->
 
                     <!-- BUTTON -->
-                    <button class="button secondary">Aplicar ajustes</button>
+                    <button type="submit" class="button secondary">Aplicar ajustes</button>
                     <!-- /BUTTON -->
                 </div>
                 <!-- /FORM ITEM -->
@@ -1457,12 +1461,13 @@
             <%}%>
             <!-- PRODUCT CATEGORY BOX TAG -->
             <%String cantEventos=new DaoActividad().cantidadEventosPorActividad(a.getIdActividad());%>
-            <%if(cantEventos.equals("1")){%>
+            <%if(cantEventos!=null){
+                if(cantEventos.equals("1")){%>
             <p class="product-category-box-tag" style="color: <%=color1%>;">1 evento</p>
             <!-- /PRODUCT CATEGORY BOX TAG -->
             <%}else{%>
             <p class="product-category-box-tag" style="color: <%=color1%>;"><%=cantEventos%> eventos</p>
-            <%}if(rolUsuario.equals("Delegado General")){%>
+            <%}}if(rolUsuario.equals("Delegado General")){%>
             <p class="product-category-box-tag"><button id="mostrarPopupEditarActividad<%=listaActividades.indexOf(a)%>" style="color: <%=color1%>;font-size: 100%;z-index: 1000">EDITAR</button></p>
             <script>
                 document.addEventListener("DOMContentLoaded", function() {

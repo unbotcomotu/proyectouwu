@@ -4,6 +4,7 @@ import java.sql.Time;
 import java.sql.Date;
 
 public class MensajeChat {
+    //ATRIBUTOS
     private int idMensajeChat;
     private int idUsuario;
     private int idEvento;
@@ -11,6 +12,7 @@ public class MensajeChat {
     private Date fecha;
     private Time hora;
 
+    //GETTERS AND SETTERS
     public int getIdMensajeChat() {
         return idMensajeChat;
     }

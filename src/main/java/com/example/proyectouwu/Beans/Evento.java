@@ -6,9 +6,9 @@ import java.sql.Time;
 import java.util.ArrayList;
 
 public class Evento {
+    //ATRIBUTOS
     private int idEvento;
     private int idActividad;
-
     private int lugarEvento;
     private String titulo;
     private Date fecha;
@@ -22,6 +22,8 @@ public class Evento {
     private String resultadoEvento;
     private String resumen;
 
+
+    //GETTERS AND SETTERS
     public int getIdEvento() {
         return idEvento;
     }

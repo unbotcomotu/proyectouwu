@@ -2,7 +2,7 @@ package com.example.proyectouwu.Daos;
 
 import java.sql.*;
 
-public class DaoBan {
+public class DaoBan extends DaoPadre {
     public boolean usuarioBaneadoPorId(int idUsuario){
         try{
             Class.forName("com.mysql.cj.jdbc.Driver");
@@ -12,7 +12,7 @@ public class DaoBan {
 
         String sql = "select * from ban where idUsuario=?";
 
-        try(Connection conn=DriverManager.getConnection("jdbc:mysql://localhost:3306/proyecto","root","123456");
+        try(Connection conn=DriverManager.getConnection("jdbc:mysql://localhost:3306/proyecto",super.getUser(),super.getPassword());
             PreparedStatement pstmt=conn.prepareStatement(sql)){
             pstmt.setInt(1,idUsuario);
             try(ResultSet rs = pstmt.executeQuery()){

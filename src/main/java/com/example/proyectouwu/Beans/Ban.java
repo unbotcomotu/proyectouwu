@@ -4,12 +4,15 @@ import java.sql.Time;
 import java.sql.Date;
 
 public class Ban {
+    //Atributos
     private int idBan;
     private int idUsuario;
     private String motivoBan;
     private Date fecha;
     private Time hora;
 
+
+    //Getters and setters
     public int getIdBan() {
         return idBan;
     }

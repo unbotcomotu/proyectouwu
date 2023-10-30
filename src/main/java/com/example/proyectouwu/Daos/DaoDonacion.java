@@ -7,12 +7,12 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
-public class DaoDonacion {
+public class DaoDonacion extends DaoPadre  {
     private Connection conn;
     {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
-            conn= DriverManager.getConnection("jdbc:mysql://localhost:3306/proyecto","root","123456");
+            conn= DriverManager.getConnection("jdbc:mysql://localhost:3306/proyecto",super.getUser(),super.getPassword());
         } catch (ClassNotFoundException | SQLException e) {
             throw new RuntimeException(e);
         }

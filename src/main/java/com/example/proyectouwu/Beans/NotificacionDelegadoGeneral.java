@@ -4,6 +4,7 @@ import java.sql.*;
 import java.util.ArrayList;
 
 public class NotificacionDelegadoGeneral {
+    //ATRIBUTOS
     private int idNotificacion;
     private Date fechaNotificacion;
     private Time horaNotificacion;
@@ -11,6 +12,7 @@ public class NotificacionDelegadoGeneral {
     private int idDonacion;
     private int idUsuario;
 
+    //GETTERS AND SETTERS
     public int getIdNotificacion() {
         return idNotificacion;
     }

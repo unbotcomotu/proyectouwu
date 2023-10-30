@@ -5,6 +5,7 @@ import java.sql.Date;
 import java.sql.Time;
 
 public class Donacion {
+    //ATRIBUTOS
     private int idDonacion;
     private int idUsuario;
     private String medioPago;
@@ -16,6 +17,7 @@ public class Donacion {
     private Time horaValidacion;
     private String estadoDonacion = "En espera";
 
+    //GETTERS AND SETTERS
     public int getIdDonacion() {
         return idDonacion;
     }

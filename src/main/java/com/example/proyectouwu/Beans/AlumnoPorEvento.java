@@ -4,6 +4,8 @@ import java.sql.Time;
 import java.sql.Date;
 
 public class AlumnoPorEvento {
+
+    //Atributos
     private int idAlumnoPorEvento;
     private int idAlumno;
     private int idEvento;
@@ -11,6 +13,11 @@ public class AlumnoPorEvento {
     private java.sql.Date fechaSolicitud;
     private Time horaSolicitud;
 
+    //Metodos otros
+
+
+
+    //Getters and setters
     public int getIdAlumnoPorEvento() {
         return idAlumnoPorEvento;
     }

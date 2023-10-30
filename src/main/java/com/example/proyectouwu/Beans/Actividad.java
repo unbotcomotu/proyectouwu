@@ -4,6 +4,7 @@ import java.sql.Blob;
 import java.util.ArrayList;
 
 public class Actividad {
+    //Atributos
     private int idActividad;
     private int idDelegadoDeActividad;
     private String nombre;
@@ -13,6 +14,10 @@ public class Actividad {
     private boolean actividadFinalizada = false;
     private boolean actividadOculta;
 
+    //Metodos otros
+
+
+    //Getters and setters
     public int getIdActividad() {
         return idActividad;
     }

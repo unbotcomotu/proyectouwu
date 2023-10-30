@@ -7,12 +7,12 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.logging.StreamHandler;
 
-public class DaoUsuario {
+public class DaoUsuario extends DaoPadre {
     private Connection conn;
     {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
-            conn= DriverManager.getConnection("jdbc:mysql://localhost:3306/proyecto","root","123456");
+            conn= DriverManager.getConnection("jdbc:mysql://localhost:3306/proyecto",super.getUser(),super.getPassword());
         } catch (ClassNotFoundException | SQLException e) {
             throw new RuntimeException(e);
         }

@@ -4,6 +4,7 @@ import java.sql.Time;
 import java.sql.Date;
 
 public class Reporte {
+    //ATRIBUTOS
     private int idReporte;
     private int idUsuarioReportado;
     private int idUsuarioQueReporta;
@@ -11,7 +12,7 @@ public class Reporte {
     private Date fecha;
     private Time hora;
 
-
+//GETTERS AND SETTERS
     public int getIdReporte() {
         return idReporte;
     }

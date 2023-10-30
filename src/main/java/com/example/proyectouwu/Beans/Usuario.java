@@ -5,6 +5,7 @@ import java.sql.Date;
 import java.sql.Time;
 
 public class Usuario {
+    //ATRIBUTOS
     private int idUsuario;
     private String rol;
     private String nombre;
@@ -21,6 +22,7 @@ public class Usuario {
     private String descripcionPerfil;
     private boolean recibioKit;
 
+    //GETTERS AND SETTERS
     public int getIdUsuario() {
         return idUsuario;
     }

@@ -1,4 +1,4 @@
 package com.example.proyectouwu.Daos;
 
-public class DaoFotoEventoCarrusel {
+public class DaoFotoEventoCarrusel extends DaoPadre {
 }

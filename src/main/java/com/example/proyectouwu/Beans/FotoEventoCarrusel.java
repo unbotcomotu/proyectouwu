@@ -3,10 +3,14 @@ package com.example.proyectouwu.Beans;
 import java.sql.Blob;
 
 public class FotoEventoCarrusel {
+
+    //ATRIBUTOS
     private int idFotoEventoCarrusel;
     private int idEvento;
     private Blob foto;
 
+
+    //GETTERS AND SETTERS
     public int getIdFotoEventoCarrusel() {
         return idFotoEventoCarrusel;
     }

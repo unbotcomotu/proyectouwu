@@ -52,6 +52,7 @@ public class ListaDeEventosServlet extends HttpServlet {
         response.setContentType("text/html");
         String action = request.getParameter("action") == null ? "default" : request.getParameter("action");
 
+        DaoEvento daoEvento = new DaoEvento();
 
         switch (action) {
             case "searchView":
@@ -93,6 +94,14 @@ public class ListaDeEventosServlet extends HttpServlet {
 
                 //mañana sigo uu
                 response.sendRedirect(request.getContextPath()+ "/ListaDeEventosServlet");
+                break;
+            case "finConfirm":
+                int finEventoId = Integer.parseInt(request.getParameter("finEventoID"));
+                String finResumen = request.getParameter("finResumen");
+                String resultado = request.getParameter("resultado");
+
+                daoEvento.finalizarEvento(finEventoId,finResumen,resultado);
+                response.sendRedirect(request.getContextPath()+"/ListaDeEventosServlet");
                 break;
         }
     }

@@ -47,6 +47,40 @@ public class ListaDeEventosServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        response.setContentType("text/html");
+        String action = request.getParameter("action") == null ? "default" : request.getParameter("action");
 
+
+        switch (action) {
+            case "searchView":
+                String recv = request.getParameter("searchEventoID");
+                if (!recv.isEmpty()) {
+                    request.setAttribute("EventoXActividadFoundSearch", new DaoEvento().actividadDeEventoPorID(Integer.parseInt(recv)));
+                    request.getRequestDispatcher("listaDeEventos.jsp").forward(request, response);
+                } else {
+                    response.sendRedirect(request.getContextPath() + "/ListaDeEventosServlet");
+                    break;
+                }
+            case "addConfirm":
+                int addEventoID = Integer.parseInt(request.getParameter("addEventoID"));
+                //el id de la Actividad no puede ser cambiado
+                int addActividadID = Integer.parseInt(request.getParameter("addActividadID"));
+                int addLugarID = Integer.parseInt(request.getParameter("addLugarID"));
+                String addTitulo = request.getParameter("addTitulo");
+                String addFecha = request.getParameter("addFecha"); //cambiar a date
+                String addHora = request.getParameter("addHora"); //cambiar a time
+                String addDescripcionEventoActivo = request.getParameter("addDescripcionEventoActivo");
+                String addFraseMotivacional = request.getParameter("addFraseMotivacional");
+                //fotoMinuatura
+                String addfotoMiniatura = request.getParameter("addfotoMiniatura");
+
+                new DaoEvento().crearEvento(addEventoID,addActividadID,addLugarID,addTitulo,addFecha,addHora,addDescripcionEventoActivo,addFraseMotivacional,addfotoMiniatura);
+                response.sendRedirect(request.getContextPath()+"/ListaDeEventosServlet");
+                break;
+            case "updateConfirm":
+
+                response.sendRedirect(request.getContextPath()+ "/ListaDeEventosServlet");
+                break;
+        }
     }
 }

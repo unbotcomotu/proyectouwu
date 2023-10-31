@@ -78,6 +78,15 @@ public class ListaDeEventosServlet extends HttpServlet {
                 response.sendRedirect(request.getContextPath()+"/ListaDeEventosServlet");
                 break;
             case "updateConfirm":
+                int updateLugarID = Integer.parseInt(request.getParameter("updateLugarID"));
+                String updateTitulo = request.getParameter("updateTitulo");
+                String updateFecha = request.getParameter("updateFecha"); //cambiar a date
+                String updateHora = request.getParameter("updateHora"); //cambiar a time
+                String updateDescripcionEventoActivo = request.getParameter("updateDescripcionEventoActivo");
+                String updateFraseMotivacional = request.getParameter("updateFraseMotivacional");
+                //fotoMinuatura
+                String updatefotoMiniatura = request.getParameter("updatefotoMiniatura");
+
 
                 response.sendRedirect(request.getContextPath()+ "/ListaDeEventosServlet");
                 break;

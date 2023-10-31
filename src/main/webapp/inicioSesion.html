@@ -20,17 +20,19 @@
 									<h1 class="login-heading mb-4" style="font-size: 150%">Bienvenido a la Semana de Ingeniería</h1>
 									<form method="get" action="actividadesAlumno.html">
 										<div class="form-floating mb-3">
+											<form  method="post" action="">
 											<label for="miInputInicioSesion">Correo PUCP</label>
-											<input type="email" class="form-control" id="miInputInicioSesion" onkeyup="habilitarBotonInicioSesion()" placeholder="telito@pucp.edu.pe" required>
+											<input type="email" class="form-control" id="miInputInicioSesion" name = "correoPucp" onkeyup="habilitarBotonInicioSesion()" placeholder="telito@pucp.edu.pe" required>
 										</div>
 										<div class="form-floating mb-3">
 											<label for="floatingPassword">Contraseña</label>
-											<input type="password" class="form-control" id="floatingPassword" placeholder="Contraseña" required>
+											<input type="password" class="form-control" id="floatingPassword" name = "contrasena" placeholder="Contraseña" required>
 										</div>
 										<div class="row d-grid">
 											<div class="col-lg-6 text-left">
 												<button class="btn btn-lg btn-primary btn-login fw-bold mb-2" style="background-color: #615dfa" id="miBotonInicioSesion" type="submit" disabled>Iniciar sesión</button>
 											</div>
+											</form>
 											<div class="col-lg-6 text-right">
 												<a class="small" href="recuperar_password_primer_paso.html">¿Has olvidado tu contraseña?</a>
 											</div>

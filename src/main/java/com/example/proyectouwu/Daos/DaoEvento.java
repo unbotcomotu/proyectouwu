@@ -241,8 +241,8 @@ public class DaoEvento extends DaoPadre {
     }
 
 
-    public boolean eventoEstaOculto(int idEvento){ //validar si el evento está o no oculto
-        String sql = "select eventoOculto from evento where idEvento = ?";
+    public boolean eventoEstaFinalizado(int idEvento){ //validar si el evento está o no finalizado
+        String sql = "select eventoFinalizado from evento where idEvento = ?";
         try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setInt(1, idEvento);
             try (ResultSet rs = pstmt.executeQuery()) {
@@ -256,12 +256,13 @@ public class DaoEvento extends DaoPadre {
             throw new RuntimeException(e);
         }
     }
-    public void ocultarEvento(int idEvento, String resumen){ //oculta evento
-        String sql = "update evento set eventoOculto=1, resumen = ? where idEvento=?";
+    public void finalizarEvento(int idEvento, String resumen, String resultado){ //finaliza evento
+        String sql = "update evento set eventoFinalizado=1, resumen = ?, resultadoEvento = ? where idEvento=?";
 
         try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            if(!eventoEstaOculto(idEvento)){
+            if(!eventoEstaFinalizado(idEvento)){
                 pstmt.setString(2,resumen);
+                pstmt.setString(3,resumen);
                 pstmt.executeUpdate();
             }
         } catch (SQLException e) {

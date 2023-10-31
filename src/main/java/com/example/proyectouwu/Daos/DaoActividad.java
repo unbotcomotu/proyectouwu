@@ -267,5 +267,6 @@ public class DaoActividad extends DaoPadre {
             throw new RuntimeException(e);
         }
     }
+
 }
 

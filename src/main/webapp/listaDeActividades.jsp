@@ -1338,7 +1338,7 @@
                     <!-- FORM INPUT -->
                     <%String actividad=(String) request.getAttribute("actividad");%>
                     <div class="form-input small">
-                        <label for="items-search">Buscar actividad</label>
+                        <label for="items-search"><%if(actividad==null){%>Buscar actividad<%}%></label>
                         <input type="text" id="items-search" name="actividad" <%if(actividad!=null){%> value="<%=actividad%>"<%}%>>
                     </div>
                     <!-- /FORM INPUT -->

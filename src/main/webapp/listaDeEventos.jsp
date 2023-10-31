@@ -1511,7 +1511,7 @@
                     <div class="checkbox-line">
                         <!-- CHECKBOX WRAP -->
                         <div class="checkbox-wrap">
-                            <input type="checkbox" id="category-logos-and-badges" name="category_logos-and-badges">
+                            <input type="checkbox" id="category-logos-and-badges" name="cantidadEventosFinalizados">
                             <!-- CHECKBOX BOX -->
                             <div class="checkbox-box">
                                 <!-- ICON CROSS -->
@@ -1525,7 +1525,8 @@
                         </div>
                         <!-- /CHECKBOX WRAP -->
                         <!-- CHECKBOX LINE TEXT -->
-                        <p class="checkbox-line-text">1</p>
+                        <%Integer cantidadEventosFinalizados=(Integer) request.getAttribute("cantidadEventosFinalizados");%>
+                        <p class="checkbox-line-text"><%=cantidadEventosFinalizados%></p>
                         <!-- /CHECKBOX LINE TEXT -->
                     </div>
                     <!-- /CHECKBOX LINE -->
@@ -1534,7 +1535,7 @@
                     <div class="checkbox-line">
                         <!-- CHECKBOX WRAP -->
                         <div class="checkbox-wrap">
-                            <input type="checkbox" id="category-sketch" name="category_sketch">
+                            <input type="checkbox" id="category-sketch" name="cantidadEventosApoyando">
                             <!-- CHECKBOX BOX -->
                             <div class="checkbox-box">
                                 <!-- ICON CROSS -->
@@ -1549,7 +1550,8 @@
                         <!-- /CHECKBOX WRAP -->
 
                         <!-- CHECKBOX LINE TEXT -->
-                        <p class="checkbox-line-text">2</p>
+                        <%Integer cantidadEventosApoyando=(Integer) request.getAttribute("cantidadEventosApoyando");%>
+                        <p class="checkbox-line-text"><%=cantidadEventosApoyando%></p>
                         <!-- /CHECKBOX LINE TEXT -->
                     </div>
                     <!-- /CHECKBOX LINE -->
@@ -1585,10 +1587,12 @@
                 <!-- SIDEBAR BOX ITEMS -->
                 <div class="sidebar-box-items">
                     <!-- CHECKBOX LINE -->
+                    <%ArrayList<Integer[]>listaLugaresCantidad=(ArrayList<Integer[]>) request.getAttribute("listaLugaresCantidad");
+                    for(Integer[] par:listaLugaresCantidad){%>
                     <div class="checkbox-line">
                         <!-- CHECKBOX WRAP -->
                         <div class="checkbox-wrap">
-                            <input type="checkbox" id="category-psd" name="category_psd">
+                            <input type="checkbox" id="category-<%=listaLugaresCantidad.indexOf(par)%>" name="lugar<%=listaLugaresCantidad.indexOf(par)%>">
                             <!-- CHECKBOX BOX -->
                             <div class="checkbox-box">
                                 <!-- ICON CROSS -->
@@ -1598,110 +1602,16 @@
                                 <!-- /ICON CROSS -->
                             </div>
                             <!-- /CHECKBOX BOX -->
-                            <label for="category-psd">Cancha de minas</label>
+                            <label for="category-<%=listaLugaresCantidad.indexOf(par)%>"><%=new DaoLugarEvento().lugarPorID(par[0])%></label>
                         </div>
                         <!-- /CHECKBOX WRAP -->
 
                         <!-- CHECKBOX LINE TEXT -->
-                        <p class="checkbox-line-text">3</p>
+                        <p class="checkbox-line-text"><%=par[1]%></p>
                         <!-- /CHECKBOX LINE TEXT -->
                     </div>
                     <!-- /CHECKBOX LINE -->
-
-                    <!-- CHECKBOX LINE -->
-                    <div class="checkbox-line">
-                        <!-- CHECKBOX WRAP -->
-                        <div class="checkbox-wrap">
-                            <input type="checkbox" id="category-html" name="category_html">
-                            <!-- CHECKBOX BOX -->
-                            <div class="checkbox-box">
-                                <!-- ICON CROSS -->
-                                <svg class="icon-cross">
-                                    <use xlink:href="#svg-cross"></use>
-                                </svg>
-                                <!-- /ICON CROSS -->
-                            </div>
-                            <!-- /CHECKBOX BOX -->
-                            <label for="category-html">V305</label>
-                        </div>
-                        <!-- /CHECKBOX WRAP -->
-
-                        <!-- CHECKBOX LINE TEXT -->
-                        <p class="checkbox-line-text">4</p>
-                        <!-- /CHECKBOX LINE TEXT -->
-                    </div>
-                    <!-- /CHECKBOX LINE -->
-
-                    <!-- CHECKBOX LINE -->
-                    <div class="checkbox-line">
-                        <!-- CHECKBOX WRAP -->
-                        <div class="checkbox-wrap">
-                            <input type="checkbox" id="category-wp" name="category_wp">
-                            <!-- CHECKBOX BOX -->
-                            <div class="checkbox-box">
-                                <!-- ICON CROSS -->
-                                <svg class="icon-cross">
-                                    <use xlink:href="#svg-cross"></use>
-                                </svg>
-                                <!-- /ICON CROSS -->
-                            </div>
-                            <!-- /CHECKBOX BOX -->
-                            <label for="category-wp">Polideportivo</label>
-                        </div>
-                        <!-- /CHECKBOX WRAP -->
-
-                        <!-- CHECKBOX LINE TEXT -->
-                        <p class="checkbox-line-text">6</p>
-                        <!-- /CHECKBOX LINE TEXT -->
-                    </div>
-                    <!-- /CHECKBOX LINE -->
-
-                    <!-- CHECKBOX LINE -->
-                    <div class="checkbox-line">
-                        <!-- CHECKBOX WRAP -->
-                        <div class="checkbox-wrap">
-                            <input type="checkbox" id="category-illustrations" name="category_illustrations">
-                            <!-- CHECKBOX BOX -->
-                            <div class="checkbox-box">
-                                <!-- ICON CROSS -->
-                                <svg class="icon-cross">
-                                    <use xlink:href="#svg-cross"></use>
-                                </svg>
-                                <!-- /ICON CROSS -->
-                            </div>
-                            <!-- /CHECKBOX BOX -->
-                            <label for="category-illustrations">V306</label>
-                        </div>
-                        <!-- /CHECKBOX WRAP -->
-
-                        <!-- CHECKBOX LINE TEXT -->
-                        <p class="checkbox-line-text">2</p>
-                        <!-- /CHECKBOX LINE TEXT -->
-                    </div>
-                    <!-- /CHECKBOX LINE -->
-                    <!-- CHECKBOX LINE -->
-                    <div class="checkbox-line">
-                        <!-- CHECKBOX WRAP -->
-                        <div class="checkbox-wrap">
-                            <input type="checkbox" id="category-stream-packs" name="category_stream-packs">
-                            <!-- CHECKBOX BOX -->
-                            <div class="checkbox-box">
-                                <!-- ICON CROSS -->
-                                <svg class="icon-cross">
-                                    <use xlink:href="#svg-cross"></use>
-                                </svg>
-                                <!-- /ICON CROSS -->
-                            </div>
-                            <!-- /CHECKBOX BOX -->
-                            <label for="category-stream-packs">Otros</label>
-                        </div>
-                        <!-- /CHECKBOX WRAP -->
-
-                        <!-- CHECKBOX LINE TEXT -->
-                        <p class="checkbox-line-text">3</p>
-                        <!-- /CHECKBOX LINE TEXT -->
-                    </div>
-                    <!-- /CHECKBOX LINE -->
+                    <%}%>
                 </div>
                 <!-- /SIDEBAR BOX ITEMS -->
 
@@ -1730,7 +1640,8 @@
                         <!-- /CHECKBOX WRAP -->
 
                         <!-- CHECKBOX LINE TEXT -->
-                        <p class="checkbox-line-text">4</p>
+                        <%Integer cantidadEventosHoy=(Integer) request.getAttribute("cantidadEventosHoy");%>
+                        <p class="checkbox-line-text"><%=cantidadEventosHoy%></p>
                         <!-- /CHECKBOX LINE TEXT -->
                     </div>
                     <!-- /CHECKBOX LINE -->
@@ -1752,9 +1663,9 @@
                             <label for="category-illustrator">Mañana</label>
                         </div>
                         <!-- /CHECKBOX WRAP -->
-
+                        <%Integer cantidadEventosManana=(Integer) request.getAttribute("cantidadEventosManana");%>
                         <!-- CHECKBOX LINE TEXT -->
-                        <p class="checkbox-line-text">3</p>
+                        <p class="checkbox-line-text"><%=cantidadEventosManana%></p>
                         <!-- /CHECKBOX LINE TEXT -->
                     </div>
                     <!-- /CHECKBOX LINE -->
@@ -1776,9 +1687,9 @@
                             <label for="category-html-css">En 2 a más días</label>
                         </div>
                         <!-- /CHECKBOX WRAP -->
-
+                        <%Integer cantidadEventos2DiasMas=(Integer) request.getAttribute("cantidadEventos2DiasMas");%>
                         <!-- CHECKBOX LINE TEXT -->
-                        <p class="checkbox-line-text">10</p>
+                        <p class="checkbox-line-text"><%=cantidadEventos2DiasMas%></p>
                         <!-- /CHECKBOX LINE TEXT -->
                     </div>
                     <!-- /CHECKBOX LINE -->

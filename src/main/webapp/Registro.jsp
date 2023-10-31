@@ -76,7 +76,7 @@
 
 
                         <div class="col-12">
-                          <!--for="email", decia eso dentro del lable-->  <label class="form-label texto">Código <span class="text-muted"></span></label>
+                          <!--for="email", decia eso dentro del label-->  <label class="form-label texto">Código <span class="text-muted"></span></label>
                             <input type="text" class="form-control" required>
                             <div class="invalid-feedback texto">
                                 Por favor ingrese un código válido.

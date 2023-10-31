@@ -262,4 +262,36 @@ public class DaoUsuario extends DaoPadre {
             throw new RuntimeException(e);
         }
     }
+    public void registroDeAlumno(String name, String apellido, String correo, String contrasena, String codigoPUCP, String condicion){
+        String sql = "insert into usuario(rol, nombre, apellido, correo, contrasena, codigoPUCP, estadoRegistro, fechaHoraRegistro,condicion) values (?,?, ?,?, ?,?, ?,(select now()),?)";
+        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setString(1,"Alumno"); //nuevos usuarios se registran como alumnos
+            pstmt.setString(2,name);
+            pstmt.setString(3, apellido);
+            pstmt.setString(4,correo);
+            pstmt.setString(5,contrasena);
+            pstmt.setString(6,codigoPUCP);
+            pstmt.setString(7,"Pendiente");//para cambiar el estado es con otro método
+            pstmt.setString(9,condicion);
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+    }
+    public void cambiarEstadoRegistroUsuario(int idUser, String estado){
+        String sql = "update usuario set estadoRegistro = ? where idUsuario = ?";
+
+        try(PreparedStatement pstmt=conn.prepareStatement(sql)){
+            pstmt.setString(1,estado);
+            pstmt.setInt(2,idUser);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+
+    }
+
+
 }

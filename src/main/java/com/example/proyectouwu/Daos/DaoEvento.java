@@ -261,8 +261,9 @@ public class DaoEvento extends DaoPadre {
 
         try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
             if(!eventoEstaFinalizado(idEvento)){
-                pstmt.setString(2,resumen);
-                pstmt.setString(3,resumen);
+                pstmt.setString(1,resumen);
+                pstmt.setString(2,resultado);
+                pstmt.setInt( 3,idEvento);
                 pstmt.executeUpdate();
             }
         } catch (SQLException e) {

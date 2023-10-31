@@ -144,6 +144,23 @@ public class DaoUsuario extends DaoPadre {
         }
     }
 
+    public ArrayList<Usuario> listarUsuariosTotal(){
+        ArrayList<Usuario> lista = new ArrayList<>();
+        String sql = "select idUsuario , correo , contrasena from usuario";
+        try(ResultSet rs = conn.prepareStatement(sql).executeQuery()){
+            while(rs.next()){
+                Usuario usuario = new Usuario();
+                usuario.setIdUsuario(rs.getInt(1));
+                usuario.setCorreo(rs.getString(2));
+                usuario.setContrasena(rs.getString(3));
+                lista.add(usuario);
+            }
+            return lista;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     public boolean usuarioEsDelegadoDeActividad(int idUsuario){
         String sql = "select rol from usuario where idUsuario=?";
         try(PreparedStatement pstmt = conn.prepareStatement(sql)){

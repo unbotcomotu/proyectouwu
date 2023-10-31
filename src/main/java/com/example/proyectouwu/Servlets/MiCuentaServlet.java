@@ -36,15 +36,15 @@ public class MiCuentaServlet extends HttpServlet {
         String action = request.getParameter("action") == null ? "default" : request.getParameter("action");
 
         switch(action){
-            case("default"):
-                //auxilio
-                break;
             case("editarDescripcion"):
                 Integer id = Integer.parseInt(request.getParameter("idUsuario"));
                 String nuevaDescripcion = request.getParameter("nuevaDescripcion");
                 //sentencia sql para actualizar:
                 daoUsuario.cambioDescripcion(nuevaDescripcion, id);
                 response.sendRedirect(request.getContextPath() + "/MiCuentaServlet?"+"idUsuario="+id);
+                break;
+            case("default"):
+                //auxilio
                 break;
         }
 

@@ -1,6 +1,7 @@
 package com.example.proyectouwu.Servlets;
 
 import com.example.proyectouwu.Daos.DaoAlumnoPorEvento;
+import com.example.proyectouwu.Daos.DaoEvento;
 import com.example.proyectouwu.Daos.DaoUsuario;
 import jakarta.servlet.*;
 import jakarta.servlet.http.*;
@@ -17,6 +18,7 @@ public class MisEventosServlet extends HttpServlet {
         response.setContentType("text/html");
         DaoUsuario dUsuario=new DaoUsuario();
         DaoAlumnoPorEvento dAlPorEvento=new DaoAlumnoPorEvento();
+        DaoEvento dEvent = new DaoEvento();
         int idUsuario=Integer.parseInt(request.getParameter("idUsuario"));
         String rolUsuario=dUsuario.rolUsuarioPorId(idUsuario);
         request.setAttribute("idUsuario",idUsuario);

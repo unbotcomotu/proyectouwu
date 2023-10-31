@@ -239,4 +239,33 @@ public class DaoEvento extends DaoPadre {
             throw new RuntimeException(e);
         }
     }
+
+
+    public boolean eventoEstaOculto(int idEvento){ //validar si el evento está o no oculto
+        String sql = "select eventoOculto from evento where idEvento = ?";
+        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setInt(1, idEvento);
+            try (ResultSet rs = pstmt.executeQuery()) {
+                if(rs.getBoolean(1)==true){
+                    return true;
+                }else{
+                    return false;
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+    public void ocultarEvento(int idEvento, String resumen){ //oculta evento
+        String sql = "update evento set eventoOculto=1, resumen = ? where idEvento=?";
+
+        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            if(!eventoEstaOculto(idEvento)){
+                pstmt.setString(2,resumen);
+                pstmt.executeUpdate();
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }

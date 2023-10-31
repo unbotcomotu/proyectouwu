@@ -1,5 +1,6 @@
 package com.example.proyectouwu.Servlets;
 
+import com.example.proyectouwu.Beans.Evento;
 import com.example.proyectouwu.Daos.DaoActividad;
 import com.example.proyectouwu.Daos.DaoEvento;
 import com.example.proyectouwu.Daos.DaoLugarEvento;

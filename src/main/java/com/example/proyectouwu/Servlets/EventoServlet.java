@@ -6,7 +6,7 @@ import com.example.proyectouwu.Daos.DaoUsuario;
 import jakarta.servlet.*;
 import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
-
+import com.example.proyectouwu.Beans.Evento;
 import java.io.IOException;
 import java.io.PrintWriter;
 

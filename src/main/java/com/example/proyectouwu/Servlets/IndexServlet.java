@@ -6,7 +6,7 @@ import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
 
 import java.io.IOException;
-
+/*Este servlet se encarga de separar las vistas de usuario -delegado de actividad y general*/
 @WebServlet(name = "IndexServlet", value = "")
 public class IndexServlet extends HttpServlet {
     @Override

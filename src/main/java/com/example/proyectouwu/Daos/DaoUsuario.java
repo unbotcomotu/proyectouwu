@@ -214,4 +214,15 @@ public class DaoUsuario extends DaoPadre {
             throw new RuntimeException(e);
         }
     }
+
+    public Usuario getUsuarioPorId(int Id){
+        DaoUsuario  daoUsuario = new DaoUsuario();
+        ArrayList<Usuario> listaUsuario = daoUsuario.listarUsuarios();
+        for (Usuario usuario : listaUsuario){
+            if(usuario.getIdUsuario() == Id){
+                return usuario;
+            }
+        }
+        return null;
+    }
 }

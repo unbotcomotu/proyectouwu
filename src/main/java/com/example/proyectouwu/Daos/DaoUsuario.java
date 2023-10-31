@@ -292,6 +292,22 @@ public class DaoUsuario extends DaoPadre {
 
 
     }
+    public float donacionPorIdUser(int idUser){
+        String sql = "select sum(monto)  from donacion where idUsuario = ?";
+        try(PreparedStatement pstmt=conn.prepareStatement(sql)){
+            pstmt.setInt(1,idUser);
+            try(ResultSet rs = pstmt.executeQuery()){
+                if(rs.next()){
+                    return rs.getInt(1);
+                }else{
+                    return 0;
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
 
 
 }

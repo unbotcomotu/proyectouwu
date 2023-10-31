@@ -192,6 +192,20 @@ public class DaoActividad extends DaoPadre {
         }
     }
 
+    public Integer cantidadEventosOcultosPorActividad(int idActividad){
+        String sql="select count(idEvento) from Actividad a inner join Evento e on a.idActividad=e.idActividad where a.idActividad=? and e.eventoOculto is true";
+        try(PreparedStatement pstmt= conn.prepareStatement(sql)){
+            pstmt.setInt(1,idActividad);
+            try(ResultSet rs=pstmt.executeQuery()){
+                if(rs.next()){
+                    return rs.getInt(1);
+                }else
+                    return 0;
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
     public Integer cantidadEventosApoyandoPorActividad(int idActividad,int idUsuario){
         String sql="select count(ae.idEvento) from Actividad a inner join Evento e on a.idActividad=e.idActividad inner join AlumnoPorEvento ae on e.idEvento=ae.idEvento where a.idActividad=? and ae.idAlumno=? and ae.estadoApoyo!='Pendiente'";
         try(PreparedStatement pstmt= conn.prepareStatement(sql)){

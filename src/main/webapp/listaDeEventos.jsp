@@ -1574,8 +1574,9 @@
                             <label for="ola">Oculto</label>
                         </div>
                         <!-- /CHECKBOX WRAP -->
+                        <%Integer cantidadEventosOcultos=(Integer) request.getAttribute("cantidadEventosOcultos");%>
                         <!-- CHECKBOX LINE TEXT -->
-                        <p class="checkbox-line-text">1</p>
+                        <p class="checkbox-line-text"><%=cantidadEventosOcultos%></p>
                         <!-- /CHECKBOX LINE TEXT -->
                     </div>
                     <!-- /CHECKBOX LINE -->
@@ -1734,7 +1735,6 @@
         <div class="marketplace-content">
             <!-- GRID -->
             <div class="grid grid-3-3-3 centered">
-                <%if(listaEventos!=null){%>
                 <%if(listaEventos!=null){%>
                 <%for(Evento e:listaEventos){%>
                 <!-- PRODUCT PREVIEW -->
@@ -1938,7 +1938,7 @@
                     <!-- /PRODUCT PREVIEW INFO -->
                 </div>
                 <!-- PRODUCT PREVIEW -->
-                <%}}}}%>
+                <%}}}%>
             </div>
             <!-- /GRID -->
 

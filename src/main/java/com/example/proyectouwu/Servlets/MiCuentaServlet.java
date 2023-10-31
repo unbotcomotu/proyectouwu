@@ -31,6 +31,22 @@ public class MiCuentaServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        response.setContentType("text/html");
+        DaoUsuario daoUsuario = new DaoUsuario();
+        String action = request.getParameter("action") == null ? "default" : request.getParameter("action");
+
+        switch(action){
+            case("default"):
+                //auxilio
+                break;
+            case("editarDescripcion"):
+                Integer id = Integer.parseInt(request.getParameter("idUsuario"));
+                String nuevaDescripcion = request.getParameter("nuevaDescripcion");
+                //sentencia sql para actualizar:
+                daoUsuario.cambioDescripcion(nuevaDescripcion, id);
+                response.sendRedirect(request.getContextPath() + "/MiCuentaServlet?"+"idUsuario="+id);
+                break;
+        }
 
     }
 }

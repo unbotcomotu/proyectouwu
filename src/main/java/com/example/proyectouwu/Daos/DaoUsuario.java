@@ -225,4 +225,24 @@ public class DaoUsuario extends DaoPadre {
         }
         return null;
     }
+
+    //CRUD
+    public void cambioDescripcion(String nuevaDescripcion , Integer idUsuario){
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+        String sql = "update usuario set descripcionPerfil = ? where idusuario = ?";
+
+        try(PreparedStatement pstmt = conn.prepareStatement(sql)){
+
+            pstmt.setString(1,nuevaDescripcion);
+            pstmt.setInt(2,idUsuario);
+            pstmt.executeUpdate();
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }

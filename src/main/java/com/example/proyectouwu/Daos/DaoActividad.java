@@ -1,6 +1,7 @@
 package com.example.proyectouwu.Daos;
 
 import com.example.proyectouwu.Beans.Actividad;
+import com.example.proyectouwu.Beans.LugarEvento;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -170,6 +171,83 @@ public class DaoActividad extends DaoPadre {
                     return rs.getString(1);
                 }else
                     return null;
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public Integer cantidadEventosFinalizadosPorActividad(int idActividad){
+        String sql="select count(idEvento) from Actividad a inner join Evento e on a.idActividad=e.idActividad where a.idActividad=? and e.eventoFinalizado is true";
+        try(PreparedStatement pstmt= conn.prepareStatement(sql)){
+            pstmt.setInt(1,idActividad);
+            try(ResultSet rs=pstmt.executeQuery()){
+                if(rs.next()){
+                    return rs.getInt(1);
+                }else
+                    return 0;
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public Integer cantidadEventosApoyandoPorActividad(int idActividad,int idUsuario){
+        String sql="select count(ae.idEvento) from Actividad a inner join Evento e on a.idActividad=e.idActividad inner join AlumnoPorEvento ae on e.idEvento=ae.idEvento where a.idActividad=? and ae.idAlumno=? and ae.estadoApoyo!='Pendiente'";
+        try(PreparedStatement pstmt= conn.prepareStatement(sql)){
+            pstmt.setInt(1,idActividad);
+            pstmt.setInt(2,idUsuario);
+            try(ResultSet rs=pstmt.executeQuery()){
+                if(rs.next()){
+                    return rs.getInt(1);
+                }else
+                    return 0;
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public ArrayList<Integer[]>lugaresConMayorCantidadDeEventos_cantidad_idLugarEvento(int idActividad){
+        ArrayList<Integer[]>lista=new ArrayList<>();
+        String sql="select l.idLugarEvento,count(e.idEvento) from LugarEvento l inner join Evento e on l.idLugarEvento=e.idLugarEvento inner join Actividad a on e.idActividad=a.idActividad where a.idActividad=? group by e.idLugarEvento order by count(e.idEvento)";
+        try(PreparedStatement pstmt= conn.prepareStatement(sql)){
+            pstmt.setInt(1,idActividad);
+            try(ResultSet rs=pstmt.executeQuery()){
+                while(rs.next()){
+                    Integer[] par={rs.getInt(1),rs.getInt(2)};
+                    lista.add(par);
+                }return lista;
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public Integer cantidadEventosEnNdiasPorActividad(int idActividad,int N){
+        String sql="select count(e.idEvento) from Evento e inner join Actividad a on e.idActividad=a.idActividad where a.idActividad=? and datediff(e.fecha,current_date())=?";
+        try(PreparedStatement pstmt= conn.prepareStatement(sql)){
+            pstmt.setInt(1,idActividad);
+            pstmt.setInt(2,N);
+            try(ResultSet rs=pstmt.executeQuery()){
+                if(rs.next()){
+                    return rs.getInt(1);
+                }else
+                    return 0;
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+    public Integer cantidadEventosEn2DiasAMasPorActividad(int idActividad){
+        String sql="select count(e.idEvento) from Evento e inner join Actividad a on e.idActividad=a.idActividad where a.idActividad=? and datediff(e.fecha,current_date())>1";
+        try(PreparedStatement pstmt= conn.prepareStatement(sql)){
+            pstmt.setInt(1,idActividad);
+            try(ResultSet rs=pstmt.executeQuery()){
+                if(rs.next()){
+                    return rs.getInt(1);
+                }else
+                    return 0;
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);

@@ -88,6 +88,8 @@ public class ListaDeEventosServlet extends HttpServlet {
                 String updatefotoMiniatura = request.getParameter("updatefotoMiniatura");
 
 
+
+                //mañana sigo uu
                 response.sendRedirect(request.getContextPath()+ "/ListaDeEventosServlet");
                 break;
         }

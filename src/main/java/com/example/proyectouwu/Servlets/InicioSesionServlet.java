@@ -48,14 +48,18 @@ public class InicioSesionServlet extends HttpServlet {
                         break bucleUsuarios;
                     }
                 }
-                if(existeUsuario) {
+                if(existeUsuario && new DaoUsuario().getEstadoDeResgitroPorId(usuarioId).equals("Registrado")) {
                     response.sendRedirect(request.getContextPath() + "/ListaDeActividadesServlet?idUsuario="+usuarioId);
                     //request.setAttribute("idUsuario", Integer.toString(usuarioId));
                     //ListaDeActividadesServlet?idUsuario=1
                     //request.getRequestDispatcher("ListaDeActividadesServlet").forward(request, response);
                 }else{
-                    request.getRequestDispatcher("InicioSesionServlet").forward(request,response);
+                    request.getRequestDispatcher("inicioSesion.jsp").forward(request,response);
                 }
+                break;
+            case "registro":
+                //String correo = request.getParameter("correoPucp");
+                //Debemos guardarlo en algun lado para mandar el correo
                 break;
             case "nose":
 

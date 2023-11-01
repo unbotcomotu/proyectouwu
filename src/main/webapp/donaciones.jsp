@@ -1439,7 +1439,7 @@
 
                     <p class="badge-item-stat-title">Dona por yape</p>
                     <!-- /BADGE ITEM STAT TITLE -->
-
+                    <form  method="post" action="<%=request.getContextPath()%>/ListaDeEventosServlet?action=addConfirm" >
                     <!-- BADGE ITEM STAT TEXT -->
                     <p class="badge-item-stat-text">Recuerda que si eres egresado debes donar como mínimo 100 para darte un kit teleco</p>
                     <!-- /BADGE ITEM STAT TEXT -->
@@ -1540,34 +1540,36 @@
         <path d="M11.4142 10L16.7071 4.70711C17.0976 4.31658 17.0976 3.68342 16.7071 3.29289C16.3166 2.90237 15.6834 2.90237 15.2929 3.29289L10 8.58579L4.70711 3.29289C4.31658 2.90237 3.68342 2.90237 3.29289 3.29289C2.90237 3.68342 2.90237 4.31658 3.29289 4.70711L8.58579 10L3.29289 15.2929C2.90237 15.6834 2.90237 16.3166 3.29289 16.7071C3.68342 17.0976 4.31658 17.0976 4.70711 16.7071L10 11.4142L15.2929 16.7071C15.6834 17.0976 16.3166 17.0976 16.7071 16.7071C17.0976 16.3166 17.0976 15.6834 16.7071 15.2929L11.4142 10Z" fill="black"></path>
     </svg>
     <div class="container-fluid">
-
-        <div class="row"><div class="col"><h5 style="text-align: center;">Donaciones</h5></div></div>
-        <div class="row">
-            <div class="col-sm-6" style = "top : 20px">
-                <br>
-                <label style="margin-top: 25px;" for="puntajeCrearActividad"><b>Monto a donar:</b></label>
-                <input type="number" id="puntajeCrearActividad" min="1"  placeholder="100" required="">
-            </div>
-            <div class="col-sm-6 contenedor2" style="top: 20px">
-                <div class="container-fluid btn btn-file1">
-                    <img class="img-fluid" src="css/subirArchivo.jpg" style="opacity: 50%;" alt="">
-                    <p><b>Foto del monto donado</b></p>
-                    <input type="file" style="background-color: white; margin-top: 25px;" accept="image/png, .jpeg, .jpg">
+        <form  method="post" action="<%=request.getContextPath()%>/MisDonacionesServlet?action=registDon">
+            <div class="row"><div class="col"><h5 style="text-align: center;">Donaciones</h5></div></div>
+            <div class="row">
+                <div class="col-sm-6" style = "top : 20px">
+                    <br>
+                    <label style="margin-top: 25px;" for="puntajeCrearActividad"><b>Monto a donar:</b></label>
+                    <input type="number" id="puntajeCrearActividad" min="1"  placeholder="100" required="">
+                </div>
+                <div class="col-sm-6 contenedor2" style="top: 20px">
+                    <div class="container-fluid btn btn-file1">
+                        <img class="img-fluid" src="css/subirArchivo.jpg" style="opacity: 50%;" alt="">
+                        <p><b>Foto del monto donado</b></p>
+                        <input type="file" style="background-color: white; margin-top: 25px;" accept="image/png, .jpeg, .jpg">
+                    </div>
                 </div>
             </div>
-        </div>
-    </div>
-    <br>
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-sm-6" style="margin-top: 5px;">
-                <button type="submit" class="button secondary" id="cerrarPopupCrear1" disabled="" style="cursor: default; opacity: 0.5;">Crear</button>
             </div>
-            <div class="col-sm-6" style="margin-top: 5px;">
-                <button class="button secondary" id="cerrarPopupCrear2" style="background-color: grey;">Cancelar</button>
+            <br>
+            <div class="container-fluid">
+            <div class="row">
+                <div class="col-sm-6" style="margin-top: 5px;">
+                    <button type="submit" class="button secondary" id="cerrarPopupCrear1" disabled="" style="cursor: default; opacity: 0.5;">Crear</button>
+                </div>
+                <div class="col-sm-6" style="margin-top: 5px;">
+                    <button class="button secondary" id="cerrarPopupCrear2" style="background-color: grey;">Cancelar</button>
+                </div>
             </div>
-        </div>
-    </div>
+            </div>
+        </form>
+
 </div>
 
 <footer style="font-size: 80%;">

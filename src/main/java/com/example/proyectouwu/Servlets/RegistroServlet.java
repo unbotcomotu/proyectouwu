@@ -15,6 +15,7 @@ import java.util.Date;
 public class RegistroServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        response.setContentType("text/html");
 
         //Para que un usuario se cree su cuenta
         DaoUsuario dUsuario=new DaoUsuario();
@@ -31,6 +32,7 @@ public class RegistroServlet extends HttpServlet {
         String condicion = request.getParameter("condicion");
 
         dUsuario.registroDeAlumno(idUsuario,nombreUsuario, apellidoUsuario, correo, contrasena, codigoPUCP,condicion );
+
         String action = request.getParameter("action") == null ? "default" : request.getParameter("action");
         switch (action){
             case "default":

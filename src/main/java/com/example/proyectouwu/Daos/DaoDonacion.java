@@ -2,6 +2,7 @@ package com.example.proyectouwu.Daos;
 
 import com.example.proyectouwu.Beans.Donacion;
 
+import java.awt.image.BufferedImage;
 import java.sql.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -52,5 +53,37 @@ public class DaoDonacion extends DaoPadre  {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+
     }
+    //Este método se utiliza para el boton de editar donación en la vista de delegado general
+    public void editarDonacion(int idDonacion,String estadoDonacion,Integer donacionCorrecta){ //Editar donacion por Id
+        String sql = "update donacion set monto = ?,estadoDonacion = ?, fechaHoraValido = now() where idDonacion = ?";
+
+        try(PreparedStatement pstmt=conn.prepareStatement(sql)){
+            pstmt.setInt(1,donacionCorrecta);
+            pstmt.setString(2, estadoDonacion);
+            pstmt.setInt(3,idDonacion);
+
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+    //Este método permite agregar el monto y foto que ha donado una persona
+    public void agregarDonacionUsuario(int idDonacion,int idUser,String medioPago, int monto, Blob captura){
+        String sql = " insert into donacion(idDonacion, idUsuario, medioPago, monto,fechaHora,captura,estadoDonacion) values (?,?, ?, ?,now(), ?,?)";
+        try(PreparedStatement pstmt=conn.prepareStatement(sql)){
+            pstmt.setInt(1,idDonacion);
+            pstmt.setInt(2, idUser);
+            pstmt.setString(3,medioPago);
+            pstmt.setInt(4,monto);
+            pstmt.setBlob(6,captura);
+            pstmt.setString(7,"En espera");//Toda donación siempre se agrega como en espera
+
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
 }

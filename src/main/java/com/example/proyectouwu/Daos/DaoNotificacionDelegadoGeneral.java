@@ -15,6 +15,15 @@ import java.time.Period;
 import java.time.LocalDate;
 public class DaoNotificacionDelegadoGeneral extends DaoPadre {
 
+    private Connection conn;
+    {
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            conn= DriverManager.getConnection("jdbc:mysql://localhost:3306/proyecto",super.getUser(),super.getPassword());
+        } catch (ClassNotFoundException | SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
     public ArrayList<Usuario>listarSolicitudesDeRegistro(){
 

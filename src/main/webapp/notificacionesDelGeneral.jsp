@@ -1838,13 +1838,13 @@
 
                         <div class="table-column centered padded">
                             <!-- TABLE TITLE -->
-                            <button class="button-accept">Editar</button>
+                             <a class="button-accept" href="<%=request.getContextPath()%>/NotificacionesServlet?action=edit&id=<%=donacion.getIdDonacion()%>">Editar</a>
                             <!-- /TABLE TITLE -->
                         </div>
 
                         <div class="table-column centered padded">
+                            <button class="button-reject" href="<%=request.getContextPath()%>/NotificacionesServlet?action=delete&id=<%=donacion.getIdDonacion()%>">Borrar</button>
 
-                            <button class="button-reject">Rechazar</button>
                         </div>
 
                         <!-- /TABLE COLUMN -->

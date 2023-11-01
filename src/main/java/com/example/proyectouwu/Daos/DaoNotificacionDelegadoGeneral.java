@@ -144,18 +144,19 @@ public class DaoNotificacionDelegadoGeneral extends DaoPadre {
         String username = super.getUser();
         String password = super.getPassword();
 
-        String sql = "SELECT idUsuario, medioPago, monto,fechaHora,estadoDonacion FROM donacion";
+        String sql = "SELECT idDonacion, idUsuario, medioPago, monto,fechaHora,estadoDonacion FROM donacion";
         try (Connection conn = DriverManager.getConnection(url, username, password);
              Statement stmt = conn.createStatement();
              ResultSet rs = stmt.executeQuery(sql)) {
 
             while (rs.next()) {
                 Donacion donacion = new Donacion();
-                donacion.setIdUsuario(rs.getInt(1));
-                donacion.setMedioPago(rs.getString(2));
-                donacion.setMonto(rs.getFloat(3));
-                donacion.setFecha(rs.getDate(4));
-                donacion.setEstadoDonacion(rs.getString(5));
+                donacion.setIdDonacion(rs.getInt(1));
+                donacion.setIdUsuario(rs.getInt(2));
+                donacion.setMedioPago(rs.getString(3));
+                donacion.setMonto(rs.getFloat(4));
+                donacion.setFecha(rs.getDate(5));
+                donacion.setEstadoDonacion(rs.getString(6));
                 donacionList.add(donacion);
             }
 

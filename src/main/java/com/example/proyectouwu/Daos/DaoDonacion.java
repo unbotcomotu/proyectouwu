@@ -57,13 +57,15 @@ public class DaoDonacion extends DaoPadre  {
 
     }
     //Este método se utiliza para el boton de editar donación en la vista de delegado general
-    public void editarDonacion(int idDonacion,String estadoDonacion,Integer donacionCorrecta){ //Editar donacion por Id
+    public void editarDonacion(Donacion donacion){ //Editar donacion por Id
+
+
         String sql = "update donacion set monto = ?,estadoDonacion = ?, fechaHoraValido = now() where idDonacion = ?";
 
         try(PreparedStatement pstmt=conn.prepareStatement(sql)){
-            pstmt.setInt(1,donacionCorrecta);
-            pstmt.setString(2, estadoDonacion);
-            pstmt.setInt(3,idDonacion);
+            pstmt.setFloat(1,donacion.getMonto());
+            pstmt.setString(2, donacion.getEstadoDonacion());
+            pstmt.setInt(3,donacion.getIdDonacion());
 
             pstmt.executeUpdate();
         } catch (SQLException e) {
@@ -110,4 +112,46 @@ public class DaoDonacion extends DaoPadre  {
         }
         return montoEgresado;
     }
+
+
+    public Donacion buscarPorId(String id){
+
+        Donacion donacion = null;
+
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+
+        String url = "jdbc:mysql://localhost:3306/proyecto";
+        String username = "root";
+        String password = "root";
+
+        String sql = "select * from donacion where idDonacion = ?";
+
+
+        try (Connection conn = DriverManager.getConnection(url, username, password);
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setString(1,id);
+
+            try(ResultSet rs = pstmt.executeQuery()){
+                while (rs.next()) {
+                    donacion = new Donacion();
+                    donacion.setIdDonacion(rs.getInt(1));
+                    donacion.setIdUsuario(rs.getInt(2));
+                    donacion.setMedioPago(rs.getString(3));
+                    donacion.setMonto(rs.getInt(4));
+                    donacion.setEstadoDonacion(rs.getString(7));
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        return donacion;
+    }
+
+
 }

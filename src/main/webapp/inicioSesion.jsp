@@ -50,12 +50,12 @@
                                         <hr>
                                         ¿Aún no tienes una cuenta?
                                     </div>
-                                    <form method="post" action="<%=request.getContextPath()%>/InicioSesionServlet?action=signUp" class="form">
+                                    <form method="post" action="<%=request.getContextPath()%>/InicioSesionServlet?action=registro" class="form">
                                     <div class="form-floating my-3">
                                         <label for="miInputRegistro">Correo PUCP</label>
                                         <input type="email" class="form-control button secondary" id="miInputRegistro" name="correoPucp" onkeyup="habilitarBotonRegistro()" placeholder="telito@pucp.edu.pe" required>
                                     </div>
-                                        </form>
+                                    </form>
                                     <div class="text-center">
                                         <button onclick="mostrarPopup()" class="btn btn-lg btn-primary btn-login fw-bold mb-2" style="background-color: #615dfa;" id="miBotonRegistro" disabled>Registrarse</button>
                                         <!-- Overlay de fondo oscuro -->

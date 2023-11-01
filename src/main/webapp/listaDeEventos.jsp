@@ -2129,13 +2129,13 @@
 </form>
 </div>
 </div>
-<div class="overlay" id="overlayFinalizar"></div>
+<div class="overlay" id="overlayFinalizar">
 <div class="popup" style="width: 500px;" id="popupFinalizar">
     <svg class="cerrarPopup" id="cerrarPopupFinalizar" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path d="M11.4142 10L16.7071 4.70711C17.0976 4.31658 17.0976 3.68342 16.7071 3.29289C16.3166 2.90237 15.6834 2.90237 15.2929 3.29289L10 8.58579L4.70711 3.29289C4.31658 2.90237 3.68342 2.90237 3.29289 3.29289C2.90237 3.68342 2.90237 4.31658 3.29289 4.70711L8.58579 10L3.29289 15.2929C2.90237 15.6834 2.90237 16.3166 3.29289 16.7071C3.68342 17.0976 4.31658 17.0976 4.70711 16.7071L10 11.4142L15.2929 16.7071C15.6834 17.0976 16.3166 17.0976 16.7071 16.7071C17.0976 16.3166 17.0976 15.6834 16.7071 15.2929L11.4142 10Z" fill="black"/>
     </svg>
+    <form  method="post" action="<%=request.getContextPath()%>/ListaDeEventosServlet?action=finConfirm" >
     <div class="container-fluid">
-        <form  method="post" action="<%=request.getContextPath()%>/ListaDeEventosServlet?action=finConfirm" >
         <div class="row">
             <div class="col-sm-1"></div>
             <div class="col-sm-10">
@@ -2159,6 +2159,7 @@
             </div>
             <div class="col-sm-1"></div>
         </div>
+
     </div>
     <br>
     <div class="container-fluid">
@@ -2171,6 +2172,8 @@
             </div>
         </div>
     </div>
+    </form>
+</div>
 </div>
 <%if(!listaEventos.isEmpty()){
     for(Evento e:listaEventos){%>
@@ -2179,8 +2182,7 @@
     <svg class="cerrarPopup" id="cerrarPopupEditarEvento<%=listaEventos.indexOf(e)%>" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path d="M11.4142 10L16.7071 4.70711C17.0976 4.31658 17.0976 3.68342 16.7071 3.29289C16.3166 2.90237 15.6834 2.90237 15.2929 3.29289L10 8.58579L4.70711 3.29289C4.31658 2.90237 3.68342 2.90237 3.29289 3.29289C2.90237 3.68342 2.90237 4.31658 3.29289 4.70711L8.58579 10L3.29289 15.2929C2.90237 15.6834 2.90237 16.3166 3.29289 16.7071C3.68342 17.0976 4.31658 17.0976 4.70711 16.7071L10 11.4142L15.2929 16.7071C15.6834 17.0976 16.3166 17.0976 16.7071 16.7071C17.0976 16.3166 17.0976 15.6834 16.7071 15.2929L11.4142 10Z" fill="black"/>
     </svg>
-
-    <form  method="post" action="<%=request.getContextPath()%>/ListaDeEventosServlet?action=updateConfirm" >
+    <form  method="post" action="<%=request.getContextPath()%>/ListaDeEventosServlet?action=updateConfirm">
         <div class="container-fluid">
         <div class="row"><div class="col"><h5 style="text-align: center;">Editar evento</h5></div></div>
         <div class="row">
@@ -2251,14 +2253,15 @@
                 <button type="submit" class="button secondary" id="cerrarPopupEditar1Evento<%=listaEventos.indexOf(e)%>">Editar</button>
             </div>
             <div class="col-sm-6" style="margin-top: 5px;">
-                <button class="button secondary" id="cerrarPopupEditar2Evento<%=listaEventos.indexOf(e)%>" style="background-color: grey;">Cancelar</button>
+                <button type="button" class="button secondary" id="cerrarPopupEditar2Evento<%=listaEventos.indexOf(e)%>" style="background-color: grey;">Cancelar</button>
             </div>
         </div>
     </div>
     </form>
+</div>
+</div>
 <%}}}%>
-</div>
-</div>
+
 <script>
     function popupFunc(popupId,abrirId,cerrarClass,overlayId){
         const showPopup=document.getElementById(abrirId);

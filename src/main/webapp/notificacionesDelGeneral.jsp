@@ -1288,11 +1288,13 @@
             <!-- SECTION FILTERS BAR ACTIONS -->
             <div class="section-filters-bar-actions">
                 <!-- FORM -->
-                <form class="form">
+                <form method="post" action="<%=request.getContextPath()%>/NotificacionesServlet?action=buscarUsuario" class="form">
                     <!-- FORM INPUT -->
                     <div class="form-input small with-button">
                         <label for="friends-search_1">Buscar usuarios</label>
-                        <input type="text" id="friends-search_1" name="friends_search">
+                        <%String busquedaSolicitudes=(String) request.getAttribute("busquedaSolicitudes");%>
+                        <input type="hidden" name="idUsuario" value="<%=idUsuario%>">
+                        <input type="text" id="friends-search_1" name="busquedaSolicitudes" <%if(busquedaSolicitudes!=null){%> value="<%=busquedaSolicitudes%>"<%}%>>
                         <!-- BUTTON -->
                         <button class="button primary">
                             <!-- ICON MAGNIFYING GLASS -->
@@ -1308,7 +1310,7 @@
                     <!-- FORM SELECT -->
                     <div class="form-select">
                         <label for="friends-filter-category_1">Filter By</label>
-                        <select id="friends-filter-category_1" name="friends_filter_category">
+                        <select id="friends-filter-category_1">
                             <option >Solicitudes de Registro</option>
                             <option >Donaciones</option>
                             <option >Reportes</option>
@@ -2223,27 +2225,6 @@
     document.getElementById("opcionReportes").addEventListener("click", function() {
         mostrarContenido("Reportes");
     });
-
-    // Mostrar la lista de Solicitudes por defecto
-    mostrarContenido("Solicitudes");
-</script>
-
-
-<script>
-    // Función para alternar entre las opciones y mostrar el contenido correspondiente
-    function mostrarContenido(opcion) {
-        const opciones = ["Solicitudes", "Donaciones", "Reportes"];
-
-        opciones.forEach(op => {
-            const contenido = document.getElementById(op.toLowerCase() + "Contenido");
-            if (op === opcion) {
-                contenido.style.display = 'block';
-            } else {
-                contenido.style.display = 'none';
-            }
-        });
-    }
-
     // Agregar eventos de clic para cada opción
     document.getElementById("opcionSolicitudes_1").addEventListener("click", function() {
         mostrarContenido("Solicitudes");
@@ -2256,27 +2237,6 @@
     document.getElementById("opcionReportes_1").addEventListener("click", function() {
         mostrarContenido("Reportes");
     });
-
-    // Mostrar la lista de Solicitudes por defecto
-    mostrarContenido("Solicitudes");
-</script>
-
-<script>
-    // Función para alternar entre las opciones y mostrar el contenido correspondiente
-    function mostrarContenido(opcion) {
-        const opciones = ["Solicitudes", "Donaciones", "Reportes"];
-
-        opciones.forEach(op => {
-            const contenido = document.getElementById(op.toLowerCase() + "Contenido");
-            if (op === opcion) {
-                contenido.style.display = 'block';
-            } else {
-                contenido.style.display = 'none';
-            }
-        });
-    }
-
-    // Agregar eventos de clic para cada opción
     document.getElementById("opcionSolicitudes_2").addEventListener("click", function() {
         mostrarContenido("Solicitudes");
     });
@@ -2288,14 +2248,8 @@
     document.getElementById("opcionReportes_2").addEventListener("click", function() {
         mostrarContenido("Reportes");
     });
-
-    // Mostrar la lista de Solicitudes por defecto
     mostrarContenido("Solicitudes");
 </script>
-
-
-<!--Scripts para popups-->
-
 <script>
     // Obtener referencias a elementos HTML
     const fondo = document.getElementById('fondo');

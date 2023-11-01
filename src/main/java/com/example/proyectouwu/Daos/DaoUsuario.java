@@ -5,6 +5,7 @@ import com.example.proyectouwu.Beans.Usuario;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.Random;
 import java.util.logging.StreamHandler;
 
 public class DaoUsuario extends DaoPadre {
@@ -307,7 +308,4 @@ public class DaoUsuario extends DaoPadre {
             throw new RuntimeException(e);
         }
     }
-
-
-
 }

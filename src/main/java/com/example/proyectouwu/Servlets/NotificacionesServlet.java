@@ -43,7 +43,6 @@ public class NotificacionesServlet extends HttpServlet {
                     request.setAttribute("donacionList",donacionList);
                     request.getRequestDispatcher("notificacionesDelGeneral.jsp").forward(request,response);
                 }else if (rolUsuario.equals("Delegado de Actividad")){
-
                         DaoNotificacionDelegadoGeneral daoNotificacionesDeleActividad = new DaoNotificacionDelegadoGeneral();
                         ArrayList<AlumnoPorEvento> listaSolicitudesApoyo = daoNotificacionesDeleActividad.listarSolicitudesDeApoyo();
 
@@ -52,7 +51,7 @@ public class NotificacionesServlet extends HttpServlet {
                 }else{
                             response.sendRedirect(request.getContextPath());
                 }
-
+                break;
 
         }
 
@@ -61,6 +60,40 @@ public class NotificacionesServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        response.setContentType("text/html");
+        DaoUsuario dUsuario=new DaoUsuario();
+        int idUsuario=Integer.parseInt(request.getParameter("idUsuario"));
+        String rolUsuario=dUsuario.rolUsuarioPorId(idUsuario);
+        request.setAttribute("idUsuario",idUsuario);
+        request.setAttribute("rolUsuario",rolUsuario);
+        request.setAttribute("nombreCompletoUsuario",dUsuario.nombreCompletoUsuarioPorId(idUsuario));
+        request.setAttribute("vistaActual","---");
+        request.setAttribute("correosDelegadosGenerales",dUsuario.listarCorreosDelegadosGenerales());
+        String action = request.getParameter("action") == null ? "default" : request.getParameter("action");
+        switch (action){
+            case "buscarUsuario":
+                if (rolUsuario.equals("Delegado General")){
+                    String busquedaSolicitudes=request.getParameter("busquedaSolicitudes");
+                    DaoNotificacionDelegadoGeneral daoNotificacionDelegadoGeneral = new DaoNotificacionDelegadoGeneral();
+                    ArrayList<Usuario> listaSolicitudes = daoNotificacionDelegadoGeneral.listarSolicitudesDeRegistro(busquedaSolicitudes);
+                    ArrayList<Reporte> reportList = daoNotificacionDelegadoGeneral.listarNotificacionesReporte();
+                    ArrayList<Donacion> donacionList = daoNotificacionDelegadoGeneral.listarNotificacionesDonaciones();
+                    request.setAttribute("busquedaSolicitudes",busquedaSolicitudes);
+                    request.setAttribute("listaSolicitudes",listaSolicitudes);
+                    request.setAttribute("reportList", reportList);
+                    request.setAttribute("donacionList",donacionList);
+                    request.getRequestDispatcher("notificacionesDelGeneral.jsp").forward(request,response);
+                }else if (rolUsuario.equals("Delegado de Actividad")){
+                    DaoNotificacionDelegadoGeneral daoNotificacionesDeleActividad = new DaoNotificacionDelegadoGeneral();
+                    ArrayList<AlumnoPorEvento> listaSolicitudesApoyo = daoNotificacionesDeleActividad.listarSolicitudesDeApoyo();
+                    request.setAttribute("listaSolicitudesApoyo",listaSolicitudesApoyo);
+                    request.getRequestDispatcher("NotificacionesDelActividad.jsp").forward(request,response);
+                }else{
+                    response.sendRedirect(request.getContextPath());
+                }
+                break;
+            case "filtrarFechaDelegadoGeneral":
 
+        }
     }
 }

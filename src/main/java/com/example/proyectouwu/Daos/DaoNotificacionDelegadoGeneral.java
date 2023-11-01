@@ -52,6 +52,40 @@ public class DaoNotificacionDelegadoGeneral extends DaoPadre {
         return listaSolicitudes;
     }
 
+    public ArrayList<Usuario>listarSolicitudesDeRegistro(String busqueda){
+        ArrayList<Usuario> listaSolicitudes = new ArrayList<>();
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+
+        String url = "jdbc:mysql://localhost:3306/proyecto";
+        String username = super.getUser();
+        String password = super.getPassword(); //Cambiar segun tu contraseña
+
+        String sql = "select nombre, apellido, correo, codigoPUCP, condicion  from Usuario where estadoRegistro = 'Pendiente' and (nombre like ? or apellido like ?)";
+        try (Connection conn = DriverManager.getConnection(url, username, password);
+             PreparedStatement pstmt = conn.prepareStatement(sql)){
+            pstmt.setString(1,"%"+busqueda+"%");
+            pstmt.setString(2,"%"+busqueda+"%");
+            try(ResultSet rs=pstmt.executeQuery()){
+                while (rs.next()){
+                    Usuario u=new Usuario();
+                    u.setNombre(rs.getString(1));
+                    u.setApellido(rs.getString(2));
+                    u.setCorreo(rs.getString(3));
+                    u.setCodigoPUCP(rs.getString(4));
+                    u.setCondicion(rs.getString(5));
+                    listaSolicitudes.add(u);
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return listaSolicitudes;
+    }
+
     public ArrayList<Reporte> listarNotificacionesReporte( ){
 
         ArrayList<Reporte> reportList= new ArrayList<>();

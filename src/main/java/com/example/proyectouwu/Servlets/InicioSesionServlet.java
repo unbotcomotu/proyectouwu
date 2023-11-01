@@ -57,6 +57,8 @@ public class InicioSesionServlet extends HttpServlet {
                     request.getRequestDispatcher("InicioSesionServlet").forward(request,response);
                 }
                 break;
+            case "nose":
+
         }
 
 

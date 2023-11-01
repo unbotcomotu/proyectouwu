@@ -11,7 +11,9 @@ import jakarta.servlet.annotation.*;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.Date;
 import java.sql.PreparedStatement;
+import java.sql.Time;
 
 @WebServlet(name = "ListaDeEventosServlet", value = "/ListaDeEventosServlet")
 public class ListaDeEventosServlet extends HttpServlet {
@@ -25,6 +27,7 @@ public class ListaDeEventosServlet extends HttpServlet {
         int idActividad=Integer.parseInt(request.getParameter("idActividad"));
         String rolUsuario=dUsuario.rolUsuarioPorId(idUsuario);
         request.setAttribute("idUsuario",idUsuario);
+        request.setAttribute("idActividad",idActividad);
         request.setAttribute("rolUsuario",rolUsuario);
         request.setAttribute("nombreCompletoUsuario",dUsuario.nombreCompletoUsuarioPorId(idUsuario));
         request.setAttribute("vistaActual","listaDeActividades");
@@ -65,20 +68,37 @@ public class ListaDeEventosServlet extends HttpServlet {
                     break;
                 }
             case "addConfirm":
-                int addEventoID = Integer.parseInt(request.getParameter("addEventoID"));
-                //el id de la Actividad no puede ser cambiado
+
+                // Parámetros:
+                int idUsuario = Integer.parseInt(request.getParameter("idUsuario"));
                 int addActividadID = Integer.parseInt(request.getParameter("addActividadID"));
-                int addLugarID = Integer.parseInt(request.getParameter("addLugarID"));
+                String addLugar = request.getParameter("addLugar");
                 String addTitulo = request.getParameter("addTitulo");
-                String addFecha = request.getParameter("addFecha"); //cambiar a date
-                String addHora = request.getParameter("addHora"); //cambiar a time
+                String addFechaStr = request.getParameter("addFecha");
+                String addHoraStr = request.getParameter("addHora");
                 String addDescripcionEventoActivo = request.getParameter("addDescripcionEventoActivo");
                 String addFraseMotivacional = request.getParameter("addFraseMotivacional");
-                //fotoMinuatura
-                String addfotoMiniatura = request.getParameter("addfotoMiniatura");
+                String addEventoOcultoStr = request.getParameter("addEventoOculto");
 
-                new DaoEvento().crearEvento(addEventoID,addActividadID,addLugarID,addTitulo,addFecha,addHora,addDescripcionEventoActivo,addFraseMotivacional,addfotoMiniatura);
-                response.sendRedirect(request.getContextPath()+"/ListaDeEventosServlet");
+                // Conversión al tipo de variables de la tabla:
+                Boolean addEventoOculto = false;
+                if(!(addEventoOcultoStr == null)){
+                    addEventoOculto = true;
+                }
+                Date addFecha = Date.valueOf("2023-10-"+addFechaStr);
+                Time addHora = Time.valueOf(addHoraStr+":00");
+
+                // Verificar lugar:
+                DaoLugarEvento dLugarEvento = new DaoLugarEvento();
+                int addLugarId = dLugarEvento.idLugarPorNombre(addLugar);
+                // En caso no exista el lugar, se crea uno nuevo
+                if(addLugarId==0){
+                    addLugarId = dLugarEvento.crearLugar(addLugar); // Id del nuevo lugar
+                }
+
+                // Crear evento:
+                new DaoEvento().crearEvento(addActividadID,addLugarId,addTitulo,addFecha,addHora,addDescripcionEventoActivo,addFraseMotivacional,"uwu",addEventoOculto);
+                response.sendRedirect(request.getContextPath()+"/ListaDeEventosServlet?idUsuario="+idUsuario+"&idActividad="+addActividadID);
                 break;
             case "updateConfirm":
                 int updateLugarID = Integer.parseInt(request.getParameter("updateLugarID"));

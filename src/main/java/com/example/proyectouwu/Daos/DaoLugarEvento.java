@@ -44,4 +44,35 @@ public class DaoLugarEvento extends DaoPadre  {
         }
     }
 
+    public int idLugarPorNombre(String nombre){
+        String sql="select idLugarEvento from lugarevento where lower(?)=lugar";
+        try(PreparedStatement pstmt= conn.prepareStatement(sql)){
+            pstmt.setString(1,nombre);
+            try(ResultSet rs=pstmt.executeQuery()){
+                if(rs.next()){
+                    return rs.getInt(1);
+                }else
+                    return 0;
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public int crearLugar(String nombre){
+        String sql="insert into lugarevento(lugar) values (?)";
+        try(PreparedStatement pstmt= conn.prepareStatement(sql,Statement.RETURN_GENERATED_KEYS)){
+            pstmt.setString(1,nombre);
+            pstmt.executeUpdate();
+            try(ResultSet rs= pstmt.getGeneratedKeys()){
+                if(rs.next()){
+                    return rs.getInt(1);
+                }else
+                    return 0;
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
 }

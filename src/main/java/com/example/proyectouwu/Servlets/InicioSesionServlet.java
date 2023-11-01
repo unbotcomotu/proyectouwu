@@ -3,6 +3,7 @@ package com.example.proyectouwu.Servlets;
 import com.example.proyectouwu.Beans.Usuario;
 import com.example.proyectouwu.Daos.DaoActividad;
 import com.example.proyectouwu.Daos.DaoUsuario;
+import com.example.proyectouwu.Daos.DaoValidacion;
 import jakarta.servlet.*;
 import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
@@ -58,8 +59,11 @@ public class InicioSesionServlet extends HttpServlet {
                 }
                 break;
             case "registro":
-                //String correo = request.getParameter("correoPucp");
+                String correo2 = request.getParameter("correoPucp");
                 //Debemos guardarlo en algun lado para mandar el correo
+                DaoValidacion daoValidacion = new DaoValidacion();
+                daoValidacion.agregarCorreoParaEnviarLink(correo2);
+                //request.getRequestDispatcher("inicioSesion.jsp").forward(request,response);
                 break;
             case "nose":
 

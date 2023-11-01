@@ -65,6 +65,15 @@
         }
     </style>
 
+
+    <style>
+        .button-reject {
+            background-color: red; /* Cambia el fondo del botón a rojo */
+            color: white; /* Cambia el color del texto a blanco */
+            /* Puedes ajustar otros estilos según tus preferencias, como el tamaño del texto, el borde, etc. */
+        }
+    </style>
+
     <style>
         @media screen and (max-width: 680px) {
             .auxResponsiveUwu{
@@ -1825,6 +1834,17 @@
                             <!-- TABLE TITLE -->
                             <p class="table-title"> <%=donacion.getEstadoDonacion()%> </p>
                             <!-- /TABLE TITLE -->
+                        </div>
+
+                        <div class="table-column centered padded">
+                            <!-- TABLE TITLE -->
+                            <button class="button-accept">Editar</button>
+                            <!-- /TABLE TITLE -->
+                        </div>
+
+                        <div class="table-column centered padded">
+
+                            <button class="button-reject">Rechazar</button>
                         </div>
 
                         <!-- /TABLE COLUMN -->

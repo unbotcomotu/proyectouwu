@@ -287,6 +287,7 @@ public class DaoUsuario extends DaoPadre {
         try(PreparedStatement pstmt=conn.prepareStatement(sql)){
             pstmt.setString(1,estado);
             pstmt.setInt(2,idUser);
+            pstmt.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -320,5 +321,18 @@ public class DaoUsuario extends DaoPadre {
             throw new RuntimeException(e);
         }
         return listIdEgresados;
+    }
+    public void cambiarFoto(int idUser, Blob foto){
+        String sql = "update usuario set fotoSeguro = ? where idUsuario = ?";
+        try(PreparedStatement pstmt=conn.prepareStatement(sql)){
+            pstmt.setBlob(1,foto);
+            pstmt.setInt(2,idUser);
+
+            pstmt.executeUpdate();
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
     }
 }

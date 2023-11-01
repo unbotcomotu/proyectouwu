@@ -1428,9 +1428,11 @@
             <!-- PROFILE HEADER INFO ACTIONS -->
             <div class="profile-header-info-actions">
                 <!-- PROFILE HEADER INFO ACTION -->
-                <div class="container-fluid button secondary btn-file1 mx-2 botones">
-                    <input type="file" accept="image/png, .jpeg, .jpg">Cambiar foto</input>
-                </div>
+
+                    <div class="container-fluid button secondary btn-file1 mx-2 botones">
+                        <input type="file" accept="image/png, .jpeg, .jpg" name = "cambiarFoto">Cambiar foto</input>
+                    </div>
+
                 <div class="container-fluid button secondary btn-file1 mx-2 botones">
                     <input type="button" id="botonDescripcion">Descripción</input>
                 </div>

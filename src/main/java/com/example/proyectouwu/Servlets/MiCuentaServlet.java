@@ -5,7 +5,10 @@ import jakarta.servlet.*;
 import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
 
+import javax.sql.rowset.serial.SerialBlob;
 import java.io.IOException;
+import java.sql.Blob;
+import java.sql.SQLException;
 
 @WebServlet(name = "MiCuentaServlet", value = "/MiCuentaServlet")
 public class MiCuentaServlet extends HttpServlet {
@@ -37,12 +40,25 @@ public class MiCuentaServlet extends HttpServlet {
 
         switch(action){
             case("editarDescripcion"):
-                Integer id = Integer.parseInt(request.getParameter("idUsuario"));
+                Integer idUser = Integer.parseInt(request.getParameter("idUsuario"));
                 String nuevaDescripcion = request.getParameter("nuevaDescripcion");
                 //sentencia sql para actualizar:
-                daoUsuario.cambioDescripcion(nuevaDescripcion, id);
-                response.sendRedirect(request.getContextPath() + "/MiCuentaServlet?"+"idUsuario="+id);
+                daoUsuario.cambioDescripcion(nuevaDescripcion, idUser);
+                response.sendRedirect(request.getContextPath() + "/MiCuentaServlet?"+"idUsuario="+idUser);
                 break;
+            case "editarFoto":
+                Integer idUsuario = Integer.parseInt(request.getParameter("idUsuario"));
+                byte[] bytes = request.getParameter("cambiarFoto").getBytes("UTF-8");
+                try {
+                    Blob cambiarFoto =  new SerialBlob(bytes);
+                    //Aquí va el método
+                    daoUsuario.cambiarFoto(idUsuario,cambiarFoto);
+                    response.sendRedirect(request.getContextPath() + "/MiCuentaServlet?"+"idUsuario="+idUsuario);
+
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
+
             case("default"):
                 //auxilio
                 break;

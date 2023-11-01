@@ -53,7 +53,7 @@ public class MisDonacionesServlet extends HttpServlet {
                 String medioPago = request.getParameter("medioPago");
                 int monto = Integer.parseInt(request.getParameter("monto"));
                 //Ayuda para lo del blob en captura
-                byte[] bytes = request.getParameter("blob").getBytes("UTF-8");
+                byte[] bytes = request.getParameter("captura").getBytes("UTF-8");
                 try {
                     Blob captura =  new SerialBlob(bytes);
                     //Después se agrega la donación

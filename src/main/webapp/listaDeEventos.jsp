@@ -9,6 +9,7 @@
 <html lang="en">
 <head>
     <%int idUsuario=(int) request.getAttribute("idUsuario");
+        int idActividad = (int) request.getAttribute("idActividad");
         String rolUsuario=(String) request.getAttribute("rolUsuario");
         String nombreCompletoUsuario=(String) request.getAttribute("nombreCompletoUsuario");
         String vistaActual=(String) request.getAttribute("vistaActual");
@@ -2060,33 +2061,34 @@
     </div>
 </footer>
 <%if(delegadoDeEstaActividadID==idUsuario){%>
-<div class="overlay" id="overlayCrear"></div>
+<div class="overlay" id="overlayCrear">
 <div class="popup contenedorCrear" style="width: 700px;" id="popupCrear">
     <svg class="cerrarPopup" id="cerrarPopupCrear" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path d="M11.4142 10L16.7071 4.70711C17.0976 4.31658 17.0976 3.68342 16.7071 3.29289C16.3166 2.90237 15.6834 2.90237 15.2929 3.29289L10 8.58579L4.70711 3.29289C4.31658 2.90237 3.68342 2.90237 3.29289 3.29289C2.90237 3.68342 2.90237 4.31658 3.29289 4.70711L8.58579 10L3.29289 15.2929C2.90237 15.6834 2.90237 16.3166 3.29289 16.7071C3.68342 17.0976 4.31658 17.0976 4.70711 16.7071L10 11.4142L15.2929 16.7071C15.6834 17.0976 16.3166 17.0976 16.7071 16.7071C17.0976 16.3166 17.0976 15.6834 16.7071 15.2929L11.4142 10Z" fill="black"/>
     </svg>
-</div>
     <form  method="post" action="<%=request.getContextPath()%>/ListaDeEventosServlet?action=addConfirm" >
         <div class="container-fluid">
         <div class="row"><div class="col"><h5 style="text-align: center;">Crear evento</h5></div></div>
         <div class="row">
             <div class="col-sm-7">
                 <br>
+                <input hidden name="idUsuario" value=<%=idUsuario%>>
+                <input hidden name="addActividadID" value=<%=idActividad%>>
                 <label style="margin-top: 25px;"><b>Nombre del evento:</b></label>
-                <input type="text" placeholder="Fibra Tóxica VS *" required>
+                <input type="text" name="addTitulo" placeholder="Fibra Tóxica VS *" required>
                 <label style="margin-top: 25px;" ><b>Frase motivacional:</b></label>
-                <input type="text" placeholder="Frase motivacional" required>
+                <input type="text" name="addFraseMotivacional" placeholder="Frase motivacional" required>
                 <label style="margin-top: 25px;"><b>Descripción del evento:</b></label>
-                <input type="text" placeholder="Descripción" required>
+                <input type="text" name="addDescripcionEventoActivo" placeholder="Descripción" required>
                 <div class="row" style="margin-top: 25px;">
                     <div class="col-6">
                         <label for="delegado"><b>Hora (HH:MM):</b></label>
-                        <input type="text" placeholder="00:00" required>
+                        <input type="text" name="addHora" placeholder="00:00" required>
                     </div>
                     <div class="col-6">
                         <label for="delegado"><b>Lugar:</b></label>
-                        <input type="text" list="lugar" placeholder="Lugar" required>
-                        <datalist id="lugar">
+                        <input type="text" list="lugarlist" name="addLugar" placeholder="Lugar" required>
+                        <datalist id="lugarlist">
                             <%for(LugarEvento l:listaLugares){%>
                             <option value="<%=l.getLugar()%>"><%=l.getLugar()%></option>
                             <%}%>
@@ -2096,11 +2098,11 @@
                 <div class="row" style="margin-top: 25px;">
                     <div class="col-6">
                         <label for="delegado"><b>Fecha (día):</b></label>
-                        <input type="text" multiple id="delegado" placeholder="... de Octubre" required>
+                        <input type="text" name="addFecha" multiple id="delegado" placeholder="... de Octubre" required>
                     </div>
                     <div class="col-6">
                         <p style="width: 100%;"><b>Ocultar evento:</b></p>
-                        <input type="checkbox" style="width: 30%; position: relative; top: 15px; left: 60px;">
+                        <input type="checkbox" name="addEventoOculto" style="width: 30%; position: relative; top: 15px; left: 60px;">
                     </div>
                 </div>
             </div>
@@ -2108,7 +2110,7 @@
                 <div class="container-fluid btn btn-file1">
                     <img class="img-fluid" src="css/subirArchivo.jpg" style="opacity: 50%;" alt="">
                     <p style="margin-top: 10px"><b>Agregar foto miniatura</b></p>
-                    <input type="file" style="background-color: white; margin-top: 25px;" accept="image/png, .jpeg, .jpg"></input>
+                    <input type="file" name="addfotoMiniatura" style="background-color: white; margin-top: 25px;" accept="image/png, .jpeg, .jpg"></input>
                 </div>
             </div>
         </div>
@@ -2125,6 +2127,8 @@
         </div>
     </div>
 </form>
+</div>
+</div>
 <div class="overlay" id="overlayFinalizar"></div>
 <div class="popup" style="width: 500px;" id="popupFinalizar">
     <svg class="cerrarPopup" id="cerrarPopupFinalizar" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -2170,12 +2174,12 @@
 </div>
 <%if(!listaEventos.isEmpty()){
     for(Evento e:listaEventos){%>
-<div class="overlay" id="overlayEditarEvento<%=listaEventos.indexOf(e)%>"></div>
+<div class="overlay" id="overlayEditarEvento<%=listaEventos.indexOf(e)%>">
 <div class="popup contenedorCrear" style="width: 700px;" id="popupEditarEvento<%=listaEventos.indexOf(e)%>">
     <svg class="cerrarPopup" id="cerrarPopupEditarEvento<%=listaEventos.indexOf(e)%>" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path d="M11.4142 10L16.7071 4.70711C17.0976 4.31658 17.0976 3.68342 16.7071 3.29289C16.3166 2.90237 15.6834 2.90237 15.2929 3.29289L10 8.58579L4.70711 3.29289C4.31658 2.90237 3.68342 2.90237 3.29289 3.29289C2.90237 3.68342 2.90237 4.31658 3.29289 4.70711L8.58579 10L3.29289 15.2929C2.90237 15.6834 2.90237 16.3166 3.29289 16.7071C3.68342 17.0976 4.31658 17.0976 4.70711 16.7071L10 11.4142L15.2929 16.7071C15.6834 17.0976 16.3166 17.0976 16.7071 16.7071C17.0976 16.3166 17.0976 15.6834 16.7071 15.2929L11.4142 10Z" fill="black"/>
     </svg>
-</div>
+
     <form  method="post" action="<%=request.getContextPath()%>/ListaDeEventosServlet?action=updateConfirm" >
         <div class="container-fluid">
         <div class="row"><div class="col"><h5 style="text-align: center;">Editar evento</h5></div></div>
@@ -2253,6 +2257,8 @@
     </div>
     </form>
 <%}}}%>
+</div>
+</div>
 <script>
     function popupFunc(popupId,abrirId,cerrarClass,overlayId){
         const showPopup=document.getElementById(abrirId);

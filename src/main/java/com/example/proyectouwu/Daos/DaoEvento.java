@@ -194,24 +194,19 @@ public class DaoEvento extends DaoPadre {
         }
     }
 
-    public void crearEvento(int idEvento, int idActividad, int lugarEvento, String titulo, String fecha, String hora, String descripcionEventoActivo, String fraseMotivacional, String fotoMiniatura) {
-        String sql = "insert into evento(idEvento,idActividad,idLugarEvento,titulo,fecha,hora,descripcionEventoActivo,fraseMotivacional,fotoMinuatura) values (?,?,?,?,?,?,?,?,?)";
-        //, String eventoFinalizado, String eventoOculto, String resumen, String resultadoEvento
+    public void crearEvento(int idActividad, int lugarEvento, String titulo, Date fecha, Time hora, String descripcionEventoActivo, String fraseMotivacional, String fotoMiniatura, Boolean eventoOculto) {
+        String sql = "insert into evento(idActividad,idLugarEvento,titulo,fecha,hora,descripcionEventoActivo,fraseMotivacional,fotoMiniatura,eventoFinalizado,eventoOculto) values (?,?,?,?,?,?,?,?,0,?)";
         Evento e = new Evento();
         try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            pstmt.setInt(1, idEvento);
-            pstmt.setInt(2, idActividad);
-            pstmt.setInt(3, lugarEvento);
-            pstmt.setString(4, titulo);
-            pstmt.setString(5, fecha);
-            pstmt.setString(6, hora);
-            pstmt.setString(7, descripcionEventoActivo);
-            pstmt.setString(8, fraseMotivacional);
-            pstmt.setString(10, fotoMiniatura);
-            //pstmt.setString(11, eventoFinalizado);
-            //pstmt.setString(12, eventoOculto);
-            //pstmt.setString(13, resumen);
-            //pstmt.setString(14, resultadoEvento);
+            pstmt.setInt(1, idActividad);
+            pstmt.setInt(2, lugarEvento);
+            pstmt.setString(3, titulo);
+            pstmt.setDate(4, fecha);
+            pstmt.setTime(5, hora);
+            pstmt.setString(6, descripcionEventoActivo);
+            pstmt.setString(7, fraseMotivacional);
+            pstmt.setString(8, fotoMiniatura);
+            pstmt.setBoolean(9,eventoOculto);
             pstmt.executeUpdate();
         } catch (SQLException ex) {
             throw new RuntimeException(ex);

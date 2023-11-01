@@ -308,4 +308,17 @@ public class DaoUsuario extends DaoPadre {
             throw new RuntimeException(e);
         }
     }
+    public ArrayList<Integer> listaIdEgresados(){
+        ArrayList<Integer> listIdEgresados = new ArrayList<>();
+
+        String sql = "select idUsuario from usuario where condicion = 'Egresado'";
+        try(ResultSet rs = conn.prepareStatement(sql).executeQuery()){
+            while(rs.next()){
+                listIdEgresados.add(rs.getInt(1));
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return listIdEgresados;
+    }
 }

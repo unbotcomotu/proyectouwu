@@ -1,6 +1,7 @@
 package com.example.proyectouwu.Daos;
 
 import com.example.proyectouwu.Beans.Donacion;
+import com.example.proyectouwu.Beans.Usuario;
 
 import java.awt.image.BufferedImage;
 import java.sql.*;
@@ -86,4 +87,27 @@ public class DaoDonacion extends DaoPadre  {
         }
     }
 
+    public Integer sumarMontoDonadoPorEgresado(){
+        int montoEgresado = 0;
+        int montoCopia = 0;
+        String sql = "select sum(monto) from donacion where idUser = ?";
+        
+        DaoUsuario daoUsuario = new DaoUsuario();
+        ArrayList<Integer> egresadosIds = daoUsuario.listaIdEgresados();
+        
+        for (Integer id:egresadosIds){
+            try(PreparedStatement pstmt=conn.prepareStatement(sql)){
+                pstmt.setInt(1,id);
+                try(ResultSet rs = pstmt.executeQuery()){
+                    while(rs.next()){
+                        montoCopia = rs.getInt(1);
+                    }
+                }
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            } 
+            montoEgresado += montoCopia;
+        }
+        return montoEgresado;
+    }
 }

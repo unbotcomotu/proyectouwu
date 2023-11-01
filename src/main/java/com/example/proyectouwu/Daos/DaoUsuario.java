@@ -352,4 +352,39 @@ public class DaoUsuario extends DaoPadre {
         }
 
     }
+
+
+    public int obtenerIdPorCorreo (String correo){
+        int id = 0;
+        String sql = "select idusuario from usuario where correo =?";
+        try(PreparedStatement pstmt=conn.prepareStatement(sql)){
+            pstmt.setString(1,correo);
+            try(ResultSet rs = pstmt.executeQuery()){
+                if(rs.next()) {
+                    id = rs.getInt(1);
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return id;
+    }
+
+    public boolean estaBaneadoporId(int usuarioId){
+        boolean baneado = true;
+        String sql = "SELECT idUsuario FROM proyecto.ban where idUsuario = ?";
+        try(PreparedStatement pstmt=conn.prepareStatement(sql)){
+            pstmt.setInt(1,usuarioId);
+            try(ResultSet rs = pstmt.executeQuery()){
+                if(rs.next()) {
+                    if(rs.getInt(1) == usuarioId ){
+                    return false;
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return baneado;
+    }
 }

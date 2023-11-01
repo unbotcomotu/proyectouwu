@@ -38,26 +38,29 @@
                                     <div class="col-lg-6 text-left">
                                         <button class="btn btn-lg btn-primary btn-login fw-bold mb-2" style="background-color: #615dfa" id="miBotonInicioSesion" type="submit" disabled>Iniciar sesión</button>
                                     </div>
-                            </form>
+
                                     <div class="col-lg-6 text-right">
-                                        <a class="small" href="<%=request.getContextPath()%>/InicioSesionServlet?action=recuperarContrasena">¿Has olvidado tu contraseña?</a>
+
+                                        <a class="small" href="<%=request.getContextPath()%>/recuperarContrasenaPrimerPaso.jsp">¿Has olvidado tu contraseña?</a>
+
+
                                     </div>
                                 </div>
-
+                            </form>
                             <div class="row d-grid">
                                 <div class="col-lg-12 mt-2">
                                     <div class="text-center" style="font-size: 75%;">
                                         <hr>
                                         ¿Aún no tienes una cuenta?
                                     </div>
-                                    <form method="post" action="<%=request.getContextPath()%>/InicioSesionServlet?action=registro" class="form">
-                                    <div class="form-floating my-3">
-                                        <label for="miInputRegistro">Correo PUCP</label>
-                                        <input type="email" class="form-control button secondary" id="miInputRegistro" name="correoPucp" onkeyup="habilitarBotonRegistro()" placeholder="telito@pucp.edu.pe" required>
-                                    </div>
-                                    </form>
+                                    <form method="post" action="<%=request.getContextPath()%>/InicioSesionServlet?action=registro" class = "form">
+                                        <div class="form-floating my-3">
+                                            <label for="miInputRegistro">Correo PUCP</label>
+                                            <input type="email" class="form-control button secondary" id="miInputRegistro" name="correoPucp" onkeyup="habilitarBotonRegistro()" placeholder="telito@pucp.edu.pe" required>
+                                        </div>
+
                                     <div class="text-center">
-                                        <button onclick="mostrarPopup()" class="btn btn-lg btn-primary btn-login fw-bold mb-2" style="background-color: #615dfa;" id="miBotonRegistro" disabled>Registrarse</button>
+                                        <button onclick="mostrarPopup()" class="btn btn-lg btn-primary btn-login fw-bold mb-2" type="submit" style="background-color: #615dfa;" id="miBotonRegistro"  disabled>Registrarse</button>
                                         <!-- Overlay de fondo oscuro -->
                                         <div class="overlay" id="overlay"></div>
                                         <!-- Contenido del popup -->
@@ -103,19 +106,19 @@
                                             </script>
                                         </div>
                                     </div>
+                                    </form>
                                 </div>
                             </div>
-                            <footer class="my-1 pt-4 text-muted text-center text-small" style="font-size: 70%;">
-                                <p>&copy; 2023 Fibra Tóxica</p>
-                            </footer>
-                        </div>
+                        <footer class="my-1 pt-4 text-muted text-center text-small" style="font-size: 70%;">
+                            <p>&copy; 2023 Fibra Tóxica</p>
+                        </footer>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
+</div>
 
 </body>
 </html>
-

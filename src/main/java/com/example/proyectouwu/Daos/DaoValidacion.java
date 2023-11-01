@@ -35,4 +35,27 @@ public class DaoValidacion extends DaoPadre {
             throw new RuntimeException(e);
         }
     }
+
+    public void agregarCorreoParaRecuperarContrasena(String correo){
+        if(new DaoUsuario().obtenerIdPorCorreo(correo) != 0) {
+            String sql = "insert into validacion( correo, tipo, codigoValidacion, fechaHora, linkEnviado, idUsuario) values (?,?,?,?,?,?);";
+
+            LocalDateTime fechaHoraActual = LocalDateTime.now();
+            // Define el formato deseado
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+            // Convierte la fecha y hora actual en un String formateado
+            String dateStr = fechaHoraActual.format(formatter);
+            try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+                pstmt.setString(1, correo);
+                pstmt.setString(2, "RecuperarContrasena");
+                pstmt.setInt(3, new Random().nextInt(99999));
+                pstmt.setString(4, dateStr);
+                pstmt.setBoolean(5, false);
+                pstmt.setInt(6, new DaoUsuario().obtenerIdPorCorreo(correo));
+                pstmt.executeUpdate();
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+        }
+    }
 }

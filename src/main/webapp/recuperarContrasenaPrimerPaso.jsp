@@ -98,17 +98,19 @@
         <h2 class="texto"> RECUPERACIÓN DE CONTRASEÑA</h2>
         <!--<p class="lead">Bienvenido y gracias por animarte a participar de la semana de ingeniería. Ahora solo necesitas crear una cuenta regirtrando tus datos</p>-->
     </div>
-
+<form  method = "post" action="<%=request.getContextPath()%>/RecuperarContrasenaPrimerPasoServlet?action=correoRecuperarContrasena" class="form">
     <div class="mb-5 col-12">
         <label for="email" class="form-label texto">Ingrese su correo electrónico</label>
-        <input type="email" class="form-control" id="email" placeholder="ejemplo@pucp.edu.pe" required>
+        <input type="email" class="form-control" name = "correoPucp" id="email" placeholder="EjemploASeguir@pucp.edu.pe" required>
         <div class="invalid-feedback texto">
             Por favor ingrese un correo electrónico válido.
         </div>
     </div>
 
     <button id="continuarButton" class=  "w-100 btn btn-primary btn-lg texto mb-3" type="submit" style ="background-color: rgb(97,93,250)" disabled><a id="abrirPopup">Continuar</a></button>
-    <button><a href="inicioSesion.html">Atrás</a></button>
+</form>
+
+    <button><a href="<%=request.getContextPath()%>/InicioSesionServlet">Atrás</a></button>
 
 
     <!---"w-100 btn btn-primary btn-lg texto"-->
@@ -158,7 +160,7 @@
 </div>
 <div class="overlay" id="overlay">
     <div class="popup" id="popup">
-        <a href="inicioSesion.html">
+        <a href="<%= request.getContextPath()%>/InicioSesionServlet">
             <svg class="cerrarPopup" id="cerrarPopup" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M11.4142 10L16.7071 4.70711C17.0976 4.31658 17.0976 3.68342 16.7071 3.29289C16.3166 2.90237 15.6834 2.90237 15.2929 3.29289L10 8.58579L4.70711 3.29289C4.31658 2.90237 3.68342 2.90237 3.29289 3.29289C2.90237 3.68342 2.90237 4.31658 3.29289 4.70711L8.58579 10L3.29289 15.2929C2.90237 15.6834 2.90237 16.3166 3.29289 16.7071C3.68342 17.0976 4.31658 17.0976 4.70711 16.7071L10 11.4142L15.2929 16.7071C15.6834 17.0976 16.3166 17.0976 16.7071 16.7071C17.0976 16.3166 17.0976 15.6834 16.7071 15.2929L11.4142 10Z" fill="black"/>
             </svg>

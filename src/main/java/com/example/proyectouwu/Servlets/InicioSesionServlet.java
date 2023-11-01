@@ -49,7 +49,7 @@ public class InicioSesionServlet extends HttpServlet {
                         break bucleUsuarios;
                     }
                 }
-                if(existeUsuario && new DaoUsuario().getEstadoDeResgitroPorId(usuarioId).equals("Registrado")) {
+                if(existeUsuario && new DaoUsuario().getEstadoDeResgitroPorId(usuarioId).equals("Registrado") && new DaoUsuario().estaBaneadoporId(usuarioId)) {
                     response.sendRedirect(request.getContextPath() + "/ListaDeActividadesServlet?idUsuario="+usuarioId);
                     //request.setAttribute("idUsuario", Integer.toString(usuarioId));
                     //ListaDeActividadesServlet?idUsuario=1
@@ -63,10 +63,8 @@ public class InicioSesionServlet extends HttpServlet {
                 //Debemos guardarlo en algun lado para mandar el correo
                 DaoValidacion daoValidacion = new DaoValidacion();
                 daoValidacion.agregarCorreoParaEnviarLink(correo2);
-                //request.getRequestDispatcher("inicioSesion.jsp").forward(request,response);
+                request.getRequestDispatcher("inicioSesion.jsp").forward(request,response);
                 break;
-            case "nose":
-
         }
 
 

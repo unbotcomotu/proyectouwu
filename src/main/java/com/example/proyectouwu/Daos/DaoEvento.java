@@ -241,6 +241,7 @@ public class DaoEvento extends DaoPadre {
         try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setInt(1, idEvento);
             try (ResultSet rs = pstmt.executeQuery()) {
+                rs.next();
                 if(rs.getBoolean(1)==true){
                     return true;
                 }else{
@@ -260,6 +261,21 @@ public class DaoEvento extends DaoPadre {
                 pstmt.setString(2,resultado);
                 pstmt.setInt( 3,idEvento);
                 pstmt.executeUpdate();
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public int idEventoPorNombre(String nombre){
+        String sql="select idEvento from evento where lower(?)=titulo";
+        try(PreparedStatement pstmt= conn.prepareStatement(sql)){
+            pstmt.setString(1,nombre);
+            try(ResultSet rs=pstmt.executeQuery()){
+                if(rs.next()){
+                    return rs.getInt(1);
+                }else
+                    return 0;
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);

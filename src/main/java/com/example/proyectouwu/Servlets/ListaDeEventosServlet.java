@@ -57,6 +57,9 @@ public class ListaDeEventosServlet extends HttpServlet {
 
         DaoEvento daoEvento = new DaoEvento();
 
+        int idUsuario;
+        int addActividadID;
+
         switch (action) {
             case "searchView":
                 String recv = request.getParameter("searchEventoID");
@@ -70,8 +73,8 @@ public class ListaDeEventosServlet extends HttpServlet {
             case "addConfirm":
 
                 // Parámetros:
-                int idUsuario = Integer.parseInt(request.getParameter("idUsuario"));
-                int addActividadID = Integer.parseInt(request.getParameter("addActividadID"));
+                idUsuario = Integer.parseInt(request.getParameter("idUsuario"));
+                addActividadID = Integer.parseInt(request.getParameter("addActividadID"));
                 String addLugar = request.getParameter("addLugar");
                 String addTitulo = request.getParameter("addTitulo");
                 String addFechaStr = request.getParameter("addFecha");
@@ -115,12 +118,16 @@ public class ListaDeEventosServlet extends HttpServlet {
                 response.sendRedirect(request.getContextPath()+ "/ListaDeEventosServlet");
                 break;
             case "finConfirm":
-                int finEventoId = Integer.parseInt(request.getParameter("finEventoID"));
+                idUsuario = Integer.parseInt(request.getParameter("idUsuario"));
+                addActividadID = Integer.parseInt(request.getParameter("addActividadID"));
+                String finEventoNombre = request.getParameter("finEventoNombre");
                 String finResumen = request.getParameter("finResumen");
                 String resultado = request.getParameter("resultado");
 
+                int finEventoId = daoEvento.idEventoPorNombre(finEventoNombre);
+
                 daoEvento.finalizarEvento(finEventoId,finResumen,resultado);
-                response.sendRedirect(request.getContextPath()+"/ListaDeEventosServlet");
+                response.sendRedirect(request.getContextPath()+"/ListaDeEventosServlet?idUsuario="+idUsuario+"&idActividad="+addActividadID);
                 break;
         }
     }

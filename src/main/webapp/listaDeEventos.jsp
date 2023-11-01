@@ -2139,9 +2139,11 @@
         <div class="row">
             <div class="col-sm-1"></div>
             <div class="col-sm-10">
+                <input hidden name="idUsuario" value=<%=idUsuario%>>
+                <input hidden name="addActividadID" value=<%=idActividad%>>
                 <label for="eventoFinalizar"><h5 style="text-align: center;">Seleccione el evento: </h5></label>
                 <div style="margin-top: 20px;">
-                    <input type="text" multiple id="eventoFinalizar" list="eventos" placeholder="Título" required>
+                    <input type="text" name="finEventoNombre" multiple id="eventoFinalizar" list="eventos" placeholder="Título" required>
                     <datalist id="eventos">
                         <%for(Evento e:listaEventos){
                         if(!e.isEventoFinalizado()){%>
@@ -2150,9 +2152,9 @@
                     </datalist>
                 </div>
                 <label style="margin-top: 25px;"><b>Resumen:</b></label>
-                <input type="text" placeholder="Resumen" required>
+                <input type="text" name="finResumen" placeholder="Resumen" required>
                 <label style="margin-top: 25px;"><b>Resultado:</b></label>
-                <select style="padding: 12.5px" id="resultado" required>
+                <select style="padding: 12.5px" name="resultado" id="resultado" required>
                     <option value="Victoria">Victoria</option>
                     <option value="Derrota">Derrota</option>
                 </select>
@@ -2168,7 +2170,7 @@
                 <button class="button secondary" style="opacity: 50%;" id="cerrarPopupFinalizar1" disabled="true">Finalizar</button>
             </div>
             <div class="col-sm-6" style="margin-top: 5px;">
-                <button class="button secondary" id="cerrarPopupFinalizar2" style="background-color: grey;">Cancelar</button>
+                <button type="button" class="button secondary" id="cerrarPopupFinalizar2" style="background-color: grey;">Cancelar</button>
             </div>
         </div>
     </div>

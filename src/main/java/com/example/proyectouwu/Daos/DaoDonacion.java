@@ -60,7 +60,7 @@ public class DaoDonacion extends DaoPadre  {
     public void editarDonacion(Donacion donacion){ //Editar donacion por Id
 
 
-        String sql = "update donacion set monto = ?,estadoDonacion = ?, fechaHoraValido = now() where idDonacion = ?";
+        String sql = "update donacion set monto = ?,estadoDonacion = ?, fechaHoraValidado = now() where idDonacion = ?";
 
         try(PreparedStatement pstmt=conn.prepareStatement(sql)){
             pstmt.setFloat(1,donacion.getMonto());

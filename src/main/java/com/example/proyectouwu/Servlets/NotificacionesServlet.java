@@ -133,7 +133,7 @@ public class NotificacionesServlet extends HttpServlet {
                     donacion.setEstadoDonacion(estadoDonacion);
 
                     daoDonacion.editarDonacion(donacion);
-                    response.sendRedirect(request.getContextPath() + "/JobServlet");
+                    request.getRequestDispatcher("job/notificacionesDelGeneral.jsp").forward(request,response);
                 }else{
                     request.setAttribute("donacion",daoDonacion.buscarPorId(donacionId));
                     request.getRequestDispatcher("job/form_edit.jsp").forward(request,response);

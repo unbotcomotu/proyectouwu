@@ -6,6 +6,10 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%String idCorreoValidacion=(String) request.getAttribute("idCorreoValidacion");
+
+%>
+
 <html>
 <head>
     <meta charset="utf-8">
@@ -55,11 +59,14 @@
         <div class="row g-5 ">
             <div class="col-md-8 offset-md-2">
                 <h4 class="mb-3 texto">Registro</h4>
-                <form class="needs-validation" novalidate>
+                <form method = "post" class="form" action="<%=request.getContextPath()%>/RegistroServlet?action=registro">
+                    <form class="needs-validation" novalidate>
+
                     <div class="row g-3">
+
                         <div class="col-sm-6">
                             <label for="firstName" class="form-label texto">Nombres</label>
-                            <input type="text" class="form-control" id="firstName" placeholder="" value="" required>
+                            <input type="text" class="form-control" name = "nombres" id="firstName" placeholder="" value="" required>
                             <div class="invalid-feedback texto">
                                 Por favor ingrese un nombre.
                             </div>
@@ -67,7 +74,7 @@
 
                         <div class="col-sm-6">
                             <label for="lastName" class="form-label texto">Apellidos</label>
-                            <input type="text" class="form-control" id="lastName" placeholder="" value="" required>
+                            <input type="text" class="form-control" id="lastName" name="apellidos" placeholder="" value="" required>
                             <div class="invalid-feedback texto">
                                 Por favor ingrese sus apellidos.
                             </div>
@@ -77,7 +84,7 @@
 
                         <div class="col-12">
                           <!--for="email", decia eso dentro del label-->  <label class="form-label texto">Código <span class="text-muted"></span></label>
-                            <input type="text" class="form-control" required>
+                            <input type="text" class="form-control" name ="codigoPucp" required>
                             <div class="invalid-feedback texto">
                                 Por favor ingrese un código válido.
                             </div>
@@ -97,6 +104,11 @@
                             <div class="invalid-feedback texto" id="password-error">
                                 Las contraseñas no coinciden.
                             </div>
+                        </div>
+
+
+                        <div class="mb-3">
+                            <input type="hidden" class="form-control" name="idCorreoValidacion" value="<%=idCorreoValidacion%>">
                         </div>
 
                         <script>
@@ -144,7 +156,7 @@
                         <!--<button class="w-100 btn btn-primary btn-lg" type="submit">Continuar</button>-->
 
 
-                        <button id="continuarButton" class="w-100 btn btn-secondary btn-lg texto" type="submit" style ="background-color: rgb(97,93,250)" disabled> <a style="color: white;" href="inicioSesion.html">Continuar</a> </button>
+                        <button id="continuarButton" class="w-100 btn btn-secondary btn-lg texto" type="submit" style ="background-color: rgb(97,93,250)" disabled> <a style="color: white;" >Continuar</a> </button>
 
                         <button onclick="goBack()">Atrás</button>
 
@@ -169,11 +181,8 @@
                                 });
                             });
                         </script>
-
-
-
                     </div>
-
+                    </form>
                 </form>
             </div>
         </div>

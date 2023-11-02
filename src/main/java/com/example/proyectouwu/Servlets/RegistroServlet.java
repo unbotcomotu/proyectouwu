@@ -1,8 +1,10 @@
 package com.example.proyectouwu.Servlets;
 
+import com.example.proyectouwu.Beans.Usuario;
 import com.example.proyectouwu.Daos.DaoAlumnoPorEvento;
 import com.example.proyectouwu.Daos.DaoEvento;
 import com.example.proyectouwu.Daos.DaoUsuario;
+import com.example.proyectouwu.Daos.DaoValidacion;
 import jakarta.servlet.*;
 import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
@@ -17,31 +19,40 @@ public class RegistroServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.setContentType("text/html");
 
-        //Para que un usuario se cree su cuenta
-        DaoUsuario dUsuario=new DaoUsuario();
-        DaoAlumnoPorEvento dAlPorEvento=new DaoAlumnoPorEvento();
-        int idUsuario=Integer.parseInt(request.getParameter("idUsuario"));
-        //String rolUsuario=request.getParameter("rol");
-        String nombreUsuario = request.getParameter("nombre");
-        String apellidoUsuario = request.getParameter("apellido");
-        String correo = request.getParameter("correo");
-        String contrasena = request.getParameter("contrasena");
-        String codigoPUCP = request.getParameter("codigoPUCP");
-        //estado del registro también está dentro del método de registrarUsuario
-        //la hora y fecha no va, porque está directamente anexada en mysql, revisar metodo de registrarUsuario
-        String condicion = request.getParameter("condicion");
-
-        dUsuario.registroDeAlumno(idUsuario,nombreUsuario, apellidoUsuario, correo, contrasena, codigoPUCP,condicion );
-
         String action = request.getParameter("action") == null ? "default" : request.getParameter("action");
-        switch (action){
-            case "default":
-                request.getRequestDispatcher("Registro.jsp").forward(request,response);
+        switch(action){
+            case "default" :
+                //Alex auxilio
+                //int codigoValidacion = Integer.parseInt(request.getParameter("codigoValidacion"));
+                String idCorreoValidacion = request.getParameter("idCorreoValidacion");
+                //request.setAttribute("codigoValidacion ",codigoValidacion);
+                request.setAttribute("idCorreoValidacion ",
+                        idCorreoValidacion);
+                RequestDispatcher rd = request.getRequestDispatcher("Registro.jsp");
+                rd.forward(request,response);
+                break;
+            case "registro" :
+                break;
         }
+
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        response.setContentType("text/html");
+        //Para que un usuario se cree su cuenta
+        String action = request.getParameter("action") == null ? "default" : request.getParameter("action");
+        switch (action){
+            case "default":
+                //Ga
+                break;
+            case "registro":
+                String idCorreoValidacion = request.getParameter("idCorreoValidacion");
+                String correo = new DaoValidacion().buscarCorreoPorIdCorreoValidacion(idCorreoValidacion);
+                new DaoUsuario().registroDeAlumno(request.getParameter("nombres"),request.getParameter("apellidos"),correo,request.getParameter("password"), request.getParameter("codigoPucp"),request.getParameter("opciones"));
+                request.getRequestDispatcher("inicioSesion.jsp").forward(request,response);
+                break;
+        }
 
     }
 }

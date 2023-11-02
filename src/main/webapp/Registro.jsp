@@ -6,9 +6,8 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%String idCorreoValidacion=(String) request.getAttribute("idCorreoValidacion");
+<jsp:useBean id="validacion" type="com.example.proyectouwu.Beans.Validacion" scope="request" />
 
-%>
 
 <html>
 <head>
@@ -108,7 +107,7 @@
 
 
                         <div class="mb-3">
-                            <input type="hidden" class="form-control" name="idCorreoValidacion" value="<%=idCorreoValidacion%>">
+                            <input type="hidden" class="form-control" name="idCorreoValidacion" value="<%=validacion.getIdCorreoValidacion()%>">
                         </div>
 
                         <script>

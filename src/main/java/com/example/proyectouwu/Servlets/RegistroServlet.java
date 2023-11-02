@@ -1,6 +1,7 @@
 package com.example.proyectouwu.Servlets;
 
 import com.example.proyectouwu.Beans.Usuario;
+import com.example.proyectouwu.Beans.Validacion;
 import com.example.proyectouwu.Daos.DaoAlumnoPorEvento;
 import com.example.proyectouwu.Daos.DaoEvento;
 import com.example.proyectouwu.Daos.DaoUsuario;
@@ -25,9 +26,12 @@ public class RegistroServlet extends HttpServlet {
                 //Alex auxilio
                 //int codigoValidacion = Integer.parseInt(request.getParameter("codigoValidacion"));
                 String idCorreoValidacion = request.getParameter("idCorreoValidacion");
+                Validacion validacion= new Validacion();
+                validacion.setIdCorreoValidacion(Integer.parseInt(idCorreoValidacion));
+                validacion.setCodigoValidacion(new DaoValidacion().getCodigoValidacionPorIdCorreoValidacion(idCorreoValidacion));
+
                 //request.setAttribute("codigoValidacion ",codigoValidacion);
-                request.setAttribute("idCorreoValidacion ",
-                        idCorreoValidacion);
+                request.setAttribute("validacion", validacion);
                 RequestDispatcher rd = request.getRequestDispatcher("Registro.jsp");
                 rd.forward(request,response);
                 break;

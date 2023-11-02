@@ -73,5 +73,20 @@ public class DaoValidacion extends DaoPadre {
         //Nunca se va a dar este caso porque siempre que se crea IdCorreoValidacion con un correo
         return "ola";
     }
+    public int getCodigoValidacionPorIdCorreoValidacion(String idCorreoValidacion){
+        String sql = "select codigoValidacion from validacion where idCorreoValidacion = ?";
+        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setString(1, idCorreoValidacion);
+            try(ResultSet rs = pstmt.executeQuery()){
+                if(rs.next()){
+                    return rs.getInt(1);
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        //Nunca se va a dar este caso porque siempre que se crea IdCorreoValidacion con un correo
+        return 1;
+    }
 
 }

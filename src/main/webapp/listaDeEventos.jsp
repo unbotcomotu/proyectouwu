@@ -2122,7 +2122,7 @@
                 <button type="submit" class="button secondary" id="cerrarPopupCrear1">Crear</button>
             </div>
             <div class="col-sm-6" style="margin-top: 5px;">
-                <button class="button secondary" id="cerrarPopupCrear2" style="background-color: grey;">Cancelar</button>
+                <button type="button" class="button secondary" id="cerrarPopupCrear2" style="background-color: grey;">Cancelar</button>
             </div>
         </div>
     </div>

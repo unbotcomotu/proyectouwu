@@ -1803,7 +1803,7 @@
                             <div class="col-7">
                                 <!-- PRODUCT PREVIEW CATEGORY -->
                                 <p class="product-preview-category digital"><span class="highlighted">Lugar: </span>
-                                    <%String lugar=new DaoEvento().lugarPorEventoID(e.getLugarEvento());
+                                    <%String lugar=new DaoEvento().lugarPorEventoID(e.getIdEvento());
                                         String lugarAux;
                                         if(lugar.length()>14) {
                                             String aux3[] = lugar.split(" ");
@@ -2235,7 +2235,7 @@
                 <div class="row" style="margin-top: 25px;">
                     <div class="col-6">
                         <label for="delegado"><b>Fecha (día):</b></label>
-                        <input type="text" name="updateFecha" multiple id="delegado" placeholder="... de Octubre" value="<%=Integer.parseInt(e.getFecha().toString().split("-")[2])%> de Octubre" required>
+                        <input type="text" name="updateFecha" multiple id="delegado" placeholder="... de Octubre" value="<%=Integer.parseInt(e.getFecha().toString().split("-")[2])%>" required>
                     </div>
                     <div class="col-6">
                         <p style="width: 100%;"><b>Ocultar evento:</b></p>

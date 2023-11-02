@@ -60,7 +60,9 @@
                                         </div>
 
                                     <div class="text-center">
-                                        <button onclick="mostrarPopup()" class="btn btn-lg btn-primary btn-login fw-bold mb-2" type="submit" style="background-color: #615dfa;" id="miBotonRegistro"  disabled>Registrarse</button>
+                                        <!-- onclick="mostrarPopup()" todo eso va antes de class paa activar el popup -->
+                                        <button  class="btn btn-lg btn-primary btn-login fw-bold mb-2" type="submit" style="background-color: #615dfa;" id="miBotonRegistro"  disabled>Registrarse</button>
+
                                         <!-- Overlay de fondo oscuro -->
                                         <div class="overlay" id="overlay"></div>
                                         <!-- Contenido del popup -->
@@ -105,7 +107,7 @@
                                                 }
                                             </script>
                                         </div>
-                                    </div>
+                                         </div>
                                     </form>
                                 </div>
                             </div>

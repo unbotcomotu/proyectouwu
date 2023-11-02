@@ -274,6 +274,7 @@ public class DaoUsuario extends DaoPadre {
             pstmt.setString(5,contrasena);
             pstmt.setString(6,codigoPUCP);
             pstmt.setString(7,"Pendiente");//para cambiar el estado es con otro método
+            //Ajustar a como debe estar en la base de datos este valor viene del jsp que solo tiene botones para esooger
             pstmt.setString(8,condicion);
             pstmt.executeUpdate();
         } catch (SQLException e) {

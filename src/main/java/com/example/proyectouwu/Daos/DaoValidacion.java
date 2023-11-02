@@ -37,7 +37,7 @@ public class DaoValidacion extends DaoPadre {
     }
 
     public void agregarCorreoParaRecuperarContrasena(String correo){
-        if(new DaoUsuario().obtenerIdPorCorreo(correo) != 0) {
+
             String sql = "insert into validacion( correo, tipo, codigoValidacion, fechaHora, linkEnviado, idUsuario) values (?,?,?,?,?,?);";
 
             LocalDateTime fechaHoraActual = LocalDateTime.now();
@@ -56,7 +56,7 @@ public class DaoValidacion extends DaoPadre {
             } catch (SQLException e) {
                 throw new RuntimeException(e);
             }
-        }
+
     }
     public String buscarCorreoPorIdCorreoValidacion(String idCorreoValidacion ){
         String sql = "select correo from validacion where idCorreoValidacion = ?";

@@ -20,9 +20,6 @@ public class InicioSesionServlet extends HttpServlet {
             case "default":
                 request.getRequestDispatcher("inicioSesion.jsp").forward(request,response);
                 break;
-            case "ola":
-                //No se que poner
-                break;
         }
     }
 
@@ -33,7 +30,6 @@ public class InicioSesionServlet extends HttpServlet {
         String action = request.getParameter("action") == null ? "default" : request.getParameter("action");
         switch (action){
             case "default":
-
                 break;
             case "logIn":
                 String correo = request.getParameter("correoPucp");
@@ -51,18 +47,19 @@ public class InicioSesionServlet extends HttpServlet {
                 }
                 if(existeUsuario && new DaoUsuario().getEstadoDeResgitroPorId(usuarioId).equals("Registrado") && new DaoUsuario().estaBaneadoporId(usuarioId)) {
                     response.sendRedirect(request.getContextPath() + "/ListaDeActividadesServlet?idUsuario="+usuarioId);
-                    //request.setAttribute("idUsuario", Integer.toString(usuarioId));
-                    //ListaDeActividadesServlet?idUsuario=1
-                    //request.getRequestDispatcher("ListaDeActividadesServlet").forward(request, response);
                 }else{
+                    //En caso se loqee mal o el usuario no exista debe salir un error en la vista de inicar sesión
                     request.getRequestDispatcher("inicioSesion.jsp").forward(request,response);
                 }
                 break;
             case "registro":
                 String correo2 = request.getParameter("correoPucp");
                 //Debemos guardarlo en algun lado para mandar el correo
+                //Debemos asegurarnos que el correo no tenga una cuenta ya asociada y en caso tenga que mande un mensaje de error al usuario
+
                 DaoValidacion daoValidacion = new DaoValidacion();
                 daoValidacion.agregarCorreoParaEnviarLink(correo2);
+                //Falta habilitar el popUp
                 request.getRequestDispatcher("inicioSesion.jsp").forward(request,response);
                 break;
         }

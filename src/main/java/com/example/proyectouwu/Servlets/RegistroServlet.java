@@ -48,12 +48,13 @@ public class RegistroServlet extends HttpServlet {
         String action = request.getParameter("action") == null ? "default" : request.getParameter("action");
         switch (action){
             case "default":
-                //Ga
+                //No hay nada aquí pero porsiacaso
                 break;
             case "registro":
                 String idCorreoValidacion = request.getParameter("idCorreoValidacion");
                 String correo = new DaoValidacion().buscarCorreoPorIdCorreoValidacion(idCorreoValidacion);
                 new DaoUsuario().registroDeAlumno(request.getParameter("nombres"),request.getParameter("apellidos"),correo,request.getParameter("password"), request.getParameter("codigoPucp"),request.getParameter("opciones"));
+                //Por el momento al terminar lo hacemos saltar a la vista de inicioSesion
                 request.getRequestDispatcher("inicioSesion.jsp").forward(request,response);
                 break;
         }

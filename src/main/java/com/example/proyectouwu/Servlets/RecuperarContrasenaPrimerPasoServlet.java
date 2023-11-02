@@ -1,5 +1,6 @@
 package com.example.proyectouwu.Servlets;
 
+import com.example.proyectouwu.Daos.DaoUsuario;
 import com.example.proyectouwu.Daos.DaoValidacion;
 import jakarta.servlet.*;
 import jakarta.servlet.http.*;
@@ -24,10 +25,14 @@ public class RecuperarContrasenaPrimerPasoServlet extends HttpServlet {
              break;
           case "correoRecuperarContrasena":
              String correo2 = request.getParameter("correoPucp");
-             //Debemos guardarlo en algun lado para mandar el correo
+             //Debemos guardarlo en algun lado para mandar el correo - cumplido
+              //Solo se envia correo si es que este existe en la base de datos de usuarios - cumplido
+              //Se debe ajustar la velocidad del salto del popUp para que el usuario tenga tiempo de ver el aviso - no cumplido
              DaoValidacion daoValidacion = new DaoValidacion();
-             daoValidacion.agregarCorreoParaRecuperarContrasena(correo2);
-             response.sendRedirect(request.getContextPath() + "/InicioSesionServlet");
+              if(new DaoUsuario().obtenerIdPorCorreo(correo2) != 0) {
+                  daoValidacion.agregarCorreoParaRecuperarContrasena(correo2);
+                  response.sendRedirect(request.getContextPath() + "/InicioSesionServlet");
+              }//else{ salga un mensaje de error en la vista} - no cumplido
              break;
        }
     }

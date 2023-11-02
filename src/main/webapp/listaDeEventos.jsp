@@ -2190,13 +2190,18 @@
         <div class="row">
             <div class="col-sm-7">
                 <br>
+                <input hidden name="idUsuario" value=<%=idUsuario%>>
+                <input hidden name="addActividadID" value=<%=idActividad%>>
+                <input hidden name="idEvento" value=<%=e.getIdEvento()%>>
+                <input hidden name="estadoEvento" value=<%=e.isEventoFinalizado()%>>
                 <label style="margin-top: 25px;"><b>Nombre del evento:</b></label>
-                <input type="text" placeholder="Fibra Tóxica VS *" value="<%=e.getTitulo()%>" required>
+                <input type="text" name="updateTitulo" placeholder="Fibra Tóxica VS *" value="<%=e.getTitulo()%>" required>
+
                 <%if(e.isEventoFinalizado()){%>
                 <label style="margin-top: 25px;" ><b>Resumen:</b></label>
-                <input type="text" placeholder="Resumen" value="<%=e.getResumen()%>" required>
+                <input type="text" name="updateResumen" placeholder="Resumen" value="<%=e.getResumen()%>" required>
                 <label style="margin-top: 25px;" ><b>Resultado:</b></label>
-                <select style="padding: 12.5px" id="resultado" required>
+                <select style="padding: 12.5px" name="updateResultado" id="resultado" required>
                     <%if(e.getResultadoEvento().equals("Derrota")){%>
                     <option value="Derrota">Derrota</option>
                     <option value="Victoria">Victoria</option>
@@ -2206,20 +2211,20 @@
                     <%}%>
                 </select>
                 <p style="width: 100%; margin-top: 25px;"><b>Ocultar evento:</b></p>
-                <input type="checkbox" style="width: 30%; position: relative; top: 15px; left: 120px;" <%if(e.isEventoOculto()){%>checked<%}%>>
+                <input type="checkbox" name="updateEventoOcultoAlt" style="width: 30%; position: relative; top: 15px; left: 120px;" <%if(e.isEventoOculto()){%>checked<%}%>>
                 <%}else{%>
                 <label style="margin-top: 25px;" ><b>Frase motivacional:</b></label>
-                <input type="text" placeholder="Frase motivacional" value="<%=e.getFraseMotivacional()%>" required>
+                <input type="text" name="updateFraseMotivacional" placeholder="Frase motivacional" value="<%=e.getFraseMotivacional()%>" required>
                 <label style="margin-top: 25px;"><b>Descripción del evento:</b></label>
-                <input type="text" placeholder="Descripción" value="<%=e.getDescripcionEventoActivo()%>" required>
+                <input type="text" name="updateDescripcionEventoActivo" placeholder="Descripción" value="<%=e.getDescripcionEventoActivo()%>" required>
                 <div class="row" style="margin-top: 25px;">
                     <div class="col-6">
                         <label for="delegado"><b>Hora (HH:MM):</b></label>
-                        <input type="text" placeholder="00:00" value="<%=Integer.parseInt(e.getHora().toString().split(":")[0])+":"+e.getHora().toString().split(":")[1]%>" required>
+                        <input type="text" name="updateHora" placeholder="00:00" value="<%=Integer.parseInt(e.getHora().toString().split(":")[0])+":"+e.getHora().toString().split(":")[1]%>" required>
                     </div>
                     <div class="col-6">
                         <label for="delegado"><b>Lugar:</b></label>
-                        <input type="text" list="lugar" placeholder="Lugar" value="<%=new DaoLugarEvento().lugarPorID(e.getLugarEvento())%>" required>
+                        <input type="text" name="updateLugar" list="lugar" placeholder="Lugar" value="<%=new DaoLugarEvento().lugarPorID(e.getLugarEvento())%>" required>
                         <datalist id="lugar">
                             <%for(LugarEvento l:listaLugares){%>
                             <option value="<%=l.getLugar()%>"><%=l.getLugar()%></option>
@@ -2230,11 +2235,11 @@
                 <div class="row" style="margin-top: 25px;">
                     <div class="col-6">
                         <label for="delegado"><b>Fecha (día):</b></label>
-                        <input type="text" multiple id="delegado" placeholder="... de Octubre" value="<%=Integer.parseInt(e.getFecha().toString().split("-")[2])%> de Octubre" required>
+                        <input type="text" name="updateFecha" multiple id="delegado" placeholder="... de Octubre" value="<%=Integer.parseInt(e.getFecha().toString().split("-")[2])%> de Octubre" required>
                     </div>
                     <div class="col-6">
                         <p style="width: 100%;"><b>Ocultar evento:</b></p>
-                        <input type="checkbox" style="width: 30%; position: relative; top: 15px; left: 60px;" <%if(e.isEventoOculto()){%>checked<%}%>>
+                        <input type="checkbox" name="updateEventoOculto" style="width: 30%; position: relative; top: 15px; left: 60px;" <%if(e.isEventoOculto()){%>checked<%}%>>
                     </div>
                 </div>
                 <%}%>

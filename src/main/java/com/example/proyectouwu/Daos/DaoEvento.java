@@ -194,12 +194,12 @@ public class DaoEvento extends DaoPadre {
         }
     }
 
-    public void crearEvento(int idActividad, int lugarEvento, String titulo, Date fecha, Time hora, String descripcionEventoActivo, String fraseMotivacional, String fotoMiniatura, Boolean eventoOculto) {
+    public void crearEvento(int idActividad, int idLugarEvento, String titulo, Date fecha, Time hora, String descripcionEventoActivo, String fraseMotivacional, String fotoMiniatura, Boolean eventoOculto) {
         String sql = "insert into evento(idActividad,idLugarEvento,titulo,fecha,hora,descripcionEventoActivo,fraseMotivacional,fotoMiniatura,eventoFinalizado,eventoOculto) values (?,?,?,?,?,?,?,?,0,?)";
         Evento e = new Evento();
         try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setInt(1, idActividad);
-            pstmt.setInt(2, lugarEvento);
+            pstmt.setInt(2, idLugarEvento);
             pstmt.setString(3, titulo);
             pstmt.setDate(4, fecha);
             pstmt.setTime(5, hora);
@@ -207,6 +207,40 @@ public class DaoEvento extends DaoPadre {
             pstmt.setString(7, fraseMotivacional);
             pstmt.setString(8, fotoMiniatura);
             pstmt.setBoolean(9,eventoOculto);
+            pstmt.executeUpdate();
+        } catch (SQLException ex) {
+            throw new RuntimeException(ex);
+        }
+    }
+
+    public void editarEvento(int idEvento, int idLugarEvento, String titulo, Date fecha, Time hora, String descripcionEventoActivo, String fraseMotivacional, String fotoMiniatura, Boolean eventoOculto) {
+        String sql = "update evento set idLugarEvento=?,titulo=?,fecha=?,hora=?,descripcionEventoActivo=?,fraseMotivacional=?,fotoMiniatura=?,eventoOculto=? where idEvento=?";
+        Evento e = new Evento();
+        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setInt(1, idLugarEvento);
+            pstmt.setString(2, titulo);
+            pstmt.setDate(3, fecha);
+            pstmt.setTime(4, hora);
+            pstmt.setString(5, descripcionEventoActivo);
+            pstmt.setString(6, fraseMotivacional);
+            pstmt.setString(7, fotoMiniatura);
+            pstmt.setBoolean(8,eventoOculto);
+            pstmt.setInt(9,idEvento);
+            pstmt.executeUpdate();
+        } catch (SQLException ex) {
+            throw new RuntimeException(ex);
+        }
+    }
+
+    public void editarEvento(int idEvento, String titulo, String resumen, String resultadoEvento, Boolean eventoOculto) {
+        String sql = "update evento set titulo=?,resumen=?,resultadoEvento=?,eventoOculto=? where idEvento=?";
+        Evento e = new Evento();
+        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setString(1, titulo);
+            pstmt.setString(2,resumen);
+            pstmt.setString(3,resultadoEvento);
+            pstmt.setBoolean(4,eventoOculto);
+            pstmt.setInt(5,idEvento);
             pstmt.executeUpdate();
         } catch (SQLException ex) {
             throw new RuntimeException(ex);
@@ -281,4 +315,7 @@ public class DaoEvento extends DaoPadre {
             throw new RuntimeException(e);
         }
     }
+
+
+
 }

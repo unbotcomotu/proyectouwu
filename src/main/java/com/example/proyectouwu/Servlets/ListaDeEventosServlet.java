@@ -55,10 +55,15 @@ public class ListaDeEventosServlet extends HttpServlet {
         response.setContentType("text/html");
         String action = request.getParameter("action") == null ? "default" : request.getParameter("action");
 
+        // Daos:
         DaoEvento daoEvento = new DaoEvento();
+        DaoLugarEvento dLugarEvento = new DaoLugarEvento();
+        DaoEvento dEvento = new DaoEvento();
 
+        // Parámetros principales:
         int idUsuario;
         int addActividadID;
+        int idEvento;
 
         switch (action) {
             case "searchView":
@@ -92,7 +97,6 @@ public class ListaDeEventosServlet extends HttpServlet {
                 Time addHora = Time.valueOf(addHoraStr+":00");
 
                 // Verificar lugar:
-                DaoLugarEvento dLugarEvento = new DaoLugarEvento();
                 int addLugarId = dLugarEvento.idLugarPorNombre(addLugar);
                 // En caso no exista el lugar, se crea uno nuevo
                 if(addLugarId==0){
@@ -100,22 +104,62 @@ public class ListaDeEventosServlet extends HttpServlet {
                 }
 
                 // Crear evento:
-                new DaoEvento().crearEvento(addActividadID,addLugarId,addTitulo,addFecha,addHora,addDescripcionEventoActivo,addFraseMotivacional,"uwu",addEventoOculto);
+                dEvento.crearEvento(addActividadID,addLugarId,addTitulo,addFecha,addHora,addDescripcionEventoActivo,addFraseMotivacional,"uwu",addEventoOculto);
                 response.sendRedirect(request.getContextPath()+"/ListaDeEventosServlet?idUsuario="+idUsuario+"&idActividad="+addActividadID);
                 break;
             case "updateConfirm":
-                int updateLugarID = Integer.parseInt(request.getParameter("updateLugarID"));
+
+                // Parámetros
+                idEvento = Integer.parseInt(request.getParameter("idEvento"));
+                String estadoEvento = request.getParameter("estadoEvento");
+                idUsuario = Integer.parseInt(request.getParameter("idUsuario"));
+                addActividadID = Integer.parseInt(request.getParameter("addActividadID"));
+
+                String updateLugar = request.getParameter("updateLugar");
                 String updateTitulo = request.getParameter("updateTitulo");
-                String updateFecha = request.getParameter("updateFecha"); //cambiar a date
-                String updateHora = request.getParameter("updateHora"); //cambiar a time
+                String updateFechaStr = request.getParameter("updateFecha");
+                String updateHoraStr = request.getParameter("updateHora");
                 String updateDescripcionEventoActivo = request.getParameter("updateDescripcionEventoActivo");
                 String updateFraseMotivacional = request.getParameter("updateFraseMotivacional");
-                //fotoMinuatura
-                String updatefotoMiniatura = request.getParameter("updatefotoMiniatura");
+                String updateResumen = request.getParameter("updateResumen");
+                String updateResultado = request.getParameter("updateResultado");
+                String updateEventoOcultoStr1 = request.getParameter("updateEventoOculto");
+                String updateEventoOcultoStr2 = request.getParameter("updateEventoOcultoAlt");
 
+                // Conversión de variables según el estado del evento:
+                if(estadoEvento.equals("true")){
+
+                    Boolean updateEventoOcultoAlt = false;
+                    if(!(updateEventoOcultoStr2 == null)){
+                        updateEventoOcultoAlt = true;
+                    }
+
+                    dEvento.editarEvento(idEvento,updateTitulo,updateResumen,updateResultado,updateEventoOcultoAlt);
+                }else{
+
+                    Boolean updateEventoOculto = false;
+                    if(!(updateEventoOcultoStr1 == null)){
+                        updateEventoOculto = true;
+                    }
+
+                    // Verificar lugar:
+                    int updateLugarId = dLugarEvento.idLugarPorNombre(updateLugar);
+                    // En caso no exista el lugar, se crea uno nuevo
+                    if(updateLugarId==0){
+                        updateLugarId = dLugarEvento.crearLugar(updateLugar); // Id del nuevo lugar
+                    }
+
+                    Date updateFecha = Date.valueOf("2023-10-"+updateFechaStr);
+                    Time updateHora = Time.valueOf(updateHoraStr+":00");
+
+                    dEvento.editarEvento(idEvento,updateLugarId,updateTitulo,updateFecha,updateHora,updateDescripcionEventoActivo,updateFraseMotivacional,"owo",updateEventoOculto);
+                }
+
+                // Envío a la vista de lista de eventos:
+                response.sendRedirect(request.getContextPath()+"/ListaDeEventosServlet?idUsuario="+idUsuario+"&idActividad="+addActividadID);
 
                 //mañana sigo uu
-                response.sendRedirect(request.getContextPath()+ "/ListaDeEventosServlet");
+                //response.sendRedirect(request.getContextPath()+ "/ListaDeEventosServlet");
                 break;
             case "finConfirm":
                 idUsuario = Integer.parseInt(request.getParameter("idUsuario"));

@@ -247,7 +247,8 @@ public class DaoEvento extends DaoPadre {
         }
     }
 
-    public void actualizarEditarEvento(int idEvento, int idActividad, int lugarEvento, String titulo, String fecha, String hora, String descripcionEventoActivo, String fraseMotivacional, String fotoMiniatura, String eventoFinalizado, String eventoOculto, String resumen, String resultadoEvento) {
+    public void actualizarEditarEvento(int idEvento, int idActividad, int lugarEvento, String titulo, String fecha, String hora, String descripcionEventoActivo, String fraseMotivacional, Blob fotoMiniatura, String eventoFinalizado, String eventoOculto, String resumen, String resultadoEvento) {
+
         String sql = "update evento set idEvento = ?,idActividad= ?,idLugarEvento= ?,titulo= ?,fecha= ?,hora= ?,descripcionEventoActivo= ?,fraseMotivacional= ?,fotoMinuatura= ?,eventoFinalizado= ?,eventoOculto= ?,resumen= ?,resultadoEvento= ?";
 
         try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
@@ -258,7 +259,7 @@ public class DaoEvento extends DaoPadre {
             pstmt.setString(5, hora);
             pstmt.setString(6, descripcionEventoActivo);
             pstmt.setString(7, fraseMotivacional);
-            pstmt.setString(8, fotoMiniatura);
+            pstmt.setBlob(8, fotoMiniatura);
             pstmt.setString(9, eventoFinalizado);
             pstmt.setString(10, eventoOculto);
             pstmt.setString(11, resumen);

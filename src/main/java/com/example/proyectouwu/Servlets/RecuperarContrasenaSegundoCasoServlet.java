@@ -42,11 +42,8 @@ public class RecuperarContrasenaSegundoCasoServlet extends HttpServlet {
                 String idCorreoValidacion = request.getParameter("idCorreoValidacion");
                 String password = request.getParameter("password");
                 //Actualizar contrasena
-                DaoValidacion daoValidacion = new DaoValidacion();
-                if(new DaoUsuario().obtenerIdPorCorreo(correo2) != 0) {
-                    daoValidacion.agregarCorreoParaRecuperarContrasena(correo2);
-                    response.sendRedirect(request.getContextPath() + "/InicioSesionServlet");
-                }//else{ salga un mensaje de error en la vista} - no cumplido
+                new DaoUsuario().actualizarContrasena(Integer.parseInt(idCorreoValidacion),password);
+                //else{ salga un mensaje de error en la vista} - no cumplido
                 break;
         }
     }

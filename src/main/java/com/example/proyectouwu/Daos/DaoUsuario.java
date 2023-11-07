@@ -391,4 +391,16 @@ public class DaoUsuario extends DaoPadre {
         }
         return baneado;
     }
+
+    public void actualizarContrasena (int idCorreoValidacion, String password){
+        String sql = "update usuario set contrasena = ? where idUsuario = (Select idUsuario from validacion where idCorreoValidacion = ?)";
+        try(PreparedStatement pstmt=conn.prepareStatement(sql)){
+            pstmt.setString(1,password);
+            pstmt.setInt(2,idCorreoValidacion);
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+    }
 }

@@ -109,7 +109,7 @@ public class DaoUsuario extends DaoPadre {
 
     public ArrayList<Usuario>listarIDyNombreDelegadosDeActividad(){
         ArrayList<Usuario>listaDelegadosDeActividad=new ArrayList<>();
-        String sql="select idUsuario,nombre,apellido from usuario where rol='Delegado de Actividad'";
+        String sql="select idUsuario,nombre,apellido from usuario where rol='Alumno'";
         try(ResultSet rs=conn.createStatement().executeQuery(sql)){
             while(rs.next()){
                 Usuario u=new Usuario();

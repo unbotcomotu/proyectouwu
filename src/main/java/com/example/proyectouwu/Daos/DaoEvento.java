@@ -402,6 +402,7 @@ public class DaoEvento extends DaoPadre {
                 pstmt.setInt(2,minaya);
                 try(ResultSet rs = pstmt.executeQuery()){
                     while(rs.next()){
+                        System.out.println(rs.getInt(1));
                         idsLugar.add(rs.getInt(1));
                     }
                 }

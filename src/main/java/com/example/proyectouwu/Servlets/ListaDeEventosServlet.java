@@ -144,8 +144,12 @@ public class ListaDeEventosServlet extends HttpServlet {
                 if(cantidad != null) {
                     int cantidadLugares = Integer.parseInt(request.getParameter("cantidadLugares"));
                     for (int j = 0; j < cantidadLugares; j++) {
-                        parametrosLugar.add(Integer.valueOf(request.getParameter("lugar" + j)));
-                        request.setAttribute("lugar" + j,Integer.valueOf(request.getParameter("lugar" + j)));
+                        String lugarAux=request.getParameter("lugar" + j);
+                        if(lugarAux!=null){
+                            Integer lugar=Integer.parseInt(lugarAux);
+                            parametrosLugar.add(lugar);
+                            request.setAttribute("lugar" + j,lugar);
+                        }
                     }
                 }
                 if(request.getParameter("eventosHoy") != null){

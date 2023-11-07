@@ -18,6 +18,12 @@
         String nombreActividad=(String)request.getAttribute("nombreActividad");
         ArrayList<LugarEvento>listaLugares=(ArrayList<LugarEvento>) request.getAttribute("listaLugares");
         int delegadoDeEstaActividadID=(int)request.getAttribute("delegadoDeEstaActividadID");
+        Integer eventoOculto = (Integer) request.getAttribute("cantidadEventosOcultos");
+        Integer eventoFinalizado = (Integer) request.getAttribute("cantidadEventosFinalizados");
+        Integer eventoApoyado = (Integer) request.getAttribute("cantidadEventosApoyando");
+        Integer eventoHoy = (Integer) request.getAttribute("eventosHoy");
+        Integer eventoManana = (Integer) request.getAttribute("eventosManana");
+        Integer eventoMasDias = (Integer) request.getAttribute("eventosMasDias");
         String colorRol;
         if(rolUsuario.equals("Alumno")){
             colorRol="";
@@ -1506,229 +1512,236 @@
         <div class="marketplace-sidebar">
             <!-- SIDEBAR BOX -->
             <div class="sidebar-box">
-                <!-- SIDEBAR BOX TITLE -->
-                <p class="sidebar-box-title">Estado</p>
-                <!-- SIDEBAR BOX TITLE -->
-                <div class="sidebar-box-items">
-                    <!-- CHECKBOX LINE -->
-                    <div class="checkbox-line">
-                        <!-- CHECKBOX WRAP -->
-                        <div class="checkbox-wrap">
-                            <input type="checkbox" id="category-logos-and-badges" name="cantidadEventosFinalizados">
-                            <!-- CHECKBOX BOX -->
-                            <div class="checkbox-box">
-                                <!-- ICON CROSS -->
-                                <svg class="icon-cross">
-                                    <use xlink:href="#svg-cross"></use>
-                                </svg>
-                                <!-- /ICON CROSS -->
-                            </div>
-                            <!-- /CHECKBOX BOX -->
-                            <label for="category-logos-and-badges">Finalizado</label>
-                        </div>
-                        <!-- /CHECKBOX WRAP -->
-                        <!-- CHECKBOX LINE TEXT -->
-                        <%Integer cantidadEventosFinalizados=(Integer) request.getAttribute("cantidadEventosFinalizados");%>
-                        <p class="checkbox-line-text"><%=cantidadEventosFinalizados%></p>
-                        <!-- /CHECKBOX LINE TEXT -->
-                    </div>
-                    <!-- /CHECKBOX LINE -->
-                    <%if(!rolUsuario.equals("Delegado General")){%>
-                    <!-- CHECKBOX LINE -->
-                    <div class="checkbox-line">
-                        <!-- CHECKBOX WRAP -->
-                        <div class="checkbox-wrap">
-                            <input type="checkbox" id="category-sketch" name="cantidadEventosApoyando">
-                            <!-- CHECKBOX BOX -->
-                            <div class="checkbox-box">
-                                <!-- ICON CROSS -->
-                                <svg class="icon-cross">
-                                    <use xlink:href="#svg-cross"></use>
-                                </svg>
-                                <!-- /ICON CROSS -->
-                            </div>
-                            <!-- /CHECKBOX BOX -->
-                            <label for="category-sketch">Apoyando</label>
-                        </div>
-                        <!-- /CHECKBOX WRAP -->
-
-                        <!-- CHECKBOX LINE TEXT -->
-                        <%Integer cantidadEventosApoyando=(Integer) request.getAttribute("cantidadEventosApoyando");%>
-                        <p class="checkbox-line-text"><%=cantidadEventosApoyando%></p>
-                        <!-- /CHECKBOX LINE TEXT -->
-                    </div>
-                    <!-- /CHECKBOX LINE -->
-                    <!-- /SIDEBAR BOX TITLE -->
-                    <%}if(delegadoDeEstaActividadID==idUsuario||rolUsuario.equals("Delegado General")){%>
-                    <!-- CHECKBOX LINE -->
-                    <div class="checkbox-line">
-                        <!-- CHECKBOX WRAP -->
-                        <div class="checkbox-wrap">
-                            <input type="checkbox" id="ola" name="ola">
-                            <!-- CHECKBOX BOX -->
-                            <div class="checkbox-box">
-                                <!-- ICON CROSS -->
-                                <svg class="icon-cross">
-                                    <use xlink:href="#svg-cross"></use>
-                                </svg>
-                                <!-- /ICON CROSS -->
-                            </div>
-                            <!-- /CHECKBOX BOX -->
-                            <label for="ola">Oculto</label>
-                        </div>
-                        <!-- /CHECKBOX WRAP -->
-                        <%Integer cantidadEventosOcultos=(Integer) request.getAttribute("cantidadEventosOcultos");%>
-                        <!-- CHECKBOX LINE TEXT -->
-                        <p class="checkbox-line-text"><%=cantidadEventosOcultos%></p>
-                        <!-- /CHECKBOX LINE TEXT -->
-                    </div>
-                    <!-- /CHECKBOX LINE -->
-                    <%}%>
-                </div>
+                <form method="post" action="<%=request.getContextPath()%>/ListaDeEventosServlet?action=filtrarEventos">
+                    <input type="hidden" name="idUsuario" value="<%=idUsuario%>">
+                    <input type="hidden" name="idActividad" value="<%=idActividad%>">
                     <!-- SIDEBAR BOX TITLE -->
-                    <p class="sidebar-box-title">Ubicación</p>
+                    <p class="sidebar-box-title">Estado</p>
+                    <!-- SIDEBAR BOX TITLE -->
+                    <div class="sidebar-box-items">
+                        <!-- CHECKBOX LINE -->
+                        <div class="checkbox-line">
+                            <!-- CHECKBOX WRAP -->
+                            <div class="checkbox-wrap">
+                                <input type="checkbox" id="category-logos-and-badges" name="cantidadEventosFinalizados" value="1" <%if(eventoFinalizado != null && eventoFinalizado==1){%>checked<%}%>>
+                                <!-- CHECKBOX BOX -->
+                                <div class="checkbox-box">
+                                    <!-- ICON CROSS -->
+                                    <svg class="icon-cross">
+                                        <use xlink:href="#svg-cross"></use>
+                                    </svg>
+                                    <!-- /ICON CROSS -->
+                                </div>
+                                <!-- /CHECKBOX BOX -->
+                                <label for="category-logos-and-badges">Finalizado</label>
+                            </div>
+                            <!-- /CHECKBOX WRAP -->
+                            <!-- CHECKBOX LINE TEXT -->
+                            <%Integer cantidadEventosFinalizados=(Integer) request.getAttribute("cantidadEventosFinalizados");%>
+                            <p class="checkbox-line-text"><%=cantidadEventosFinalizados%></p>
+                            <!-- /CHECKBOX LINE TEXT -->
+                        </div>
+                        <!-- /CHECKBOX LINE -->
+                        <%if(!rolUsuario.equals("Delegado General")){%>
+                        <!-- CHECKBOX LINE -->
+                        <div class="checkbox-line">
+                            <!-- CHECKBOX WRAP -->
+                            <div class="checkbox-wrap">
+                                <input type="checkbox" id="category-sketch" name="cantidadEventosApoyando" value="1" <%if(eventoApoyado != null && eventoApoyado==1){%>checked<%}%>>
+                                <!-- CHECKBOX BOX -->
+                                <div class="checkbox-box">
+                                    <!-- ICON CROSS -->
+                                    <svg class="icon-cross">
+                                        <use xlink:href="#svg-cross"></use>
+                                    </svg>
+                                    <!-- /ICON CROSS -->
+                                </div>
+                                <!-- /CHECKBOX BOX -->
+                                <label for="category-sketch">Apoyando</label>
+                            </div>
+                            <!-- /CHECKBOX WRAP -->
+
+                            <!-- CHECKBOX LINE TEXT -->
+                            <%Integer cantidadEventosApoyando=(Integer) request.getAttribute("cantidadEventosApoyando");%>
+                            <p class="checkbox-line-text"><%=cantidadEventosApoyando%></p>
+                            <!-- /CHECKBOX LINE TEXT -->
+                        </div>
+                        <!-- /CHECKBOX LINE -->
+                        <!-- /SIDEBAR BOX TITLE -->
+                        <%}if(delegadoDeEstaActividadID==idUsuario||rolUsuario.equals("Delegado General")){%>
+                        <!-- CHECKBOX LINE -->
+                        <div class="checkbox-line">
+                            <!-- CHECKBOX WRAP -->
+                            <div class="checkbox-wrap">
+                                <input type="checkbox" id="ola" name="cantidadEventosOcultos" value="1" <%if(eventoOculto != null && eventoOculto==1){%>checked<%}%>>
+                                <!-- CHECKBOX BOX -->
+                                <div class="checkbox-box">
+                                    <!-- ICON CROSS -->
+                                    <svg class="icon-cross">
+                                        <use xlink:href="#svg-cross"></use>
+                                    </svg>
+                                    <!-- /ICON CROSS -->
+                                </div>
+                                <!-- /CHECKBOX BOX -->
+                                <label for="ola">Oculto</label>
+                            </div>
+                            <!-- /CHECKBOX WRAP -->
+                            <%Integer cantidadEventosOcultos=(Integer) request.getAttribute("cantidadEventosOcultos");%>
+                            <!-- CHECKBOX LINE TEXT -->
+                            <p class="checkbox-line-text"><%=cantidadEventosOcultos%></p>
+                            <!-- /CHECKBOX LINE TEXT -->
+                        </div>
+                        <!-- /CHECKBOX LINE -->
+                        <%}%>
+                    </div>
+                        <!-- SIDEBAR BOX TITLE -->
+                        <p class="sidebar-box-title">Ubicación</p>
+                        <!-- /SIDEBAR BOX TITLE -->
+                    <!-- SIDEBAR BOX ITEMS -->
+                    <div class="sidebar-box-items">
+                        <!-- CHECKBOX LINE -->
+                        <%ArrayList<Integer[]>listaLugaresCantidad=(ArrayList<Integer[]>) request.getAttribute("listaLugaresCantidad");
+                        int cantidadLugares = 0;
+                        for(Integer[] par:listaLugaresCantidad){%>
+                        <%String lugar = (String) request.getAttribute("lugar"+listaLugaresCantidad.indexOf(par));%>
+                        <div class="checkbox-line">
+                            <!-- CHECKBOX WRAP -->
+                            <div class="checkbox-wrap">
+                                <input type="checkbox" id="category-<%=listaLugaresCantidad.indexOf(par)%>" name="lugar<%=listaLugaresCantidad.indexOf(par)%>" value="<%=par[0]%>" <%if(lugar != null){%>checked<%}%>>
+                                <!-- CHECKBOX BOX -->
+                                <div class="checkbox-box">
+                                    <!-- ICON CROSS -->
+                                    <svg class="icon-cross">
+                                        <use xlink:href="#svg-cross"></use>
+                                    </svg>
+                                    <!-- /ICON CROSS -->
+                                </div>
+                                <!-- /CHECKBOX BOX -->
+                                <label for="category-<%=listaLugaresCantidad.indexOf(par)%>"><%=new DaoLugarEvento().lugarPorID(par[0])%></label>
+                            </div>
+                            <!-- /CHECKBOX WRAP -->
+
+                            <!-- CHECKBOX LINE TEXT -->
+                            <p class="checkbox-line-text"><%=par[1]%></p>
+                            <!-- /CHECKBOX LINE TEXT -->
+                        </div>
+                        <!-- /CHECKBOX LINE -->
+                        <%cantidadLugares++;}%>
+                        <input type="hidden" name="cantidadLugares" value="<%=cantidadLugares%>">
+                    </div>
+                    <!-- /SIDEBAR BOX ITEMS -->
+
+                    <!-- SIDEBAR BOX TITLE -->
+                    <p class="sidebar-box-title">Fecha</p>
                     <!-- /SIDEBAR BOX TITLE -->
-                <!-- SIDEBAR BOX ITEMS -->
-                <div class="sidebar-box-items">
-                    <!-- CHECKBOX LINE -->
-                    <%ArrayList<Integer[]>listaLugaresCantidad=(ArrayList<Integer[]>) request.getAttribute("listaLugaresCantidad");
-                    for(Integer[] par:listaLugaresCantidad){%>
-                    <div class="checkbox-line">
-                        <!-- CHECKBOX WRAP -->
-                        <div class="checkbox-wrap">
-                            <input type="checkbox" id="category-<%=listaLugaresCantidad.indexOf(par)%>" name="lugar<%=listaLugaresCantidad.indexOf(par)%>">
-                            <!-- CHECKBOX BOX -->
-                            <div class="checkbox-box">
-                                <!-- ICON CROSS -->
-                                <svg class="icon-cross">
-                                    <use xlink:href="#svg-cross"></use>
-                                </svg>
-                                <!-- /ICON CROSS -->
+
+                    <!-- SIDEBAR BOX ITEMS -->
+                    <div class="sidebar-box-items">
+                        <!-- CHECKBOX LINE -->
+                        <div class="checkbox-line">
+                            <!-- CHECKBOX WRAP -->
+                            <div class="checkbox-wrap">
+                                <input type="checkbox" id="category-photoshop" name="eventosHoy" value="1" <%if(eventoHoy != null){%>checked<%}%>>
+                                <!-- CHECKBOX BOX -->
+                                <div class="checkbox-box">
+                                    <!-- ICON CROSS -->
+                                    <svg class="icon-cross">
+                                        <use xlink:href="#svg-cross"></use>
+                                    </svg>
+                                    <!-- /ICON CROSS -->
+                                </div>
+                                <!-- /CHECKBOX BOX -->
+                                <label for="category-photoshop">Hoy</label>
                             </div>
-                            <!-- /CHECKBOX BOX -->
-                            <label for="category-<%=listaLugaresCantidad.indexOf(par)%>"><%=new DaoLugarEvento().lugarPorID(par[0])%></label>
+                            <!-- /CHECKBOX WRAP -->
+
+                            <!-- CHECKBOX LINE TEXT -->
+                            <%Integer cantidadEventosHoy=(Integer) request.getAttribute("cantidadEventosHoy");%>
+                            <p class="checkbox-line-text"><%=cantidadEventosHoy%></p>
+                            <!-- /CHECKBOX LINE TEXT -->
                         </div>
-                        <!-- /CHECKBOX WRAP -->
+                        <!-- /CHECKBOX LINE -->
 
-                        <!-- CHECKBOX LINE TEXT -->
-                        <p class="checkbox-line-text"><%=par[1]%></p>
-                        <!-- /CHECKBOX LINE TEXT -->
-                    </div>
-                    <!-- /CHECKBOX LINE -->
-                    <%}%>
-                </div>
-                <!-- /SIDEBAR BOX ITEMS -->
-
-                <!-- SIDEBAR BOX TITLE -->
-                <p class="sidebar-box-title">Fecha</p>
-                <!-- /SIDEBAR BOX TITLE -->
-
-                <!-- SIDEBAR BOX ITEMS -->
-                <div class="sidebar-box-items">
-                    <!-- CHECKBOX LINE -->
-                    <div class="checkbox-line">
-                        <!-- CHECKBOX WRAP -->
-                        <div class="checkbox-wrap">
-                            <input type="checkbox" id="category-photoshop" name="category_photoshop">
-                            <!-- CHECKBOX BOX -->
-                            <div class="checkbox-box">
-                                <!-- ICON CROSS -->
-                                <svg class="icon-cross">
-                                    <use xlink:href="#svg-cross"></use>
-                                </svg>
-                                <!-- /ICON CROSS -->
+                        <!-- CHECKBOX LINE -->
+                        <div class="checkbox-line">
+                            <!-- CHECKBOX WRAP -->
+                            <div class="checkbox-wrap">
+                                <input type="checkbox" id="category-illustrator" name="eventosManana" value="1" <%if(eventoManana != null){%>checked<%}%>>
+                                <!-- CHECKBOX BOX -->
+                                <div class="checkbox-box">
+                                    <!-- ICON CROSS -->
+                                    <svg class="icon-cross">
+                                        <use xlink:href="#svg-cross"></use>
+                                    </svg>
+                                    <!-- /ICON CROSS -->
+                                </div>
+                                <!-- /CHECKBOX BOX -->
+                                <label for="category-illustrator">Mañana</label>
                             </div>
-                            <!-- /CHECKBOX BOX -->
-                            <label for="category-photoshop">Hoy</label>
+                            <!-- /CHECKBOX WRAP -->
+                            <%Integer cantidadEventosManana=(Integer) request.getAttribute("cantidadEventosManana");%>
+                            <!-- CHECKBOX LINE TEXT -->
+                            <p class="checkbox-line-text"><%=cantidadEventosManana%></p>
+                            <!-- /CHECKBOX LINE TEXT -->
                         </div>
-                        <!-- /CHECKBOX WRAP -->
+                        <!-- /CHECKBOX LINE -->
 
-                        <!-- CHECKBOX LINE TEXT -->
-                        <%Integer cantidadEventosHoy=(Integer) request.getAttribute("cantidadEventosHoy");%>
-                        <p class="checkbox-line-text"><%=cantidadEventosHoy%></p>
-                        <!-- /CHECKBOX LINE TEXT -->
-                    </div>
-                    <!-- /CHECKBOX LINE -->
-
-                    <!-- CHECKBOX LINE -->
-                    <div class="checkbox-line">
-                        <!-- CHECKBOX WRAP -->
-                        <div class="checkbox-wrap">
-                            <input type="checkbox" id="category-illustrator" name="category_illustrator">
-                            <!-- CHECKBOX BOX -->
-                            <div class="checkbox-box">
-                                <!-- ICON CROSS -->
-                                <svg class="icon-cross">
-                                    <use xlink:href="#svg-cross"></use>
-                                </svg>
-                                <!-- /ICON CROSS -->
+                        <!-- CHECKBOX LINE -->
+                        <div class="checkbox-line">
+                            <!-- CHECKBOX WRAP -->
+                            <div class="checkbox-wrap">
+                                <input type="checkbox" id="category-html-css" name="eventosMasDias" value="1" <%if(eventoMasDias != null){%>checked<%}%>>
+                                <!-- CHECKBOX BOX -->
+                                <div class="checkbox-box">
+                                    <!-- ICON CROSS -->
+                                    <svg class="icon-cross">
+                                        <use xlink:href="#svg-cross"></use>
+                                    </svg>
+                                    <!-- /ICON CROSS -->
+                                </div>
+                                <!-- /CHECKBOX BOX -->
+                                <label for="category-html-css">En 2 a más días</label>
                             </div>
-                            <!-- /CHECKBOX BOX -->
-                            <label for="category-illustrator">Mañana</label>
+                            <!-- /CHECKBOX WRAP -->
+                            <%Integer cantidadEventos2DiasMas=(Integer) request.getAttribute("cantidadEventos2DiasMas");%>
+                            <!-- CHECKBOX LINE TEXT -->
+                            <p class="checkbox-line-text"><%=cantidadEventos2DiasMas%></p>
+                            <!-- /CHECKBOX LINE TEXT -->
                         </div>
-                        <!-- /CHECKBOX WRAP -->
-                        <%Integer cantidadEventosManana=(Integer) request.getAttribute("cantidadEventosManana");%>
-                        <!-- CHECKBOX LINE TEXT -->
-                        <p class="checkbox-line-text"><%=cantidadEventosManana%></p>
-                        <!-- /CHECKBOX LINE TEXT -->
+                        <!-- /CHECKBOX LINE -->
                     </div>
-                    <!-- /CHECKBOX LINE -->
+                    <!-- /SIDEBAR BOX ITEMS -->
 
-                    <!-- CHECKBOX LINE -->
-                    <div class="checkbox-line">
-                        <!-- CHECKBOX WRAP -->
-                        <div class="checkbox-wrap">
-                            <input type="checkbox" id="category-html-css" name="category_html-css">
-                            <!-- CHECKBOX BOX -->
-                            <div class="checkbox-box">
-                                <!-- ICON CROSS -->
-                                <svg class="icon-cross">
-                                    <use xlink:href="#svg-cross"></use>
-                                </svg>
-                                <!-- /ICON CROSS -->
+                    <!-- SIDEBAR BOX TITLE -->
+                    <p class="sidebar-box-title">Rango de horas</p>
+                    <!-- /SIDEBAR BOX TITLE -->
+
+                    <!-- SIDEBAR BOX ITEMS -->
+                    <div class="sidebar-box-items small-space">
+                        <!-- FORM ITEM -->
+                        <div class="form-item split">
+                            <!-- FORM INPUT -->
+                            <div class="form-input small active always-active">
+                                <label for="price-from">Desde</label>
+                                <input type="text" id="price-from" name="horaInicio" value="<%=request.getAttribute("horaInicio") != null ? request.getAttribute("horaInicio") : ""%>">
                             </div>
-                            <!-- /CHECKBOX BOX -->
-                            <label for="category-html-css">En 2 a más días</label>
+                            <!-- /FORM INPUT -->
+
+                            <!-- FORM INPUT -->
+                            <div class="form-input small active always-active">
+                                <label for="price-to">Hasta</label>
+                                <input type="text" id="price-to" name="horaFin" value="<%=request.getAttribute("horaFin") != null ? request.getAttribute("horaFin") : ""%>">
+                            </div>
+                            <!-- /FORM INPUT -->
                         </div>
-                        <!-- /CHECKBOX WRAP -->
-                        <%Integer cantidadEventos2DiasMas=(Integer) request.getAttribute("cantidadEventos2DiasMas");%>
-                        <!-- CHECKBOX LINE TEXT -->
-                        <p class="checkbox-line-text"><%=cantidadEventos2DiasMas%></p>
-                        <!-- /CHECKBOX LINE TEXT -->
+                        <!-- /FORM ITEM -->
                     </div>
-                    <!-- /CHECKBOX LINE -->
-                </div>
-                <!-- /SIDEBAR BOX ITEMS -->
+                    <!-- /SIDEBAR BOX ITEMS -->
 
-                <!-- SIDEBAR BOX TITLE -->
-                <p class="sidebar-box-title">Rango de horas</p>
-                <!-- /SIDEBAR BOX TITLE -->
-
-                <!-- SIDEBAR BOX ITEMS -->
-                <div class="sidebar-box-items small-space">
-                    <!-- FORM ITEM -->
-                    <div class="form-item split">
-                        <!-- FORM INPUT -->
-                        <div class="form-input small active always-active">
-                            <label for="price-from">Desde</label>
-                            <input type="text" id="price-from" name="price_from">
-                        </div>
-                        <!-- /FORM INPUT -->
-
-                        <!-- FORM INPUT -->
-                        <div class="form-input small active always-active">
-                            <label for="price-to">Hasta</label>
-                            <input type="text" id="price-to" name="price_to">
-                        </div>
-                        <!-- /FORM INPUT -->
-                    </div>
-                    <!-- /FORM ITEM -->
-                </div>
-                <!-- /SIDEBAR BOX ITEMS -->
-
-                <!-- BUTTON -->
-                <p class="button small primary">Aplicar filtros de categoría</p>
-                <!-- /BUTTON -->
+                    <!-- BUTTON -->
+                    <button type="submit" class="button small primary">Aplicar filtros de categoría</button>
+                    <!-- /BUTTON -->
+                </form>
             </div>
             <!-- /SIDEBAR BOX -->
         </div>

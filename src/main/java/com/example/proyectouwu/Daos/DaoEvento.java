@@ -5,6 +5,7 @@ import com.example.proyectouwu.Beans.Evento;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.HashSet;
 
 public class DaoEvento extends DaoPadre {
     private Connection conn;
@@ -347,4 +348,153 @@ public class DaoEvento extends DaoPadre {
         }
     }
 
+    public ArrayList<Evento> filtrarEventos(ArrayList<String> parametrosEstado, ArrayList<Integer> parametrosLugar, ArrayList<String> parametrosFecha, String horaInicio, String horaFin, int idActividad){
+        HashSet<Integer> idsEstado = new HashSet<Integer>();
+        HashSet<Integer> idsLugar = new HashSet<Integer>();
+        HashSet<Integer> idsFecha = new HashSet<Integer>();
+        HashSet<Integer> idsHora = new HashSet<Integer>();
+        for(String s : parametrosEstado){
+            if(s.equals("Oculto")){
+                String sql = "select idEvento from evento where eventoOculto=true and idActividad = ?";
+                try(PreparedStatement pstmt = conn.prepareStatement(sql)){
+                    pstmt.setInt(1,idActividad);
+                    try(ResultSet rs = pstmt.executeQuery()){
+                        while(rs.next()){
+                            idsEstado.add(rs.getInt(1));
+                        }
+                    }
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+            if(s.equals("Finalizado")){
+                String sql = "select idEvento from evento where eventoFinalizado=true and idActividad = ?";
+                try(PreparedStatement pstmt = conn.prepareStatement(sql)){
+                    pstmt.setInt(1,idActividad);
+                    try(ResultSet rs = pstmt.executeQuery()){
+                        while(rs.next()){
+                            idsEstado.add(rs.getInt(1));
+                        }
+                    }
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+            if(s.equals("Apoyando")){
+                String sql = "select e.idEvento from evento e inner join alumnoporevento ape on e.idEvento = ape.idEvento where ape.estadoApoyo != 'Pendiente' and e.idActividad = ?";
+                try(PreparedStatement pstmt = conn.prepareStatement(sql)){
+                    pstmt.setInt(1,idActividad);
+                    try(ResultSet rs = pstmt.executeQuery()){
+                        while(rs.next()){
+                            idsEstado.add(rs.getInt(1));
+                        }
+                    }
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        }
+        //el nombre fue idea de Josh Fernando Yauri Salas - 20213852
+        for(Integer minaya : parametrosLugar){
+            String sql = "select idEvento from evento where idActividad = ? and idLugarEvento = ?";
+            try(PreparedStatement pstmt = conn.prepareStatement(sql)){
+                pstmt.setInt(1,idActividad);
+                pstmt.setInt(2,minaya);
+                try(ResultSet rs = pstmt.executeQuery()){
+                    while(rs.next()){
+                        idsLugar.add(rs.getInt(1));
+                    }
+                }
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+        }
+        for(String woody : parametrosFecha){
+            if(woody.equals("Hoy")){
+                String sql = "select idEvento from evento where datediff(date(current_date()),fecha)=0 and idActividad=?";
+                try(PreparedStatement pstmt = conn.prepareStatement(sql)){
+                    pstmt.setInt(1,idActividad);
+                    try(ResultSet rs = pstmt.executeQuery()){
+                        while(rs.next()){
+                            idsFecha.add(rs.getInt(1));
+                        }
+                    }
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+            if(woody.equals("Manana")){
+                String sql = "select idEvento from evento where datediff(fecha,date(current_date()))=1 and idActividad=?";
+                try(PreparedStatement pstmt = conn.prepareStatement(sql)){
+                    pstmt.setInt(1,idActividad);
+                    try(ResultSet rs = pstmt.executeQuery()){
+                        while(rs.next()){
+                            idsFecha.add(rs.getInt(1));
+                        }
+                    }
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+            if(woody.equals("MasDias")){
+                String sql = "select idEvento from evento where datediff(fecha,date(current_date()))>1 and idActividad=?";
+                try(PreparedStatement pstmt = conn.prepareStatement(sql)){
+                    pstmt.setInt(1,idActividad);
+                    try(ResultSet rs = pstmt.executeQuery()){
+                        while(rs.next()){
+                            idsFecha.add(rs.getInt(1));
+                        }
+                    }
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        }
+        idsEstado.retainAll(idsLugar);
+        idsEstado.retainAll(idsFecha);
+        if(horaInicio != null) {
+            String sql = "select idEvento from evento where idActividad = ? and hora between ? and ?";
+            try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+                pstmt.setInt(1, idActividad);
+                pstmt.setString(2, horaInicio + ":00");
+                pstmt.setString(3, horaFin + ":00");
+                try (ResultSet rs = pstmt.executeQuery()) {
+                    while (rs.next()) {
+                        idsHora.add(rs.getInt(1));
+                    }
+                }
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+            idsEstado.retainAll(idsHora);
+        }
+        ArrayList<Evento> lista = new ArrayList<>();
+        for(Integer stuardotqm : idsEstado){
+            String sql = "select idEvento,idLugarEvento,titulo,fecha,hora,descripcionEventoActivo,fraseMotivacional,fotoMiniatura,eventoFinalizado,eventoOculto,resumen,resultadoEvento from evento where idEvento=?";
+            try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+                pstmt.setInt(1,stuardotqm);
+                try (ResultSet rs = pstmt.executeQuery()) {
+                    if(rs.next()) {
+                        Evento e = new Evento();
+                        e.setIdEvento(rs.getInt(1));
+                        e.setLugarEvento(rs.getInt(2));
+                        e.setTitulo(rs.getString(3));
+                        e.setFecha(rs.getDate(4));
+                        e.setHora(rs.getTime(5));
+                        e.setDescripcionEventoActivo(rs.getString(6));
+                        e.setFraseMotivacional(rs.getString(7));
+                        e.setFotoMiniatura(rs.getBlob(8));
+                        e.setEventoFinalizado(rs.getBoolean(9));
+                        e.setEventoOculto(rs.getBoolean(10));
+                        e.setResumen(rs.getString(11));
+                        e.setResultadoEvento(rs.getString(12));
+                        lista.add(e);
+                    }
+                }
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+        }
+        return lista;
+    }
 }

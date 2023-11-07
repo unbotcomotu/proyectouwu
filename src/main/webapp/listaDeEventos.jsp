@@ -1424,18 +1424,20 @@
         <!-- SECTION FILTERS BAR ACTIONS -->
         <div class="section-filters-bar-actions">
             <!-- FORM -->
-            <form class="form">
+            <form method="post" class="form" action="<%=request.getContextPath()%>/ListaDeEventosServlet?action=buscarEvento">
                 <!-- FORM ITEM -->
                 <div class="form-item split">
                     <!-- FORM INPUT -->
                     <div class="form-input small">
                         <label for="items-search">Buscar evento</label>
-                        <input type="text" id="items-search" name="items_search">
+                        <input type="text" id="items-search" name="nombreEvento" value="<%=request.getAttribute("busqueda") != null ? request.getAttribute("busqueda") : ""%>">
+                        <input type="hidden" name="idUsuario" value="<%=idUsuario%>">
+                        <input type="hidden" name="idActividad" value="<%=idActividad%>">
                     </div>
                     <!-- /FORM INPUT -->
 
                     <!-- BUTTON -->
-                    <button class="button primary">
+                    <button type="submit" class="button primary">
                         <!-- ICON MAGNIFYING GLASS -->
                         <svg class="icon-magnifying-glass">
                             <use xlink:href="#svg-magnifying-glass"></use>

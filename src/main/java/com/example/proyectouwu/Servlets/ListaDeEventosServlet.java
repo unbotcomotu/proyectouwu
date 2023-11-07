@@ -14,6 +14,7 @@ import java.io.PrintWriter;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.Time;
+import java.util.ArrayList;
 
 @WebServlet(name = "ListaDeEventosServlet", value = "/ListaDeEventosServlet")
 public class ListaDeEventosServlet extends HttpServlet {
@@ -56,27 +57,43 @@ public class ListaDeEventosServlet extends HttpServlet {
         String action = request.getParameter("action") == null ? "default" : request.getParameter("action");
 
         // Daos:
-        DaoEvento daoEvento = new DaoEvento();
         DaoLugarEvento dLugarEvento = new DaoLugarEvento();
         DaoEvento dEvento = new DaoEvento();
 
         // Parámetros principales:
-        int idUsuario;
         int addActividadID;
         int idEvento;
 
         switch (action) {
-            case "searchView":
-                String recv = request.getParameter("searchEventoID");
-                if (!recv.isEmpty()) {
-                    request.setAttribute("EventoXActividadFoundSearch", new DaoEvento().actividadDeEventoPorID(Integer.parseInt(recv)));
-                    request.getRequestDispatcher("listaDeEventos.jsp").forward(request, response);
-                } else {
-                    response.sendRedirect(request.getContextPath() + "/ListaDeEventosServlet");
-                    break;
-                }
+            case "buscarEvento":
+                DaoUsuario dUsuario = new DaoUsuario();
+                DaoActividad dActividad=new DaoActividad();
+                String textoBuscar = request.getParameter("nombreEvento");
+                int idUsuario=Integer.parseInt(request.getParameter("idUsuario"));
+                int idActividad = Integer.parseInt(request.getParameter("idActividad"));
+                String rolUsuario=dUsuario.rolUsuarioPorId(idUsuario);
+                request.setAttribute("idUsuario",idUsuario);
+                request.setAttribute("idActividad",idActividad);
+                request.setAttribute("rolUsuario",rolUsuario);
+                request.setAttribute("nombreCompletoUsuario",dUsuario.nombreCompletoUsuarioPorId(idUsuario));
+                request.setAttribute("vistaActual","listaDeActividades");
+                request.setAttribute("correosDelegadosGenerales",dUsuario.listarCorreosDelegadosGenerales());
+                request.setAttribute("listaEventos",dEvento.listarEventos(idActividad));
+                request.setAttribute("nombreActividad",dActividad.nombreActividadPorID(idActividad));
+                request.setAttribute("delegadoDeEstaActividadID",dActividad.idDelegadoDeActividadPorActividad(idActividad));
+                request.setAttribute("listaLugares",new DaoLugarEvento().listarLugares());
+                request.setAttribute("cantidadEventosFinalizados",dActividad.cantidadEventosFinalizadosPorActividad(idActividad));
+                request.setAttribute("cantidadEventosOcultos",dActividad.cantidadEventosOcultosPorActividad(idActividad));
+                request.setAttribute("cantidadEventosApoyando",dActividad.cantidadEventosApoyandoPorActividad(idActividad,idUsuario));
+                request.setAttribute("listaLugaresCantidad",dActividad.lugaresConMayorCantidadDeEventos_cantidad_idLugarEvento(idActividad));
+                request.setAttribute("cantidadEventosHoy",dActividad.cantidadEventosEnNdiasPorActividad(idActividad,0));
+                request.setAttribute("cantidadEventosManana",dActividad.cantidadEventosEnNdiasPorActividad(idActividad,1));
+                request.setAttribute("cantidadEventos2DiasMas", dActividad.cantidadEventosEn2DiasAMasPorActividad(idActividad));
+                request.setAttribute("listaEventos",dEvento.buscarEventoPorNombre(textoBuscar,idActividad));
+                request.setAttribute("busqueda",textoBuscar);
+                request.getRequestDispatcher("listaDeEventos.jsp").forward(request,response);
+                break;
             case "addConfirm":
-
                 // Parámetros:
                 idUsuario = Integer.parseInt(request.getParameter("idUsuario"));
                 addActividadID = Integer.parseInt(request.getParameter("addActividadID"));
@@ -168,9 +185,9 @@ public class ListaDeEventosServlet extends HttpServlet {
                 String finResumen = request.getParameter("finResumen");
                 String resultado = request.getParameter("resultado");
 
-                int finEventoId = daoEvento.idEventoPorNombre(finEventoNombre);
+                int finEventoId = dEvento.idEventoPorNombre(finEventoNombre);
 
-                daoEvento.finalizarEvento(finEventoId,finResumen,resultado);
+                dEvento.finalizarEvento(finEventoId,finResumen,resultado);
                 response.sendRedirect(request.getContextPath()+"/ListaDeEventosServlet?idUsuario="+idUsuario+"&idActividad="+addActividadID);
                 break;
         }

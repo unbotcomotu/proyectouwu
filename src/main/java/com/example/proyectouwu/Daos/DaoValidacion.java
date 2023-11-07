@@ -47,7 +47,7 @@ public class DaoValidacion extends DaoPadre {
             String dateStr = fechaHoraActual.format(formatter);
             try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
                 pstmt.setString(1, correo);
-                pstmt.setString(2, "RecuperarContrasena");
+                pstmt.setString(2, "recuperarContrasena");
                 pstmt.setInt(3, new Random().nextInt(99999));
                 pstmt.setString(4, dateStr);
                 pstmt.setBoolean(5, false);
@@ -88,5 +88,22 @@ public class DaoValidacion extends DaoPadre {
         //Nunca se va a dar este caso porque siempre que se crea IdCorreoValidacion con un correo
         return 1;
     }
+
+
+    public int getIdPorcodigoValidacion(int codigoValidacion){
+        String sql = "select idCorreoValidacion  from validacion where codigoValidacion = ?";
+        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setInt(1, codigoValidacion);
+            try(ResultSet rs = pstmt.executeQuery()){
+                if(rs.next()){
+                    return rs.getInt(1);
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return 0;
+    }
+
 
 }

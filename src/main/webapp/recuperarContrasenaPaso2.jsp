@@ -7,6 +7,7 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
+<% int idCorreoValidacion =(int) request.getAttribute("idCorreoValidacion"); %>
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -45,13 +46,16 @@
 </head>
 <body> <!--class="bg-light", no se porque dice eso-->
 <div class="container">
-
+<form method  = "post" action="<%=request.getContextPath()%>/RecuperarContrasenaSegundoCasoServlet?action=correoRecuperarContrasenaSegundoPaso" >
     <div class="py-5 text-center">
         <img class="d-block mx-auto mb-4" src="css/telito.png" alt="" width="50%" height="50%">
         <h2 class="texto"> RECUPERACIÓN DE CONTRASEÑA</h2>
         <!--<p class="lead">Bienvenido y gracias por animarte a participar de la semana de ingeniería. Ahora solo necesitas crear una cuenta regirtrando tus datos</p>-->
     </div>
 
+    <div class="mb-3">
+        <input type="hidden" class="form-control" name="idCorreoValidacion" value="<%=idCorreoValidacion%>">
+    </div>
 
 
     <div class="mb-3 col-12">

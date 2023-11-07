@@ -1,5 +1,6 @@
 package com.example.proyectouwu.Servlets;
 
+import com.example.proyectouwu.Daos.DaoBan;
 import com.example.proyectouwu.Daos.DaoUsuario;
 import jakarta.servlet.*;
 import jakarta.servlet.http.*;
@@ -25,6 +26,13 @@ public class ListaDeUsuariosServlet extends HttpServlet {
             case "listarUsuarios":
                 request.setAttribute("listaUsuarios",dUsuario.listarUsuarios());
                 request.getRequestDispatcher("listaUsuarios.jsp").forward(request,response);
+                break;
+            case "banear":
+                int idUsuarioABanear =Integer.parseInt(request.getParameter("idUsuarioABanear"));
+                new DaoBan().banearPorId(idUsuarioABanear);
+                request.setAttribute("listaUsuarios",dUsuario.listarUsuarios());
+                request.getRequestDispatcher("listaUsuarios.jsp").forward(request,response);
+                break;
         }
     }
 

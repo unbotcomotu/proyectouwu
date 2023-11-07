@@ -39,7 +39,7 @@ public class DaoNotificacionDelegadoGeneral extends DaoPadre {
         String username = super.getUser();
         String password = super.getPassword(); //Cambiar segun tu contraseña
 
-        String sql = "select nombre, apellido, correo, codigoPUCP, condicion  from Usuario where estadoRegistro = 'Pendiente'";
+        String sql = "select nombre, apellido, correo, codigoPUCP, condicion ,idUsuario from Usuario where estadoRegistro = 'Pendiente'";
 
 
         try (Connection conn = DriverManager.getConnection(url, username, password);
@@ -52,6 +52,7 @@ public class DaoNotificacionDelegadoGeneral extends DaoPadre {
                 u.setCorreo(rs.getString(3));
                 u.setCodigoPUCP(rs.getString(4));
                 u.setCondicion(rs.getString(5));
+                u.setIdUsuario(rs.getInt(6));
                 listaSolicitudes.add(u);
             }
         } catch (SQLException e) {

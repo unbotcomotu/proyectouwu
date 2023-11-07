@@ -395,4 +395,27 @@ public class DaoUsuario extends DaoPadre {
         }
 
     }
+
+    public void aceptarRegistro(int idUsuario){
+        String sql = "update usuario set estadoRegistro = ? where idUsuario = ?";
+        try(PreparedStatement pstmt=conn.prepareStatement(sql)){
+            pstmt.setString(1,"Registrado");
+            pstmt.setInt(2,idUsuario);
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void rechazarRegistro(int idUsuario){
+        String sql = "update usuario set estadoRegistro = ? where idUsuario = ?";
+        try(PreparedStatement pstmt=conn.prepareStatement(sql)){
+            pstmt.setString(1,"No registrado");
+            pstmt.setInt(2,idUsuario);
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
 }

@@ -1468,10 +1468,10 @@
 
 
                                 <div class="col-sm-6">
-                                    <button class="button-accept">Aceptar</button>
+                                    <a href="<%=request.getContextPath()%>/NotificacionesServlet?action=aceptarRegistro&idUsuarioARegistrar=<%=usuario_pendiente.getIdUsuario()%>&idUsuario=<%=idUsuario%>" ><button class="button-accept">Aceptar</button></a>
                                 </div>
                                 <div class="col-sm-6">
-                                    <button class="button-reject">Rechazar</button>
+                                    <a href="<%=request.getContextPath()%>/NotificacionesServlet?action=rechazarRegistro&idUsuarioARegistrar=<%=usuario_pendiente.getIdUsuario()%>&idUsuario=<%=idUsuario%>"><button class="button-reject"  >Rechazar</button></a>
                                 </div>
                             </div>
                             <!--<button class="button-accept">Aceptar</button>
@@ -1483,6 +1483,7 @@
                 </div>
                 <!-- /USER PREVIEW INFO -->
             </div>
+
             <!-- /USER PREVIEW -->
             <%}%>
         </div>

@@ -23,7 +23,7 @@ public class NotificacionesServlet extends HttpServlet {
         response.setContentType("text/html");
         DaoUsuario dUsuario=new DaoUsuario();
         DaoDonacion daoDonacion  = new DaoDonacion();
-        int idUsuario=Integer.parseInt(request.getParameter("idUsuario"));
+        int idUsuario= (int) Integer.parseInt(request.getParameter("idUsuario"));
 
 
         String rolUsuario=dUsuario.rolUsuarioPorId(idUsuario);
@@ -72,7 +72,18 @@ public class NotificacionesServlet extends HttpServlet {
                     request.getRequestDispatcher("notificacionesDelGeneral.jsp").forward(request,response);
                 }
                 break;
-
+            case "aceptarRegistro":
+                String idUserMaster = request.getParameter("idUsuario");
+                String idUsuarioARegistrar = request.getParameter("idUsuarioARegistrar");
+                new DaoUsuario().aceptarRegistro((int)Integer.parseInt(idUsuarioARegistrar));
+                response.sendRedirect(request.getContextPath() + "/NotificacionesServlet?idUsuario="+ idUserMaster);
+                break;
+            case "rechazarRegistro":
+                String idUserMaster1 = request.getParameter("idUsuario");
+                String idUsuarioARegistrar1 = request.getParameter("idUsuarioARegistrar");
+                new DaoUsuario().rechazarRegistro((int)Integer.parseInt(idUsuarioARegistrar1));
+                response.sendRedirect(request.getContextPath() + "/NotificacionesServlet?idUsuario="+ idUserMaster1);
+                break;
             case "delete":
 
                 String idd = request.getParameter("id");

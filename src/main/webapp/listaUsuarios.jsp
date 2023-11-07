@@ -1024,7 +1024,7 @@
   <!-- GRID -->
   <div class="grid grid-4-4-4 centered">
 
-    <% for(Usuario usuario: listaUsuarios){%>
+    <% for(Usuario usuario: listaUsuarios) { %>
 
     <!-- USER PREVIEW -->
     <div class="user-preview">
@@ -1143,7 +1143,7 @@
           <%if(new DaoBan().usuarioBaneadoPorId(usuario.getIdUsuario())){%>
           <button class="button secondary" id="boton" style="background-color: #615dfa; opacity: 60%;">Baneado</button>
           <%}else{%>
-          <button class="button secondary" id="mostrarPopup<%=listaUsuarios.indexOf(usuario)%>">Banear</button>
+          <button class="button secondary" id="mostrarPopup<%=listaUsuarios.indexOf(usuario)%>" >Banear</button>
           <%}%>
           <!-- /BUTTON -->
 
@@ -1293,8 +1293,8 @@
   <div class="container-fluid">
     <div class="row">
       <div class="col-sm-6" style="margin-top: 5px;">
-        <button class="button secondary" id="cerrarPopup1<%=i%>">Banear</button>
-      </div>
+        <a href="<%=request.getContextPath()%>/ListaDeUsuariosServlet?action=banear&idUsuario=<%=idUsuario%>&idUsuarioABanear=<%=listaUsuarios.get(i).getIdUsuario()%>" > <button class="button secondary" id="cerrarPopup1<%=i%>">Banear</button>
+        </a> </div>
       <div class="col-sm-6" style="margin-top: 5px;">
         <button class="button secondary" id="cerrarPopup2<%=i%>" style="background-color: grey;">Cancelar</button>
       </div>

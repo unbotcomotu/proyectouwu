@@ -133,10 +133,10 @@ public class NotificacionesServlet extends HttpServlet {
                     donacion.setEstadoDonacion(estadoDonacion);
 
                     daoDonacion.editarDonacion(donacion);
-                    request.getRequestDispatcher("job/notificacionesDelGeneral.jsp").forward(request,response);
+                    request.getRequestDispatcher("notificacionesDelGeneral.jsp").forward(request,response);
                 }else{
                     request.setAttribute("donacion",daoDonacion.buscarPorId(donacionId));
-                    request.getRequestDispatcher("job/form_edit.jsp").forward(request,response);
+                    request.getRequestDispatcher("donacion_edit.jsp").forward(request,response);
                 }
                 break;
 

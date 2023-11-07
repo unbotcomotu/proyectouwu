@@ -1410,7 +1410,7 @@
                 <!-- /SECTION HEADER INFO -->
                 <div class="section-filters-bar-actions col-sm-auto d-flex justify-content-end recuadro recuadroFila" style="width: 150px;">
                     <!-- BUTTON -->
-                    <button class="button secondary popup-event-creation-trigger botones" id="mostrarPopupFinalizar" style="width: 100%;">Finalizar evento</button>
+                    <button class="button secondary popup-event-creation-trigger botones" id="mostrarPopupFinalizar" style="width: 100%;">Finalizar Evento</button>
                     <!-- /BUTTON -->
                 </div>
                 <%}%>

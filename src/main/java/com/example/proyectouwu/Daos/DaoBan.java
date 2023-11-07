@@ -50,4 +50,35 @@ public class DaoBan extends DaoPadre {
             throw new RuntimeException(e);
         }
     }
+
+    public Integer cantidadTotalBaneados(){
+        String sql = "select count(idBan) from ban";
+        try(Connection conn=DriverManager.getConnection("jdbc:mysql://localhost:3306/proyecto",super.getUser(),super.getPassword());
+            ResultSet rs=conn.createStatement().executeQuery(sql)) {
+            if(rs.next()){
+                return rs.getInt(1);
+            }else{
+                return 0;
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public Integer cantidadBaneadosHaceNdias(int n){
+        String sql = "select count(idBan) from ban where day(current_date())-day(fechaHora)=? group by day(fechaHora)";
+        try(Connection conn=DriverManager.getConnection("jdbc:mysql://localhost:3306/proyecto",super.getUser(),super.getPassword());
+            PreparedStatement pstmt=conn.prepareStatement(sql)) {
+            pstmt.setInt(1,n);
+            try (ResultSet rs=pstmt.executeQuery()){
+                if(rs.next()){
+                    return rs.getInt(1);
+                }else{
+                    return 0;
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }

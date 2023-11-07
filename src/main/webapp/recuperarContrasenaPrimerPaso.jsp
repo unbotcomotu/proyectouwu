@@ -6,6 +6,7 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%String correoNoExiste=(String) request.getAttribute("correoNoExiste");%>
 <html> <!-- lang="en"  , no se poque estaba eso dentro del html-->
 <head>
     <meta charset="utf-8">
@@ -103,6 +104,7 @@
     <div class="mb-5 col-12">
         <label for="email" class="form-label texto">Ingrese su correo electrónico</label>
         <input type="email" class="form-control" name = "correoPucp" id="email" placeholder="EjemploASeguir@pucp.edu.pe" required>
+        <input type="hidden" name="popup" value="2">
         <div class="invalid-feedback texto">
             Por favor ingrese un correo electrónico válido.
         </div>
@@ -141,15 +143,7 @@
             return emailPattern.test(email);
         }
     </script>
-
-
-
-
-        </form>
-    </div>
-    </div>
-</main>
-
+</div>
 <footer class="my-5 pt-5 text-muted text-center text-small">
     <p class="mb-1">&copy; 2023 PUCP</p>
     <!--<ul class="list-inline">
@@ -158,19 +152,20 @@
       <li class="list-inline-item"><a href="#">Support</a></li>
     </ul>-->
 </footer>
-</div>
-<div class="overlay" id="overlay">
-    <div class="popup" id="popup">
+
+<%if(correoNoExiste!=null){%>
+<div class="overlay" style="display: block" id="overlay">
+    <div class="popup" style="display: block;" id="popup">
         <a href="<%= request.getContextPath()%>/InicioSesionServlet">
             <svg class="cerrarPopup" id="cerrarPopup" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M11.4142 10L16.7071 4.70711C17.0976 4.31658 17.0976 3.68342 16.7071 3.29289C16.3166 2.90237 15.6834 2.90237 15.2929 3.29289L10 8.58579L4.70711 3.29289C4.31658 2.90237 3.68342 2.90237 3.29289 3.29289C2.90237 3.68342 2.90237 4.31658 3.29289 4.70711L8.58579 10L3.29289 15.2929C2.90237 15.6834 2.90237 16.3166 3.29289 16.7071C3.68342 17.0976 4.31658 17.0976 4.70711 16.7071L10 11.4142L15.2929 16.7071C15.6834 17.0976 16.3166 17.0976 16.7071 16.7071C17.0976 16.3166 17.0976 15.6834 16.7071 15.2929L11.4142 10Z" fill="black"/>
             </svg>
         </a>
 
-        <p style="font-size: 1.125rem;font-family: 'Titillium Web' !important; font-weight: 500 !important; text-align: center;">Se le ha enviado un correo electrónico con el siguiente paso para la recuperación de su contraseña.</p>
+        <p style="font-size: 1.125rem;font-family: 'Titillium Web' !important; font-weight: 500 !important; text-align: center;">El correo ingresado no está registrado. Ingrese un correo correcto.</p>
     </div>
-
 </div>
+<%}%>
 <script>
 
     function popupFunc(popupId,abrirId,cerrarId){

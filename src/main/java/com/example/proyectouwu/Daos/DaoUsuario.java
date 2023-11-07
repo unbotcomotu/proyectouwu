@@ -1,12 +1,15 @@
 package com.example.proyectouwu.Daos;
 
+import com.example.proyectouwu.Beans.Evento;
 import com.example.proyectouwu.Beans.Usuario;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.Random;
+import java.util.logging.StreamHandler;
 
 public class DaoUsuario extends DaoPadre {
-    private final Connection conn;
+    private Connection conn;
     {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
@@ -91,6 +94,7 @@ public class DaoUsuario extends DaoPadre {
         }
     }
 
+
     public ArrayList<String>listarCorreosDelegadosGenerales(){
         ArrayList<String>listaCorreosDelegadosGenerales=new ArrayList<>();
         String sql="select correo from usuario where rol='Delegado General'";
@@ -164,7 +168,11 @@ public class DaoUsuario extends DaoPadre {
             pstmt.setInt(1,idUsuario);
             try(ResultSet rs = pstmt.executeQuery()){
                 if(rs.next()){
-                    return rs.getString(1).equals("Delegado de Actividad");
+                    if(rs.getString(1).equals("Delegado de Actividad")){
+                        return true;
+                    }else{
+                        return false;
+                    }
                 }else{
                     return false;
                 }
@@ -383,7 +391,6 @@ public class DaoUsuario extends DaoPadre {
         }
         return baneado;
     }
-
     public void actualizarContrasena (int idCorreoValidacion, String password){
         String sql = "update usuario set contrasena = ? where idUsuario = (Select idUsuario from validacion where idCorreoValidacion = ?)";
         try(PreparedStatement pstmt=conn.prepareStatement(sql)){
@@ -417,5 +424,29 @@ public class DaoUsuario extends DaoPadre {
             throw new RuntimeException(e);
         }
     }
+    public Integer totalEstudiantesRegistrados(){
+        String sql = "select count(idUsuario) from usuario where condicion='Estudiante' and estadoRegistro='Registrado'";
+        try(ResultSet rs=conn.createStatement().executeQuery(sql)){
+            if(rs.next()) {
+                return rs.getInt(1);
+            }else{
+                return 0;
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
+    public Integer totalEgresadosRegistrados(){
+        String sql = "select count(idUsuario) from usuario where condicion='Egresado' and estadoRegistro='Registrado'";
+        try(ResultSet rs=conn.createStatement().executeQuery(sql)){
+            if(rs.next()) {
+                return rs.getInt(1);
+            }else{
+                return 0;
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }

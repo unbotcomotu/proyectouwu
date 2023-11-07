@@ -7,6 +7,8 @@ import com.example.proyectouwu.Daos.DaoValidacion;
 import jakarta.servlet.*;
 import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
+
+import javax.swing.*;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -49,6 +51,7 @@ public class InicioSesionServlet extends HttpServlet {
                     response.sendRedirect(request.getContextPath() + "/ListaDeActividadesServlet?idUsuario="+usuarioId);
                 }else{
                     //En caso se loqee mal o el usuario no exista debe salir un error en la vista de inicar sesión
+                    request.setAttribute("popup","4");
                     request.getRequestDispatcher("inicioSesion.jsp").forward(request,response);
                 }
                 break;
@@ -56,10 +59,16 @@ public class InicioSesionServlet extends HttpServlet {
                 String correo2 = request.getParameter("correoPucp");
                 //Debemos guardarlo en algun lado para mandar el correo
                 //Debemos asegurarnos que el correo no tenga una cuenta ya asociada y en caso tenga que mande un mensaje de error al usuario
-
-                DaoValidacion daoValidacion = new DaoValidacion();
-                daoValidacion.agregarCorreoParaEnviarLink(correo2);
-                //Falta habilitar el popUp
+                if(new DaoUsuario().obtenerIdPorCorreo(correo2) != 0) {
+                    request.setAttribute("popup","3");
+                }else{
+                    DaoValidacion daoValidacion = new DaoValidacion();
+                    daoValidacion.agregarCorreoParaEnviarLink(correo2);
+                    String popup=request.getParameter("popup");
+                    if(popup!=null) {
+                        request.setAttribute("popup", popup);
+                    }
+                }
                 request.getRequestDispatcher("inicioSesion.jsp").forward(request,response);
                 break;
         }

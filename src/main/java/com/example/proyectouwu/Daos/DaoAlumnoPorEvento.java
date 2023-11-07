@@ -58,4 +58,45 @@ public class DaoAlumnoPorEvento extends DaoPadre {
             throw new RuntimeException(e);
         }
     }
+
+    public Integer cantidadTotalApoyosEstudiantes(){
+        String sql="select count(ae.idAlumnoPorEvento) from AlumnoPorEvento ae inner join Usuario u on ae.idAlumno=u.idUsuario where ae.estadoApoyo!='Pendiente' and u.condicion='Estudiante'";
+        try(ResultSet rs=conn.createStatement().executeQuery(sql);) {
+            if(rs.next()){
+                return rs.getInt(1);
+            }else {
+                return 0;
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public Integer cantidadTotalApoyosEgresados(){
+        String sql="select count(ae.idAlumnoPorEvento) from AlumnoPorEvento ae inner join Usuario u on ae.idAlumno=u.idUsuario where ae.estadoApoyo!='Pendiente' and u.condicion='Egresado'";
+        try(ResultSet rs=conn.createStatement().executeQuery(sql);) {
+            if(rs.next()){
+                return rs.getInt(1);
+            }else {
+                return 0;
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+    public Integer solicitudesApoyoHaceNdias(int n){
+        String sql = "select count(idAlumnoPorEvento) from AlumnoPorEvento where day(current_date())-day(fechaHoraSolicitud)=? group by day(fechaHoraSolicitud)";
+        try(PreparedStatement pstmt=conn.prepareStatement(sql)){
+            pstmt.setInt(1,n);
+            try(ResultSet rs = pstmt.executeQuery()){
+                if(rs.next()) {
+                    return rs.getInt(1);
+                }else{
+                    return 0;
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }

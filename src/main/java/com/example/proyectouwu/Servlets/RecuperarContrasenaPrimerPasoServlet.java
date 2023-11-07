@@ -29,10 +29,14 @@ public class RecuperarContrasenaPrimerPasoServlet extends HttpServlet {
               //Solo se envia correo si es que este existe en la base de datos de usuarios - cumplido
               //Se debe ajustar la velocidad del salto del popUp para que el usuario tenga tiempo de ver el aviso - no cumplido
              DaoValidacion daoValidacion = new DaoValidacion();
-              if(new DaoUsuario().obtenerIdPorCorreo(correo2) != 0) {
+             if(new DaoUsuario().obtenerIdPorCorreo(correo2) != 0) {
                   daoValidacion.agregarCorreoParaRecuperarContrasena(correo2);
-                  response.sendRedirect(request.getContextPath() + "/InicioSesionServlet");
-              }//else{ salga un mensaje de error en la vista} - no cumplido
+                  request.setAttribute("popup","2");
+                  request.getRequestDispatcher("inicioSesion.jsp").forward(request,response);
+             }else{
+                 request.setAttribute("correoNoExiste","1");
+                 request.getRequestDispatcher("recuperarContrasenaPrimerPaso.jsp").forward(request,response);
+             }
              break;
        }
     }

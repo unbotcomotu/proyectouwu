@@ -268,5 +268,39 @@ public class DaoActividad extends DaoPadre {
         }
     }
 
+    public ArrayList<String> listaNombresActividadesOrden(){
+        ArrayList<String>lista=new ArrayList<>();
+        String sql="select nombre from Actividad order by nombre";
+        try(ResultSet rs=conn.createStatement().executeQuery(sql)){
+            while (rs.next()){
+                lista.add(rs.getString(1));
+            }return lista;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public ArrayList<Integer>cantidadApoyosEstudiantesPorActividadOrden(){
+        ArrayList<Integer>lista=new ArrayList<>();
+        String sql="select count(ae.idAlumnoPorEvento) from AlumnoPorEvento ae inner join Evento e on ae.idEvento=e.idEvento inner join Actividad a on e.idActividad=a.idActividad inner join Usuario u on ae.idAlumno=u.idUsuario where u.condicion='Estudiante' group by a.nombre order by a.nombre";
+        try(ResultSet rs=conn.createStatement().executeQuery(sql)){
+            while (rs.next()){
+                lista.add(rs.getInt(1));
+            }return lista;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+    public ArrayList<Integer>cantidadApoyosEgresadosPorActividadOrden(){
+        ArrayList<Integer>lista=new ArrayList<>();
+        String sql="select count(ae.idAlumnoPorEvento) from AlumnoPorEvento ae inner join Evento e on ae.idEvento=e.idEvento inner join Actividad a on e.idActividad=a.idActividad inner join Usuario u on ae.idAlumno=u.idUsuario where u.condicion='Egresado' group by a.nombre order by a.nombre";
+        try(ResultSet rs=conn.createStatement().executeQuery(sql)){
+            while (rs.next()){
+                lista.add(rs.getInt(1));
+            }return lista;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }
 

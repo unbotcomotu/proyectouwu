@@ -6,6 +6,7 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%String popup=(String) request.getAttribute("popup");%>
 <html>
 <head>
     <meta charset="utf-8">
@@ -53,61 +54,41 @@
                                         <hr>
                                         ¿Aún no tienes una cuenta?
                                     </div>
-                                    <form method="post" action="<%=request.getContextPath()%>/InicioSesionServlet?action=registro" class = "form">
+                                    <form method="post" action="<%=request.getContextPath()%>/InicioSesionServlet?action=registro"class = "form">
                                         <div class="form-floating my-3">
                                             <label for="miInputRegistro">Correo PUCP</label>
                                             <input type="email" class="form-control button secondary" id="miInputRegistro" name="correoPucp" onkeyup="habilitarBotonRegistro()" placeholder="telito@pucp.edu.pe" required>
+                                            <input type="hidden" name="popup" value="1">
                                         </div>
 
                                     <div class="text-center">
                                         <!-- onclick="mostrarPopup()" todo eso va antes de class paa activar el popup -->
                                         <button  class="btn btn-lg btn-primary btn-login fw-bold mb-2" type="submit" style="background-color: #615dfa;" id="miBotonRegistro"  disabled>Registrarse</button>
+                                    </div>
+                                        <script>
+                                            // Función para habilitar el boton de Inicio de Sesión
+                                            function habilitarBotonInicioSesion() {
+                                                var input = document.getElementById("miInputInicioSesion");
+                                                var boton = document.getElementById("miBotonInicioSesion");
 
-                                        <!-- Overlay de fondo oscuro -->
-                                        <div class="overlay" id="overlay"></div>
-                                        <!-- Contenido del popup -->
-                                        <div class="popup" id="popup">
-                                            <span class="close-button" onclick="cerrarPopup()">&#10005;</span>
-                                            <div>
-                                                Te hemos enviado un correo electrónico con un link desde el que podrás continuar con el registro
-                                            </div>
-                                            <script>
-                                                // Función para mostrar el popup
-                                                function mostrarPopup() {
-                                                    document.getElementById("miBotonRegistro").disabled=true;
-                                                    document.getElementById("overlay").style.display = "block";
-                                                    document.getElementById("popup").style.display = "block";
+                                                if (input.checkValidity() && input.value.endsWith("@pucp.edu.pe")) { // Verificar el campo de entrada
+                                                    boton.disabled = false; // Habilitar el botón
+                                                } else {
+                                                    boton.disabled = true; // Deshabilitar el botón
                                                 }
-                                                // Función para cerrar el popup
-                                                function cerrarPopup() {
-                                                    document.getElementById("overlay").style.display = "none";
-                                                    document.getElementById("popup").style.display = "none";
-                                                }
-                                                // Función para habilitar el boton de Inicio de Sesión
-                                                function habilitarBotonInicioSesion() {
-                                                    var input = document.getElementById("miInputInicioSesion");
-                                                    var boton = document.getElementById("miBotonInicioSesion");
+                                            }
+                                            // Función para habilitar el boton de Registro
+                                            function habilitarBotonRegistro() {
+                                                var input = document.getElementById("miInputRegistro");
+                                                var boton = document.getElementById("miBotonRegistro");
 
-                                                    if (input.checkValidity() && input.value.endsWith("@pucp.edu.pe")) { // Verificar el campo de entrada
-                                                        boton.disabled = false; // Habilitar el botón
-                                                    } else {
-                                                        boton.disabled = true; // Deshabilitar el botón
-                                                    }
+                                                if (input.checkValidity() && input.value.endsWith("@pucp.edu.pe")) { // Verificar el campo de entrada
+                                                    boton.disabled = false; // Habilitar el botón
+                                                } else {
+                                                    boton.disabled = true; // Deshabilitar el botón
                                                 }
-                                                // Función para habilitar el boton de Registro
-                                                function habilitarBotonRegistro() {
-                                                    var input = document.getElementById("miInputRegistro");
-                                                    var boton = document.getElementById("miBotonRegistro");
-
-                                                    if (input.checkValidity() && input.value.endsWith("@pucp.edu.pe")) { // Verificar el campo de entrada
-                                                        boton.disabled = false; // Habilitar el botón
-                                                    } else {
-                                                        boton.disabled = true; // Deshabilitar el botón
-                                                    }
-                                                }
-                                            </script>
-                                        </div>
-                                         </div>
+                                            }
+                                        </script>
                                     </form>
                                 </div>
                             </div>
@@ -121,6 +102,73 @@
     </div>
 </div>
 </div>
+<%if(popup!=null){%>
+<div class="overlay" style="display: block" id="overlay">
+    <div class="popup" style="display: block;" id="popup">
+        <a href="<%= request.getContextPath()%>/InicioSesionServlet">
+            <svg class="cerrarPopup" id="cerrarPopup" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M11.4142 10L16.7071 4.70711C17.0976 4.31658 17.0976 3.68342 16.7071 3.29289C16.3166 2.90237 15.6834 2.90237 15.2929 3.29289L10 8.58579L4.70711 3.29289C4.31658 2.90237 3.68342 2.90237 3.29289 3.29289C2.90237 3.68342 2.90237 4.31658 3.29289 4.70711L8.58579 10L3.29289 15.2929C2.90237 15.6834 2.90237 16.3166 3.29289 16.7071C3.68342 17.0976 4.31658 17.0976 4.70711 16.7071L10 11.4142L15.2929 16.7071C15.6834 17.0976 16.3166 17.0976 16.7071 16.7071C17.0976 16.3166 17.0976 15.6834 16.7071 15.2929L11.4142 10Z" fill="black"/>
+            </svg>
+        </a>
 
+        <p style="font-size: 1.125rem;font-family: 'Titillium Web' !important; font-weight: 500 !important; text-align: center;">
+            <%if(popup.equals("1")){%>
+            Te hemos enviado un correo electrónico con un link desde el que podrás continuar con el registro
+            <%}else if(popup.equals("2")){%>
+            Se le ha enviado un correo electrónico con el siguiente paso para la recuperación de su contraseña
+            <%}else if(popup.equals("3")){%>
+                El correo ingresado ya existe
+            <%}else if(popup.equals("4")){%>
+                Las credenciales no son correctas
+            <%}%>
+        </p>
+    </div>
+</div>
+<%}%>
+<script>
+
+    function popupFunc(popupId,abrirId,cerrarId){
+        const showPopup=document.getElementById(abrirId);
+        const overlay=document.getElementById('overlay');
+        const popup=document.getElementById(popupId);
+        const closePopup=document.getElementById(cerrarId);
+
+        const mostrarPopup = () => {
+            overlay.style.display = 'block';
+            popup.style.display = 'block';
+            // Desactivar el scroll
+            document.body.style.overflow = 'hidden';
+        };
+        showPopup.addEventListener('click', mostrarPopup);
+        const cerrarPopup = () => {
+            overlay.style.display = 'none';
+            popup.style.display = 'none';
+            // Reactivar el scroll
+            document.body.style.overflow = 'auto';
+
+        };
+        closePopup.addEventListener('click', cerrarPopup);
+        overlay.addEventListener('click', (e) => {
+            if (e.target === overlay) {
+                cerrarPopup();
+            }
+        });
+
+        // Cerrar el popup al presionar Escape
+        document.addEventListener('keydown', (event) => {
+            if (event.key === 'Escape') {
+                cerrarPopup();
+            }
+        });
+    }
+    popupFunc('popup','abrirPopup','cerrarPopup');
+
+
+
+
+    function goBack() {
+        window.history.back();
+    }
+</script>
 </body>
 </html>

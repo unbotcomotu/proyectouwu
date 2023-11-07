@@ -152,7 +152,60 @@ public class DaoDonacion extends DaoPadre  {
 
         return donacion;
     }
+    public float[] donacionesEgresadosUltimaSemana(){
+        String sql="select sum(d.monto) from donacion d inner join usuario u where u.condicion='Egresado' and datediff(current_date(),d.fechaHora)=?";
+        float[] listaDonaciones=new float[7];
+        for (int i=0;i<7;i++){
+            int aux=7-i;
+            try(PreparedStatement pstmt=conn.prepareStatement(sql)){
+                pstmt.setInt(1,aux);
+                try(ResultSet rs = pstmt.executeQuery()) {
+                    if (rs.next()){
+                        listaDonaciones[i]=rs.getFloat(1);
+                    }else{
+                        listaDonaciones[i]=0;
+                    }
+                }
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+        } return listaDonaciones;
+    }
+    public float[] donacionesEstudiantesUltimaSemana(){
+        String sql="select sum(d.monto) from donacion d inner join usuario u where u.condicion='Estudiante' and datediff(current_date(),d.fechaHora)=?";
+        float[] listaDonaciones=new float[7];
+        for (int i=0;i<7;i++){
+            int aux=7-i;
+            try(PreparedStatement pstmt=conn.prepareStatement(sql)){
+                pstmt.setInt(1,aux);
+                try(ResultSet rs = pstmt.executeQuery()) {
+                    if (rs.next()){
+                        listaDonaciones[i]=rs.getFloat(1);
+                    }else{
+                        listaDonaciones[i]=0;
+                    }
+                }
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+        } return listaDonaciones;
+    }
 
+    public float donacionesHaceNdias(int n){
+        String sql="select sum(monto) from donacion where datediff(current_date(),fechaHora)=?";
+        try(PreparedStatement pstmt=conn.prepareStatement(sql)) {
+            pstmt.setInt(1,n);
+            try(ResultSet rs=pstmt.executeQuery()) {
+                if(rs.next()){
+                    return rs.getFloat(1);
+                }else{
+                    return 0;
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
     public void borrar(String idDonacion) throws SQLException {
 
@@ -169,4 +222,28 @@ public class DaoDonacion extends DaoPadre  {
 
 
 
+    public float donacionesTotalesEgresados(){
+        String sql="select sum(d.monto) from donacion d inner join usuario u on d.idUsuario=u.idUsuario where u.condicion='Egresado'";
+        try(ResultSet rs=conn.createStatement().executeQuery(sql)){
+            if(rs.next()){
+                return rs.getFloat(1);
+            }else{
+                return 0;
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+    public float donacionesTotalesEstudiantes(){
+        String sql="select sum(d.monto) from donacion d inner join usuario u on d.idUsuario=u.idUsuario where u.condicion='Estudiante'";
+        try(ResultSet rs=conn.createStatement().executeQuery(sql)){
+            if(rs.next()){
+                return rs.getFloat(1);
+            }else{
+                return 0;
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }

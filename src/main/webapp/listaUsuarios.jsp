@@ -1341,31 +1341,6 @@
   <%for(int i=0;i<listaUsuarios.size();i++){%>
   popupFunc('popup<%=i%>','overlay<%=i%>','mostrarPopup<%=i%>',['cerrar-btn<%=i%>','cerrarPopup1<%=i%>','cerrarPopup2<%=i%>']);
   <%}%>
-
-  /*const createUserPreviewStatsSliders = function () {
-    let i = 1;
-
-    while (true) {
-      const j = i < 10 ? `00${i}` : i;
-
-        const upStatsSlider = app.plugins.createSlider({
-          container: `#user-preview-stats-slides-${j}`,
-          loop: false,
-          controls: false,
-          navContainer: `#user-preview-stats-roster-${j}`
-        });
-
-        if (!upStatsSlider) break;
-
-        i++;
-      }
-    };
-
-    createUserPreviewStatsSliders();
-
-    const centerTinySlider = function (sliderInfo, itemWidth, gutterWidth) {
-      sliderInfo.container.style.width = `${sliderInfo.slideCount * itemWidth + (sliderInfo.slideCount - 1) * gutterWidth}px`;
-    };*/
 </script>
 <!-- app -->
 <script src="js/utils/app.js"></script>

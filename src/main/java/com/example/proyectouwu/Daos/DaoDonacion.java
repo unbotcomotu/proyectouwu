@@ -154,4 +154,19 @@ public class DaoDonacion extends DaoPadre  {
     }
 
 
+    public void borrar(String idDonacion) throws SQLException {
+
+        String sql = "delete from donacion where idDonacion = ?";
+
+        try(PreparedStatement pstmt = conn.prepareStatement(sql)){
+
+            pstmt.setString(1,idDonacion);
+            pstmt.executeUpdate();
+
+        }
+    }
+
+
+
+
 }

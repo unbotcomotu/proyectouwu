@@ -32,6 +32,10 @@
         }else{
             colorRol="orange";
         }
+
+        String vistaActualNueva= (String) request.getAttribute("vistaActualNueva");
+
+        System.out.println(vistaActualNueva );
     %>
 
 
@@ -1843,7 +1847,7 @@
                         </div>
 
                         <div class="table-column centered padded">
-                            <button class="button-reject" href="<%=request.getContextPath()%>/NotificacionesServlet?action=delete&id=<%=donacion.getIdDonacion()%>&idUsuario=<%=idUsuario%>">Borrar</button>
+                            <a class="button-reject" href="<%=request.getContextPath()%>/NotificacionesServlet?action=delete&id=<%=donacion.getIdDonacion()%>&idUsuario=<%=idUsuario%>">Borrar</a>
 
                         </div>
 
@@ -2268,7 +2272,38 @@
     document.getElementById("opcionReportes_2").addEventListener("click", function() {
         mostrarContenido("Reportes");
     });
-    mostrarContenido("Solicitudes");
+
+    <%if (vistaActualNueva==null){%>
+
+        mostrarContenido("Solicitudes");
+
+    <%}
+    else{%>
+
+        <%switch (vistaActualNueva){
+
+            case "Solicitudes":%>
+
+                mostrarContenido("Solicitudes");
+
+               <% break;
+
+            case "Donaciones":%>
+
+                mostrarContenido("Donaciones");
+
+                <% break;
+
+            case "Reportes":%>
+
+                mostrarContenido("Reportes");
+
+                <% break;
+
+        }%>
+    <%}%>
+
+
 </script>
 <script>
     // Obtener referencias a elementos HTML

@@ -12,6 +12,7 @@ import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 @WebServlet(name = "NotificacionesServlet", value = "/NotificacionesServlet")
@@ -23,6 +24,8 @@ public class NotificacionesServlet extends HttpServlet {
         DaoUsuario dUsuario=new DaoUsuario();
         DaoDonacion daoDonacion  = new DaoDonacion();
         int idUsuario=Integer.parseInt(request.getParameter("idUsuario"));
+
+
         String rolUsuario=dUsuario.rolUsuarioPorId(idUsuario);
         request.setAttribute("idUsuario",idUsuario);
         request.setAttribute("rolUsuario",rolUsuario);
@@ -34,6 +37,8 @@ public class NotificacionesServlet extends HttpServlet {
             case "default":
                 if (rolUsuario.equals("Delegado General")){
 
+                    String vistaActualNueva = request.getParameter("vistaActualNueva");
+                    request.setAttribute("vistaActualNueva",vistaActualNueva);
                     //saca del modelo
                     DaoNotificacionDelegadoGeneral daoNotificacionDelegadoGeneral = new DaoNotificacionDelegadoGeneral();
                     ArrayList<Usuario> listaSolicitudes = daoNotificacionDelegadoGeneral.listarSolicitudesDeRegistro();
@@ -52,7 +57,7 @@ public class NotificacionesServlet extends HttpServlet {
                         request.setAttribute("listaSolicitudesApoyo",listaSolicitudesApoyo);
                         request.getRequestDispatcher("NotificacionesDelActividad.jsp").forward(request,response);
                 }else{
-                            response.sendRedirect(request.getContextPath());
+                    request.getRequestDispatcher("notificacionesDelGeneral.jsp").forward(request,response);
                 }
                 break;
 
@@ -64,11 +69,24 @@ public class NotificacionesServlet extends HttpServlet {
                     request.setAttribute("donacion",donacion);
                     request.getRequestDispatcher("/donacion_edit.jsp").forward(request,response);
                 }else{
-                    response.sendRedirect(request.getContextPath() + "/NotificacionesServlet");
+                    request.getRequestDispatcher("notificacionesDelGeneral.jsp").forward(request,response);
                 }
                 break;
 
             case "delete":
+
+                String idd = request.getParameter("id");
+                Donacion donacion1 = daoDonacion.buscarPorId(idd);
+
+                if(donacion1 != null){
+                    try {
+                        daoDonacion.borrar(idd);
+                    } catch (SQLException e) {
+                        System.out.println("Log: excepcion: " + e.getMessage());
+                    }
+                }
+                request.getRequestDispatcher("notificacionesDelGeneral.jsp").forward(request,response);
+
 
                 break;
 
@@ -119,6 +137,7 @@ public class NotificacionesServlet extends HttpServlet {
 
             case "edit":
 
+
                 String donacionId = request.getParameter("idDonacion");
                 String montoDonacion = request.getParameter("montoDonacion");
                 String estadoDonacion = request.getParameter("estadoDonacion");
@@ -127,22 +146,30 @@ public class NotificacionesServlet extends HttpServlet {
                 float monto = Float.parseFloat(montoDonacion);
 
                 if(estadoDonacion.length()<11){
+
+                    DaoNotificacionDelegadoGeneral daoNotificacionDelegadoGeneral = new DaoNotificacionDelegadoGeneral();
+                    ArrayList<Usuario> listaSolicitudes = daoNotificacionDelegadoGeneral.listarSolicitudesDeRegistro();
+                    ArrayList<Reporte> reportList = daoNotificacionDelegadoGeneral.listarNotificacionesReporte();
+                    ArrayList<Donacion> donacionList = daoNotificacionDelegadoGeneral.listarNotificacionesDonaciones();
+
+
+                    request.setAttribute("listaSolicitudes",listaSolicitudes);
+                    request.setAttribute("reportList", reportList);
+                    request.setAttribute("donacionList",donacionList);
+
                     Donacion donacion = new Donacion();
                     donacion.setIdDonacion(donacionId_int);
                     donacion.setMonto(monto);
                     donacion.setEstadoDonacion(estadoDonacion);
 
                     daoDonacion.editarDonacion(donacion);
-                    request.getRequestDispatcher("notificacionesDelGeneral.jsp").forward(request,response);
+                    response.sendRedirect(request.getContextPath()+  "/NotificacionesServlet?idUsuario="+idUsuario + "&vistaActualNueva=Donaciones");
                 }else{
                     request.setAttribute("donacion",daoDonacion.buscarPorId(donacionId));
                     request.getRequestDispatcher("donacion_edit.jsp").forward(request,response);
                 }
                 break;
 
-            case "delete":
-
-                break;
 
 
             case "filtrarFechaDelegadoGeneral":

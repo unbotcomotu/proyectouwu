@@ -27,7 +27,7 @@
             <label>Estato de la donación</label>
             <input type="text" class="form-control" name="estadoDonacion" value="<%=donacion.getEstadoDonacion()%>">
         </div>
-        <a href="<%=request.getContextPath()%>/NotificacionesServlet" class="btn btn-danger">Regresar</a>
+        <a href="<%=request.getContextPath()%>/NotificacionesServlet?idUsuario=<%=idUsuario%>" class="btn btn-danger">Regresar</a>
         <button type="submit" class="btn btn-primary">Confirmar</button>
     </form>
 </div>

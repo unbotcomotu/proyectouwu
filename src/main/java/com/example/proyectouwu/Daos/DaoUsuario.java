@@ -1,15 +1,12 @@
 package com.example.proyectouwu.Daos;
 
-import com.example.proyectouwu.Beans.Evento;
 import com.example.proyectouwu.Beans.Usuario;
 
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.Random;
-import java.util.logging.StreamHandler;
 
 public class DaoUsuario extends DaoPadre {
-    private Connection conn;
+    private final Connection conn;
     {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
@@ -94,7 +91,6 @@ public class DaoUsuario extends DaoPadre {
         }
     }
 
-
     public ArrayList<String>listarCorreosDelegadosGenerales(){
         ArrayList<String>listaCorreosDelegadosGenerales=new ArrayList<>();
         String sql="select correo from usuario where rol='Delegado General'";
@@ -168,11 +164,7 @@ public class DaoUsuario extends DaoPadre {
             pstmt.setInt(1,idUsuario);
             try(ResultSet rs = pstmt.executeQuery()){
                 if(rs.next()){
-                    if(rs.getString(1).equals("Delegado de Actividad")){
-                        return true;
-                    }else{
-                        return false;
-                    }
+                    return rs.getString(1).equals("Delegado de Actividad");
                 }else{
                     return false;
                 }

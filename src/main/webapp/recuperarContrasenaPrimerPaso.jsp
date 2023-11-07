@@ -99,6 +99,7 @@
         <!--<p class="lead">Bienvenido y gracias por animarte a participar de la semana de ingeniería. Ahora solo necesitas crear una cuenta regirtrando tus datos</p>-->
     </div>
 <form  method = "post" action="<%=request.getContextPath()%>/RecuperarContrasenaPrimerPasoServlet?action=correoRecuperarContrasena" class="form">
+
     <div class="mb-5 col-12">
         <label for="email" class="form-label texto">Ingrese su correo electrónico</label>
         <input type="email" class="form-control" name = "correoPucp" id="email" placeholder="EjemploASeguir@pucp.edu.pe" required>

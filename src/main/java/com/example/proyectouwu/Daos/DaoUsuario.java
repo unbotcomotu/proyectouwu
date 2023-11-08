@@ -264,7 +264,7 @@ public class DaoUsuario extends DaoPadre {
         }
     }
     public void registroDeAlumno(String name, String apellido, String correo, String contrasena, String codigoPUCP, String condicion){
-        String sql = "insert into usuario( rol, nombre, apellido, correo, contrasena, codigoPUCP, estadoRegistro, fechaHoraRegistro,condicion) values (?, ?,?, ?,?, ?,?,(select now()),?)";
+        String sql = "insert into usuario( rol, nombre, apellido, correo, contrasena, codigoPUCP, estadoRegistro, fechaHoraRegistro,condicion ,DescripcionPerfil) values (?, ?,?, ?,?, ?,?,(select now()),?, 'Vamos Fibra')";
         try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
             //pstmt.setInt(1,idUser);
             pstmt.setString(1,"Alumno"); //nuevos usuarios se registran como alumnos

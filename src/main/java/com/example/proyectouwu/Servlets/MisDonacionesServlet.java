@@ -33,6 +33,9 @@ public class MisDonacionesServlet extends HttpServlet {
         request.setAttribute("listaDonaciones",dDonacion.listarDonacionesVistaUsuario(idUsuario));
         request.setAttribute("totalDonaciones",dDonacion.totalDonaciones(idUsuario));
         String action = request.getParameter("action") == null ? "default" : request.getParameter("action");
+        if(request.getParameter("confirmacion")!=null){
+            request.setAttribute("confirmacion","1");
+        }
         switch (action){
             case "default":
                 request.getRequestDispatcher("donaciones.jsp").forward(request,response);
@@ -48,20 +51,20 @@ public class MisDonacionesServlet extends HttpServlet {
 
         switch (action){
             case "registDon":
-                int idUser = Integer.parseInt(request.getParameter("IdUsuarioDonacion"));
-                int montoDonacion = Integer.parseInt(request.getParameter("montoDonacion"));
-                String medioPago = request.getParameter("medioPago");
+                int idUsuario = Integer.parseInt(request.getParameter("idUsuario"));
+                String medioPago = request.getParameter("medio");
                 int monto = Integer.parseInt(request.getParameter("monto"));
                 //Ayuda para lo del blob en captura
-                byte[] bytes = request.getParameter("captura").getBytes("UTF-8");
-                try {
+                //byte[] bytes = request.getParameter("captura").getBytes("UTF-8");
+                /*try {
                     Blob captura =  new SerialBlob(bytes);
                     //Después se agrega la donación
-                    daoDonacion.agregarDonacionUsuario(idDonacion,idUser,medioPago,monto,captura);
+                    daoDonacion.agregarDonacionUsuario(idUser,medioPago,monto,captura);
                 } catch (SQLException e) {
                     throw new RuntimeException(e);
-                }
-                response.sendRedirect(request.getContextPath()+"/MisDonacionesServlet");
+                }*/
+                daoDonacion.agregarDonacionUsuario(idUsuario,medioPago,monto,"ola");
+                response.sendRedirect(request.getContextPath()+"/MisDonacionesServlet?idUsuario="+idUsuario+"&confirmacion=1");
                 break;
             case "default":
                 request.getRequestDispatcher("donaciones.jsp").forward(request,response);

@@ -73,15 +73,14 @@ public class DaoDonacion extends DaoPadre  {
         }
     }
     //Este método permite agregar el monto y foto que ha donado una persona
-    public void agregarDonacionUsuario(int idDonacion,int idUser,String medioPago, int monto, Blob captura){
-        String sql = "insert into donacion(idDonacion, idUsuario, medioPago, monto,fechaHora,captura,estadoDonacion) values (?,?, ?, ?,now(), ?,?)";
+    public void agregarDonacionUsuario(int idUser,String medioPago, int monto, String captura){
+        String sql = " insert into donacion(idUsuario, medioPago, monto,fechaHora,captura,estadoDonacion) values (?, ?, ?,now(), ?,?)";
         try(PreparedStatement pstmt=conn.prepareStatement(sql)){
-            pstmt.setInt(1,idDonacion);
-            pstmt.setInt(2, idUser);
-            pstmt.setString(3,medioPago);
-            pstmt.setInt(4,monto);
-            pstmt.setBlob(6,captura);
-            pstmt.setString(7,"En espera");//Toda donación siempre se agrega como en espera
+            pstmt.setInt(1, idUser);
+            pstmt.setString(2,medioPago);
+            pstmt.setInt(3,monto);
+            pstmt.setString(4,captura);
+            pstmt.setString(5,"Pendiente");//Toda donación siempre se agrega como pendiente
 
             pstmt.executeUpdate();
         } catch (SQLException e) {

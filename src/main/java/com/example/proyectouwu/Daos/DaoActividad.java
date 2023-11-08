@@ -302,5 +302,30 @@ public class DaoActividad extends DaoPadre {
             throw new RuntimeException(e);
         }
     }
+
+    public void finalizarActividad(int idActividad){
+        String sql="update actividad set actividadFinalizada=1 where idActividad=?";
+        try(PreparedStatement pstmt= conn.prepareStatement(sql)){
+            pstmt.setInt(1,idActividad);
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void crearActividad(String nombre,int idDelegadoDeActividad,int puntaje,boolean oculto,String fotoCabecera,String fotoMiniatura){
+        String sql="insert into actividad (idDelegadoDeActividad,nombre,fotoMiniatura,fotoCabecera,cantidadPuntosPrimerLugar,actividadFinalizada,actividadOculta) values(?,?,?,?,?,false,?)";
+        try(PreparedStatement pstmt= conn.prepareStatement(sql)){
+            pstmt.setInt(1,idDelegadoDeActividad);
+            pstmt.setString(2,nombre);
+            pstmt.setString(3,fotoMiniatura);
+            pstmt.setString(4,fotoCabecera);
+            pstmt.setInt(5,puntaje);
+            pstmt.setBoolean(6,oculto);
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }
 

@@ -14,6 +14,7 @@
     ArrayList<Donacion>listaDonaciones=(ArrayList<Donacion>)request.getAttribute("listaDonaciones");
     float totalDonaciones=(float)request.getAttribute("totalDonaciones");
     String colorRol;
+    String confirmacion=(String) request.getAttribute("confirmacion");
     if(rolUsuario.equals("Alumno")){
         colorRol="";
     }else if(rolUsuario.equals("Delegado de Actividad")){
@@ -1438,8 +1439,6 @@
 
 
                     <p class="badge-item-stat-title">Dona por yape</p>
-                    <!-- /BADGE ITEM STAT TITLE -->
-                    <form  method="post" action="<%=request.getContextPath()%>/ListaDeEventosServlet?action=addConfirm" >
                     <!-- BADGE ITEM STAT TEXT -->
                     <p class="badge-item-stat-text">Recuerda que si eres egresado debes donar como mínimo 100 para darte un kit teleco</p>
                     <!-- /BADGE ITEM STAT TEXT -->
@@ -1534,22 +1533,21 @@
 </div>
 
 <!-- /CONTENT GRID -->
-<div class="overlay" id="overlay" style="display: none;"></div>
-<div class="popup contenedorCrear" style="width: 60%; display: none;" id="popupCrear">
-    <svg class="cerrar-btn-crear" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+<div class="overlay" id="overlayPlin" style="display: none;"></div>
+<div class="popup contenedorCrear" style="width: 60%; display: none;" id="popupPlin">
+    <svg class="cerrar-btn-crear" id="cerrarPopupPlin" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path d="M11.4142 10L16.7071 4.70711C17.0976 4.31658 17.0976 3.68342 16.7071 3.29289C16.3166 2.90237 15.6834 2.90237 15.2929 3.29289L10 8.58579L4.70711 3.29289C4.31658 2.90237 3.68342 2.90237 3.29289 3.29289C2.90237 3.68342 2.90237 4.31658 3.29289 4.70711L8.58579 10L3.29289 15.2929C2.90237 15.6834 2.90237 16.3166 3.29289 16.7071C3.68342 17.0976 4.31658 17.0976 4.70711 16.7071L10 11.4142L15.2929 16.7071C15.6834 17.0976 16.3166 17.0976 16.7071 16.7071C17.0976 16.3166 17.0976 15.6834 16.7071 15.2929L11.4142 10Z" fill="black"></path>
     </svg>
     <div class="container-fluid">
         <form  method="post" action="<%=request.getContextPath()%>/MisDonacionesServlet?action=registDon">
+            <input type="hidden" name="idUsuario" value="<%=idUsuario%>">
+            <input type="hidden" name="medio" value="Plin">
             <div class="row"><div class="col"><h5 style="text-align: center;">Donaciones</h5></div></div>
             <div class="row">
-                <div class="mb-3">
-                    <input type="hidden" class="form-control" name="IdUsuarioDonacion" value="<%=idUsuario%>">
-                </div>
                 <div class="col-sm-6" style = "top : 20px">
                     <br>
-                    <label style="margin-top: 25px;" for="puntajeCrearActividad"><b>Monto a donar:</b></label>
-                    <input type="number" name="montoDonacion" id="puntajeCrearActividad" min="1"  placeholder="100" required="">
+                    <label style="margin-top: 25px;" for="puntaje2"><b>Monto a donar:</b></label>
+                    <input type="number" name="monto" id="puntaje2" placeholder="100" required>
                 </div>
                 <div class="col-sm-6 contenedor2" style="top: 20px">
                     <div class="container-fluid btn btn-file1">
@@ -1558,43 +1556,37 @@
                         <input type="file" style="background-color: white; margin-top: 25px;" accept="image/png, .jpeg, .jpg">
                     </div>
                 </div>
-            </div>
             </div>
             <br>
             <div class="container-fluid">
-            <div class="row">
-                <div class="col-sm-6" style="margin-top: 5px;">
-                    <button type="submit" class="button secondary" id="cerrarPopupCrear1" disabled="" style="cursor: default; opacity: 0.5;">Crear</button>
+                <div class="row">
+                    <div class="col-sm-6" style="margin-top: 5px;">
+                        <button type="submit" class="button secondary" id="cerrarPopupPlin1" disabled="" style="cursor: default; opacity: 0.5;">Donar</button>
+                    </div>
+                    <div class="col-sm-6" style="margin-top: 5px;">
+                        <button class="button secondary" id="cerrarPopupPlin2" style="background-color: grey;">Cancelar</button>
+                    </div>
                 </div>
-                <div class="col-sm-6" style="margin-top: 5px;">
-                    <button class="button secondary" id="cerrarPopupCrear2" style="background-color: grey;">Cancelar</button>
-                </div>
-            </div>
             </div>
         </form>
-
+    </div>
 </div>
 
-
-
-
-
-<div class="overlay" id="overlay1" style="display: none;"></div>
-<div class="popup contenedorCrear" style="width: 60%; display: none;" id="popupCrear1">
-    <svg class="cerrar-btn-crear" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+<div class="overlay" id="overlayYape" style="display: none;"></div>
+<div class="popup contenedorCrear" style="width: 60%; display: none;" id="popupYape">
+    <svg class="cerrar-btn-crear" id="cerrarPopupYape" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path d="M11.4142 10L16.7071 4.70711C17.0976 4.31658 17.0976 3.68342 16.7071 3.29289C16.3166 2.90237 15.6834 2.90237 15.2929 3.29289L10 8.58579L4.70711 3.29289C4.31658 2.90237 3.68342 2.90237 3.29289 3.29289C2.90237 3.68342 2.90237 4.31658 3.29289 4.70711L8.58579 10L3.29289 15.2929C2.90237 15.6834 2.90237 16.3166 3.29289 16.7071C3.68342 17.0976 4.31658 17.0976 4.70711 16.7071L10 11.4142L15.2929 16.7071C15.6834 17.0976 16.3166 17.0976 16.7071 16.7071C17.0976 16.3166 17.0976 15.6834 16.7071 15.2929L11.4142 10Z" fill="black"></path>
     </svg>
     <div class="container-fluid">
         <form  method="post" action="<%=request.getContextPath()%>/MisDonacionesServlet?action=registDon">
+            <input type="hidden" name="idUsuario" value="<%=idUsuario%>">
+            <input type="hidden" name="medio" value="Yape">
             <div class="row"><div class="col"><h5 style="text-align: center;">Donaciones</h5></div></div>
             <div class="row">
-                <div class="mb-3">
-                    <input type="hidden" class="form-control" name="IdUsuarioDonacion" value="<%=idUsuario%>">
-                </div>
                 <div class="col-sm-6" style = "top : 20px">
                     <br>
-                    <label style="margin-top: 25px;" for="puntajeCrearActividad"><b>Monto a donar:</b></label>
-                    <input type="number" name="montoDonacion" id="puntajeCrearActividad" min="1"  placeholder="100" required="">
+                    <label style="margin-top: 25px;" for="puntaje1"><b>Monto a donar:</b></label>
+                    <input type="number" name="monto" id="puntaje1" placeholder="100" required>
                 </div>
                 <div class="col-sm-6 contenedor2" style="top: 20px">
                     <div class="container-fluid btn btn-file1">
@@ -1604,23 +1596,32 @@
                     </div>
                 </div>
             </div>
-    </div>
-    <br>
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-sm-6" style="margin-top: 5px;">
-                <button type="submit" class="button secondary" id="cerrarPopupCrear1" disabled="" style="cursor: default; opacity: 0.5;">Crear</button>
+            <br>
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-sm-6" style="margin-top: 5px;">
+                        <button type="submit" class="button secondary" id="cerrarPopupYape1" disabled="" style="cursor: default; opacity: 0.5;">Donar</button>
+                    </div>
+                    <div class="col-sm-6" style="margin-top: 5px;">
+                        <button class="button secondary" id="cerrarPopupYape2" style="background-color: grey;">Cancelar</button>
+                    </div>
+                </div>
             </div>
-            <div class="col-sm-6" style="margin-top: 5px;">
-                <button class="button secondary" id="cerrarPopupCrear2" style="background-color: grey;">Cancelar</button>
-            </div>
-        </div>
+        </form>
     </div>
-    </form>
-
 </div>
 
-
+<%if(confirmacion!=null){%>
+<div class="overlay" id="overlayConfirmacion" style="display: block;"></div>
+<div class="popup contenedorCrear" style="width: 60%; display: block;" id="popupConfirmacion">
+    <svg class="cerrar-btn-crear" id="cerrarPopupConfirmacion" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M11.4142 10L16.7071 4.70711C17.0976 4.31658 17.0976 3.68342 16.7071 3.29289C16.3166 2.90237 15.6834 2.90237 15.2929 3.29289L10 8.58579L4.70711 3.29289C4.31658 2.90237 3.68342 2.90237 3.29289 3.29289C2.90237 3.68342 2.90237 4.31658 3.29289 4.70711L8.58579 10L3.29289 15.2929C2.90237 15.6834 2.90237 16.3166 3.29289 16.7071C3.68342 17.0976 4.31658 17.0976 4.70711 16.7071L10 11.4142L15.2929 16.7071C15.6834 17.0976 16.3166 17.0976 16.7071 16.7071C17.0976 16.3166 17.0976 15.6834 16.7071 15.2929L11.4142 10Z" fill="black"></path>
+    </svg>
+    <div class="container-fluid">
+        <h5>¡Se ha registrado correctamente su donación! Un delegado general lo verificará.</h5>
+    </div>
+</div>
+<%}%>
 <footer style="font-size: 80%;">
     <!-- Primera fila -->
     <div class="fila">
@@ -1647,6 +1648,7 @@
             </ul>
         </div>
     </div>
+    <div id="abrirPopupConfirmacion"></div>
 </footer>
 <!-- app -->
 <script src="js/utils/app.js"></script>
@@ -1671,65 +1673,62 @@
 <!-- SVG icons -->
 <script src="js/utils/svg-loader.js"></script>
 <script>
+    function popupFunc(popupId,abrirId,cerrarClass,overlayId){
+        const showPopup=document.getElementById(abrirId);
+        const overlay=document.getElementById(overlayId);
+        const popup=document.getElementById(popupId);
+        const mostrarPopup = () => {
+            overlay.style.display = 'block';
+            popup.style.display = 'block';
+            // Desactivar el scroll
+            document.body.style.overflow = 'hidden';
+        };
+        showPopup.addEventListener('click', mostrarPopup);
+        const cerrarPopup = () => {
+            overlay.style.display = 'none';
+            popup.style.display = 'none';
+            document.body.style.overflow = 'auto';
 
-    function analizarPopupCrear(monto,boton){
-        if(monto.value === ""){
-            boton.disabled = true;
-            boton.style.cursor = 'default';
-            boton.style.opacity = '50%';
-        }else{
-            boton.disabled = false;
-            boton.style.cursor = 'pointer';
-            boton.style.opacity = '100%';
+        };
+        for(let i=0;i<cerrarClass.length;i++){
+            document.getElementById(cerrarClass[i]).addEventListener('click', cerrarPopup);
         }
+
+        overlay.addEventListener('click', (e) => {
+            if (e.target === overlay) {
+                cerrarPopup();
+            }
+        });
+
+        document.addEventListener('keydown', (event) => {
+            if (event.key === 'Escape') {
+                cerrarPopup();
+            }
+        });
     }
-
-    //Función para abrir el popup de Crear Actividad
-    //Nombre =  monto
-    function mostrarPopupCrear(x,nombre) {
-        document.getElementById('overlay').style.display = 'block';
-        x.style.display = 'block';
-        document.body.style.overflow = 'hidden';
-        nombre.value = "";
-        setInterval(analizarPopupCrear,10,nombre,document.getElementById('cerrarPopupCrear1'));
+    function analizarPopupCrear(idMonto,idBoton){
+        monto=document.getElementById(idMonto);
+        boton=document.getElementById(idBoton);
+        monto.addEventListener("input",function (){
+            console.log(monto.value.trim());
+            if(monto.value === ""){
+                boton.disabled = true;
+                boton.style.cursor = 'default';
+                boton.style.opacity = 0.5;
+            }else{
+                boton.disabled = false;
+                boton.style.cursor = 'pointer';
+                boton.style.opacity = 1;
+            }
+        })
     }
-
-
-    //Popup de Crear Actividad
-    document.getElementById('Ola_yape').addEventListener('click', function(){mostrarPopupCrear(document.getElementById('popupCrear'),document.getElementById('puntajeCrearActividad'));});
-    document.getElementById('Ola_plin').addEventListener('click', function(){mostrarPopupCrear(document.getElementById('popupCrear1'),document.getElementById('puntajeCrearActividad'));});
-
-    //Función para cerrar el popup
-    function cerrarPopup(x,overlayId) {
-        document.getElementById(overlayId).style.display = 'none';
-        x.style.display = 'none';
-        document.body.style.overflow = 'auto';
-    }
-
-    //Cerrar popup de Crear Actividad
-    document.getElementById('cerrarPopupCrear1').addEventListener('click', function(){cerrarPopup(document.getElementById('popupCrear'));});
-    document.getElementById('cerrarPopupCrear2').addEventListener('click', function(){cerrarPopup(document.getElementById('popupCrear'));});
-    document.querySelector('.cerrar-btn-crear').addEventListener('click', function(){cerrarPopup(document.getElementById('popupCrear'));});
-
-    document.getElementById('overlay').addEventListener('click', (e) => {
-        if (e.target === document.getElementById('overlay')) {
-            cerrarPopup(document.getElementById('popupCrear'));
-        }
-    });
-
-    document.getElementById('overlay1').addEventListener('click', (e) => {
-        if (e.target === document.getElementById('overlay1')) {
-            cerrarPopup(document.getElementById('popupCrear1'));
-        }
-    });
-
-    //Cerrar el popup al presionar Escape
-    document.addEventListener('keydown', (event) => {
-        if (event.key === 'Escape') {
-            cerrarPopup(document.getElementById('popupCrear'));
-        }
-    });
-
+    <%if(confirmacion!=null){%>
+    popupFunc('popupConfirmacion','abrirPopupConfirmacion',['cerrarPopupConfirmacion'],'overlayConfirmacion');
+    <%}%>
+    popupFunc('popupYape','Ola_yape',['cerrarPopupYape','cerrarPopupYape1','cerrarPopupYape2'],'overlayYape');
+    popupFunc('popupPlin','Ola_plin',['cerrarPopupPlin','cerrarPopupPlin1','cerrarPopupPlin2'],'overlayPlin');
+    analizarPopupCrear('puntaje1','cerrarPopupYape1');
+    analizarPopupCrear('puntaje2','cerrarPopupPlin1');
 </script>
 </body>
 </html>

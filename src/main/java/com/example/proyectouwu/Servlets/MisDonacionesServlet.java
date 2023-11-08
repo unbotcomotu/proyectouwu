@@ -48,8 +48,8 @@ public class MisDonacionesServlet extends HttpServlet {
 
         switch (action){
             case "registDon":
-                int idDonacion = Integer.parseInt(request.getParameter("idDonacion"));
-                int idUser = Integer.parseInt(request.getParameter("idUser"));
+                int idUser = Integer.parseInt(request.getParameter("IdUsuarioDonacion"));
+                int montoDonacion = Integer.parseInt(request.getParameter("montoDonacion"));
                 String medioPago = request.getParameter("medioPago");
                 int monto = Integer.parseInt(request.getParameter("monto"));
                 //Ayuda para lo del blob en captura

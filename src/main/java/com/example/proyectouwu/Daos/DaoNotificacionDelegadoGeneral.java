@@ -327,7 +327,7 @@ public class DaoNotificacionDelegadoGeneral extends DaoPadre {
         String username = super.getUser();
         String password = super.getPassword(); //Cambiar segun tu contraseña
 
-        String sql = "select idAlumnoPorEvento,idAlumno from alumnoporevento where estadoApoyo = 'Pendiente'";
+        String sql = "select idAlumnoPorEvento, idAlumno from alumnoporevento  where estadoApoyo = 'Pendiente'";
 
 
         try (Connection conn = DriverManager.getConnection(url, username, password);
@@ -338,6 +338,43 @@ public class DaoNotificacionDelegadoGeneral extends DaoPadre {
                 alumnoPorEvento.setIdAlumnoPorEvento(rs.getInt(1));
                 alumnoPorEvento.setIdAlumno(rs.getInt(2));
                 listaSolicitudesApoyo.add(alumnoPorEvento);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        return listaSolicitudesApoyo;
+    }
+
+    public ArrayList<AlumnoPorEvento> listarSolicitudesDeApoyo(String buscar){
+
+        ArrayList<AlumnoPorEvento> listaSolicitudesApoyo = new ArrayList<>();
+
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+
+        String url = "jdbc:mysql://localhost:3306/proyecto";
+        String username = super.getUser();
+        String password = super.getPassword(); //Cambiar segun tu contraseña
+
+        String sql = "select ae.idAlumnoPorEvento, ae.idAlumno from alumnoporevento ae inner join usuario u on ae.idAlumno = u.idUsuario where (u.nombre like ? or u.apellido like ?) and  estadoApoyo = 'Pendiente'";
+
+
+        try (Connection conn = DriverManager.getConnection(url, username, password);
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setString(1,"%"+buscar+"%");
+            pstmt.setString(2,"%"+buscar+"%");
+            try(ResultSet rs=pstmt.executeQuery()){
+                while (rs.next()) {
+                    AlumnoPorEvento alumnoPorEvento = new AlumnoPorEvento();
+                    alumnoPorEvento.setIdAlumnoPorEvento(rs.getInt(1));
+                    alumnoPorEvento.setIdAlumno(rs.getInt(2));
+
+                    listaSolicitudesApoyo.add(alumnoPorEvento);
+                }
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);

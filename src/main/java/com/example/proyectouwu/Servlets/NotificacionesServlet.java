@@ -74,8 +74,9 @@ public class NotificacionesServlet extends HttpServlet {
                     request.getRequestDispatcher("notificacionesDelGeneral.jsp").forward(request,response);
 
                 }else if (rolUsuario.equals("Delegado de Actividad")){
+                    String busquedaSolicitudes=request.getParameter("busquedaSolicitudes");
                     DaoNotificacionDelegadoGeneral daoNotificacionesDeleActividad = new DaoNotificacionDelegadoGeneral();
-                    ArrayList<AlumnoPorEvento> listaSolicitudesApoyo = daoNotificacionesDeleActividad.listarSolicitudesDeApoyo();
+                    ArrayList<AlumnoPorEvento> listaSolicitudesApoyo = daoNotificacionesDeleActividad.listarSolicitudesDeApoyo(busquedaSolicitudes);
                     request.setAttribute("listaSolicitudesApoyo",listaSolicitudesApoyo);
                     request.getRequestDispatcher("NotificacionesDelActividad.jsp").forward(request,response);
                 }else{

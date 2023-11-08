@@ -817,11 +817,14 @@
         <!-- SECTION FILTERS BAR ACTIONS -->
         <div class="section-filters-bar-actions">
             <!-- FORM -->
-            <form class="form">
+            <form method="get" action="<%=request.getContextPath()%>/NotificacionesServlet" class="form">
                 <!-- FORM INPUT -->
+
                 <div class="form-input small with-button">
                     <label for="friends-search">Buscar usuarios</label>
-                    <input type="text" id="friends-search" name="friends_search">
+                    <%String busquedaSolicitudes=(String) request.getAttribute("busquedaSolicitudes");%>
+                    <input type="hidden" name="idUsuario" value="<%=idUsuario%>">
+                    <input type="text" id="friends-search" name="busquedaSolicitudes" <%if(busquedaSolicitudes!=null){%> value="<%=busquedaSolicitudes%>"<%}%>>
                     <!-- BUTTON -->
                     <button class="button primary">
                         <!-- ICON MAGNIFYING GLASS -->

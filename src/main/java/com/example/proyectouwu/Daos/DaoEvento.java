@@ -348,7 +348,7 @@ public class DaoEvento extends DaoPadre {
         }
     }
 
-    public ArrayList<Evento> filtrarEventos(ArrayList<String> parametrosEstado, ArrayList<Integer> parametrosLugar, ArrayList<String> parametrosFecha, String horaInicio, String horaFin, int idActividad){
+    public ArrayList<Evento> filtrarEventos(ArrayList<String> parametrosEstado, ArrayList<Integer> parametrosLugar, ArrayList<String> parametrosFecha, String horaInicio, String horaFin, int idActividad, int idUsuario){
         HashSet<Integer> idsEvento = new HashSet<>();
         String sqlEvento = "select idEvento from evento where idActividad = ?";
         try(PreparedStatement pstmt = conn.prepareStatement(sqlEvento)){
@@ -423,9 +423,10 @@ public class DaoEvento extends DaoPadre {
             }
 
             if(parametrosEstado.contains("Apoyando")){
-                String sql = "select e.idEvento from evento e inner join alumnoporevento ape on e.idEvento = ape.idEvento where ape.estadoApoyo != 'Pendiente' and e.idActividad = ?";
+                String sql = "select e.idEvento from evento e inner join alumnoporevento ape on e.idEvento = ape.idEvento inner join usuario u on u.idUsuario = ape.idAlumno where ape.estadoApoyo != 'Pendiente' and e.idActividad = ? and u.idUsuario = ?";
                 try(PreparedStatement pstmt = conn.prepareStatement(sql)){
                     pstmt.setInt(1,idActividad);
+                    pstmt.setInt(2,idUsuario);
                     try(ResultSet rs = pstmt.executeQuery()){
                         while(rs.next()){
                             idsApoyando.add(rs.getInt(1));
@@ -435,7 +436,7 @@ public class DaoEvento extends DaoPadre {
                     throw new RuntimeException(e);
                 }
             }else{
-                String sql = "select e.idEvento from evento e inner join alumnoporevento ape on e.idEvento = ape.idEvento where e.idActividad = ?";
+                String sql = "select idEvento from evento where idActividad = ?";
                 try(PreparedStatement pstmt = conn.prepareStatement(sql)){
                     pstmt.setInt(1,idActividad);
                     try(ResultSet rs = pstmt.executeQuery()){
@@ -553,7 +554,7 @@ public class DaoEvento extends DaoPadre {
         idsEvento.retainAll(idsManana);
         idsEvento.retainAll(idsMasDias);
 
-        if(horaInicio != null) {
+        if(horaInicio != "") {
             String sql = "select idEvento from evento where idActividad = ? and hora between ? and ?";
             try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
                 pstmt.setInt(1, idActividad);

@@ -1602,13 +1602,16 @@
                     <div class="sidebar-box-items">
                         <!-- CHECKBOX LINE -->
                         <%ArrayList<Integer[]>listaLugaresCantidad=(ArrayList<Integer[]>) request.getAttribute("listaLugaresCantidad");
+                        ArrayList<Integer> listaLugaresFiltro = new ArrayList<>();
+                        for(int i=0;i<listaLugaresCantidad.size();i++){
+                            listaLugaresFiltro.add((Integer) request.getAttribute("lugar"+i));
+                        }
                         int cantidadLugares = 0;
                         for(Integer[] par:listaLugaresCantidad){%>
-                        <%String lugar = (String) request.getAttribute("lugar"+listaLugaresCantidad.indexOf(par));%>
                         <div class="checkbox-line">
                             <!-- CHECKBOX WRAP -->
                             <div class="checkbox-wrap">
-                                <input type="checkbox" id="category-<%=listaLugaresCantidad.indexOf(par)%>" name="lugar<%=listaLugaresCantidad.indexOf(par)%>" value="<%=par[0]%>" <%if(lugar != null){%>checked<%}%>>
+                                <input type="checkbox" id="category-<%=listaLugaresCantidad.indexOf(par)%>" name="lugar<%=listaLugaresCantidad.indexOf(par)%>" value="<%=par[0]%>" <%if(listaLugaresFiltro.get(cantidadLugares) != null){%>checked<%}%>>
                                 <!-- CHECKBOX BOX -->
                                 <div class="checkbox-box">
                                     <!-- ICON CROSS -->

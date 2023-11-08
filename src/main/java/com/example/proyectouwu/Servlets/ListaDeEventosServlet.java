@@ -95,7 +95,7 @@ public class ListaDeEventosServlet extends HttpServlet {
                     parametrosFecha.add("MasDias");
                     request.setAttribute("eventosMasDias",1);
                 }
-                request.setAttribute("listaEventos",dEvento.filtrarEventos(parametrosEstado,parametrosLugar,parametrosFecha,request.getParameter("horaInicio"),request.getParameter("horaFin"),idActividad));
+                request.setAttribute("listaEventos",dEvento.filtrarEventos(parametrosEstado,parametrosLugar,parametrosFecha,request.getParameter("horaInicio"),request.getParameter("horaFin"),idActividad,idUsuario));
                 request.setAttribute("horaInicio",request.getParameter("horaInicio"));
                 request.setAttribute("horaFin",request.getParameter("horaFin"));
                 request.getRequestDispatcher("listaDeEventos.jsp").forward(request,response);

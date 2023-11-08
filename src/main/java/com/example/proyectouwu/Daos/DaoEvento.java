@@ -349,51 +349,109 @@ public class DaoEvento extends DaoPadre {
     }
 
     public ArrayList<Evento> filtrarEventos(ArrayList<String> parametrosEstado, ArrayList<Integer> parametrosLugar, ArrayList<String> parametrosFecha, String horaInicio, String horaFin, int idActividad){
-        HashSet<Integer> idsEstado = new HashSet<Integer>();
+        HashSet<Integer> idsEvento = new HashSet<>();
+        String sqlEvento = "select idEvento from evento where idActividad = ?";
+        try(PreparedStatement pstmt = conn.prepareStatement(sqlEvento)){
+            pstmt.setInt(1,idActividad);
+            try(ResultSet rs = pstmt.executeQuery()){
+                while(rs.next()){
+                    idsEvento.add(rs.getInt(1));
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        HashSet<Integer> idsOculto = new HashSet<Integer>();
+        HashSet<Integer> idsFinalizado = new HashSet<Integer>();
+        HashSet<Integer> idsApoyando = new HashSet<Integer>();
         HashSet<Integer> idsLugar = new HashSet<Integer>();
-        HashSet<Integer> idsFecha = new HashSet<Integer>();
+        HashSet<Integer> idsHoy = new HashSet<Integer>();
+        HashSet<Integer> idsManana = new HashSet<Integer>();
+        HashSet<Integer> idsMasDias = new HashSet<Integer>();
         HashSet<Integer> idsHora = new HashSet<Integer>();
-        for(String s : parametrosEstado){
-            if(s.equals("Oculto")){
+
+            if(parametrosEstado.contains("Oculto")){
                 String sql = "select idEvento from evento where eventoOculto=true and idActividad = ?";
                 try(PreparedStatement pstmt = conn.prepareStatement(sql)){
                     pstmt.setInt(1,idActividad);
                     try(ResultSet rs = pstmt.executeQuery()){
                         while(rs.next()){
-                            idsEstado.add(rs.getInt(1));
+                            idsOculto.add(rs.getInt(1));
+                        }
+                    }
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
+            }else {
+                String sql = "select idEvento from evento where idActividad = ?";
+                try(PreparedStatement pstmt = conn.prepareStatement(sql)){
+                    pstmt.setInt(1,idActividad);
+                    try(ResultSet rs = pstmt.executeQuery()){
+                        while(rs.next()){
+                            idsOculto.add(rs.getInt(1));
                         }
                     }
                 } catch (SQLException e) {
                     throw new RuntimeException(e);
                 }
             }
-            if(s.equals("Finalizado")){
+            if(parametrosEstado.contains("Finalizado")){
                 String sql = "select idEvento from evento where eventoFinalizado=true and idActividad = ?";
                 try(PreparedStatement pstmt = conn.prepareStatement(sql)){
                     pstmt.setInt(1,idActividad);
                     try(ResultSet rs = pstmt.executeQuery()){
                         while(rs.next()){
-                            idsEstado.add(rs.getInt(1));
+                            idsFinalizado.add(rs.getInt(1));
+                        }
+                    }
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
+            }else {
+                String sql = "select idEvento from evento where idActividad = ?";
+                try(PreparedStatement pstmt = conn.prepareStatement(sql)){
+                    pstmt.setInt(1,idActividad);
+                    try(ResultSet rs = pstmt.executeQuery()){
+                        while(rs.next()){
+                            idsFinalizado.add(rs.getInt(1));
                         }
                     }
                 } catch (SQLException e) {
                     throw new RuntimeException(e);
                 }
             }
-            if(s.equals("Apoyando")){
+
+            if(parametrosEstado.contains("Apoyando")){
                 String sql = "select e.idEvento from evento e inner join alumnoporevento ape on e.idEvento = ape.idEvento where ape.estadoApoyo != 'Pendiente' and e.idActividad = ?";
                 try(PreparedStatement pstmt = conn.prepareStatement(sql)){
                     pstmt.setInt(1,idActividad);
                     try(ResultSet rs = pstmt.executeQuery()){
                         while(rs.next()){
-                            idsEstado.add(rs.getInt(1));
+                            idsApoyando.add(rs.getInt(1));
+                        }
+                    }
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
+            }else{
+                String sql = "select e.idEvento from evento e inner join alumnoporevento ape on e.idEvento = ape.idEvento where e.idActividad = ?";
+                try(PreparedStatement pstmt = conn.prepareStatement(sql)){
+                    pstmt.setInt(1,idActividad);
+                    try(ResultSet rs = pstmt.executeQuery()){
+                        while(rs.next()){
+                            idsApoyando.add(rs.getInt(1));
                         }
                     }
                 } catch (SQLException e) {
                     throw new RuntimeException(e);
                 }
             }
-        }
+
+        idsEvento.retainAll(idsOculto);
+        idsEvento.retainAll(idsApoyando);
+        idsEvento.retainAll(idsFinalizado);
+
         //el nombre fue idea de Josh Fernando Yauri Salas - 20213852
         for(Integer minaya : parametrosLugar){
             String sql = "select idEvento from evento where idActividad = ? and idLugarEvento = ?";
@@ -410,49 +468,91 @@ public class DaoEvento extends DaoPadre {
                 throw new RuntimeException(e);
             }
         }
-        for(String woody : parametrosFecha){
-            if(woody.equals("Hoy")){
+
+        if(!parametrosLugar.isEmpty()){
+            idsEvento.retainAll(idsLugar);
+        }
+
+            if(parametrosFecha.contains("Hoy")){
                 String sql = "select idEvento from evento where datediff(date(current_date()),fecha)=0 and idActividad=?";
                 try(PreparedStatement pstmt = conn.prepareStatement(sql)){
                     pstmt.setInt(1,idActividad);
                     try(ResultSet rs = pstmt.executeQuery()){
                         while(rs.next()){
-                            idsFecha.add(rs.getInt(1));
+                            idsHoy.add(rs.getInt(1));
+                        }
+                    }
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
+            }else {
+                String sql = "select idEvento from evento where idActividad=?";
+                try(PreparedStatement pstmt = conn.prepareStatement(sql)){
+                    pstmt.setInt(1,idActividad);
+                    try(ResultSet rs = pstmt.executeQuery()){
+                        while(rs.next()){
+                            idsHoy.add(rs.getInt(1));
                         }
                     }
                 } catch (SQLException e) {
                     throw new RuntimeException(e);
                 }
             }
-            if(woody.equals("Manana")){
+            if(parametrosFecha.contains("Manana")){
                 String sql = "select idEvento from evento where datediff(fecha,date(current_date()))=1 and idActividad=?";
                 try(PreparedStatement pstmt = conn.prepareStatement(sql)){
                     pstmt.setInt(1,idActividad);
                     try(ResultSet rs = pstmt.executeQuery()){
                         while(rs.next()){
-                            idsFecha.add(rs.getInt(1));
+                            idsManana.add(rs.getInt(1));
+                        }
+                    }
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
+            }else{
+                String sql = "select idEvento from evento where idActividad=?";
+                try(PreparedStatement pstmt = conn.prepareStatement(sql)){
+                    pstmt.setInt(1,idActividad);
+                    try(ResultSet rs = pstmt.executeQuery()){
+                        while(rs.next()){
+                            idsManana.add(rs.getInt(1));
                         }
                     }
                 } catch (SQLException e) {
                     throw new RuntimeException(e);
                 }
             }
-            if(woody.equals("MasDias")){
+            if(parametrosFecha.contains("MasDias")){
                 String sql = "select idEvento from evento where datediff(fecha,date(current_date()))>1 and idActividad=?";
                 try(PreparedStatement pstmt = conn.prepareStatement(sql)){
                     pstmt.setInt(1,idActividad);
                     try(ResultSet rs = pstmt.executeQuery()){
                         while(rs.next()){
-                            idsFecha.add(rs.getInt(1));
+                            idsMasDias.add(rs.getInt(1));
+                        }
+                    }
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
+            }else{
+                String sql = "select idEvento from evento where idActividad=?";
+                try(PreparedStatement pstmt = conn.prepareStatement(sql)){
+                    pstmt.setInt(1,idActividad);
+                    try(ResultSet rs = pstmt.executeQuery()){
+                        while(rs.next()){
+                            idsMasDias.add(rs.getInt(1));
                         }
                     }
                 } catch (SQLException e) {
                     throw new RuntimeException(e);
                 }
             }
-        }
-        idsEstado.retainAll(idsLugar);
-        idsEstado.retainAll(idsFecha);
+
+        idsEvento.retainAll(idsHoy);
+        idsEvento.retainAll(idsManana);
+        idsEvento.retainAll(idsMasDias);
+
         if(horaInicio != null) {
             String sql = "select idEvento from evento where idActividad = ? and hora between ? and ?";
             try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
@@ -467,10 +567,10 @@ public class DaoEvento extends DaoPadre {
             } catch (SQLException e) {
                 throw new RuntimeException(e);
             }
-            idsEstado.retainAll(idsHora);
+            idsEvento.retainAll(idsHora);
         }
         ArrayList<Evento> lista = new ArrayList<>();
-        for(Integer stuardotqm : idsEstado){
+        for(Integer stuardotqm : idsEvento){
             String sql = "select idEvento,idLugarEvento,titulo,fecha,hora,descripcionEventoActivo,fraseMotivacional,fotoMiniatura,eventoFinalizado,eventoOculto,resumen,resultadoEvento from evento where idEvento=?";
             try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
                 pstmt.setInt(1,stuardotqm);

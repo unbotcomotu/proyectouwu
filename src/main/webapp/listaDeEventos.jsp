@@ -1512,9 +1512,10 @@
         <div class="marketplace-sidebar">
             <!-- SIDEBAR BOX -->
             <div class="sidebar-box">
-                <form method="get" action="<%=request.getContextPath()%>/ListaDeEventosServlet?action=filtrarEventos">
+                <form method="get" action="<%=request.getContextPath()%>/ListaDeEventosServlet">
                     <input type="hidden" name="idUsuario" value="<%=idUsuario%>">
                     <input type="hidden" name="idActividad" value="<%=idActividad%>">
+                    <input type="hidden" name="action" value="filtrarEventos">
                     <!-- SIDEBAR BOX TITLE -->
                     <p class="sidebar-box-title">Estado</p>
                     <!-- SIDEBAR BOX TITLE -->

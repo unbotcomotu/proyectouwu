@@ -189,6 +189,52 @@ public class DaoUsuario extends DaoPadre {
         }
     }
 
+    public ArrayList<Usuario>listarUsuariosFiltro(int idFiltroUsuarios,int idOrdenarUsuarios,int idUsuario){
+        ArrayList<Usuario>listaUsuarios=new ArrayList<>();
+        String sql="";
+        if(idFiltroUsuarios==0){
+            if(idOrdenarUsuarios==0){
+                sql = "select idUsuario, nombre, apellido, rol, codigoPUCP, condicion, fotoPerfil, descripcionPerfil from usuario order by nombre desc ";
+            }else{
+                sql = "select idUsuario, nombre, apellido, rol, codigoPUCP, condicion, fotoPerfil, descripcionPerfil from usuario order by nombre asc";
+            }
+        }else if(idFiltroUsuarios==1){
+            if(idOrdenarUsuarios==0){
+                sql = "select idUsuario, nombre, apellido, rol, codigoPUCP, condicion, fotoPerfil, descripcionPerfil from usuario order by codigoPUCP desc ";
+            }else{
+                sql = "select idUsuario, nombre, apellido, rol, codigoPUCP, condicion, fotoPerfil, descripcionPerfil from usuario order by codigoPUCP asc ";
+            }
+        }else if(idFiltroUsuarios==2){
+            if(idOrdenarUsuarios==0){
+                sql = "select idUsuario, nombre, apellido, rol, codigoPUCP, condicion, fotoPerfil, descripcionPerfil from usuario order by condicion desc ";
+            }else{
+                sql = "select idUsuario, nombre, apellido, rol, codigoPUCP, condicion, fotoPerfil, descripcionPerfil from usuario order by condicion asc ";
+            }
+        }else if(idFiltroUsuarios==3) {
+            if (idOrdenarUsuarios == 0) {
+                sql = "select idUsuario, nombre, apellido, rol, codigoPUCP, condicion, fotoPerfil, descripcionPerfil from usuario order by baneado desc ";
+            } else {
+                sql = "select idUsuario, nombre, apellido, rol, codigoPUCP, condicion, fotoPerfil, descripcionPerfil from usuario order by baneado asc ";
+            }
+        }
+        try(ResultSet rs=conn.createStatement().executeQuery(sql);){
+            while (rs.next()){
+                Usuario u=new Usuario();
+                u.setIdUsuario(rs.getInt(1));
+                u.setNombre(rs.getString(2));
+                u.setApellido(rs.getString(3));
+                u.setRol(rs.getString(4));
+                u.setCodigoPUCP(rs.getString(5));
+                u.setCondicion(rs.getString(6));
+                u.setFotoPerfil(rs.getBlob(7));
+                u.setDescripcionPerfil(rs.getString(8));
+                listaUsuarios.add(u);
+            }return listaUsuarios;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     public boolean usuarioEsDelegadoDeActividad(int idUsuario){
         String sql = "select rol from usuario where idUsuario=?";
         try(PreparedStatement pstmt = conn.prepareStatement(sql)){

@@ -432,6 +432,17 @@ public class DaoNotificacionDelegadoGeneral extends DaoPadre {
         }
         return listaSegundoMinutoHoraDiaMes; //Devuelve la diferencia en segundo, minuto, hora, dia y mes
     }
+    public void actualizarEnviado(int idCorreoValidacion){
+
+        String sql = "update validacion set linkEnviado = 1 where idCorreoValidacion=?";
+
+        try(PreparedStatement pstmt=conn.prepareStatement(sql)){
+            pstmt.setInt(1,idCorreoValidacion);
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
     public void aceptarSolicitudApoyo(int idAlumnoPorEvento,String tipoDeApoyo){
         String sql="update alumnoPorEvento set estadoApoyo=? where idAlumnoPorEvento=?";

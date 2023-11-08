@@ -24,6 +24,7 @@
     <!-- bootstrap 4.3.1 -->
     <link rel="stylesheet" href="css/vendor/bootstrap.min.css">
     <!-- styles -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <link rel="stylesheet" href="css/raw/estilosActividadesDelGen.css">
     <!-- simplebar styles -->
     <link rel="stylesheet" href="css/vendor/simplebar.css">
@@ -1481,9 +1482,14 @@
             </ul>
         </div>
         <div class="columna">
-            <p>© 2023 Fibra tóxica</p>
+            <span class="titulo">© 2023 Fibra tóxica</span>
             <ul class="lista">
-                <li><a>Siguenos en: </a> <i class="fab fa-facebook"></i> <i class="fab fa-instagram"></i> <i class="fab fa-youtube"></i></li>
+                <li><a>Política de Privacidad</a></li>
+                <li><a>Términos y Condiciones</a></li>
+            </ul>
+            <span class="titulo">Siguenos en:</span>
+            <ul class="lista">
+                <li><a><i class="fab fa-facebook"></i> <i class="fab fa-instagram"></i> <i class="fab fa-youtube"></i></a> </li>
             </ul>
         </div>
         <div class="columna">

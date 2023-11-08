@@ -53,6 +53,7 @@
     <!-- simplebar styles -->
     <link rel="stylesheet" href="css/vendor/simplebar.css">
     <!-- tiny-slider styles -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <link rel="stylesheet" href="css/vendor/tiny-slider.css">
     <!-- favicon -->
     <link rel="icon" href="img/favicon.ico">
@@ -2357,15 +2358,25 @@
                         <!-- TABLE COLUMN -->
                         <div class="table-column centered padded">
                             <!-- TABLE TITLE -->
-                            <p class="table-title"> Link </p>
+                            <%String link = "mips";%>
+                            <%if(validacion.getTipo().equals("enviarLinkACorreo")){link = "linkRegistro2";%>
+
+                            <%}else if(validacion.getTipo().equals("recuperarContrasena")){link = "linkRecuperar";%>
+                            <%}%>
+                            <p class="table-title"> <%=link%> </p>
                             <!-- /TABLE TITLE -->
                         </div>
 
                         <div class="table-column centered padded">
                             <!-- TABLE TITLE -->
                             <!revisar aquí-->
-                            <a class="button-accept" href="<%=request.getContextPath()%>/NotificacionesServlet?action=enviar&id=<%=validacion.getIdCorreoValidacion()%>&idUsuario=<%=idUsuario%>">Enviar</a>
+                            <a class="button-accept" href="mailto:<%=validacion.getCorreo()%>">Enviar</a>
                             <!-- /TABLE TITLE -->
+                        </div>
+
+                        <div class="table-column centered padded">
+
+                            <a class="button-accept" href="<%=request.getContextPath()%>/NotificacionesServlet?action=enviar&idCorreoValidacion=<%=validacion.getIdCorreoValidacion()%>&idUsuario=<%=idUsuario%>">Enviado</a>
                         </div>
 
 
@@ -2482,9 +2493,14 @@
             </ul>
         </div>
         <div class="columna">
-            <p>© 2023 Fibra tóxica</p>
+            <span class="titulo">© 2023 Fibra tóxica</span>
             <ul class="lista">
-                <li><a>Siguenos en: </a> <i class="fab fa-facebook"></i> <i class="fab fa-instagram"></i> <i class="fab fa-youtube"></i></li>
+                <li><a>Política de Privacidad</a></li>
+                <li><a>Términos y Condiciones</a></li>
+            </ul>
+            <span class="titulo">Siguenos en:</span>
+            <ul class="lista">
+                <li><a><i class="fab fa-facebook"></i> <i class="fab fa-instagram"></i> <i class="fab fa-youtube"></i></a> </li>
             </ul>
         </div>
         <div class="columna">

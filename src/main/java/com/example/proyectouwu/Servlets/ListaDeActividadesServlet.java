@@ -27,6 +27,11 @@ public class ListaDeActividadesServlet extends HttpServlet {
         switch (action){
             case "default":
                 request.setAttribute("listaActividades",new DaoActividad().listarActividades());
+                String idActividadAux=request.getParameter("idActividadElegida");
+                if(idActividadAux!=null){
+                    request.setAttribute("idActividadElegida",Integer.parseInt(idActividadAux));
+                }
+                request.setAttribute("puntajeNoNumerico",request.getParameter("puntajeNoNumerico"));
                 if(rolUsuario.equals("Alumno")||rolUsuario.equals("Delegado General")){
                     request.getRequestDispatcher("listaDeActividades.jsp").forward(request,response);
                 }else if(rolUsuario.equals("Delegado de Actividad")){
@@ -75,34 +80,45 @@ public class ListaDeActividadesServlet extends HttpServlet {
             case "crearActividad":
                 String nombreCrearActividad=request.getParameter("nombreCrearActividad");
                 Integer idDelegadoActividadCrear=Integer.parseInt(request.getParameter("idDelegadoActividadCrear"));
-                Integer puntajeCrearActividad=Integer.parseInt(request.getParameter("puntajeCrearActividad"));
-                boolean ocultoCrearActividad;
-                if(request.getParameter("ocultoCrearActividad")!=null){
-                    ocultoCrearActividad=true;
-                }else{
-                    ocultoCrearActividad=false;
+                String puntajeAux=request.getParameter("puntajeCrearActividad");
+                try{
+                    Integer puntajeCrearActividad=Integer.parseInt(puntajeAux);
+                    boolean ocultoCrearActividad;
+                    if(request.getParameter("ocultoCrearActividad")!=null){
+                        ocultoCrearActividad=true;
+                    }else{
+                        ocultoCrearActividad=false;
+                    }
+                    String fotoCabecera="ola";
+                    String fotoMiniatura="ola";
+                    dActividad.crearActividad(nombreCrearActividad,idDelegadoActividadCrear,puntajeCrearActividad,ocultoCrearActividad,fotoCabecera,fotoMiniatura);
+                    response.sendRedirect(request.getContextPath()+"/ListaDeActividadesServlet?idUsuario="+idUsuario);
+                }catch (NumberFormatException e){
+                    response.sendRedirect(request.getContextPath()+"/ListaDeActividadesServlet?idUsuario="+idUsuario+"&puntajeNoNumerico=1");
                 }
-                String fotoCabecera="ola";
-                String fotoMiniatura="ola";
-                dActividad.crearActividad(nombreCrearActividad,idDelegadoActividadCrear,puntajeCrearActividad,ocultoCrearActividad,fotoCabecera,fotoMiniatura);
-                response.sendRedirect(request.getContextPath()+"/ListaDeActividadesServlet?idUsuario="+idUsuario);
                 break;
             case "editarActividad":
                 Integer idDelegadoActividadAnterior=Integer.parseInt(request.getParameter("idDelegadoActividadAnterior"));
                 Integer idActividadEditar=Integer.parseInt(request.getParameter("idActividadEditar"));
                 String nombreEditarActividad=request.getParameter("nombreEditarActividad");
                 Integer idDelegadoActividadEditar=Integer.parseInt(request.getParameter("idDelegadoActividadEditar"));
-                Integer puntajeEditarActividad=Integer.parseInt(request.getParameter("puntajeEditarActividad"));
-                boolean ocultoEditarActividad;
-                if(request.getParameter("ocultoEditarActividad")!=null){
-                    ocultoEditarActividad=true;
-                }else{
-                    ocultoEditarActividad=false;
+                String puntajeAux2=request.getParameter("puntajeEditarActividad");
+                try{
+                    Integer puntajeEditarActividad=Integer.parseInt(puntajeAux2);
+                    boolean ocultoEditarActividad;
+                    if(request.getParameter("ocultoEditarActividad")!=null){
+                        ocultoEditarActividad=true;
+                    }else{
+                        ocultoEditarActividad=false;
+                    }
+                    String fotoCabeceraEditar="ola";
+                    String fotoMiniaturaEditar="ola";
+                    dActividad.editarActividad(idActividadEditar,nombreEditarActividad,idDelegadoActividadEditar,puntajeEditarActividad,ocultoEditarActividad,fotoCabeceraEditar,fotoMiniaturaEditar,idDelegadoActividadAnterior);
+                    response.sendRedirect(request.getContextPath()+"/ListaDeActividadesServlet?idUsuario="+idUsuario);
+                }catch (NumberFormatException e){
+                    response.sendRedirect(request.getContextPath()+"/ListaDeActividadesServlet?idUsuario="+idUsuario+"&idActividadElegida="+idActividadEditar+"&puntajeNoNumerico=1");
                 }
-                String fotoCabeceraEditar="ola";
-                String fotoMiniaturaEditar="ola";
-                dActividad.editarActividad(idActividadEditar,nombreEditarActividad,idDelegadoActividadEditar,puntajeEditarActividad,ocultoEditarActividad,fotoCabeceraEditar,fotoMiniaturaEditar,idDelegadoActividadAnterior);
-                response.sendRedirect(request.getContextPath()+"/ListaDeActividadesServlet?idUsuario="+idUsuario);
+
                 break;
         }
     }

@@ -15,6 +15,8 @@
     String vistaActual=(String) request.getAttribute("vistaActual");
     ArrayList<String>listaCorreosDelegadosGenerales=(ArrayList<String>)request.getAttribute("correosDelegadosGenerales");
     ArrayList<Usuario>listaIDyNombresDelegadosDeActividad=(ArrayList<Usuario>)request.getAttribute("IDyNombreDelegadosDeActividad");
+    Integer idActividadElegida=(Integer) request.getAttribute("idActividadElegida");
+    String puntajeNoNumerico=(String) request.getAttribute("puntajeNoNumerico");
     String colorRol;
     if(rolUsuario.equals("Alumno")){
         colorRol="";
@@ -1557,8 +1559,8 @@
     </div>
 </div>
 <%}else if(rolUsuario.equals("Delegado General")){%>
-<div class="overlay" id="overlayCrear"></div>
-<div class="popup contenedorCrear" style="width: 700px;" id="popupCrear">
+<div class="overlay" <%if(puntajeNoNumerico!=null && idActividadElegida==null){%>style="display: block"<%}%> id="overlayCrear"></div>
+<div class="popup contenedorCrear" style="width: 700px; <%if(puntajeNoNumerico!=null && idActividadElegida==null){%> display: block <%}%>" id="popupCrear">
     <svg class="cerrarPopup" id="cerrarPopupCrear" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path d="M11.4142 10L16.7071 4.70711C17.0976 4.31658 17.0976 3.68342 16.7071 3.29289C16.3166 2.90237 15.6834 2.90237 15.2929 3.29289L10 8.58579L4.70711 3.29289C4.31658 2.90237 3.68342 2.90237 3.29289 3.29289C2.90237 3.68342 2.90237 4.31658 3.29289 4.70711L8.58579 10L3.29289 15.2929C2.90237 15.6834 2.90237 16.3166 3.29289 16.7071C3.68342 17.0976 4.31658 17.0976 4.70711 16.7071L10 11.4142L15.2929 16.7071C15.6834 17.0976 16.3166 17.0976 16.7071 16.7071C17.0976 16.3166 17.0976 15.6834 16.7071 15.2929L11.4142 10Z" fill="black"/>
     </svg>
@@ -1581,6 +1583,9 @@
 
                     <label style="margin-top: 25px;" for="puntajeCrearActividad"><b>Puntaje para el 1er lugar:</b></label>
                     <input type="text" name="puntajeCrearActividad" id="puntajeCrearActividad" placeholder="###" required>
+                    <%if(puntajeNoNumerico!=null && idActividadElegida==null){%>
+                    <a style="color: red">Debe de ingresar un valor numérico</a>
+                    <%}%>
 
                     <div style="display: flex; justify-content: left; margin-top: 25px;">
                         <p style="width: 32%;"><b>Ocultar actividad</b></p>
@@ -1618,8 +1623,8 @@
 
 <%if(listaActividades!=null){
     for(int i=0;i<listaActividades.size();i++){%>
-<div class="overlay" id="overlayEditarActividad<%=i%>"></div>
-<div class="popup contenedorCrear" style="width: 700px;" id="popupEditarActividad<%=i%>">
+<div class="overlay" <%if(puntajeNoNumerico!=null && idActividadElegida!=null && idActividadElegida==listaActividades.get(i).getIdActividad()){%>style="display: block"<%}%>  id="overlayEditarActividad<%=i%>"></div>
+<div class="popup contenedorCrear"  style="width: 700px; <%if(puntajeNoNumerico!=null && idActividadElegida!=null && idActividadElegida==listaActividades.get(i).getIdActividad()){%> display: block<%}%>" id="popupEditarActividad<%=i%>">
     <svg class="cerrarPopup" id="cerrarPopupEditarActividad<%=i%>" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path d="M11.4142 10L16.7071 4.70711C17.0976 4.31658 17.0976 3.68342 16.7071 3.29289C16.3166 2.90237 15.6834 2.90237 15.2929 3.29289L10 8.58579L4.70711 3.29289C4.31658 2.90237 3.68342 2.90237 3.29289 3.29289C2.90237 3.68342 2.90237 4.31658 3.29289 4.70711L8.58579 10L3.29289 15.2929C2.90237 15.6834 2.90237 16.3166 3.29289 16.7071C3.68342 17.0976 4.31658 17.0976 4.70711 16.7071L10 11.4142L15.2929 16.7071C15.6834 17.0976 16.3166 17.0976 16.7071 16.7071C17.0976 16.3166 17.0976 15.6834 16.7071 15.2929L11.4142 10Z" fill="black"/>
     </svg>
@@ -1637,7 +1642,7 @@
 
                     <label for="idDelegadoActividadEditar<%=i%>" style="margin-top: 25px;"><b>Seleccionar delegado de actividad:</b></label>
                     <select style="height: 55px;padding-left: 20px" name="idDelegadoActividadEditar" id="idDelegadoActividadEditar<%=i%>" required>
-                        <option value="<%=listaActividades.get(i).getIdDelegadoDeActividad()%> selected"><%=new DaoUsuario().nombreCompletoUsuarioPorId(listaActividades.get(i).getIdDelegadoDeActividad())%></option>
+                        <option value="<%=listaActividades.get(i).getIdDelegadoDeActividad()%>" selected><%=new DaoUsuario().nombreCompletoUsuarioPorId(listaActividades.get(i).getIdDelegadoDeActividad())%></option>
                         <%for(Usuario u:listaIDyNombresDelegadosDeActividad){%>
                         <option value="<%=u.getIdUsuario()%>"><%=u.getNombre()%> <%=u.getApellido()%></option>
                         <%}%>
@@ -1645,7 +1650,9 @@
 
                     <label style="margin-top: 25px;"><b>Puntaje para el 1er lugar:</b></label>
                     <input type="text" name="puntajeEditarActividad" id="puntajeEditarActividad<%=i%>" value="<%=listaActividades.get(i).getCantPuntosPrimerLugar()%>" placeholder="###" required>
-
+                    <%if(puntajeNoNumerico!=null && idActividadElegida!=null && idActividadElegida==listaActividades.get(i).getIdActividad()){%>
+                    <a style="color: red">Debe de ingresar un valor numérico</a>
+                    <%}%>
                     <div style="display: flex; justify-content: left; margin-top: 25px;">
                         <p style="width: 32%;"><b>Ocultar actividad</b></p>
                         <input type="checkbox" name="ocultoEditarActividad" id="ocultoEditarActividad<%=i%>" <%if(listaActividades.get(i).isActividadOculta()){%>checked<%}%> style="width: 10%;">

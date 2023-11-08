@@ -44,6 +44,7 @@
     <!-- tiny-slider styles -->
     <link rel="stylesheet" href="css/vendor/tiny-slider.css">
     <!-- favicon -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <link rel="icon" href="img/favicon.ico">
     <title>Notificaciones - Siempre Fibra</title>
 

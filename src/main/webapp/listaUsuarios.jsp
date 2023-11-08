@@ -22,6 +22,7 @@
   <link rel="stylesheet" href="css/vendor/simplebar.css">
   <!-- tiny-slider styles -->
   <link rel="stylesheet" href="css/vendor/tiny-slider.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
   <!-- favicon -->
   <link rel="icon" href="img/favicon.ico">
   <title>Usuarios - Siempre Fibra</title>
@@ -1262,11 +1263,14 @@
       </ul>
     </div>
     <div class="columna">
-      <p>© 2023 Fibra tóxica</p>
+      <span class="titulo">© 2023 Fibra tóxica</span>
       <ul class="lista">
         <li><a>Política de Privacidad</a></li>
         <li><a>Términos y Condiciones</a></li>
-        <li><a>Siguenos en: </a> <i class="fab fa-facebook"></i> <i class="fab fa-instagram"></i> <i class="fab fa-youtube"></i></li>
+      </ul>
+      <span class="titulo">Siguenos en:</span>
+      <ul class="lista">
+      <li><a><i class="fab fa-facebook"></i> <i class="fab fa-instagram"></i> <i class="fab fa-youtube"></i></a> </li>
       </ul>
     </div>
     <div class="columna">

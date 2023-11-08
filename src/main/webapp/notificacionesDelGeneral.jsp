@@ -2357,15 +2357,25 @@
                         <!-- TABLE COLUMN -->
                         <div class="table-column centered padded">
                             <!-- TABLE TITLE -->
-                            <p class="table-title"> Link </p>
+                            <%String link = "mips";%>
+                            <%if(validacion.getTipo().equals("enviarLinkACorreo")){link = "linkRegistro2";%>
+
+                            <%}else if(validacion.getTipo().equals("recuperarContrasena")){link = "linkRecuperar";%>
+                            <%}%>
+                            <p class="table-title"> <%=link%> </p>
                             <!-- /TABLE TITLE -->
                         </div>
 
                         <div class="table-column centered padded">
                             <!-- TABLE TITLE -->
                             <!revisar aquí-->
-                            <a class="button-accept" href="<%=request.getContextPath()%>/NotificacionesServlet?action=enviar&id=<%=validacion.getIdCorreoValidacion()%>&idUsuario=<%=idUsuario%>">Enviar</a>
+                            <a class="button-accept" href="mailto:<%=validacion.getCorreo()%>">Enviar</a>
                             <!-- /TABLE TITLE -->
+                        </div>
+
+                        <div class="table-column centered padded">
+
+                            <a class="button-accept" href="<%=request.getContextPath()%>/NotificacionesServlet?action=enviar&idCorreoValidacion=<%=validacion.getIdCorreoValidacion()%>&idUsuario=<%=idUsuario%>">Enviado</a>
                         </div>
 
 

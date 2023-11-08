@@ -1925,7 +1925,7 @@
                             <div class="col-7">
                                 <!-- PRODUCT PREVIEW CATEGORY -->
                                 <p class="product-preview-category digital"><span class="highlighted">Lugar: </span>
-                                    <%String lugar=new DaoEvento().lugarPorEventoID(e.getLugarEvento());
+                                    <%String lugar=new DaoEvento().lugarPorEventoID(e.getIdEvento());
                                         String lugarAux;
                                         if(lugar.length()>14) {
                                             String aux3[] = lugar.split(" ");

@@ -41,6 +41,19 @@ public class EventoServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
+        response.setContentType("text/html");
+        int idUsuario = Integer.parseInt(request.getParameter("idUsuario"));
+        int idEvento = Integer.parseInt(request.getParameter("idEvento"));
+        String action = request.getParameter("action") == null ? "default" : request.getParameter("action");
+        switch (action){
+            case "default":
+                //request.getRequestDispatcher("evento.jsp").forward(request,response);
+            case "apoyoEvento":
+                new DaoAlumnoPorEvento().usuarioApoyaEvento(idUsuario,idEvento);
+                //<a href="/proyectouwu_war_exploded/EventoServlet?idEvento=6&amp;idUsuario=17">
+                //http://localhost:8080/proyectouwu_war_exploded/EventoServlet?idEvento=6&idUsuario=17
+                response.sendRedirect(request.getContextPath()+"/EventoServlet?idEvento="+idEvento+"&idUsuario="+idUsuario);
+                break;
+        }
     }
 }

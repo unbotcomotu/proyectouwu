@@ -99,4 +99,18 @@ public class DaoAlumnoPorEvento extends DaoPadre {
             throw new RuntimeException(e);
         }
     }
+
+    public void usuarioApoyaEvento(int idUsuario,int idEvento){
+        String sql = "insert into alumnoporevento (  idAlumno, idevento , estadoApoyo, fechaHoraSolicitud) values (?, ?, ? , now())";
+        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            //pstmt.setInt(1,idUser);
+            pstmt.setInt(1,idUsuario); //nuevos usuarios se registran como alumnos
+            pstmt.setInt(2,idEvento);
+            pstmt.setString(3,"Pendiente");
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+    }
 }

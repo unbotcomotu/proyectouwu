@@ -1478,8 +1478,14 @@
                     </div>
                     <!-- /USER STATS -->
 
+                    <form method="post" action="<%=request.getContextPath()%>/EventoServlet?action=apoyoEvento">
+                        <input type="hidden" name="idUsuario" value="<%=idUsuario%>">
+                        <input type="hidden" name="idEvento" value="<%=e.getIdEvento()%>">
+                        <a class="button small twitch" style="color: white;" id="mostrarPopupApoyar" ><button type="submit">Apoyar al evento</button></a>
+
+                    </form>
+
                     <!-- BUTTON -->
-                    <a class="button small twitch" style="color: white;" id="mostrarPopupApoyar" >Apoyar al evento</a>
                     <!-- /BUTTON -->
                 </div>
                 <%}else{%>

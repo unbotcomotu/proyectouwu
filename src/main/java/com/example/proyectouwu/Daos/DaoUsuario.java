@@ -449,4 +449,7 @@ public class DaoUsuario extends DaoPadre {
             throw new RuntimeException(e);
         }
     }
+
+
+
 }

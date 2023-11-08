@@ -111,7 +111,7 @@ public class DaoNotificacionDelegadoGeneral extends DaoPadre {
         String username = super.getUser();
         String password = super.getPassword();
 
-        String sql = "SELECT idUsuarioReportado, idUsuarioQueReporta, motivoReporte,fechaHora FROM reporte";
+        String sql = "SELECT idUsuarioReportado, idUsuarioQueReporta, motivoReporte,fechaHora FROM reporte order by fechaHora desc";
         try (Connection conn = DriverManager.getConnection(url, username, password);
              Statement stmt = conn.createStatement();
              ResultSet rs = stmt.executeQuery(sql)) {
@@ -131,6 +131,40 @@ public class DaoNotificacionDelegadoGeneral extends DaoPadre {
         return reportList;
     }
 
+    public ArrayList<Reporte> listarNotificacionesReporte(String buscar){
+
+        ArrayList<Reporte> reportList= new ArrayList<>();
+
+        try{
+            Class.forName("com.mysql.cj.jdbc.Driver");
+        }catch (ClassNotFoundException e){
+            throw new RuntimeException(e);
+        }
+
+        String url = "jdbc:mysql://localhost:3306/proyecto";
+        String username = super.getUser();
+        String password = super.getPassword();
+
+        String sql = "SELECT r.idUsuarioReportado, r.idUsuarioQueReporta, r.motivoReporte,r.fechaHora FROM reporte r inner join usuario u on r.idUsuarioReportado=u.idUsuario where u.nombre like ? or u.apellido like ? order by r.fechaHora desc";
+        try (Connection conn = DriverManager.getConnection(url, username, password);
+             PreparedStatement pstmt = conn.prepareStatement(sql)){
+            pstmt.setString(1,"%"+buscar+"%");
+            pstmt.setString(2,"%"+buscar+"%");
+            try(ResultSet rs = pstmt.executeQuery()){
+                while (rs.next()) {
+                    Reporte report = new Reporte();
+                    report.setIdUsuarioReportado(rs.getInt(1));
+                    report.setIdUsuarioQueReporta(rs.getInt(2));
+                    report.setMotivoReporte(rs.getString(3));
+                    report.setFecha(rs.getDate(4));
+                    reportList.add(report);
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return reportList;
+    }
 
     public ArrayList<Donacion> listarNotificacionesDonaciones( ){
 
@@ -146,7 +180,7 @@ public class DaoNotificacionDelegadoGeneral extends DaoPadre {
         String username = super.getUser();
         String password = super.getPassword();
 
-        String sql = "SELECT idDonacion, idUsuario, medioPago, monto,fechaHora,estadoDonacion FROM donacion";
+        String sql = "SELECT idDonacion, idUsuario, medioPago, monto,fechaHora,estadoDonacion FROM donacion order by if(estadoDonacion='Pendiente',0,1)";
         try (Connection conn = DriverManager.getConnection(url, username, password);
              Statement stmt = conn.createStatement();
              ResultSet rs = stmt.executeQuery(sql)) {
@@ -162,6 +196,82 @@ public class DaoNotificacionDelegadoGeneral extends DaoPadre {
                 donacionList.add(donacion);
             }
 
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return donacionList;
+    }
+
+    public ArrayList<Donacion> listarNotificacionesDonaciones(String buscar){
+
+        ArrayList<Donacion> donacionList= new ArrayList<>();
+
+        try{
+            Class.forName("com.mysql.cj.jdbc.Driver");
+        }catch (ClassNotFoundException e){
+            throw new RuntimeException(e);
+        }
+
+        String url = "jdbc:mysql://localhost:3306/proyecto";
+        String username = super.getUser();
+        String password = super.getPassword();
+
+        String sql = "SELECT d.idDonacion, d.idUsuario, d.medioPago, d.monto,d.fechaHora,d.estadoDonacion FROM donacion d inner join usuario u on d.idUsuario=u.idUsuario where u.nombre like ? or u.apellido like ? order by if(d.estadoDonacion='Pendiente',0,1)";
+        try (Connection conn = DriverManager.getConnection(url, username, password);
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setString(1,"%"+buscar+"%");
+            pstmt.setString(2,"%"+buscar+"%");
+            try(ResultSet rs=pstmt.executeQuery()){
+                while (rs.next()) {
+                    Donacion donacion = new Donacion();
+                    donacion.setIdDonacion(rs.getInt(1));
+                    donacion.setIdUsuario(rs.getInt(2));
+                    donacion.setMedioPago(rs.getString(3));
+                    donacion.setMonto(rs.getFloat(4));
+                    donacion.setFecha(rs.getDate(5));
+                    donacion.setEstadoDonacion(rs.getString(6));
+                    donacionList.add(donacion);
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return donacionList;
+    }
+    public ArrayList<Donacion> listarNotificacionesDonaciones(String fecha1,String fecha2){
+        String fecha1aux[]=fecha1.split("/");
+        String fecha1final=fecha1aux[2]+"/"+fecha1aux[1]+"/"+fecha1aux[0];
+        String fecha2aux[]=fecha2.split("/");
+        String fecha2final=fecha2aux[2]+"/"+fecha2aux[1]+"/"+fecha2aux[0];
+        ArrayList<Donacion> donacionList= new ArrayList<>();
+
+        try{
+            Class.forName("com.mysql.cj.jdbc.Driver");
+        }catch (ClassNotFoundException e){
+            throw new RuntimeException(e);
+        }
+
+        String url = "jdbc:mysql://localhost:3306/proyecto";
+        String username = super.getUser();
+        String password = super.getPassword();
+
+        String sql = "SELECT idDonacion, idUsuario, medioPago, monto,fechaHora,estadoDonacion FROM donacion where date(fechaHora) between ? and ? order by if(estadoDonacion='Pendiente',0,1)";
+        try (Connection conn = DriverManager.getConnection(url, username, password);
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setString(1,fecha1final);
+            pstmt.setString(2,fecha2final);
+            try(ResultSet rs=pstmt.executeQuery()){
+                while (rs.next()) {
+                    Donacion donacion = new Donacion();
+                    donacion.setIdDonacion(rs.getInt(1));
+                    donacion.setIdUsuario(rs.getInt(2));
+                    donacion.setMedioPago(rs.getString(3));
+                    donacion.setMonto(rs.getFloat(4));
+                    donacion.setFecha(rs.getDate(5));
+                    donacion.setEstadoDonacion(rs.getString(6));
+                    donacionList.add(donacion);
+                }
+            }
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

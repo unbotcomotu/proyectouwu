@@ -1293,8 +1293,12 @@
   <div class="container-fluid">
     <div class="row">
       <div class="col-sm-6" style="margin-top: 5px;">
-        <a href="<%=request.getContextPath()%>/ListaDeUsuariosServlet?action=banear&idUsuario=<%=idUsuario%>&idUsuarioABanear=<%=u.getIdUsuario()%>" > <button class="button secondary" id="cerrarPopup1<%=l%>">Banear</button>
-        </a> </div>
+        <form method="post" action="<%=request.getContextPath()%>/ListaDeUsuariosServlet?action=banear">
+          <input type="hidden" name="idUsuario" value="<%=idUsuario%>">
+          <input type="hidden" name="idUsuarioABanear" value="<%=u.getIdUsuario()%>">
+          <a> <button type="submit" class="button secondary" id="cerrarPopup1<%=l%>">Banear</button></a>
+        </form>
+      </div>
       <div class="col-sm-6" style="margin-top: 5px;">
         <button class="button secondary" id="cerrarPopup2<%=l%>" style="background-color: grey;">Cancelar</button>
       </div>

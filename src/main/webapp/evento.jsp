@@ -1481,8 +1481,7 @@
                     <form method="post" action="<%=request.getContextPath()%>/EventoServlet?action=apoyoEvento">
                         <input type="hidden" name="idUsuario" value="<%=idUsuario%>">
                         <input type="hidden" name="idEvento" value="<%=e.getIdEvento()%>">
-                        <a class="button small twitch" style="color: white;" id="mostrarPopupApoyar" ><button type="submit">Apoyar al evento</button></a>
-
+                        <button style="background: transparent;height: 0px" type="submit"><a class="button small twitch" style="color: white;">Apoyar al evento</a></button>
                     </form>
 
                     <!-- BUTTON -->
@@ -1493,7 +1492,18 @@
                     <!-- STREAMER BOX TITLE -->
                     <p class="streamer-box-title" style="font-size: 150%;">GRACIAS POR APOYAR</p>
                     <!-- /STREAMER BOX TITLE -->
-
+                    <%if(estadoApoyo.equals("Pendiente")){%>
+                    <!-- STREAMER BOX STATUS -->
+                    <p class="mt-4" style="font-size: 150%">¡Espera hasta que el delegado de actividad revise tu solicitud y te asigne a pertenecer a la barra a al equipo!</p>
+                    <!-- /STREAMER BOX STATUS -->
+                    <div class="user-stats">
+                        <div class="user-stat">
+                            <!-- USER STAT TITLE -->
+                            <img src="css/esperarSolicitud.png" width="100%">
+                            <!-- /USER STAT TITLE -->
+                        </div>
+                    </div>
+                    <%}else{%>
                     <!-- STREAMER BOX STATUS -->
                     <p class="mt-4" style="font-size: 150%">Actualmente estás apoyando como:</p>
                     <!-- /STREAMER BOX STATUS -->
@@ -1526,6 +1536,7 @@
                         <%}%>
                     </div>
                     <!-- /USER STATS -->
+                    <%}%>
                 </div>
                 <%}}else{%>
                 <div class="streamer-box-info">

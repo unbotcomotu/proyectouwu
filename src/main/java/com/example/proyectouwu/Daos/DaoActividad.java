@@ -326,6 +326,43 @@ public class DaoActividad extends DaoPadre {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+        sql="update usuario set rol='Delegado de Actividad' where idUsuario=?";
+        try(PreparedStatement pstmt= conn.prepareStatement(sql)){
+            pstmt.setInt(1,idDelegadoDeActividad);
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void editarActividad(int idActividad,String nombre,int idDelegadoDeActividad,int puntaje,boolean oculto,String fotoCabecera,String fotoMiniatura,int idDelegadoActividadAnterior){
+        String sql="update actividad set idDelegadoDeActividad=?,nombre=?,fotoMiniatura=?,fotoCabecera=?,cantidadPuntosPrimerLugar=?,actividadOculta=? where idActividad=?";
+        try(PreparedStatement pstmt= conn.prepareStatement(sql)){
+            pstmt.setInt(1,idDelegadoDeActividad);
+            pstmt.setString(2,nombre);
+            pstmt.setString(3,fotoMiniatura);
+            pstmt.setString(4,fotoCabecera);
+            pstmt.setInt(5,puntaje);
+            pstmt.setBoolean(6,oculto);
+            pstmt.setInt(7,idActividad);
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        sql="update usuario set rol='Delegado de Actividad' where idUsuario=?";
+        try(PreparedStatement pstmt= conn.prepareStatement(sql)){
+            pstmt.setInt(1,idDelegadoDeActividad);
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        sql="update usuario set rol='Alumno' where idUsuario=?";
+        try(PreparedStatement pstmt= conn.prepareStatement(sql)){
+            pstmt.setInt(1,idDelegadoActividadAnterior);
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 }
 

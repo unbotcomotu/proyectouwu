@@ -87,6 +87,23 @@ public class ListaDeActividadesServlet extends HttpServlet {
                 dActividad.crearActividad(nombreCrearActividad,idDelegadoActividadCrear,puntajeCrearActividad,ocultoCrearActividad,fotoCabecera,fotoMiniatura);
                 response.sendRedirect(request.getContextPath()+"/ListaDeActividadesServlet?idUsuario="+idUsuario);
                 break;
+            case "editarActividad":
+                Integer idDelegadoActividadAnterior=Integer.parseInt(request.getParameter("idDelegadoActividadAnterior"));
+                Integer idActividadEditar=Integer.parseInt(request.getParameter("idActividadEditar"));
+                String nombreEditarActividad=request.getParameter("nombreEditarActividad");
+                Integer idDelegadoActividadEditar=Integer.parseInt(request.getParameter("idDelegadoActividadEditar"));
+                Integer puntajeEditarActividad=Integer.parseInt(request.getParameter("puntajeEditarActividad"));
+                boolean ocultoEditarActividad;
+                if(request.getParameter("ocultoEditarActividad")!=null){
+                    ocultoEditarActividad=true;
+                }else{
+                    ocultoEditarActividad=false;
+                }
+                String fotoCabeceraEditar="ola";
+                String fotoMiniaturaEditar="ola";
+                dActividad.editarActividad(idActividadEditar,nombreEditarActividad,idDelegadoActividadEditar,puntajeEditarActividad,ocultoEditarActividad,fotoCabeceraEditar,fotoMiniaturaEditar,idDelegadoActividadAnterior);
+                response.sendRedirect(request.getContextPath()+"/ListaDeActividadesServlet?idUsuario="+idUsuario);
+                break;
         }
     }
 }

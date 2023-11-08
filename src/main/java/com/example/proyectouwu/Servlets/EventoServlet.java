@@ -49,6 +49,7 @@ public class EventoServlet extends HttpServlet {
             case "default":
                 //request.getRequestDispatcher("evento.jsp").forward(request,response);
             case "apoyoEvento":
+                System.out.println("ola");
                 new DaoAlumnoPorEvento().usuarioApoyaEvento(idUsuario,idEvento);
                 //<a href="/proyectouwu_war_exploded/EventoServlet?idEvento=6&amp;idUsuario=17">
                 //http://localhost:8080/proyectouwu_war_exploded/EventoServlet?idEvento=6&idUsuario=17

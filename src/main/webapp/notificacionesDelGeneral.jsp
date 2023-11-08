@@ -34,9 +34,11 @@
         }else{
             colorRol="orange";
         }
-
+        String buscar=(String) request.getAttribute("buscar");
         String vistaActualNueva= (String) request.getAttribute("vistaActualNueva");
-
+        String fecha1=(String) request.getAttribute("fecha1");
+        String fecha2=(String) request.getAttribute("fecha2");
+        String buscarReportes=(String) request.getAttribute("buscarReportes");
         System.out.println(vistaActualNueva );
     %>
 
@@ -1478,12 +1480,19 @@
 
                             <div class="row" >
 
-
                                 <div class="col-sm-6">
-                                    <a href="<%=request.getContextPath()%>/NotificacionesServlet?action=aceptarRegistro&idUsuarioARegistrar=<%=usuario_pendiente.getIdUsuario()%>&idUsuario=<%=idUsuario%>" ><button class="button-accept">Aceptar</button></a>
+                                    <form method="post" action="<%=request.getContextPath()%>/NotificacionesServlet?action=aceptarRegistro">
+                                        <input type="hidden" name="idUsuarioARegistrar" value="<%=usuario_pendiente.getIdUsuario()%>">
+                                        <input type="hidden" name="idUsuario" value="<%=idUsuario%>">
+                                        <a><button style="background-image: linear-gradient(to right,limegreen,lawngreen);" type="submit" class="button-accept">Aceptar</button></a>
+                                    </form>
                                 </div>
                                 <div class="col-sm-6">
-                                    <a href="<%=request.getContextPath()%>/NotificacionesServlet?action=rechazarRegistro&idUsuarioARegistrar=<%=usuario_pendiente.getIdUsuario()%>&idUsuario=<%=idUsuario%>"><button class="button-reject"  >Rechazar</button></a>
+                                    <form method="post" action="<%=request.getContextPath()%>/NotificacionesServlet?action=rechazarRegistro">
+                                        <input type="hidden" name="idUsuarioARegistrar" value="<%=usuario_pendiente.getIdUsuario()%>">
+                                        <input type="hidden" name="idUsuario" value="<%=idUsuario%>">
+                                        <a><button style="background-image: linear-gradient(to right,mediumvioletred,red);" type="submit" class="button-accept">Rechazar</button></a>
+                                    </form>
                                 </div>
                             </div>
                             <!--<button class="button-accept">Aceptar</button>
@@ -1592,13 +1601,15 @@
             <!-- SECTION FILTERS BAR ACTIONS -->
             <div class="section-filters-bar-actions">
                 <!-- FORM -->
-                <form class="form">
+                <form method="get" action="<%=request.getContextPath()%>/NotificacionesServlet" class="form">
+                    <input type="hidden" name="action" value="buscarDonaciones">
+                    <input type="hidden" name="idUsuario" value="<%=idUsuario%>">
                     <!-- FORM INPUT -->
                     <div class="form-input small with-button">
                         <label for="friends-search_2">Buscar usuarios</label>
-                        <input type="text" id="friends-search_2" name="friends_search">
+                        <input type="text" id="friends-search_2" name="buscar" <%if(buscar!=null){%> value="<%=buscar%> <%}%>">
                         <!-- BUTTON -->
-                        <button class="button primary">
+                        <button type="submit" class="button primary">
                             <!-- ICON MAGNIFYING GLASS -->
                             <svg class="icon-magnifying-glass">
                                 <use xlink:href="#svg-magnifying-glass"></use>
@@ -1667,7 +1678,9 @@
             <!-- SECTION FILTERS BAR ACTIONS -->
             <div class="section-filters-bar-actions">
                 <!-- FORM -->
-                <form class="form">
+                <form method="get" action="<%=request.getContextPath()%>/NotificacionesServlet" class="form">
+                    <input type="hidden" name="action" value="filtrarDonaciones">
+                    <input type="hidden" name="idUsuario" value="<%=idUsuario%>">
                     <!-- FORM ITEM -->
                     <div class="form-item split">
                         <!-- FORM INPUT DECORATED -->
@@ -1675,7 +1688,7 @@
                             <!-- FORM INPUT -->
                             <div class="form-input small active">
                                 <label for="statement-from-date">Fecha de Inicio</label>
-                                <input type="text" id="statement-from-date" name="statement_from_date" value="02/10/2023">
+                                <input type="text" id="statement-from-date" name="fecha1" placeholder="DD/MM/20AA" <%if(fecha1!=null){%> value="<%=fecha1%>" <%}%>>
                             </div>
                             <!-- /FORM INPUT -->
 
@@ -1692,7 +1705,7 @@
                             <!-- FORM INPUT -->
                             <div class="form-input small active">
                                 <label for="statement-to-date">Fecha de Fin</label>
-                                <input type="text" id="statement-to-date" name="statement_to_date" value="11/10/2023">
+                                <input type="text" id="statement-to-date" name="fecha2" placeholder="DD/MM/20AA" <%if(fecha2!=null){%> value="<%=fecha2%>" <%}%>>
                             </div>
                             <!-- /FORM INPUT -->
 
@@ -1860,16 +1873,18 @@
                         </div>
 
                         <div class="table-column centered padded">
+                            <form method="post" action="<%=request.getContextPath()%>/NotificacionesServlet?action=editDonacion">
+                                <input type="hidden" name="id" value="<%=donacion.getIdDonacion()%>">
+                                <input type="hidden" name="idUsuario" value="<%=idUsuario%>">
+                                <button class="button-accept" type="submit"><a>Editar</a></button>
+                            </form>
                             <!-- TABLE TITLE -->
-                             <a class="button-accept" href="<%=request.getContextPath()%>/NotificacionesServlet?action=edit&id=<%=donacion.getIdDonacion()%>&idUsuario=<%=idUsuario%>">Editar</a>
-                            <!-- /TABLE TITLE -->
+                            <form method="post" action="<%=request.getContextPath()%>/NotificacionesServlet?action=deleteDonacion">
+                                <input type="hidden" name="id" value="<%=donacion.getIdDonacion()%>">
+                                <input type="hidden" name="idUsuario" value="<%=idUsuario%>">
+                                <button class="button-reject" type="submit"><a>Borrar</a></button>
+                            </form>
                         </div>
-
-                        <div class="table-column centered padded">
-                            <a class="button-reject" href="<%=request.getContextPath()%>/NotificacionesServlet?action=delete&id=<%=donacion.getIdDonacion()%>&idUsuario=<%=idUsuario%>">Borrar</a>
-
-                        </div>
-
                         <!-- /TABLE COLUMN -->
                     </div>
                     <!-- /TABLE ROW -->
@@ -1975,13 +1990,15 @@
             <!-- SECTION FILTERS BAR ACTIONS -->
             <div class="section-filters-bar-actions">
                 <!-- FORM -->
-                <form class="form">
+                <form method="get" action="<%=request.getContextPath()%>/NotificacionesServlet" class="form">
+                    <input type="hidden" name="idUsuario" value="<%=idUsuario%>">
+                    <input type="hidden" name="action" value="buscarReportes">
                     <!-- FORM INPUT -->
                     <div class="form-input small with-button">
                         <label for="friends-search_3">Buscar usuarios</label>
-                        <input type="text" id="friends-search_3" name="friends_search">
+                        <input type="text" id="friends-search_3" name="buscarReportes" <%if(buscarReportes!=null){%> value="<%=buscarReportes%>" <%}%>>
                         <!-- BUTTON -->
-                        <button class="button primary">
+                        <button type="submit" class="button primary">
                             <!-- ICON MAGNIFYING GLASS -->
                             <svg class="icon-magnifying-glass">
                                 <use xlink:href="#svg-magnifying-glass"></use>
@@ -2060,14 +2077,6 @@
                         <!-- /SECTION TITLE -->
                     </div>
                     <!-- /SECTION HEADER INFO -->
-
-                    <!-- SECTION HEADER ACTIONS -->
-                    <div class="section-header-actions">
-                        <!-- SECTION HEADER ACTION -->
-                        <p class="section-header-action">Marcar todos como leídos</p>
-                        <!-- /SECTION HEADER ACTION -->
-                    </div>
-                    <!-- /SECTION HEADER ACTIONS -->
                 </div>
                 <!-- /SECTION HEADER -->
 

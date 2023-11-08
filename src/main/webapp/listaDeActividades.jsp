@@ -1561,12 +1561,12 @@
         <path d="M11.4142 10L16.7071 4.70711C17.0976 4.31658 17.0976 3.68342 16.7071 3.29289C16.3166 2.90237 15.6834 2.90237 15.2929 3.29289L10 8.58579L4.70711 3.29289C4.31658 2.90237 3.68342 2.90237 3.29289 3.29289C2.90237 3.68342 2.90237 4.31658 3.29289 4.70711L8.58579 10L3.29289 15.2929C2.90237 15.6834 2.90237 16.3166 3.29289 16.7071C3.68342 17.0976 4.31658 17.0976 4.70711 16.7071L10 11.4142L15.2929 16.7071C15.6834 17.0976 16.3166 17.0976 16.7071 16.7071C17.0976 16.3166 17.0976 15.6834 16.7071 15.2929L11.4142 10Z" fill="black"/>
     </svg>
     <form method="post" action="<%=request.getContextPath()%>/ListaDeActividadesServlet?action=crearActividad">
+        <input type="hidden" name="idUsuario" value="<%=idUsuario%>">
         <div class="container-fluid">
             <div class="row"><div class="col"><h5 style="text-align: center;">Crear actividad</h5></div></div>
             <div class="row">
                 <div class="col-sm-7">
                     <br>
-                    <input type="hidden" name="idUsuario" value="<%=idUsuario%>">
                     <label for="nombreCrearActividad" style="margin-top: 25px;"><b>Nombre de la actividad:</b></label>
                     <input type="text" name="nombreCrearActividad" id="nombreCrearActividad" placeholder="Actividad" required>
 
@@ -1621,58 +1621,61 @@
     <svg class="cerrarPopup" id="cerrarPopupEditarActividad<%=i%>" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path d="M11.4142 10L16.7071 4.70711C17.0976 4.31658 17.0976 3.68342 16.7071 3.29289C16.3166 2.90237 15.6834 2.90237 15.2929 3.29289L10 8.58579L4.70711 3.29289C4.31658 2.90237 3.68342 2.90237 3.29289 3.29289C2.90237 3.68342 2.90237 4.31658 3.29289 4.70711L8.58579 10L3.29289 15.2929C2.90237 15.6834 2.90237 16.3166 3.29289 16.7071C3.68342 17.0976 4.31658 17.0976 4.70711 16.7071L10 11.4142L15.2929 16.7071C15.6834 17.0976 16.3166 17.0976 16.7071 16.7071C17.0976 16.3166 17.0976 15.6834 16.7071 15.2929L11.4142 10Z" fill="black"/>
     </svg>
-    <div class="container-fluid">
+    <form method="post" action="<%=request.getContextPath()%>/ListaDeActividadesServlet?action=editarActividad">
+        <input type="hidden" name="idUsuario" value="<%=idUsuario%>">
+        <input type="hidden" name="idActividadEditar" value="<%=listaActividades.get(i).getIdActividad()%>">
+        <input type="hidden" name="idDelegadoActividadAnterior" value="<%=listaActividades.get(i).getIdDelegadoDeActividad()%>">
+        <div class="container-fluid">
+            <div class="row"><div class="col"><h5 style="text-align: center;">Editar actividad</h5></div></div>
+            <div class="row">
+                <div class="col-sm-7">
+                    <br>
+                    <label style="margin-top: 25px;"><b>Nombre de la actividad:</b></label>
+                    <input type="text" name="nombreEditarActividad" id="nombreEditarActividad<%=i%>" value="<%=listaActividades.get(i).getNombre()%>" placeholder="Actividad" required>
 
-        <div class="row"><div class="col"><h5 style="text-align: center;">Editar actividad</h5></div></div>
-        <div class="row">
-            <div class="col-sm-7">
-                <br>
-                <label style="margin-top: 25px;"><b>Nombre de la actividad:</b></label>
-                <input type="text" value="<%=listaActividades.get(i).getNombre()%>" placeholder="Actividad" required>
+                    <label for="idDelegadoActividadEditar<%=i%>" style="margin-top: 25px;"><b>Seleccionar delegado de actividad:</b></label>
+                    <select style="height: 55px;padding-left: 20px" name="idDelegadoActividadEditar" id="idDelegadoActividadEditar<%=i%>" required>
+                        <option value="<%=listaActividades.get(i).getIdDelegadoDeActividad()%> selected"><%=new DaoUsuario().nombreCompletoUsuarioPorId(listaActividades.get(i).getIdDelegadoDeActividad())%></option>
+                        <%for(Usuario u:listaIDyNombresDelegadosDeActividad){%>
+                        <option value="<%=u.getIdUsuario()%>"><%=u.getNombre()%> <%=u.getApellido()%></option>
+                        <%}%>
+                    </select>
 
-                <label style="margin-top: 25px;"><b>Seleccionar delegado de actividad:</b></label>
-                <input type="text" multiple id="delegado" list="alumnos" value="<%=new DaoUsuario().nombreCompletoUsuarioPorId(listaActividades.get(i).getIdDelegadoDeActividad())%>" placeholder="Delegado de actividad" required>
+                    <label style="margin-top: 25px;"><b>Puntaje para el 1er lugar:</b></label>
+                    <input type="text" name="puntajeEditarActividad" id="puntajeEditarActividad<%=i%>" value="<%=listaActividades.get(i).getCantPuntosPrimerLugar()%>" placeholder="###" required>
 
-                <datalist id="alumnos">
-                    <%for(Usuario u:listaIDyNombresDelegadosDeActividad){%>
-                    <option value="<%=u.getNombre()%> <%=u.getApellido()%>"><%=u.getNombre()%> <%=u.getApellido()%></option>
-                    <%}%>
-                </datalist>
-
-                <label style="margin-top: 25px;"><b>Puntaje para el 1er lugar:</b></label>
-                <input type="text" value="<%=listaActividades.get(i).getCantPuntosPrimerLugar()%>" placeholder="###" required>
-
-                <div style="display: flex; justify-content: left; margin-top: 25px;">
-                    <p style="width: 32%;"><b>Ocultar actividad</b></p>
-                    <input type="checkbox" <%if(listaActividades.get(i).isActividadOculta()){%>checked<%}%> style="width: 10%;">
+                    <div style="display: flex; justify-content: left; margin-top: 25px;">
+                        <p style="width: 32%;"><b>Ocultar actividad</b></p>
+                        <input type="checkbox" name="ocultoEditarActividad" id="ocultoEditarActividad<%=i%>" <%if(listaActividades.get(i).isActividadOculta()){%>checked<%}%> style="width: 10%;">
+                    </div>
                 </div>
-            </div>
-            <div class="col-sm-5 contenedor2" style="top: 30px">
-                <div class="container-fluid btn btn-file1">
-                    <img class="img-fluid" src="css/telitoVoley.png" width="80%" alt="">
-                    <p><b>Editar foto de cabecera</b></p>
-                    <input type="file" style="background-color: white; margin-top: 25px;" accept="image/png, .jpeg, .jpg"></input>
-                </div>
-                <br>
-                <div class="container-fluid btn btn-file1">
-                    <img class="img-fluid" src="css/fotoVoleyActividades.png" width="80%" alt="">
-                    <p><b>Editar foto de miniatura</b></p>
-                    <input type="file" style="background-color: white; margin-top: 25px;" accept="image/png, .jpeg, .jpg"></input>
+                <div class="col-sm-5 contenedor2" style="top: 30px">
+                    <div class="container-fluid btn btn-file1">
+                        <img class="img-fluid" src="css/telitoVoley.png" width="80%" alt="">
+                        <p><b>Editar foto de cabecera</b></p>
+                        <input type="file" style="background-color: white; margin-top: 25px;" accept="image/png, .jpeg, .jpg"></input>
+                    </div>
+                    <br>
+                    <div class="container-fluid btn btn-file1">
+                        <img class="img-fluid" src="css/fotoVoleyActividades.png" width="80%" alt="">
+                        <p><b>Editar foto de miniatura</b></p>
+                        <input type="file" style="background-color: white; margin-top: 25px;" accept="image/png, .jpeg, .jpg"></input>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-    <br>
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-sm-6" style="margin-top: 5px;">
-                <button type="submit" class="button secondary" id="cerrarPopupEditar1Actividad<%=i%>">Editar</button>
-            </div>
-            <div class="col-sm-6" style="margin-top: 5px;">
-                <button class="button secondary" id="cerrarPopupEditar2Actividad<%=i%>" style="background-color: grey;">Cancelar</button>
+        <br>
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-sm-6" style="margin-top: 5px;">
+                    <button type="submit" class="button secondary" id="cerrarPopupEditar1Actividad<%=i%>">Editar</button>
+                </div>
+                <div class="col-sm-6" style="margin-top: 5px;">
+                    <button class="button secondary" id="cerrarPopupEditar2Actividad<%=i%>" style="background-color: grey;">Cancelar</button>
+                </div>
             </div>
         </div>
-    </div>
+    </form>
 </div>
 <%}}}%>
 <script>
@@ -1735,6 +1738,8 @@
     popupFunc('popupCrear','mostrarPopupCrear',['cerrarPopupCrear','cerrarPopupCrear1','cerrarPopupCrear2'],'overlayCrear');
     <%if(listaActividades!=null){
     for(int i=0;i<listaActividades.size();i++){%>
+    var elementos<%=i%>=['nombreEditarActividad<%=i%>','idDelegadoActividadEditar<%=i%>','puntajeEditarActividad<%=i%>'];
+    verificarInput(elementos<%=i%>,'cerrarPopupEditar1Actividad<%=i%>');
     popupFunc('popupEditarActividad<%=i%>','mostrarPopupEditarActividad<%=i%>',['cerrarPopupEditarActividad<%=i%>','cerrarPopupEditar1Actividad<%=i%>','cerrarPopupEditar2Actividad<%=i%>'],'overlayEditarActividad<%=i%>');
     <%}}}%>
 </script>

@@ -20,14 +20,13 @@ public class NotificacionesServlet extends HttpServlet {
         response.setContentType("text/html");
         DaoUsuario dUsuario=new DaoUsuario();
         DaoDonacion daoDonacion  = new DaoDonacion();
+        DaoNotificacionDelegadoGeneral daoNotificacionDelegadoGeneral = new DaoNotificacionDelegadoGeneral();
+        request.setAttribute("vistaActual","---");
         int idUsuario= Integer.parseInt(request.getParameter("idUsuario"));
-
-
         String rolUsuario=dUsuario.rolUsuarioPorId(idUsuario);
         request.setAttribute("idUsuario",idUsuario);
         request.setAttribute("rolUsuario",rolUsuario);
         request.setAttribute("nombreCompletoUsuario",dUsuario.nombreCompletoUsuarioPorId(idUsuario));
-        request.setAttribute("vistaActual","---");
         request.setAttribute("correosDelegadosGenerales",dUsuario.listarCorreosDelegadosGenerales());
         String action = request.getParameter("action") == null ? "default" : request.getParameter("action");
         switch (action){
@@ -37,7 +36,6 @@ public class NotificacionesServlet extends HttpServlet {
                     String vistaActualNueva = request.getParameter("vistaActualNueva");
                     request.setAttribute("vistaActualNueva",vistaActualNueva);
                     //saca del modelo
-                    DaoNotificacionDelegadoGeneral daoNotificacionDelegadoGeneral = new DaoNotificacionDelegadoGeneral();
                     ArrayList<Usuario> listaSolicitudes = daoNotificacionDelegadoGeneral.listarSolicitudesDeRegistro();
                     ArrayList<Reporte> reportList = daoNotificacionDelegadoGeneral.listarNotificacionesReporte();
                     ArrayList<Donacion> donacionList = daoNotificacionDelegadoGeneral.listarNotificacionesDonaciones();
@@ -60,9 +58,9 @@ public class NotificacionesServlet extends HttpServlet {
                 }
                 break;
             case "buscarUsuario":
+                request.setAttribute("vistaActualNueva","Solicitudes");
                 if (rolUsuario.equals("Delegado General")){
                     String busquedaSolicitudes=request.getParameter("busquedaSolicitudes");
-                    DaoNotificacionDelegadoGeneral daoNotificacionDelegadoGeneral = new DaoNotificacionDelegadoGeneral();
                     ArrayList<Usuario> listaSolicitudes = daoNotificacionDelegadoGeneral.listarSolicitudesDeRegistro(busquedaSolicitudes);
                     ArrayList<Reporte> reportList = daoNotificacionDelegadoGeneral.listarNotificacionesReporte();
                     ArrayList<Donacion> donacionList = daoNotificacionDelegadoGeneral.listarNotificacionesDonaciones();
@@ -84,46 +82,50 @@ public class NotificacionesServlet extends HttpServlet {
                     response.sendRedirect(request.getContextPath());
                 }
                 break;
-            case "edit":
-                String id = request.getParameter("id");
-                Donacion donacion = daoDonacion.buscarPorId(id);
-
-                if(donacion != null){
-                    request.setAttribute("donacion",donacion);
-                    request.getRequestDispatcher("/donacion_edit.jsp").forward(request,response);
-                }else{
-                    request.getRequestDispatcher("notificacionesDelGeneral.jsp").forward(request,response);
-                }
-                break;
-            case "aceptarRegistro":
-                String idUserMaster = request.getParameter("idUsuario");
-                String idUsuarioARegistrar = request.getParameter("idUsuarioARegistrar");
-                new DaoUsuario().aceptarRegistro((int)Integer.parseInt(idUsuarioARegistrar));
-                response.sendRedirect(request.getContextPath() + "/NotificacionesServlet?idUsuario="+ idUserMaster);
-                break;
-            case "rechazarRegistro":
-                String idUserMaster1 = request.getParameter("idUsuario");
-                String idUsuarioARegistrar1 = request.getParameter("idUsuarioARegistrar");
-                new DaoUsuario().rechazarRegistro((int)Integer.parseInt(idUsuarioARegistrar1));
-                response.sendRedirect(request.getContextPath() + "/NotificacionesServlet?idUsuario="+ idUserMaster1);
-                break;
-            case "delete":
-
-                String idd = request.getParameter("id");
-                Donacion donacion1 = daoDonacion.buscarPorId(idd);
-
-                if(donacion1 != null){
-                    try {
-                        daoDonacion.borrar(idd);
-                    } catch (SQLException e) {
-                        System.out.println("Log: excepcion: " + e.getMessage());
-                    }
-                }
+            case "buscarDonaciones":
+                request.setAttribute("vistaActualNueva","Donaciones");
+                String buscar=request.getParameter("buscar");
+                ArrayList<Usuario> listaSolicitudes = daoNotificacionDelegadoGeneral.listarSolicitudesDeRegistro();
+                ArrayList<Reporte> reportList = daoNotificacionDelegadoGeneral.listarNotificacionesReporte();
+                ArrayList<Donacion> donacionList = daoNotificacionDelegadoGeneral.listarNotificacionesDonaciones(buscar);
+                ArrayList<Validacion> recuperacionList = daoNotificacionDelegadoGeneral.listarNotificacionesRecuperacion();
+                request.setAttribute("buscar",buscar);
+                request.setAttribute("listaSolicitudes",listaSolicitudes);
+                request.setAttribute("reportList", reportList);
+                request.setAttribute("donacionList",donacionList);
+                request.setAttribute("recuperacionList",recuperacionList);
                 request.getRequestDispatcher("notificacionesDelGeneral.jsp").forward(request,response);
-
-
                 break;
-
+            case "filtrarDonaciones":
+                request.setAttribute("vistaActualNueva","Donaciones");
+                String fecha1=request.getParameter("fecha1");
+                String fecha2=request.getParameter("fecha2");
+                ArrayList<Usuario> listaSolicitudes1 = daoNotificacionDelegadoGeneral.listarSolicitudesDeRegistro();
+                ArrayList<Reporte> reportList1 = daoNotificacionDelegadoGeneral.listarNotificacionesReporte();
+                ArrayList<Donacion> donacionList1 = daoNotificacionDelegadoGeneral.listarNotificacionesDonaciones(fecha1,fecha2);
+                ArrayList<Validacion> recuperacionList1 = daoNotificacionDelegadoGeneral.listarNotificacionesRecuperacion();
+                request.setAttribute("fecha1",fecha1);
+                request.setAttribute("fecha2",fecha2);
+                request.setAttribute("listaSolicitudes",listaSolicitudes1);
+                request.setAttribute("reportList", reportList1);
+                request.setAttribute("donacionList",donacionList1);
+                request.setAttribute("recuperacionList",recuperacionList1);
+                request.getRequestDispatcher("notificacionesDelGeneral.jsp").forward(request,response);
+                break;
+            case "buscarReportes":
+                request.setAttribute("vistaActualNueva","Reportes");
+                String buscarReportes=request.getParameter("buscarReportes");
+                ArrayList<Usuario> listaSolicitudes2 = daoNotificacionDelegadoGeneral.listarSolicitudesDeRegistro();
+                ArrayList<Reporte> reportList2 = daoNotificacionDelegadoGeneral.listarNotificacionesReporte(buscarReportes);
+                ArrayList<Donacion> donacionList2 = daoNotificacionDelegadoGeneral.listarNotificacionesDonaciones();
+                ArrayList<Validacion> recuperacionList2 = daoNotificacionDelegadoGeneral.listarNotificacionesRecuperacion();
+                request.setAttribute("buscarReportes",buscarReportes);
+                request.setAttribute("listaSolicitudes",listaSolicitudes2);
+                request.setAttribute("reportList", reportList2);
+                request.setAttribute("donacionList",donacionList2);
+                request.setAttribute("recuperacionList",recuperacionList2);
+                request.getRequestDispatcher("notificacionesDelGeneral.jsp").forward(request,response);
+                break;
         }
 
 
@@ -139,16 +141,12 @@ public class NotificacionesServlet extends HttpServlet {
         String action = request.getParameter("action") == null ? "default" : request.getParameter("action");
         switch (action){
             case "edit":
-
                 String donacionId = request.getParameter("idDonacion");
                 String montoDonacion = request.getParameter("montoDonacion");
                 String estadoDonacion = request.getParameter("estadoDonacion");
-
-                int donacionId_int = Integer.parseInt(donacionId);
-                float monto = Float.parseFloat(montoDonacion);
-
-                if(estadoDonacion.length()<11){
-
+                try{
+                    int donacionId_int = Integer.parseInt(donacionId);
+                    float monto = Float.parseFloat(montoDonacion);
                     DaoNotificacionDelegadoGeneral daoNotificacionDelegadoGeneral = new DaoNotificacionDelegadoGeneral();
                     ArrayList<Usuario> listaSolicitudes = daoNotificacionDelegadoGeneral.listarSolicitudesDeRegistro();
                     ArrayList<Reporte> reportList = daoNotificacionDelegadoGeneral.listarNotificacionesReporte();
@@ -167,22 +165,58 @@ public class NotificacionesServlet extends HttpServlet {
 
                     daoDonacion.editarDonacion(donacion);
                     response.sendRedirect(request.getContextPath()+  "/NotificacionesServlet?idUsuario="+idUsuario + "&vistaActualNueva=Donaciones");
-                }else{
+                }catch (NumberFormatException e){
                     request.setAttribute("donacion",daoDonacion.buscarPorId(donacionId));
+                    request.setAttribute("alerta","monto");
                     request.getRequestDispatcher("donacion_edit.jsp").forward(request,response);
                 }
+                break;
+            case "editDonacion":
+                String id = request.getParameter("id");
+                Donacion donacion = daoDonacion.buscarPorId(id);
+
+                if(donacion != null){
+                    request.setAttribute("donacion",donacion);
+                    request.getRequestDispatcher("/donacion_edit.jsp").forward(request,response);
+                }else{
+                    request.getRequestDispatcher("notificacionesDelGeneral.jsp").forward(request,response);
+                }
+                break;
+            case "deleteDonacion":
+
+                String idd = request.getParameter("id");
+                Donacion donacion1 = daoDonacion.buscarPorId(idd);
+
+                if(donacion1 != null){
+                    try {
+                        daoDonacion.borrar(idd);
+                    } catch (SQLException e) {
+                        System.out.println("Log: excepcion: " + e.getMessage());
+                    }
+                }
+                response.sendRedirect(request.getContextPath()+"/NotificacionesServlet?idUsuario="+idUsuario+"&vistaActualNueva=Donaciones");
+
                 break;
             case "enviar":
                 //cómo hago para que envíe link?
                 break;
-
+            case "aceptarRegistro":
+                String idUserMaster = request.getParameter("idUsuario");
+                String idUsuarioARegistrar = request.getParameter("idUsuarioARegistrar");
+                new DaoUsuario().aceptarRegistro(Integer.parseInt(idUsuarioARegistrar));
+                response.sendRedirect(request.getContextPath() + "/NotificacionesServlet?idUsuario="+ idUserMaster);
+                break;
+            case "rechazarRegistro":
+                String idUserMaster1 = request.getParameter("idUsuario");
+                String idUsuarioARegistrar1 = request.getParameter("idUsuarioARegistrar");
+                new DaoUsuario().rechazarRegistro(Integer.parseInt(idUsuarioARegistrar1));
+                response.sendRedirect(request.getContextPath() + "/NotificacionesServlet?idUsuario="+ idUserMaster1);
+                break;
             case "filtrarFechaDelegadoGeneral":
                 break;
             case "aceptarSolicitudApoyo":
                 int idAlumnoPorEvento=Integer.parseInt(request.getParameter("idAlumnoPorEvento"));
                 String tipoDeApoyo=request.getParameter("tipoDeApoyo");
-                System.out.println(idAlumnoPorEvento);
-                System.out.println(tipoDeApoyo);
                 dN.aceptarSolicitudApoyo(idAlumnoPorEvento,tipoDeApoyo);
                 response.sendRedirect(request.getContextPath()+"/NotificacionesServlet?idUsuario="+idUsuario);
                 break;

@@ -23,16 +23,10 @@ public class ListaDeUsuariosServlet extends HttpServlet {
         request.setAttribute("vistaActual","listaDeUsuarios");
         request.setAttribute("correosDelegadosGenerales",dUsuario.listarCorreosDelegadosGenerales());
         String action = request.getParameter("action") == null ? "listarUsuarios" : request.getParameter("action");
-        switch (action){
+        switch (action) {
             case "listarUsuarios":
-                request.setAttribute("listaUsuarios",dUsuario.listarUsuarios());
-                request.getRequestDispatcher("listaUsuarios.jsp").forward(request,response);
-                break;
-            case "banear":
-                int idUsuarioABanear =Integer.parseInt(request.getParameter("idUsuarioABanear"));
-                new DaoBan().banearPorId(idUsuarioABanear);
-                request.setAttribute("listaUsuarios",dUsuario.listarUsuarios());
-                request.getRequestDispatcher("listaUsuarios.jsp").forward(request,response);
+                request.setAttribute("listaUsuarios", dUsuario.listarUsuarios());
+                request.getRequestDispatcher("listaUsuarios.jsp").forward(request, response);
                 break;
             case "buscarUsuario":
                 String usuario=request.getParameter("usuario");
@@ -60,7 +54,11 @@ public class ListaDeUsuariosServlet extends HttpServlet {
         int idUsuario=Integer.parseInt(request.getParameter("idUsuario"));
         String action = request.getParameter("action") == null ? "default" : request.getParameter("action");
         switch(action){
-            case "ban":
+            case "banear":
+                int idUsuarioABanear =Integer.parseInt(request.getParameter("idUsuarioABanear"));
+                new DaoBan().banearPorId(idUsuarioABanear);
+                response.sendRedirect(request.getContextPath()+"/ListaDeUsuariosServlet?idUsuario="+idUsuario);
+                break;
         }
 
 

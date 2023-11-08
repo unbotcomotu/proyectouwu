@@ -1,6 +1,7 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <jsp:useBean id="donacion" type="com.example.proyectouwu.Beans.Donacion" scope="request" />
-<%int idUsuario=(int) request.getAttribute("idUsuario");%>
+<%int idUsuario=(int) request.getAttribute("idUsuario");
+String alerta=(String) request.getAttribute("alerta");%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -22,10 +23,14 @@
         <div class="mb-3">
             <label>Monto</label>
             <input type="text" class="form-control" name="montoDonacion" value="<%=donacion.getMonto()%>">
+            <%if(alerta!=null &&alerta.equals("monto")){%> <span style="color: red">Ingrese un monto numérico</span> <%}%>
         </div>
         <div class="mb-3">
-            <label>Estato de la donación</label>
-            <input type="text" class="form-control" name="estadoDonacion" value="<%=donacion.getEstadoDonacion()%>">
+            <label for="estadoDonacion">Estado de la donación</label>
+            <select name="estadoDonacion" id="estadoDonacion">
+                <option value="Validado" <%if(donacion.getEstadoDonacion().equals("Validado")){%>selected<%}%>>Validado</option>
+                <option value="Pendiente" <%if(donacion.getEstadoDonacion().equals("Pendiente")){%>selected<%}%>>Pendiente</option>
+            </select>
         </div>
         <a href="<%=request.getContextPath()%>/NotificacionesServlet?idUsuario=<%=idUsuario%>" class="btn btn-danger">Regresar</a>
         <button type="submit" class="btn btn-primary">Confirmar</button>

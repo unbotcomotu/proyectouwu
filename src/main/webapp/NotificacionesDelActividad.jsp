@@ -1284,6 +1284,7 @@
 
                 <div class="form-input small with-button">
                     <label for="friends-search">Buscar usuarios</label>
+                    <input type="hidden" name="action" value="buscarUsuario">
                     <%String busquedaSolicitudes=(String) request.getAttribute("busquedaSolicitudes");%>
                     <input type="hidden" name="idUsuario" value="<%=idUsuario%>">
                     <input type="text" id="friends-search" name="busquedaSolicitudes" <%if(busquedaSolicitudes!=null){%> value="<%=busquedaSolicitudes%>"<%}%>>

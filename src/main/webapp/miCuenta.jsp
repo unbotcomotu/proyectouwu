@@ -673,7 +673,7 @@
         <!-- ACTION ITEM -->
         <div class="action-item dark header-settings-dropdown-trigger">
             <!-- ACTION ITEM ICON -->
-            <a href="<%=request.getContextPath()%>"><img src="css/logOut.png" style="margin-left: 25px;" width="30%" alt=""></a>
+            <a href="<%=request.getContextPath()%>/inicioSesion.jsp"><img src="css/logOut.png" style="margin-left: 25px;" width="30%" alt=""></a>
             <!-- /ACTION ITEM ICON -->
         </div>
         <!-- /ACTION ITEM -->
@@ -924,7 +924,7 @@
             <!-- ACTION ITEM -->
             <div class="action-item dark header-settings-dropdown-trigger">
                 <!-- ACTION ITEM ICON -->
-                <a href="<%=request.getContextPath()%>"><img src="css/logOut.png" width="30%" style="margin-left: 25px;" alt=""></a>
+                <a href="<%=request.getContextPath()%>/inicioSesion.jsp"><img src="css/logOut.png" width="30%" style="margin-left: 25px;" alt=""></a>
                 <!-- /ACTION ITEM ICON -->
             </div>
             <!-- /ACTION ITEM -->
@@ -1307,7 +1307,7 @@
             <!-- ACTION ITEM -->
             <div class="action-item dark header-settings-dropdown-trigger">
                 <!-- ACTION ITEM ICON -->
-                <a href="<%=request.getContextPath()%>"><img src="css/logOut.png" width="30%" style="margin-left: 25px;" alt=""></a>
+                <a href="<%=request.getContextPath()%>/inicioSesion.jsp"><img src="css/logOut.png" width="30%" style="margin-left: 25px;" alt=""></a>
                 <!-- /ACTION ITEM ICON -->
             </div>
             <!-- /ACTION ITEM -->

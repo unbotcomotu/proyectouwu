@@ -1,9 +1,6 @@
 package com.example.proyectouwu.Servlets;
 
-import com.example.proyectouwu.Beans.AlumnoPorEvento;
-import com.example.proyectouwu.Beans.Donacion;
-import com.example.proyectouwu.Beans.Reporte;
-import com.example.proyectouwu.Beans.Usuario;
+import com.example.proyectouwu.Beans.*;
 import com.example.proyectouwu.Daos.DaoDonacion;
 import com.example.proyectouwu.Daos.DaoNotificacionDelegadoGeneral;
 import com.example.proyectouwu.Daos.DaoUsuario;
@@ -44,10 +41,12 @@ public class NotificacionesServlet extends HttpServlet {
                     ArrayList<Usuario> listaSolicitudes = daoNotificacionDelegadoGeneral.listarSolicitudesDeRegistro();
                     ArrayList<Reporte> reportList = daoNotificacionDelegadoGeneral.listarNotificacionesReporte();
                     ArrayList<Donacion> donacionList = daoNotificacionDelegadoGeneral.listarNotificacionesDonaciones();
+                    ArrayList<Validacion> recuperacionList = daoNotificacionDelegadoGeneral.listarNotificacionesRecuperacion();
                     //mandar la lista a la vista
                             request.setAttribute("listaSolicitudes",listaSolicitudes);
                             request.setAttribute("reportList", reportList);
                             request.setAttribute("donacionList",donacionList);
+                            request.setAttribute("recuperacionList",recuperacionList);
                             request.getRequestDispatcher("notificacionesDelGeneral.jsp").forward(request,response);
 
                 }else if (rolUsuario.equals("Delegado de Actividad")){
@@ -128,13 +127,14 @@ public class NotificacionesServlet extends HttpServlet {
                     ArrayList<Usuario> listaSolicitudes = daoNotificacionDelegadoGeneral.listarSolicitudesDeRegistro(busquedaSolicitudes);
                     ArrayList<Reporte> reportList = daoNotificacionDelegadoGeneral.listarNotificacionesReporte();
                     ArrayList<Donacion> donacionList = daoNotificacionDelegadoGeneral.listarNotificacionesDonaciones();
+                    ArrayList<Validacion> recuperacionList = daoNotificacionDelegadoGeneral.listarNotificacionesRecuperacion();
 
-                            request.setAttribute("busquedaSolicitudes",busquedaSolicitudes);
+                    request.setAttribute("busquedaSolicitudes",busquedaSolicitudes);
                             request.setAttribute("listaSolicitudes",listaSolicitudes);
                             request.setAttribute("reportList", reportList);
                             request.setAttribute("donacionList",donacionList);
+                            request.setAttribute("recuperacionList",recuperacionList);
                             request.getRequestDispatcher("notificacionesDelGeneral.jsp").forward(request,response);
-
 
                 }else if (rolUsuario.equals("Delegado de Actividad")){
                     DaoNotificacionDelegadoGeneral daoNotificacionesDeleActividad = new DaoNotificacionDelegadoGeneral();
@@ -162,11 +162,12 @@ public class NotificacionesServlet extends HttpServlet {
                     ArrayList<Usuario> listaSolicitudes = daoNotificacionDelegadoGeneral.listarSolicitudesDeRegistro();
                     ArrayList<Reporte> reportList = daoNotificacionDelegadoGeneral.listarNotificacionesReporte();
                     ArrayList<Donacion> donacionList = daoNotificacionDelegadoGeneral.listarNotificacionesDonaciones();
-
+                    ArrayList<Validacion> recuperacionList = daoNotificacionDelegadoGeneral.listarNotificacionesRecuperacion();
 
                     request.setAttribute("listaSolicitudes",listaSolicitudes);
                     request.setAttribute("reportList", reportList);
                     request.setAttribute("donacionList",donacionList);
+                    request.setAttribute("recuperacionList",recuperacionList);
 
                     Donacion donacion = new Donacion();
                     donacion.setIdDonacion(donacionId_int);
@@ -179,6 +180,9 @@ public class NotificacionesServlet extends HttpServlet {
                     request.setAttribute("donacion",daoDonacion.buscarPorId(donacionId));
                     request.getRequestDispatcher("donacion_edit.jsp").forward(request,response);
                 }
+                break;
+            case "enviar":
+                //cómo hago para que envíe link?
                 break;
 
 

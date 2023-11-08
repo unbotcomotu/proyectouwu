@@ -74,7 +74,7 @@ public class DaoDonacion extends DaoPadre  {
     }
     //Este método permite agregar el monto y foto que ha donado una persona
     public void agregarDonacionUsuario(int idDonacion,int idUser,String medioPago, int monto, Blob captura){
-        String sql = " insert into donacion(idDonacion, idUsuario, medioPago, monto,fechaHora,captura,estadoDonacion) values (?,?, ?, ?,now(), ?,?)";
+        String sql = "insert into donacion(idDonacion, idUsuario, medioPago, monto,fechaHora,captura,estadoDonacion) values (?,?, ?, ?,now(), ?,?)";
         try(PreparedStatement pstmt=conn.prepareStatement(sql)){
             pstmt.setInt(1,idDonacion);
             pstmt.setInt(2, idUser);

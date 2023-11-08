@@ -3,6 +3,7 @@
 <%@ page import="com.example.proyectouwu.Beans.Reporte" %>
 <%@ page import="com.example.proyectouwu.Daos.DaoUsuario" %>
 <%@ page import="com.example.proyectouwu.Beans.Donacion" %>
+<%@ page import="com.example.proyectouwu.Beans.Validacion" %>
 <%--
   Created by IntelliJ IDEA.
   User: Santiago
@@ -20,6 +21,7 @@
         ArrayList<Usuario> listaSolicitudes=(ArrayList<Usuario>) request.getAttribute("listaSolicitudes");
         ArrayList<Reporte> reportList = (ArrayList<Reporte>) request.getAttribute("reportList");
         ArrayList<Donacion> donacionList = (ArrayList<Donacion>) request.getAttribute("donacionList");
+        ArrayList<Validacion> recuperacionList = (ArrayList<Validacion>) request.getAttribute("recuperacionList");
         Integer idActividadDelegatura=(Integer)request.getAttribute("idActividadDelegatura");
         String vistaActual=(String) request.getAttribute("vistaActual");
         ArrayList<String>listaCorreosDelegadosGenerales=(ArrayList<String>)request.getAttribute("correosDelegadosGenerales");
@@ -1327,6 +1329,7 @@
                             <option >Solicitudes de Registro</option>
                             <option >Donaciones</option>
                             <option >Reportes</option>
+                            <option>Solicitudes de Recuperación</option>
                         </select>
                         <!-- FORM SELECT ICON -->
                         <svg class="form-select-icon icon-small-arrow">
@@ -1360,6 +1363,14 @@
                     <div class="filter-tab">
                         <!-- FILTER TAB TEXT -->
                         <p class="filter-tab-text clickeable" id="opcionReportes"  >Reportes</p>
+                        <!-- /FILTER TAB TEXT -->
+                    </div>
+                    <!-- /FILTER TAB -->
+
+                    <!-- /FILTER TAB -->
+                    <div class="filter-tab">
+                        <!-- FILTER TAB TEXT -->
+                        <p class="filter-tab-text clickeable" id="opcionRecuperacion" > Solicitudes de Recuperacion</p>
                         <!-- /FILTER TAB TEXT -->
                     </div>
                     <!-- /FILTER TAB -->
@@ -1604,6 +1615,7 @@
                             <option >Solicitudes de Registro</option>
                             <option >Donaciones</option>
                             <option >Reportes</option>
+                            <option>Solicitudes de Recuperación</option>
                         </select>
                         <!-- FORM SELECT ICON -->
                         <svg class="form-select-icon icon-small-arrow">
@@ -1640,6 +1652,11 @@
                         <!-- /FILTER TAB TEXT -->
                     </div>
                     <!-- /FILTER TAB -->
+                    <div class="filter-tab">
+                        <!-- FILTER TAB TEXT -->
+                        <p class="filter-tab-text clickeable" id="opcionRecuperacion_1">Solicitudes de Recuperación</p>
+                        <!-- /FILTER TAB TEXT -->
+                    </div>
                 </div>
                 <!-- /FILTER TABS -->
             </div>
@@ -1981,6 +1998,7 @@
                             <option >Solicitudes de Registro</option>
                             <option >Donaciones</option>
                             <option >Reportes</option>
+                            <option>Solicitudes de Recuperación</option>
                         </select>
                         <!-- FORM SELECT ICON -->
                         <svg class="form-select-icon icon-small-arrow">
@@ -2017,6 +2035,11 @@
                         <!-- /FILTER TAB TEXT -->
                     </div>
                     <!-- /FILTER TAB -->
+                    <div class="filter-tab">
+                        <!-- FILTER TAB TEXT -->
+                        <p class="filter-tab-text clickeable" id="opcionRecuperacion_2" >Solicitudes de Recuperación</p>
+                        <!-- /FILTER TAB TEXT -->
+                    </div>
                 </div>
                 <!-- /FILTER TABS -->
             </div>
@@ -2142,6 +2165,300 @@
 
     </div>
 
+    <div id="recuperacionContenido" class="oculto">
+
+        <div class="section-filters-bar v1">
+            <!-- SECTION FILTERS BAR ACTIONS -->
+            <div class="section-filters-bar-actions">
+                <!-- FORM -->
+                <form class="form">
+                    <!-- FORM INPUT -->
+                    <div class="form-input small with-button">
+                        <label for="friends-search_4">Buscar usuarios</label>
+                        <input type="text" id="friends-search_4" name="friends_search">
+                        <!-- BUTTON -->
+                        <button class="button primary">
+                            <!-- ICON MAGNIFYING GLASS -->
+                            <svg class="icon-magnifying-glass">
+                                <use xlink:href="#svg-magnifying-glass"></use>
+                            </svg>
+                            <!-- /ICON MAGNIFYING GLASS -->
+                        </button>
+                        <!-- /BUTTON -->
+                    </div>
+                    <!-- /FORM INPUT -->
+
+                    <!-- FORM SELECT -->
+                    <div class="form-select">
+                        <label for="friends-filter-category_4">Filter By</label>
+                        <select id="friends-filter-category_4" name="friends_filter_category">
+                            <option >Solicitudes de Registro</option>
+                            <option >Donaciones</option>
+                            <option >Reportes</option>
+                            <option>Solicitudes de Recuperación</option>
+                        </select>
+                        <!-- FORM SELECT ICON -->
+                        <svg class="form-select-icon icon-small-arrow">
+                            <use xlink:href="#svg-small-arrow"></use>
+                        </svg>
+                        <!-- /FORM SELECT ICON -->
+                    </div>
+                    <!-- /FORM SELECT -->
+                </form>
+                <!-- /FORM -->
+
+                <!-- FILTER TABS -->
+                <div class="filter-tabs">
+                    <!-- FILTER TAB -->
+                    <div class="filter-tab">
+                        <!-- FILTER TAB TEXT -->
+                        <p  class="filter-tab-text clickeable"  id="opcionSolicitudes_3">Solicitudes de Registro</p>
+                        <!-- /FILTER TAB TEXT -->
+                    </div>
+                    <!-- /FILTER TAB -->
+
+                    <!-- FILTER TAB -->
+                    <div class="filter-tab">
+                        <!-- FILTER TAB TEXT -->
+                        <p  class="filter-tab-text clickeable"  id = "opcionDonaciones_3">Donaciones</p>
+                        <!-- /FILTER TAB TEXT -->
+                    </div>
+                    <!-- /FILTER TAB -->
+
+                    <!-- FILTER TAB -->
+                    <div class="filter-tab">
+                        <!-- FILTER TAB TEXT -->
+                        <p class="filter-tab-text clickeable" id="opcionReportes_3"  >Reportes </p>
+                        <!-- /FILTER TAB TEXT -->
+                    </div>
+                    <!-- /FILTER TAB -->
+                    <div class="filter-tab active">
+                        <!-- FILTER TAB TEXT -->
+                        <p class="filter-tab-text clickeable" id="opcionRecuperacion_3"  > Solicitudes de Recuperación</p>
+                        <!-- /FILTER TAB TEXT -->
+                    </div>
+                </div>
+                <!-- /FILTER TABS -->
+            </div>
+
+        </div>
+
+        <!-- TABLE WRAP -->
+        <div class="table-wrap" data-simplebar>
+            <!-- TABLE -->
+            <div class="table table-sales">
+                <!-- TABLE HEADER -->
+                <div class="table-header">
+                    <!-- TABLE HEADER COLUMN -->
+                    <div class="table-header-column">
+                        <!-- TABLE HEADER TITLE -->
+                        <p class="table-header-title">Fecha</p>
+                        <!-- /TABLE HEADER TITLE -->
+                    </div>
+                    <!-- /TABLE HEADER COLUMN -->
+
+                    <!-- TABLE HEADER COLUMN -->
+                    <div class="table-header-column padded-left">
+                        <!-- TABLE HEADER TITLE -->
+                        <p class="table-header-title">Correo</p>
+                        <!-- /TABLE HEADER TITLE -->
+                    </div>
+                    <!-- /TABLE HEADER COLUMN -->
+
+                    <!-- TABLE HEADER COLUMN -->
+                    <div class="table-header-column centered padded">
+                        <!-- TABLE HEADER TITLE -->
+                        <p class="table-header-title">Tipo</p>
+                        <!-- /TABLE HEADER TITLE -->
+                    </div>
+                    <!-- /TABLE HEADER COLUMN -->
+
+                    <!-- TABLE HEADER COLUMN -->
+
+                    <!-- /TABLE HEADER COLUMN -->
+
+                    <!-- TABLE HEADER COLUMN -->
+                    <div class="table-header-column centered padded">
+                        <!-- TABLE HEADER TITLE -->
+                        <p class="table-header-title">Código Validación</p>
+                        <!-- /TABLE HEADER TITLE -->
+                    </div>
+                    <!-- /TABLE HEADER COLUMN -->
+
+                    <div class="table-header-column centered padded">
+                        <!-- TABLE HEADER TITLE -->
+                        <p class="table-header-title">link</p>
+                        <!-- /TABLE HEADER TITLE -->
+                    </div>
+
+                    <!-- /TABLE HEADER COLUMN -->
+
+
+
+                    <!-- /TABLE HEADER COLUMN -->
+                </div>
+                <!-- /TABLE HEADER -->
+
+                <!-- TABLE BODY -->
+                <div class="table-body same-color-rows">
+
+
+                    <%for (Validacion validacion : recuperacionList){%>
+                    <!-- TABLE ROW -->
+                    <div class="table-row micro">
+                        <!-- TABLE COLUMN -->
+                        <div class="table-column">
+                            <!-- TABLE TEXT -->
+                            <p class="table-text"><span class="light"><%=validacion.getFechaHora()%></span></p>
+                            <!-- /TABLE TEXT -->
+                        </div>
+                        <!-- /TABLE COLUMN -->
+
+                        <!-- TABLE COLUMN -->
+
+                        <!-- /TABLE COLUMN -->
+
+                        <!-- TABLE COLUMN -->
+                        <div class="table-column centered padded">
+                            <!-- TABLE TITLE -->
+                            <p class="table-title"> <%=validacion.getCorreo()%> </p>
+                            <!-- /TABLE TITLE -->
+                        </div>
+
+                        <!-- TABLE COLUMN -->
+                        <div class="table-column centered padded">
+                            <!-- TABLE TITLE -->
+                            <p class="table-title"><%=validacion.getTipo()%></p>
+                            <!-- /TABLE TITLE -->
+                        </div>
+                        <!-- /TABLE COLUMN -->
+
+                        <div class="table-column centered padded">
+                            <!-- TABLE TITLE -->
+                            <p class="table-title"><%=validacion.getCodigoValidacion()%></p>
+                            <!-- /TABLE TITLE -->
+                        </div>
+
+                        <!-- /TABLE COLUMN -->
+
+                        <!-- TABLE COLUMN -->
+                        <!-- /TABLE COLUMN -->
+
+                        <!-- TABLE COLUMN -->
+                        <div class="table-column centered padded">
+                            <!-- TABLE TITLE -->
+                            <p class="table-title"> Link </p>
+                            <!-- /TABLE TITLE -->
+                        </div>
+
+                        <div class="table-column centered padded">
+                            <!-- TABLE TITLE -->
+                            <!revisar aquí-->
+                            <a class="button-accept" href="<%=request.getContextPath()%>/NotificacionesServlet?action=enviar&id=<%=validacion.getIdCorreoValidacion()%>&idUsuario=<%=idUsuario%>">Enviar</a>
+                            <!-- /TABLE TITLE -->
+                        </div>
+
+
+                        <!-- /TABLE COLUMN -->
+                    </div>
+                    <!-- /TABLE ROW -->
+
+                    <%}%>
+
+
+                </div>
+                <!-- /TABLE BODY -->
+            </div>
+            <!-- /TABLE -->
+        </div>
+        <!-- /TABLE WRAP -->
+
+        <!-- SECTION PAGER BAR WRAP -->
+        <div class="section-pager-bar-wrap align-right">
+            <!-- SECTION PAGER BAR -->
+            <div class="section-pager-bar">
+                <!-- SECTION PAGER -->
+                <div class="section-pager">
+                    <!-- SECTION PAGER ITEM -->
+                    <div class="section-pager-item active">
+                        <!-- SECTION PAGER ITEM TEXT -->
+                        <p class="section-pager-item-text">01</p>
+                        <!-- /SECTION PAGER ITEM TEXT -->
+                    </div>
+                    <!-- /SECTION PAGER ITEM -->
+
+                    <!-- SECTION PAGER ITEM -->
+                    <div class="section-pager-item">
+                        <!-- SECTION PAGER ITEM TEXT -->
+                        <p class="section-pager-item-text">02</p>
+                        <!-- /SECTION PAGER ITEM TEXT -->
+                    </div>
+                    <!-- /SECTION PAGER ITEM -->
+
+                    <!-- SECTION PAGER ITEM -->
+                    <div class="section-pager-item">
+                        <!-- SECTION PAGER ITEM TEXT -->
+                        <p class="section-pager-item-text">03</p>
+                        <!-- /SECTION PAGER ITEM TEXT -->
+                    </div>
+                    <!-- /SECTION PAGER ITEM -->
+
+                    <!-- SECTION PAGER ITEM -->
+                    <div class="section-pager-item">
+                        <!-- SECTION PAGER ITEM TEXT -->
+                        <p class="section-pager-item-text">04</p>
+                        <!-- /SECTION PAGER ITEM TEXT -->
+                    </div>
+                    <!-- /SECTION PAGER ITEM -->
+
+                    <!-- SECTION PAGER ITEM -->
+                    <div class="section-pager-item">
+                        <!-- SECTION PAGER ITEM TEXT -->
+                        <p class="section-pager-item-text">05</p>
+                        <!-- /SECTION PAGER ITEM TEXT -->
+                    </div>
+                    <!-- /SECTION PAGER ITEM -->
+
+                    <!-- SECTION PAGER ITEM -->
+                    <div class="section-pager-item">
+                        <!-- SECTION PAGER ITEM TEXT -->
+                        <p class="section-pager-item-text">06</p>
+                        <!-- /SECTION PAGER ITEM TEXT -->
+                    </div>
+                    <!-- /SECTION PAGER ITEM -->
+                </div>
+                <!-- /SECTION PAGER -->
+
+                <!-- SECTION PAGER CONTROLS -->
+                <div class="section-pager-controls">
+                    <!-- SLIDER CONTROL -->
+                    <div class="slider-control left disabled">
+                        <!-- SLIDER CONTROL ICON -->
+                        <svg class="slider-control-icon icon-small-arrow">
+                            <use xlink:href="#svg-small-arrow"></use>
+                        </svg>
+                        <!-- /SLIDER CONTROL ICON -->
+                    </div>
+                    <!-- /SLIDER CONTROL -->
+
+                    <!-- SLIDER CONTROL -->
+                    <div class="slider-control right">
+                        <!-- SLIDER CONTROL ICON -->
+                        <svg class="slider-control-icon icon-small-arrow">
+                            <use xlink:href="#svg-small-arrow"></use>
+                        </svg>
+                        <!-- /SLIDER CONTROL ICON -->
+                    </div>
+                    <!-- /SLIDER CONTROL -->
+                </div>
+                <!-- /SECTION PAGER CONTROLS -->
+            </div>
+            <!-- /SECTION PAGER BAR -->
+        </div>
+
+
+    </div>
+
 </div> <!--GRID-->
 <footer style="font-size: 80%;">
     <!-- Primera fila -->
@@ -2226,7 +2543,7 @@
 <script>
     // Función para alternar entre las opciones y mostrar el contenido correspondiente
     function mostrarContenido(opcion) {
-        const opciones = ["Solicitudes", "Donaciones", "Reportes"];
+        const opciones = ["Solicitudes", "Donaciones", "Reportes","Recuperacion"];
 
         opciones.forEach(op => {
             const contenido = document.getElementById(op.toLowerCase() + "Contenido");
@@ -2250,6 +2567,9 @@
     document.getElementById("opcionReportes").addEventListener("click", function() {
         mostrarContenido("Reportes");
     });
+    document.getElementById("opcionRecuperacion").addEventListener("click", function() {
+        mostrarContenido("Recuperacion");
+    });
     // Agregar eventos de clic para cada opción
     document.getElementById("opcionSolicitudes_1").addEventListener("click", function() {
         mostrarContenido("Solicitudes");
@@ -2262,6 +2582,9 @@
     document.getElementById("opcionReportes_1").addEventListener("click", function() {
         mostrarContenido("Reportes");
     });
+    document.getElementById("opcionRecuperacion_1").addEventListener("click", function() {
+        mostrarContenido("Recuperacion");
+    });
     document.getElementById("opcionSolicitudes_2").addEventListener("click", function() {
         mostrarContenido("Solicitudes");
     });
@@ -2273,7 +2596,24 @@
     document.getElementById("opcionReportes_2").addEventListener("click", function() {
         mostrarContenido("Reportes");
     });
+    document.getElementById("opcionRecuperacion_2").addEventListener("click", function() {
+        mostrarContenido("Recuperacion");
+    });
 
+    document.getElementById("opcionSolicitudes_3").addEventListener("click", function() {
+        mostrarContenido("Solicitudes");
+    });
+
+    document.getElementById("opcionDonaciones_3").addEventListener("click", function() {
+        mostrarContenido("Donaciones");
+    });
+
+    document.getElementById("opcionReportes_3").addEventListener("click", function() {
+        mostrarContenido("Reportes");
+    });
+    document.getElementById("opcionRecuperacion_3").addEventListener("click", function() {
+        mostrarContenido("Recuperacion");
+    });
     <%if (vistaActualNueva==null){%>
 
         mostrarContenido("Solicitudes");
@@ -2300,8 +2640,12 @@
                 mostrarContenido("Reportes");
 
                 <% break;
+            case "Recuperacion":%>
 
-        }%>
+                mostrarContenido("Recuperacion");
+
+    <% break;
+}%>
     <%}%>
 
 

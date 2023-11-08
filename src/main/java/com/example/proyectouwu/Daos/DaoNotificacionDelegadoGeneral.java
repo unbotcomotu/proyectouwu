@@ -4,6 +4,7 @@ import com.example.proyectouwu.Beans.AlumnoPorEvento;
 import com.example.proyectouwu.Beans.Donacion;
 import com.example.proyectouwu.Beans.Reporte;
 import com.example.proyectouwu.Beans.Usuario;
+import com.example.proyectouwu.Beans.Validacion;
 import java.sql.*;
 import java.util.ArrayList;
 
@@ -165,6 +166,41 @@ public class DaoNotificacionDelegadoGeneral extends DaoPadre {
             throw new RuntimeException(e);
         }
         return donacionList;
+    }
+    public ArrayList<Validacion> listarNotificacionesRecuperacion( ){
+
+        ArrayList<Validacion> validacionList= new ArrayList<>();
+
+        try{
+            Class.forName("com.mysql.cj.jdbc.Driver");
+        }catch (ClassNotFoundException e){
+            throw new RuntimeException(e);
+        }
+
+        String url = "jdbc:mysql://localhost:3306/proyecto";
+        String username = super.getUser();
+        String password = super.getPassword();
+
+        String sql = "select correo,tipo,codigoValidacion,fechaHora from validacion where linkEnviado = 0";
+        try (Connection conn = DriverManager.getConnection(url, username, password);
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(sql)) {
+
+            while (rs.next()) {
+
+                Validacion validacion = new Validacion();
+                validacion.setCorreo(rs.getString(1));
+                validacion.setTipo(rs.getString(2));
+                validacion.setCodigoValidacion(rs.getInt(3));
+                validacion.setFechaHora(rs.getDate(4));
+
+                validacionList.add(validacion);
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return validacionList;
     }
 
     public ArrayList<AlumnoPorEvento> listarSolicitudesDeApoyo(){

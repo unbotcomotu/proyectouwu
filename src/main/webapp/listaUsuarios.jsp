@@ -978,14 +978,19 @@
       <form class="form">
         <!-- FORM ITEM -->
         <div class="form-item split medium">
+          <%Integer idFiltroUsuario=(Integer) request.getAttribute("idFiltroUsuario");%>
+
           <!-- FORM SELECT -->
           <div class="form-select small">
             <label for="items-filter-category">Filtrar por</label>
-            <select id="items-filter-category" name="items_filter_category">
-              <option value="0">Orden alfabético</option>
-              <option value="1">Código PUCP</option>
-              <option value="2">Condición</option>
-              <option value="3">Baneado</option>
+            <select id="items-filter-category" name="idFiltroUsuario">
+              <%if(rolUsuario.equals("Delegado General")){%>
+
+              <option value="0"<%if(idFiltroUsuario!=null && idFiltroUsuario==0){%>selected<%}%>>Orden alfabético</option>
+              <option value="1"<%if(idFiltroUsuario!=null && idFiltroUsuario==1){%>selected<%}%>>Código PUCP</option>
+              <option value="2"<%if(idFiltroUsuario!=null && idFiltroUsuario==2){%>selected<%}%>>Condición</option>
+              <option value="3"<%if(idFiltroUsuario!=null && idFiltroUsuario==3){%>selected<%}%>>Baneado</option>
+              <%}%>
             </select>
             <!-- FORM SELECT ICON -->
             <svg class="form-select-icon icon-small-arrow">
@@ -994,13 +999,14 @@
             <!-- /FORM SELECT ICON -->
           </div>
           <!-- /FORM SELECT -->
+          <%Integer idOrdenarUsuario=(Integer)request.getAttribute("idOrdenarUsuario");%>
 
           <!-- FORM SELECT -->
           <div class="form-select small">
             <label for="items-filter-order">Ordenar por</label>
             <select id="items-filter-order" name="items_filter_order">
-              <option value="0">Ascendente</option>
-              <option value="1">Descendente</option>
+              <option value="0"<%if(idOrdenarUsuario!=null){if(idOrdenarUsuario==0){%>selected<%}}%>>Ascendente</option>
+              <option value="1"<%if(idOrdenarUsuario!=null){if(idOrdenarUsuario==1){%>selected<%}}%>>Descendente</option>
             </select>
             <!-- FORM SELECT ICON -->
             <svg class="form-select-icon icon-small-arrow">

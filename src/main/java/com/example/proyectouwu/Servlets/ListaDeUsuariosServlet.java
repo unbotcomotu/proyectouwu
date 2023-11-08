@@ -40,7 +40,7 @@ public class ListaDeUsuariosServlet extends HttpServlet {
                 int idFiltroUsuarios=Integer.parseInt(request.getParameter("idFiltroUsuarios"));
                 int idOrdenarUsuarios=Integer.parseInt(request.getParameter("idOrdenarUsuarios"));
                 //request.setAttribute("listaUsuarios",new DaoUsuario().listarUsuariosTotal(idFiltroActividades,idOrdenarActividades,idUsuario));
-                request.setAttribute("listaUsuarios",new DaoUsuario().listarUsuarios(idFiltroUsuarios,idOrdenarUsuarios,idUsuario));
+                request.setAttribute("listaUsuarios",new DaoUsuario().listarUsuariosFiltro(idFiltroUsuarios,idOrdenarUsuarios,idUsuario));
                 request.setAttribute("idFiltroUsuarios",idFiltroUsuarios);
                 request.setAttribute("idOrdenarUsuarios",idOrdenarUsuarios);
                 request.getRequestDispatcher("listaUsuarios.jsp").forward(request,response);

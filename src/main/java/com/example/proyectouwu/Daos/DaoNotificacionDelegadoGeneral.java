@@ -217,7 +217,7 @@ public class DaoNotificacionDelegadoGeneral extends DaoPadre {
         String username = super.getUser();
         String password = super.getPassword(); //Cambiar segun tu contraseña
 
-        String sql = "select idAlumno from alumnoporevento where estadoApoyo = 'En espera'";
+        String sql = "select idAlumnoPorEvento,idAlumno from alumnoporevento where estadoApoyo = 'Pendiente'";
 
 
         try (Connection conn = DriverManager.getConnection(url, username, password);
@@ -225,8 +225,8 @@ public class DaoNotificacionDelegadoGeneral extends DaoPadre {
              ResultSet rs = stmt.executeQuery(sql)) {
             while (rs.next()){
                 AlumnoPorEvento alumnoPorEvento=new AlumnoPorEvento();
-                alumnoPorEvento.setIdAlumno(rs.getInt(1));
-
+                alumnoPorEvento.setIdAlumnoPorEvento(rs.getInt(1));
+                alumnoPorEvento.setIdAlumno(rs.getInt(2));
                 listaSolicitudesApoyo.add(alumnoPorEvento);
             }
         } catch (SQLException e) {
@@ -284,6 +284,17 @@ public class DaoNotificacionDelegadoGeneral extends DaoPadre {
             throw new RuntimeException(e);
         }
         return listaSegundoMinutoHoraDiaMes; //Devuelve la diferencia en segundo, minuto, hora, dia y mes
+    }
+
+    public void aceptarSolicitudApoyo(int idAlumnoPorEvento,String tipoDeApoyo){
+        String sql="update alumnoPorEvento set estadoApoyo=? where idAlumnoPorEvento=?";
+        try(PreparedStatement pstmt= conn.prepareStatement(sql)){
+            pstmt.setString(1,tipoDeApoyo);
+            pstmt.setInt(2,idAlumnoPorEvento);
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
 }

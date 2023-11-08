@@ -1303,7 +1303,8 @@
             <!-- SECTION FILTERS BAR ACTIONS -->
             <div class="section-filters-bar-actions">
                 <!-- FORM -->
-                <form method="post" action="<%=request.getContextPath()%>/NotificacionesServlet?action=buscarUsuario" class="form">
+                <form method="get" action="<%=request.getContextPath()%>/NotificacionesServlet" class="form">
+                    <input type="hidden" name="action" value="buscarUsuario">
                     <!-- FORM INPUT -->
                     <div class="form-input small with-button">
                         <label for="friends-search_1">Buscar usuarios</label>

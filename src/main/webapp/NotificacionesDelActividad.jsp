@@ -948,17 +948,23 @@
 
                 <div class="user-preview-actions">
                     <!-- BUTTON -->
-
                     <div class="container-fluid">
-
                         <div class="row" >
-
-
                             <div class="col-sm-6">
-                                <button class="button-accept">Barra</button>
+                                <form method="post" action="<%=request.getContextPath()%>/NotificacionesServlet?action=aceptarSolicitudApoyo">
+                                    <input type="hidden" name="idUsuario" value="<%=idUsuario%>">
+                                    <input type="hidden" name="idAlumnoPorEvento" value="<%=alumnoPorEvento.getIdAlumnoPorEvento()%>">
+                                    <input type="hidden" name="tipoDeApoyo" value="Barra">
+                                    <button type="submit" class="button-accept">Barra</button>
+                                </form>
                             </div>
                             <div class="col-sm-6">
-                                <button class="button-reject">Jugador</button>
+                                <form method="post" action="<%=request.getContextPath()%>/NotificacionesServlet?action=aceptarSolicitudApoyo">
+                                    <input type="hidden" name="idUsuario" value="<%=idUsuario%>">
+                                    <input type="hidden" name="idAlumnoPorEvento" value="<%=alumnoPorEvento.getIdAlumnoPorEvento()%>">
+                                    <input type="hidden" name="tipoDeApoyo" value="Jugador">
+                                    <button type="submit" class="button-reject">Jugador</button>
+                                </form>
                             </div>
                         </div>
                         <!--<button class="button-accept">Aceptar</button>

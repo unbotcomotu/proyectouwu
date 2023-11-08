@@ -18,9 +18,9 @@
         String nombreActividad=(String)request.getAttribute("nombreActividad");
         ArrayList<LugarEvento>listaLugares=(ArrayList<LugarEvento>) request.getAttribute("listaLugares");
         int delegadoDeEstaActividadID=(int)request.getAttribute("delegadoDeEstaActividadID");
-        Integer eventoOculto = (Integer) request.getAttribute("cantidadEventosOcultos");
-        Integer eventoFinalizado = (Integer) request.getAttribute("cantidadEventosFinalizados");
-        Integer eventoApoyado = (Integer) request.getAttribute("cantidadEventosApoyando");
+        Integer eventoOculto = (Integer) request.getAttribute("eventoOculto");
+        Integer eventoFinalizado = (Integer) request.getAttribute("eventoFinalizado");
+        Integer eventoApoyado = (Integer) request.getAttribute("eventoApoyando");
         Integer eventoHoy = (Integer) request.getAttribute("eventosHoy");
         Integer eventoManana = (Integer) request.getAttribute("eventosManana");
         Integer eventoMasDias = (Integer) request.getAttribute("eventosMasDias");
@@ -1461,15 +1461,19 @@
         <!-- SECTION FILTERS BAR ACTIONS -->
         <div class="section-filters-bar-actions">
             <!-- FORM -->
-            <form class="form">
+            <form method="get" action="<%=request.getContextPath()%>/ListaDeEventosServlet" class="form">
+                <input type="hidden" name="action" value="filtroOrdenarEvento">
+                <input type="hidden" name="idUsuario" value="<%=idUsuario%>">
+                <input type="hidden" name="idActividad" value="<%=idActividad%>">
                 <!-- FORM ITEM -->
                 <div class="form-item split medium">
+                    <%Integer idOrdenarEventos=(Integer) request.getAttribute("idOrdenarEventos");%>
                     <!-- FORM SELECT -->
                     <div class="form-select small">
                         <label for="items-filter-category">Ordenar por</label>
-                        <select id="items-filter-category" name="items_filter_category">
-                            <option value="0">Más reciente</option>
-                            <option value="1">Orden alfabético</option>
+                        <select id="items-filter-category" name="idOrdenarEventos">
+                            <option value="0" <%if(idOrdenarEventos!=null && idOrdenarEventos==0){%>selected<%}%>>Más reciente</option>
+                            <option value="1" <%if(idOrdenarEventos!=null && idOrdenarEventos==1){%>selected<%}%>>Orden alfabético</option>
                         </select>
                         <!-- FORM SELECT ICON -->
                         <svg class="form-select-icon icon-small-arrow">
@@ -1478,13 +1482,13 @@
                         <!-- /FORM SELECT ICON -->
                     </div>
                     <!-- /FORM SELECT -->
-
+                    <%Integer idSentidoEventos=(Integer) request.getAttribute("idSentidoEventos");%>
                     <!-- FORM SELECT -->
                     <div class="form-select small">
                         <label for="items-filter-order">Sentido</label>
-                        <select id="items-filter-order" name="items_filter_order">
-                            <option value="0">Ascendente</option>
-                            <option value="1">Descendente</option>
+                        <select id="items-filter-order" name="idSentidoEventos">
+                            <option value="0" <%if(idSentidoEventos!=null){if(idSentidoEventos==0){%>selected<%}}%>>Ascendente</option>
+                            <option value="1" <%if(idSentidoEventos!=null){if(idSentidoEventos==1){%>selected<%}}%>>Descendente</option>
                         </select>
                         <!-- FORM SELECT ICON -->
                         <svg class="form-select-icon icon-small-arrow">
@@ -1495,7 +1499,7 @@
                     <!-- /FORM SELECT -->
 
                     <!-- BUTTON -->
-                    <button class="button secondary">Aplicar filtros</button>
+                    <button type="submit" class="button secondary">Aplicar filtros</button>
                     <!-- /BUTTON -->
                 </div>
                 <!-- /FORM ITEM -->
@@ -1524,7 +1528,7 @@
                         <div class="checkbox-line">
                             <!-- CHECKBOX WRAP -->
                             <div class="checkbox-wrap">
-                                <input type="checkbox" id="category-logos-and-badges" name="cantidadEventosFinalizados" value="1" <%if(eventoFinalizado != null && eventoFinalizado==1){%>checked<%}%>>
+                                <input type="checkbox" id="category-logos-and-badges" name="eventoFinalizado" value="1" <%if(eventoFinalizado != null && eventoFinalizado==1){%>checked<%}%>>
                                 <!-- CHECKBOX BOX -->
                                 <div class="checkbox-box">
                                     <!-- ICON CROSS -->
@@ -1548,7 +1552,7 @@
                         <div class="checkbox-line">
                             <!-- CHECKBOX WRAP -->
                             <div class="checkbox-wrap">
-                                <input type="checkbox" id="category-sketch" name="cantidadEventosApoyando" value="1" <%if(eventoApoyado != null && eventoApoyado==1){%>checked<%}%>>
+                                <input type="checkbox" id="category-sketch" name="eventoApoyando" value="1" <%if(eventoApoyado != null && eventoApoyado==1){%>checked<%}%>>
                                 <!-- CHECKBOX BOX -->
                                 <div class="checkbox-box">
                                     <!-- ICON CROSS -->
@@ -1574,7 +1578,7 @@
                         <div class="checkbox-line">
                             <!-- CHECKBOX WRAP -->
                             <div class="checkbox-wrap">
-                                <input type="checkbox" id="ola" name="cantidadEventosOcultos" value="1" <%if(eventoOculto != null && eventoOculto==1){%>checked<%}%>>
+                                <input type="checkbox" id="ola" name="eventoOculto" value="1" <%if(eventoOculto != null && eventoOculto==1){%>checked<%}%>>
                                 <!-- CHECKBOX BOX -->
                                 <div class="checkbox-box">
                                     <!-- ICON CROSS -->
@@ -2094,30 +2098,29 @@
                 <input hidden name="idUsuario" value=<%=idUsuario%>>
                 <input hidden name="addActividadID" value=<%=idActividad%>>
                 <label style="margin-top: 25px;"><b>Nombre del evento:</b></label>
-                <input type="text" name="addTitulo" placeholder="Fibra Tóxica VS *" required>
+                <input type="text" id="nombreCrearEvento" name="addTitulo" placeholder="Fibra Tóxica VS *" required>
                 <label style="margin-top: 25px;" ><b>Frase motivacional:</b></label>
-                <input type="text" name="addFraseMotivacional" placeholder="Frase motivacional" required>
+                <input type="text" id="fraseMotivacionalCrearEvento" name="addFraseMotivacional" placeholder="Frase motivacional" required>
                 <label style="margin-top: 25px;"><b>Descripción del evento:</b></label>
-                <input type="text" name="addDescripcionEventoActivo" placeholder="Descripción" required>
+                <input type="text" id="descripcionCrearEvento" name="addDescripcionEventoActivo" placeholder="Descripción" required>
                 <div class="row" style="margin-top: 25px;">
                     <div class="col-6">
                         <label for="delegado"><b>Hora (HH:MM):</b></label>
-                        <input type="text" name="addHora" placeholder="00:00" required>
+                        <input type="text" id="horaCrearEvento" name="addHora" placeholder="00:00" required>
                     </div>
                     <div class="col-6">
-                        <label for="delegado"><b>Lugar:</b></label>
-                        <input type="text" list="lugarlist" name="addLugar" placeholder="Lugar" required>
-                        <datalist id="lugarlist">
+                        <label for="lugarCrearEvento"><b>Lugar:</b></label>
+                        <select style="height: 55px;padding-left: 20px" name="lugarlist" id="lugarCrearEvento" required>
                             <%for(LugarEvento l:listaLugares){%>
                             <option value="<%=l.getLugar()%>"><%=l.getLugar()%></option>
                             <%}%>
-                        </datalist>
+                        </select>
                     </div>
                 </div>
                 <div class="row" style="margin-top: 25px;">
                     <div class="col-6">
                         <label for="delegado"><b>Fecha (día):</b></label>
-                        <input type="text" name="addFecha" multiple id="delegado" placeholder="... de Octubre" required>
+                        <input type="text" id="fechaCrearEvento" name="addFecha" multiple placeholder="... de Octubre" required>
                     </div>
                     <div class="col-6">
                         <p style="width: 100%;"><b>Ocultar evento:</b></p>
@@ -2138,7 +2141,7 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-sm-6" style="margin-top: 5px;">
-                <button type="submit" class="button secondary" id="cerrarPopupCrear1">Crear</button>
+                <button type="submit" class="button secondary" style="opacity: 0.5" id="cerrarPopupCrear1" disabled>Crear</button>
             </div>
             <div class="col-sm-6" style="margin-top: 5px;">
                 <button type="button" class="button secondary" id="cerrarPopupCrear2" style="background-color: grey;">Cancelar</button>
@@ -2214,12 +2217,12 @@
                 <input hidden name="idEvento" value=<%=e.getIdEvento()%>>
                 <input hidden name="estadoEvento" value=<%=e.isEventoFinalizado()%>>
                 <label style="margin-top: 25px;"><b>Nombre del evento:</b></label>
-                <input type="text" name="updateTitulo" placeholder="Fibra Tóxica VS *" value="<%=e.getTitulo()%>" required>
+                <input type="text" id="editarNombreEvento<%=listaEventos.indexOf(e)%>" name="updateTitulo" placeholder="Fibra Tóxica VS *" value="<%=e.getTitulo()%>" required>
 
                 <%if(e.isEventoFinalizado()){%>
                 <label style="margin-top: 25px;" ><b>Resumen:</b></label>
-                <input type="text" name="updateResumen" placeholder="Resumen" value="<%=e.getResumen()%>" required>
-                <label style="margin-top: 25px;" ><b>Resultado:</b></label>
+                <input type="text" id="editarResumenEvento<%=listaEventos.indexOf(e)%>" name="updateResumen" placeholder="Resumen" value="<%=e.getResumen()%>" required>
+                <label for="resultado" style="margin-top: 25px;" ><b>Resultado:</b></label>
                 <select style="padding: 12.5px" name="updateResultado" id="resultado" required>
                     <%if(e.getResultadoEvento().equals("Derrota")){%>
                     <option value="Derrota">Derrota</option>
@@ -2233,28 +2236,27 @@
                 <input type="checkbox" name="updateEventoOcultoAlt" style="width: 30%; position: relative; top: 15px; left: 120px;" <%if(e.isEventoOculto()){%>checked<%}%>>
                 <%}else{%>
                 <label style="margin-top: 25px;" ><b>Frase motivacional:</b></label>
-                <input type="text" name="updateFraseMotivacional" placeholder="Frase motivacional" value="<%=e.getFraseMotivacional()%>" required>
+                <input type="text" id="editarFraseMotivacionalEvento<%=listaEventos.indexOf(e)%>" name="updateFraseMotivacional" placeholder="Frase motivacional" value="<%=e.getFraseMotivacional()%>" required>
                 <label style="margin-top: 25px;"><b>Descripción del evento:</b></label>
-                <input type="text" name="updateDescripcionEventoActivo" placeholder="Descripción" value="<%=e.getDescripcionEventoActivo()%>" required>
+                <input type="text" id="editarDescripcionEvento<%=listaEventos.indexOf(e)%>" name="updateDescripcionEventoActivo" placeholder="Descripción" value="<%=e.getDescripcionEventoActivo()%>" required>
                 <div class="row" style="margin-top: 25px;">
                     <div class="col-6">
                         <label for="delegado"><b>Hora (HH:MM):</b></label>
-                        <input type="text" name="updateHora" placeholder="00:00" value="<%=Integer.parseInt(e.getHora().toString().split(":")[0])+":"+e.getHora().toString().split(":")[1]%>" required>
+                        <input type="text" id="editarHoraEvento<%=listaEventos.indexOf(e)%>" name="updateHora" placeholder="00:00" value="<%=Integer.parseInt(e.getHora().toString().split(":")[0])+":"+e.getHora().toString().split(":")[1]%>" required>
                     </div>
                     <div class="col-6">
-                        <label for="delegado"><b>Lugar:</b></label>
-                        <input type="text" name="updateLugar" list="lugar" placeholder="Lugar" value="<%=new DaoLugarEvento().lugarPorID(e.getLugarEvento())%>" required>
-                        <datalist id="lugar">
+                        <label for="editarLugarEvento<%=listaEventos.indexOf(e)%>"><b>Lugar:</b></label>
+                        <select style="height: 55px;padding-left: 20px" name="updateLugar" id="editarLugarEvento<%=listaEventos.indexOf(e)%>" required>
                             <%for(LugarEvento l:listaLugares){%>
                             <option value="<%=l.getLugar()%>"><%=l.getLugar()%></option>
                             <%}%>
-                        </datalist>
+                        </select>
                     </div>
                 </div>
                 <div class="row" style="margin-top: 25px;">
                     <div class="col-6">
-                        <label for="delegado"><b>Fecha (día):</b></label>
-                        <input type="text" name="updateFecha" multiple id="delegado" placeholder="... de Octubre" value="<%=Integer.parseInt(e.getFecha().toString().split("-")[2])%>" required>
+                        <label><b>Fecha (día):</b></label>
+                        <input type="text" name="updateFecha" multiple id="editarFechaEvento<%=listaEventos.indexOf(e)%>" placeholder="... de Octubre" value="<%=Integer.parseInt(e.getFecha().toString().split("-")[2])%>" required>
                     </div>
                     <div class="col-6">
                         <p style="width: 100%;"><b>Ocultar evento:</b></p>
@@ -2322,13 +2324,35 @@
             }
         });
     }
+    function verificarInput(elementos,idBoton) {
+        for(let i=0;i<elementos.length;i++) {
+            document.getElementById(elementos[i]).addEventListener("input", function () {
+                var boton=document.getElementById(idBoton);
+                boton.disabled=false;
+                boton.style.opacity=1;
+                for(let i=0;i<elementos.length;i++){
+                    var elemento=document.getElementById(elementos[i]);
+                    if(elemento.value===""){
+                        boton.disabled=true;
+                        boton.style.opacity=0.5;
+                    }
+                }
+            });
+        }
+    }
     <%if(delegadoDeEstaActividadID==idUsuario){%>
     popupFunc('popupCrear','mostrarPopupCrear',['cerrarPopupCrear','cerrarPopupCrear1','cerrarPopupCrear2'],'overlayCrear');
     popupFunc('popupFinalizar','mostrarPopupFinalizar',['cerrarPopupFinalizar','cerrarPopupFinalizar1','cerrarPopupFinalizar2'],'overlayFinalizar');
     <%if(listaEventos!=null){
     for(int i=0;i<listaEventos.size();i++){%>
     popupFunc('popupEditarEvento<%=i%>','mostrarPopupEditarEvento<%=i%>',['cerrarPopupEditarEvento<%=i%>','cerrarPopupEditar1Evento<%=i%>','cerrarPopupEditar2Evento<%=i%>'],'overlayEditarEvento<%=i%>');
-    <%}}%>
+    <%if(listaEventos.get(i).isEventoFinalizado()){%>
+    var elementos<%=i%>=['editarNombreEvento<%=i%>','editarResumenEvento<%=i%>'];
+    verificarInput(elementos<%=i%>,'cerrarPopupEditar1Evento<%=i%>');
+    <%}else{%>
+    var elementos<%=i%>=['editarNombreEvento<%=i%>','editarFraseMotivacionalEvento<%=i%>','editarDescripcionEvento<%=i%>','editarHoraEvento<%=i%>','editarLugarEvento<%=i%>','editarFechaEvento<%=i%>'];
+    verificarInput(elementos<%=i%>,'cerrarPopupEditar1Evento<%=i%>');
+    <%}}}%>
     // Obtener elementos del DOM
     const textElement = document.getElementById('eventoFinalizar');
     const buttonElement = document.getElementById('cerrarPopupFinalizar1');
@@ -2352,6 +2376,8 @@
         }
     }
     <%}%>
+    var elementos=['nombreCrearEvento','fraseMotivacionalCrearEvento','descripcionCrearEvento','horaCrearEvento','lugarCrearEvento','fechaCrearEvento'];
+    verificarInput(elementos,'cerrarPopupCrear1');
 </script>
 <!-- app -->
 <script src="js/utils/app.js"></script>

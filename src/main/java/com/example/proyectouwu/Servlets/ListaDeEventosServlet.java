@@ -55,20 +55,20 @@ public class ListaDeEventosServlet extends HttpServlet {
                 ArrayList<Integer> parametrosLugar = new ArrayList<>();
                 ArrayList<String> parametrosFecha = new ArrayList<>();
 
-                if(request.getParameter("cantidadEventosFinalizados") != null){
+                if(request.getParameter("eventoFinalizado") != null){
                     parametrosEstado.add("Finalizado");
-                    request.setAttribute("cantidadEventosFinalizados",1);
+                    request.setAttribute("eventoFinalizado",1);
                 }
                 if(!rolUsuario.equals("Delegado General")){
-                    if(request.getParameter("cantidadEventosApoyando") != null){
+                    if(request.getParameter("eventoApoyando") != null){
                         parametrosEstado.add("Apoyando");
-                        request.setAttribute("cantidadEventosApoyando",1);
+                        request.setAttribute("eventoApoyando",1);
                     }
                 }
                 if(dActividad.idDelegadoDeActividadPorActividad(idActividad) == idUsuario || rolUsuario.equals("Delegado General")){
-                    if(request.getParameter("cantidadEventosOcultos") != null){
+                    if(request.getParameter("eventoOculto") != null){
                         parametrosEstado.add("Oculto");
-                        request.setAttribute("cantidadEventosOcultos",1);
+                        request.setAttribute("eventoOculto",1);
                     }
                 }
                 String cantidad = request.getParameter("cantidadLugares");
@@ -98,6 +98,12 @@ public class ListaDeEventosServlet extends HttpServlet {
                 request.setAttribute("listaEventos",dEvento.filtrarEventos(parametrosEstado,parametrosLugar,parametrosFecha,request.getParameter("horaInicio"),request.getParameter("horaFin"),idActividad,idUsuario));
                 request.setAttribute("horaInicio",request.getParameter("horaInicio"));
                 request.setAttribute("horaFin",request.getParameter("horaFin"));
+                request.getRequestDispatcher("listaDeEventos.jsp").forward(request,response);
+                break;
+            case "filtroOrdenarEvento":
+                request.setAttribute("idOrdenarEventos",Integer.parseInt(request.getParameter("idOrdenarEventos")));
+                request.setAttribute("idSentidoEventos",Integer.parseInt(request.getParameter("idSentidoEventos")));
+                request.setAttribute("listaEventos",dEvento.ordenarEvento(request.getParameter("idOrdenarEventos"),request.getParameter("idSentidoEventos"),idActividad));
                 request.getRequestDispatcher("listaDeEventos.jsp").forward(request,response);
                 break;
         }

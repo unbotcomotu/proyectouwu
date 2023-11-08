@@ -36,7 +36,7 @@ public class ListaDeUsuariosServlet extends HttpServlet {
                 break;
             case "buscarUsuario":
                 String usuario=request.getParameter("usuario");
-                request.setAttribute("listaUsuarios",new DaoUsuario().listarUsuariosTotal();
+                request.setAttribute("listaUsuarios",new DaoUsuario().listarUsuariosTotal());
                 request.setAttribute("usuario",usuario);
                 if(rolUsuario.equals("Alumno")||rolUsuario.equals("Delegado General")){
                     request.getRequestDispatcher("listaUsuarios.jsp").forward(request,response);
@@ -45,7 +45,7 @@ public class ListaDeUsuariosServlet extends HttpServlet {
             case "filtroUsuario":
                 int idFiltroActividades=Integer.parseInt(request.getParameter("idFiltroUsuarios"));
                 int idOrdenarActividades=Integer.parseInt(request.getParameter("idOrdenarUsuarios"));
-                request.setAttribute("listaUsuarios",new DaoUsuario().listarUsuariosTotal(idFiltroActividades,idOrdenarActividades,idUsuario));
+                //request.setAttribute("listaUsuarios",new DaoUsuario().listarUsuariosTotal(idFiltroActividades,idOrdenarActividades,idUsuario));
                 request.setAttribute("idFiltroUsuarios",idFiltroActividades);
                 request.setAttribute("idOrdenarUsuarios",idOrdenarActividades);
                 request.getRequestDispatcher("listaUsuarios.jsp").forward(request,response);

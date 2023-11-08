@@ -599,4 +599,40 @@ public class DaoEvento extends DaoPadre {
         }
         return lista;
     }
+    public ArrayList<Evento> ordenarEvento(String orden, String sentido,int idActividad){
+        ArrayList<Evento> lista = new ArrayList<>();
+        String sql = "select e.idEvento,e.idLugarEvento,e.titulo,e.fecha,e.hora,e.descripcionEventoActivo,e.fraseMotivacional,e.fotoMiniatura,e.eventoFinalizado,e.eventoOculto,e.resumen,e.resultadoEvento from Evento e inner join Actividad a on e.idActividad=a.idActividad where a.idActividad=? order by";
+        if(orden.equals("0")){
+            sql+=" CONCAT(fecha,' ',hora)";
+        }else{
+            sql+=" titulo";
+        }
+        if(sentido.equals("1")){
+            sql+=" desc";
+        }
+        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setInt(1,idActividad);
+            try (ResultSet rs = pstmt.executeQuery()) {
+                while(rs.next()) {
+                    Evento e = new Evento();
+                    e.setIdEvento(rs.getInt(1));
+                    e.setLugarEvento(rs.getInt(2));
+                    e.setTitulo(rs.getString(3));
+                    e.setFecha(rs.getDate(4));
+                    e.setHora(rs.getTime(5));
+                    e.setDescripcionEventoActivo(rs.getString(6));
+                    e.setFraseMotivacional(rs.getString(7));
+                    e.setFotoMiniatura(rs.getBlob(8));
+                    e.setEventoFinalizado(rs.getBoolean(9));
+                    e.setEventoOculto(rs.getBoolean(10));
+                    e.setResumen(rs.getString(11));
+                    e.setResultadoEvento(rs.getString(12));
+                    lista.add(e);
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return lista;
+    }
 }

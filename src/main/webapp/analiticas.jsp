@@ -4,6 +4,7 @@
 <%@ page import="com.mysql.cj.xdevapi.JsonString" %>
 <%@ page import="com.mysql.cj.xdevapi.JsonArray" %>
 <%@ page import="java.util.Arrays" %>
+<%@ page import="com.example.proyectouwu.Daos.DaoUsuario" %>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <!DOCTYPE html>
 <html lang="en">
@@ -29,7 +30,7 @@
         Integer cantidadTotalBaneados=(Integer)request.getAttribute("cantidadTotalBaneados");
         float[]donacionesUltimaSemanaEgresados=(float[])request.getAttribute("donacionesUltimaSemanaEgresados");
         float[]donacionesUltimaSemanaEstudiantes=(float[]) request.getAttribute("donacionesUltimaSemanaEstudiantes");
-        String[] fechas={"Lunes 25-09","Martes 26-09","Miércoles 27-09","Jueves 28-09","Viernes 29-09","Sábado 30-09","Domingo 01-10","Lunes 02-10","Martes 03-10","Miércoles 04-10","Jueves 05-10","Viernes 06-10","Sábado 07-10","Domingo 08-10","Lunes 09-10","Martes 10-10","Miércoles 11-10","Jueves 12-10","Viernes 13-10","Sábado 14-10","Domingo 15-10","Lunes 16-10","Martes 17-10","Miércoles 18-10","Jueves 19-10","Viernes 29-10","Sábado 21-10","Domingo 22-10","Lunes 23-10","Martes 24-10","Miércoles 25-10","Jueves 26-10","Viernes 27-10","Sábado 28-10","Domingo 29-10","Lunes 30-10","Martes 31-10","Miércoles 01-11","Jueves 02-11","Viernes 03-11","Sábado 04-11"};
+        String[] fechas={"Lunes 25-09","Martes 26-09","Miércoles 27-09","Jueves 28-09","Viernes 29-09","Sábado 30-09","Domingo 01-10","Lunes 02-10","Martes 03-10","Miércoles 04-10","Jueves 05-10","Viernes 06-10","Sábado 07-10","Domingo 08-10","Lunes 09-10","Martes 10-10","Miércoles 11-10","Jueves 12-10","Viernes 13-10","Sábado 14-10","Domingo 15-10","Lunes 16-10","Martes 17-10","Miércoles 18-10","Jueves 19-10","Viernes 29-10","Sábado 21-10","Domingo 22-10","Lunes 23-10","Martes 24-10","Miércoles 25-10","Jueves 26-10","Viernes 27-10","Sábado 28-10","Domingo 29-10","Lunes 30-10","Martes 31-10","Miércoles 01-11","Jueves 02-11","Viernes 03-11","Sábado 04-11","Domingo 05-11","Lunes 06-11","Martes 07-11","Miércoles 08-11","Jueves 09-11","Viernes 10-11","Sábado 11-11"};
         String[] diasSemana=new String[7];
         String[] aux=ZonedDateTime.now().toString().split("T")[0].split("-");
         String diaMesActual=aux[2]+"-"+aux[1];
@@ -136,7 +137,6 @@
 </head>
 <body>
 
-<!-- PAGE LOADER -->
 <!-- PAGE LOADER -->
 <div class="page-loader">
     <!-- PAGE LOADER DECORATION -->
@@ -343,7 +343,11 @@
         <!-- /USER SHORT DESCRIPTION TITLE -->
 
         <!-- USER SHORT DESCRIPTION TEXT -->
+        <% if(new DaoUsuario().usuarioEsDelegadoDeActividad(idUsuario)){ %>
+        <p class="user-short-description-text"><a style="color: <%=colorRol%>;"><%=rolUsuario + ": " + new DaoUsuario().obtenerDelegaturaPorId(idUsuario)%></a></p>
+        <%}else{%>
         <p class="user-short-description-text"><a style="color: <%=colorRol%>;"><%=rolUsuario%></a></p>
+        <%}%>
         <!-- /USER SHORT DESCRIPTION TEXT -->
     </div>
     <!-- /USER SHORT DESCRIPTION -->
@@ -493,7 +497,11 @@
             <!-- /NAVIGATION WIDGET INFO TITLE -->
 
             <!-- NAVIGATION WIDGET INFO TEXT -->
-            <p class="navigation-widget-info-text" style="color: <%=colorRol%>;"><%=rolUsuario%></p>
+            <% if(new DaoUsuario().usuarioEsDelegadoDeActividad(idUsuario)){ %>
+            <p class="navigation-widget-info-text" style="color: <%=colorRol%>"><%=rolUsuario + ": " + new DaoUsuario().obtenerDelegaturaPorId(idUsuario)%></p>
+            <%}else{%>
+            <p class="navigation-widget-info-text" style="color: <%=colorRol%>"><%=rolUsuario%></p>
+            <%}%>
             <!-- /NAVIGATION WIDGET INFO TEXT -->
         </div>
         <!-- /NAVIGATION WIDGET INFO -->
@@ -544,9 +552,6 @@
     </ul>
 </nav>
 <!-- /NAVIGATION WIDGET -->
-
-
-
 
 <!-- HEADER -->
 <header class="header">
@@ -1274,9 +1279,6 @@
     <!-- /HEADER ACTIONS -->
 </header>
 <!-- /HEADER -->
-
-
-
 <!-- CONTENT GRID -->
 
 <div class="content-grid">

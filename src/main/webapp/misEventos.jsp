@@ -230,7 +230,6 @@
 <body>
 
 <!-- PAGE LOADER -->
-<!-- PAGE LOADER -->
 <div class="page-loader">
     <!-- PAGE LOADER DECORATION -->
     <div class="page-loader-decoration">
@@ -645,9 +644,6 @@
     </ul>
 </nav>
 <!-- /NAVIGATION WIDGET -->
-
-
-
 
 <!-- HEADER -->
 <header class="header">
@@ -1375,8 +1371,6 @@
     <!-- /HEADER ACTIONS -->
 </header>
 <!-- /HEADER -->
-
-
 
 <!-- CONTENT GRID -->
 

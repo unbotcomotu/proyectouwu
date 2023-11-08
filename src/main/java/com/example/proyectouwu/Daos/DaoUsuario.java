@@ -110,7 +110,7 @@ public class DaoUsuario extends DaoPadre {
 
     public ArrayList<Usuario>listarIDyNombreDelegadosDeActividad(){
         ArrayList<Usuario>listaDelegadosDeActividad=new ArrayList<>();
-        String sql="select idUsuario,nombre,apellido from usuario where rol='Alumno'";
+        String sql="select u.idUsuario,u.nombre,u.apellido from usuario u left join ban b on u.idUsuario=b.idUsuario where rol='Alumno' and b.idUsuario is null and u.estadoRegistro='Registrado' ";
         try(ResultSet rs=conn.createStatement().executeQuery(sql)){
             while(rs.next()){
                 Usuario u=new Usuario();
@@ -165,8 +165,9 @@ public class DaoUsuario extends DaoPadre {
 
     public ArrayList<Usuario>listarUsuarioXnombre(String nombre){
         ArrayList<Usuario>listaUsuarios=new ArrayList<>();
-        String sql = "select idUsuario, nombre, apellido, rol, codigoPUCP, condicion, fotoPerfil, descripcionPerfil from usuario where nombre = ? ";
+        String sql = "select idUsuario, nombre, apellido, rol, codigoPUCP, condicion, fotoPerfil, descripcionPerfil from usuario where estadoRegistro='Registrado' AND rol!='Delegado General' and (nombre like ? or apellido like ? )";
         try(PreparedStatement pstmt=conn.prepareStatement(sql)){
+            pstmt.setString(1,"%"+nombre+"%");
             pstmt.setString(2,"%"+nombre+"%");
             try (ResultSet rs=pstmt.executeQuery()){
                 while (rs.next()){
@@ -179,8 +180,6 @@ public class DaoUsuario extends DaoPadre {
                     u.setCondicion(rs.getString(6));
                     u.setFotoPerfil(rs.getBlob(7));
                     u.setDescripcionPerfil(rs.getString(8));
-
-
                     listaUsuarios.add(u);
                 }return listaUsuarios;
             }
@@ -189,33 +188,32 @@ public class DaoUsuario extends DaoPadre {
         }
     }
 
-    public ArrayList<Usuario>listarUsuariosFiltro(int idFiltroUsuarios,int idOrdenarUsuarios,int idUsuario){
+    public ArrayList<Usuario>listarUsuariosFiltro(int idFiltroUsuarios,int idOrdenarUsuarios){
         ArrayList<Usuario>listaUsuarios=new ArrayList<>();
         String sql="";
         if(idFiltroUsuarios==0){
-            if(idOrdenarUsuarios==0){
-                sql = "select idUsuario, nombre, apellido, rol, codigoPUCP, condicion, fotoPerfil, descripcionPerfil from usuario order by nombre desc ";
+            if(idOrdenarUsuarios==1){
+                sql = "select idUsuario, nombre, apellido, rol, codigoPUCP, condicion, fotoPerfil, descripcionPerfil from usuario where estadoRegistro='Registrado' AND rol!='Delegado General' order by nombre desc ";
             }else{
-                sql = "select idUsuario, nombre, apellido, rol, codigoPUCP, condicion, fotoPerfil, descripcionPerfil from usuario order by nombre asc";
+                sql = "select idUsuario, nombre, apellido, rol, codigoPUCP, condicion, fotoPerfil, descripcionPerfil from usuario where estadoRegistro='Registrado' AND rol!='Delegado General' order by nombre asc";
             }
         }else if(idFiltroUsuarios==1){
-            if(idOrdenarUsuarios==0){
-                sql = "select idUsuario, nombre, apellido, rol, codigoPUCP, condicion, fotoPerfil, descripcionPerfil from usuario order by codigoPUCP desc ";
+            if(idOrdenarUsuarios==1){
+                sql = "select idUsuario, nombre, apellido, rol, codigoPUCP, condicion, fotoPerfil, descripcionPerfil from usuario where estadoRegistro='Registrado' AND rol!='Delegado General' order by codigoPUCP desc ";
             }else{
-                sql = "select idUsuario, nombre, apellido, rol, codigoPUCP, condicion, fotoPerfil, descripcionPerfil from usuario order by codigoPUCP asc ";
+                sql = "select idUsuario, nombre, apellido, rol, codigoPUCP, condicion, fotoPerfil, descripcionPerfil from usuario where estadoRegistro='Registrado' AND rol!='Delegado General' order by codigoPUCP asc ";
             }
         }else if(idFiltroUsuarios==2){
-            if(idOrdenarUsuarios==0){
-                sql = "select idUsuario, nombre, apellido, rol, codigoPUCP, condicion, fotoPerfil, descripcionPerfil from usuario order by condicion desc ";
+            if(idOrdenarUsuarios==1){
+                sql = "select idUsuario, nombre, apellido, rol, codigoPUCP, condicion, fotoPerfil, descripcionPerfil from usuario where estadoRegistro='Registrado' AND rol!='Delegado General' order by if(condicion='Estudiante',1,0)";
             }else{
-                sql = "select idUsuario, nombre, apellido, rol, codigoPUCP, condicion, fotoPerfil, descripcionPerfil from usuario order by condicion asc ";
+                sql = "select idUsuario, nombre, apellido, rol, codigoPUCP, condicion, fotoPerfil, descripcionPerfil from usuario where estadoRegistro='Registrado' AND rol!='Delegado General' order by if(condicion='Estudiante',0,1)";
             }
         }else if(idFiltroUsuarios==3) {
-            if (idOrdenarUsuarios == 0) {
-                sql = "select idUsuario, nombre, apellido, rol, codigoPUCP, condicion, fotoPerfil, descripcionPerfil from usuario order by baneado desc ";
+            if (idOrdenarUsuarios == 1) {
+                sql = "select u.idUsuario, u.nombre, u.apellido, u.rol, u.codigoPUCP, u.condicion, u.fotoPerfil, u.descripcionPerfil from usuario u left join ban b on u.idUsuario=b.idUsuario where estadoRegistro='Registrado' AND rol!='Delegado General' order by if(b.idBan is not null,1,0)";
             } else {
-                sql = "select idUsuario, nombre, apellido, rol, codigoPUCP, condicion, fotoPerfil, descripcionPerfil from usuario order by baneado asc ";
-            }
+                sql = "select u.idUsuario, u.nombre, u.apellido, u.rol, u.codigoPUCP, u.condicion, u.fotoPerfil, u.descripcionPerfil from usuario u left join ban b on u.idUsuario=b.idUsuario where estadoRegistro='Registrado' AND rol!='Delegado General' order by if(b.idBan is not null,0,1)";           }
         }
         try(ResultSet rs=conn.createStatement().executeQuery(sql);){
             while (rs.next()){
@@ -229,7 +227,9 @@ public class DaoUsuario extends DaoPadre {
                 u.setFotoPerfil(rs.getBlob(7));
                 u.setDescripcionPerfil(rs.getString(8));
                 listaUsuarios.add(u);
-            }return listaUsuarios;
+            }
+            System.out.println(listaUsuarios.size());
+            return listaUsuarios;
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

@@ -11,6 +11,15 @@
     ArrayList<Usuario>listaUsuarios=(ArrayList<Usuario>) request.getAttribute("listaUsuarios");
     String vistaActual=(String) request.getAttribute("vistaActual");
     ArrayList<String> listaCorreosDelegadosGenerales=(ArrayList<String>)request.getAttribute("correosDelegadosGenerales");
+    String busqueda=(String) request.getAttribute("usuario");
+    String colorRol;
+    if(rolUsuario.equals("Alumno")){
+      colorRol="";
+    }else if(rolUsuario.equals("Delegado de Actividad")){
+      colorRol="green";
+    }else{
+      colorRol="orange";
+    }
   %>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -122,6 +131,7 @@
   </style>
 </head>
 <body>
+
 <!-- PAGE LOADER -->
 <div class="page-loader">
   <!-- PAGE LOADER DECORATION -->
@@ -186,6 +196,29 @@
     </div>
     <!-- /USER AVATAR PROGRESS BORDER -->
 
+    <!-- USER AVATAR BADGE -->
+    <div class="user-avatar-badge">
+      <!-- USER AVATAR BADGE BORDER -->
+      <div class="user-avatar-badge-border">
+        <!-- HEXAGON -->
+        <div class="hexagon-22-24"></div>
+        <!-- /HEXAGON -->
+      </div>
+      <!-- /USER AVATAR BADGE BORDER -->
+
+      <!-- USER AVATAR BADGE CONTENT -->
+      <div class="user-avatar-badge-content">
+        <!-- HEXAGON -->
+        <div class="hexagon-dark-16-18"></div>
+        <!-- /HEXAGON -->
+      </div>
+      <!-- /USER AVATAR BADGE CONTENT -->
+
+      <!-- USER AVATAR BADGE TEXT -->
+      <p class="user-avatar-badge-text">24</p>
+      <!-- /USER AVATAR BADGE TEXT -->
+    </div>
+    <!-- /USER AVATAR BADGE -->
   </a>
   <!-- /USER AVATAR -->
 
@@ -206,7 +239,6 @@
       </a>
       <!-- /MENU ITEM LINK -->
     </li>
-    <!-- /MENU ITEM -->
     <li class="menu-item <%if(vistaActual.equals("listaDeActividades")){%>active<%}%>">
       <!-- MENU ITEM LINK -->
       <a class="menu-item-link text-tooltip-tfr" href="<%=request.getContextPath()%>/ListaDeActividadesServlet?idUsuario=<%=idUsuario%>" data-title="Actividades">
@@ -216,6 +248,7 @@
       </a>
       <!-- /MENU ITEM LINK -->
     </li>
+    <%if(rolUsuario.equals("Delegado General")){%>
     <li class="menu-item <%if(vistaActual.equals("analiticas")){%>active<%}%>">
       <!-- MENU ITEM LINK -->
       <a class="menu-item-link text-tooltip-tfr text-center" href="<%=request.getContextPath()%>/AnaliticasServlet?idUsuario=<%=idUsuario%>" data-title="Analíticas">
@@ -235,7 +268,26 @@
       </a>
       <!-- /MENU ITEM LINK -->
     </li>
-    <!-- /MENU ITEM -->
+    <%}else{%>
+    <li class="menu-item <%if(vistaActual.equals("misEventos")){%>active<%}%>">
+      <!-- MENU ITEM LINK -->
+      <a class="menu-item-link text-tooltip-tfr" href="<%=request.getContextPath()%>/MisEventosServlet?idUsuario=<%=idUsuario%>" data-title="Mis eventos">
+        <!-- MENU ITEM LINK ICON -->
+        <img src="css/misEventosIcono.png" class="menu-item-link-icon icon-members" alt="">
+        <!-- /MENU ITEM LINK ICON -->
+      </a>
+      <!-- /MENU ITEM LINK -->
+    </li>
+    <li class="menu-item <%if(vistaActual.equals("misDonaciones")){%>active<%}%>">
+      <!-- MENU ITEM LINK -->
+      <a class="menu-item-link text-tooltip-tfr" href="<%=request.getContextPath()%>/MisDonacionesServlet?idUsuario=<%=idUsuario%>" data-title="Donaciones">
+        <!-- MENU ITEM LINK ICON -->
+        <img src="css/donacionIcono.png" class="menu-item-link-icon icon-members" style="opacity: 50%;" alt="">
+        <!-- /MENU ITEM LINK ICON -->
+      </a>
+      <!-- /MENU ITEM LINK -->
+    </li>
+    <%}%>
   </ul>
   <!-- /MENU -->
 </nav>
@@ -286,7 +338,11 @@
     <!-- /USER SHORT DESCRIPTION TITLE -->
 
     <!-- USER SHORT DESCRIPTION TEXT -->
-    <p class="user-short-description-text"><a style="color: orange"><%=rolUsuario%></a></p>
+    <% if(new DaoUsuario().usuarioEsDelegadoDeActividad(idUsuario)){ %>
+    <p class="user-short-description-text"><a style="color: <%=colorRol%>;"><%=rolUsuario + ": " + new DaoUsuario().obtenerDelegaturaPorId(idUsuario)%></a></p>
+    <%}else{%>
+    <p class="user-short-description-text"><a style="color: <%=colorRol%>;"><%=rolUsuario%></a></p>
+    <%}%>
     <!-- /USER SHORT DESCRIPTION TEXT -->
   </div>
   <!-- /USER SHORT DESCRIPTION -->
@@ -310,13 +366,12 @@
   <!-- /MENU ITEM -->
 
   <hr>
-
   <!-- MENU ITEM -->
   <li class="menu-item">
     <!-- MENU ITEM LINK -->
     <a class="menu-item-link" href="<%=request.getContextPath()%>/ListaDeActividadesServlet?idUsuario=<%=idUsuario%>">
       <!-- MENU ITEM LINK ICON -->
-      <img src="css/actividadIconoGris.png" width="7%" alt="">
+      <img src="css/actividadIconoGris.png" class="menu-item-link-icon icon-members" alt="">
       <!-- /MENU ITEM LINK ICON -->
       Actividades
     </a>
@@ -324,6 +379,7 @@
   </li>
   <!-- /MENU ITEM -->
   <br>
+  <%if(rolUsuario.equals("Delegado General")){%>
   <!-- MENU ITEM -->
   <li class="menu-item">
     <!-- MENU ITEM LINK -->
@@ -348,7 +404,34 @@
     <!-- /MENU ITEM LINK -->
   </li>
   <!-- /MENU ITEM -->
-
+  <%}else{%>
+  <!-- MENU ITEM -->
+  <li class="menu-item">
+    <!-- MENU ITEM LINK -->
+    <a class="menu-item-link" href="<%=request.getContextPath()%>/MisEventosServlet?idUsuario=<%=idUsuario%>">
+      <!-- MENU ITEM LINK ICON -->
+      <img src="css/misEventosIcono.png" class="menu-item-link-icon icon-members" alt="">
+      <!-- /MENU ITEM LINK ICON -->
+      Mis eventos
+    </a>
+    <!-- /MENU ITEM LINK -->
+  </li>
+  <!-- /MENU ITEM -->
+  <br>
+  <!-- MENU ITEM -->
+  <li class="menu-item">
+    <!-- MENU ITEM LINK -->
+    <a class="menu-item-link" href="<%=request.getContextPath()%>/MisDonacionesServlet?idUsuario=<%=idUsuario%>">
+      <!-- MENU ITEM LINK ICON -->
+      <img src="css/donacionIcono.png" class="menu-item-link-icon icon-members" style="opacity: 50%;" alt="">
+      <!-- /MENU ITEM LINK ICON -->
+      Donaciones
+    </a>
+    <!-- /MENU ITEM LINK -->
+  </li>
+  <!-- /MENU ITEM -->
+  <%}%>
+  </ul>
   <!-- /MENU -->
 </nav>
 <!-- /NAVIGATION WIDGET -->
@@ -409,13 +492,17 @@
       <!-- /NAVIGATION WIDGET INFO TITLE -->
 
       <!-- NAVIGATION WIDGET INFO TEXT -->
-      <p class="navigation-widget-info-text" style="color: orange;"><%=rolUsuario%></p>
+      <% if(new DaoUsuario().usuarioEsDelegadoDeActividad(idUsuario)){ %>
+      <p class="navigation-widget-info-text" style="color: <%=colorRol%>"><%=rolUsuario + ": " + new DaoUsuario().obtenerDelegaturaPorId(idUsuario)%></p>
+      <%}else{%>
+      <p class="navigation-widget-info-text" style="color: <%=colorRol%>"><%=rolUsuario%></p>
+      <%}%>
       <!-- /NAVIGATION WIDGET INFO TEXT -->
     </div>
     <!-- /NAVIGATION WIDGET INFO -->
 
     <!-- NAVIGATION WIDGET BUTTON -->
-    <a href="<%=request.getContextPath()%>" class="navigation-widget-info-button button small secondary">Cerrar sesión</a>
+    <a href="<%=request.getContextPath()%>/IndexServlet"><p class="navigation-widget-info-button button small secondary">Cerrar sesión</p></a>
     <!-- /NAVIGATION WIDGET BUTTON -->
   </div>
   <!-- /NAVIGATION WIDGET INFO WRAP -->
@@ -433,15 +520,14 @@
     <a class="navigation-widget-section-link" href="<%=request.getContextPath()%>/MiCuentaServlet?idUsuario=<%=idUsuario%>">Mi cuenta</a>
     <!-- /NAVIGATION WIDGET SECTION LINK -->
 
-
     <!-- NAVIGATION WIDGET SECTION TITLE -->
-    <p class="navigation-widget-section-title">Funciones de rol</p>
+    <p class="navigation-widget-section-title">Funciones</p>
     <!-- /NAVIGATION WIDGET SECTION TITLE -->
 
     <!-- NAVIGATION WIDGET SECTION LINK -->
     <a class="navigation-widget-section-link" href="<%=request.getContextPath()%>/ListaDeActividadesServlet?idUsuario=<%=idUsuario%>">Actividades</a>
     <!-- /NAVIGATION WIDGET SECTION LINK -->
-
+    <%if(rolUsuario.equals("Delegado General")){%>
     <!-- NAVIGATION WIDGET SECTION LINK -->
     <a class="navigation-widget-section-link" href="<%=request.getContextPath()%>/AnaliticasServlet?idUsuario=<%=idUsuario%>">Analíticas</a>
     <!-- /NAVIGATION WIDGET SECTION LINK -->
@@ -449,12 +535,18 @@
     <!-- NAVIGATION WIDGET SECTION LINK -->
     <a class="navigation-widget-section-link" href="<%=request.getContextPath()%>/ListaDeUsuariosServlet?idUsuario=<%=idUsuario%>">Usuarios</a>
     <!-- /NAVIGATION WIDGET SECTION LINK -->
+    <%}else{%>
+    <!-- NAVIGATION WIDGET SECTION LINK -->
+    <a class="navigation-widget-section-link" href="<%=request.getContextPath()%>/MisEventosServlet?idUsuario=<%=idUsuario%>">Mis eventos</a>
+    <!-- /NAVIGATION WIDGET SECTION LINK -->
+
+    <!-- NAVIGATION WIDGET SECTION LINK -->
+    <a class="navigation-widget-section-link" href="<%=request.getContextPath()%>/MisDonacionesServlet?idUsuario=<%=idUsuario%>">Donaciones</a>
+    <!-- /NAVIGATION WIDGET SECTION LINK -->
+    <%}%>
   </ul>
 </nav>
 <!-- /NAVIGATION WIDGET -->
-
-
-
 
 <!-- HEADER -->
 <header class="header">
@@ -509,12 +601,6 @@
   </div>
   <!-- /HEADER ACTIONS -->
 
-  <!-- HEADER ACTIONS -->
-  <div class="header-actions">
-
-  </div>
-  <!-- /HEADER ACTIONS -->
-
   <!-- NO BORRAR ESTO-->
 
   <!-- HEADER ACTIONS -->
@@ -527,17 +613,282 @@
         <!-- /BAR PROGRESS INFO -->
       </div>
       <!-- /BAR PROGRESS WRAP -->
-
-      <!-- PROGRESS STAT BAR -->
-      <!-- /PROGRESS STAT BAR -->
     </div>
     <!-- /PROGRESS STAT -->
   </div>
   <!-- /HEADER ACTIONS -->
 
   <!-- NO BORRAR ESTO-->
+  <%if(rolUsuario.equals("Alumno")){%>
+  <!-- ACTION ITEM WRAP USUARIO -->
+  <div class="action-item-wrap auxResponsiveUwu">
+    <!-- ACTION ITEM -->
+    <div class="action-item dark header-settings-dropdown-trigger">
+      <!-- ACTION ITEM ICON -->
+      <a href="<%=request.getContextPath()%>/inicioSesion.jsp"><img src="css/logOut.png" width="30%" alt=""></a>
+      <!-- /ACTION ITEM ICON -->
+    </div>
+    <!-- /ACTION ITEM -->
 
-  <!-- HEADER ACTIONS -->
+    <!-- DROPDOWN NAVIGATION -->
+
+  </div>
+  <!-- /ACTION ITEM WRAP -->
+  <%}else if(rolUsuario.equals("Delegado de Actividad")){%>
+  <!-- HEADER ACTIONS DELEGADO DE ACTIVIDAD -->
+  <div class="header-actions">
+    <!-- ACTION LIST -->
+    <div class="action-list dark">
+      <!-- ACTION LIST ITEM WRAP -->
+      <div class="action-list-item-wrap">
+        <!-- ACTION LIST ITEM -->
+        <div class="action-list-item unread header-dropdown-trigger">
+          <!-- ACTION LIST ITEM ICON -->
+          <svg class="action-list-item-icon icon-notification">
+            <use xlink:href="#svg-notification"></use>
+          </svg>
+          <!-- /ACTION LIST ITEM ICON -->
+        </div>
+        <!-- /ACTION LIST ITEM -->
+
+        <!-- DROPDOWN BOX -->
+        <div class="dropdown-box header-dropdown">
+          <!-- DROPDOWN BOX HEADER -->
+          <div class="dropdown-box-header">
+            <!-- DROPDOWN BOX HEADER TITLE -->
+            <p class="dropdown-box-header-title">Notificaciones</p>
+            <!-- /DROPDOWN BOX HEADER TITLE -->
+          </div>
+          <!-- /DROPDOWN BOX HEADER -->
+
+          <!-- DROPDOWN BOX LIST -->
+          <div class="dropdown-box-list" data-simplebar>
+            <!-- DROPDOWN BOX LIST ITEM -->
+            <div class="dropdown-box-list-item unread">
+              <!-- USER STATUS -->
+              <div class="user-status notification">
+                <!-- USER STATUS AVATAR -->
+                <a class="user-status-avatar">
+                  <!-- USER AVATAR -->
+                  <div class="user-avatar small no-outline">
+                    <!-- USER AVATAR CONTENT -->
+                    <div class="user-avatar-content">
+                      <!-- HEXAGON -->
+                      <div class="hexagon-image-30-32" data-src="css/fabiana.png"></div>
+                      <!-- /HEXAGON -->
+                    </div>
+                    <!-- /USER AVATAR CONTENT -->
+
+                    <!-- USER AVATAR PROGRESS -->
+                    <div class="user-avatar-progress">
+                      <!-- HEXAGON -->
+                      <div class="hexagon-progress-40-44"></div>
+                      <!-- /HEXAGON -->
+                    </div>
+                    <!-- /USER AVATAR PROGRESS -->
+
+                    <!-- USER AVATAR PROGRESS BORDER -->
+                    <div class="user-avatar-progress-border">
+                      <!-- HEXAGON -->
+                      <div class="hexagon-border-40-44"></div>
+                      <!-- /HEXAGON -->
+                    </div>
+                    <!-- /USER AVATAR PROGRESS BORDER -->
+
+                    <!-- USER AVATAR BADGE -->
+                    <div class="user-avatar-badge">
+                      <!-- USER AVATAR BADGE BORDER -->
+                      <div class="user-avatar-badge-border">
+                      </div>
+                      <!-- /USER AVATAR BADGE BORDER -->
+
+                    </div>
+                    <!-- /USER AVATAR BADGE -->
+                  </div>
+                  <!-- /USER AVATAR -->
+                </a>
+                <!-- /USER STATUS AVATAR -->
+
+                <!-- USER STATUS TITLE -->
+                <p class="user-status-title"><a class="bold">Fabiana Rojas</a> desea apoyar el evento <a class="highlighted">Fibra Tóxica VS Huascaminas</a> dentro de la actividad <a style="color: blueviolet;">Voley</a>.</p>
+                <!-- /USER STATUS TITLE -->
+
+                <!-- USER STATUS TIMESTAMP -->
+                <p class="user-status-timestamp">Hace 24 minutos</p>
+                <!-- /USER STATUS TIMESTAMP -->
+
+                <!-- USER STATUS ICON -->
+                <div class="user-status-icon">
+                  <!-- ICON COMMENT -->
+                  <img src="css/voleyIcono.png" width="30px" alt="">
+                  <!-- /ICON COMMENT -->
+                </div>
+                <!-- /USER STATUS ICON -->
+              </div>
+              <!-- /USER STATUS -->
+            </div>
+            <!-- /DROPDOWN BOX LIST ITEM -->
+            <!-- DROPDOWN BOX LIST ITEM -->
+            <div class="dropdown-box-list-item unread">
+              <!-- USER STATUS -->
+              <div class="user-status notification">
+                <!-- USER STATUS AVATAR -->
+                <a class="user-status-avatar">
+                  <!-- USER AVATAR -->
+                  <div class="user-avatar small no-outline">
+                    <!-- USER AVATAR CONTENT -->
+                    <div class="user-avatar-content">
+                      <!-- HEXAGON -->
+                      <div class="hexagon-image-30-32" data-src="css/edisonFlores.png"></div>
+                      <!-- /HEXAGON -->
+                    </div>
+                    <!-- /USER AVATAR CONTENT -->
+
+                    <!-- USER AVATAR PROGRESS -->
+                    <div class="user-avatar-progress">
+                      <!-- HEXAGON -->
+                      <div class="hexagon-progress-40-44"></div>
+                      <!-- /HEXAGON -->
+                    </div>
+                    <!-- /USER AVATAR PROGRESS -->
+
+                    <!-- USER AVATAR PROGRESS BORDER -->
+                    <div class="user-avatar-progress-border">
+                      <!-- HEXAGON -->
+                      <div class="hexagon-border-40-44"></div>
+                      <!-- /HEXAGON -->
+                    </div>
+                    <!-- /USER AVATAR PROGRESS BORDER -->
+
+                    <!-- USER AVATAR BADGE -->
+                    <div class="user-avatar-badge">
+                      <!-- USER AVATAR BADGE BORDER -->
+                      <div class="user-avatar-badge-border">
+                      </div>
+                      <!-- /USER AVATAR BADGE BORDER -->
+
+                    </div>
+                    <!-- /USER AVATAR BADGE -->
+                  </div>
+                  <!-- /USER AVATAR -->
+                </a>
+                <!-- /USER STATUS AVATAR -->
+
+                <!-- USER STATUS TITLE -->
+                <p class="user-status-title"><a class="bold">Edison Flores</a> desea apoyar el evento <a class="highlighted">Fibra Tóxica VS PXO Industrial</a> dentro de la actividad <a style="color: blueviolet;">Futsal</a>.</p>
+                <!-- /USER STATUS TITLE -->
+
+                <!-- USER STATUS TIMESTAMP -->
+                <p class="user-status-timestamp">Hace 1 hora</p>
+                <!-- /USER STATUS TIMESTAMP -->
+
+                <!-- USER STATUS ICON -->
+                <div class="user-status-icon">
+                  <!-- ICON COMMENT -->
+                  <img src="css/futsalIcono.png" width="30px" alt="">
+                  <!-- /ICON COMMENT -->
+                </div>
+                <!-- /USER STATUS ICON -->
+              </div>
+              <!-- /USER STATUS -->
+            </div>
+            <!-- /DROPDOWN BOX LIST ITEM -->
+            <!-- DROPDOWN BOX LIST ITEM -->
+            <div class="dropdown-box-list-item unread">
+              <!-- USER STATUS -->
+              <div class="user-status notification">
+                <!-- USER STATUS AVATAR -->
+                <a class="user-status-avatar">
+                  <!-- USER AVATAR -->
+                  <div class="user-avatar small no-outline">
+                    <!-- USER AVATAR CONTENT -->
+                    <div class="user-avatar-content">
+                      <!-- HEXAGON -->
+                      <div class="hexagon-image-30-32" data-src="css/raulRomero.png"></div>
+                      <!-- /HEXAGON -->
+                    </div>
+                    <!-- /USER AVATAR CONTENT -->
+
+                    <!-- USER AVATAR PROGRESS -->
+                    <div class="user-avatar-progress">
+                      <!-- HEXAGON -->
+                      <div class="hexagon-progress-40-44"></div>
+                      <!-- /HEXAGON -->
+                    </div>
+                    <!-- /USER AVATAR PROGRESS -->
+
+                    <!-- USER AVATAR PROGRESS BORDER -->
+                    <div class="user-avatar-progress-border">
+                      <!-- HEXAGON -->
+                      <div class="hexagon-border-40-44"></div>
+                      <!-- /HEXAGON -->
+                    </div>
+                    <!-- /USER AVATAR PROGRESS BORDER -->
+
+                    <!-- USER AVATAR BADGE -->
+                    <div class="user-avatar-badge">
+                      <!-- USER AVATAR BADGE BORDER -->
+                      <div class="user-avatar-badge-border">
+                      </div>
+                      <!-- /USER AVATAR BADGE BORDER -->
+
+                    </div>
+                    <!-- /USER AVATAR BADGE -->
+                  </div>
+                  <!-- /USER AVATAR -->
+                </a>
+                <!-- /USER STATUS AVATAR -->
+
+                <!-- USER STATUS TITLE -->
+                <p class="user-status-title"><a class="bold">Raul Romero</a> desea apoyar el evento <a class="highlighted">Fibra Tóxica VS Hormigón Armado</a> dentro del evento <a style="color: blueviolet;">Six Pract</a>.</p>
+                <!-- /USER STATUS TITLE -->
+
+                <!-- USER STATUS TIMESTAMP -->
+                <p class="user-status-timestamp">Hace 2 horas</p>
+                <!-- /USER STATUS TIMESTAMP -->
+
+                <!-- USER STATUS ICON -->
+                <div class="user-status-icon">
+                  <!-- ICON COMMENT -->
+                  <img src="css/sixPractIcono.png" width="30px" alt="">
+                  <!-- /ICON COMMENT -->
+                </div>
+                <!-- /USER STATUS ICON -->
+              </div>
+              <!-- /USER STATUS -->
+            </div>
+            <!-- /DROPDOWN BOX LIST ITEM -->
+          </div>
+          <!-- /DROPDOWN BOX LIST -->
+          <!--ARRIBA ESTÁN LAS NOTIFICACIONES-->
+          <!-- DROPDOWN BOX BUTTON -->
+          <a class="dropdown-box-button secondary" href="<%=request.getContextPath()%>/NotificacionesServlet?idUsuario=<%=idUsuario%>">Ver todas las notificaciones</a>
+          <!-- /DROPDOWN BOX BUTTON -->
+        </div>
+        <!-- /DROPDOWN BOX -->
+      </div>
+      <!-- /ACTION LIST ITEM WRAP -->
+    </div>
+    <!-- /ACTION LIST -->
+
+    <!-- ACTION ITEM WRAP -->
+    <div class="action-item-wrap auxResponsiveUwu">
+      <!-- ACTION ITEM -->
+      <div class="action-item dark header-settings-dropdown-trigger">
+        <!-- ACTION ITEM ICON -->
+        <a href="<%=request.getContextPath()%>/inicioSesion.jsp"><img src="css/logOut.png" width="30%" style="margin-left: 25px;" alt=""></a>
+        <!-- /ACTION ITEM ICON -->
+      </div>
+      <!-- /ACTION ITEM -->
+
+      <!-- DROPDOWN NAVIGATION -->
+
+    </div>
+    <!-- /ACTION ITEM WRAP -->
+  </div>
+  <!-- /HEADER ACTIONS -->
+  <%}else{%>
+  <!-- HEADER ACTIONS DELEGADO GENERAL -->
   <div class="header-actions">
     <!-- ACTION LIST -->
     <div class="action-list dark">
@@ -919,9 +1270,10 @@
     <!-- /ACTION ITEM WRAP -->
   </div>
   <!-- /HEADER ACTIONS -->
+  <%}%>
+  <!-- /HEADER ACTIONS -->
 </header>
 <!-- /HEADER -->
-
 
 <!-- CONTENT GRID -->
 <div class="content-grid">
@@ -947,18 +1299,20 @@
     <!-- SECTION FILTERS BAR ACTIONS -->
     <div class="section-filters-bar-actions">
       <!-- FORM -->
-      <form class="form">
+      <form method="get" action="<%=request.getContextPath()%>/ListaDeUsuariosServlet" class="form">
+        <input type="hidden" name="idUsuario" value="<%=idUsuario%>">
+        <input type="hidden" name="action" value="buscarUsuario">
         <!-- FORM ITEM -->
         <div class="form-item split">
           <!-- FORM INPUT -->
           <div class="form-input small">
             <label for="items-search">Buscar usuario</label>
-            <input type="text" id="items-search" name="items_search">
+            <input type="text" id="items-search" name="usuario" <%if(busqueda!=null){%>value="<%=busqueda%>"<%}%>>
           </div>
           <!-- /FORM INPUT -->
 
           <!-- BUTTON -->
-          <button class="button primary">
+          <button type="submit" class="button primary">
             <!-- ICON MAGNIFYING GLASS -->
             <svg class="icon-magnifying-glass">
               <use xlink:href="#svg-magnifying-glass"></use>
@@ -976,7 +1330,9 @@
     <!-- SECTION FILTERS BAR ACTIONS -->
     <div class="section-filters-bar-actions">
       <!-- FORM -->
-      <form class="form">
+      <form method="get" action="<%=request.getContextPath()%>/ListaDeUsuariosServlet" class="form">
+        <input type="hidden" name="idUsuario" value="<%=idUsuario%>">
+        <input type="hidden" name="action" value="filtroUsuario">
         <!-- FORM ITEM -->
         <div class="form-item split medium">
           <%Integer idFiltroUsuario=(Integer) request.getAttribute("idFiltroUsuario");%>
@@ -985,13 +1341,10 @@
           <div class="form-select small">
             <label for="items-filter-category">Filtrar por</label>
             <select id="items-filter-category" name="idFiltroUsuario">
-              <%if(rolUsuario.equals("Delegado General")){%>
-
               <option value="0"<%if(idFiltroUsuario!=null && idFiltroUsuario==0){%>selected<%}%>>Orden alfabético</option>
               <option value="1"<%if(idFiltroUsuario!=null && idFiltroUsuario==1){%>selected<%}%>>Código PUCP</option>
-              <option value="2"<%if(idFiltroUsuario!=null && idFiltroUsuario==2){%>selected<%}%>>Condición</option>
-              <option value="3"<%if(idFiltroUsuario!=null && idFiltroUsuario==3){%>selected<%}%>>Baneado</option>
-              <%}%>
+              <option value="2"<%if(idFiltroUsuario!=null && idFiltroUsuario==2){%>selected<%}%>>Estudiantes primero</option>
+              <option value="3"<%if(idFiltroUsuario!=null && idFiltroUsuario==3){%>selected<%}%>>Baneados primero</option>
             </select>
             <!-- FORM SELECT ICON -->
             <svg class="form-select-icon icon-small-arrow">
@@ -1005,9 +1358,9 @@
           <!-- FORM SELECT -->
           <div class="form-select small">
             <label for="items-filter-order">Ordenar por</label>
-            <select id="items-filter-order" name="items_filter_order">
-              <option value="0"<%if(idOrdenarUsuario!=null){if(idOrdenarUsuario==0){%>selected<%}}%>>Ascendente</option>
-              <option value="1"<%if(idOrdenarUsuario!=null){if(idOrdenarUsuario==1){%>selected<%}}%>>Descendente</option>
+            <select id="items-filter-order" name="idOrdenarUsuario">
+              <option value="0"<%if(idOrdenarUsuario!=null){if(idOrdenarUsuario==0){%>selected<%}}%>>Primero -> Último</option>
+              <option value="1"<%if(idOrdenarUsuario!=null){if(idOrdenarUsuario==1){%>selected<%}}%>>Último -> Primero</option>
             </select>
             <!-- FORM SELECT ICON -->
             <svg class="form-select-icon icon-small-arrow">
@@ -1018,7 +1371,7 @@
           <!-- /FORM SELECT -->
 
           <!-- BUTTON -->
-          <button class="button secondary">Aplicar filtros</button>
+          <button type="submit" class="button secondary">Aplicar filtros</button>
           <!-- /BUTTON -->
         </div>
         <!-- /FORM ITEM -->

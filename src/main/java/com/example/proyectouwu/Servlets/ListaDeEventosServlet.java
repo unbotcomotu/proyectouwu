@@ -48,6 +48,18 @@ public class ListaDeEventosServlet extends HttpServlet {
         String action = request.getParameter("action") == null ? "default" : request.getParameter("action");
         switch (action){
             case "default":
+                String fechaNoNumerica=request.getParameter("fechaNoNumerica");
+                if(fechaNoNumerica!=null){
+                    request.setAttribute("fechaNoNumerica",fechaNoNumerica);
+                }
+                String horaInvalida= request.getParameter("horaInvalida");
+                if(horaInvalida!=null){
+                    request.setAttribute("horaInvalida",horaInvalida);
+                }
+                String idEventoElegidoAux=request.getParameter("idEventoElegido");
+                if(idEventoElegidoAux!=null){
+                    request.setAttribute("idEventoElegidoAux",Integer.parseInt(idEventoElegidoAux));
+                }
                 request.getRequestDispatcher("listaDeEventos.jsp").forward(request,response);
                 break;
             case "filtrarEventos":
@@ -122,12 +134,6 @@ public class ListaDeEventosServlet extends HttpServlet {
         int addActividadID;
         int idEvento;
 
-
-        // Parámetros validación:
-        boolean validacion;
-        boolean auxiliar1;
-        boolean auxiliar2;
-
         switch (action) {
             case "buscarEvento":
                 DaoUsuario dUsuario = new DaoUsuario();
@@ -165,49 +171,53 @@ public class ListaDeEventosServlet extends HttpServlet {
                 addActividadID = Integer.parseInt(request.getParameter("addActividadID"));
                 String addLugar = request.getParameter("addLugar");
                 String addTitulo = request.getParameter("addTitulo");
-                String addFechaStr = request.getParameter("addFecha");
                 String addHoraStr = request.getParameter("addHora");
                 String addDescripcionEventoActivo = request.getParameter("addDescripcionEventoActivo");
                 String addFraseMotivacional = request.getParameter("addFraseMotivacional");
                 String addEventoOcultoStr = request.getParameter("addEventoOculto");
-
-                // Conversión al tipo de variables de la tabla:
-                Boolean addEventoOculto = false;
-                if(!(addEventoOcultoStr == null)){
-                    addEventoOculto = true;
-                }
-
-                // Validar tipo y longitud de la información (mensajes en la vista sgt avance con sessions)
-
-                validacion = true;
-
-                Date addFecha = null;
-                Time addHora = null;;
-
+                String addFechaStrAux = request.getParameter("addFecha");
                 try{
-                    addFecha = Date.valueOf("2023-10-"+addFechaStr);
-                    addHora = Time.valueOf(addHoraStr+":00");
-                }catch (IllegalArgumentException e){
-                    validacion = false;
-                }
+                    Integer addFechaStr=Integer.parseInt(addFechaStrAux);
+                    // Conversión al tipo de variables de la tabla:
+                    Boolean addEventoOculto = false;
+                    if(!(addEventoOcultoStr == null)){
+                        addEventoOculto = true;
+                    }
+                    String addHoraAux[]=addHoraStr.split(":");
+                    try{
+                        if(addHoraAux.length!=2){
+                            Integer horaAux = Integer.parseInt(addHoraAux[0]);
+                            System.out.println(addHoraStr);
+                            Integer minutoAux = Integer.parseInt(addHoraAux[1]);
+                            System.out.println(addHoraStr);
+                            if (horaAux >= 0 && horaAux < 24 && minutoAux >= 0 && minutoAux < 60) {
+                                Date addFecha = Date.valueOf("2023-10-" + addFechaStrAux);
+                                Time addHora = Time.valueOf(addHoraStr + ":00");
 
-                auxiliar1 = addTitulo.length()>100 || addDescripcionEventoActivo.length()>1000 || addFraseMotivacional.length() >45;
-                if(auxiliar1){
-                    validacion = false;
-                }
+                                // Verificar lugar:
+                                int addLugarId = dLugarEvento.idLugarPorNombre(addLugar);
+                                // En caso no exista el lugar, se crea uno nuevo
+                                if (addLugarId == 0) {
+                                    addLugarId = dLugarEvento.crearLugar(addLugar); // Id del nuevo lugar
+                                }
 
-                // Verificar lugar:
-                int addLugarId = dLugarEvento.idLugarPorNombre(addLugar);
-                // En caso no exista el lugar, se crea uno nuevo
-                if(addLugarId==0){
-                    addLugarId = dLugarEvento.crearLugar(addLugar); // Id del nuevo lugar
-                }
+                                // Crear evento:
+                                dEvento.crearEvento(addActividadID, addLugarId, addTitulo, addFecha, addHora, addDescripcionEventoActivo, addFraseMotivacional, "uwu", addEventoOculto);
+                                response.sendRedirect(request.getContextPath() + "/ListaDeEventosServlet?idUsuario=" + idUsuario + "&idActividad=" + addActividadID);
+                            } else {
+                                response.sendRedirect(request.getContextPath() + "/ListaDeEventosServlet?idUsuario=" + idUsuario + "&idActividad=" + addActividadID + "&horaInvalida=1");
+                            }
+                        }else{
+                            response.sendRedirect(request.getContextPath() + "/ListaDeEventosServlet?idUsuario=" + idUsuario + "&idActividad=" + addActividadID + "&horaInvalida=1");
+                        }
 
-                // Crear evento:
-                if(validacion){
-                    dEvento.crearEvento(addActividadID,addLugarId,addTitulo,addFecha,addHora,addDescripcionEventoActivo,addFraseMotivacional,"uwu",addEventoOculto);
+                    }catch (NumberFormatException i) {
+                        response.sendRedirect(request.getContextPath() + "/ListaDeEventosServlet?idUsuario=" + idUsuario + "&idActividad=" + addActividadID + "&horaInvalida=1");
+                    }
+
+                }catch (NumberFormatException e){
+                    response.sendRedirect(request.getContextPath()+"/ListaDeEventosServlet?idUsuario="+idUsuario+"&idActividad="+addActividadID+"&fechaNoNumerica=1");
                 }
-                response.sendRedirect(request.getContextPath()+"/ListaDeEventosServlet?idUsuario="+idUsuario+"&idActividad="+addActividadID);
                 break;
             case "updateConfirm":
 
@@ -227,68 +237,62 @@ public class ListaDeEventosServlet extends HttpServlet {
                 String updateResultado = request.getParameter("updateResultado");
                 String updateEventoOcultoStr1 = request.getParameter("updateEventoOculto");
                 String updateEventoOcultoStr2 = request.getParameter("updateEventoOcultoAlt");
-
-                // Validar tipo y longitud de la información
-
-                validacion = true;
-
-                Date updateFecha = null;
-                Time updateHora = null;
-
-                // Conversión de variables según el estado del evento:
-                if(estadoEvento.equals("true")){
-
-                    Boolean updateEventoOcultoAlt = false;
-                    if(!(updateEventoOcultoStr2 == null)){
-                        updateEventoOcultoAlt = true;
-                    }
-
-                    // Validación
-                    auxiliar1 = updateTitulo.length()>100 || updateResumen.length()>1000 || updateResultado.length()>45;
-
-                    if(auxiliar1){
-                        validacion = false;
-                    }
-
-                    if(validacion){
-                        dEvento.editarEvento(idEvento,updateTitulo,updateResumen,updateResultado,updateEventoOcultoAlt);
-                    }
-
-                }else{
-
-                    Boolean updateEventoOculto = false;
-                    if(!(updateEventoOcultoStr1 == null)){
-                        updateEventoOculto = true;
-                    }
-
-                    // Verificar lugar:
-                    int updateLugarId = dLugarEvento.idLugarPorNombre(updateLugar);
-                    // En caso no exista el lugar, se crea uno nuevo
-                    if(updateLugarId==0){
-                        updateLugarId = dLugarEvento.crearLugar(updateLugar); // Id del nuevo lugar
-                    }
-
+                try{
+                    Integer updateFechaStrAux=Integer.parseInt(updateFechaStr);
+                    String updateHoraStrAux[]=updateHoraStr.split(":");
                     try{
-                        updateFecha = Date.valueOf("2023-10-"+updateFechaStr);
-                        updateHora = Time.valueOf(updateHoraStr+":00");
-                    }catch (IllegalArgumentException e){
-                        validacion = false;
+                        if(updateHoraStrAux.length!=2){
+                            Integer horaAux=Integer.parseInt(updateHoraStrAux[0]);
+                            Integer minutoAux=Integer.parseInt(updateHoraStrAux[1]);
+                            if(horaAux>=0 && horaAux<24 && minutoAux>=0 && minutoAux<60) {
+                                // Conversión de variables según el estado del evento:
+                                if(estadoEvento.equals("true")){
+
+                                    Boolean updateEventoOcultoAlt = false;
+                                    if(!(updateEventoOcultoStr2 == null)){
+                                        updateEventoOcultoAlt = true;
+                                    }
+
+                                    dEvento.editarEvento(idEvento,updateTitulo,updateResumen,updateResultado,updateEventoOcultoAlt);
+                                }else{
+
+                                    Boolean updateEventoOculto = false;
+                                    if(!(updateEventoOcultoStr1 == null)){
+                                        updateEventoOculto = true;
+                                    }
+
+                                    // Verificar lugar:
+                                    int updateLugarId = dLugarEvento.idLugarPorNombre(updateLugar);
+                                    // En caso no exista el lugar, se crea uno nuevo
+                                    if(updateLugarId==0){
+                                        updateLugarId = dLugarEvento.crearLugar(updateLugar); // Id del nuevo lugar
+                                    }
+
+                                    Date updateFecha = Date.valueOf("2023-10-"+updateFechaStr);
+                                    Time updateHora = Time.valueOf(updateHoraStr+":00");
+
+                                    dEvento.editarEvento(idEvento,updateLugarId,updateTitulo,updateFecha,updateHora,updateDescripcionEventoActivo,updateFraseMotivacional,"owo",updateEventoOculto);
+                                }
+
+                                // Envío a la vista de lista de eventos:
+                                response.sendRedirect(request.getContextPath()+"/ListaDeEventosServlet?idUsuario="+idUsuario+"&idActividad="+addActividadID);
+
+                                //mañana sigo uu
+                                //response.sendRedirect(request.getContextPath()+ "/ListaDeEventosServlet");
+                            }else {
+                                response.sendRedirect(request.getContextPath()+"/ListaDeEventosServlet?idUsuario="+idUsuario+"&idActividad="+addActividadID+"&horaInvalida=1"+"&idEventoElegido="+idEvento);
+                            }
+                        }else{
+                            response.sendRedirect(request.getContextPath()+"/ListaDeEventosServlet?idUsuario="+idUsuario+"&idActividad="+addActividadID+"&fechaNoNumerica=1"+"&idEventoElegido="+idEvento);
+                        }
+                    }catch (NumberFormatException i){
+                        response.sendRedirect(request.getContextPath()+"/ListaDeEventosServlet?idUsuario="+idUsuario+"&idActividad="+addActividadID+"&fechaNoNumerica=1"+"&idEventoElegido="+idEvento);
                     }
 
-                    // Validación
-                    auxiliar2 = updateTitulo.length()>100 || updateDescripcionEventoActivo.length()>1000 || updateFraseMotivacional.length() >45;
 
-                    if(auxiliar2){
-                        validacion = false;
-                    }
-
-                    if(validacion){
-                        dEvento.editarEvento(idEvento,updateLugarId,updateTitulo,updateFecha,updateHora,updateDescripcionEventoActivo,updateFraseMotivacional,"owo",updateEventoOculto);
-                    }
+                }catch (NumberFormatException e){
+                    response.sendRedirect(request.getContextPath()+"/ListaDeEventosServlet?idUsuario="+idUsuario+"&idActividad="+addActividadID+"&fechaNoNumerica=1"+"&idEventoElegido="+idEvento);
                 }
-
-                // Envío a la vista de lista de eventos:
-                response.sendRedirect(request.getContextPath()+"/ListaDeEventosServlet?idUsuario="+idUsuario+"&idActividad="+addActividadID);
                 break;
             case "finConfirm":
                 idUsuario = Integer.parseInt(request.getParameter("idUsuario"));

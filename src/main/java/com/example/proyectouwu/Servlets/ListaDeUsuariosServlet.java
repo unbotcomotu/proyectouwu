@@ -30,19 +30,19 @@ public class ListaDeUsuariosServlet extends HttpServlet {
                 break;
             case "buscarUsuario":
                 String usuario=request.getParameter("usuario");
-                request.setAttribute("listaUsuarios",new DaoUsuario().listarUsuariosTotal());
+                request.setAttribute("listaUsuarios",new DaoUsuario().listarUsuarioXnombre(usuario));
                 request.setAttribute("usuario",usuario);
                 if(rolUsuario.equals("Alumno")||rolUsuario.equals("Delegado General")){
                     request.getRequestDispatcher("listaUsuarios.jsp").forward(request,response);
                 }
                 break;
             case "filtroUsuario":
-                int idFiltroUsuarios=Integer.parseInt(request.getParameter("idFiltroUsuarios"));
-                int idOrdenarUsuarios=Integer.parseInt(request.getParameter("idOrdenarUsuarios"));
-                //request.setAttribute("listaUsuarios",new DaoUsuario().listarUsuariosTotal(idFiltroActividades,idOrdenarActividades,idUsuario));
-                request.setAttribute("listaUsuarios",new DaoUsuario().listarUsuariosFiltro(idFiltroUsuarios,idOrdenarUsuarios,idUsuario));
-                request.setAttribute("idFiltroUsuarios",idFiltroUsuarios);
-                request.setAttribute("idOrdenarUsuarios",idOrdenarUsuarios);
+                int idFiltroUsuario=Integer.parseInt(request.getParameter("idFiltroUsuario"));
+                int idOrdenarUsuario=Integer.parseInt(request.getParameter("idOrdenarUsuario"));
+                //request.setAttribute("listaUsuario",new DaoUsuario().listarUsuariosTotal(idFiltroActividades,idOrdenarActividades,idUsuario));
+                request.setAttribute("listaUsuarios",new DaoUsuario().listarUsuariosFiltro(idFiltroUsuario,idOrdenarUsuario));
+                request.setAttribute("idFiltroUsuario",idFiltroUsuario);
+                request.setAttribute("idOrdenarUsuario",idOrdenarUsuario);
                 request.getRequestDispatcher("listaUsuarios.jsp").forward(request,response);
                 break;
         }

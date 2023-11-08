@@ -234,7 +234,6 @@
 <body>
 
 <!-- PAGE LOADER -->
-<!-- PAGE LOADER -->
 <div class="page-loader">
     <!-- PAGE LOADER DECORATION -->
     <div class="page-loader-decoration">
@@ -650,9 +649,6 @@
 </nav>
 <!-- /NAVIGATION WIDGET -->
 
-
-
-
 <!-- HEADER -->
 <header class="header">
     <!-- HEADER ACTIONS -->
@@ -724,7 +720,7 @@
     <!-- /HEADER ACTIONS -->
 
     <!-- NO BORRAR ESTO-->
-<%if(rolUsuario.equals("Alumno")){%>
+    <%if(rolUsuario.equals("Alumno")){%>
     <!-- ACTION ITEM WRAP USUARIO -->
     <div class="action-item-wrap auxResponsiveUwu">
         <!-- ACTION ITEM -->
@@ -739,7 +735,7 @@
 
     </div>
     <!-- /ACTION ITEM WRAP -->
-<%}else if(rolUsuario.equals("Delegado de Actividad")){%>
+    <%}else if(rolUsuario.equals("Delegado de Actividad")){%>
     <!-- HEADER ACTIONS DELEGADO DE ACTIVIDAD -->
     <div class="header-actions">
         <!-- ACTION LIST -->
@@ -992,7 +988,7 @@
         <!-- /ACTION ITEM WRAP -->
     </div>
     <!-- /HEADER ACTIONS -->
-<%}else{%>
+    <%}else{%>
     <!-- HEADER ACTIONS DELEGADO GENERAL -->
     <div class="header-actions">
         <!-- ACTION LIST -->
@@ -1375,7 +1371,7 @@
         <!-- /ACTION ITEM WRAP -->
     </div>
     <!-- /HEADER ACTIONS -->
-<%}%>
+    <%}%>
     <!-- /HEADER ACTIONS -->
 </header>
 <!-- /HEADER -->

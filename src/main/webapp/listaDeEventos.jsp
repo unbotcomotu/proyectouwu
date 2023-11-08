@@ -24,6 +24,9 @@
         Integer eventoHoy = (Integer) request.getAttribute("eventosHoy");
         Integer eventoManana = (Integer) request.getAttribute("eventosManana");
         Integer eventoMasDias = (Integer) request.getAttribute("eventosMasDias");
+        Integer idEventoElegido=(Integer)request.getAttribute("idEventoElegido");
+        String fechaNoNumerica=(String)request.getAttribute("fechaNoNumerica");
+        String horaInvalida=(String)request.getAttribute("horaInvalida");
         String colorRol;
         if(rolUsuario.equals("Alumno")){
             colorRol="";
@@ -226,7 +229,6 @@
 </head>
 <body>
 
-<!-- PAGE LOADER -->
 <!-- PAGE LOADER -->
 <div class="page-loader">
     <!-- PAGE LOADER DECORATION -->
@@ -642,9 +644,6 @@
     </ul>
 </nav>
 <!-- /NAVIGATION WIDGET -->
-
-
-
 
 <!-- HEADER -->
 <header class="header">
@@ -1373,7 +1372,6 @@
 </header>
 <!-- /HEADER -->
 
-
 <!-- CONTENT GRID -->
 
 <div class="content-grid">
@@ -2090,8 +2088,8 @@
     </div>
 </footer>
 <%if(delegadoDeEstaActividadID==idUsuario){%>
-<div class="overlay" id="overlayCrear">
-<div class="popup contenedorCrear" style="width: 700px;" id="popupCrear">
+<div class="overlay" id="overlayCrear" <%if((horaInvalida!=null || fechaNoNumerica!=null) && idEventoElegido==null){%>style="display: block"<%}%>>
+<div class="popup contenedorCrear" style="width: 700px; <%if((horaInvalida!=null || fechaNoNumerica!=null) && idEventoElegido==null){%> display: block <%}%>" id="popupCrear">
     <svg class="cerrarPopup" id="cerrarPopupCrear" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path d="M11.4142 10L16.7071 4.70711C17.0976 4.31658 17.0976 3.68342 16.7071 3.29289C16.3166 2.90237 15.6834 2.90237 15.2929 3.29289L10 8.58579L4.70711 3.29289C4.31658 2.90237 3.68342 2.90237 3.29289 3.29289C2.90237 3.68342 2.90237 4.31658 3.29289 4.70711L8.58579 10L3.29289 15.2929C2.90237 15.6834 2.90237 16.3166 3.29289 16.7071C3.68342 17.0976 4.31658 17.0976 4.70711 16.7071L10 11.4142L15.2929 16.7071C15.6834 17.0976 16.3166 17.0976 16.7071 16.7071C17.0976 16.3166 17.0976 15.6834 16.7071 15.2929L11.4142 10Z" fill="black"/>
     </svg>
@@ -2111,8 +2109,11 @@
                 <input type="text" id="descripcionCrearEvento" name="addDescripcionEventoActivo" placeholder="Descripción" required>
                 <div class="row" style="margin-top: 25px;">
                     <div class="col-6">
-                        <label for="delegado"><b>Hora (HH:MM):</b></label>
+                        <label for="horaCrearEvento"><b>Hora (HH:MM):</b></label>
                         <input type="text" id="horaCrearEvento" name="addHora" placeholder="00:00" required>
+                        <%if(horaInvalida!=null && idEventoElegido==null){%>
+                        <a style="color: red">Ingrese el formato indicado</a>
+                        <%}%>
                     </div>
                     <div class="col-6">
                         <label for="lugarCrearEvento"><b>Lugar:</b></label>
@@ -2125,8 +2126,11 @@
                 </div>
                 <div class="row" style="margin-top: 25px;">
                     <div class="col-6">
-                        <label for="delegado"><b>Fecha (día):</b></label>
+                        <label for="fechaCrearEvento"><b>Fecha (día):</b></label>
                         <input type="text" id="fechaCrearEvento" name="addFecha" multiple placeholder="... de Octubre" required>
+                        <%if(fechaNoNumerica!=null && idEventoElegido==null){%>
+                        <a style="color: red">Ingrese un número</a>
+                        <%}%>
                     </div>
                     <div class="col-6">
                         <p style="width: 100%;"><b>Ocultar evento:</b></p>
@@ -2207,8 +2211,8 @@
 </div>
 <%if(!listaEventos.isEmpty()){
     for(Evento e:listaEventos){%>
-<div class="overlay" id="overlayEditarEvento<%=listaEventos.indexOf(e)%>">
-<div class="popup contenedorCrear" style="width: 700px;" id="popupEditarEvento<%=listaEventos.indexOf(e)%>">
+<div class="overlay" id="overlayEditarEvento<%=listaEventos.indexOf(e)%>" <%if((horaInvalida!=null || fechaNoNumerica!=null) && idEventoElegido!=null && idEventoElegido==e.getIdEvento()){%>style="display: block"<%}%>>
+<div class="popup contenedorCrear" style="width: 700px; <%if((horaInvalida!=null || fechaNoNumerica!=null) && idEventoElegido!=null && idEventoElegido==e.getIdEvento()){%> display: block <%}%>" id="popupEditarEvento<%=listaEventos.indexOf(e)%>">
     <svg class="cerrarPopup" id="cerrarPopupEditarEvento<%=listaEventos.indexOf(e)%>" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path d="M11.4142 10L16.7071 4.70711C17.0976 4.31658 17.0976 3.68342 16.7071 3.29289C16.3166 2.90237 15.6834 2.90237 15.2929 3.29289L10 8.58579L4.70711 3.29289C4.31658 2.90237 3.68342 2.90237 3.29289 3.29289C2.90237 3.68342 2.90237 4.31658 3.29289 4.70711L8.58579 10L3.29289 15.2929C2.90237 15.6834 2.90237 16.3166 3.29289 16.7071C3.68342 17.0976 4.31658 17.0976 4.70711 16.7071L10 11.4142L15.2929 16.7071C15.6834 17.0976 16.3166 17.0976 16.7071 16.7071C17.0976 16.3166 17.0976 15.6834 16.7071 15.2929L11.4142 10Z" fill="black"/>
     </svg>
@@ -2247,8 +2251,11 @@
                 <input type="text" id="editarDescripcionEvento<%=listaEventos.indexOf(e)%>" name="updateDescripcionEventoActivo" placeholder="Descripción" value="<%=e.getDescripcionEventoActivo()%>" required>
                 <div class="row" style="margin-top: 25px;">
                     <div class="col-6">
-                        <label for="delegado"><b>Hora (HH:MM):</b></label>
+                        <label for="editarHoraEvento<%=listaEventos.indexOf(e)%>"><b>Hora (HH:MM):</b></label>
                         <input type="text" id="editarHoraEvento<%=listaEventos.indexOf(e)%>" name="updateHora" placeholder="00:00" value="<%=Integer.parseInt(e.getHora().toString().split(":")[0])+":"+e.getHora().toString().split(":")[1]%>" required>
+                        <%if(horaInvalida!=null && idEventoElegido!=null && idEventoElegido==e.getIdEvento()){%>
+                        <a style="color: red">Ingrese el formato indicado</a>
+                        <%}%>
                     </div>
                     <div class="col-6">
                         <label for="editarLugarEvento<%=listaEventos.indexOf(e)%>"><b>Lugar:</b></label>
@@ -2263,6 +2270,9 @@
                     <div class="col-6">
                         <label><b>Fecha (día):</b></label>
                         <input type="text" name="updateFecha" multiple id="editarFechaEvento<%=listaEventos.indexOf(e)%>" placeholder="... de Octubre" value="<%=Integer.parseInt(e.getFecha().toString().split("-")[2])%>" required>
+                        <%if(fechaNoNumerica!=null && idEventoElegido!=null && idEventoElegido==e.getIdEvento()){%>
+                        <a style="color: red">Ingrese el formato indicado</a>
+                        <%}%>
                     </div>
                     <div class="col-6">
                         <p style="width: 100%;"><b>Ocultar evento:</b></p>

@@ -180,7 +180,7 @@
     </style>
 </head>
 <body>
-<!-- PAGE LOADER -->
+
 <!-- PAGE LOADER -->
 <div class="page-loader">
     <!-- PAGE LOADER DECORATION -->
@@ -277,7 +277,7 @@
         <!-- MENU ITEM -->
         <!-- MENU ITEM -->
         <!-- MENU ITEM -->
-        <li class="menu-item <%if(vistaActual.equals("miCuenta")){%>active"<%}%>>
+        <li class="menu-item <%if(vistaActual.equals("miCuenta")){%>active<%}%>">
             <!-- MENU ITEM LINK -->
             <a class="menu-item-link text-tooltip-tfr" href="<%=request.getContextPath()%>/MiCuentaServlet?idUsuario=<%=idUsuario%>" data-title="Mi cuenta">
                 <!-- MENU ITEM LINK ICON -->
@@ -288,7 +288,7 @@
             </a>
             <!-- /MENU ITEM LINK -->
         </li>
-        <li class="menu-item <%if(vistaActual.equals("listaDeActividades")){%>active"<%}%>">
+        <li class="menu-item <%if(vistaActual.equals("listaDeActividades")){%>active<%}%>">
             <!-- MENU ITEM LINK -->
             <a class="menu-item-link text-tooltip-tfr" href="<%=request.getContextPath()%>/ListaDeActividadesServlet?idUsuario=<%=idUsuario%>" data-title="Actividades">
                 <!-- MENU ITEM LINK ICON -->
@@ -296,6 +296,7 @@
                 <!-- /MENU ITEM LINK ICON -->
             </a>
             <!-- /MENU ITEM LINK -->
+        </li>
         <%if(rolUsuario.equals("Delegado General")){%>
         <li class="menu-item <%if(vistaActual.equals("analiticas")){%>active<%}%>">
             <!-- MENU ITEM LINK -->
@@ -317,15 +318,16 @@
             <!-- /MENU ITEM LINK -->
         </li>
         <%}else{%>
-        <li class="menu-item <%if(vistaActual.equals("misEventos")){%>active"<%}%>">
+        <li class="menu-item <%if(vistaActual.equals("misEventos")){%>active<%}%>">
             <!-- MENU ITEM LINK -->
             <a class="menu-item-link text-tooltip-tfr" href="<%=request.getContextPath()%>/MisEventosServlet?idUsuario=<%=idUsuario%>" data-title="Mis eventos">
                 <!-- MENU ITEM LINK ICON -->
                 <img src="css/misEventosIcono.png" class="menu-item-link-icon icon-members" alt="">
                 <!-- /MENU ITEM LINK ICON -->
             </a>
-
-        <li class="menu-item <%if(vistaActual.equals("misDonaciones")){%>active"<%}%>">
+            <!-- /MENU ITEM LINK -->
+        </li>
+        <li class="menu-item <%if(vistaActual.equals("misDonaciones")){%>active<%}%>">
             <!-- MENU ITEM LINK -->
             <a class="menu-item-link text-tooltip-tfr" href="<%=request.getContextPath()%>/MisDonacionesServlet?idUsuario=<%=idUsuario%>" data-title="Donaciones">
                 <!-- MENU ITEM LINK ICON -->
@@ -333,6 +335,7 @@
                 <!-- /MENU ITEM LINK ICON -->
             </a>
             <!-- /MENU ITEM LINK -->
+        </li>
         <%}%>
     </ul>
     <!-- /MENU -->
@@ -415,7 +418,7 @@
     <!-- MENU ITEM -->
     <li class="menu-item">
         <!-- MENU ITEM LINK -->
-        <a class="menu-item-link" href="<%=request.getContextPath()%>/ListaDeActividadesServlet">
+        <a class="menu-item-link" href="<%=request.getContextPath()%>/ListaDeActividadesServlet?idUsuario=<%=idUsuario%>">
             <!-- MENU ITEM LINK ICON -->
             <img src="css/actividadIconoGris.png" class="menu-item-link-icon icon-members" alt="">
             <!-- /MENU ITEM LINK ICON -->
@@ -425,8 +428,8 @@
     </li>
     <!-- /MENU ITEM -->
     <br>
-    <!-- MENU ITEM -->
     <%if(rolUsuario.equals("Delegado General")){%>
+    <!-- MENU ITEM -->
     <li class="menu-item">
         <!-- MENU ITEM LINK -->
         <a class="menu-item-link" href="<%=request.getContextPath()%>/AnaliticasServlet?idUsuario=<%=idUsuario%>">
@@ -449,7 +452,9 @@
         </a>
         <!-- /MENU ITEM LINK -->
     </li>
+    <!-- /MENU ITEM -->
     <%}else{%>
+    <!-- MENU ITEM -->
     <li class="menu-item">
         <!-- MENU ITEM LINK -->
         <a class="menu-item-link" href="<%=request.getContextPath()%>/MisEventosServlet?idUsuario=<%=idUsuario%>">
@@ -473,8 +478,9 @@
         </a>
         <!-- /MENU ITEM LINK -->
     </li>
-    <%}%>
     <!-- /MENU ITEM -->
+    <%}%>
+    </ul>
     <!-- /MENU -->
 </nav>
 <!-- /NAVIGATION WIDGET -->
@@ -545,7 +551,7 @@
         <!-- /NAVIGATION WIDGET INFO -->
 
         <!-- NAVIGATION WIDGET BUTTON -->
-        <a href="<%=request.getContextPath()%>"><p class="navigation-widget-info-button button small secondary">Cerrar sesión</p></a>
+        <a href="<%=request.getContextPath()%>/IndexServlet"><p class="navigation-widget-info-button button small secondary">Cerrar sesión</p></a>
         <!-- /NAVIGATION WIDGET BUTTON -->
     </div>
     <!-- /NAVIGATION WIDGET INFO WRAP -->
@@ -590,9 +596,6 @@
     </ul>
 </nav>
 <!-- /NAVIGATION WIDGET -->
-
-
-
 
 <!-- HEADER -->
 <header class="header">
@@ -659,9 +662,6 @@
                 <!-- /BAR PROGRESS INFO -->
             </div>
             <!-- /BAR PROGRESS WRAP -->
-
-            <!-- PROGRESS STAT BAR -->
-            <!-- /PROGRESS STAT BAR -->
         </div>
         <!-- /PROGRESS STAT -->
     </div>
@@ -674,7 +674,7 @@
         <!-- ACTION ITEM -->
         <div class="action-item dark header-settings-dropdown-trigger">
             <!-- ACTION ITEM ICON -->
-            <a href="<%=request.getContextPath()%>/inicioSesion.jsp"><img src="css/logOut.png" style="margin-left: 25px;" width="30%" alt=""></a>
+            <a href="<%=request.getContextPath()%>/inicioSesion.jsp"><img src="css/logOut.png" width="30%" alt=""></a>
             <!-- /ACTION ITEM ICON -->
         </div>
         <!-- /ACTION ITEM -->
@@ -1323,7 +1323,6 @@
     <!-- /HEADER ACTIONS -->
 </header>
 <!-- /HEADER -->
-
 
 <!-- CONTENT GRID -->
 <div class="content-grid">

@@ -2110,7 +2110,7 @@
                     </div>
                     <div class="col-6">
                         <label for="lugarCrearEvento"><b>Lugar:</b></label>
-                        <select style="height: 55px;padding-left: 20px" name="lugarlist" id="lugarCrearEvento" required>
+                        <select style="height: 55px;padding-left: 20px" name="addLugar" id="lugarCrearEvento" required>
                             <%for(LugarEvento l:listaLugares){%>
                             <option value="<%=l.getLugar()%>"><%=l.getLugar()%></option>
                             <%}%>

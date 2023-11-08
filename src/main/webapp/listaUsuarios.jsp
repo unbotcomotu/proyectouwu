@@ -1023,7 +1023,7 @@
   <!-- /SECTION FILTERS BAR -->
   <!-- GRID -->
   <div class="grid grid-4-4-4 centered">
-
+    <%int k=0;%>
     <% for(Usuario usuario: listaUsuarios) { %>
 
     <!-- USER PREVIEW -->
@@ -1143,8 +1143,8 @@
           <%if(new DaoBan().usuarioBaneadoPorId(usuario.getIdUsuario())){%>
           <button class="button secondary" id="boton" style="background-color: #615dfa; opacity: 60%;">Baneado</button>
           <%}else{%>
-          <button class="button secondary" id="mostrarPopup<%=listaUsuarios.indexOf(usuario)%>" >Banear</button>
-          <%}%>
+          <button class="button secondary" id="mostrarPopup<%=k%>">Banear</button>
+          <%k++;}%>
           <!-- /BUTTON -->
 
         </div>
@@ -1273,11 +1273,11 @@
     </div>
   </div>
 </footer>
-<% for(int i=0;i<listaUsuarios.size();i++){ %>
-
-<div class="overlay" id="overlay<%=i%>"></div>
-<div class="popup" id="popup<%=i%>">
-  <svg class="cerrar-btn" id="cerrar-btn<%=i%>" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+<%int l = 0;
+  for(Usuario u : listaUsuarios){if(new DaoUsuario().estaBaneadoporId(u.getIdUsuario())){%>
+<div class="overlay" id="overlay<%=l%>"></div>
+<div class="popup" id="popup<%=l%>">
+  <svg class="cerrar-btn" id="cerrar-btn<%=l%>" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
     <path d="M11.4142 10L16.7071 4.70711C17.0976 4.31658 17.0976 3.68342 16.7071 3.29289C16.3166 2.90237 15.6834 2.90237 15.2929 3.29289L10 8.58579L4.70711 3.29289C4.31658 2.90237 3.68342 2.90237 3.29289 3.29289C2.90237 3.68342 2.90237 4.31658 3.29289 4.70711L8.58579 10L3.29289 15.2929C2.90237 15.6834 2.90237 16.3166 3.29289 16.7071C3.68342 17.0976 4.31658 17.0976 4.70711 16.7071L10 11.4142L15.2929 16.7071C15.6834 17.0976 16.3166 17.0976 16.7071 16.7071C17.0976 16.3166 17.0976 15.6834 16.7071 15.2929L11.4142 10Z" fill="black"/>
   </svg>
   <div class="container-fluid">
@@ -1293,16 +1293,16 @@
   <div class="container-fluid">
     <div class="row">
       <div class="col-sm-6" style="margin-top: 5px;">
-        <a href="<%=request.getContextPath()%>/ListaDeUsuariosServlet?action=banear&idUsuario=<%=idUsuario%>&idUsuarioABanear=<%=listaUsuarios.get(i).getIdUsuario()%>" > <button class="button secondary" id="cerrarPopup1<%=i%>">Banear</button>
+        <a href="<%=request.getContextPath()%>/ListaDeUsuariosServlet?action=banear&idUsuario=<%=idUsuario%>&idUsuarioABanear=<%=u.getIdUsuario()%>" > <button class="button secondary" id="cerrarPopup1<%=l%>">Banear</button>
         </a> </div>
       <div class="col-sm-6" style="margin-top: 5px;">
-        <button class="button secondary" id="cerrarPopup2<%=i%>" style="background-color: grey;">Cancelar</button>
+        <button class="button secondary" id="cerrarPopup2<%=l%>" style="background-color: grey;">Cancelar</button>
       </div>
     </div>
   </div>
 </div>
 
-<%}%>
+<%l++;}}%>
 
 <script>
   function popupFunc(popup,overlay,mostrar,cerrar){

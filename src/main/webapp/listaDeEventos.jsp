@@ -1512,7 +1512,7 @@
         <div class="marketplace-sidebar">
             <!-- SIDEBAR BOX -->
             <div class="sidebar-box">
-                <form method="post" action="<%=request.getContextPath()%>/ListaDeEventosServlet?action=filtrarEventos">
+                <form method="get" action="<%=request.getContextPath()%>/ListaDeEventosServlet?action=filtrarEventos">
                     <input type="hidden" name="idUsuario" value="<%=idUsuario%>">
                     <input type="hidden" name="idActividad" value="<%=idActividad%>">
                     <!-- SIDEBAR BOX TITLE -->

@@ -72,7 +72,7 @@ public class DaoActividad extends DaoPadre {
         ArrayList<Actividad>listaActividades=new ArrayList<>();
         String sql="select idActividad,idDelegadoDeActividad,nombre,fotoMiniatura,cantidadPuntosPrimerLugar,actividadFinalizada,actividadOculta from actividad where lower(nombre) like ?";
         try(PreparedStatement pstmt=conn.prepareStatement(sql)){
-            pstmt.setString(1,"%"+nombre+"%");
+            pstmt.setString(3,"%"+nombre+"%");
             try (ResultSet rs=pstmt.executeQuery()){
                 while (rs.next()){
                     Actividad a=new Actividad();

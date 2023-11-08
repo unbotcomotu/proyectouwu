@@ -1,5 +1,6 @@
 package com.example.proyectouwu.Daos;
 
+import com.example.proyectouwu.Beans.Actividad;
 import com.example.proyectouwu.Beans.Evento;
 import com.example.proyectouwu.Beans.Usuario;
 
@@ -157,6 +158,32 @@ public class DaoUsuario extends DaoPadre {
                 lista.add(usuario);
             }
             return lista;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public ArrayList<Usuario>listarUsuarioXnombre(String nombre){
+        ArrayList<Usuario>listaUsuarios=new ArrayList<>();
+        String sql = "select idUsuario, nombre, apellido, rol, codigoPUCP, condicion, fotoPerfil, descripcionPerfil from usuario where nombre = ? ";
+        try(PreparedStatement pstmt=conn.prepareStatement(sql)){
+            pstmt.setString(2,"%"+nombre+"%");
+            try (ResultSet rs=pstmt.executeQuery()){
+                while (rs.next()){
+                    Usuario u=new Usuario();
+                    u.setIdUsuario(rs.getInt(1));
+                    u.setNombre(rs.getString(2));
+                    u.setApellido(rs.getString(3));
+                    u.setRol(rs.getString(4));
+                    u.setCodigoPUCP(rs.getString(5));
+                    u.setCondicion(rs.getString(6));
+                    u.setFotoPerfil(rs.getBlob(7));
+                    u.setDescripcionPerfil(rs.getString(8));
+
+
+                    listaUsuarios.add(u);
+                }return listaUsuarios;
+            }
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

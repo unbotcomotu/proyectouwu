@@ -196,10 +196,7 @@
         </ul>-->
     </footer>
 </div>
-
-
 <script src="../assets/dist/js/bootstrap.bundle.min.js"></script>
-
 <script src="form-validation.js"></script>
 <script>
     function goBack() {

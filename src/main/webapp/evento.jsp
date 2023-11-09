@@ -1896,11 +1896,10 @@
             <span class="titulo">© 2023 Fibra tóxica</span>
             <ul class="lista">
                 <li><a>Política de Privacidad</a></li>
-                <li><a>Términos y Condiciones</a></li>
             </ul>
             <span class="titulo">Siguenos en:</span>
             <ul class="lista">
-                <li><a><i class="fab fa-facebook"></i> <i class="fab fa-instagram"></i> <i class="fab fa-youtube"></i></a> </li>
+                <li><a><i class="fab fa-facebook"></i>a></i> <i class="fab fa-instagram"></i> <i class="fab fa-youtube"></i></a> </li>
             </ul>
         </div>
         <div class="columna">

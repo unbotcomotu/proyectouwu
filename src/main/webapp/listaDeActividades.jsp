@@ -1541,9 +1541,17 @@
             </ul>
         </div>
         <div class="columna">
-            <p>© 2023 Fibra tóxica</p>
+            <span class="titulo">© 2023 Fibra tóxica</span>
             <ul class="lista">
-                <li><a>Siguenos en: </a> <i class="fab fa-facebook"></i> <i class="fab fa-instagram"></i> <i class="fab fa-youtube"></i></li>
+                <li><a href="enlace-de-politica-de-privacidad">Política de Privacidad</a></li>
+            </ul>
+            <span class="titulo">Síguenos en:</span>
+            <ul class="lista">
+                <li>
+                    <a href="https://www.facebook.com/hineilldavid.cespedesespinoza.3"><i class="fab fa-facebook"></i></a>
+                    <a href="https://www.facebook.com/hineilldavid.cespedesespinoza.3"><i class="fab fa-instagram"></i></a>
+                    <a href="https://www.facebook.com/hineilldavid.cespedesespinoza.3"><i class="fab fa-youtube"></i></a>
+                </li>
             </ul>
         </div>
         <div class="columna">

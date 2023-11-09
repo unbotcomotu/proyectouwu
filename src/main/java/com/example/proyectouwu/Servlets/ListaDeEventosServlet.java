@@ -185,7 +185,7 @@ public class ListaDeEventosServlet extends HttpServlet {
                     }
                     String addHoraAux[]=addHoraStr.split(":");
                     try{
-                        if(addHoraAux.length!=2){
+                        if(addHoraAux.length==2){
                             Integer horaAux = Integer.parseInt(addHoraAux[0]);
                             System.out.println(addHoraStr);
                             Integer minutoAux = Integer.parseInt(addHoraAux[1]);
@@ -241,7 +241,7 @@ public class ListaDeEventosServlet extends HttpServlet {
                     Integer updateFechaStrAux=Integer.parseInt(updateFechaStr);
                     String updateHoraStrAux[]=updateHoraStr.split(":");
                     try{
-                        if(updateHoraStrAux.length!=2){
+                        if(updateHoraStrAux.length==2){
                             Integer horaAux=Integer.parseInt(updateHoraStrAux[0]);
                             Integer minutoAux=Integer.parseInt(updateHoraStrAux[1]);
                             if(horaAux>=0 && horaAux<24 && minutoAux>=0 && minutoAux<60) {

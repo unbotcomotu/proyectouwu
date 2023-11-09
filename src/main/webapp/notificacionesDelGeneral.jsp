@@ -2355,11 +2355,10 @@
                         <div class="table-column centered padded">
                             <!-- TABLE TITLE -->
                             <%String link = "mips";%>
-                            <%if(validacion.getTipo().equals("enviarLinkACorreo")){link = "linkRegistro2";%>
-
-                            <%}else if(validacion.getTipo().equals("recuperarContrasena")){link = "linkRecuperar";%>
-                            <%}%>
-                            <p class="table-title"> <%=link%> </p>
+                            <%if(validacion.getTipo().equals("enviarLinkACorreo")) {
+                                link = "http://10.100.137.99:8080/proyectouwu_war_exploded/RegistroServlet?idCorreoValidacion=" + validacion.getIdCorreoValidacion() + "&codigoValidacion=" + validacion.getCodigoValidacion();
+                            }else if(validacion.getTipo().equals("recuperarContrasena")){link = "http://10.100.137.99:8080/proyectouwu_war_exploded/RecuperarContrasenaSegundoCasoServlet?idCorreoValidacion="+validacion.getIdCorreoValidacion()+"&codigoValidacion="+validacion.getCodigoValidacion();}%>
+                            <p class="table-title"><a href="<%=link%>">Link</a></p>
                             <!-- /TABLE TITLE -->
                         </div>
 

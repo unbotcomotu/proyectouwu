@@ -291,7 +291,7 @@ public class DaoNotificacionDelegadoGeneral extends DaoPadre {
         String username = super.getUser();
         String password = super.getPassword();
 
-        String sql = "select correo,tipo,codigoValidacion,fechaHora from validacion where linkEnviado = 0";
+        String sql = "select correo,tipo,codigoValidacion,fechaHora,idCorreoValidacion from validacion where linkEnviado = 0";
         try (Connection conn = DriverManager.getConnection(url, username, password);
              Statement stmt = conn.createStatement();
              ResultSet rs = stmt.executeQuery(sql)) {
@@ -303,7 +303,7 @@ public class DaoNotificacionDelegadoGeneral extends DaoPadre {
                 validacion.setTipo(rs.getString(2));
                 validacion.setCodigoValidacion(rs.getInt(3));
                 validacion.setFechaHora(rs.getDate(4));
-
+                validacion.setCodigoValidacion(rs.getInt(5));
                 validacionList.add(validacion);
             }
 

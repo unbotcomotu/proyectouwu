@@ -6,11 +6,15 @@ import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
 
 import javax.sql.rowset.serial.SerialBlob;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.sql.Blob;
 import java.sql.SQLException;
 
 @WebServlet(name = "MiCuentaServlet", value = "/MiCuentaServlet")
+@MultipartConfig(maxFileSize = 10000000)
 public class MiCuentaServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -38,26 +42,53 @@ public class MiCuentaServlet extends HttpServlet {
         DaoUsuario daoUsuario = new DaoUsuario();
         String action = request.getParameter("action") == null ? "default" : request.getParameter("action");
 
+        // Variables inicializadas
+        Integer idUsuario = Integer.parseInt(request.getParameter("idUsuario"));;
+        Part part = null;
+        InputStream input = null;
+        boolean validarLongitud;
+
         switch(action){
             case("editarDescripcion"):
-                Integer idUser = Integer.parseInt(request.getParameter("idUsuario"));
                 String nuevaDescripcion = request.getParameter("nuevaDescripcion");
                 //sentencia sql para actualizar:
-                daoUsuario.cambioDescripcion(nuevaDescripcion, idUser);
-                response.sendRedirect(request.getContextPath() + "/MiCuentaServlet?"+"idUsuario="+idUser);
+                daoUsuario.cambioDescripcion(nuevaDescripcion, idUsuario);
+                response.sendRedirect(request.getContextPath() + "/MiCuentaServlet?"+"idUsuario="+idUsuario);
                 break;
             case "editarFoto":
-                Integer idUsuario = Integer.parseInt(request.getParameter("idUsuario"));
-                byte[] bytes = request.getParameter("cambiarFoto").getBytes("UTF-8");
-                try {
-                    Blob cambiarFoto =  new SerialBlob(bytes);
-                    //Aquí va el método
-                    daoUsuario.cambiarFoto(idUsuario,cambiarFoto);
-                    response.sendRedirect(request.getContextPath() + "/MiCuentaServlet?"+"idUsuario="+idUsuario);
+                part = request.getPart("cambiarFoto");
 
-                } catch (SQLException e) {
-                    throw new RuntimeException(e);
+                // Obtenemos el flujo de bytes
+                if(part != null){
+                    input = part.getInputStream();
                 }
+
+                validarLongitud = input.available()>0;
+
+                try {
+                    daoUsuario.cambiarFoto(idUsuario,input,validarLongitud);
+                } catch (SQLException e) {
+                }
+
+                response.sendRedirect(request.getContextPath() + "/MiCuentaServlet?"+"idUsuario="+idUsuario);
+                break;
+            case "editarSeguro":
+                part = request.getPart("cambiarSeguro");
+
+                // Obtenemos el flujo de bytes
+                if(part != null){
+                    input = part.getInputStream();
+                }
+
+                validarLongitud = input.available()>0;
+
+                try {
+                    daoUsuario.cambiarSeguro(idUsuario,input,validarLongitud);
+                } catch (SQLException e) {
+                }
+
+                response.sendRedirect(request.getContextPath() + "/MiCuentaServlet?"+"idUsuario="+idUsuario);
+
 
             case("default"):
                 //auxilio

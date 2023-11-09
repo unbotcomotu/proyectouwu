@@ -1351,7 +1351,7 @@
                     <!-- USER AVATAR CONTENT -->
                     <div class="user-avatar-content">
                         <!-- HEXAGON -->
-                        <div class="hexagon-image-100-110" data-src="css/sin_foto_De_perfil.png"></div>
+                        <div class="hexagon-image-100-110" data-src="ImagenUsuarioServlet?idUsuario=<%=idUsuario%>"><div class="hexagon-image-100-110" data-src="css/sin_foto_De_perfil.png"></div></div>
                         <!-- /HEXAGON -->
                     </div>
                     <!-- /USER AVATAR CONTENT -->
@@ -1387,7 +1387,7 @@
                     <!-- USER AVATAR CONTENT -->
                     <div class="user-avatar-content">
                         <!-- HEXAGON -->
-                        <div class="hexagon-image-82-90" data-src="css/sin_foto_De_perfil.png"></div>
+                        <div class="hexagon-image-82-90" data-src="ImagenUsuarioServlet?idUsuario=<%=idUsuario%>"><div class="hexagon-image-100-110" data-src="css/sin_foto_De_perfil.png"></div></div>
                         <!-- /HEXAGON -->
                     </div>
                     <!-- /USER AVATAR CONTENT -->
@@ -1430,7 +1430,13 @@
                 <!-- PROFILE HEADER INFO ACTION -->
 
                     <div class="container-fluid button secondary btn-file1 mx-2 botones">
-                        <input type="file" accept="image/png, .jpeg, .jpg" name = "cambiarFoto">Cambiar foto</input>
+
+                        <form  method="post" action="<%=request.getContextPath()%>/MiCuentaServlet?action=editarDescripcion" >
+
+                        <input type="button" id="botonFoto" accept="image/png, .jpeg, .jpg" name = "cambiarFoto">Cambiar foto</input>
+
+                        </form>
+
                     </div>
 
                 <div class="container-fluid button secondary btn-file1 mx-2 botones">
@@ -1438,7 +1444,7 @@
                 </div>
                 <%if(!rolUsuario.equals("Delegado General")){%>
                 <div class="container-fluid button secondary btn-file1 mx-2 botones">
-                    <input type="file" accept="image/png, .jpeg, .jpg">Subir seguro PUCP</input>
+                    <input type="button" id="botonSeguro" accept="image/png, .jpeg, .jpg">Subir seguro PUCP</input>
                 </div>
                 <%}%>
                 <!-- /PROFILE HEADER INFO ACTION -->
@@ -1538,6 +1544,99 @@
 
 </div>
 
+<div class="overlay" id="overlayFoto"></div>
+<div class="popup" style="width: 700px;" id="popupFoto">
+    <svg class="cerrarPopup" id="cerrarPopupFoto" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M11.4142 10L16.7071 4.70711C17.0976 4.31658 17.0976 3.68342 16.7071 3.29289C16.3166 2.90237 15.6834 2.90237 15.2929 3.29289L10 8.58579L4.70711 3.29289C4.31658 2.90237 3.68342 2.90237 3.29289 3.29289C2.90237 3.68342 2.90237 4.31658 3.29289 4.70711L8.58579 10L3.29289 15.2929C2.90237 15.6834 2.90237 16.3166 3.29289 16.7071C3.68342 17.0976 4.31658 17.0976 4.70711 16.7071L10 11.4142L15.2929 16.7071C15.6834 17.0976 16.3166 17.0976 16.7071 16.7071C17.0976 16.3166 17.0976 15.6834 16.7071 15.2929L11.4142 10Z" fill="black"/>
+    </svg>
+    <form  method="post" action="<%=request.getContextPath()%>/MiCuentaServlet?action=editarFoto" enctype="multipart/form-data" >
+    <div class="container-fluid">
+
+            <div class="row"><div class="col"><h5 style="text-align: center;">Editar Foto:</h5></div></div>
+            <div class="row">
+                <div class="mb-3">
+                    <input type="hidden" class="form-control" name="idUsuario" value="<%=idUsuario%>">
+                </div>
+                <div class="col-sm-12">
+                    <br>
+                    <input type="file" accept="image/png, .jpeg, .jpg" name = "cambiarFoto" onchange="previewImage(event,'preview')">
+                </div>
+
+            </div>
+
+            <div class="mt-2 text-center">
+                <img class="" id="preview" alt="" style="max-width: 80%; max-height: 400px;">
+            </div>
+    </div>
+    <br>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-6" style="margin-top: 5px;">
+                <button type="submit" class="button secondary" id="botonEditar2">Subir</button>
+            </div>
+            <div class="col-sm-6" style="margin-top: 5px;">
+                <button type="button" class="button secondary" id="botonCerrar2" style="background-color: grey;" >Cancelar</button>
+            </div>
+
+        </div>
+    </div>
+    </form>
+</div>
+
+<div class="overlay" id="overlaySeguro"></div>
+<div class="popup" style="width: 700px;" id="popupSeguro">
+    <svg class="cerrarPopup" id="cerrarPopupSeguro" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M11.4142 10L16.7071 4.70711C17.0976 4.31658 17.0976 3.68342 16.7071 3.29289C16.3166 2.90237 15.6834 2.90237 15.2929 3.29289L10 8.58579L4.70711 3.29289C4.31658 2.90237 3.68342 2.90237 3.29289 3.29289C2.90237 3.68342 2.90237 4.31658 3.29289 4.70711L8.58579 10L3.29289 15.2929C2.90237 15.6834 2.90237 16.3166 3.29289 16.7071C3.68342 17.0976 4.31658 17.0976 4.70711 16.7071L10 11.4142L15.2929 16.7071C15.6834 17.0976 16.3166 17.0976 16.7071 16.7071C17.0976 16.3166 17.0976 15.6834 16.7071 15.2929L11.4142 10Z" fill="black"/>
+    </svg>
+    <form  method="post" action="<%=request.getContextPath()%>/MiCuentaServlet?action=editarSeguro" enctype="multipart/form-data" >
+        <div class="container-fluid">
+
+            <div class="row"><div class="col"><h5 style="text-align: center;">Editar Seguro:</h5></div></div>
+            <div class="row">
+                <div class="mb-3">
+                    <input type="hidden" class="form-control" name="idUsuario" value="<%=idUsuario%>">
+                </div>
+                <div class="col-sm-12">
+                    <br>
+                    <input type="file" accept="image/png, .jpeg, .jpg" name = "cambiarSeguro" onchange="previewImage(event,'preview2')">
+                </div>
+
+            </div>
+
+            <div class="mt-2 text-center">
+                <img class="" id="preview2" alt="" style="max-width: 80%; max-height: 400px;">
+            </div>
+        </div>
+        <br>
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-sm-6" style="margin-top: 5px;">
+                    <button type="submit" class="button secondary" id="botonEditar3">Subir</button>
+                </div>
+                <div class="col-sm-6" style="margin-top: 5px;">
+                    <button type="button" class="button secondary" id="botonCerrar3" style="background-color: grey;" >Cancelar</button>
+                </div>
+
+            </div>
+        </div>
+    </form>
+</div>
+
+<!-- Función para mostrar la imagen antes de enviarla -->
+<script type="text/javascript">
+    function previewImage(event,idS) {
+        var input = event.target;
+        var image = document.getElementById(idS);
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+            reader.onload = function(e) {
+                image.src = e.target.result;
+            }
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+</script>
+
 <script>
     function popupFunc(popupId,abrirId,cerrarClass,overlayId){
         const showPopup=document.getElementById(abrirId);
@@ -1572,6 +1671,8 @@
             }
         });}
     popupFunc('popupDescripcion','botonDescripcion',['cerrarPopupDescripcion','botonEditar','botonCerrar'],'overlayDescripcion');
+    popupFunc('popupFoto','botonFoto',['cerrarPopupFoto','botonEditar2','botonCerrar2'],'overlayFoto');
+    popupFunc('popupSeguro','botonSeguro',['cerrarPopupSeguro','botonEditar3','botonCerrar3'],'overlaySeguro');
 </script>
 
 <!-- app -->

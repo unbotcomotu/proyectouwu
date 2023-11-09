@@ -3,7 +3,10 @@ package com.example.proyectouwu.Daos;
 import com.example.proyectouwu.Beans.Actividad;
 import com.example.proyectouwu.Beans.Evento;
 import com.example.proyectouwu.Beans.Usuario;
+import com.mysql.cj.jdbc.exceptions.MysqlDataTruncation;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.Random;
@@ -416,20 +419,35 @@ public class DaoUsuario extends DaoPadre {
         }
         return listIdEgresados;
     }
-    public void cambiarFoto(int idUser, Blob foto){
-        String sql = "update usuario set fotoSeguro = ? where idUsuario = ?";
+    public void cambiarFoto(int idUser, InputStream foto, boolean validacion) throws SQLException,IOException{
+        String sql = "update usuario set fotoPerfil = ? where idUsuario = ?";
         try(PreparedStatement pstmt=conn.prepareStatement(sql)){
-            pstmt.setBlob(1,foto);
+            if(!validacion){
+                pstmt.setNull(1,Types.BLOB);
+            }else{
+                pstmt.setBinaryStream(1,foto,foto.available());
+            }
             pstmt.setInt(2,idUser);
 
             pstmt.executeUpdate();
-
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
         }
 
     }
 
+    public void cambiarSeguro(int idUser, InputStream foto, boolean validacion) throws SQLException,IOException{
+        String sql = "update usuario set fotoSeguro = ? where idUsuario = ?";
+        try(PreparedStatement pstmt=conn.prepareStatement(sql)){
+            if(!validacion){
+                pstmt.setNull(1,Types.BLOB);
+            }else{
+                pstmt.setBinaryStream(1,foto,foto.available());
+            }
+            pstmt.setInt(2,idUser);
+
+            pstmt.executeUpdate();
+        }
+
+    }
 
     public int obtenerIdPorCorreo (String correo){
         int id = 0;
@@ -522,6 +540,8 @@ public class DaoUsuario extends DaoPadre {
             throw new RuntimeException(e);
         }
     }
+
+
 
 
 

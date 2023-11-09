@@ -1540,30 +1540,35 @@
 <footer style="font-size: 80%;">
     <!-- Primera fila -->
     <div class="fila">
-        <div class="columna">
-            <span class="titulo">Contactos</span>
-            <ul class="lista">
-                <li>Delegado general 1: <a href="mailto:a20210548@pucp.edu.pe">a20210548@pucp.edu.pe</a></li>
-                <li>Delegado general 2: <a href="mailto:a20210751@pucp.edu.pe">a20210751@pucp.edu.pe</a></li>
-                <li>Delegado general 3: <a href="mailto:josh.yauri@pucp.edu.pe">josh.yauri@pucp.edu.pe</a></li>
-            </ul>
-        </div>
-        <div class="columna">
-            <p>© 2023 Fibra tóxica</p>
-            <ul class="lista">
-                <li><a href="#">Política de Privacidad</a></li>
-                <li><a href="#">Términos y Condiciones</a></li>
-                <li><a href="#">Siguenos en: </a> <i class="fab fa-facebook"></i> <i class="fab fa-instagram"></i> <i class="fab fa-youtube"></i></li>
-            </ul>
-        </div>
-        <div class="columna">
-            <span class="titulo">Sobre nosotros</span>
-            <ul class="lista">
-                <li>Somos un grupo de estudiantes que</li>
-                <li>busca conectar a todos los amantes</li>
-                <li>de esta maravillosa carrera</li>
-            </ul>
-        </div>
+        <div class="fila">
+            <div class="columna">
+                <span class="titulo">Contactos</span>
+                <ul class="lista">
+                    <%for(int i=0;i<listaCorreosDelegadosGenerales.size();i++){%>
+                    <li>Delegado general <%=(i+1)%>: <a href="mailto:<%=listaCorreosDelegadosGenerales.get(i)%>"><%=listaCorreosDelegadosGenerales.get(i)%></a></li>
+                    <%}%>
+                </ul>
+            </div>
+            <div class="columna">
+                <span class="titulo">© 2023 Fibra tóxica</span>
+                <ul class="lista">
+                    <li><a href="enlace-de-politica-de-privacidad">Política de Privacidad</a></li>
+                </ul>
+                <span class="titulo">Síguenos en:</span>
+                <ul class="lista">
+                    <li>
+                        <a href="https://www.facebook.com/profile.php?id=100010710095134"><i class="fab fa-facebook"></i></a>   <a href="https://www.instagram.com/fibra.toxic/"><i class="fab fa-instagram"></i></a>   <a href="https://www.instagram.com/fibra.toxic/"><i class="fab fa-youtube"></i></a>
+                    </li>
+                </ul>
+            </div>
+            <div class="columna">
+                <span class="titulo">Sobre nosotros</span>
+                <ul class="lista">
+                    <li>Somos un grupo de estudiantes que</li>
+                    <li>busca conectar a todos los amantes</li>
+                    <li>de esta maravillosa carrera</li>
+                </ul>
+            </div>
     </div>
 
     <div class="fila">

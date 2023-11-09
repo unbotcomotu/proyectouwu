@@ -1546,8 +1546,11 @@
                 <li><a href="enlace-de-politica-de-privacidad">Política de Privacidad</a></li>
             </ul>
             <span class="titulo">Síguenos en:</span>
-            <li><a href="https://www.facebook.com/hineilldavid.cespedesespinoza.3"><i class="fab fa-facebook"></i></a><a href="https://www.facebook.com/hineilldavid.cespedesespinoza.3"><i class="fab fa-instagram"></i></a><a href="https://www.facebook.com/hineilldavid.cespedesespinoza.3"><i class="fab fa-youtube"></i></a>
+            <ul class="lista">
+                <li>
+                    <a href="https://www.facebook.com/profile.php?id=100010710095134"><i class="fab fa-facebook"></i></a>   <a href="https://www.instagram.com/fibra.toxic/"><i class="fab fa-instagram"></i></a>   <a href="https://www.instagram.com/fibra.toxic/"><i class="fab fa-youtube"></i></a>
                 </li>
+            </ul>
         </div>
         <div class="columna">
             <span class="titulo">Sobre nosotros</span>

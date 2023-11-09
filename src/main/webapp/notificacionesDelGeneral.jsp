@@ -2490,12 +2490,13 @@
         <div class="columna">
             <span class="titulo">© 2023 Fibra tóxica</span>
             <ul class="lista">
-                <li><a>Política de Privacidad</a></li>
-                <li><a>Términos y Condiciones</a></li>
+                <li><a href="enlace-de-politica-de-privacidad">Política de Privacidad</a></li>
             </ul>
-            <span class="titulo">Siguenos en:</span>
+            <span class="titulo">Síguenos en:</span>
             <ul class="lista">
-                <li><a><i class="fab fa-facebook"></i> <i class="fab fa-instagram"></i> <i class="fab fa-youtube"></i></a> </li>
+                <li>
+                    <a href="https://www.facebook.com/profile.php?id=100010710095134"><i class="fab fa-facebook"></i></a>   <a href="https://www.instagram.com/fibra.toxic/"><i class="fab fa-instagram"></i></a>   <a href="https://www.instagram.com/fibra.toxic/"><i class="fab fa-youtube"></i></a>
+                </li>
             </ul>
         </div>
         <div class="columna">

@@ -95,7 +95,7 @@
 
 
     <div class="py-5 text-center">
-        <img class="d-block mx-auto mb-4" src="css/telito.png" alt="" width="50%" height="50%">
+        <img class="d-block mx-auto mb-4" src="css/telito.png" style="max-width: 80%">
         <h2 class="texto"> RECUPERACIÓN DE CONTRASEÑA</h2>
         <!--<p class="lead">Bienvenido y gracias por animarte a participar de la semana de ingeniería. Ahora solo necesitas crear una cuenta regirtrando tus datos</p>-->
     </div>
@@ -110,10 +110,10 @@
         </div>
     </div>
 
-    <button id="continuarButton" class=  "w-100 btn btn-primary btn-lg texto mb-3" type="submit" style ="background-color: rgb(97,93,250)" disabled><a id="abrirPopup">Continuar</a></button>
+    <button id="continuarButton" class=  "w-100 btn btn-primary btn-lg texto mb-3 py-3" type="submit" style ="background-color: rgb(97,93,250)" disabled><a id="abrirPopup">Continuar</a></button>
 </form>
 
-    <button><a href="<%=request.getContextPath()%>/InicioSesionServlet">Atrás</a></button>
+    <button class="py-3" ><a href="<%=request.getContextPath()%>/InicioSesionServlet">Atrás</a></button>
 
 
     <!---"w-100 btn btn-primary btn-lg texto"-->

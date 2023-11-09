@@ -58,7 +58,7 @@ public class MiCuentaServlet extends HttpServlet {
             case "editarFoto":
                 part = request.getPart("cambiarFoto");
 
-                // Obtenemos el flujo de bytes
+                // Obtenemos el flujo de bytes uwu
                 if(part != null){
                     input = part.getInputStream();
                 }
@@ -66,7 +66,7 @@ public class MiCuentaServlet extends HttpServlet {
                 validarLongitud = input.available()>0;
 
                 try {
-                    daoUsuario.cambiarFoto(idUsuario,input,validarLongitud);
+                    daoUsuario.cambiarFoto(idUsuario,input,validarLongitud,"1");
                 } catch (SQLException e) {
                 }
 
@@ -75,7 +75,7 @@ public class MiCuentaServlet extends HttpServlet {
             case "editarSeguro":
                 part = request.getPart("cambiarSeguro");
 
-                // Obtenemos el flujo de bytes
+                // Obtenemos el flujo de bytes owo
                 if(part != null){
                     input = part.getInputStream();
                 }
@@ -83,7 +83,7 @@ public class MiCuentaServlet extends HttpServlet {
                 validarLongitud = input.available()>0;
 
                 try {
-                    daoUsuario.cambiarSeguro(idUsuario,input,validarLongitud);
+                    daoUsuario.cambiarFoto(idUsuario,input,validarLongitud,"2");
                 } catch (SQLException e) {
                 }
 

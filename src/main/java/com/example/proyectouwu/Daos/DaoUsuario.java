@@ -419,23 +419,10 @@ public class DaoUsuario extends DaoPadre {
         }
         return listIdEgresados;
     }
-    public void cambiarFoto(int idUser, InputStream foto, boolean validacion) throws SQLException,IOException{
-        String sql = "update usuario set fotoPerfil = ? where idUsuario = ?";
-        try(PreparedStatement pstmt=conn.prepareStatement(sql)){
-            if(!validacion){
-                pstmt.setNull(1,Types.BLOB);
-            }else{
-                pstmt.setBinaryStream(1,foto,foto.available());
-            }
-            pstmt.setInt(2,idUser);
+    public void cambiarFoto(int idUser, InputStream foto, boolean validacion, String tipo) throws SQLException,IOException{
+        tipo = tipo.equals("1")?"fotoPerfil":"fotoSeguro";
 
-            pstmt.executeUpdate();
-        }
-
-    }
-
-    public void cambiarSeguro(int idUser, InputStream foto, boolean validacion) throws SQLException,IOException{
-        String sql = "update usuario set fotoSeguro = ? where idUsuario = ?";
+        String sql = "update usuario set "+tipo+" = ? where idUsuario = ?";
         try(PreparedStatement pstmt=conn.prepareStatement(sql)){
             if(!validacion){
                 pstmt.setNull(1,Types.BLOB);

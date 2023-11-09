@@ -1546,13 +1546,8 @@
                 <li><a href="enlace-de-politica-de-privacidad">Política de Privacidad</a></li>
             </ul>
             <span class="titulo">Síguenos en:</span>
-            <ul class="lista">
-                <li>
-                    <a href="https://www.facebook.com/hineilldavid.cespedesespinoza.3"><i class="fab fa-facebook"></i></a>
-                    <a href="https://www.facebook.com/hineilldavid.cespedesespinoza.3"><i class="fab fa-instagram"></i></a>
-                    <a href="https://www.facebook.com/hineilldavid.cespedesespinoza.3"><i class="fab fa-youtube"></i></a>
+            <li><a href="https://www.facebook.com/hineilldavid.cespedesespinoza.3"><i class="fab fa-facebook"></i></a><a href="https://www.facebook.com/hineilldavid.cespedesespinoza.3"><i class="fab fa-instagram"></i></a><a href="https://www.facebook.com/hineilldavid.cespedesespinoza.3"><i class="fab fa-youtube"></i></a>
                 </li>
-            </ul>
         </div>
         <div class="columna">
             <span class="titulo">Sobre nosotros</span>

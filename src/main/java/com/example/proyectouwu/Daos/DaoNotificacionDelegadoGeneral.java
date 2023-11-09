@@ -291,7 +291,7 @@ public class DaoNotificacionDelegadoGeneral extends DaoPadre {
         String username = super.getUser();
         String password = super.getPassword();
 
-        String sql = "select correo,tipo,codigoValidacion,fechaHora,idCorreoValidacion from validacion where linkEnviado = 0";
+        String sql = "select correo,tipo,codigoValidacion,fechaHora,idCorreoValidacion from validacion where linkEnviado = 0 order by idCorreoValidacion desc";
         try (Connection conn = DriverManager.getConnection(url, username, password);
              Statement stmt = conn.createStatement();
              ResultSet rs = stmt.executeQuery(sql)) {
@@ -303,7 +303,7 @@ public class DaoNotificacionDelegadoGeneral extends DaoPadre {
                 validacion.setTipo(rs.getString(2));
                 validacion.setCodigoValidacion(rs.getInt(3));
                 validacion.setFechaHora(rs.getDate(4));
-                validacion.setCodigoValidacion(rs.getInt(5));
+                validacion.setIdCorreoValidacion(rs.getInt(5));
                 validacionList.add(validacion);
             }
 
@@ -327,7 +327,7 @@ public class DaoNotificacionDelegadoGeneral extends DaoPadre {
         String username = super.getUser();
         String password = super.getPassword(); //Cambiar segun tu contraseña
 
-        String sql = "select idAlumnoPorEvento, idAlumno from alumnoporevento  where estadoApoyo = 'Pendiente'";
+        String sql = "select idAlumnoPorEvento, idAlumno ,idEvento from alumnoporevento  where estadoApoyo = 'Pendiente'";
 
 
         try (Connection conn = DriverManager.getConnection(url, username, password);
@@ -337,6 +337,7 @@ public class DaoNotificacionDelegadoGeneral extends DaoPadre {
                 AlumnoPorEvento alumnoPorEvento=new AlumnoPorEvento();
                 alumnoPorEvento.setIdAlumnoPorEvento(rs.getInt(1));
                 alumnoPorEvento.setIdAlumno(rs.getInt(2));
+                alumnoPorEvento.setIdEvento(rs.getInt(3));
                 listaSolicitudesApoyo.add(alumnoPorEvento);
             }
         } catch (SQLException e) {

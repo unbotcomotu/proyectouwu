@@ -1329,7 +1329,7 @@
                             <option >Solicitudes de Registro</option>
                             <option >Donaciones</option>
                             <option >Reportes</option>
-                            <option>Solicitudes de Recuperación</option>
+                            <option>Solicitudes de Validación</option>
                         </select>
                         <!-- FORM SELECT ICON -->
                         <svg class="form-select-icon icon-small-arrow">
@@ -1370,7 +1370,7 @@
                     <!-- /FILTER TAB -->
                     <div class="filter-tab">
                         <!-- FILTER TAB TEXT -->
-                        <p class="filter-tab-text clickeable" id="opcionRecuperacion" > Solicitudes de Recuperacion</p>
+                        <p class="filter-tab-text clickeable" id="opcionRecuperacion" > Solicitudes de Validación</p>
                         <!-- /FILTER TAB TEXT -->
                     </div>
                     <!-- /FILTER TAB -->
@@ -1624,7 +1624,7 @@
                             <option >Solicitudes de Registro</option>
                             <option >Donaciones</option>
                             <option >Reportes</option>
-                            <option>Solicitudes de Recuperación</option>
+                            <option>Solicitudes de Validación</option>
                         </select>
                         <!-- FORM SELECT ICON -->
                         <svg class="form-select-icon icon-small-arrow">
@@ -1663,7 +1663,7 @@
                     <!-- /FILTER TAB -->
                     <div class="filter-tab">
                         <!-- FILTER TAB TEXT -->
-                        <p class="filter-tab-text clickeable" id="opcionRecuperacion_1">Solicitudes de Recuperación</p>
+                        <p class="filter-tab-text clickeable" id="opcionRecuperacion_1">Solicitudes de Validación</p>
                         <!-- /FILTER TAB TEXT -->
                     </div>
                 </div>
@@ -1879,7 +1879,7 @@
                             <form method="post" action="<%=request.getContextPath()%>/NotificacionesServlet?action=deleteDonacion">
                                 <input type="hidden" name="id" value="<%=donacion.getIdDonacion()%>">
                                 <input type="hidden" name="idUsuario" value="<%=idUsuario%>">
-                                <button class="button-reject" type="submit"><a>Borrar</a></button>
+                                <button class="button-reject" type="submit"><a>Rechazar</a></button>
                             </form>
                         </div>
                         <!-- /TABLE COLUMN -->
@@ -2013,7 +2013,7 @@
                             <option >Solicitudes de Registro</option>
                             <option >Donaciones</option>
                             <option >Reportes</option>
-                            <option>Solicitudes de Recuperación</option>
+                            <option>Solicitudes de Validación</option>
                         </select>
                         <!-- FORM SELECT ICON -->
                         <svg class="form-select-icon icon-small-arrow">
@@ -2052,7 +2052,7 @@
                     <!-- /FILTER TAB -->
                     <div class="filter-tab">
                         <!-- FILTER TAB TEXT -->
-                        <p class="filter-tab-text clickeable" id="opcionRecuperacion_2" >Solicitudes de Recuperación</p>
+                        <p class="filter-tab-text clickeable" id="opcionRecuperacion_2" >Solicitudes de Validación</p>
                         <!-- /FILTER TAB TEXT -->
                     </div>
                 </div>
@@ -2064,18 +2064,6 @@
 
             <!-- GRID COLUMN -->
             <div class="account-hub-content">
-                <!-- SECTION HEADER -->
-                <div class="section-header">
-                    <!-- SECTION HEADER INFO -->
-                    <div class="section-header-info">
-
-                        <!-- SECTION TITLE -->
-                        <h2 class="section-title">Notificaciones</h2>
-                        <!-- /SECTION TITLE -->
-                    </div>
-                    <!-- /SECTION HEADER INFO -->
-                </div>
-                <!-- /SECTION HEADER -->
 
                 <!-- NOTIFICATION BOX LIST -->
                 <div class="notification-box-list">
@@ -2180,7 +2168,7 @@
                 <!-- FORM -->
                 <form class="form">
                     <!-- FORM INPUT -->
-                    <div class="form-input small with-button">
+                    <div class="form-input small with-button" style="opacity: 0">
                         <label for="friends-search_4">Buscar usuarios</label>
                         <input type="text" id="friends-search_4" name="friends_search">
                         <!-- BUTTON -->
@@ -2202,7 +2190,7 @@
                             <option >Solicitudes de Registro</option>
                             <option >Donaciones</option>
                             <option >Reportes</option>
-                            <option>Solicitudes de Recuperación</option>
+                            <option>Solicitudes de Validación</option>
                         </select>
                         <!-- FORM SELECT ICON -->
                         <svg class="form-select-icon icon-small-arrow">
@@ -2241,7 +2229,7 @@
                     <!-- /FILTER TAB -->
                     <div class="filter-tab active">
                         <!-- FILTER TAB TEXT -->
-                        <p class="filter-tab-text clickeable" id="opcionRecuperacion_3"  > Solicitudes de Recuperación</p>
+                        <p class="filter-tab-text clickeable" id="opcionRecuperacion_3"  > Solicitudes de Validación</p>
                         <!-- /FILTER TAB TEXT -->
                     </div>
                 </div>

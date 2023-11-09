@@ -24,7 +24,7 @@ public class AnaliticasServlet extends HttpServlet {
         request.setAttribute("idUsuario",idUsuario);
         request.setAttribute("rolUsuario",rolUsuario);
         request.setAttribute("nombreCompletoUsuario",dUsuario.nombreCompletoUsuarioPorId(idUsuario));
-        request.setAttribute("vistaActual","listaDeActividades");
+        request.setAttribute( "vistaActual","analiticas");
         request.setAttribute("correosDelegadosGenerales",dUsuario.listarCorreosDelegadosGenerales());
         request.setAttribute("listaNombresActividadesOrden",dActividad.listaNombresActividadesOrden());
         request.setAttribute("cantidadApoyosEstudiantesPorActividadOrden",dActividad.cantidadApoyosEstudiantesPorActividadOrden());

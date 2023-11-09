@@ -635,4 +635,18 @@ public class DaoEvento extends DaoPadre {
         }
         return lista;
     }
+    public String  nombreEventoPorID(int idEvento){
+        String sql="select titulo from evento where idEvento=?";
+        try(PreparedStatement pstmt= conn.prepareStatement(sql)){
+            pstmt.setInt(1,idEvento);
+            try(ResultSet rs=pstmt.executeQuery()){
+                if(rs.next()){
+                    return rs.getString(1);
+                }else
+                    return null;
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }

@@ -2,7 +2,8 @@
 <%@ page import="com.example.proyectouwu.Beans.Usuario" %>
 <%@ page import="com.example.proyectouwu.Daos.DaoUsuario" %>
 <%@ page import="java.util.ArrayList" %>
-<%@ page import="com.example.proyectouwu.Daos.DaoNotificacionDelegadoGeneral" %><%--
+<%@ page import="com.example.proyectouwu.Daos.DaoNotificacionDelegadoGeneral" %>
+<%@ page import="com.example.proyectouwu.Daos.DaoEvento" %><%--
   Created by IntelliJ IDEA.
   User: Santiago
   Date: 24/10/2023
@@ -1392,7 +1393,7 @@
 
                                 <div class="col-sm-6 px-5" style="text-align: center;">
 
-                                    <p style="font-family: 'Rajdhani', sans-serif; text-transform: uppercase; font-weight: 700; font-size: 0.875rem;" >Código: <%= usuarioOWO.codigoUsuarioPorId(alumnoPorEvento.getIdAlumno())%> </p>
+                                    <p style="font-family: 'Rajdhani', sans-serif; text-transform: uppercase; font-weight: 700; font-size: 0.75rem;" ><%= new DaoEvento().nombreEventoPorID(alumnoPorEvento.getIdEvento())%> </p>
 
                                 </div>
 

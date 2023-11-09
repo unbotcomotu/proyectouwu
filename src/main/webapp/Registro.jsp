@@ -129,12 +129,12 @@
 
 
                         <div class="form-check">
-                            <input type="checkbox" class="form-check-input" id="estudiante" name="opciones" value="estudiante">
+                            <input type="checkbox" class="form-check-input" id="estudiante" name="opciones" value="Estudiante">
                             <label class="form-check-label texto" for="estudiante">Alumno</label>
                         </div>
 
                         <div class="form-check">
-                            <input type="checkbox" class="form-check-input" id="egresado" name="opciones" value="egresado">
+                            <input type="checkbox" class="form-check-input" id="egresado" name="opciones" value="Egresado">
                             <label class="form-check-label texto" for="egresado">Egresado</label>
                         </div>
 

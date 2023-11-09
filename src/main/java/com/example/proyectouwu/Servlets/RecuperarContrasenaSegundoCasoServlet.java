@@ -43,6 +43,7 @@ public class RecuperarContrasenaSegundoCasoServlet extends HttpServlet {
                 String password = request.getParameter("password");
                 //Actualizar contrasena
                 new DaoUsuario().actualizarContrasena(Integer.parseInt(idCorreoValidacion),password);
+                response.sendRedirect(request.getContextPath());
                 //else{ salga un mensaje de error en la vista} - no cumplido
                 break;
         }

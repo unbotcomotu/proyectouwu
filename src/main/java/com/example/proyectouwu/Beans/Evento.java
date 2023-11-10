@@ -8,8 +8,8 @@ import java.util.ArrayList;
 public class Evento {
     //ATRIBUTOS
     private int idEvento;
-    private int idActividad;
-    private int lugarEvento;
+    private Actividad actividad=new Actividad();
+    private LugarEvento lugarEvento=new LugarEvento();
     private String titulo;
     private Date fecha;
     private Time hora;
@@ -24,6 +24,7 @@ public class Evento {
 
 
     //GETTERS AND SETTERS
+
     public int getIdEvento() {
         return idEvento;
     }
@@ -32,19 +33,19 @@ public class Evento {
         this.idEvento = idEvento;
     }
 
-    public int getIdActividad() {
-        return idActividad;
+    public Actividad getActividad() {
+        return actividad;
     }
 
-    public void setIdActividad(int idActividad) {
-        this.idActividad = idActividad;
+    public void setActividad(Actividad actividad) {
+        this.actividad = actividad;
     }
 
-    public int getLugarEvento() {
+    public LugarEvento getLugarEvento() {
         return lugarEvento;
     }
 
-    public void setLugarEvento(int lugarEvento) {
+    public void setLugarEvento(LugarEvento lugarEvento) {
         this.lugarEvento = lugarEvento;
     }
 

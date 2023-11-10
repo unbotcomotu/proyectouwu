@@ -1763,7 +1763,7 @@
                 <%for(Evento e:listaEventos){%>
                 <!-- PRODUCT PREVIEW -->
                 <%if(delegadoDeEstaActividadID==idUsuario||rolUsuario.equals("Delegado General")){%>
-                <div class="product-preview">
+                <div class="product-preview" style="<%if(e.isEventoFinalizado()){%>opacity: 0.5<%}%>">
                     <!-- PRODUCT PREVIEW IMAGE -->
                     <figure class="product-preview-image liquid" style="position: relative">
                         <a href="<%=request.getContextPath()%>/EventoServlet?idEvento=<%=e.getIdEvento()%>&idUsuario=<%=idUsuario%>">
@@ -1868,7 +1868,7 @@
                 <!-- /PRODUCT PREVIEW -->
                 <%}else if(!e.isEventoOculto()){%>
                 <!-- /PRODUCT PREVIEW -->
-                <div class="product-preview">
+                <div class="product-preview" style="<%if(e.isEventoFinalizado()){%>opacitiy: 0.5<%}%>">
                     <!-- PRODUCT PREVIEW IMAGE -->
                     <a href="<%=request.getContextPath()%>/EventoServlet?idEvento=<%=e.getIdEvento()%>&idUsuario=<%=idUsuario%>">
                         <figure class="product-preview-image liquid">

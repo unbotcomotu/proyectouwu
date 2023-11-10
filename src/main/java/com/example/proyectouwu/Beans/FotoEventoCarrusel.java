@@ -6,11 +6,12 @@ public class FotoEventoCarrusel {
 
     //ATRIBUTOS
     private int idFotoEventoCarrusel;
-    private int idEvento;
+    private Evento evento=new Evento();
     private Blob foto;
 
 
     //GETTERS AND SETTERS
+
     public int getIdFotoEventoCarrusel() {
         return idFotoEventoCarrusel;
     }
@@ -19,12 +20,12 @@ public class FotoEventoCarrusel {
         this.idFotoEventoCarrusel = idFotoEventoCarrusel;
     }
 
-    public int getIdEvento() {
-        return idEvento;
+    public Evento getEvento() {
+        return evento;
     }
 
-    public void setIdEvento(int idEvento) {
-        this.idEvento = idEvento;
+    public void setEvento(Evento evento) {
+        this.evento = evento;
     }
 
     public Blob getFoto() {

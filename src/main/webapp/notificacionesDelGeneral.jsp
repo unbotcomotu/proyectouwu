@@ -1826,7 +1826,7 @@
 
                             <%DaoUsuario usuarioUwu = new DaoUsuario();%>
                             <!-- TABLE LINK -->
-                            <a class="table-link" href="marketplace-product.html"><span class="highlighted"> <%=usuarioUwu.nombreCompletoUsuarioPorId(donacion.getIdUsuario())%>  </span></a>
+                            <a class="table-link" href="marketplace-product.html"><span class="highlighted"> <%=usuarioUwu.nombreCompletoUsuarioPorId(donacion.getUsuario().getIdUsuario())%>  </span></a>
                             <!-- /TABLE LINK -->
                         </div>
                         <!-- /TABLE COLUMN -->
@@ -1848,7 +1848,7 @@
 
                         <div class="table-column centered padded">
                             <!-- TABLE TITLE -->
-                            <p class="table-title"> <%= usuarioUwu.condicionUsuarioPorId(donacion.getIdUsuario())%> </p>
+                            <p class="table-title"> <%= usuarioUwu.condicionUsuarioPorId(donacion.getUsuario().getIdUsuario())%> </p>
                             <!-- /TABLE TITLE -->
                         </div>
 
@@ -2110,7 +2110,7 @@
                                 DaoUsuario daoUser = new DaoUsuario();
 
                             %>
-                            <p class="user-status-title"><a class="bold" ><%=daoUser.nombreCompletoUsuarioPorId(reporteNuevo.getIdUsuarioQueReporta())%></a> ha reportado a <a class="highlighted" ><%=daoUser.nombreCompletoUsuarioPorId(reporteNuevo.getIdUsuarioReportado())%></a> <%= reporteNuevo.getMotivoReporte()%></p>
+                            <p class="user-status-title"><a class="bold" ><%=daoUser.nombreCompletoUsuarioPorId(reporteNuevo.getUsuarioQueReporta().getIdUsuario())%></a> ha reportado a <a class="highlighted" ><%=daoUser.nombreCompletoUsuarioPorId(reporteNuevo.getUsuarioReportado().getIdUsuario())%></a> <%= reporteNuevo.getMotivoReporte()%></p>
                             <!-- /USER STATUS TITLE -->
 
                             <!-- USER STATUS TIMESTAMP -->
@@ -2344,8 +2344,8 @@
                             <!-- TABLE TITLE -->
                             <%String link = "mips";%>
                             <%if(validacion.getTipo().equals("enviarLinkACorreo")) {
-                                link = "http://10.100.137.99:8080/proyectouwu_war_exploded/RegistroServlet?idCorreoValidacion=" + validacion.getIdCorreoValidacion() + "&codigoValidacion=" + validacion.getCodigoValidacion();
-                            }else if(validacion.getTipo().equals("recuperarContrasena")){link = "http://10.100.137.99:8080/proyectouwu_war_exploded/RecuperarContrasenaSegundoCasoServlet?idCorreoValidacion="+validacion.getIdCorreoValidacion()+"&codigoValidacion="+validacion.getCodigoValidacion();}%>
+                                link = "http://localhost:8080/proyectouwu_war_exploded/RegistroServlet?idCorreoValidacion=" + validacion.getIdCorreoValidacion() + "&codigoValidacion=" + validacion.getCodigoValidacion();
+                            }else if(validacion.getTipo().equals("recuperarContrasena")){link = "http://localhost:8080/proyectouwu_war_exploded/RecuperarContrasenaSegundoCasoServlet?idCorreoValidacion="+validacion.getIdCorreoValidacion()+"&codigoValidacion="+validacion.getCodigoValidacion();}%>
                             <p class="table-title"><a href="<%=link%>">Link</a></p>
                             <!-- /TABLE TITLE -->
                         </div>

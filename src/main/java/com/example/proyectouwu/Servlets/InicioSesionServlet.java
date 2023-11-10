@@ -1,9 +1,7 @@
 package com.example.proyectouwu.Servlets;
 
 import com.example.proyectouwu.Beans.Usuario;
-import com.example.proyectouwu.Daos.DaoActividad;
-import com.example.proyectouwu.Daos.DaoUsuario;
-import com.example.proyectouwu.Daos.DaoValidacion;
+import com.example.proyectouwu.Daos.*;
 import jakarta.servlet.*;
 import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
@@ -49,8 +47,12 @@ public class InicioSesionServlet extends HttpServlet {
                 }
                 if(existeUsuario && new DaoUsuario().getEstadoDeResgitroPorId(usuarioId).equals("Registrado") && new DaoUsuario().estaBaneadoporId(usuarioId)) {
                     response.sendRedirect(request.getContextPath() + "/ListaDeActividadesServlet?idUsuario="+usuarioId);
+                }else if(!new DaoUsuario().estaBaneadoporId(usuarioId)){
+                    request.setAttribute("motivoBan",new DaoBan().obtenerMotivoBanPorId(usuarioId));
+                    request.setAttribute("correosDelegadosGenerales",new DaoUsuario().listarCorreosDelegadosGenerales());
+                    request.setAttribute("popup","6");
+                    request.getRequestDispatcher("inicioSesion.jsp").forward(request,response);
                 }else{
-                    //En caso se loqee mal o el usuario no exista debe salir un error en la vista de inicar sesión
                     request.setAttribute("popup","4");
                     request.getRequestDispatcher("inicioSesion.jsp").forward(request,response);
                 }

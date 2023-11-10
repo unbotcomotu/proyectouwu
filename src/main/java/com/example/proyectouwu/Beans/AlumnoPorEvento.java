@@ -7,8 +7,8 @@ public class AlumnoPorEvento {
 
     //Atributos
     private int idAlumnoPorEvento;
-    private int idAlumno;
-    private int idEvento;
+    private Usuario alumno=new Usuario();
+    private Evento evento=new Evento();
     private String estadoApoyo = "En espera";
     private java.sql.Date fechaSolicitud;
     private Time horaSolicitud;
@@ -18,6 +18,7 @@ public class AlumnoPorEvento {
 
 
     //Getters and setters
+
     public int getIdAlumnoPorEvento() {
         return idAlumnoPorEvento;
     }
@@ -26,20 +27,20 @@ public class AlumnoPorEvento {
         this.idAlumnoPorEvento = idAlumnoPorEvento;
     }
 
-    public int getIdAlumno() {
-        return idAlumno;
+    public Usuario getAlumno() {
+        return alumno;
     }
 
-    public void setIdAlumno(int idAlumno) {
-        this.idAlumno = idAlumno;
+    public void setAlumno(Usuario alumno) {
+        this.alumno = alumno;
     }
 
-    public int getIdEvento() {
-        return idEvento;
+    public Evento getEvento() {
+        return evento;
     }
 
-    public void setIdEvento(int idEvento) {
-        this.idEvento = idEvento;
+    public void setEvento(Evento evento) {
+        this.evento = evento;
     }
 
     public String getEstadoApoyo() {
@@ -54,7 +55,7 @@ public class AlumnoPorEvento {
         return fechaSolicitud;
     }
 
-    public void setFechaSolicitud(java.sql.Date fechaSolicitud) {
+    public void setFechaSolicitud(Date fechaSolicitud) {
         this.fechaSolicitud = fechaSolicitud;
     }
 

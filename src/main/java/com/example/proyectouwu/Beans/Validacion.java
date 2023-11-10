@@ -4,7 +4,7 @@ import java.util.Date;
 public class Validacion {
     //ATRIBUTOS
     private int idCorreoValidacion;
-    private int idUsuario;
+    private Usuario usuario=new Usuario();
     private String correo;
     private String tipo;
     private int codigoValidacion;
@@ -14,6 +14,7 @@ public class Validacion {
 
 
     //GETTERS AND SETTERS
+
     public int getIdCorreoValidacion() {
         return idCorreoValidacion;
     }
@@ -22,12 +23,12 @@ public class Validacion {
         this.idCorreoValidacion = idCorreoValidacion;
     }
 
-    public int getIdUsuario() {
-        return idUsuario;
+    public Usuario getUsuario() {
+        return usuario;
     }
 
-    public void setIdUsuario(int idUsuario) {
-        this.idUsuario = idUsuario;
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
     }
 
     public String getCorreo() {

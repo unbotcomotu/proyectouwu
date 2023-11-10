@@ -1,4 +1,5 @@
-<%--
+<%@ page import="com.example.proyectouwu.Daos.DaoBan" %>
+<%@ page import="java.util.ArrayList" %><%--
   Created by IntelliJ IDEA.
   User: Hineill
   Date: 31/10/2023
@@ -113,13 +114,27 @@
 
         <p style="font-size: 1.125rem;font-family: 'Titillium Web' !important; font-weight: 500 !important; text-align: center;">
             <%if(popup.equals("1")){%>
-            Te hemos enviado un correo electrónico con un link desde el que podrás continuar con el registro
+            Te hemos enviado un correo electrónico con un link desde el que podrás continuar con el registro.
             <%}else if(popup.equals("2")){%>
-            Se le ha enviado un correo electrónico con el siguiente paso para la recuperación de su contraseña
+            Se le ha enviado un correo electrónico con el siguiente paso para la recuperación de su contraseña.
             <%}else if(popup.equals("3")){%>
                 El correo ingresado ya existe
             <%}else if(popup.equals("4")){%>
                 Las credenciales no son correctas
+            <%}else if(popup.equals("5")){%>
+                Espere a la validación de sus datos por parte del delegado general. Se le enviará un correo con el resultado del registro.
+            <%}else if(popup.equals("6")){%>
+                Usted se encuentra actualmente baneado en la plataforma debido al siguiente motivo:
+        <hr>
+            <%=request.getAttribute("motivoBan")%>
+        <hr>
+        Contáctese con algún delegado general:
+        <%ArrayList<String>listaCorreosDelegadosGenerales=(ArrayList<String>)request.getAttribute("correosDelegadosGenerales");%>
+        <ul class="lista" style="font-size: 75%;padding-left: 10%">
+            <%for(int i=0;i<listaCorreosDelegadosGenerales.size();i++){%>
+            <li>Delegado general <%=(i+1)%>: <a href="mailto:<%=listaCorreosDelegadosGenerales.get(i)%>"><%=listaCorreosDelegadosGenerales.get(i)%></a></li>
+            <%}%>
+        </ul>
             <%}%>
         </p>
     </div>

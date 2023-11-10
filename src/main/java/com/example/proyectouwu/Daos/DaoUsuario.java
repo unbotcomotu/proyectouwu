@@ -13,18 +13,9 @@ import java.util.Random;
 import java.util.logging.StreamHandler;
 
 public class DaoUsuario extends DaoPadre {
-    private Connection conn;
-    {
-        try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            conn= DriverManager.getConnection("jdbc:mysql://localhost:3306/proyecto",super.getUser(),super.getPassword());
-        } catch (ClassNotFoundException | SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }
     public String rolUsuarioPorId(int idUsuario){
         String sql="select rol from usuario where idUsuario=?";
-        try(PreparedStatement pstmt= conn.prepareStatement(sql)){
+        try(Connection conn=this.getConnection(); PreparedStatement pstmt= conn.prepareStatement(sql)){
             pstmt.setInt(1,idUsuario);
             try(ResultSet rs=pstmt.executeQuery()){
                 if(rs.next()){
@@ -39,7 +30,7 @@ public class DaoUsuario extends DaoPadre {
 
     public String nombreCompletoUsuarioPorId(int idUsuario){
         String sql="select concat(nombre,' ',apellido) as 'nombreCompleto' from usuario where idUsuario=?";
-        try(PreparedStatement pstmt= conn.prepareStatement(sql)){
+        try(Connection conn=this.getConnection(); PreparedStatement pstmt= conn.prepareStatement(sql)){
             pstmt.setInt(1,idUsuario);
             try(ResultSet rs=pstmt.executeQuery()){
                 if(rs.next()){
@@ -54,7 +45,7 @@ public class DaoUsuario extends DaoPadre {
 
     public String condicionUsuarioPorId(int idUsuario){
         String sql="select condicion from usuario where idUsuario=?";
-        try(PreparedStatement pstmt= conn.prepareStatement(sql)){
+        try(Connection conn=this.getConnection(); PreparedStatement pstmt= conn.prepareStatement(sql)){
             pstmt.setInt(1,idUsuario);
             try(ResultSet rs=pstmt.executeQuery()){
                 if(rs.next()){
@@ -70,7 +61,7 @@ public class DaoUsuario extends DaoPadre {
 
     public String correoUsuarioPorId(int idUsuario){
         String sql="select correo from usuario where idUsuario=?";
-        try(PreparedStatement pstmt= conn.prepareStatement(sql)){
+        try(Connection conn=this.getConnection(); PreparedStatement pstmt= conn.prepareStatement(sql)){
             pstmt.setInt(1,idUsuario);
             try(ResultSet rs=pstmt.executeQuery()){
                 if(rs.next()){
@@ -85,7 +76,7 @@ public class DaoUsuario extends DaoPadre {
 
     public String codigoUsuarioPorId(int idUsuario){
         String sql="select codigoPUCP from usuario where idUsuario=?";
-        try(PreparedStatement pstmt= conn.prepareStatement(sql)){
+        try(Connection conn=this.getConnection(); PreparedStatement pstmt= conn.prepareStatement(sql)){
             pstmt.setInt(1,idUsuario);
             try(ResultSet rs=pstmt.executeQuery()){
                 if(rs.next()){
@@ -102,7 +93,7 @@ public class DaoUsuario extends DaoPadre {
     public ArrayList<String>listarCorreosDelegadosGenerales(){
         ArrayList<String>listaCorreosDelegadosGenerales=new ArrayList<>();
         String sql="select correo from usuario where rol='Delegado General'";
-        try(ResultSet rs=conn.createStatement().executeQuery(sql)){
+        try(Connection conn=this.getConnection(); ResultSet rs=conn.createStatement().executeQuery(sql)){
             while(rs.next()){
                 listaCorreosDelegadosGenerales.add(rs.getString(1));
             }return listaCorreosDelegadosGenerales;
@@ -114,7 +105,7 @@ public class DaoUsuario extends DaoPadre {
     public ArrayList<Usuario>listarIDyNombreDelegadosDeActividad(){
         ArrayList<Usuario>listaDelegadosDeActividad=new ArrayList<>();
         String sql="select u.idUsuario,u.nombre,u.apellido from usuario u left join ban b on u.idUsuario=b.idUsuario where rol='Alumno' and b.idUsuario is null and u.estadoRegistro='Registrado' ";
-        try(ResultSet rs=conn.createStatement().executeQuery(sql)){
+        try(Connection conn=this.getConnection(); ResultSet rs=conn.createStatement().executeQuery(sql)){
             while(rs.next()){
                 Usuario u=new Usuario();
                 u.setIdUsuario(rs.getInt(1));
@@ -130,7 +121,7 @@ public class DaoUsuario extends DaoPadre {
     public ArrayList<Usuario> listarUsuarios(){
         ArrayList<Usuario> lista = new ArrayList<>();
         String sql = "select idUsuario, nombre, apellido, rol, codigoPUCP, condicion, fotoPerfil, descripcionPerfil from usuario where estadoRegistro='Registrado' AND rol!='Delegado General'";
-        try(ResultSet rs = conn.prepareStatement(sql).executeQuery()){
+        try(Connection conn=this.getConnection(); ResultSet rs=conn.prepareStatement(sql).executeQuery()){
             while(rs.next()){
                 Usuario usuario = new Usuario();
                 usuario.setIdUsuario(rs.getInt(1));
@@ -152,7 +143,7 @@ public class DaoUsuario extends DaoPadre {
     public ArrayList<Usuario> listarUsuariosTotal(){
         ArrayList<Usuario> lista = new ArrayList<>();
         String sql = "select idUsuario , correo , contrasena from usuario";
-        try(ResultSet rs = conn.prepareStatement(sql).executeQuery()){
+        try(Connection conn=this.getConnection(); ResultSet rs=conn.prepareStatement(sql).executeQuery()){
             while(rs.next()){
                 Usuario usuario = new Usuario();
                 usuario.setIdUsuario(rs.getInt(1));
@@ -169,7 +160,7 @@ public class DaoUsuario extends DaoPadre {
     public ArrayList<Usuario>listarUsuarioXnombre(String nombre){
         ArrayList<Usuario>listaUsuarios=new ArrayList<>();
         String sql = "select idUsuario, nombre, apellido, rol, codigoPUCP, condicion, fotoPerfil, descripcionPerfil from usuario where estadoRegistro='Registrado' AND rol!='Delegado General' and (nombre like ? or apellido like ? )";
-        try(PreparedStatement pstmt=conn.prepareStatement(sql)){
+        try(Connection conn=this.getConnection(); PreparedStatement pstmt=conn.prepareStatement(sql)){
             pstmt.setString(1,"%"+nombre+"%");
             pstmt.setString(2,"%"+nombre+"%");
             try (ResultSet rs=pstmt.executeQuery()){
@@ -218,7 +209,7 @@ public class DaoUsuario extends DaoPadre {
             } else {
                 sql = "select u.idUsuario, u.nombre, u.apellido, u.rol, u.codigoPUCP, u.condicion, u.fotoPerfil, u.descripcionPerfil from usuario u left join ban b on u.idUsuario=b.idUsuario where estadoRegistro='Registrado' AND rol!='Delegado General' order by if(b.idBan is not null,0,1)";           }
         }
-        try(ResultSet rs=conn.createStatement().executeQuery(sql);){
+        try(Connection conn=this.getConnection(); ResultSet rs=conn.createStatement().executeQuery(sql);){
             while (rs.next()){
                 Usuario u=new Usuario();
                 u.setIdUsuario(rs.getInt(1));
@@ -240,7 +231,7 @@ public class DaoUsuario extends DaoPadre {
 
     public boolean usuarioEsDelegadoDeActividad(int idUsuario){
         String sql = "select rol from usuario where idUsuario=?";
-        try(PreparedStatement pstmt = conn.prepareStatement(sql)){
+        try(Connection conn=this.getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql)){
             pstmt.setInt(1,idUsuario);
             try(ResultSet rs = pstmt.executeQuery()){
                 if(rs.next()){
@@ -261,7 +252,7 @@ public class DaoUsuario extends DaoPadre {
     public String obtenerDelegaturaPorId(int idUsuario){
         String sql = "select nombre from actividad where idDelegadoDeActividad=?";
 
-        try(PreparedStatement pstmt=conn.prepareStatement(sql)){
+        try(Connection conn=this.getConnection(); PreparedStatement pstmt=conn.prepareStatement(sql)){
             pstmt.setInt(1,idUsuario);
             try(ResultSet rs = pstmt.executeQuery()){
                 if(rs.next()){
@@ -278,7 +269,7 @@ public class DaoUsuario extends DaoPadre {
     public ArrayList<String> obtenerInfoPorId(int idUsuario){
         ArrayList<String> listaInfo = new ArrayList<>();
         String sql = "select codigoPUCP, correo, condicion from usuario where idUsuario=?";
-        try(PreparedStatement pstmt=conn.prepareStatement(sql)){
+        try(Connection conn=this.getConnection(); PreparedStatement pstmt=conn.prepareStatement(sql)){
             pstmt.setInt(1,idUsuario);
             try(ResultSet rs = pstmt.executeQuery()){
                 if(rs.next()){
@@ -296,7 +287,7 @@ public class DaoUsuario extends DaoPadre {
     public String obtenerDescripcionPorId(int idUsuario){
         String descripcion="";
         String sql = "select descripcionPerfil from usuario where idUsuario=?";
-        try(PreparedStatement pstmt=conn.prepareStatement(sql)){
+        try(Connection conn=this.getConnection(); PreparedStatement pstmt=conn.prepareStatement(sql)){
             pstmt.setInt(1,idUsuario);
             try(ResultSet rs = pstmt.executeQuery()){
                 if(rs.next()){
@@ -323,7 +314,7 @@ public class DaoUsuario extends DaoPadre {
     public Usuario getUsuarioPorIdSinFiltro(int Id) throws SQLException {
         Usuario usuario = new Usuario();
         String sql = "select idUsuario, nombre, apellido, rol, codigoPUCP, condicion, fotoPerfil, fotoSeguro, descripcionPerfil from usuario WHERE idUsuario = ?";
-        try(PreparedStatement pstmt = conn.prepareStatement(sql)){
+        try(Connection conn=this.getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql)){
             pstmt.setInt(1,Id);
             try(ResultSet rs = pstmt.executeQuery()){
                 if(rs.next()){
@@ -354,7 +345,7 @@ public class DaoUsuario extends DaoPadre {
         }
         String sql = "update usuario set descripcionPerfil = ? where idusuario = ?";
 
-        try(PreparedStatement pstmt = conn.prepareStatement(sql)){
+        try(Connection conn=this.getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql)){
 
             pstmt.setString(1,nuevaDescripcion);
             pstmt.setInt(2,idUsuario);
@@ -366,7 +357,7 @@ public class DaoUsuario extends DaoPadre {
     }
     public void registroDeAlumno(String name, String apellido, String correo, String contrasena, String codigoPUCP, String condicion){
         String sql = "insert into usuario( rol, nombre, apellido, correo, contrasena, codigoPUCP, estadoRegistro, fechaHoraRegistro,condicion ,DescripcionPerfil) values (?, ?,?, ?,?, ?,?,(select now()),?, 'Vamos Fibra')";
-        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+        try (Connection conn=this.getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql,Statement.RETURN_GENERATED_KEYS)) {
             //pstmt.setInt(1,idUser);
             pstmt.setString(1,"Alumno"); //nuevos usuarios se registran como alumnos
             pstmt.setString(2,name);
@@ -378,6 +369,10 @@ public class DaoUsuario extends DaoPadre {
             //Ajustar a como debe estar en la base de datos este valor viene del jsp que solo tiene botones para esooger
             pstmt.setString(8,condicion);
             pstmt.executeUpdate();
+            ResultSet rskeys=pstmt.getGeneratedKeys();
+            if(rskeys.next()){
+                new DaoNotificacionDelegadoGeneral().crearNotificacionSolicitudDeRegistro(rskeys.getInt(1));
+            }
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -389,7 +384,7 @@ public class DaoUsuario extends DaoPadre {
     public void cambiarEstadoRegistroUsuario(int idUser, String estado){
         String sql = "update usuario set estadoRegistro = ? where idUsuario = ?";
 
-        try(PreparedStatement pstmt=conn.prepareStatement(sql)){
+        try(Connection conn=this.getConnection(); PreparedStatement pstmt=conn.prepareStatement(sql)){
             pstmt.setString(1,estado);
             pstmt.setInt(2,idUser);
             pstmt.executeUpdate();
@@ -403,7 +398,7 @@ public class DaoUsuario extends DaoPadre {
     public String getEstadoDeResgitroPorId(int id){
         String sql = "select estadoRegistro from usuario where  idUsuario = ?";
 
-        try(PreparedStatement pstmt=conn.prepareStatement(sql)){
+        try(Connection conn=this.getConnection(); PreparedStatement pstmt=conn.prepareStatement(sql)){
             pstmt.setInt(1,id);
             try(ResultSet rs = pstmt.executeQuery()){
                 if(rs.next()){
@@ -418,7 +413,7 @@ public class DaoUsuario extends DaoPadre {
     }
     public float donacionPorIdUser(int idUser){
         String sql = "select sum(monto)  from donacion where idUsuario = ?";
-        try(PreparedStatement pstmt=conn.prepareStatement(sql)){
+        try(Connection conn=this.getConnection(); PreparedStatement pstmt=conn.prepareStatement(sql)){
             pstmt.setInt(1,idUser);
             try(ResultSet rs = pstmt.executeQuery()){
                 if(rs.next()){
@@ -435,7 +430,7 @@ public class DaoUsuario extends DaoPadre {
         ArrayList<Integer> listIdEgresados = new ArrayList<>();
 
         String sql = "select idUsuario from usuario where condicion = 'Egresado'";
-        try(ResultSet rs = conn.prepareStatement(sql).executeQuery()){
+        try(Connection conn=this.getConnection(); ResultSet rs=conn.prepareStatement(sql).executeQuery()){
             while(rs.next()){
                 listIdEgresados.add(rs.getInt(1));
             }
@@ -448,7 +443,7 @@ public class DaoUsuario extends DaoPadre {
         tipo = tipo.equals("1")?"fotoPerfil":"fotoSeguro";
 
         String sql = "update usuario set "+tipo+" = ? where idUsuario = ?";
-        try(PreparedStatement pstmt=conn.prepareStatement(sql)){
+        try(Connection conn=this.getConnection(); PreparedStatement pstmt=conn.prepareStatement(sql)){
             if(!validacion){
                 pstmt.setNull(1,Types.BLOB);
             }else{
@@ -464,7 +459,7 @@ public class DaoUsuario extends DaoPadre {
     public int obtenerIdPorCorreo (String correo){
         int id = 0;
         String sql = "select idusuario from usuario where correo =?";
-        try(PreparedStatement pstmt=conn.prepareStatement(sql)){
+        try(Connection conn=this.getConnection(); PreparedStatement pstmt=conn.prepareStatement(sql)){
             pstmt.setString(1,correo);
             try(ResultSet rs = pstmt.executeQuery()){
                 if(rs.next()) {
@@ -480,7 +475,7 @@ public class DaoUsuario extends DaoPadre {
     public boolean estaBaneadoporId(int usuarioId){
         boolean baneado = true;
         String sql = "SELECT idUsuario FROM proyecto.ban where idUsuario = ?";
-        try(PreparedStatement pstmt=conn.prepareStatement(sql)){
+        try(Connection conn=this.getConnection(); PreparedStatement pstmt=conn.prepareStatement(sql)){
             pstmt.setInt(1,usuarioId);
             try(ResultSet rs = pstmt.executeQuery()){
                 if(rs.next()) {
@@ -496,7 +491,7 @@ public class DaoUsuario extends DaoPadre {
     }
     public void actualizarContrasena (int idCorreoValidacion, String password){
         String sql = "update usuario set contrasena = ? where idUsuario = (Select idUsuario from validacion where idCorreoValidacion = ?)";
-        try(PreparedStatement pstmt=conn.prepareStatement(sql)){
+        try(Connection conn=this.getConnection(); PreparedStatement pstmt=conn.prepareStatement(sql)){
             pstmt.setString(1,password);
             pstmt.setInt(2,idCorreoValidacion);
             pstmt.executeUpdate();
@@ -508,7 +503,7 @@ public class DaoUsuario extends DaoPadre {
 
     public void aceptarRegistro(int idUsuario){
         String sql = "update usuario set estadoRegistro = ? where idUsuario = ?";
-        try(PreparedStatement pstmt=conn.prepareStatement(sql)){
+        try(Connection conn=this.getConnection(); PreparedStatement pstmt=conn.prepareStatement(sql)){
             pstmt.setString(1,"Registrado");
             pstmt.setInt(2,idUsuario);
             pstmt.executeUpdate();
@@ -519,7 +514,7 @@ public class DaoUsuario extends DaoPadre {
 
     public void rechazarRegistro(int idUsuario){
         String sql = "update usuario set estadoRegistro = ? where idUsuario = ?";
-        try(PreparedStatement pstmt=conn.prepareStatement(sql)){
+        try(Connection conn=this.getConnection(); PreparedStatement pstmt=conn.prepareStatement(sql)){
             pstmt.setString(1,"No registrado");
             pstmt.setInt(2,idUsuario);
             pstmt.executeUpdate();
@@ -529,7 +524,7 @@ public class DaoUsuario extends DaoPadre {
     }
     public Integer totalEstudiantesRegistrados(){
         String sql = "select count(idUsuario) from usuario where condicion='Estudiante' and estadoRegistro='Registrado'";
-        try(ResultSet rs=conn.createStatement().executeQuery(sql)){
+        try(Connection conn=this.getConnection(); ResultSet rs=conn.createStatement().executeQuery(sql)){
             if(rs.next()) {
                 return rs.getInt(1);
             }else{
@@ -542,7 +537,7 @@ public class DaoUsuario extends DaoPadre {
 
     public Integer totalEgresadosRegistrados(){
         String sql = "select count(idUsuario) from usuario where condicion='Egresado' and estadoRegistro='Registrado'";
-        try(ResultSet rs=conn.createStatement().executeQuery(sql)){
+        try(Connection conn=this.getConnection(); ResultSet rs=conn.createStatement().executeQuery(sql)){
             if(rs.next()) {
                 return rs.getInt(1);
             }else{

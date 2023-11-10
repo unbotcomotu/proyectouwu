@@ -7,7 +7,7 @@ import java.sql.Time;
 public class Donacion {
     //ATRIBUTOS
     private int idDonacion;
-    private int idUsuario;
+    private Usuario usuario=new Usuario();
     private String medioPago;
     private float monto;
     private Date fecha;
@@ -15,9 +15,10 @@ public class Donacion {
     private Blob captura;
     private Date fechaValidacion;
     private Time horaValidacion;
-    private String estadoDonacion = "En espera";
+    private String estadoDonacion;
 
     //GETTERS AND SETTERS
+
     public int getIdDonacion() {
         return idDonacion;
     }
@@ -26,12 +27,12 @@ public class Donacion {
         this.idDonacion = idDonacion;
     }
 
-    public int getIdUsuario() {
-        return idUsuario;
+    public Usuario getUsuario() {
+        return usuario;
     }
 
-    public void setIdUsuario(int idUsuario) {
-        this.idUsuario = idUsuario;
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
     }
 
     public String getMedioPago() {

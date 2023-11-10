@@ -6,13 +6,14 @@ import java.sql.Date;
 public class MensajeChat {
     //ATRIBUTOS
     private int idMensajeChat;
-    private int idUsuario;
-    private int idEvento;
+    private Usuario usuario=new Usuario();
+    private Evento evento=new Evento();
     private String mensaje;
     private Date fecha;
     private Time hora;
 
     //GETTERS AND SETTERS
+
     public int getIdMensajeChat() {
         return idMensajeChat;
     }
@@ -21,20 +22,20 @@ public class MensajeChat {
         this.idMensajeChat = idMensajeChat;
     }
 
-    public int getIdUsuario() {
-        return idUsuario;
+    public Usuario getUsuario() {
+        return usuario;
     }
 
-    public void setIdUsuario(int idUsuario) {
-        this.idUsuario = idUsuario;
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
     }
 
-    public int getIdEvento() {
-        return idEvento;
+    public Evento getEvento() {
+        return evento;
     }
 
-    public void setIdEvento(int idEvento) {
-        this.idEvento = idEvento;
+    public void setEvento(Evento evento) {
+        this.evento = evento;
     }
 
     public String getMensaje() {

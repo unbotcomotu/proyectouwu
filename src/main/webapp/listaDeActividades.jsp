@@ -1666,7 +1666,7 @@
     <form method="post" action="<%=request.getContextPath()%>/ListaDeActividadesServlet?action=editarActividad">
         <input type="hidden" name="idUsuario" value="<%=idUsuario%>">
         <input type="hidden" name="idActividadEditar" value="<%=listaActividades.get(i).getIdActividad()%>">
-        <input type="hidden" name="idDelegadoActividadAnterior" value="<%=listaActividades.get(i).getIdDelegadoDeActividad()%>">
+        <input type="hidden" name="idDelegadoActividadAnterior" value="<%=listaActividades.get(i).getDelegadoDeActividad().getIdUsuario()%>">
         <div class="container-fluid">
             <div class="row"><div class="col"><h5 style="text-align: center;">Editar actividad</h5></div></div>
             <div class="row">
@@ -1677,7 +1677,7 @@
 
                     <label for="idDelegadoActividadEditar<%=i%>" style="margin-top: 25px;"><b>Seleccionar delegado de actividad:</b></label>
                     <select style="height: 55px;padding-left: 20px" name="idDelegadoActividadEditar" id="idDelegadoActividadEditar<%=i%>" required>
-                        <option value="<%=listaActividades.get(i).getIdDelegadoDeActividad()%>" selected><%=new DaoUsuario().nombreCompletoUsuarioPorId(listaActividades.get(i).getIdDelegadoDeActividad())%></option>
+                        <option value="<%=listaActividades.get(i).getDelegadoDeActividad().getIdUsuario()%>" selected><%=new DaoUsuario().nombreCompletoUsuarioPorId(listaActividades.get(i).getDelegadoDeActividad().getIdUsuario())%></option>
                         <%for(Usuario u:listaIDyNombresDelegadosDeActividad){%>
                         <option value="<%=u.getIdUsuario()%>"><%=u.getNombre()%> <%=u.getApellido()%></option>
                         <%}%>

@@ -1,4 +1,5 @@
-<%--
+<%@ page import="com.example.proyectouwu.Beans.Validacion" %>
+<%@ page import="java.util.ArrayList" %><%--
   Created by IntelliJ IDEA.
   User: Santiago
   Date: 24/10/2023
@@ -6,8 +7,9 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<jsp:useBean id="validacion" type="com.example.proyectouwu.Beans.Validacion" scope="request" />
-
+<%Validacion validacion=(Validacion) request.getAttribute("validacion");
+    ArrayList<String> listaCorreosDelegadosGenerales=(ArrayList<String>)request.getAttribute("correosDelegadosGenerales");
+%>
 
 <html>
 <head>
@@ -19,6 +21,14 @@
     <title>Registro - Siempre Fibra</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="css/vendor/bootstrap.min.css">
+    <!-- styles -->
+    <link rel="stylesheet" href="css/raw/stylesSanti.css">
+    <!-- simplebar styles -->
+    <link rel="stylesheet" href="css/vendor/simplebar.css">
+    <!-- tiny-slider styles -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link rel="stylesheet" href="css/vendor/tiny-slider.css">
     <link rel="canonical" href="https://getbootstrap.com/docs/5.0/examples/checkout/">
 
     <link rel="stylesheet" href="css/styles_aux.css">
@@ -110,24 +120,6 @@
                             <input type="hidden" class="form-control" name="idCorreoValidacion" value="<%=validacion.getIdCorreoValidacion()%>">
                         </div>
 
-                        <script>
-                            document.getElementById("password2").addEventListener("input", function () {
-                                var password1 = document.getElementById("password").value;
-                                var password2 = document.getElementById("password2").value;
-                                var passwordError = document.getElementById("password-error");
-
-                                if (password1 !== password2) {
-                                    passwordError.style.display = "block";
-                                    continuarButton.disabled=true;
-
-                                } else {
-                                    passwordError.style.display = "none";
-                                    continuarButton.disabled=false;
-                                }
-                            });
-                        </script>
-
-
                         <div class="form-check">
                             <input type="checkbox" class="form-check-input" id="estudiante" name="opciones" value="Estudiante">
                             <label class="form-check-label texto" for="estudiante">Alumno</label>
@@ -139,18 +131,6 @@
                         </div>
 
 
-                        <script>
-                            const checkboxes = document.querySelectorAll('input[name="opciones"]');
-                            checkboxes.forEach((checkbox) => {
-                                checkbox.addEventListener('change', function () {
-                                    checkboxes.forEach((otherCheckbox) => {
-                                        if (otherCheckbox !== checkbox) {
-                                            otherCheckbox.checked = false;
-                                        }
-                                    });
-                                });
-                            });
-                        </script>
 
                         <!--<button class="w-100 btn btn-primary btn-lg" type="submit">Continuar</button>-->
 
@@ -158,11 +138,34 @@
                         <button id="continuarButton" class="w-100 btn btn-secondary btn-lg texto" type="submit" style ="background-color: rgb(97,93,250)" disabled> <a style="color: white;" >Continuar</a> </button>
 
                         <button onclick="goBack()">Atrás</button>
-
-
                         <script>
                             const checkboxe = document.querySelectorAll('input[name="opciones"]');
                             const continuarButton = document.getElementById('continuarButton');
+                            let i=true;
+                            let j=true;
+                            document.getElementById("password2").addEventListener("input", function () {
+                                var password1 = document.getElementById("password").value;
+                                var password2 = document.getElementById("password2").value;
+                                var passwordError = document.getElementById("password-error");
+
+                                if (password1 !== password2) {
+                                    passwordError.style.display = "block";
+                                    i=true;
+                                    if(i===true || j===true){
+                                        continuarButton.disabled=true;
+                                    }
+
+                                } else {
+                                    passwordError.style.display = "none";
+                                    i=false;
+                                    if(i===false && j===false){
+                                        continuarButton.disabled=false;
+                                    }
+                                }
+                                console.log(i);
+                                console.log(j);
+                            });
+
 
                             checkboxe.forEach((checkbox) => {
                                 checkbox.addEventListener('change', function () {
@@ -173,12 +176,21 @@
                                     });
 
                                     // Verificar si al menos una casilla está marcada
-                                    const algunaMarcada = Array.from(checkboxes).some((checkbox) => checkbox.checked);
+                                    const algunaMarcada = Array.from(checkboxe).some((checkbox) => checkbox.checked);
 
                                     // Habilitar o deshabilitar el botón "Continuar" según si hay casillas marcadas
-                                    continuarButton.disabled = !algunaMarcada;
+                                    j=!algunaMarcada;
+                                    if(i===true || j===true){
+                                        continuarButton.disabled=true;
+                                    }else {
+                                        continuarButton.disabled=false;
+                                    }
+                                    console.log(i);
+                                    console.log(j);
                                 });
                             });
+
+
                         </script>
                     </div>
                     </form>
@@ -186,41 +198,40 @@
             </div>
         </div>
     </main>
-
-    <footer style="font-size: 80%;">
-        <!-- Primera fila -->
-        <div class="fila">
-            <div class="columna">
-                <span class="titulo">Contactos</span>
-                <ul class="lista">
-                    <%for(int i=0;i<listaCorreosDelegadosGenerales.size();i++){%>
-                    <li>Delegado general <%=(i+1)%>: <a href="mailto:<%=listaCorreosDelegadosGenerales.get(i)%>"><%=listaCorreosDelegadosGenerales.get(i)%></a></li>
-                    <%}%>
-                </ul>
-            </div>
-            <div class="columna">
-                <span class="titulo">© 2023 Fibra tóxica</span>
-                <ul class="lista">
-                    <li><a href="enlace-de-politica-de-privacidad">Política de Privacidad</a></li>
-                </ul>
-                <span class="titulo">Síguenos en:</span>
-                <ul class="lista">
-                    <li>
-                        <a href="https://www.facebook.com/profile.php?id=100010710095134"><i class="fab fa-facebook"></i></a>   <a href="https://www.instagram.com/fibra.toxic/"><i class="fab fa-instagram"></i></a>   <a href="https://www.instagram.com/fibra.toxic/"><i class="fab fa-youtube"></i></a>
-                    </li>
-                </ul>
-            </div>
-            <div class="columna">
-                <span class="titulo">Sobre nosotros</span>
-                <ul class="lista">
-                    <li>Somos un grupo de estudiantes que</li>
-                    <li>busca conectar a todos los amantes</li>
-                    <li>de esta maravillosa carrera</li>
-                </ul>
-            </div>
-        </div>
-    </footer>
 </div>
+<footer style="font-size: 80%; margin-top: 30px">
+    <!-- Primera fila -->
+    <div class="fila">
+        <div class="columna">
+            <span class="titulo">Contactos</span>
+            <ul class="lista">
+                <%for(int i=0;i<listaCorreosDelegadosGenerales.size();i++){%>
+                <li>Delegado general <%=(i+1)%>: <a href="mailto:<%=listaCorreosDelegadosGenerales.get(i)%>"><%=listaCorreosDelegadosGenerales.get(i)%></a></li>
+                <%}%>
+            </ul>
+        </div>
+        <div class="columna">
+            <span class="titulo">© 2023 Fibra tóxica</span>
+            <ul class="lista">
+                <li><a href="enlace-de-politica-de-privacidad">Política de Privacidad</a></li>
+            </ul>
+            <span class="titulo">Síguenos en:</span>
+            <ul class="lista">
+                <li>
+                    <a href="https://www.facebook.com/profile.php?id=100010710095134"><i class="fab fa-facebook"></i></a>   <a href="https://www.instagram.com/fibra.toxic/"><i class="fab fa-instagram"></i></a>   <a href="https://www.instagram.com/fibra.toxic/"><i class="fab fa-youtube"></i></a>
+                </li>
+            </ul>
+        </div>
+        <div class="columna">
+            <span class="titulo">Sobre nosotros</span>
+            <ul class="lista">
+                <li>Somos un grupo de estudiantes que</li>
+                <li>busca conectar a todos los amantes</li>
+                <li>de esta maravillosa carrera</li>
+            </ul>
+        </div>
+    </div>
+</footer>
 <script src="../assets/dist/js/bootstrap.bundle.min.js"></script>
 <script src="form-validation.js"></script>
 <script>

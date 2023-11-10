@@ -8,11 +8,12 @@ public class NotificacionDelegadoGeneral {
     private int idNotificacion;
     private Date fechaNotificacion;
     private Time horaNotificacion;
-    private int idReporte;
-    private int idDonacion;
-    private int idUsuario;
+    private Reporte reporte=new Reporte();
+    private Donacion donacion=new Donacion();
+    private Usuario usuario=new Usuario();
 
     //GETTERS AND SETTERS
+
     public int getIdNotificacion() {
         return idNotificacion;
     }
@@ -37,28 +38,27 @@ public class NotificacionDelegadoGeneral {
         this.horaNotificacion = horaNotificacion;
     }
 
-    public int getIdReporte() {
-        return idReporte;
+    public Reporte getReporte() {
+        return reporte;
     }
 
-    public void setIdReporte(int idReporte) {
-        this.idReporte = idReporte;
+    public void setReporte(Reporte reporte) {
+        this.reporte = reporte;
     }
 
-    public int getIdDonacion() {
-        return idDonacion;
+    public Donacion getDonacion() {
+        return donacion;
     }
 
-    public void setIdDonacion(int idDonacion) {
-        this.idDonacion = idDonacion;
+    public void setDonacion(Donacion donacion) {
+        this.donacion = donacion;
     }
 
-    public int getIdUsuario() {
-        return idUsuario;
+    public Usuario getUsuario() {
+        return usuario;
     }
 
-    public void setIdUsuario(int idUsuario) {
-        this.idUsuario = idUsuario;
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
     }
-
-    }
+}

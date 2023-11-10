@@ -16,36 +16,14 @@ import java.time.Period;
 import java.time.LocalDate;
 public class DaoNotificacionDelegadoGeneral extends DaoPadre {
 
-    private Connection conn;
-    {
-        try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            conn= DriverManager.getConnection("jdbc:mysql://localhost:3306/proyecto",super.getUser(),super.getPassword());
-        } catch (ClassNotFoundException | SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
     public ArrayList<Usuario>listarSolicitudesDeRegistro(){
 
         ArrayList<Usuario> listaSolicitudes = new ArrayList<>();
 
-        try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
-        } catch (ClassNotFoundException e) {
-            throw new RuntimeException(e);
-        }
-
-        String url = "jdbc:mysql://localhost:3306/proyecto";
-        String username = super.getUser();
-        String password = super.getPassword(); //Cambiar segun tu contraseña
-
-        String sql = "select nombre, apellido, correo, codigoPUCP, condicion ,idUsuario from Usuario where estadoRegistro = 'Pendiente'";
+        String sql = "select nombre, apellido, correo, codigoPUCP, condicion ,idUsuario from Usuario where estadoRegistro = 'Pendiente' order by fechaHoraRegistro desc";
 
 
-        try (Connection conn = DriverManager.getConnection(url, username, password);
-             Statement stmt = conn.createStatement();
-             ResultSet rs = stmt.executeQuery(sql)) {
+        try (Connection conn=this.getConnection(); ResultSet rs=conn.createStatement().executeQuery(sql)) {
             while (rs.next()){
                 Usuario u=new Usuario();
                 u.setNombre(rs.getString(1));
@@ -65,19 +43,10 @@ public class DaoNotificacionDelegadoGeneral extends DaoPadre {
 
     public ArrayList<Usuario>listarSolicitudesDeRegistro(String busqueda){
         ArrayList<Usuario> listaSolicitudes = new ArrayList<>();
-        try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
-        } catch (ClassNotFoundException e) {
-            throw new RuntimeException(e);
-        }
+        
 
-        String url = "jdbc:mysql://localhost:3306/proyecto";
-        String username = super.getUser();
-        String password = super.getPassword(); //Cambiar segun tu contraseña
-
-        String sql = "select nombre, apellido, correo, codigoPUCP, condicion  from Usuario where estadoRegistro = 'Pendiente' and (nombre like ? or apellido like ?)";
-        try (Connection conn = DriverManager.getConnection(url, username, password);
-             PreparedStatement pstmt = conn.prepareStatement(sql)){
+        String sql = "select nombre, apellido, correo, codigoPUCP, condicion  from Usuario where estadoRegistro = 'Pendiente' and (nombre like ? or apellido like ?) order by fechaHoraRegistro desc";
+        try (Connection conn=this.getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql)){
             pstmt.setString(1,"%"+busqueda+"%");
             pstmt.setString(2,"%"+busqueda+"%");
             try(ResultSet rs=pstmt.executeQuery()){
@@ -101,25 +70,15 @@ public class DaoNotificacionDelegadoGeneral extends DaoPadre {
 
         ArrayList<Reporte> reportList= new ArrayList<>();
 
-        try{
-            Class.forName("com.mysql.cj.jdbc.Driver");
-        }catch (ClassNotFoundException e){
-            throw new RuntimeException(e);
-        }
-
-        String url = "jdbc:mysql://localhost:3306/proyecto";
-        String username = super.getUser();
-        String password = super.getPassword();
+        
 
         String sql = "SELECT idUsuarioReportado, idUsuarioQueReporta, motivoReporte,fechaHora FROM reporte order by fechaHora desc";
-        try (Connection conn = DriverManager.getConnection(url, username, password);
-             Statement stmt = conn.createStatement();
-             ResultSet rs = stmt.executeQuery(sql)) {
+        try (Connection conn=this.getConnection(); ResultSet rs=conn.createStatement().executeQuery(sql)){
 
             while (rs.next()) {
                 Reporte report = new Reporte();
-                report.setIdUsuarioReportado(rs.getInt(1));
-                report.setIdUsuarioQueReporta(rs.getInt(2));
+                report.getUsuarioReportado().setIdUsuario(rs.getInt(1));
+                report.getUsuarioQueReporta().setIdUsuario(rs.getInt(2));
                 report.setMotivoReporte(rs.getString(3));
                 report.setFecha(rs.getDate(4));
                 reportList.add(report);
@@ -135,26 +94,17 @@ public class DaoNotificacionDelegadoGeneral extends DaoPadre {
 
         ArrayList<Reporte> reportList= new ArrayList<>();
 
-        try{
-            Class.forName("com.mysql.cj.jdbc.Driver");
-        }catch (ClassNotFoundException e){
-            throw new RuntimeException(e);
-        }
-
-        String url = "jdbc:mysql://localhost:3306/proyecto";
-        String username = super.getUser();
-        String password = super.getPassword();
+        
 
         String sql = "SELECT r.idUsuarioReportado, r.idUsuarioQueReporta, r.motivoReporte,r.fechaHora FROM reporte r inner join usuario u on r.idUsuarioReportado=u.idUsuario where u.nombre like ? or u.apellido like ? order by r.fechaHora desc";
-        try (Connection conn = DriverManager.getConnection(url, username, password);
-             PreparedStatement pstmt = conn.prepareStatement(sql)){
+        try (Connection conn=this.getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql)){
             pstmt.setString(1,"%"+buscar+"%");
             pstmt.setString(2,"%"+buscar+"%");
             try(ResultSet rs = pstmt.executeQuery()){
                 while (rs.next()) {
                     Reporte report = new Reporte();
-                    report.setIdUsuarioReportado(rs.getInt(1));
-                    report.setIdUsuarioQueReporta(rs.getInt(2));
+                    report.getUsuarioReportado().setIdUsuario(rs.getInt(1));
+                    report.getUsuarioQueReporta().setIdUsuario(rs.getInt(2));
                     report.setMotivoReporte(rs.getString(3));
                     report.setFecha(rs.getDate(4));
                     reportList.add(report);
@@ -170,25 +120,15 @@ public class DaoNotificacionDelegadoGeneral extends DaoPadre {
 
         ArrayList<Donacion> donacionList= new ArrayList<>();
 
-        try{
-            Class.forName("com.mysql.cj.jdbc.Driver");
-        }catch (ClassNotFoundException e){
-            throw new RuntimeException(e);
-        }
+        
 
-        String url = "jdbc:mysql://localhost:3306/proyecto";
-        String username = super.getUser();
-        String password = super.getPassword();
-
-        String sql = "SELECT idDonacion, idUsuario, medioPago, monto,fechaHora,estadoDonacion FROM donacion order by if(estadoDonacion='Pendiente',0,1)";
-        try (Connection conn = DriverManager.getConnection(url, username, password);
-             Statement stmt = conn.createStatement();
-             ResultSet rs = stmt.executeQuery(sql)) {
+        String sql = "SELECT idDonacion, idUsuario, medioPago, monto,fechaHora,estadoDonacion FROM donacion order by if(estadoDonacion='Pendiente',0,1),fechaHora desc";
+        try (Connection conn=this.getConnection(); ResultSet rs=conn.createStatement().executeQuery(sql)) {
 
             while (rs.next()) {
                 Donacion donacion = new Donacion();
                 donacion.setIdDonacion(rs.getInt(1));
-                donacion.setIdUsuario(rs.getInt(2));
+                donacion.getUsuario().setIdUsuario(rs.getInt(2));
                 donacion.setMedioPago(rs.getString(3));
                 donacion.setMonto(rs.getFloat(4));
                 donacion.setFecha(rs.getDate(5));
@@ -206,26 +146,17 @@ public class DaoNotificacionDelegadoGeneral extends DaoPadre {
 
         ArrayList<Donacion> donacionList= new ArrayList<>();
 
-        try{
-            Class.forName("com.mysql.cj.jdbc.Driver");
-        }catch (ClassNotFoundException e){
-            throw new RuntimeException(e);
-        }
+        
 
-        String url = "jdbc:mysql://localhost:3306/proyecto";
-        String username = super.getUser();
-        String password = super.getPassword();
-
-        String sql = "SELECT d.idDonacion, d.idUsuario, d.medioPago, d.monto,d.fechaHora,d.estadoDonacion FROM donacion d inner join usuario u on d.idUsuario=u.idUsuario where u.nombre like ? or u.apellido like ? order by if(d.estadoDonacion='Pendiente',0,1)";
-        try (Connection conn = DriverManager.getConnection(url, username, password);
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+        String sql = "SELECT d.idDonacion, d.idUsuario, d.medioPago, d.monto,d.fechaHora,d.estadoDonacion FROM donacion d inner join usuario u on d.idUsuario=u.idUsuario where u.nombre like ? or u.apellido like ? order by if(d.estadoDonacion='Pendiente',0,1),fechaHora desc";
+        try (Connection conn=this.getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setString(1,"%"+buscar+"%");
             pstmt.setString(2,"%"+buscar+"%");
             try(ResultSet rs=pstmt.executeQuery()){
                 while (rs.next()) {
                     Donacion donacion = new Donacion();
                     donacion.setIdDonacion(rs.getInt(1));
-                    donacion.setIdUsuario(rs.getInt(2));
+                    donacion.getUsuario().setIdUsuario(rs.getInt(2));
                     donacion.setMedioPago(rs.getString(3));
                     donacion.setMonto(rs.getFloat(4));
                     donacion.setFecha(rs.getDate(5));
@@ -245,26 +176,17 @@ public class DaoNotificacionDelegadoGeneral extends DaoPadre {
         String fecha2final=fecha2aux[2]+"/"+fecha2aux[1]+"/"+fecha2aux[0];
         ArrayList<Donacion> donacionList= new ArrayList<>();
 
-        try{
-            Class.forName("com.mysql.cj.jdbc.Driver");
-        }catch (ClassNotFoundException e){
-            throw new RuntimeException(e);
-        }
+        
 
-        String url = "jdbc:mysql://localhost:3306/proyecto";
-        String username = super.getUser();
-        String password = super.getPassword();
-
-        String sql = "SELECT idDonacion, idUsuario, medioPago, monto,fechaHora,estadoDonacion FROM donacion where date(fechaHora) between ? and ? order by if(estadoDonacion='Pendiente',0,1)";
-        try (Connection conn = DriverManager.getConnection(url, username, password);
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+        String sql = "SELECT idDonacion, idUsuario, medioPago, monto,fechaHora,estadoDonacion FROM donacion where date(fechaHora) between ? and ? order by if(estadoDonacion='Pendiente',0,1),fechaHora desc";
+        try (Connection conn=this.getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setString(1,fecha1final);
             pstmt.setString(2,fecha2final);
             try(ResultSet rs=pstmt.executeQuery()){
                 while (rs.next()) {
                     Donacion donacion = new Donacion();
                     donacion.setIdDonacion(rs.getInt(1));
-                    donacion.setIdUsuario(rs.getInt(2));
+                    donacion.getUsuario().setIdUsuario(rs.getInt(2));
                     donacion.setMedioPago(rs.getString(3));
                     donacion.setMonto(rs.getFloat(4));
                     donacion.setFecha(rs.getDate(5));
@@ -281,20 +203,10 @@ public class DaoNotificacionDelegadoGeneral extends DaoPadre {
 
         ArrayList<Validacion> validacionList= new ArrayList<>();
 
-        try{
-            Class.forName("com.mysql.cj.jdbc.Driver");
-        }catch (ClassNotFoundException e){
-            throw new RuntimeException(e);
-        }
-
-        String url = "jdbc:mysql://localhost:3306/proyecto";
-        String username = super.getUser();
-        String password = super.getPassword();
+        
 
         String sql = "select correo,tipo,codigoValidacion,fechaHora,idCorreoValidacion from validacion where linkEnviado = 0 order by idCorreoValidacion desc";
-        try (Connection conn = DriverManager.getConnection(url, username, password);
-             Statement stmt = conn.createStatement();
-             ResultSet rs = stmt.executeQuery(sql)) {
+        try (Connection conn=this.getConnection(); ResultSet rs=conn.createStatement().executeQuery(sql)) {
 
             while (rs.next()) {
 
@@ -313,32 +225,21 @@ public class DaoNotificacionDelegadoGeneral extends DaoPadre {
         return validacionList;
     }
 
-    public ArrayList<AlumnoPorEvento> listarSolicitudesDeApoyo(){
+    public ArrayList<AlumnoPorEvento> listarSolicitudesDeApoyo(int idDelegadoDeActividad){
 
         ArrayList<AlumnoPorEvento> listaSolicitudesApoyo = new ArrayList<>();
+        String sql = "select ae.idAlumnoPorEvento, ae.idAlumno ,ae.idEvento from alumnoporevento ae inner join evento e on ae.idEvento=e.idEvento inner join actividad a on e.idActividad=a.idActividad where a.idDelegadoDeActividad=? and estadoApoyo = 'Pendiente' order by fechaHoraSolicitud desc";
 
-        try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
-        } catch (ClassNotFoundException e) {
-            throw new RuntimeException(e);
-        }
-
-        String url = "jdbc:mysql://localhost:3306/proyecto";
-        String username = super.getUser();
-        String password = super.getPassword(); //Cambiar segun tu contraseña
-
-        String sql = "select idAlumnoPorEvento, idAlumno ,idEvento from alumnoporevento  where estadoApoyo = 'Pendiente'";
-
-
-        try (Connection conn = DriverManager.getConnection(url, username, password);
-             Statement stmt = conn.createStatement();
-             ResultSet rs = stmt.executeQuery(sql)) {
-            while (rs.next()){
-                AlumnoPorEvento alumnoPorEvento=new AlumnoPorEvento();
-                alumnoPorEvento.setIdAlumnoPorEvento(rs.getInt(1));
-                alumnoPorEvento.setIdAlumno(rs.getInt(2));
-                alumnoPorEvento.setIdEvento(rs.getInt(3));
-                listaSolicitudesApoyo.add(alumnoPorEvento);
+        try (Connection conn=this.getConnection(); PreparedStatement pstmt=conn.prepareStatement(sql)){
+            pstmt.setInt(1,idDelegadoDeActividad);
+            try(ResultSet rs=pstmt.executeQuery()){
+                while (rs.next()){
+                    AlumnoPorEvento alumnoPorEvento=new AlumnoPorEvento();
+                    alumnoPorEvento.setIdAlumnoPorEvento(rs.getInt(1));
+                    alumnoPorEvento.getAlumno().setIdUsuario(rs.getInt(2));
+                    alumnoPorEvento.getEvento().setIdEvento(rs.getInt(3));
+                    listaSolicitudesApoyo.add(alumnoPorEvento);
+                }
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -347,32 +248,24 @@ public class DaoNotificacionDelegadoGeneral extends DaoPadre {
         return listaSolicitudesApoyo;
     }
 
-    public ArrayList<AlumnoPorEvento> listarSolicitudesDeApoyo(String buscar){
+    public ArrayList<AlumnoPorEvento> listarSolicitudesDeApoyo(int idDelegadoDeActividad,String buscar){
 
         ArrayList<AlumnoPorEvento> listaSolicitudesApoyo = new ArrayList<>();
 
-        try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
-        } catch (ClassNotFoundException e) {
-            throw new RuntimeException(e);
-        }
+        
 
-        String url = "jdbc:mysql://localhost:3306/proyecto";
-        String username = super.getUser();
-        String password = super.getPassword(); //Cambiar segun tu contraseña
-
-        String sql = "select ae.idAlumnoPorEvento, ae.idAlumno from alumnoporevento ae inner join usuario u on ae.idAlumno = u.idUsuario where (u.nombre like ? or u.apellido like ?) and  estadoApoyo = 'Pendiente'";
+        String sql = "select ae.idAlumnoPorEvento, ae.idAlumno from alumnoporevento ae inner join usuario u on ae.idAlumno = u.idUsuario inner join evento e on ae.idEvento=e.idEvento inner join actividad a on e.idActividad=a.idActividad where (u.nombre like ? or u.apellido like ?) and  estadoApoyo = 'Pendiente' and a.idDelegadoDeActividad=? order by ae.fechaHoraSolicitud desc";
 
 
-        try (Connection conn = DriverManager.getConnection(url, username, password);
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+        try (Connection conn=this.getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setString(1,"%"+buscar+"%");
             pstmt.setString(2,"%"+buscar+"%");
+            pstmt.setInt(3,idDelegadoDeActividad);
             try(ResultSet rs=pstmt.executeQuery()){
                 while (rs.next()) {
                     AlumnoPorEvento alumnoPorEvento = new AlumnoPorEvento();
                     alumnoPorEvento.setIdAlumnoPorEvento(rs.getInt(1));
-                    alumnoPorEvento.setIdAlumno(rs.getInt(2));
+                    alumnoPorEvento.getAlumno().setIdUsuario(rs.getInt(2));
 
                     listaSolicitudesApoyo.add(alumnoPorEvento);
                 }
@@ -388,20 +281,10 @@ public class DaoNotificacionDelegadoGeneral extends DaoPadre {
         DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
         Date dateNow = Calendar.getInstance().getTime();
         ArrayList<Integer> listaSegundoMinutoHoraDiaMes= new ArrayList<>();
-        try{
-            Class.forName("com.mysql.cj.jdbc.Driver");
-        }catch (ClassNotFoundException e){
-            throw new RuntimeException(e);
-        }
-
-        String url = "jdbc:mysql://localhost:3306/proyecto";
-        String username = super.getUser();
-        String password = super.getPassword();
+        
 
         String sql = "SELECT fechaHora FROM donacion";
-        try (Connection conn = DriverManager.getConnection(url, username, password);
-             Statement stmt = conn.createStatement();
-             ResultSet rs = stmt.executeQuery(sql)) {
+        try (Connection conn=this.getConnection(); ResultSet rs=conn.createStatement().executeQuery(sql)) {
 
             if (rs.next()) {
                 Date fechaReporte = rs.getDate(1);
@@ -437,7 +320,7 @@ public class DaoNotificacionDelegadoGeneral extends DaoPadre {
 
         String sql = "update validacion set linkEnviado = 1 where idCorreoValidacion=?";
 
-        try(PreparedStatement pstmt=conn.prepareStatement(sql)){
+        try(Connection conn=this.getConnection(); PreparedStatement pstmt=conn.prepareStatement(sql)){
             pstmt.setInt(1,idCorreoValidacion);
             pstmt.executeUpdate();
         } catch (SQLException e) {
@@ -447,9 +330,49 @@ public class DaoNotificacionDelegadoGeneral extends DaoPadre {
 
     public void aceptarSolicitudApoyo(int idAlumnoPorEvento,String tipoDeApoyo){
         String sql="update alumnoPorEvento set estadoApoyo=? where idAlumnoPorEvento=?";
-        try(PreparedStatement pstmt= conn.prepareStatement(sql)){
+        try(Connection conn=this.getConnection(); PreparedStatement pstmt= conn.prepareStatement(sql)){
             pstmt.setString(1,tipoDeApoyo);
             pstmt.setInt(2,idAlumnoPorEvento);
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void crearNotificacionValidacion(int idValidacion){
+        String sql="insert into notificaciondelegadogeneral (fechaHoraNotificacion,idValidacion) values(now(),?)";
+        try(Connection conn=this.getConnection(); PreparedStatement pstmt= conn.prepareStatement(sql)){
+            pstmt.setInt(1,idValidacion);
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void crearNotificacionSolicitudDeRegistro(int idUsuario){
+        String sql="insert into notificaciondelegadogeneral (fechaHoraNotificacion,idUsuario) values(now(),?)";
+        try(Connection conn=this.getConnection(); PreparedStatement pstmt= conn.prepareStatement(sql)){
+            pstmt.setInt(1,idUsuario);
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void crearNotificacionDonacion(int idDonacion){
+        String sql="insert into notificaciondelegadogeneral (fechaHoraNotificacion,idDonacion) values(now(),?)";
+        try(Connection conn=this.getConnection(); PreparedStatement pstmt= conn.prepareStatement(sql)){
+            pstmt.setInt(1,idDonacion);
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void crearNotificacionReporte(int idReporte){
+        String sql="insert into notificaciondelegadogeneral (fechaHoraNotificacion,idReporte) values(now(),?)";
+        try(Connection conn=this.getConnection(); PreparedStatement pstmt= conn.prepareStatement(sql)){
+            pstmt.setInt(1,idReporte);
             pstmt.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException(e);

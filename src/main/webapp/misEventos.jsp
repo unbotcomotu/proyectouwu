@@ -1424,11 +1424,11 @@
                         <%ArrayList<Integer>IDsActividadesContadas=new ArrayList<Integer>();
                             aux:for(Evento e:listaEventos){
                                 for(Integer i:IDsActividadesContadas){
-                                    if(e.getIdActividad()==i){
+                                    if(e.getActividad().getIdActividad()==i){
                                         continue aux;
                                     }
-                                }%><a style="color: <%=colorPorActividad[e.getIdActividad()]%>"><%=new DaoEvento().actividadDeEventoPorID(e.getIdEvento())%></a>
-                                    <%IDsActividadesContadas.add(e.getIdActividad());%>
+                                }%><a style="color: <%=colorPorActividad[e.getActividad().getIdActividad()]%>"><%=new DaoEvento().actividadDeEventoPorID(e.getIdEvento())%></a>
+                                    <%IDsActividadesContadas.add(e.getActividad().getIdActividad());%>
                             <%}%>
                     </p>
                 </div>
@@ -1503,8 +1503,7 @@
                                     titulo+=tituloAux[k]+" ";
                                 }
                             %>
-                            <p class="calendar-day-event popup-event-information-trigger" style="background-color: <%=colorPorActividad[e.getIdActividad()]%>" id="mostrarPopupEvento<%=listaEventos.indexOf(e)%>"><span class="calendar-day-event-text">⚔️<%=titulo%></span></p>
-
+                            <p class="calendar-day-event popup-event-information-trigger" style="background-color: <%=colorPorActividad[e.getActividad().getIdActividad()]%> <%if(e.isEventoFinalizado()){%>;opacity: 0.5<%}%>" id="mostrarPopupEvento<%=listaEventos.indexOf(e)%>"><span class="calendar-day-event-text">⚔️<%=titulo%></span></p>
                         <!-- /CALENDAR DAY -->
                         <%}}if(!aux){%>
                         </div>
@@ -1629,7 +1628,7 @@
                     <!-- DECORATED FEATURE INFO -->
                     <div class="decorated-feature-info">
                         <!-- DECORATED FEATURE TITLE -->
-                        <p class="decorated-feature-title"><%=new DaoLugarEvento().lugarPorID(e.getLugarEvento())%></p>
+                        <p class="decorated-feature-title"><%=new DaoLugarEvento().lugarPorID(e.getLugarEvento().getIdLugarEvento())%></p>
                         <!-- /DECORATED FEATURE TITLE -->
 
                         <!-- DECORATED FEATURE TEXT -->

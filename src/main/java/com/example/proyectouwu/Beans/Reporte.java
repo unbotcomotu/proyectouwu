@@ -6,13 +6,14 @@ import java.sql.Date;
 public class Reporte {
     //ATRIBUTOS
     private int idReporte;
-    private int idUsuarioReportado;
-    private int idUsuarioQueReporta;
+    private Usuario usuarioReportado=new Usuario();
+    private Usuario usuarioQueReporta=new Usuario();
     private String motivoReporte;
     private Date fecha;
     private Time hora;
 
 //GETTERS AND SETTERS
+
     public int getIdReporte() {
         return idReporte;
     }
@@ -21,20 +22,20 @@ public class Reporte {
         this.idReporte = idReporte;
     }
 
-    public int getIdUsuarioReportado() {
-        return idUsuarioReportado;
+    public Usuario getUsuarioReportado() {
+        return usuarioReportado;
     }
 
-    public void setIdUsuarioReportado(int idUsuarioReportado) {
-        this.idUsuarioReportado = idUsuarioReportado;
+    public void setUsuarioReportado(Usuario usuarioReportado) {
+        this.usuarioReportado = usuarioReportado;
     }
 
-    public int getIdUsuarioQueReporta() {
-        return idUsuarioQueReporta;
+    public Usuario getUsuarioQueReporta() {
+        return usuarioQueReporta;
     }
 
-    public void setIdUsuarioQueReporta(int idUsuarioQueReporta) {
-        this.idUsuarioQueReporta = idUsuarioQueReporta;
+    public void setUsuarioQueReporta(Usuario usuarioQueReporta) {
+        this.usuarioQueReporta = usuarioQueReporta;
     }
 
     public String getMotivoReporte() {

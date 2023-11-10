@@ -1373,11 +1373,11 @@
                     <%DaoUsuario usuarioOWO = new DaoUsuario();%>
 
                     <!-- USER SHORT DESCRIPTION TITLE -->
-                    <p class="user-short-description-title" style="color: rgb(22, 143, 143);"> <%= usuarioOWO.nombreCompletoUsuarioPorId(alumnoPorEvento.getIdAlumno())%> </p>
+                    <p class="user-short-description-title" style="color: rgb(22, 143, 143);"> <%= usuarioOWO.nombreCompletoUsuarioPorId(alumnoPorEvento.getAlumno().getIdUsuario())%> </p>
                     <!-- /USER SHORT DESCRIPTION TITLE -->
 
                     <!-- USER SHORT DESCRIPTION TEXT -->
-                    <p class="user-short-description-text" style="text-transform: lowercase;"> <%= usuarioOWO.correoUsuarioPorId(alumnoPorEvento.getIdAlumno())%>  </p>
+                    <p class="user-short-description-text" style="text-transform: lowercase;"> <%= usuarioOWO.correoUsuarioPorId(alumnoPorEvento.getAlumno().getIdUsuario())%>  </p>
                     <!-- /USER SHORT DESCRIPTION TEXT -->
                 </div>
                 <!-- /USER SHORT DESCRIPTION -->
@@ -1393,13 +1393,13 @@
 
                                 <div class="col-sm-6 px-5" style="text-align: center;">
 
-                                    <p style="font-family: 'Rajdhani', sans-serif; text-transform: uppercase; font-weight: 700; font-size: 0.75rem;" ><%= new DaoEvento().nombreEventoPorID(alumnoPorEvento.getIdEvento())%> </p>
+                                    <p style="font-family: 'Rajdhani', sans-serif; text-transform: uppercase; font-weight: 700; font-size: 0.75rem;" ><%= new DaoEvento().nombreEventoPorID(alumnoPorEvento.getEvento().getIdEvento())%> </p>
 
                                 </div>
 
                                 <div class="col-sm-6 px-5" style="text-align: center;">
 
-                                    <p style="font-family: 'Rajdhani', sans-serif; text-transform: uppercase; font-weight: 700; font-size: 0.875rem;" >Condición: <%= usuarioOWO.condicionUsuarioPorId(alumnoPorEvento.getIdAlumno())%> </p>
+                                    <p style="font-family: 'Rajdhani', sans-serif; text-transform: uppercase; font-weight: 700; font-size: 0.875rem;" >Condición: <%= usuarioOWO.condicionUsuarioPorId(alumnoPorEvento.getAlumno().getIdUsuario())%> </p>
 
                                 </div>
                             </div>
@@ -1569,8 +1569,8 @@
                     <li>de esta maravillosa carrera</li>
                 </ul>
             </div>
+        </div>
     </div>
-
     <div class="fila">
 
     </div>

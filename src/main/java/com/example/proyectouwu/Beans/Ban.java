@@ -6,13 +6,14 @@ import java.sql.Date;
 public class Ban {
     //Atributos
     private int idBan;
-    private int idUsuario;
+    private Usuario usuario=new Usuario();
     private String motivoBan;
     private Date fecha;
     private Time hora;
 
 
     //Getters and setters
+
     public int getIdBan() {
         return idBan;
     }
@@ -21,12 +22,12 @@ public class Ban {
         this.idBan = idBan;
     }
 
-    public int getIdUsuario() {
-        return idUsuario;
+    public Usuario getUsuario() {
+        return usuario;
     }
 
-    public void setIdUsuario(int idUsuario) {
-        this.idUsuario = idUsuario;
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
     }
 
     public String getMotivoBan() {

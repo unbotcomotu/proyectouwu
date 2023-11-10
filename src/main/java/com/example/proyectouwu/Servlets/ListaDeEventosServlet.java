@@ -10,14 +10,17 @@ import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.PrintWriter;
 import java.sql.Date;
 import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.sql.Time;
 import java.util.ArrayList;
 import java.util.HashSet;
 
 @WebServlet(name = "ListaDeEventosServlet", value = "/ListaDeEventosServlet")
+@MultipartConfig(maxFileSize = 10000000)
 public class ListaDeEventosServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -133,6 +136,12 @@ public class ListaDeEventosServlet extends HttpServlet {
         // Parámetros principales:
         int addActividadID;
         int idEvento;
+        // Parámetros auxiliares
+        Part part = null;
+        InputStream input = null;
+        InputStream inputAlt = null;
+        boolean validarLongitud;
+        String rutaImagenPredeterminada;
 
         switch (action) {
             case "buscarEvento":
@@ -201,8 +210,31 @@ public class ListaDeEventosServlet extends HttpServlet {
                                     addLugarId = dLugarEvento.crearLugar(addLugar); // Id del nuevo lugar
                                 }
 
-                                // Crear evento:
-                                dEvento.crearEvento(addActividadID, addLugarId, addTitulo, addFecha, addHora, addDescripcionEventoActivo, addFraseMotivacional, "uwu", addEventoOculto);
+                                try{
+                                    // Foto Miniatura
+                                    part = request.getPart("updateFotoMiniatura");
+
+                                    // Obtenemos el flujo de bytes
+                                    if(part != null){
+                                        input = part.getInputStream();
+                                    }else{
+                                        input = getServletContext().getResourceAsStream("/css/fibraVShormigon.png");
+                                    }
+
+                                    validarLongitud = input.available()>10;
+
+                                    if(!validarLongitud){
+                                        input = getServletContext().getResourceAsStream("/css/fibraVShormigon.png");
+                                    }
+
+                                    try {
+                                        // Crear evento:
+                                        dEvento.crearEvento(addActividadID, addLugarId, addTitulo, addFecha, addHora, addDescripcionEventoActivo, addFraseMotivacional, input, addEventoOculto);
+                                    } catch (SQLException e) {
+                                    }
+                                    input.close();
+                                }catch (IOException e){
+                                }
                                 response.sendRedirect(request.getContextPath() + "/ListaDeEventosServlet?idUsuario=" + idUsuario + "&idActividad=" + addActividadID);
                             } else {
                                 response.sendRedirect(request.getContextPath() + "/ListaDeEventosServlet?idUsuario=" + idUsuario + "&idActividad=" + addActividadID + "&horaInvalida=1");
@@ -262,6 +294,7 @@ public class ListaDeEventosServlet extends HttpServlet {
                                     }
 
                                     // Verificar lugar:
+
                                     int updateLugarId = dLugarEvento.idLugarPorNombre(updateLugar);
                                     // En caso no exista el lugar, se crea uno nuevo
                                     if(updateLugarId==0){
@@ -271,14 +304,27 @@ public class ListaDeEventosServlet extends HttpServlet {
                                     Date updateFecha = Date.valueOf("2023-10-"+updateFechaStr);
                                     Time updateHora = Time.valueOf(updateHoraStr+":00");
 
-                                    dEvento.editarEvento(idEvento,updateLugarId,updateTitulo,updateFecha,updateHora,updateDescripcionEventoActivo,updateFraseMotivacional,"owo",updateEventoOculto);
-                                }
+                                    try{
+                                        // Foto Miniatura
+                                        part = request.getPart("updateFotoMiniatura");
 
+                                        // Obtenemos el flujo de bytes
+                                        if(part != null){
+                                            input = part.getInputStream();
+                                        }
+
+                                        validarLongitud = input.available()>10;
+
+                                        try {
+                                            dEvento.editarEvento(idEvento,updateLugarId,updateTitulo,updateFecha,updateHora,updateDescripcionEventoActivo,updateFraseMotivacional,input,updateEventoOculto,validarLongitud);
+                                        } catch (SQLException e) {
+                                        }
+                                        input.close();
+                                    }catch (IOException e){
+                                    }
+                                }
                                 // Envío a la vista de lista de eventos:
                                 response.sendRedirect(request.getContextPath()+"/ListaDeEventosServlet?idUsuario="+idUsuario+"&idActividad="+addActividadID);
-
-                                //mañana sigo uu
-                                //response.sendRedirect(request.getContextPath()+ "/ListaDeEventosServlet");
                             }else {
                                 response.sendRedirect(request.getContextPath()+"/ListaDeEventosServlet?idUsuario="+idUsuario+"&idActividad="+addActividadID+"&horaInvalida=1"+"&idEventoElegido="+idEvento);
                             }

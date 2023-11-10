@@ -272,7 +272,7 @@
         <!-- USER AVATAR CONTENT -->
         <div class="user-avatar-content">
             <!-- HEXAGON -->
-            <div class="hexagon-image-30-32" data-src="css/fotoMichi.png"></div>
+            <div class="hexagon-image-30-32" data-src="ImagenUsuarioServlet?idUsuario=<%=idUsuario%>"><div class="hexagon-image-30-32" data-src="css/fotoMichi.png"></div></div>
             <!-- /HEXAGON -->
         </div>
         <!-- /USER AVATAR CONTENT -->
@@ -413,7 +413,8 @@
             <!-- USER AVATAR CONTENT -->
             <div class="user-avatar-content">
                 <!-- HEXAGON -->
-                <div class="hexagon-image-82-90" data-src="css/fotoMichi.png"></div>
+
+                <div class="hexagon-image-82-90" data-src="ImagenUsuarioServlet?idUsuario=<%=idUsuario%>"><div class="hexagon-image-82-90" data-src="css/fotoMichi.png"></div></div>
                 <!-- /HEXAGON -->
             </div>
             <!-- /USER AVATAR CONTENT -->
@@ -554,7 +555,7 @@
                 <!-- USER AVATAR CONTENT -->
                 <div class="user-avatar-content">
                     <!-- HEXAGON -->
-                    <div class="hexagon-image-30-32" data-src="css/fotoMichi.png"></div>
+                    <div class="hexagon-image-30-32" data-src=""ImagenUsuarioServlet?idUsuario=<%=idUsuario%>""><div class="hexagon-image-30-32" data-src="css/fotoMichi.png"></div></div>
                     <!-- /HEXAGON -->
                 </div>
                 <!-- /USER AVATAR CONTENT -->
@@ -1766,11 +1767,11 @@
                     <!-- PRODUCT PREVIEW IMAGE -->
                     <figure class="product-preview-image liquid" style="position: relative">
                         <a href="<%=request.getContextPath()%>/EventoServlet?idEvento=<%=e.getIdEvento()%>&idUsuario=<%=idUsuario%>">
-                            <img src="css/fibraVShormigonMedio.png" style="position: absolute; z-index: 0" height="100%" alt="item-01">
+                            <img src="ImagenEventoServlet?idEvento=<%=e.getIdEvento()%>" style="position: absolute; z-index: 0" height="100%" width="100%" alt="item-01">
                         </a>
                         <%if(delegadoDeEstaActividadID==idUsuario){%>
                         <a id="mostrarPopupEditarEvento<%=listaEventos.indexOf(e)%>">
-                            <img src="css/ajustesEvento.png" style="position: absolute;left: 82%; z-index: 100;height: 50px;width: 50px;cursor: pointer" alt="">
+                            <img src="css/ajustesEvento.png" class="mt-2" style="position: absolute;left: 82%; z-index: 100;height: 50px;width: 50px;cursor: pointer" alt="">
                         </a>
                         <%}%>
                     </figure>
@@ -1871,7 +1872,7 @@
                     <!-- PRODUCT PREVIEW IMAGE -->
                     <a href="<%=request.getContextPath()%>/EventoServlet?idEvento=<%=e.getIdEvento()%>&idUsuario=<%=idUsuario%>">
                         <figure class="product-preview-image liquid">
-                            <img src="css/fibraVShormigonMedio.png" alt="item-01">
+                            <img src="ImagenEventoServlet?idEvento=<%=e.getIdEvento()%>" alt="item-01">
                         </figure>
                     </a>
                     <!-- /PRODUCT PREVIEW IMAGE -->
@@ -2094,7 +2095,7 @@
     <svg class="cerrarPopup" id="cerrarPopupCrear" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path d="M11.4142 10L16.7071 4.70711C17.0976 4.31658 17.0976 3.68342 16.7071 3.29289C16.3166 2.90237 15.6834 2.90237 15.2929 3.29289L10 8.58579L4.70711 3.29289C4.31658 2.90237 3.68342 2.90237 3.29289 3.29289C2.90237 3.68342 2.90237 4.31658 3.29289 4.70711L8.58579 10L3.29289 15.2929C2.90237 15.6834 2.90237 16.3166 3.29289 16.7071C3.68342 17.0976 4.31658 17.0976 4.70711 16.7071L10 11.4142L15.2929 16.7071C15.6834 17.0976 16.3166 17.0976 16.7071 16.7071C17.0976 16.3166 17.0976 15.6834 16.7071 15.2929L11.4142 10Z" fill="black"/>
     </svg>
-    <form  method="post" action="<%=request.getContextPath()%>/ListaDeEventosServlet?action=addConfirm" >
+    <form  method="post" action="<%=request.getContextPath()%>/ListaDeEventosServlet?action=addConfirm" enctype="multipart/form-data">
         <div class="container-fluid">
         <div class="row"><div class="col"><h5 style="text-align: center;">Crear evento</h5></div></div>
         <div class="row">
@@ -2139,11 +2140,13 @@
                     </div>
                 </div>
             </div>
-            <div class="col-sm-5 contenedor2" style="top: 140px">
+            <div class="col-sm-5 contenedor2 my-5 d-flex align-items-center">
                 <div class="container-fluid btn btn-file1">
-                    <img class="img-fluid" src="css/subirArchivo.jpg" style="opacity: 50%;" alt="">
+                    <div id="contenedorImagenCrear">
+                        <img id="imagenActualCrear" class="img-fluid" src="css/subirArchivo.jpg" style="opacity: 50%;" alt="">
+                    </div>
                     <p style="margin-top: 10px"><b>Agregar foto miniatura</b></p>
-                    <input type="file" name="addfotoMiniatura" style="background-color: white; margin-top: 25px;" accept="image/png, .jpeg, .jpg"></input>
+                    <input type="file" id="inputCrear" name="addfotoMiniatura" style="background-color: white; margin-top: 25px;" accept="image/png, .jpeg, .jpg" onchange="mostrarImagen('imagenActualCrear','contenedorImagenCrear','inputCrear')"></input>
                 </div>
             </div>
         </div>
@@ -2217,7 +2220,7 @@
     <svg class="cerrarPopup" id="cerrarPopupEditarEvento<%=listaEventos.indexOf(e)%>" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path d="M11.4142 10L16.7071 4.70711C17.0976 4.31658 17.0976 3.68342 16.7071 3.29289C16.3166 2.90237 15.6834 2.90237 15.2929 3.29289L10 8.58579L4.70711 3.29289C4.31658 2.90237 3.68342 2.90237 3.29289 3.29289C2.90237 3.68342 2.90237 4.31658 3.29289 4.70711L8.58579 10L3.29289 15.2929C2.90237 15.6834 2.90237 16.3166 3.29289 16.7071C3.68342 17.0976 4.31658 17.0976 4.70711 16.7071L10 11.4142L15.2929 16.7071C15.6834 17.0976 16.3166 17.0976 16.7071 16.7071C17.0976 16.3166 17.0976 15.6834 16.7071 15.2929L11.4142 10Z" fill="black"/>
     </svg>
-    <form  method="post" action="<%=request.getContextPath()%>/ListaDeEventosServlet?action=updateConfirm">
+    <form  method="post" action="<%=request.getContextPath()%>/ListaDeEventosServlet?action=updateConfirm" enctype="multipart/form-data">
         <div class="container-fluid">
         <div class="row"><div class="col"><h5 style="text-align: center;">Editar evento</h5></div></div>
         <div class="row">
@@ -2282,11 +2285,13 @@
                 </div>
                 <%}%>
             </div>
-            <div class="col-sm-5 contenedor2" style="top: 140px">
+            <div class="col-sm-5 contenedor2 my-5 d-flex align-items-center">
                 <div class="container-fluid btn btn-file1">
-                    <img class="img-fluid" src="css/fibraVShormigon.png" alt="">
+                    <div id="contenedorImagenEditar<%=listaEventos.indexOf(e)%>">
+                    <img id="imagenActualEditar<%=listaEventos.indexOf(e)%>" class="img-fluid" src="ImagenEventoServlet?idEvento=<%=e.getIdEvento()%>" alt="">
+                    </div>
                     <p style="margin-top: 10px"><b>Editar foto miniatura</b></p>
-                    <input type="file" style="background-color: white; margin-top: 25px;" accept="image/png, .jpeg, .jpg"></input>
+                    <input type="file" id="inputEditar<%=listaEventos.indexOf(e)%>" style="background-color: white; margin-top: 25px;" accept="image/png, .jpeg, .jpg" name="updateFotoMiniatura" onchange="mostrarImagen('imagenActualEditar<%=listaEventos.indexOf(e)%>','contenedorImagenEditar<%=listaEventos.indexOf(e)%>','inputEditar<%=listaEventos.indexOf(e)%>')"></input>
                 </div>
             </div>
         </div>
@@ -2306,6 +2311,48 @@
 </div>
 </div>
 <%}}}%>
+
+<script>
+    function mostrarImagen(idImagen, idImagenContainer, idInputArchivo) {
+        var imagenContainer = document.getElementById(idImagenContainer);
+        var imagen = document.getElementById(idImagen);
+        var inputArchivo = document.getElementById(idInputArchivo);
+
+        // Verificar si se seleccionó un archivo
+        if (inputArchivo.files && inputArchivo.files[0]) {
+            var reader = new FileReader();
+
+            reader.onload = function (e) {
+                // Cambiar la fuente de la imagen
+                imagen.src = e.target.result;
+            };
+
+            // Leer el archivo como una URL de datos
+            reader.readAsDataURL(inputArchivo.files[0]);
+
+            // Mostrar la imagen
+            imagenContainer.style.display = 'block';
+        } else {
+            // Ocultar la imagen si no se selecciona ningún archivo
+            imagenContainer.style.display = 'none';
+        }
+    }
+</script>
+
+<!-- Función para mostrar la imagen antes de enviarla -->
+<script type="text/javascript">
+    function previewImage(event,idS) {
+        var input = event.target;
+        var image = document.getElementById(idS);
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+            reader.onload = function(e) {
+                image.src = e.target.result;
+            }
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+</script>
 
 <script>
     function popupFunc(popupId,abrirId,cerrarClass,overlayId){

@@ -19,15 +19,15 @@ public class ImagenUsuarioServlet extends HttpServlet {
 
         DaoUsuario daoUsuario = new DaoUsuario();
 
-        Usuario usuario = daoUsuario.getUsuarioPorId(Integer.parseInt(idUsuario));
-
         try {
+            Usuario usuario = daoUsuario.getUsuarioPorIdSinFiltro(Integer.parseInt(idUsuario));
             byte[] fotoPerfil =  usuario.getFotoPerfil().getBytes(1,(int) usuario.getFotoPerfil().length());
             ServletOutputStream output = response.getOutputStream();
             output.write(fotoPerfil);
 
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            ServletOutputStream output = response.getOutputStream();
+            output.write(0);
         }
 
     }

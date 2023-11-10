@@ -2,7 +2,10 @@ package com.example.proyectouwu.Daos;
 
 import com.example.proyectouwu.Beans.Donacion;
 import com.example.proyectouwu.Beans.Evento;
+import jakarta.servlet.ServletOutputStream;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -195,7 +198,7 @@ public class DaoEvento extends DaoPadre {
         }
     }
 
-    public void crearEvento(int idActividad, int idLugarEvento, String titulo, Date fecha, Time hora, String descripcionEventoActivo, String fraseMotivacional, String fotoMiniatura, Boolean eventoOculto) {
+    public void crearEvento(int idActividad, int idLugarEvento, String titulo, Date fecha, Time hora, String descripcionEventoActivo, String fraseMotivacional, InputStream fotoMiniatura, Boolean eventoOculto) throws SQLException, IOException{
         String sql = "insert into evento(idActividad,idLugarEvento,titulo,fecha,hora,descripcionEventoActivo,fraseMotivacional,fotoMiniatura,eventoFinalizado,eventoOculto) values (?,?,?,?,?,?,?,?,0,?)";
         Evento e = new Evento();
         try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
@@ -206,16 +209,23 @@ public class DaoEvento extends DaoPadre {
             pstmt.setTime(5, hora);
             pstmt.setString(6, descripcionEventoActivo);
             pstmt.setString(7, fraseMotivacional);
-            pstmt.setString(8, fotoMiniatura);
+            pstmt.setBinaryStream(8, fotoMiniatura,(int)fotoMiniatura.available());
             pstmt.setBoolean(9,eventoOculto);
             pstmt.executeUpdate();
-        } catch (SQLException ex) {
-            throw new RuntimeException(ex);
+        }catch (SQLException ee){
+            System.out.println("oli");
+            throw new RuntimeException(ee);
         }
     }
 
-    public void editarEvento(int idEvento, int idLugarEvento, String titulo, Date fecha, Time hora, String descripcionEventoActivo, String fraseMotivacional, String fotoMiniatura, Boolean eventoOculto) {
-        String sql = "update evento set idLugarEvento=?,titulo=?,fecha=?,hora=?,descripcionEventoActivo=?,fraseMotivacional=?,fotoMiniatura=?,eventoOculto=? where idEvento=?";
+    public void editarEvento(int idEvento, int idLugarEvento, String titulo, Date fecha, Time hora, String descripcionEventoActivo, String fraseMotivacional, InputStream fotoMiniatura, Boolean eventoOculto,boolean validarLongitud) throws SQLException, IOException {
+
+        String secFoto = "";
+        if(validarLongitud){
+            secFoto = ",fotoMiniatura=?";
+        }
+
+        String sql = "update evento set idLugarEvento=?,titulo=?,fecha=?,hora=?,descripcionEventoActivo=?,fraseMotivacional=?,eventoOculto=?"+secFoto+" where idEvento=?";
         Evento e = new Evento();
         try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setInt(1, idLugarEvento);
@@ -224,12 +234,15 @@ public class DaoEvento extends DaoPadre {
             pstmt.setTime(4, hora);
             pstmt.setString(5, descripcionEventoActivo);
             pstmt.setString(6, fraseMotivacional);
-            pstmt.setString(7, fotoMiniatura);
-            pstmt.setBoolean(8,eventoOculto);
-            pstmt.setInt(9,idEvento);
+            pstmt.setBoolean(7,eventoOculto);
+            if(validarLongitud){
+                pstmt.setBinaryStream(8,fotoMiniatura,fotoMiniatura.available());
+                pstmt.setInt(9,idEvento);
+            }else{
+                pstmt.setInt(8,idEvento);
+            }
+
             pstmt.executeUpdate();
-        } catch (SQLException ex) {
-            throw new RuntimeException(ex);
         }
     }
 
@@ -649,4 +662,20 @@ public class DaoEvento extends DaoPadre {
             throw new RuntimeException(e);
         }
     }
+
+    public Blob getFotoEventoPorID(int idEvento){
+        String sql="select fotoMiniatura from evento where idEvento=?";
+        try(PreparedStatement pstmt= conn.prepareStatement(sql)){
+            pstmt.setInt(1,idEvento);
+            try(ResultSet rs=pstmt.executeQuery()){
+                if(rs.next()){
+                    return rs.getBlob(1);
+                }else
+                    return null;
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
 }

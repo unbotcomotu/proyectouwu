@@ -63,13 +63,14 @@ public class MiCuentaServlet extends HttpServlet {
                     input = part.getInputStream();
                 }
 
-                validarLongitud = input.available()>0;
+                validarLongitud = input.available()>10;
 
                 try {
                     daoUsuario.cambiarFoto(idUsuario,input,validarLongitud,"1");
                 } catch (SQLException e) {
                 }
 
+                input.close();
                 response.sendRedirect(request.getContextPath() + "/MiCuentaServlet?"+"idUsuario="+idUsuario);
                 break;
             case "editarSeguro":
@@ -87,8 +88,8 @@ public class MiCuentaServlet extends HttpServlet {
                 } catch (SQLException e) {
                 }
 
+                input.close();
                 response.sendRedirect(request.getContextPath() + "/MiCuentaServlet?"+"idUsuario="+idUsuario);
-
 
             case("default"):
                 //auxilio

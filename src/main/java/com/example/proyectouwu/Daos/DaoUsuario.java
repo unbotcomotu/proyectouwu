@@ -320,6 +320,31 @@ public class DaoUsuario extends DaoPadre {
         return null;
     }
 
+    public Usuario getUsuarioPorIdSinFiltro(int Id) throws SQLException {
+        Usuario usuario = new Usuario();
+        String sql = "select idUsuario, nombre, apellido, rol, codigoPUCP, condicion, fotoPerfil, fotoSeguro, descripcionPerfil from usuario WHERE idUsuario = ?";
+        try(PreparedStatement pstmt = conn.prepareStatement(sql)){
+            pstmt.setInt(1,Id);
+            try(ResultSet rs = pstmt.executeQuery()){
+                if(rs.next()){
+                    usuario.setIdUsuario(rs.getInt(1));
+                    usuario.setNombre(rs.getString(2));
+                    usuario.setApellido(rs.getString(3));
+                    usuario.setRol(rs.getString(4));
+                    usuario.setCodigoPUCP(rs.getString(5));
+                    usuario.setCondicion(rs.getString(6));
+                    usuario.setFotoPerfil(rs.getBlob(7));
+                    usuario.setFotoSeguro(rs.getBlob(8));
+                    usuario.setDescripcionPerfil(rs.getString(9));
+                }
+            }
+            return usuario;
+        }catch(SQLException e){
+            throw new SQLException(e);
+        }
+    }
+
+
     //CRUD
     public void cambioDescripcion(String nuevaDescripcion , Integer idUsuario){
         try {

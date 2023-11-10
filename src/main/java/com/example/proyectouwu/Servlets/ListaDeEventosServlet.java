@@ -141,7 +141,7 @@ public class ListaDeEventosServlet extends HttpServlet {
         InputStream input = null;
         InputStream inputAlt = null;
         boolean validarLongitud;
-        String rutaImagenPredeterminada;
+        String rutaImagenPredeterminada = "/css/fibraVShormigon.png";
 
         switch (action) {
             case "buscarEvento":
@@ -218,13 +218,13 @@ public class ListaDeEventosServlet extends HttpServlet {
                                     if(part != null){
                                         input = part.getInputStream();
                                     }else{
-                                        input = getServletContext().getResourceAsStream("/css/fibraVShormigon.png");
+                                        input = getServletContext().getResourceAsStream(rutaImagenPredeterminada);
                                     }
 
                                     validarLongitud = input.available()>10;
 
                                     if(!validarLongitud){
-                                        input = getServletContext().getResourceAsStream("/css/fibraVShormigon.png");
+                                        input = getServletContext().getResourceAsStream(rutaImagenPredeterminada);
                                     }
 
                                     try {

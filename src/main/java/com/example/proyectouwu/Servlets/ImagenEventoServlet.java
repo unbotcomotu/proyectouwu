@@ -21,6 +21,7 @@ public class ImagenEventoServlet extends HttpServlet {
 
         DaoEvento daoEvento = new DaoEvento();
 
+        String rutaImagenPredeterminada = "/css/fibraVShormigon.png";
         try {
 
             Blob fotoBytes = daoEvento.getFotoEventoPorID(Integer.parseInt(idEvento));
@@ -28,7 +29,7 @@ public class ImagenEventoServlet extends HttpServlet {
             byte[] fotoMiniatura = null;
 
             if(longitud<=100){
-                InputStream input = getServletContext().getResourceAsStream("/css/fibraVShormigon.png");
+                InputStream input = getServletContext().getResourceAsStream(rutaImagenPredeterminada);
                 fotoMiniatura = new byte[input.available()];
                 input.read(fotoMiniatura);
                 input.close();

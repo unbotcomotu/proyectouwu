@@ -2318,22 +2318,15 @@
         var imagen = document.getElementById(idImagen);
         var inputArchivo = document.getElementById(idInputArchivo);
 
-        // Verificar si se seleccionó un archivo
         if (inputArchivo.files && inputArchivo.files[0]) {
             var reader = new FileReader();
-
             reader.onload = function (e) {
-                // Cambiar la fuente de la imagen
+                // Cambiar la imagen por la q recien se subió mediante el input
                 imagen.src = e.target.result;
             };
-
-            // Leer el archivo como una URL de datos
             reader.readAsDataURL(inputArchivo.files[0]);
-
-            // Mostrar la imagen
             imagenContainer.style.display = 'block';
         } else {
-            // Ocultar la imagen si no se selecciona ningún archivo
             imagenContainer.style.display = 'none';
         }
     }

@@ -227,4 +227,26 @@ public class DaoDonacion extends DaoPadre  {
             throw new RuntimeException(e);
         }
     }
+
+    public Donacion donacionPorIDNotificacion(int idDonacion){
+        String sql="select u.idUsuario,u.nombre,u.apellido,u.fotoPerfil,d.monto from donacion d inner join usuario u on d.idUsuario=u.idUsuario where d.idDonacion=?";
+        try(Connection conn=this.getConnection(); PreparedStatement pstmt=conn.prepareStatement(sql)) {
+            pstmt.setInt(1,idDonacion);
+            try(ResultSet rs=pstmt.executeQuery()) {
+                if(rs.next()){
+                    Donacion d=new Donacion();
+                    d.getUsuario().setIdUsuario(rs.getInt(1));
+                    d.getUsuario().setNombre(rs.getString(2));
+                    d.getUsuario().setApellido(rs.getString(3));
+                    d.getUsuario().setFotoPerfil(rs.getBlob(4));
+                    d.setMonto(rs.getFloat(5));
+                    return d;
+                }else{
+                    return null;
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }

@@ -104,6 +104,59 @@ public class DaoValidacion extends DaoPadre {
         return 0;
     }
 
+    public String tipoValidacionPorID(int idCorreoValidacion){
+        String sql = "select tipo from validacion where idCorreoValidacion = ?";
+        try (Connection conn=this.getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setInt(1,idCorreoValidacion);
+            try(ResultSet rs = pstmt.executeQuery()){
+                if(rs.next()){
+                    return rs.getString(1);
+                }else{
+                    return null;
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
+    public Validacion validacionPorIDNotificacionCorreo(int idCorreoValidacion){
+        String sql = "select correo,codigoValidacion from validacion where idCorreoValidacion = ?";
+        try (Connection conn=this.getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setInt(1,idCorreoValidacion);
+            try(ResultSet rs = pstmt.executeQuery()){
+                if(rs.next()){
+                    Validacion v=new Validacion();
+                    v.setCorreo(rs.getString(1));
+                    v.setCodigoValidacion(rs.getInt(2));
+                    return v;
+                }else{
+                    return null;
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
+    public Validacion validacionPorIDNotificacionContrasena(int idCorreoValidacion){
+        String sql = "select v.codigoValidacion,u.nombre,u.apellido,u.fotoPerfil from validacion v inner join usuario u on v.idUsuario=u.idUsuario where v.idCorreoValidacion = ?";
+        try (Connection conn=this.getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setInt(1,idCorreoValidacion);
+            try(ResultSet rs = pstmt.executeQuery()){
+                if(rs.next()){
+                    Validacion v=new Validacion();
+                    v.setCodigoValidacion(rs.getInt(1));
+                    v.getUsuario().setNombre(rs.getString(2));
+                    v.getUsuario().setApellido(rs.getString(3));
+                    v.getUsuario().setFotoPerfil(rs.getBlob(4));
+                    return v;
+                }else{
+                    return null;
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }

@@ -6,7 +6,7 @@ import java.sql.Time;
 
 public class Donacion {
     //ATRIBUTOS
-    private int idDonacion;
+    private Integer idDonacion;
     private Usuario usuario=new Usuario();
     private String medioPago;
     private float monto;
@@ -19,11 +19,12 @@ public class Donacion {
 
     //GETTERS AND SETTERS
 
-    public int getIdDonacion() {
+
+    public Integer getIdDonacion() {
         return idDonacion;
     }
 
-    public void setIdDonacion(int idDonacion) {
+    public void setIdDonacion(Integer idDonacion) {
         this.idDonacion = idDonacion;
     }
 

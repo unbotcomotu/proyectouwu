@@ -6,7 +6,7 @@ import java.sql.Time;
 
 public class Usuario {
     //ATRIBUTOS
-    private int idUsuario;
+    private Integer idUsuario;
     private String rol;
     private String nombre;
     private String apellido;
@@ -23,11 +23,12 @@ public class Usuario {
     private boolean recibioKit;
 
     //GETTERS AND SETTERS
-    public int getIdUsuario() {
+
+    public Integer getIdUsuario() {
         return idUsuario;
     }
 
-    public void setIdUsuario(int idUsuario) {
+    public void setIdUsuario(Integer idUsuario) {
         this.idUsuario = idUsuario;
     }
 

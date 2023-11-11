@@ -1,5 +1,6 @@
 package com.example.proyectouwu.Servlets;
 
+import com.example.proyectouwu.Daos.DaoNotificacionDelegadoGeneral;
 import com.example.proyectouwu.Daos.DaoUsuario;
 import com.example.proyectouwu.Daos.DaoActividad;
 import jakarta.servlet.*;
@@ -32,7 +33,10 @@ public class ListaDeActividadesServlet extends HttpServlet {
                     request.setAttribute("idActividadElegida",Integer.parseInt(idActividadAux));
                 }
                 request.setAttribute("puntajeNoNumerico",request.getParameter("puntajeNoNumerico"));
-                if(rolUsuario.equals("Alumno")||rolUsuario.equals("Delegado General")){
+                if(rolUsuario.equals("Alumno")){
+                    request.getRequestDispatcher("listaDeActividades.jsp").forward(request,response);
+                }else if(rolUsuario.equals("Delegado General")){
+                    request.setAttribute("listaNotificacionesCampanita",new DaoNotificacionDelegadoGeneral().listarNotificacionesDelegadoGeneral());
                     request.getRequestDispatcher("listaDeActividades.jsp").forward(request,response);
                 }else if(rolUsuario.equals("Delegado de Actividad")){
                     int idActividadDelegatura=new DaoActividad().idDelegaturaPorIdDelegadoDeActividad(idUsuario);
@@ -44,7 +48,10 @@ public class ListaDeActividadesServlet extends HttpServlet {
                 String actividad=request.getParameter("actividad");
                 request.setAttribute("listaActividades",new DaoActividad().listarActividades(actividad));
                 request.setAttribute("actividad",actividad);
-                if(rolUsuario.equals("Alumno")||rolUsuario.equals("Delegado General")){
+                if(rolUsuario.equals("Alumno")){
+                    request.getRequestDispatcher("listaDeActividades.jsp").forward(request,response);
+                }else if(rolUsuario.equals("Delegado General")){
+                    request.setAttribute("listaNotificacionesCampanita",new DaoNotificacionDelegadoGeneral().listarNotificacionesDelegadoGeneral());
                     request.getRequestDispatcher("listaDeActividades.jsp").forward(request,response);
                 }else if(rolUsuario.equals("Delegado de Actividad")){
                     int idActividadDelegatura=new DaoActividad().idDelegaturaPorIdDelegadoDeActividad(idUsuario);
@@ -58,7 +65,16 @@ public class ListaDeActividadesServlet extends HttpServlet {
                 request.setAttribute("listaActividades",new DaoActividad().listarActividades(idFiltroActividades,idOrdenarActividades,idUsuario));
                 request.setAttribute("idFiltroActividades",idFiltroActividades);
                 request.setAttribute("idOrdenarActividades",idOrdenarActividades);
-                request.getRequestDispatcher("listaDeActividades.jsp").forward(request,response);
+                if(rolUsuario.equals("Alumno")){
+                    request.getRequestDispatcher("listaDeActividades.jsp").forward(request,response);
+                }else if(rolUsuario.equals("Delegado General")){
+                    request.setAttribute("listaNotificacionesCampanita",new DaoNotificacionDelegadoGeneral().listarNotificacionesDelegadoGeneral());
+                    request.getRequestDispatcher("listaDeActividades.jsp").forward(request,response);
+                }else if(rolUsuario.equals("Delegado de Actividad")){
+                    int idActividadDelegatura=new DaoActividad().idDelegaturaPorIdDelegadoDeActividad(idUsuario);
+                    request.setAttribute("idActividadDelegatura",idActividadDelegatura);
+                    request.getRequestDispatcher("listaDeActividades.jsp").forward(request,response);
+                }
                 break;
         }
     }
@@ -68,6 +84,7 @@ public class ListaDeActividadesServlet extends HttpServlet {
         response.setContentType("text/html");
         DaoUsuario dUsuario=new DaoUsuario();
         DaoActividad dActividad=new DaoActividad();
+        DaoNotificacionDelegadoGeneral dN=new DaoNotificacionDelegadoGeneral();
         int idUsuario=Integer.parseInt(request.getParameter("idUsuario"));
         request.setAttribute("idUsuario",idUsuario);
         String action = request.getParameter("action") == null ? "default" : request.getParameter("action");
@@ -119,6 +136,10 @@ public class ListaDeActividadesServlet extends HttpServlet {
                     response.sendRedirect(request.getContextPath()+"/ListaDeActividadesServlet?idUsuario="+idUsuario+"&idActividadElegida="+idActividadEditar+"&puntajeNoNumerico=1");
                 }
 
+                break;
+            case "notificacionLeidaCampanita":
+                dN.notificacionLeida(Integer.parseInt(request.getParameter("idNotificacion")));
+                response.sendRedirect(request.getContextPath()+"/ListaDeActividadesServlet?idUsuario="+idUsuario);
                 break;
         }
     }

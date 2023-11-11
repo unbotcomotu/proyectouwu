@@ -1,5 +1,6 @@
 package com.example.proyectouwu.Beans;
 
+import javax.swing.*;
 import java.sql.*;
 import java.util.ArrayList;
 
@@ -8,11 +9,14 @@ public class NotificacionDelegadoGeneral {
     private int idNotificacion;
     private Date fechaNotificacion;
     private Time horaNotificacion;
+    private String estado;
     private Reporte reporte=new Reporte();
     private Donacion donacion=new Donacion();
     private Usuario usuario=new Usuario();
+    private Validacion validacion=new Validacion();
 
     //GETTERS AND SETTERS
+
 
     public int getIdNotificacion() {
         return idNotificacion;
@@ -38,6 +42,14 @@ public class NotificacionDelegadoGeneral {
         this.horaNotificacion = horaNotificacion;
     }
 
+    public String getEstado() {
+        return estado;
+    }
+
+    public void setEstado(String estado) {
+        this.estado = estado;
+    }
+
     public Reporte getReporte() {
         return reporte;
     }
@@ -60,5 +72,13 @@ public class NotificacionDelegadoGeneral {
 
     public void setUsuario(Usuario usuario) {
         this.usuario = usuario;
+    }
+
+    public Validacion getValidacion() {
+        return validacion;
+    }
+
+    public void setValidacion(Validacion validacion) {
+        this.validacion = validacion;
     }
 }

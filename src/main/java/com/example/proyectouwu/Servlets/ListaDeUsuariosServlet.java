@@ -2,6 +2,7 @@ package com.example.proyectouwu.Servlets;
 
 import com.example.proyectouwu.Daos.DaoActividad;
 import com.example.proyectouwu.Daos.DaoBan;
+import com.example.proyectouwu.Daos.DaoNotificacionDelegadoGeneral;
 import com.example.proyectouwu.Daos.DaoUsuario;
 import jakarta.servlet.*;
 import jakarta.servlet.http.*;
@@ -22,6 +23,9 @@ public class ListaDeUsuariosServlet extends HttpServlet {
         request.setAttribute("nombreCompletoUsuario",dUsuario.nombreCompletoUsuarioPorId(idUsuario));
         request.setAttribute("vistaActual","listaDeUsuarios");
         request.setAttribute("correosDelegadosGenerales",dUsuario.listarCorreosDelegadosGenerales());
+        if(rolUsuario.equals("Delegado General")){
+            request.setAttribute("listaNotificacionesCampanita",new DaoNotificacionDelegadoGeneral().listarNotificacionesDelegadoGeneral());
+        }
         String action = request.getParameter("action") == null ? "listarUsuarios" : request.getParameter("action");
         switch (action) {
             case "listarUsuarios":
@@ -53,6 +57,7 @@ public class ListaDeUsuariosServlet extends HttpServlet {
         response.setContentType("text/html");
         DaoUsuario dUsuario=new DaoUsuario();
         int idUsuario=Integer.parseInt(request.getParameter("idUsuario"));
+        DaoNotificacionDelegadoGeneral dN=new DaoNotificacionDelegadoGeneral();
         String action = request.getParameter("action") == null ? "default" : request.getParameter("action");
         switch(action){
             case "banear":
@@ -60,8 +65,10 @@ public class ListaDeUsuariosServlet extends HttpServlet {
                 new DaoBan().banearPorId(idUsuarioABanear);
                 response.sendRedirect(request.getContextPath()+"/ListaDeUsuariosServlet?idUsuario="+idUsuario);
                 break;
+            case "notificacionLeidaCampanita":
+                dN.notificacionLeida(Integer.parseInt(request.getParameter("idNotificacion")));
+                response.sendRedirect(request.getContextPath()+"/ListaDeUsuariosServlet?idUsuario="+idUsuario);
+                break;
         }
-
-
     }
 }

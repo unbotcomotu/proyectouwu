@@ -46,6 +46,9 @@ public class AnaliticasServlet extends HttpServlet {
         request.setAttribute("totalEgresadosRegistrados",dUsuario.totalEgresadosRegistrados());
         request.setAttribute("totalDonacionesEgresados",dDonacion.donacionesTotalesEgresados());
         request.setAttribute("totalDonacionesEstudiantes",dDonacion.donacionesTotalesEstudiantes());
+        if(rolUsuario.equals("Delegado General")){
+            request.setAttribute("listaNotificacionesCampanita",new DaoNotificacionDelegadoGeneral().listarNotificacionesDelegadoGeneral());
+        }
         String action = request.getParameter("action") == null ? "default" : request.getParameter("action");
         switch (action){
             case "default":
@@ -55,6 +58,16 @@ public class AnaliticasServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        response.setContentType("text/html");
+        String action = request.getParameter("action") == null ? "default" : request.getParameter("action");
+        DaoNotificacionDelegadoGeneral dN=new DaoNotificacionDelegadoGeneral();
+        int idUsuario=Integer.parseInt(request.getParameter("idUsuario"));
 
-    }
+        switch (action){
+            case "notificacionLeidaCampanita":
+                dN.notificacionLeida(Integer.parseInt(request.getParameter("idNotificacion")));
+                response.sendRedirect(request.getContextPath()+"/AnaliticasServlet?idUsuario="+idUsuario);
+                break;
+        }
+        }
 }

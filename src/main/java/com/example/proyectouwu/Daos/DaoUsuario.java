@@ -548,8 +548,22 @@ public class DaoUsuario extends DaoPadre {
         }
     }
 
-
-
-
-
+    public Usuario usuarioPorIdNotificacion(int idUsuario){
+        String sql = "select nombre,apellido from usuario where idUsuario = ?";
+        try(Connection conn=this.getConnection(); PreparedStatement pstmt=conn.prepareStatement(sql)){
+            pstmt.setInt(1,idUsuario);
+            try(ResultSet rs = pstmt.executeQuery()){
+                if(rs.next()){
+                    Usuario u=new Usuario();
+                    u.setNombre(rs.getString(1));
+                    u.setApellido(rs.getString(2));
+                    return u;
+                }else{
+                    return null;
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }

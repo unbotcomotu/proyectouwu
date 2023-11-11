@@ -1,10 +1,7 @@
 package com.example.proyectouwu.Servlets;
 
 import com.example.proyectouwu.Beans.Evento;
-import com.example.proyectouwu.Daos.DaoActividad;
-import com.example.proyectouwu.Daos.DaoEvento;
-import com.example.proyectouwu.Daos.DaoLugarEvento;
-import com.example.proyectouwu.Daos.DaoUsuario;
+import com.example.proyectouwu.Daos.*;
 import jakarta.servlet.*;
 import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
@@ -48,6 +45,9 @@ public class ListaDeEventosServlet extends HttpServlet {
         request.setAttribute("cantidadEventosHoy",dActividad.cantidadEventosEnNdiasPorActividad(idActividad,0));
         request.setAttribute("cantidadEventosManana",dActividad.cantidadEventosEnNdiasPorActividad(idActividad,1));
         request.setAttribute("cantidadEventos2DiasMas", dActividad.cantidadEventosEn2DiasAMasPorActividad(idActividad));
+        if(rolUsuario.equals("Delegado General")){
+            request.setAttribute("listaNotificacionesCampanita",new DaoNotificacionDelegadoGeneral().listarNotificacionesDelegadoGeneral());
+        }
         String action = request.getParameter("action") == null ? "default" : request.getParameter("action");
         switch (action){
             case "default":
@@ -132,9 +132,10 @@ public class ListaDeEventosServlet extends HttpServlet {
         // Daos:
         DaoLugarEvento dLugarEvento = new DaoLugarEvento();
         DaoEvento dEvento = new DaoEvento();
-
+        DaoNotificacionDelegadoGeneral dN=new DaoNotificacionDelegadoGeneral();
+        int idUsuario = Integer.parseInt(request.getParameter("idUsuario"));
+        int idActividad = Integer.parseInt(request.getParameter("idActividad"));
         // Parámetros principales:
-        int addActividadID;
         int idEvento;
         // Parámetros auxiliares
         Part part = null;
@@ -148,8 +149,6 @@ public class ListaDeEventosServlet extends HttpServlet {
                 DaoUsuario dUsuario = new DaoUsuario();
                 DaoActividad dActividad=new DaoActividad();
                 String textoBuscar = request.getParameter("nombreEvento");
-                int idUsuario=Integer.parseInt(request.getParameter("idUsuario"));
-                int idActividad = Integer.parseInt(request.getParameter("idActividad"));
                 String rolUsuario=dUsuario.rolUsuarioPorId(idUsuario);
                 request.setAttribute("idUsuario",idUsuario);
                 request.setAttribute("idActividad",idActividad);
@@ -176,8 +175,6 @@ public class ListaDeEventosServlet extends HttpServlet {
                 break;
             case "addConfirm":
                 // Parámetros:
-                idUsuario = Integer.parseInt(request.getParameter("idUsuario"));
-                addActividadID = Integer.parseInt(request.getParameter("addActividadID"));
                 String addLugar = request.getParameter("addLugar");
                 String addTitulo = request.getParameter("addTitulo");
                 String addHoraStr = request.getParameter("addHora");
@@ -229,26 +226,26 @@ public class ListaDeEventosServlet extends HttpServlet {
 
                                     try {
                                         // Crear evento:
-                                        dEvento.crearEvento(addActividadID, addLugarId, addTitulo, addFecha, addHora, addDescripcionEventoActivo, addFraseMotivacional, input, addEventoOculto);
+                                        dEvento.crearEvento(idActividad, addLugarId, addTitulo, addFecha, addHora, addDescripcionEventoActivo, addFraseMotivacional, input, addEventoOculto);
                                     } catch (SQLException e) {
                                     }
                                     input.close();
                                 }catch (IOException e){
                                 }
-                                response.sendRedirect(request.getContextPath() + "/ListaDeEventosServlet?idUsuario=" + idUsuario + "&idActividad=" + addActividadID);
+                                response.sendRedirect(request.getContextPath() + "/ListaDeEventosServlet?idUsuario=" + idUsuario + "&idActividad=" + idActividad);
                             } else {
-                                response.sendRedirect(request.getContextPath() + "/ListaDeEventosServlet?idUsuario=" + idUsuario + "&idActividad=" + addActividadID + "&horaInvalida=1");
+                                response.sendRedirect(request.getContextPath() + "/ListaDeEventosServlet?idUsuario=" + idUsuario + "&idActividad=" + idActividad + "&horaInvalida=1");
                             }
                         }else{
-                            response.sendRedirect(request.getContextPath() + "/ListaDeEventosServlet?idUsuario=" + idUsuario + "&idActividad=" + addActividadID + "&horaInvalida=1");
+                            response.sendRedirect(request.getContextPath() + "/ListaDeEventosServlet?idUsuario=" + idUsuario + "&idActividad=" + idActividad + "&horaInvalida=1");
                         }
 
                     }catch (NumberFormatException i) {
-                        response.sendRedirect(request.getContextPath() + "/ListaDeEventosServlet?idUsuario=" + idUsuario + "&idActividad=" + addActividadID + "&horaInvalida=1");
+                        response.sendRedirect(request.getContextPath() + "/ListaDeEventosServlet?idUsuario=" + idUsuario + "&idActividad=" + idActividad + "&horaInvalida=1");
                     }
 
                 }catch (NumberFormatException e){
-                    response.sendRedirect(request.getContextPath()+"/ListaDeEventosServlet?idUsuario="+idUsuario+"&idActividad="+addActividadID+"&fechaNoNumerica=1");
+                    response.sendRedirect(request.getContextPath()+"/ListaDeEventosServlet?idUsuario="+idUsuario+"&idActividad="+idActividad+"&fechaNoNumerica=1");
                 }
                 break;
             case "updateConfirm":
@@ -256,8 +253,6 @@ public class ListaDeEventosServlet extends HttpServlet {
                 // Parámetros
                 idEvento = Integer.parseInt(request.getParameter("idEvento"));
                 String estadoEvento = request.getParameter("estadoEvento");
-                idUsuario = Integer.parseInt(request.getParameter("idUsuario"));
-                addActividadID = Integer.parseInt(request.getParameter("addActividadID"));
 
                 String updateLugar = request.getParameter("updateLugar");
                 String updateTitulo = request.getParameter("updateTitulo");
@@ -324,25 +319,23 @@ public class ListaDeEventosServlet extends HttpServlet {
                                     }
                                 }
                                 // Envío a la vista de lista de eventos:
-                                response.sendRedirect(request.getContextPath()+"/ListaDeEventosServlet?idUsuario="+idUsuario+"&idActividad="+addActividadID);
+                                response.sendRedirect(request.getContextPath()+"/ListaDeEventosServlet?idUsuario="+idUsuario+"&idActividad="+idActividad);
                             }else {
-                                response.sendRedirect(request.getContextPath()+"/ListaDeEventosServlet?idUsuario="+idUsuario+"&idActividad="+addActividadID+"&horaInvalida=1"+"&idEventoElegido="+idEvento);
+                                response.sendRedirect(request.getContextPath()+"/ListaDeEventosServlet?idUsuario="+idUsuario+"&idActividad="+idActividad+"&horaInvalida=1"+"&idEventoElegido="+idEvento);
                             }
                         }else{
-                            response.sendRedirect(request.getContextPath()+"/ListaDeEventosServlet?idUsuario="+idUsuario+"&idActividad="+addActividadID+"&fechaNoNumerica=1"+"&idEventoElegido="+idEvento);
+                            response.sendRedirect(request.getContextPath()+"/ListaDeEventosServlet?idUsuario="+idUsuario+"&idActividad="+idActividad+"&fechaNoNumerica=1"+"&idEventoElegido="+idEvento);
                         }
                     }catch (NumberFormatException i){
-                        response.sendRedirect(request.getContextPath()+"/ListaDeEventosServlet?idUsuario="+idUsuario+"&idActividad="+addActividadID+"&fechaNoNumerica=1"+"&idEventoElegido="+idEvento);
+                        response.sendRedirect(request.getContextPath()+"/ListaDeEventosServlet?idUsuario="+idUsuario+"&idActividad="+idActividad+"&fechaNoNumerica=1"+"&idEventoElegido="+idEvento);
                     }
 
 
                 }catch (NumberFormatException e){
-                    response.sendRedirect(request.getContextPath()+"/ListaDeEventosServlet?idUsuario="+idUsuario+"&idActividad="+addActividadID+"&fechaNoNumerica=1"+"&idEventoElegido="+idEvento);
+                    response.sendRedirect(request.getContextPath()+"/ListaDeEventosServlet?idUsuario="+idUsuario+"&idActividad="+idActividad+"&fechaNoNumerica=1"+"&idEventoElegido="+idEvento);
                 }
                 break;
             case "finConfirm":
-                idUsuario = Integer.parseInt(request.getParameter("idUsuario"));
-                addActividadID = Integer.parseInt(request.getParameter("addActividadID"));
                 String finEventoNombre = request.getParameter("finEventoNombre");
                 String finResumen = request.getParameter("finResumen");
                 String resultado = request.getParameter("resultado");
@@ -350,7 +343,11 @@ public class ListaDeEventosServlet extends HttpServlet {
                 int finEventoId = dEvento.idEventoPorNombre(finEventoNombre);
 
                 dEvento.finalizarEvento(finEventoId,finResumen,resultado);
-                response.sendRedirect(request.getContextPath()+"/ListaDeEventosServlet?idUsuario="+idUsuario+"&idActividad="+addActividadID);
+                response.sendRedirect(request.getContextPath()+"/ListaDeEventosServlet?idUsuario="+idUsuario+"&idActividad="+idActividad);
+                break;
+            case "notificacionLeidaCampanita":
+                dN.notificacionLeida(Integer.parseInt(request.getParameter("idNotificacion")));
+                response.sendRedirect(request.getContextPath()+"/ListaDeEventosServlet?idUsuario="+idUsuario+"&idActividad="+idActividad);
                 break;
         }
     }

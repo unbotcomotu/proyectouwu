@@ -1,10 +1,7 @@
 package com.example.proyectouwu.Daos;
 
-import com.example.proyectouwu.Beans.AlumnoPorEvento;
-import com.example.proyectouwu.Beans.Donacion;
-import com.example.proyectouwu.Beans.Reporte;
-import com.example.proyectouwu.Beans.Usuario;
-import com.example.proyectouwu.Beans.Validacion;
+import com.example.proyectouwu.Beans.*;
+
 import java.sql.*;
 import java.util.ArrayList;
 
@@ -340,7 +337,7 @@ public class DaoNotificacionDelegadoGeneral extends DaoPadre {
     }
 
     public void crearNotificacionValidacion(int idValidacion){
-        String sql="insert into notificaciondelegadogeneral (fechaHoraNotificacion,idValidacion) values(now(),?)";
+        String sql="insert into notificaciondelegadogeneral (fechaHoraNotificacion,estado,idValidacion) values(now(),'No leido',?)";
         try(Connection conn=this.getConnection(); PreparedStatement pstmt= conn.prepareStatement(sql)){
             pstmt.setInt(1,idValidacion);
             pstmt.executeUpdate();
@@ -350,7 +347,7 @@ public class DaoNotificacionDelegadoGeneral extends DaoPadre {
     }
 
     public void crearNotificacionSolicitudDeRegistro(int idUsuario){
-        String sql="insert into notificaciondelegadogeneral (fechaHoraNotificacion,idUsuario) values(now(),?)";
+        String sql="insert into notificaciondelegadogeneral (fechaHoraNotificacion,estado,idUsuario) values(now(),'No leido',?)";
         try(Connection conn=this.getConnection(); PreparedStatement pstmt= conn.prepareStatement(sql)){
             pstmt.setInt(1,idUsuario);
             pstmt.executeUpdate();
@@ -360,7 +357,7 @@ public class DaoNotificacionDelegadoGeneral extends DaoPadre {
     }
 
     public void crearNotificacionDonacion(int idDonacion){
-        String sql="insert into notificaciondelegadogeneral (fechaHoraNotificacion,idDonacion) values(now(),?)";
+        String sql="insert into notificaciondelegadogeneral (fechaHoraNotificacion,estado,idDonacion) values(now(),'No leido',?)";
         try(Connection conn=this.getConnection(); PreparedStatement pstmt= conn.prepareStatement(sql)){
             pstmt.setInt(1,idDonacion);
             pstmt.executeUpdate();
@@ -370,9 +367,61 @@ public class DaoNotificacionDelegadoGeneral extends DaoPadre {
     }
 
     public void crearNotificacionReporte(int idReporte){
-        String sql="insert into notificaciondelegadogeneral (fechaHoraNotificacion,idReporte) values(now(),?)";
+        String sql="insert into notificaciondelegadogeneral (fechaHoraNotificacion,estado,idReporte) values(now(),'No leido',?)";
         try(Connection conn=this.getConnection(); PreparedStatement pstmt= conn.prepareStatement(sql)){
             pstmt.setInt(1,idReporte);
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public ArrayList<NotificacionDelegadoGeneral>listarNotificacionesDelegadoGeneral(){
+        ArrayList<NotificacionDelegadoGeneral>listaDeNotificaciones= new ArrayList<>();
+        String sql = "select idNotificacion,idReporte,idDonacion,idUsuario,idValidacion from notificacionDelegadoGeneral where estado='No leido' order by fechaHoraNotificacion desc";
+        try (Connection conn=this.getConnection(); ResultSet rs=conn.createStatement().executeQuery(sql)) {
+            while (rs.next()) {
+                NotificacionDelegadoGeneral noti=new NotificacionDelegadoGeneral();
+                noti.setIdNotificacion(rs.getInt(1));
+                noti.getReporte().setIdReporte(rs.getInt(2));
+                noti.getDonacion().setIdDonacion(rs.getInt(3));
+                noti.getUsuario().setIdUsuario(rs.getInt(4));
+                noti.getValidacion().setIdCorreoValidacion(rs.getInt(5));
+                listaDeNotificaciones.add(noti);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return listaDeNotificaciones;
+    }
+
+    public Integer[] obtenerDiferenciaEntre2FechasNotificaciones(int idNotificacion){
+        Integer[] diferencia=new Integer[6];
+        String sql ="select timestampdiff(year,fechaHoraNotificacion,now()),timestampdiff(month,fechaHoraNotificacion,now()),timestampdiff(day,fechaHoraNotificacion,now()),timestampdiff(hour,fechaHoraNotificacion,now()),timestampdiff(minute,fechaHoraNotificacion,now()),timestampdiff(second,fechaHoraNotificacion,now()) from notificaciondelegadogeneral where idNotificacion=?";
+        try (Connection conn=this.getConnection(); PreparedStatement pstmt= conn.prepareStatement(sql)) {
+            pstmt.setInt(1,idNotificacion);
+            try(ResultSet rs=pstmt.executeQuery()){
+                if (rs.next()) {
+                    diferencia[0]=rs.getInt(1);
+                    diferencia[1]= rs.getInt(2)%12;
+                    diferencia[2]=rs.getInt(3)%30;
+                    diferencia[3]=rs.getInt(4)%24;
+                    diferencia[4]=rs.getInt(5)%60;
+                    diferencia[5]= rs.getInt(6)%60;
+                    return diferencia;
+                }else{
+                    return null;
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void notificacionLeida(int idNotificacion){
+        String sql="update notificacionDelegadoGeneral set estado='Leido' where idNotificacion=?";
+        try(Connection conn=this.getConnection(); PreparedStatement pstmt= conn.prepareStatement(sql)){
+            pstmt.setInt(1,idNotificacion);
             pstmt.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException(e);

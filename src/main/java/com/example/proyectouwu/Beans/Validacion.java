@@ -3,7 +3,7 @@ import java.util.Date;
 
 public class Validacion {
     //ATRIBUTOS
-    private int idCorreoValidacion;
+    private Integer idCorreoValidacion;
     private Usuario usuario=new Usuario();
     private String correo;
     private String tipo;
@@ -15,11 +15,12 @@ public class Validacion {
 
     //GETTERS AND SETTERS
 
-    public int getIdCorreoValidacion() {
+
+    public Integer getIdCorreoValidacion() {
         return idCorreoValidacion;
     }
 
-    public void setIdCorreoValidacion(int idCorreoValidacion) {
+    public void setIdCorreoValidacion(Integer idCorreoValidacion) {
         this.idCorreoValidacion = idCorreoValidacion;
     }
 

@@ -5,7 +5,7 @@ import java.sql.Date;
 
 public class Reporte {
     //ATRIBUTOS
-    private int idReporte;
+    private Integer idReporte;
     private Usuario usuarioReportado=new Usuario();
     private Usuario usuarioQueReporta=new Usuario();
     private String motivoReporte;
@@ -14,11 +14,12 @@ public class Reporte {
 
 //GETTERS AND SETTERS
 
-    public int getIdReporte() {
+
+    public Integer getIdReporte() {
         return idReporte;
     }
 
-    public void setIdReporte(int idReporte) {
+    public void setIdReporte(Integer idReporte) {
         this.idReporte = idReporte;
     }
 

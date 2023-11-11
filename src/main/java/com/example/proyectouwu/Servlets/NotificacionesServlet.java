@@ -28,6 +28,9 @@ public class NotificacionesServlet extends HttpServlet {
         request.setAttribute("rolUsuario",rolUsuario);
         request.setAttribute("nombreCompletoUsuario",dUsuario.nombreCompletoUsuarioPorId(idUsuario));
         request.setAttribute("correosDelegadosGenerales",dUsuario.listarCorreosDelegadosGenerales());
+        if(rolUsuario.equals("Delegado General")){
+            request.setAttribute("listaNotificacionesCampanita",new DaoNotificacionDelegadoGeneral().listarNotificacionesDelegadoGeneral());
+        }
         String action = request.getParameter("action") == null ? "default" : request.getParameter("action");
         switch (action){
             case "default":
@@ -221,7 +224,10 @@ public class NotificacionesServlet extends HttpServlet {
                 dN.aceptarSolicitudApoyo(idAlumnoPorEvento,tipoDeApoyo);
                 response.sendRedirect(request.getContextPath()+"/NotificacionesServlet?idUsuario="+idUsuario);
                 break;
-
+            case "notificacionLeidaCampanita":
+                dN.notificacionLeida(Integer.parseInt(request.getParameter("idNotificacion")));
+                response.sendRedirect(request.getContextPath()+"/EventoServlet?idUsuario="+idUsuario);
+                break;
         }
     }
 }

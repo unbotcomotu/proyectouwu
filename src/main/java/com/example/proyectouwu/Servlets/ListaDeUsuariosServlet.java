@@ -27,9 +27,12 @@ public class ListaDeUsuariosServlet extends HttpServlet {
             request.setAttribute("listaNotificacionesCampanita",new DaoNotificacionDelegadoGeneral().listarNotificacionesDelegadoGeneral());
         }
         String action = request.getParameter("action") == null ? "listarUsuarios" : request.getParameter("action");
+        String pagina = request.getParameter("p") == null ? "1" : request.getParameter("p");
         switch (action) {
             case "listarUsuarios":
-                request.setAttribute("listaUsuarios", dUsuario.listarUsuarios());
+                request.setAttribute("listaUsuarios", dUsuario.listarUsuarios(Integer.parseInt(pagina)-1));
+                request.setAttribute("cantidadUsuariosTotal", dUsuario.listarUsuarios().size());
+                request.setAttribute("pagActual", Integer.parseInt(pagina));
                 request.getRequestDispatcher("listaUsuarios.jsp").forward(request, response);
                 break;
             case "buscarUsuario":

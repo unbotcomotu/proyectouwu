@@ -1719,7 +1719,7 @@
   <!-- /SECTION FILTERS BAR -->
   <!-- GRID -->
   <div class="grid grid-4-4-4 centered">
-    <%int k=0;%>
+    <%int k=0;int cantidadUsuarios=0;%>
     <% for(Usuario usuario: listaUsuarios) { %>
 
     <!-- USER PREVIEW -->
@@ -1850,7 +1850,7 @@
     </div>
     <!-- /USER PREVIEW -->
 
-    <%}%>
+    <%cantidadUsuarios++;}%>
 
   </div>
   <!-- /GRID -->
@@ -1860,52 +1860,20 @@
     <!-- SECTION PAGER -->
     <div class="section-pager">
       <!-- SECTION PAGER ITEM -->
-      <div class="section-pager-item active">
+      <%int cantidadTotalUsuarios = (int)Math.ceil((int)request.getAttribute("cantidadUsuariosTotal")/8.0);
+      Integer pagActual = (Integer) request.getAttribute("pagActual") != null ? (Integer) request.getAttribute("pagActual") : 1;
+      for(int p=0;p<cantidadTotalUsuarios; p++){%>
+      <div class="section-pager-item <%if(pagActual==p+1){%>active<%}%>">
         <!-- SECTION PAGER ITEM TEXT -->
-        <p class="section-pager-item-text">01</p>
+        <%if(p<9){%>
+        <a class="section-pager-item-text" href="<%=request.getContextPath()%>/ListaDeUsuariosServlet?idUsuario=<%=idUsuario%>&p=<%=p+1%>">0<%=p+1%></a>
+        <%}else{%>
+        <a class="section-pager-item-text" href="<%=request.getContextPath()%>/ListaDeUsuariosServlet?idUsuario=<%=idUsuario%>&p=<%=p+1%>"><%=p+1%></a>
+        <%}%>
         <!-- /SECTION PAGER ITEM TEXT -->
       </div>
       <!-- /SECTION PAGER ITEM -->
-
-      <!-- SECTION PAGER ITEM -->
-      <div class="section-pager-item">
-        <!-- SECTION PAGER ITEM TEXT -->
-        <p class="section-pager-item-text">02</p>
-        <!-- /SECTION PAGER ITEM TEXT -->
-      </div>
-      <!-- /SECTION PAGER ITEM -->
-
-      <!-- SECTION PAGER ITEM -->
-      <div class="section-pager-item">
-        <!-- SECTION PAGER ITEM TEXT -->
-        <p class="section-pager-item-text">03</p>
-        <!-- /SECTION PAGER ITEM TEXT -->
-      </div>
-      <!-- /SECTION PAGER ITEM -->
-
-      <!-- SECTION PAGER ITEM -->
-      <div class="section-pager-item">
-        <!-- SECTION PAGER ITEM TEXT -->
-        <p class="section-pager-item-text">04</p>
-        <!-- /SECTION PAGER ITEM TEXT -->
-      </div>
-      <!-- /SECTION PAGER ITEM -->
-
-      <!-- SECTION PAGER ITEM -->
-      <div class="section-pager-item">
-        <!-- SECTION PAGER ITEM TEXT -->
-        <p class="section-pager-item-text">05</p>
-        <!-- /SECTION PAGER ITEM TEXT -->
-      </div>
-      <!-- /SECTION PAGER ITEM -->
-
-      <!-- SECTION PAGER ITEM -->
-      <div class="section-pager-item">
-        <!-- SECTION PAGER ITEM TEXT -->
-        <p class="section-pager-item-text">06</p>
-        <!-- /SECTION PAGER ITEM TEXT -->
-      </div>
-      <!-- /SECTION PAGER ITEM -->
+      <%}%>
     </div>
     <!-- /SECTION PAGER -->
 
@@ -1936,7 +1904,7 @@
   <!-- /SECTION PAGER BAR -->
 
   <!-- SECTION RESULTS TEXT -->
-  <p class="section-results-text">Mostrando 4 de 282 usuarios</p>
+  <p class="section-results-text">Mostrando <%=cantidadUsuarios%> de <%=(int)request.getAttribute("cantidadUsuariosTotal")%> usuarios</p>
   <!-- /SECTION RESULTS TEXT -->
 </div>
 <!-- /CONTENT GRID -->

@@ -140,6 +140,32 @@ public class DaoUsuario extends DaoPadre {
         }
     }
 
+    public ArrayList<Usuario> listarUsuarios(int pagina){
+        ArrayList<Usuario> lista = new ArrayList<>();
+        String sql = "select idUsuario, nombre, apellido, rol, codigoPUCP, condicion, fotoPerfil, descripcionPerfil from usuario where estadoRegistro='Registrado' AND rol!='Delegado General' limit 8 offset ?";
+        try(Connection conn=this.getConnection();
+            PreparedStatement pstmt = conn.prepareStatement(sql)){
+            pstmt.setInt(1,pagina*8);
+            try(ResultSet rs = pstmt.executeQuery()) {
+                while (rs.next()) {
+                    Usuario usuario = new Usuario();
+                    usuario.setIdUsuario(rs.getInt(1));
+                    usuario.setNombre(rs.getString(2));
+                    usuario.setApellido(rs.getString(3));
+                    usuario.setRol(rs.getString(4));
+                    usuario.setCodigoPUCP(rs.getString(5));
+                    usuario.setCondicion(rs.getString(6));
+                    usuario.setFotoPerfil(rs.getBlob(7));
+                    usuario.setDescripcionPerfil(rs.getString(8));
+                    lista.add(usuario);
+                }
+                return lista;
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     public ArrayList<Usuario> listarUsuariosTotal(){
         ArrayList<Usuario> lista = new ArrayList<>();
         String sql = "select idUsuario , correo , contrasena from usuario";

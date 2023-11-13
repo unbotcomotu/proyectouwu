@@ -220,7 +220,7 @@ public class NotificacionesServlet extends HttpServlet {
                 break;
             case "notificacionLeidaCampanita":
                 dN.notificacionLeida(Integer.parseInt(request.getParameter("idNotificacion")));
-                response.sendRedirect("EventoServlet");
+                response.sendRedirect("NotificacionesServlet");
                 break;
         }
     }

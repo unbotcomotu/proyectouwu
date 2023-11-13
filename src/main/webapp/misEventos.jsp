@@ -5,13 +5,15 @@
 <%@ page import="com.example.proyectouwu.Daos.DaoLugarEvento" %>
 <%@ page import="com.example.proyectouwu.Daos.DaoAlumnoPorEvento" %>
 <%@ page import="com.example.proyectouwu.Daos.DaoUsuario" %>
+<%@ page import="com.example.proyectouwu.Beans.Usuario" %>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <%int idUsuario=(int) request.getAttribute("idUsuario");
-    String rolUsuario=(String) request.getAttribute("rolUsuario");
-    String nombreCompletoUsuario=(String) request.getAttribute("nombreCompletoUsuario");
+    <%Usuario usuarioActual=(Usuario) request.getSession().getAttribute("usuario");
+    int idUsuario=usuarioActual.getIdUsuario();
+    String rolUsuario=usuarioActual.getRol();
+    String nombreCompletoUsuario=usuarioActual.getNombre()+" "+usuarioActual.getApellido();
     String vistaActual=(String) request.getAttribute("vistaActual");
     ArrayList<String>listaCorreosDelegadosGenerales=(ArrayList<String>)request.getAttribute("correosDelegadosGenerales");
     int diaActual=(int) request.getAttribute("diaActual");
@@ -327,7 +329,7 @@
         <!-- MENU ITEM -->
         <li class="menu-item <%if(vistaActual.equals("miCuenta")){%>active<%}%>">
             <!-- MENU ITEM LINK -->
-            <a class="menu-item-link text-tooltip-tfr" href="<%=request.getContextPath()%>/MiCuentaServlet?idUsuario=<%=idUsuario%>" data-title="Mi cuenta">
+            <a class="menu-item-link text-tooltip-tfr" href="MiCuentaServlet" data-title="Mi cuenta">
                 <!-- MENU ITEM LINK ICON -->
                 <svg class="menu-item-link-icon icon-members">
                     <use xlink:href="#svg-members"></use>
@@ -338,7 +340,7 @@
         </li>
         <li class="menu-item <%if(vistaActual.equals("listaDeActividades")){%>active<%}%>">
             <!-- MENU ITEM LINK -->
-            <a class="menu-item-link text-tooltip-tfr" href="<%=request.getContextPath()%>/ListaDeActividadesServlet?idUsuario=<%=idUsuario%>" data-title="Actividades">
+            <a class="menu-item-link text-tooltip-tfr" href="ListaDeActividadesServlet" data-title="Actividades">
                 <!-- MENU ITEM LINK ICON -->
                 <img src="css/actividadIconoGris.png" class="menu-item-link-icon icon-members" alt="">
                 <!-- /MENU ITEM LINK ICON -->
@@ -348,7 +350,7 @@
         <%if(rolUsuario.equals("Delegado General")){%>
         <li class="menu-item <%if(vistaActual.equals("analiticas")){%>active<%}%>">
             <!-- MENU ITEM LINK -->
-            <a class="menu-item-link text-tooltip-tfr text-center" href="<%=request.getContextPath()%>/AnaliticasServlet?idUsuario=<%=idUsuario%>" data-title="Analíticas">
+            <a class="menu-item-link text-tooltip-tfr text-center" href="AnaliticasServlet" data-title="Analíticas">
                 <!-- MENU ITEM LINK ICON -->
                 <img src="css/analiticasIcono.png" width="70%" alt="">
                 <!-- /MENU ITEM LINK ICON -->
@@ -358,7 +360,7 @@
         <!-- /MENU ITEM -->
         <li class="menu-item <%if(vistaActual.equals("listaDeUsuarios")){%>active<%}%>">
             <!-- MENU ITEM LINK -->
-            <a class="menu-item-link text-tooltip-tfr text-center" href="<%=request.getContextPath()%>/ListaDeUsuariosServlet?idUsuario=<%=idUsuario%>" data-title="Usuarios">
+            <a class="menu-item-link text-tooltip-tfr text-center" href="ListaDeUsuariosServlet" data-title="Usuarios">
                 <!-- MENU ITEM LINK ICON -->
                 <img src="css/usuariosIcono.png" width="70%" alt="">
                 <!-- /MENU ITEM LINK ICON -->
@@ -368,7 +370,7 @@
         <%}else{%>
         <li class="menu-item <%if(vistaActual.equals("misEventos")){%>active<%}%>">
             <!-- MENU ITEM LINK -->
-            <a class="menu-item-link text-tooltip-tfr" href="<%=request.getContextPath()%>/MisEventosServlet?idUsuario=<%=idUsuario%>" data-title="Mis eventos">
+            <a class="menu-item-link text-tooltip-tfr" href="MisEventosServlet" data-title="Mis eventos">
                 <!-- MENU ITEM LINK ICON -->
                 <img src="css/misEventosIcono.png" class="menu-item-link-icon icon-members" alt="">
                 <!-- /MENU ITEM LINK ICON -->
@@ -377,7 +379,7 @@
         </li>
         <li class="menu-item <%if(vistaActual.equals("misDonaciones")){%>active<%}%>">
             <!-- MENU ITEM LINK -->
-            <a class="menu-item-link text-tooltip-tfr" href="<%=request.getContextPath()%>/MisDonacionesServlet?idUsuario=<%=idUsuario%>" data-title="Donaciones">
+            <a class="menu-item-link text-tooltip-tfr" href="MisDonacionesServlet" data-title="Donaciones">
                 <!-- MENU ITEM LINK ICON -->
                 <img src="css/donacionIcono.png" class="menu-item-link-icon icon-members" style="opacity: 50%;" alt="">
                 <!-- /MENU ITEM LINK ICON -->
@@ -450,7 +452,7 @@
     <!-- MENU ITEM -->
     <li class="menu-item">
         <!-- MENU ITEM LINK -->
-        <a class="menu-item-link" href="<%=request.getContextPath()%>/MiCuentaServlet?idUsuario=<%=idUsuario%>">
+        <a class="menu-item-link" href="MiCuentaServlet">
             <!-- MENU ITEM LINK ICON -->
             <svg class="menu-item-link-icon icon-members">
                 <use xlink:href="#svg-members"></use>
@@ -466,7 +468,7 @@
     <!-- MENU ITEM -->
     <li class="menu-item">
         <!-- MENU ITEM LINK -->
-        <a class="menu-item-link" href="<%=request.getContextPath()%>/ListaDeActividadesServlet?idUsuario=<%=idUsuario%>">
+        <a class="menu-item-link" href="ListaDeActividadesServlet">
             <!-- MENU ITEM LINK ICON -->
             <img src="css/actividadIconoGris.png" class="menu-item-link-icon icon-members" alt="">
             <!-- /MENU ITEM LINK ICON -->
@@ -480,7 +482,7 @@
     <!-- MENU ITEM -->
     <li class="menu-item">
         <!-- MENU ITEM LINK -->
-        <a class="menu-item-link" href="<%=request.getContextPath()%>/AnaliticasServlet?idUsuario=<%=idUsuario%>">
+        <a class="menu-item-link" href="AnaliticasServlet">
             <!-- MENU ITEM LINK ICON -->
             <img src="css/analiticasIcono.png" width="7%" alt="">
             <!-- /MENU ITEM LINK ICON -->
@@ -492,7 +494,7 @@
     <br>
     <li class="menu-item">
         <!-- MENU ITEM LINK -->
-        <a class="menu-item-link" href="<%=request.getContextPath()%>/ListaDeUsuariosServlet?idUsuario=<%=idUsuario%>">
+        <a class="menu-item-link" href="ListaDeUsuariosServlet">
             <!-- MENU ITEM LINK ICON -->
             <img src="css/usuariosIcono.png" width="7%" alt="">
             <!-- /MENU ITEM LINK ICON -->
@@ -505,7 +507,7 @@
     <!-- MENU ITEM -->
     <li class="menu-item">
         <!-- MENU ITEM LINK -->
-        <a class="menu-item-link" href="<%=request.getContextPath()%>/MisEventosServlet?idUsuario=<%=idUsuario%>">
+        <a class="menu-item-link" href="MisEventosServlet">
             <!-- MENU ITEM LINK ICON -->
             <img src="css/misEventosIcono.png" class="menu-item-link-icon icon-members" alt="">
             <!-- /MENU ITEM LINK ICON -->
@@ -518,7 +520,7 @@
     <!-- MENU ITEM -->
     <li class="menu-item">
         <!-- MENU ITEM LINK -->
-        <a class="menu-item-link" href="<%=request.getContextPath()%>/MisDonacionesServlet?idUsuario=<%=idUsuario%>">
+        <a class="menu-item-link" href="MisDonacionesServlet">
             <!-- MENU ITEM LINK ICON -->
             <img src="css/donacionIcono.png" class="menu-item-link-icon icon-members" style="opacity: 50%;" alt="">
             <!-- /MENU ITEM LINK ICON -->
@@ -599,7 +601,7 @@
         <!-- /NAVIGATION WIDGET INFO -->
 
         <!-- NAVIGATION WIDGET BUTTON -->
-        <a href="<%=request.getContextPath()%>/IndexServlet"><p class="navigation-widget-info-button button small secondary">Cerrar sesión</p></a>
+        <a href="IndexServlet"><p class="navigation-widget-info-button button small secondary">Cerrar sesión</p></a>
         <!-- /NAVIGATION WIDGET BUTTON -->
     </div>
     <!-- /NAVIGATION WIDGET INFO WRAP -->
@@ -614,7 +616,7 @@
         <!-- /NAVIGATION WIDGET SECTION TITLE -->
 
         <!-- NAVIGATION WIDGET SECTION LINK -->
-        <a class="navigation-widget-section-link" href="<%=request.getContextPath()%>/MiCuentaServlet?idUsuario=<%=idUsuario%>">Mi cuenta</a>
+        <a class="navigation-widget-section-link" href="MiCuentaServlet">Mi cuenta</a>
         <!-- /NAVIGATION WIDGET SECTION LINK -->
 
         <!-- NAVIGATION WIDGET SECTION TITLE -->
@@ -622,23 +624,23 @@
         <!-- /NAVIGATION WIDGET SECTION TITLE -->
 
         <!-- NAVIGATION WIDGET SECTION LINK -->
-        <a class="navigation-widget-section-link" href="<%=request.getContextPath()%>/ListaDeActividadesServlet?idUsuario=<%=idUsuario%>">Actividades</a>
+        <a class="navigation-widget-section-link" href="ListaDeActividadesServlet">Actividades</a>
         <!-- /NAVIGATION WIDGET SECTION LINK -->
         <%if(rolUsuario.equals("Delegado General")){%>
         <!-- NAVIGATION WIDGET SECTION LINK -->
-        <a class="navigation-widget-section-link" href="<%=request.getContextPath()%>/AnaliticasServlet?idUsuario=<%=idUsuario%>">Analíticas</a>
+        <a class="navigation-widget-section-link" href="AnaliticasServlet">Analíticas</a>
         <!-- /NAVIGATION WIDGET SECTION LINK -->
 
         <!-- NAVIGATION WIDGET SECTION LINK -->
-        <a class="navigation-widget-section-link" href="<%=request.getContextPath()%>/ListaDeUsuariosServlet?idUsuario=<%=idUsuario%>">Usuarios</a>
+        <a class="navigation-widget-section-link" href="ListaDeUsuariosServlet">Usuarios</a>
         <!-- /NAVIGATION WIDGET SECTION LINK -->
         <%}else{%>
         <!-- NAVIGATION WIDGET SECTION LINK -->
-        <a class="navigation-widget-section-link" href="<%=request.getContextPath()%>/MisEventosServlet?idUsuario=<%=idUsuario%>">Mis eventos</a>
+        <a class="navigation-widget-section-link" href="MisEventosServlet">Mis eventos</a>
         <!-- /NAVIGATION WIDGET SECTION LINK -->
 
         <!-- NAVIGATION WIDGET SECTION LINK -->
-        <a class="navigation-widget-section-link" href="<%=request.getContextPath()%>/MisDonacionesServlet?idUsuario=<%=idUsuario%>">Donaciones</a>
+        <a class="navigation-widget-section-link" href="MisDonacionesServlet">Donaciones</a>
         <!-- /NAVIGATION WIDGET SECTION LINK -->
         <%}%>
     </ul>
@@ -722,7 +724,10 @@
         <!-- ACTION ITEM -->
         <div class="action-item dark header-settings-dropdown-trigger">
             <!-- ACTION ITEM ICON -->
-            <a href="<%=request.getContextPath()%>/inicioSesion.jsp"><img src="css/logOut.png" width="30%" alt=""></a>
+            <form id="cerrarSesion3" method="post" action="InicioSesionServlet?action=logOut">
+                <a onclick="enviarFormulario('cerrarSesion3')"><img src="css/logOut.png" width="30%" style="margin-left: 25px;" alt=""></a>
+            </form>
+            <script></script>
             <!-- /ACTION ITEM ICON -->
         </div>
         <!-- /ACTION ITEM -->
@@ -959,7 +964,7 @@
                     <!-- /DROPDOWN BOX LIST -->
                     <!--ARRIBA ESTÁN LAS NOTIFICACIONES-->
                     <!-- DROPDOWN BOX BUTTON -->
-                    <a class="dropdown-box-button secondary" href="<%=request.getContextPath()%>/NotificacionesServlet?idUsuario=<%=idUsuario%>">Ver todas las notificaciones</a>
+                    <a class="dropdown-box-button secondary" href="NotificacionesServlet">Ver todas las notificaciones</a>
                     <!-- /DROPDOWN BOX BUTTON -->
                 </div>
                 <!-- /DROPDOWN BOX -->
@@ -973,7 +978,10 @@
             <!-- ACTION ITEM -->
             <div class="action-item dark header-settings-dropdown-trigger">
                 <!-- ACTION ITEM ICON -->
-                <a href="<%=request.getContextPath()%>/inicioSesion.jsp"><img src="css/logOut.png" width="30%" style="margin-left: 25px;" alt=""></a>
+                <form id="cerrarSesion2" method="post" action="InicioSesionServlet?action=logOut">
+                    <a onclick="enviarFormulario('cerrarSesion2')"><img src="css/logOut.png" width="30%" style="margin-left: 25px;" alt=""></a>
+                </form>
+                <script></script>
                 <!-- /ACTION ITEM ICON -->
             </div>
             <!-- /ACTION ITEM -->
@@ -986,386 +994,6 @@
     <!-- /HEADER ACTIONS -->
     <%}else{%>
     <!-- HEADER ACTIONS DELEGADO GENERAL -->
-    <div class="header-actions">
-        <!-- ACTION LIST -->
-        <div class="action-list dark">
-            <!-- ACTION LIST ITEM WRAP -->
-            <div class="action-list-item-wrap">
-                <!-- ACTION LIST ITEM -->
-                <div class="action-list-item unread header-dropdown-trigger">
-                    <!-- ACTION LIST ITEM ICON -->
-                    <svg class="action-list-item-icon icon-notification">
-                        <use xlink:href="#svg-notification"></use>
-                    </svg>
-                    <!-- /ACTION LIST ITEM ICON -->
-                </div>
-                <!-- /ACTION LIST ITEM -->
-
-                <!-- DROPDOWN BOX -->
-                <div class="dropdown-box header-dropdown">
-                    <!-- DROPDOWN BOX HEADER -->
-                    <div class="dropdown-box-header">
-                        <!-- DROPDOWN BOX HEADER TITLE -->
-                        <p class="dropdown-box-header-title">Notificaciones</p>
-                        <!-- /DROPDOWN BOX HEADER TITLE -->
-                    </div>
-                    <!-- /DROPDOWN BOX HEADER -->
-
-                    <!-- DROPDOWN BOX LIST -->
-                    <div class="dropdown-box-list" data-simplebar>
-                        <!-- DROPDOWN BOX LIST ITEM -->
-                        <div class="dropdown-box-list-item unread">
-                            <!-- USER STATUS -->
-                            <div class="user-status notification">
-                                <!-- USER STATUS AVATAR -->
-                                <a class="user-status-avatar">
-                                    <!-- USER AVATAR -->
-                                    <div class="user-avatar small no-outline">
-                                        <!-- USER AVATAR CONTENT -->
-                                        <div class="user-avatar-content">
-                                            <!-- HEXAGON -->
-                                            <div class="hexagon-image-30-32" data-src="css/iconoPerfil.png"></div>
-                                            <!-- /HEXAGON -->
-                                        </div>
-                                        <!-- /USER AVATAR CONTENT -->
-
-                                        <!-- USER AVATAR PROGRESS -->
-                                        <div class="user-avatar-progress">
-                                            <!-- HEXAGON -->
-                                            <div class="hexagon-progress-40-44"></div>
-                                            <!-- /HEXAGON -->
-                                        </div>
-                                        <!-- /USER AVATAR PROGRESS -->
-
-                                        <!-- USER AVATAR PROGRESS BORDER -->
-                                        <div class="user-avatar-progress-border">
-                                            <!-- HEXAGON -->
-                                            <div class="hexagon-border-40-44"></div>
-                                            <!-- /HEXAGON -->
-                                        </div>
-                                        <!-- /USER AVATAR PROGRESS BORDER -->
-
-                                        <!-- USER AVATAR BADGE -->
-                                        <div class="user-avatar-badge">
-                                            <!-- USER AVATAR BADGE BORDER -->
-                                            <div class="user-avatar-badge-border">
-                                            </div>
-                                            <!-- /USER AVATAR BADGE BORDER -->
-
-                                        </div>
-                                        <!-- /USER AVATAR BADGE -->
-                                    </div>
-                                    <!-- /USER AVATAR -->
-                                </a>
-                                <!-- /USER STATUS AVATAR -->
-
-                                <!-- USER STATUS TITLE -->
-                                <p class="user-status-title"><a class="bold">Javier Milei</a> está solicitando la aprobación de su <a class="highlighted">registro</a> en la plataforma.</p>
-                                <!-- /USER STATUS TITLE -->
-
-                                <!-- USER STATUS TIMESTAMP -->
-                                <p class="user-status-timestamp">Hace 20 minutos</p>
-                                <!-- /USER STATUS TIMESTAMP -->
-
-                                <!-- USER STATUS ICON -->
-                                <div class="user-status-icon">
-                                    <!-- ICON COMMENT -->
-                                    <img src="css/iconoRegistro.png" width="30px" alt="">
-                                    <!-- /ICON COMMENT -->
-                                </div>
-                                <!-- /USER STATUS ICON -->
-                            </div>
-                            <!-- /USER STATUS -->
-                        </div>
-                        <!-- /DROPDOWN BOX LIST ITEM -->
-                        <!-- DROPDOWN BOX LIST ITEM -->
-                        <div class="dropdown-box-list-item unread">
-                            <!-- USER STATUS -->
-                            <div class="user-status notification">
-                                <!-- USER STATUS AVATAR -->
-                                <a class="user-status-avatar">
-                                    <!-- USER AVATAR -->
-                                    <div class="user-avatar small no-outline">
-                                        <!-- USER AVATAR CONTENT -->
-                                        <div class="user-avatar-content">
-                                            <!-- HEXAGON -->
-                                            <div class="hexagon-image-30-32" data-src="css/fotoAlex.png"></div>
-                                            <!-- /HEXAGON -->
-                                        </div>
-                                        <!-- /USER AVATAR CONTENT -->
-
-                                        <!-- USER AVATAR PROGRESS -->
-                                        <div class="user-avatar-progress">
-                                            <!-- HEXAGON -->
-                                            <div class="hexagon-progress-40-44"></div>
-                                            <!-- /HEXAGON -->
-                                        </div>
-                                        <!-- /USER AVATAR PROGRESS -->
-
-                                        <!-- USER AVATAR PROGRESS BORDER -->
-                                        <div class="user-avatar-progress-border">
-                                            <!-- HEXAGON -->
-                                            <div class="hexagon-border-40-44"></div>
-                                            <!-- /HEXAGON -->
-                                        </div>
-                                        <!-- /USER AVATAR PROGRESS BORDER -->
-
-                                        <!-- USER AVATAR BADGE -->
-                                        <div class="user-avatar-badge">
-                                            <!-- USER AVATAR BADGE BORDER -->
-                                            <div class="user-avatar-badge-border">
-                                            </div>
-                                            <!-- /USER AVATAR BADGE BORDER -->
-
-                                        </div>
-                                        <!-- /USER AVATAR BADGE -->
-                                    </div>
-                                    <!-- /USER AVATAR -->
-                                </a>
-                                <!-- /USER STATUS AVATAR -->
-
-                                <!-- USER STATUS TITLE -->
-                                <p class="user-status-title"><a class="bold">Alex Segovia</a> realizó una  <a class="highlighted">donación</a> de <a style="color: orange;">S/. 3</a>.</p>
-                                <!-- /USER STATUS TITLE -->
-
-                                <!-- USER STATUS TIMESTAMP -->
-                                <p class="user-status-timestamp">Hace 37 minutos</p>
-                                <!-- /USER STATUS TIMESTAMP -->
-
-                                <!-- USER STATUS ICON -->
-                                <div class="user-status-icon">
-                                    <!-- ICON COMMENT -->
-                                    <img src="css/donacionIcono.png" width="30px" alt="">
-                                    <!-- /ICON COMMENT -->
-                                </div>
-                                <!-- /USER STATUS ICON -->
-                            </div>
-                            <!-- /USER STATUS -->
-                        </div>
-                        <!-- /DROPDOWN BOX LIST ITEM -->
-                        <!-- DROPDOWN BOX LIST ITEM -->
-                        <div class="dropdown-box-list-item unread">
-                            <!-- USER STATUS -->
-                            <div class="user-status notification">
-                                <!-- USER STATUS AVATAR -->
-                                <a class="user-status-avatar">
-                                    <!-- USER AVATAR -->
-                                    <div class="user-avatar small no-outline">
-                                        <!-- USER AVATAR CONTENT -->
-                                        <div class="user-avatar-content">
-                                            <!-- HEXAGON -->
-                                            <div class="hexagon-image-30-32" data-src="css/fotoMayte.png"></div>
-                                            <!-- /HEXAGON -->
-                                        </div>
-                                        <!-- /USER AVATAR CONTENT -->
-
-                                        <!-- USER AVATAR PROGRESS -->
-                                        <div class="user-avatar-progress">
-                                            <!-- HEXAGON -->
-                                            <div class="hexagon-progress-40-44"></div>
-                                            <!-- /HEXAGON -->
-                                        </div>
-                                        <!-- /USER AVATAR PROGRESS -->
-
-                                        <!-- USER AVATAR PROGRESS BORDER -->
-                                        <div class="user-avatar-progress-border">
-                                            <!-- HEXAGON -->
-                                            <div class="hexagon-border-40-44"></div>
-                                            <!-- /HEXAGON -->
-                                        </div>
-                                        <!-- /USER AVATAR PROGRESS BORDER -->
-
-                                        <!-- USER AVATAR BADGE -->
-                                        <div class="user-avatar-badge">
-                                            <!-- USER AVATAR BADGE BORDER -->
-                                            <div class="user-avatar-badge-border">
-                                            </div>
-                                            <!-- /USER AVATAR BADGE BORDER -->
-
-                                        </div>
-                                        <!-- /USER AVATAR BADGE -->
-                                    </div>
-                                    <!-- /USER AVATAR -->
-                                </a>
-                                <!-- /USER STATUS AVATAR -->
-
-                                <!-- USER STATUS TITLE -->
-                                <p class="user-status-title"><a class="bold">Mayte Asto</a> realizó una  <a class="highlighted">donación</a> de <a style="color: orange;">S/. 100</a>.</p>
-                                <!-- /USER STATUS TITLE -->
-
-                                <!-- USER STATUS TIMESTAMP -->
-                                <p class="user-status-timestamp">Hace 54 minutos</p>
-                                <!-- /USER STATUS TIMESTAMP -->
-
-                                <!-- USER STATUS ICON -->
-                                <div class="user-status-icon">
-                                    <!-- ICON COMMENT -->
-                                    <img src="css/donacionIcono.png" width="30px" alt="">
-                                    <!-- /ICON COMMENT -->
-                                </div>
-                                <!-- /USER STATUS ICON -->
-                            </div>
-                            <!-- /USER STATUS -->
-                        </div>
-                        <!-- /DROPDOWN BOX LIST ITEM -->
-                        <!-- DROPDOWN BOX LIST ITEM -->
-                        <div class="dropdown-box-list-item unread">
-                            <!-- USER STATUS -->
-                            <div class="user-status notification">
-                                <!-- USER STATUS AVATAR -->
-                                <a class="user-status-avatar">
-                                    <!-- USER AVATAR -->
-                                    <div class="user-avatar small no-outline">
-                                        <!-- USER AVATAR CONTENT -->
-                                        <div class="user-avatar-content">
-                                            <!-- HEXAGON -->
-                                            <div class="hexagon-image-30-32" data-src="css/iconoPerfil.png"></div>
-                                            <!-- /HEXAGON -->
-                                        </div>
-                                        <!-- /USER AVATAR CONTENT -->
-
-                                        <!-- USER AVATAR PROGRESS -->
-                                        <div class="user-avatar-progress">
-                                            <!-- HEXAGON -->
-                                            <div class="hexagon-progress-40-44"></div>
-                                            <!-- /HEXAGON -->
-                                        </div>
-                                        <!-- /USER AVATAR PROGRESS -->
-
-                                        <!-- USER AVATAR PROGRESS BORDER -->
-                                        <div class="user-avatar-progress-border">
-                                            <!-- HEXAGON -->
-                                            <div class="hexagon-border-40-44"></div>
-                                            <!-- /HEXAGON -->
-                                        </div>
-                                        <!-- /USER AVATAR PROGRESS BORDER -->
-
-                                        <!-- USER AVATAR BADGE -->
-                                        <div class="user-avatar-badge">
-                                            <!-- USER AVATAR BADGE BORDER -->
-                                            <div class="user-avatar-badge-border">
-                                            </div>
-                                            <!-- /USER AVATAR BADGE BORDER -->
-
-                                        </div>
-                                        <!-- /USER AVATAR BADGE -->
-                                    </div>
-                                    <!-- /USER AVATAR -->
-                                </a>
-                                <!-- /USER STATUS AVATAR -->
-
-                                <!-- USER STATUS TITLE -->
-                                <p class="user-status-title"><a class="bold">Rubén Agapito</a> está solicitando la aprobación de su <a class="highlighted">registro</a> en la plataforma.</p>
-                                <!-- /USER STATUS TITLE -->
-
-                                <!-- USER STATUS TIMESTAMP -->
-                                <p class="user-status-timestamp">Hace 1 hora</p>
-                                <!-- /USER STATUS TIMESTAMP -->
-
-                                <!-- USER STATUS ICON -->
-                                <div class="user-status-icon">
-                                    <!-- ICON COMMENT -->
-                                    <img src="css/iconoRegistro.png" width="30px" alt="">
-                                    <!-- /ICON COMMENT -->
-                                </div>
-                                <!-- /USER STATUS ICON -->
-                            </div>
-                            <!-- /USER STATUS -->
-                        </div>
-                        <!-- /DROPDOWN BOX LIST ITEM -->
-                        <!-- DROPDOWN BOX LIST ITEM -->
-                        <div class="dropdown-box-list-item unread">
-                            <!-- USER STATUS -->
-                            <div class="user-status notification">
-                                <!-- USER STATUS AVATAR -->
-                                <a class="user-status-avatar">
-                                    <!-- USER AVATAR -->
-                                    <div class="user-avatar small no-outline">
-                                        <!-- USER AVATAR CONTENT -->
-                                        <div class="user-avatar-content">
-                                            <!-- HEXAGON -->
-                                            <div class="hexagon-image-30-32" data-src="css/fotoYarleque.png"></div>
-                                            <!-- /HEXAGON -->
-                                        </div>
-                                        <!-- /USER AVATAR CONTENT -->
-
-                                        <!-- USER AVATAR PROGRESS -->
-                                        <div class="user-avatar-progress">
-                                            <!-- HEXAGON -->
-                                            <div class="hexagon-progress-40-44"></div>
-                                            <!-- /HEXAGON -->
-                                        </div>
-                                        <!-- /USER AVATAR PROGRESS -->
-
-                                        <!-- USER AVATAR PROGRESS BORDER -->
-                                        <div class="user-avatar-progress-border">
-                                            <!-- HEXAGON -->
-                                            <div class="hexagon-border-40-44"></div>
-                                            <!-- /HEXAGON -->
-                                        </div>
-                                        <!-- /USER AVATAR PROGRESS BORDER -->
-
-                                        <!-- USER AVATAR BADGE -->
-                                        <div class="user-avatar-badge">
-                                            <!-- USER AVATAR BADGE BORDER -->
-                                            <div class="user-avatar-badge-border">
-                                            </div>
-                                            <!-- /USER AVATAR BADGE BORDER -->
-
-                                        </div>
-                                        <!-- /USER AVATAR BADGE -->
-                                    </div>
-                                    <!-- /USER AVATAR -->
-                                </a>
-                                <!-- /USER STATUS AVATAR -->
-
-                                <!-- USER STATUS TITLE -->
-                                <p class="user-status-title"><a class="bold">Manuel Yarleque</a> realizó una  <a class="highlighted">donación</a> de <a style="color: orange;">S/. 1</a>.</p>
-                                <!-- /USER STATUS TITLE -->
-
-                                <!-- USER STATUS TIMESTAMP -->
-                                <p class="user-status-timestamp">Hace 2 horas</p>
-                                <!-- /USER STATUS TIMESTAMP -->
-
-                                <!-- USER STATUS ICON -->
-                                <div class="user-status-icon">
-                                    <!-- ICON COMMENT -->
-                                    <img src="css/donacionIcono.png" width="30px" alt="">
-                                    <!-- /ICON COMMENT -->
-                                </div>
-                                <!-- /USER STATUS ICON -->
-                            </div>
-                            <!-- /USER STATUS -->
-                        </div>
-                        <!-- /DROPDOWN BOX LIST ITEM -->
-                    </div>
-                    <!-- /DROPDOWN BOX LIST -->
-                    <!--ARRIBA ESTÁN LAS NOTIFICACIONES-->
-                    <!-- DROPDOWN BOX BUTTON -->
-                    <a class="dropdown-box-button secondary" href="<%=request.getContextPath()%>/NotificacionesServlet?idUsuario=<%=idUsuario%>">Ver todas las notificaciones</a>
-                    <!-- /DROPDOWN BOX BUTTON -->
-                </div>
-                <!-- /DROPDOWN BOX -->
-            </div>
-            <!-- /ACTION LIST ITEM WRAP -->
-        </div>
-        <!-- /ACTION LIST -->
-
-        <!-- ACTION ITEM WRAP -->
-        <div class="action-item-wrap auxResponsiveUwu">
-            <!-- ACTION ITEM -->
-            <div class="action-item dark header-settings-dropdown-trigger">
-                <!-- ACTION ITEM ICON -->
-                <a href="<%=request.getContextPath()%>/inicioSesion.jsp"><img src="css/logOut.png" width="30%" style="margin-left: 25px;" alt=""></a>
-                <!-- /ACTION ITEM ICON -->
-            </div>
-            <!-- /ACTION ITEM -->
-
-            <!-- DROPDOWN NAVIGATION -->
-
-        </div>
-        <!-- /ACTION ITEM WRAP -->
-    </div>
     <!-- /HEADER ACTIONS -->
     <%}%>
     <!-- /HEADER ACTIONS -->

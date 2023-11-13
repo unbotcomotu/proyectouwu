@@ -1,6 +1,7 @@
 package com.example.proyectouwu.Daos;
 
 import com.example.proyectouwu.Beans.Actividad;
+import com.example.proyectouwu.Beans.Ban;
 import com.example.proyectouwu.Beans.Evento;
 import com.example.proyectouwu.Beans.Usuario;
 import com.mysql.cj.jdbc.exceptions.MysqlDataTruncation;
@@ -459,7 +460,7 @@ public class DaoUsuario extends DaoPadre {
         }
     }
     public void registroDeAlumno(String name, String apellido, String correo, String contrasena, String codigoPUCP, String condicion){
-        String sql = "insert into usuario( rol, nombre, apellido, correo, contrasena, codigoPUCP, estadoRegistro, fechaHoraRegistro,condicion ,DescripcionPerfil) values (?, ?,?, ?,?, ?,?,(select now()),?, 'Vamos Fibra')";
+        String sql = "insert into usuario( rol, nombre, apellido, correo, contrasena, codigoPUCP, estadoRegistro, fechaHoraRegistro,condicion ,DescripcionPerfil) values (?,?,?,?,sha2(?,256),?,?,(select now()),?, 'Vamos Fibra')";
         try (Connection conn=this.getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql,Statement.RETURN_GENERATED_KEYS)) {
             //pstmt.setInt(1,idUser);
             pstmt.setString(1,"Alumno"); //nuevos usuarios se registran como alumnos
@@ -593,7 +594,7 @@ public class DaoUsuario extends DaoPadre {
         return baneado;
     }
     public void actualizarContrasena (int idCorreoValidacion, String password){
-        String sql = "update usuario set contrasena = ? where idUsuario = (Select idUsuario from validacion where idCorreoValidacion = ?)";
+        String sql = "update usuario set contrasena = sha2(?,256) where idUsuario = (Select idUsuario from validacion where idCorreoValidacion = ?)";
         try(Connection conn=this.getConnection(); PreparedStatement pstmt=conn.prepareStatement(sql)){
             pstmt.setString(1,password);
             pstmt.setInt(2,idCorreoValidacion);
@@ -661,6 +662,50 @@ public class DaoUsuario extends DaoPadre {
                     u.setNombre(rs.getString(1));
                     u.setApellido(rs.getString(2));
                     return u;
+                }else{
+                    return null;
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public Usuario usuarioSesion(int idUsuario){
+        String sql = "select idUsuario,rol,nombre,apellido,fotoPerfil from usuario where idUsuario = ?";
+        try(Connection conn=this.getConnection(); PreparedStatement pstmt=conn.prepareStatement(sql)){
+            pstmt.setInt(1,idUsuario);
+            try(ResultSet rs = pstmt.executeQuery()){
+                if(rs.next()){
+                    Usuario u=new Usuario();
+                    u.setIdUsuario(rs.getInt(1));
+                    u.setRol(rs.getString(2));
+                    u.setNombre(rs.getString(3));
+                    u.setApellido(rs.getString(4));
+                    u.setFotoPerfil(rs.getBlob(5));
+                    return u;
+                }else{
+                    return null;
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public Ban logIn(String correo, String contrasena){
+        String sql = "select u.idUsuario,u.estadoRegistro,b.idBan,b.motivoBan from usuario u left join ban b on u.idUsuario=b.idUsuario where u.correo=? and u.contrasena=sha2(?,256)";
+        try(Connection conn=this.getConnection(); PreparedStatement pstmt=conn.prepareStatement(sql)){
+            pstmt.setString(1,correo);
+            pstmt.setString(2,contrasena);
+            try(ResultSet rs = pstmt.executeQuery()){
+                if(rs.next()){
+                    Ban b=new Ban();
+                    b.getUsuario().setIdUsuario(rs.getInt(1));
+                    b.getUsuario().setEstadoRegistro(rs.getString(2));
+                    b.setIdBan(rs.getInt(3));
+                    b.setMotivoBan(rs.getString(4));
+                    return b;
                 }else{
                     return null;
                 }

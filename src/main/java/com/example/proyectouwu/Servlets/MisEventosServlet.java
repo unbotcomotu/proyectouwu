@@ -1,5 +1,6 @@
 package com.example.proyectouwu.Servlets;
 
+import com.example.proyectouwu.Beans.Usuario;
 import com.example.proyectouwu.Daos.DaoAlumnoPorEvento;
 import com.example.proyectouwu.Daos.DaoEvento;
 import com.example.proyectouwu.Daos.DaoUsuario;
@@ -19,19 +20,19 @@ public class MisEventosServlet extends HttpServlet {
         DaoUsuario dUsuario=new DaoUsuario();
         DaoAlumnoPorEvento dAlPorEvento=new DaoAlumnoPorEvento();
         DaoEvento dEvent = new DaoEvento();
-        int idUsuario=Integer.parseInt(request.getParameter("idUsuario"));
-        String rolUsuario=dUsuario.rolUsuarioPorId(idUsuario);
-        request.setAttribute("idUsuario",idUsuario);
-        request.setAttribute("rolUsuario",rolUsuario);
-        request.setAttribute("nombreCompletoUsuario",dUsuario.nombreCompletoUsuarioPorId(idUsuario));
-        request.setAttribute("vistaActual","misEventos");
-        request.setAttribute("correosDelegadosGenerales",dUsuario.listarCorreosDelegadosGenerales());
-        request.setAttribute("diaActual",Integer.parseInt(ZonedDateTime.now().toString().split("T")[0].split("-")[2]));
-        request.setAttribute("listaEventos",dAlPorEvento.listarEventosPorUsuario(idUsuario));
-        String action = request.getParameter("action") == null ? "default" : request.getParameter("action");
-        switch (action){
-            case "default":
-                request.getRequestDispatcher("misEventos.jsp").forward(request,response);
+        Usuario usuario=(Usuario) request.getSession().getAttribute("usuario");
+        if(usuario==null){
+            response.sendRedirect("InicioSesionServlet");
+        }else{
+            request.setAttribute("vistaActual","misEventos");
+            request.setAttribute("correosDelegadosGenerales",dUsuario.listarCorreosDelegadosGenerales());
+            request.setAttribute("diaActual",Integer.parseInt(ZonedDateTime.now().toString().split("T")[0].split("-")[2]));
+            request.setAttribute("listaEventos",dAlPorEvento.listarEventosPorUsuario(usuario.getIdUsuario()));
+            String action = request.getParameter("action") == null ? "default" : request.getParameter("action");
+            switch (action){
+                case "default":
+                    request.getRequestDispatcher("misEventos.jsp").forward(request,response);
+            }
         }
     }
 

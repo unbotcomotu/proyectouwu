@@ -5,7 +5,7 @@ import java.sql.Date;
 
 public class Ban {
     //Atributos
-    private int idBan;
+    private Integer idBan;
     private Usuario usuario=new Usuario();
     private String motivoBan;
     private Date fecha;
@@ -14,11 +14,12 @@ public class Ban {
 
     //Getters and setters
 
-    public int getIdBan() {
+
+    public Integer getIdBan() {
         return idBan;
     }
 
-    public void setIdBan(int idBan) {
+    public void setIdBan(Integer idBan) {
         this.idBan = idBan;
     }
 

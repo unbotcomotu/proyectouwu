@@ -1,5 +1,6 @@
 package com.example.proyectouwu.Servlets;
 
+import com.example.proyectouwu.Beans.Usuario;
 import com.example.proyectouwu.Daos.DaoNotificacionDelegadoGeneral;
 import com.example.proyectouwu.Daos.DaoUsuario;
 import jakarta.servlet.*;
@@ -21,22 +22,23 @@ public class MiCuentaServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.setContentType("text/html");
         DaoUsuario dUsuario=new DaoUsuario();
-        int idUsuario=Integer.parseInt(request.getParameter("idUsuario"));
-        String rolUsuario=dUsuario.rolUsuarioPorId(idUsuario);
-        request.setAttribute("idUsuario",idUsuario);
-        request.setAttribute("rolUsuario",rolUsuario);
-        request.setAttribute("nombreCompletoUsuario",dUsuario.nombreCompletoUsuarioPorId(idUsuario));
-        request.setAttribute("listaInfo",dUsuario.obtenerInfoPorId(idUsuario));
-        request.setAttribute("vistaActual","miCuenta");
-        request.setAttribute("correosDelegadosGenerales",dUsuario.listarCorreosDelegadosGenerales());
-        request.setAttribute("IDyNombreDelegadosDeActividad",dUsuario.listarIDyNombreDelegadosDeActividad());
-        String action = request.getParameter("action") == null ? "default" : request.getParameter("action");
-        if(rolUsuario.equals("Delegado General")){
-            request.setAttribute("listaNotificacionesCampanita",new DaoNotificacionDelegadoGeneral().listarNotificacionesDelegadoGeneral());
-        }
-        switch (action){
-            case "default":
-                request.getRequestDispatcher("miCuenta.jsp").forward(request,response);
+        Usuario usuario=(Usuario) request.getSession().getAttribute("usuario");
+        if(usuario==null){
+            response.sendRedirect("InicioSesionServlet");
+        }else{
+            String rolUsuario=dUsuario.rolUsuarioPorId(usuario.getIdUsuario());
+            request.setAttribute("listaInfo",dUsuario.obtenerInfoPorId(usuario.getIdUsuario()));
+            request.setAttribute("vistaActual","miCuenta");
+            request.setAttribute("correosDelegadosGenerales",dUsuario.listarCorreosDelegadosGenerales());
+            request.setAttribute("IDyNombreDelegadosDeActividad",dUsuario.listarIDyNombreDelegadosDeActividad());
+            String action = request.getParameter("action") == null ? "default" : request.getParameter("action");
+            if(rolUsuario.equals("Delegado General")){
+                request.setAttribute("listaNotificacionesCampanita",new DaoNotificacionDelegadoGeneral().listarNotificacionesDelegadoGeneral());
+            }
+            switch (action){
+                case "default":
+                    request.getRequestDispatcher("miCuenta.jsp").forward(request,response);
+            }
         }
     }
 
@@ -46,9 +48,7 @@ public class MiCuentaServlet extends HttpServlet {
         DaoUsuario daoUsuario = new DaoUsuario();
         DaoNotificacionDelegadoGeneral dN=new DaoNotificacionDelegadoGeneral();
         String action = request.getParameter("action") == null ? "default" : request.getParameter("action");
-
-        // Variables inicializadas
-        Integer idUsuario = Integer.parseInt(request.getParameter("idUsuario"));;
+        Usuario usuario=(Usuario) request.getSession().getAttribute("usuario");
         Part part = null;
         InputStream input = null;
         boolean validarLongitud;
@@ -57,8 +57,8 @@ public class MiCuentaServlet extends HttpServlet {
             case("editarDescripcion"):
                 String nuevaDescripcion = request.getParameter("nuevaDescripcion");
                 //sentencia sql para actualizar:
-                daoUsuario.cambioDescripcion(nuevaDescripcion, idUsuario);
-                response.sendRedirect(request.getContextPath() + "/MiCuentaServlet?"+"idUsuario="+idUsuario);
+                daoUsuario.cambioDescripcion(nuevaDescripcion, usuario.getIdUsuario());
+                response.sendRedirect("MiCuentaServlet");
                 break;
             case "editarFoto":
                 part = request.getPart("cambiarFoto");
@@ -71,12 +71,12 @@ public class MiCuentaServlet extends HttpServlet {
                 validarLongitud = input.available()>10;
 
                 try {
-                    daoUsuario.cambiarFoto(idUsuario,input,validarLongitud,"1");
+                    daoUsuario.cambiarFoto(usuario.getIdUsuario(),input,validarLongitud,"1");
                 } catch (SQLException e) {
                 }
 
                 input.close();
-                response.sendRedirect(request.getContextPath() + "/MiCuentaServlet?"+"idUsuario="+idUsuario);
+                response.sendRedirect("MiCuentaServlet");
                 break;
             case "editarSeguro":
                 part = request.getPart("cambiarSeguro");
@@ -89,19 +89,19 @@ public class MiCuentaServlet extends HttpServlet {
                 validarLongitud = input.available()>0;
 
                 try {
-                    daoUsuario.cambiarFoto(idUsuario,input,validarLongitud,"2");
+                    daoUsuario.cambiarFoto(usuario.getIdUsuario(),input,validarLongitud,"2");
                 } catch (SQLException e) {
                 }
 
                 input.close();
-                response.sendRedirect(request.getContextPath() + "/MiCuentaServlet?"+"idUsuario="+idUsuario);
+                response.sendRedirect( "MiCuentaServlet");
 
             case("default"):
                 //auxilio
                 break;
             case "notificacionLeidaCampanita":
                 dN.notificacionLeida(Integer.parseInt(request.getParameter("idNotificacion")));
-                response.sendRedirect(request.getContextPath()+"/MiCuentaServlet?idUsuario="+idUsuario);
+                response.sendRedirect("MiCuentaServlet");
                 break;
         }
     }

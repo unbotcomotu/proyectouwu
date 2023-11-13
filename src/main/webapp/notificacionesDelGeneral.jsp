@@ -12,9 +12,10 @@
 <html>
 <head>
 
-    <%int idUsuario=(int) request.getAttribute("idUsuario");
-        String rolUsuario=(String) request.getAttribute("rolUsuario");
-        String nombreCompletoUsuario=(String) request.getAttribute("nombreCompletoUsuario");
+    <%Usuario usuarioActual=(Usuario) request.getSession().getAttribute("usuario");
+        int idUsuario=usuarioActual.getIdUsuario();
+        String rolUsuario=usuarioActual.getRol();
+        String nombreCompletoUsuario=usuarioActual.getNombre()+" "+usuarioActual.getApellido();
         ArrayList<Usuario> listaSolicitudes=(ArrayList<Usuario>) request.getAttribute("listaSolicitudes");
         ArrayList<Reporte> reportList = (ArrayList<Reporte>) request.getAttribute("reportList");
         ArrayList<Donacion> donacionList = (ArrayList<Donacion>) request.getAttribute("donacionList");
@@ -93,38 +94,49 @@
 
 
     <style>
-        /* Estilos para el pop-up */
-        .popup {
+        .overlay {
             display: none;
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.7);
-
-            /*align-items: center;
-            justify-content: center;*/
+            background-color: rgba(0, 0, 0, 0.7);
+            z-index: 10000;
         }
-        .popup-content {
-            background-color: white;
-            /*max-width: 80%;*/
+
+        /* Estilo para el contenido del popup */
+        .popup {
             padding: 20px;
-            top: 50%;
-            left: 50%;
-            border-radius: 5px;
-            transform: translate(-50%, -50%);
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-            /*text-align: center; /* Centra horizontalmente el contenido */
             display: none;
             position: fixed;
+            top: 50%;
+            left: 50%;
+            border-radius: 12px;
+            transform: translate(-50%, -50%);
+            z-index: 10001;
+            width: 100%;
+            max-width: 650px;
+            background-color: #fff;
         }
-        .popup-content img {
-            max-width: 50%;
-            height: auto;
-            display: block; /* Elimina cualquier espacio en blanco debajo de la imagen */
-            margin: 0 auto;
 
+        /* Estilo para el botón de cerrar */
+        .cerrarPopup {
+            display: flex;
+            -ms-flex-pack: center;
+            justify-content: center;
+            -ms-flex-align: center;
+            align-items: center;
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            background-color: #45437f;
+            cursor: pointer;
+            position: absolute;
+            top: -20px;
+            right: -20px;
+            z-index: 2;
+            transition: background-color .2s ease-in-out;
         }
     </style>
 
@@ -229,7 +241,7 @@
         <!-- MENU ITEM -->
         <li class="menu-item <%if(vistaActual.equals("miCuenta")){%>active<%}%>">
             <!-- MENU ITEM LINK -->
-            <a class="menu-item-link text-tooltip-tfr" href="<%=request.getContextPath()%>/MiCuentaServlet?idUsuario=<%=idUsuario%>" data-title="Mi cuenta">
+            <a class="menu-item-link text-tooltip-tfr" href="MiCuentaServlet" data-title="Mi cuenta">
                 <!-- MENU ITEM LINK ICON -->
                 <svg class="menu-item-link-icon icon-members">
                     <use xlink:href="#svg-members"></use>
@@ -240,7 +252,7 @@
         </li>
         <li class="menu-item <%if(vistaActual.equals("listaDeActividades")){%>active<%}%>">
             <!-- MENU ITEM LINK -->
-            <a class="menu-item-link text-tooltip-tfr" href="<%=request.getContextPath()%>/ListaDeActividadesServlet?idUsuario=<%=idUsuario%>" data-title="Actividades">
+            <a class="menu-item-link text-tooltip-tfr" href="ListaDeActividadesServlet" data-title="Actividades">
                 <!-- MENU ITEM LINK ICON -->
                 <img src="css/actividadIconoGris.png" class="menu-item-link-icon icon-members" alt="">
                 <!-- /MENU ITEM LINK ICON -->
@@ -250,7 +262,7 @@
         <%if(rolUsuario.equals("Delegado General")){%>
         <li class="menu-item <%if(vistaActual.equals("analiticas")){%>active<%}%>">
             <!-- MENU ITEM LINK -->
-            <a class="menu-item-link text-tooltip-tfr text-center" href="<%=request.getContextPath()%>/AnaliticasServlet?idUsuario=<%=idUsuario%>" data-title="Analíticas">
+            <a class="menu-item-link text-tooltip-tfr text-center" href="AnaliticasServlet" data-title="Analíticas">
                 <!-- MENU ITEM LINK ICON -->
                 <img src="css/analiticasIcono.png" width="70%" alt="">
                 <!-- /MENU ITEM LINK ICON -->
@@ -260,7 +272,7 @@
         <!-- /MENU ITEM -->
         <li class="menu-item <%if(vistaActual.equals("listaDeUsuarios")){%>active<%}%>">
             <!-- MENU ITEM LINK -->
-            <a class="menu-item-link text-tooltip-tfr text-center" href="<%=request.getContextPath()%>/ListaDeUsuariosServlet?idUsuario=<%=idUsuario%>" data-title="Usuarios">
+            <a class="menu-item-link text-tooltip-tfr text-center" href="ListaDeUsuariosServlet" data-title="Usuarios">
                 <!-- MENU ITEM LINK ICON -->
                 <img src="css/usuariosIcono.png" width="70%" alt="">
                 <!-- /MENU ITEM LINK ICON -->
@@ -270,7 +282,7 @@
         <%}else{%>
         <li class="menu-item <%if(vistaActual.equals("misEventos")){%>active<%}%>">
             <!-- MENU ITEM LINK -->
-            <a class="menu-item-link text-tooltip-tfr" href="<%=request.getContextPath()%>/MisEventosServlet?idUsuario=<%=idUsuario%>" data-title="Mis eventos">
+            <a class="menu-item-link text-tooltip-tfr" href="MisEventosServlet" data-title="Mis eventos">
                 <!-- MENU ITEM LINK ICON -->
                 <img src="css/misEventosIcono.png" class="menu-item-link-icon icon-members" alt="">
                 <!-- /MENU ITEM LINK ICON -->
@@ -279,7 +291,7 @@
         </li>
         <li class="menu-item <%if(vistaActual.equals("misDonaciones")){%>active<%}%>">
             <!-- MENU ITEM LINK -->
-            <a class="menu-item-link text-tooltip-tfr" href="<%=request.getContextPath()%>/MisDonacionesServlet?idUsuario=<%=idUsuario%>" data-title="Donaciones">
+            <a class="menu-item-link text-tooltip-tfr" href="MisDonacionesServlet" data-title="Donaciones">
                 <!-- MENU ITEM LINK ICON -->
                 <img src="css/donacionIcono.png" class="menu-item-link-icon icon-members" style="opacity: 50%;" alt="">
                 <!-- /MENU ITEM LINK ICON -->
@@ -352,7 +364,7 @@
     <!-- MENU ITEM -->
     <li class="menu-item">
         <!-- MENU ITEM LINK -->
-        <a class="menu-item-link" href="<%=request.getContextPath()%>/MiCuentaServlet?idUsuario=<%=idUsuario%>">
+        <a class="menu-item-link" href="MiCuentaServlet">
             <!-- MENU ITEM LINK ICON -->
             <svg class="menu-item-link-icon icon-members">
                 <use xlink:href="#svg-members"></use>
@@ -368,7 +380,7 @@
     <!-- MENU ITEM -->
     <li class="menu-item">
         <!-- MENU ITEM LINK -->
-        <a class="menu-item-link" href="<%=request.getContextPath()%>/ListaDeActividadesServlet?idUsuario=<%=idUsuario%>">
+        <a class="menu-item-link" href="ListaDeActividadesServlet">
             <!-- MENU ITEM LINK ICON -->
             <img src="css/actividadIconoGris.png" class="menu-item-link-icon icon-members" alt="">
             <!-- /MENU ITEM LINK ICON -->
@@ -382,7 +394,7 @@
     <!-- MENU ITEM -->
     <li class="menu-item">
         <!-- MENU ITEM LINK -->
-        <a class="menu-item-link" href="<%=request.getContextPath()%>/AnaliticasServlet?idUsuario=<%=idUsuario%>">
+        <a class="menu-item-link" href="AnaliticasServlet">
             <!-- MENU ITEM LINK ICON -->
             <img src="css/analiticasIcono.png" width="7%" alt="">
             <!-- /MENU ITEM LINK ICON -->
@@ -394,7 +406,7 @@
     <br>
     <li class="menu-item">
         <!-- MENU ITEM LINK -->
-        <a class="menu-item-link" href="<%=request.getContextPath()%>/ListaDeUsuariosServlet?idUsuario=<%=idUsuario%>">
+        <a class="menu-item-link" href="ListaDeUsuariosServlet">
             <!-- MENU ITEM LINK ICON -->
             <img src="css/usuariosIcono.png" width="7%" alt="">
             <!-- /MENU ITEM LINK ICON -->
@@ -407,7 +419,7 @@
     <!-- MENU ITEM -->
     <li class="menu-item">
         <!-- MENU ITEM LINK -->
-        <a class="menu-item-link" href="<%=request.getContextPath()%>/MisEventosServlet?idUsuario=<%=idUsuario%>">
+        <a class="menu-item-link" href="MisEventosServlet">
             <!-- MENU ITEM LINK ICON -->
             <img src="css/misEventosIcono.png" class="menu-item-link-icon icon-members" alt="">
             <!-- /MENU ITEM LINK ICON -->
@@ -420,7 +432,7 @@
     <!-- MENU ITEM -->
     <li class="menu-item">
         <!-- MENU ITEM LINK -->
-        <a class="menu-item-link" href="<%=request.getContextPath()%>/MisDonacionesServlet?idUsuario=<%=idUsuario%>">
+        <a class="menu-item-link" href="MisDonacionesServlet">
             <!-- MENU ITEM LINK ICON -->
             <img src="css/donacionIcono.png" class="menu-item-link-icon icon-members" style="opacity: 50%;" alt="">
             <!-- /MENU ITEM LINK ICON -->
@@ -501,7 +513,7 @@
         <!-- /NAVIGATION WIDGET INFO -->
 
         <!-- NAVIGATION WIDGET BUTTON -->
-        <a href="<%=request.getContextPath()%>/IndexServlet"><p class="navigation-widget-info-button button small secondary">Cerrar sesión</p></a>
+        <a href="IndexServlet"><p class="navigation-widget-info-button button small secondary">Cerrar sesión</p></a>
         <!-- /NAVIGATION WIDGET BUTTON -->
     </div>
     <!-- /NAVIGATION WIDGET INFO WRAP -->
@@ -516,7 +528,7 @@
         <!-- /NAVIGATION WIDGET SECTION TITLE -->
 
         <!-- NAVIGATION WIDGET SECTION LINK -->
-        <a class="navigation-widget-section-link" href="<%=request.getContextPath()%>/MiCuentaServlet?idUsuario=<%=idUsuario%>">Mi cuenta</a>
+        <a class="navigation-widget-section-link" href="MiCuentaServlet">Mi cuenta</a>
         <!-- /NAVIGATION WIDGET SECTION LINK -->
 
         <!-- NAVIGATION WIDGET SECTION TITLE -->
@@ -524,23 +536,23 @@
         <!-- /NAVIGATION WIDGET SECTION TITLE -->
 
         <!-- NAVIGATION WIDGET SECTION LINK -->
-        <a class="navigation-widget-section-link" href="<%=request.getContextPath()%>/ListaDeActividadesServlet?idUsuario=<%=idUsuario%>">Actividades</a>
+        <a class="navigation-widget-section-link" href="ListaDeActividadesServlet">Actividades</a>
         <!-- /NAVIGATION WIDGET SECTION LINK -->
         <%if(rolUsuario.equals("Delegado General")){%>
         <!-- NAVIGATION WIDGET SECTION LINK -->
-        <a class="navigation-widget-section-link" href="<%=request.getContextPath()%>/AnaliticasServlet?idUsuario=<%=idUsuario%>">Analíticas</a>
+        <a class="navigation-widget-section-link" href="AnaliticasServlet">Analíticas</a>
         <!-- /NAVIGATION WIDGET SECTION LINK -->
 
         <!-- NAVIGATION WIDGET SECTION LINK -->
-        <a class="navigation-widget-section-link" href="<%=request.getContextPath()%>/ListaDeUsuariosServlet?idUsuario=<%=idUsuario%>">Usuarios</a>
+        <a class="navigation-widget-section-link" href="ListaDeUsuariosServlet">Usuarios</a>
         <!-- /NAVIGATION WIDGET SECTION LINK -->
         <%}else{%>
         <!-- NAVIGATION WIDGET SECTION LINK -->
-        <a class="navigation-widget-section-link" href="<%=request.getContextPath()%>/MisEventosServlet?idUsuario=<%=idUsuario%>">Mis eventos</a>
+        <a class="navigation-widget-section-link" href="MisEventosServlet">Mis eventos</a>
         <!-- /NAVIGATION WIDGET SECTION LINK -->
 
         <!-- NAVIGATION WIDGET SECTION LINK -->
-        <a class="navigation-widget-section-link" href="<%=request.getContextPath()%>/MisDonacionesServlet?idUsuario=<%=idUsuario%>">Donaciones</a>
+        <a class="navigation-widget-section-link" href="MisDonacionesServlet">Donaciones</a>
         <!-- /NAVIGATION WIDGET SECTION LINK -->
         <%}%>
     </ul>
@@ -624,7 +636,10 @@
         <!-- ACTION ITEM -->
         <div class="action-item dark header-settings-dropdown-trigger">
             <!-- ACTION ITEM ICON -->
-            <a href="<%=request.getContextPath()%>/inicioSesion.jsp"><img src="css/logOut.png" width="30%" alt=""></a>
+            <form id="cerrarSesion3" method="post" action="InicioSesionServlet?action=logOut">
+                <a onclick="enviarFormulario('cerrarSesion3')"><img src="css/logOut.png" width="30%" style="margin-left: 25px;" alt=""></a>
+            </form>
+            <script></script>
             <!-- /ACTION ITEM ICON -->
         </div>
         <!-- /ACTION ITEM -->
@@ -861,7 +876,7 @@
                     <!-- /DROPDOWN BOX LIST -->
                     <!--ARRIBA ESTÁN LAS NOTIFICACIONES-->
                     <!-- DROPDOWN BOX BUTTON -->
-                    <a class="dropdown-box-button secondary" href="<%=request.getContextPath()%>/NotificacionesServlet?idUsuario=<%=idUsuario%>">Ver todas las notificaciones</a>
+                    <a class="dropdown-box-button secondary" href="NotificacionesServlet">Ver todas las notificaciones</a>
                     <!-- /DROPDOWN BOX BUTTON -->
                 </div>
                 <!-- /DROPDOWN BOX -->
@@ -875,7 +890,10 @@
             <!-- ACTION ITEM -->
             <div class="action-item dark header-settings-dropdown-trigger">
                 <!-- ACTION ITEM ICON -->
-                <a href="<%=request.getContextPath()%>/inicioSesion.jsp"><img src="css/logOut.png" width="30%" style="margin-left: 25px;" alt=""></a>
+                <form id="cerrarSesion2" method="post" action="InicioSesionServlet?action=logOut">
+                    <a onclick="enviarFormulario('cerrarSesion2')"><img src="css/logOut.png" width="30%" style="margin-left: 25px;" alt=""></a>
+                </form>
+                <script></script>
                 <!-- /ACTION ITEM ICON -->
             </div>
             <!-- /ACTION ITEM -->
@@ -916,9 +934,8 @@
                     <!-- DROPDOWN BOX LIST -->
                     <div class="dropdown-box-list" data-simplebar>
                         <%for(NotificacionDelegadoGeneral noti:listaNotificacionesCampanita){%>
-                        <form id="notificacionLeidaCampanita<%=listaNotificacionesCampanita.indexOf(noti)%>" method="post" action="<%=request.getContextPath()%>/<%=servletActual%>?action=notificacionLeidaCampanita">
+                        <form id="notificacionLeidaCampanita<%=listaNotificacionesCampanita.indexOf(noti)%>" method="post" action="/<%=servletActual%>?action=notificacionLeidaCampanita">
                             <input type="hidden" name="idNotificacion" value="<%=noti.getIdNotificacion()%>">
-                            <input type="hidden" name="idUsuario" value="<%=idUsuario%>">
                             <%if(noti.getReporte().getIdReporte()!=0){
                                 Reporte r=new DaoReporte().reportePorIdReporteNotificacion(noti.getReporte().getIdReporte());%>
                             <!-- Reporte -->
@@ -1579,7 +1596,7 @@
                     <!-- /DROPDOWN BOX LIST -->
                     <!--ARRIBA ESTÁN LAS NOTIFICACIONES-->
                     <!-- DROPDOWN BOX BUTTON -->
-                    <a class="dropdown-box-button secondary" href="<%=request.getContextPath()%>/NotificacionesServlet?idUsuario=<%=idUsuario%>">Ver todas las notificaciones</a>
+                    <a class="dropdown-box-button secondary" href="NotificacionesServlet">Ver todas las notificaciones</a>
                     <!-- /DROPDOWN BOX BUTTON -->
                 </div>
                 <!-- /DROPDOWN BOX -->
@@ -1593,7 +1610,10 @@
             <!-- ACTION ITEM -->
             <div class="action-item dark header-settings-dropdown-trigger">
                 <!-- ACTION ITEM ICON -->
-                <a href="<%=request.getContextPath()%>/inicioSesion.jsp"><img src="css/logOut.png" width="30%" style="margin-left: 25px;" alt=""></a>
+                <form id="cerrarSesion1" method="post" action="InicioSesionServlet?action=logOut">
+                    <a onclick="enviarFormulario('cerrarSesion1')"><img src="css/logOut.png" width="30%" style="margin-left: 25px;" alt=""></a>
+                </form>
+                <script></script>
                 <!-- /ACTION ITEM ICON -->
             </div>
             <!-- /ACTION ITEM -->
@@ -1642,7 +1662,6 @@
                     <div class="form-input small with-button">
                         <label for="friends-search_1">Buscar usuarios</label>
                         <%String busquedaSolicitudes=(String) request.getAttribute("busquedaSolicitudes");%>
-                        <input type="hidden" name="idUsuario" value="<%=idUsuario%>">
                         <input type="text" id="friends-search_1" name="busquedaSolicitudes" <%if(busquedaSolicitudes!=null){%> value="<%=busquedaSolicitudes%>"<%}%>>
                         <!-- BUTTON -->
                         <button class="button primary">
@@ -1814,14 +1833,12 @@
                                 <div class="col-sm-6">
                                     <form method="post" action="<%=request.getContextPath()%>/NotificacionesServlet?action=aceptarRegistro">
                                         <input type="hidden" name="idUsuarioARegistrar" value="<%=usuario_pendiente.getIdUsuario()%>">
-                                        <input type="hidden" name="idUsuario" value="<%=idUsuario%>">
                                         <a><button style="background-image: linear-gradient(to right,limegreen,lawngreen);" type="submit" class="button-accept">Aceptar</button></a>
                                     </form>
                                 </div>
                                 <div class="col-sm-6">
                                     <form method="post" action="<%=request.getContextPath()%>/NotificacionesServlet?action=rechazarRegistro">
                                         <input type="hidden" name="idUsuarioARegistrar" value="<%=usuario_pendiente.getIdUsuario()%>">
-                                        <input type="hidden" name="idUsuario" value="<%=idUsuario%>">
                                         <a><button style="background-image: linear-gradient(to right,mediumvioletred,red);" type="submit" class="button-accept">Rechazar</button></a>
                                     </form>
                                 </div>
@@ -1934,7 +1951,6 @@
                 <!-- FORM -->
                 <form method="get" action="<%=request.getContextPath()%>/NotificacionesServlet" class="form">
                     <input type="hidden" name="action" value="buscarDonaciones">
-                    <input type="hidden" name="idUsuario" value="<%=idUsuario%>">
                     <!-- FORM INPUT -->
                     <div class="form-input small with-button">
                         <label for="friends-search_2">Buscar usuarios</label>
@@ -2011,7 +2027,6 @@
                 <!-- FORM -->
                 <form method="get" action="<%=request.getContextPath()%>/NotificacionesServlet" class="form">
                     <input type="hidden" name="action" value="filtrarDonaciones">
-                    <input type="hidden" name="idUsuario" value="<%=idUsuario%>">
                     <!-- FORM ITEM -->
                     <div class="form-item split">
                         <!-- FORM INPUT DECORATED -->
@@ -2191,7 +2206,7 @@
                         <!-- TABLE COLUMN -->
                         <div class="table-column centered padded">
                             <!-- TABLE TITLE -->
-                            <p class="table-title" ><span class="highlighted">pulse aquí</span></p>
+                            <p id="mostrarPopupImagenDonacion<%=donacionList.indexOf(donacion)%>" style="cursor: pointer;" class="table-title" ><span class="highlighted">pulse aquí</span></p>
                             <!-- /TABLE TITLE -->
                         </div>
                         <!-- /TABLE COLUMN -->
@@ -2206,13 +2221,11 @@
                         <div class="table-column centered padded">
                             <form method="post" action="<%=request.getContextPath()%>/NotificacionesServlet?action=editDonacion">
                                 <input type="hidden" name="id" value="<%=donacion.getIdDonacion()%>">
-                                <input type="hidden" name="idUsuario" value="<%=idUsuario%>">
                                 <button class="button-accept" type="submit"><a>Editar</a></button>
                             </form>
                             <!-- TABLE TITLE -->
                             <form method="post" action="<%=request.getContextPath()%>/NotificacionesServlet?action=deleteDonacion">
                                 <input type="hidden" name="id" value="<%=donacion.getIdDonacion()%>">
-                                <input type="hidden" name="idUsuario" value="<%=idUsuario%>">
                                 <button class="button-reject" type="submit"><a>Rechazar</a></button>
                             </form>
                         </div>
@@ -2322,7 +2335,6 @@
             <div class="section-filters-bar-actions">
                 <!-- FORM -->
                 <form method="get" action="<%=request.getContextPath()%>/NotificacionesServlet" class="form">
-                    <input type="hidden" name="idUsuario" value="<%=idUsuario%>">
                     <input type="hidden" name="action" value="buscarReportes">
                     <!-- FORM INPUT -->
                     <div class="form-input small with-button">
@@ -2674,7 +2686,7 @@
                         <!-- /TABLE COLUMN -->
 
                         <!-- TABLE COLUMN -->
-                        <div class="table-column centered padded">
+                        <div class="table-column centered padded" style="opacity: 0">
                             <!-- TABLE TITLE -->
                             <%String link = "mips";%>
                             <%if(validacion.getTipo().equals("enviarLinkACorreo")) {
@@ -2686,8 +2698,11 @@
 
                         <div class="table-column centered padded">
                             <!-- TABLE TITLE -->
-                            <!revisar aquí-->
-                            <a class="button-accept" href="mailto:<%=validacion.getCorreo()%>">Enviar</a>
+                            <%if(validacion.getTipo().equals("enviarLinkACorreo")){%>
+                            <a class="button-accept" href="mailto:<%=validacion.getCorreo()%>?subject=Solicitud de verificación de correo electrónico - Siempre Fibra&body=¡Continúa con tu registro! Haz clic en el siguiente link y completa tus datos: <%=link%>">Enviar</a>
+                            <%}else{%>
+                            <a class="button-accept" href="mailto:<%=validacion.getCorreo()%>?subject=Solicitud de recuperación de contraseña - Siempre Fibra&body=¡Continúa con el proceso de recuperación de contraseña! Haz clic en el siguiente link e ingrese su nueva contraseña: <%=link%>">Enviar</a>
+                            <%}%>
                             <!-- /TABLE TITLE -->
                         </div>
 
@@ -2833,17 +2848,6 @@
 </footer>
 <div class="popup" id="fondo">
 </div>
-
-<div class="popup-content" id="imagePopup">
-    <img src="css\plin.jpeg" alt="Imagen">
-    <button class= "mt-3"id="closePopup">Cerrar</button>
-</div>
-
-<div class="popup-content" id="imagePopup_1">
-    <img src="css/yape.jpeg" alt="Imagen">
-    <button class= "mt-3"id="closePopup_1">Cerrar</button>
-</div>
-
 <div class="popup" id="montoPopup"></div>
 <div class="popup-content" id="popupMonto">
     <label for="nuevoMonto">Nuevo Monto: </label>
@@ -2851,8 +2855,59 @@
     <button id="guardarMonto">Guardar</button>
     <button id="cerrarPopup">Cerrar</button>
 </div>
+<%for(int i=0;i<donacionList.size();i++){%>
+<div class="overlay" id="overlayPopupImagenDonacion<%=i%>"></div>
+<div class="popup" style="max-width: 30%" id="popupImagenDonacion<%=i%>">
+    <svg class="cerrarPopup" id="cerrarPopupImagenDonacion<%=i%>" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M11.4142 10L16.7071 4.70711C17.0976 4.31658 17.0976 3.68342 16.7071 3.29289C16.3166 2.90237 15.6834 2.90237 15.2929 3.29289L10 8.58579L4.70711 3.29289C4.31658 2.90237 3.68342 2.90237 3.29289 3.29289C2.90237 3.68342 2.90237 4.31658 3.29289 4.70711L8.58579 10L3.29289 15.2929C2.90237 15.6834 2.90237 16.3166 3.29289 16.7071C3.68342 17.0976 4.31658 17.0976 4.70711 16.7071L10 11.4142L15.2929 16.7071C15.6834 17.0976 16.3166 17.0976 16.7071 16.7071C17.0976 16.3166 17.0976 15.6834 16.7071 15.2929L11.4142 10Z" fill="black"/>
+    </svg>
+    <div class="row">
+        <div class="container-fluid">
+            <img src="css/yape.jpeg" class="img-fluid">
+        </div>
+    </div>
+</div>
+<%}%>
+<script>
+    function popupFunc(popupId,abrirId,cerrarClass,overlayId){
+        const showPopup=document.getElementById(abrirId);
+        const overlay=document.getElementById(overlayId);
+        const popup=document.getElementById(popupId);
+        const mostrarPopup = () => {
+            overlay.style.display = 'block';
+            popup.style.display = 'block';
+            // Desactivar el scroll
+            document.body.style.overflow = 'hidden';
+        };
+        showPopup.addEventListener('click', mostrarPopup);
+        const cerrarPopup = () => {
+            overlay.style.display = 'none';
+            popup.style.display = 'none';
+            document.body.style.overflow = 'auto';
+            if(popupId=='popupApoyar'){
+                blockButton('mostrarPopupApoyar');
+            }
+        };
+        for(let i=0;i<cerrarClass.length;i++){
+            document.getElementById(cerrarClass[i]).addEventListener('click', cerrarPopup);
+        }
 
+        overlay.addEventListener('click', (e) => {
+            if (e.target === overlay) {
+                cerrarPopup();
+            }
+        });
 
+        document.addEventListener('keydown', (event) => {
+            if (event.key === 'Escape') {
+                cerrarPopup();
+            }
+        });
+    }
+    <%for(int i=0;i<donacionList.size();i++){%>
+    popupFunc('popupImagenDonacion<%=i%>','mostrarPopupImagenDonacion<%=i%>',['cerrarPopupImagenDonacion<%=i%>'],'overlayPopupImagenDonacion<%=i%>');
+    <%}%>
+</script>
     <!-- app -->
     <script src="js/utils/app.js"></script>
     <!-- page loader -->

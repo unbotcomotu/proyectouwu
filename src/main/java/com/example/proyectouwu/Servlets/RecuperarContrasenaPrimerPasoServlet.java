@@ -12,7 +12,7 @@ import java.io.IOException;
 public class RecuperarContrasenaPrimerPasoServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
+        request.getRequestDispatcher("recuperarContrasenaPrimerPaso.jsp").forward(request,response);
     }
 
     @Override
@@ -31,11 +31,11 @@ public class RecuperarContrasenaPrimerPasoServlet extends HttpServlet {
              DaoValidacion daoValidacion = new DaoValidacion();
              if(new DaoUsuario().obtenerIdPorCorreo(correo2) != 0) {
                   daoValidacion.agregarCorreoParaRecuperarContrasena(correo2);
-                  request.setAttribute("popup","2");
-                  request.getRequestDispatcher("inicioSesion.jsp").forward(request,response);
+                  request.getSession().setAttribute("popup","2");
+                  response.sendRedirect("InicioSesionServlet");
              }else{
-                 request.setAttribute("correoNoExiste","1");
-                 request.getRequestDispatcher("recuperarContrasenaPrimerPaso.jsp").forward(request,response);
+                 request.getSession().setAttribute("correoNoExiste","1");
+                 response.sendRedirect("RecuperarContrasenaPrimerPasoServlet");
              }
              break;
        }

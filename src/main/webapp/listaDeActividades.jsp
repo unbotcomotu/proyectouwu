@@ -5,9 +5,10 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <%int idUsuario=(int) request.getAttribute("idUsuario");
-    String rolUsuario=(String) request.getAttribute("rolUsuario");
-    String nombreCompletoUsuario=(String) request.getAttribute("nombreCompletoUsuario");
+    <%Usuario usuarioActual=(Usuario) request.getSession().getAttribute("usuario");
+    int idUsuario=usuarioActual.getIdUsuario();
+    String rolUsuario=usuarioActual.getRol();
+    String nombreCompletoUsuario=usuarioActual.getNombre()+" "+usuarioActual.getApellido();
     ArrayList<Actividad>listaActividades=(ArrayList<Actividad>) request.getAttribute("listaActividades");
     Integer idActividadDelegatura=(Integer)request.getAttribute("idActividadDelegatura");
     String vistaActual=(String) request.getAttribute("vistaActual");
@@ -264,7 +265,7 @@
         <!-- MENU ITEM -->
         <li class="menu-item <%if(vistaActual.equals("miCuenta")){%>active<%}%>">
             <!-- MENU ITEM LINK -->
-            <a class="menu-item-link text-tooltip-tfr" href="<%=request.getContextPath()%>/MiCuentaServlet?idUsuario=<%=idUsuario%>" data-title="Mi cuenta">
+            <a class="menu-item-link text-tooltip-tfr" href="MiCuentaServlet" data-title="Mi cuenta">
                 <!-- MENU ITEM LINK ICON -->
                 <svg class="menu-item-link-icon icon-members">
                     <use xlink:href="#svg-members"></use>
@@ -275,7 +276,7 @@
         </li>
         <li class="menu-item <%if(vistaActual.equals("listaDeActividades")){%>active<%}%>">
             <!-- MENU ITEM LINK -->
-            <a class="menu-item-link text-tooltip-tfr" href="<%=request.getContextPath()%>/ListaDeActividadesServlet?idUsuario=<%=idUsuario%>" data-title="Actividades">
+            <a class="menu-item-link text-tooltip-tfr" href="ListaDeActividadesServlet" data-title="Actividades">
                 <!-- MENU ITEM LINK ICON -->
                 <img src="css/actividadIconoGris.png" class="menu-item-link-icon icon-members" alt="">
                 <!-- /MENU ITEM LINK ICON -->
@@ -285,7 +286,7 @@
         <%if(rolUsuario.equals("Delegado General")){%>
         <li class="menu-item <%if(vistaActual.equals("analiticas")){%>active<%}%>">
             <!-- MENU ITEM LINK -->
-            <a class="menu-item-link text-tooltip-tfr text-center" href="<%=request.getContextPath()%>/AnaliticasServlet?idUsuario=<%=idUsuario%>" data-title="Analíticas">
+            <a class="menu-item-link text-tooltip-tfr text-center" href="AnaliticasServlet" data-title="Analíticas">
                 <!-- MENU ITEM LINK ICON -->
                 <img src="css/analiticasIcono.png" width="70%" alt="">
                 <!-- /MENU ITEM LINK ICON -->
@@ -295,7 +296,7 @@
         <!-- /MENU ITEM -->
         <li class="menu-item <%if(vistaActual.equals("listaDeUsuarios")){%>active<%}%>">
             <!-- MENU ITEM LINK -->
-            <a class="menu-item-link text-tooltip-tfr text-center" href="<%=request.getContextPath()%>/ListaDeUsuariosServlet?idUsuario=<%=idUsuario%>" data-title="Usuarios">
+            <a class="menu-item-link text-tooltip-tfr text-center" href="ListaDeUsuariosServlet" data-title="Usuarios">
                 <!-- MENU ITEM LINK ICON -->
                 <img src="css/usuariosIcono.png" width="70%" alt="">
                 <!-- /MENU ITEM LINK ICON -->
@@ -305,7 +306,7 @@
         <%}else{%>
         <li class="menu-item <%if(vistaActual.equals("misEventos")){%>active<%}%>">
             <!-- MENU ITEM LINK -->
-            <a class="menu-item-link text-tooltip-tfr" href="<%=request.getContextPath()%>/MisEventosServlet?idUsuario=<%=idUsuario%>" data-title="Mis eventos">
+            <a class="menu-item-link text-tooltip-tfr" href="MisEventosServlet" data-title="Mis eventos">
                 <!-- MENU ITEM LINK ICON -->
                 <img src="css/misEventosIcono.png" class="menu-item-link-icon icon-members" alt="">
                 <!-- /MENU ITEM LINK ICON -->
@@ -314,7 +315,7 @@
         </li>
         <li class="menu-item <%if(vistaActual.equals("misDonaciones")){%>active<%}%>">
             <!-- MENU ITEM LINK -->
-            <a class="menu-item-link text-tooltip-tfr" href="<%=request.getContextPath()%>/MisDonacionesServlet?idUsuario=<%=idUsuario%>" data-title="Donaciones">
+            <a class="menu-item-link text-tooltip-tfr" href="MisDonacionesServlet" data-title="Donaciones">
                 <!-- MENU ITEM LINK ICON -->
                 <img src="css/donacionIcono.png" class="menu-item-link-icon icon-members" style="opacity: 50%;" alt="">
                 <!-- /MENU ITEM LINK ICON -->
@@ -387,7 +388,7 @@
     <!-- MENU ITEM -->
     <li class="menu-item">
         <!-- MENU ITEM LINK -->
-        <a class="menu-item-link" href="<%=request.getContextPath()%>/MiCuentaServlet?idUsuario=<%=idUsuario%>">
+        <a class="menu-item-link" href="MiCuentaServlet">
             <!-- MENU ITEM LINK ICON -->
             <svg class="menu-item-link-icon icon-members">
                 <use xlink:href="#svg-members"></use>
@@ -403,7 +404,7 @@
     <!-- MENU ITEM -->
     <li class="menu-item">
         <!-- MENU ITEM LINK -->
-        <a class="menu-item-link" href="<%=request.getContextPath()%>/ListaDeActividadesServlet?idUsuario=<%=idUsuario%>">
+        <a class="menu-item-link" href="ListaDeActividadesServlet">
             <!-- MENU ITEM LINK ICON -->
             <img src="css/actividadIconoGris.png" class="menu-item-link-icon icon-members" alt="">
             <!-- /MENU ITEM LINK ICON -->
@@ -417,7 +418,7 @@
     <!-- MENU ITEM -->
     <li class="menu-item">
         <!-- MENU ITEM LINK -->
-        <a class="menu-item-link" href="<%=request.getContextPath()%>/AnaliticasServlet?idUsuario=<%=idUsuario%>">
+        <a class="menu-item-link" href="AnaliticasServlet">
             <!-- MENU ITEM LINK ICON -->
             <img src="css/analiticasIcono.png" width="7%" alt="">
             <!-- /MENU ITEM LINK ICON -->
@@ -429,7 +430,7 @@
     <br>
     <li class="menu-item">
         <!-- MENU ITEM LINK -->
-        <a class="menu-item-link" href="<%=request.getContextPath()%>/ListaDeUsuariosServlet?idUsuario=<%=idUsuario%>">
+        <a class="menu-item-link" href="ListaDeUsuariosServlet">
             <!-- MENU ITEM LINK ICON -->
             <img src="css/usuariosIcono.png" width="7%" alt="">
             <!-- /MENU ITEM LINK ICON -->
@@ -442,7 +443,7 @@
     <!-- MENU ITEM -->
     <li class="menu-item">
         <!-- MENU ITEM LINK -->
-        <a class="menu-item-link" href="<%=request.getContextPath()%>/MisEventosServlet?idUsuario=<%=idUsuario%>">
+        <a class="menu-item-link" href="MisEventosServlet">
             <!-- MENU ITEM LINK ICON -->
             <img src="css/misEventosIcono.png" class="menu-item-link-icon icon-members" alt="">
             <!-- /MENU ITEM LINK ICON -->
@@ -455,7 +456,7 @@
     <!-- MENU ITEM -->
     <li class="menu-item">
         <!-- MENU ITEM LINK -->
-        <a class="menu-item-link" href="<%=request.getContextPath()%>/MisDonacionesServlet?idUsuario=<%=idUsuario%>">
+        <a class="menu-item-link" href="MisDonacionesServlet">
             <!-- MENU ITEM LINK ICON -->
             <img src="css/donacionIcono.png" class="menu-item-link-icon icon-members" style="opacity: 50%;" alt="">
             <!-- /MENU ITEM LINK ICON -->
@@ -536,7 +537,7 @@
         <!-- /NAVIGATION WIDGET INFO -->
 
         <!-- NAVIGATION WIDGET BUTTON -->
-        <a href="<%=request.getContextPath()%>/IndexServlet"><p class="navigation-widget-info-button button small secondary">Cerrar sesión</p></a>
+        <a href="IndexServlet"><p class="navigation-widget-info-button button small secondary">Cerrar sesión</p></a>
         <!-- /NAVIGATION WIDGET BUTTON -->
     </div>
     <!-- /NAVIGATION WIDGET INFO WRAP -->
@@ -551,7 +552,7 @@
         <!-- /NAVIGATION WIDGET SECTION TITLE -->
 
         <!-- NAVIGATION WIDGET SECTION LINK -->
-        <a class="navigation-widget-section-link" href="<%=request.getContextPath()%>/MiCuentaServlet?idUsuario=<%=idUsuario%>">Mi cuenta</a>
+        <a class="navigation-widget-section-link" href="MiCuentaServlet">Mi cuenta</a>
         <!-- /NAVIGATION WIDGET SECTION LINK -->
 
         <!-- NAVIGATION WIDGET SECTION TITLE -->
@@ -559,23 +560,23 @@
         <!-- /NAVIGATION WIDGET SECTION TITLE -->
 
         <!-- NAVIGATION WIDGET SECTION LINK -->
-        <a class="navigation-widget-section-link" href="<%=request.getContextPath()%>/ListaDeActividadesServlet?idUsuario=<%=idUsuario%>">Actividades</a>
+        <a class="navigation-widget-section-link" href="ListaDeActividadesServlet">Actividades</a>
         <!-- /NAVIGATION WIDGET SECTION LINK -->
         <%if(rolUsuario.equals("Delegado General")){%>
         <!-- NAVIGATION WIDGET SECTION LINK -->
-        <a class="navigation-widget-section-link" href="<%=request.getContextPath()%>/AnaliticasServlet?idUsuario=<%=idUsuario%>">Analíticas</a>
+        <a class="navigation-widget-section-link" href="AnaliticasServlet">Analíticas</a>
         <!-- /NAVIGATION WIDGET SECTION LINK -->
 
         <!-- NAVIGATION WIDGET SECTION LINK -->
-        <a class="navigation-widget-section-link" href="<%=request.getContextPath()%>/ListaDeUsuariosServlet?idUsuario=<%=idUsuario%>">Usuarios</a>
+        <a class="navigation-widget-section-link" href="ListaDeUsuariosServlet">Usuarios</a>
         <!-- /NAVIGATION WIDGET SECTION LINK -->
         <%}else{%>
         <!-- NAVIGATION WIDGET SECTION LINK -->
-        <a class="navigation-widget-section-link" href="<%=request.getContextPath()%>/MisEventosServlet?idUsuario=<%=idUsuario%>">Mis eventos</a>
+        <a class="navigation-widget-section-link" href="MisEventosServlet">Mis eventos</a>
         <!-- /NAVIGATION WIDGET SECTION LINK -->
 
         <!-- NAVIGATION WIDGET SECTION LINK -->
-        <a class="navigation-widget-section-link" href="<%=request.getContextPath()%>/MisDonacionesServlet?idUsuario=<%=idUsuario%>">Donaciones</a>
+        <a class="navigation-widget-section-link" href="MisDonacionesServlet">Donaciones</a>
         <!-- /NAVIGATION WIDGET SECTION LINK -->
         <%}%>
     </ul>
@@ -659,7 +660,9 @@
         <!-- ACTION ITEM -->
         <div class="action-item dark header-settings-dropdown-trigger">
             <!-- ACTION ITEM ICON -->
-            <a href="<%=request.getContextPath()%>/inicioSesion.jsp"><img src="css/logOut.png" width="30%" alt=""></a>
+            <form id="cerrarSesion3" method="post" action="InicioSesionServlet?action=logOut">
+                <a onclick="enviarFormulario('cerrarSesion3')"><img src="css/logOut.png" width="30%" style="margin-left: 25px;" alt=""></a>
+            </form>
             <!-- /ACTION ITEM ICON -->
         </div>
         <!-- /ACTION ITEM -->
@@ -896,7 +899,7 @@
                     <!-- /DROPDOWN BOX LIST -->
                     <!--ARRIBA ESTÁN LAS NOTIFICACIONES-->
                     <!-- DROPDOWN BOX BUTTON -->
-                    <a class="dropdown-box-button secondary" href="<%=request.getContextPath()%>/NotificacionesServlet?idUsuario=<%=idUsuario%>">Ver todas las notificaciones</a>
+                    <a class="dropdown-box-button secondary" href="NotificacionesServlet">Ver todas las notificaciones</a>
                     <!-- /DROPDOWN BOX BUTTON -->
                 </div>
                 <!-- /DROPDOWN BOX -->
@@ -910,7 +913,10 @@
             <!-- ACTION ITEM -->
             <div class="action-item dark header-settings-dropdown-trigger">
                 <!-- ACTION ITEM ICON -->
-                <a href="<%=request.getContextPath()%>/inicioSesion.jsp"><img src="css/logOut.png" width="30%" style="margin-left: 25px;" alt=""></a>
+                <form id="cerrarSesion2" method="post" action="InicioSesionServlet?action=logOut">
+                    <a onclick="enviarFormulario('cerrarSesion2')"><img src="css/logOut.png" width="30%" style="margin-left: 25px;" alt=""></a>
+                </form>
+                <script></script>
                 <!-- /ACTION ITEM ICON -->
             </div>
             <!-- /ACTION ITEM -->
@@ -951,9 +957,8 @@
                     <!-- DROPDOWN BOX LIST -->
                     <div class="dropdown-box-list" data-simplebar>
                         <%for(NotificacionDelegadoGeneral noti:listaNotificacionesCampanita){%>
-                        <form id="notificacionLeidaCampanita<%=listaNotificacionesCampanita.indexOf(noti)%>" method="post" action="<%=request.getContextPath()%>/<%=servletActual%>?action=notificacionLeidaCampanita">
+                        <form id="notificacionLeidaCampanita<%=listaNotificacionesCampanita.indexOf(noti)%>" method="post" action="/<%=servletActual%>?action=notificacionLeidaCampanita">
                             <input type="hidden" name="idNotificacion" value="<%=noti.getIdNotificacion()%>">
-                            <input type="hidden" name="idUsuario" value="<%=idUsuario%>">
                             <%if(noti.getReporte().getIdReporte()!=0){
                                 Reporte r=new DaoReporte().reportePorIdReporteNotificacion(noti.getReporte().getIdReporte());%>
                             <!-- Reporte -->
@@ -1614,7 +1619,7 @@
                     <!-- /DROPDOWN BOX LIST -->
                     <!--ARRIBA ESTÁN LAS NOTIFICACIONES-->
                     <!-- DROPDOWN BOX BUTTON -->
-                    <a class="dropdown-box-button secondary" href="<%=request.getContextPath()%>/NotificacionesServlet?idUsuario=<%=idUsuario%>">Ver todas las notificaciones</a>
+                    <a class="dropdown-box-button secondary" href="NotificacionesServlet">Ver todas las notificaciones</a>
                     <!-- /DROPDOWN BOX BUTTON -->
                 </div>
                 <!-- /DROPDOWN BOX -->
@@ -1628,7 +1633,10 @@
             <!-- ACTION ITEM -->
             <div class="action-item dark header-settings-dropdown-trigger">
                 <!-- ACTION ITEM ICON -->
-                <a href="<%=request.getContextPath()%>/inicioSesion.jsp"><img src="css/logOut.png" width="30%" style="margin-left: 25px;" alt=""></a>
+                <form id="cerrarSesion1" method="post" action="InicioSesionServlet?action=logOut">
+                    <a onclick="enviarFormulario('cerrarSesion1')"><img src="css/logOut.png" width="30%" style="margin-left: 25px;" alt=""></a>
+                </form>
+                <script></script>
                 <!-- /ACTION ITEM ICON -->
             </div>
             <!-- /ACTION ITEM -->
@@ -1694,7 +1702,6 @@
             <!-- FORM -->
             <form method="get" action="<%=request.getContextPath()%>/ListaDeActividadesServlet" class="form">
                 <input type="hidden" name="action" value="buscarActividad">
-                <input type="hidden" name="idUsuario" value="<%=idUsuario%>">
                 <!-- FORM ITEM -->
                 <div class="form-item split">
                     <!-- FORM INPUT -->
@@ -1726,7 +1733,6 @@
             <!-- FORM -->
             <form method="get" action="<%=request.getContextPath()%>/ListaDeActividadesServlet" class="form">
                 <input type="hidden" name="action" value="filtroActividad">
-                <input type="hidden" name="idUsuario" value="<%=idUsuario%>">
                 <!-- FORM ITEM -->
                 <div class="form-item split medium">
                     <%Integer idFiltroActividades=(Integer) request.getAttribute("idFiltroActividades");%>
@@ -1918,7 +1924,6 @@
             <div class="col-sm-6" style="margin-top: 5px;">
                 <form method="post" action="<%=request.getContextPath()%>/ListaDeActividadesServlet?action=finalizarActividad">
                     <input type="hidden" name="idActividadFinalizar" value="<%=new DaoActividad().idDelegaturaPorIdDelegadoDeActividad(idUsuario)%>">
-                    <input type="hidden" name="idUsuario" value="<%=idUsuario%>">
                     <button type="submit" class="button secondary" id="cerrarPopupFinalizar1">Finalizar</button>
                 </form>
             </div>
@@ -1935,7 +1940,6 @@
         <path d="M11.4142 10L16.7071 4.70711C17.0976 4.31658 17.0976 3.68342 16.7071 3.29289C16.3166 2.90237 15.6834 2.90237 15.2929 3.29289L10 8.58579L4.70711 3.29289C4.31658 2.90237 3.68342 2.90237 3.29289 3.29289C2.90237 3.68342 2.90237 4.31658 3.29289 4.70711L8.58579 10L3.29289 15.2929C2.90237 15.6834 2.90237 16.3166 3.29289 16.7071C3.68342 17.0976 4.31658 17.0976 4.70711 16.7071L10 11.4142L15.2929 16.7071C15.6834 17.0976 16.3166 17.0976 16.7071 16.7071C17.0976 16.3166 17.0976 15.6834 16.7071 15.2929L11.4142 10Z" fill="black"/>
     </svg>
     <form method="post" action="<%=request.getContextPath()%>/ListaDeActividadesServlet?action=crearActividad">
-        <input type="hidden" name="idUsuario" value="<%=idUsuario%>">
         <div class="container-fluid">
             <div class="row"><div class="col"><h5 style="text-align: center;">Crear actividad</h5></div></div>
             <div class="row">
@@ -1999,7 +2003,6 @@
         <path d="M11.4142 10L16.7071 4.70711C17.0976 4.31658 17.0976 3.68342 16.7071 3.29289C16.3166 2.90237 15.6834 2.90237 15.2929 3.29289L10 8.58579L4.70711 3.29289C4.31658 2.90237 3.68342 2.90237 3.29289 3.29289C2.90237 3.68342 2.90237 4.31658 3.29289 4.70711L8.58579 10L3.29289 15.2929C2.90237 15.6834 2.90237 16.3166 3.29289 16.7071C3.68342 17.0976 4.31658 17.0976 4.70711 16.7071L10 11.4142L15.2929 16.7071C15.6834 17.0976 16.3166 17.0976 16.7071 16.7071C17.0976 16.3166 17.0976 15.6834 16.7071 15.2929L11.4142 10Z" fill="black"/>
     </svg>
     <form method="post" action="<%=request.getContextPath()%>/ListaDeActividadesServlet?action=editarActividad">
-        <input type="hidden" name="idUsuario" value="<%=idUsuario%>">
         <input type="hidden" name="idActividadEditar" value="<%=listaActividades.get(i).getIdActividad()%>">
         <input type="hidden" name="idDelegadoActividadAnterior" value="<%=listaActividades.get(i).getDelegadoDeActividad().getIdUsuario()%>">
         <div class="container-fluid">

@@ -6,7 +6,7 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%String correoNoExiste=(String) request.getAttribute("correoNoExiste");%>
+<%String correoNoExiste=(String) request.getSession().getAttribute("correoNoExiste");%>
 <html> <!-- lang="en"  , no se poque estaba eso dentro del html-->
 <head>
     <meta charset="utf-8">
@@ -165,6 +165,7 @@
         <p style="font-size: 1.125rem;font-family: 'Titillium Web' !important; font-weight: 500 !important; text-align: center;">El correo ingresado no está registrado. Ingrese un correo correcto.</p>
     </div>
 </div>
+<%request.getSession().removeAttribute("correoNoExiste");%>
 <%}%>
 <script>
 

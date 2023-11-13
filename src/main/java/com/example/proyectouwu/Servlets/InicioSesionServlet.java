@@ -1,5 +1,6 @@
 package com.example.proyectouwu.Servlets;
 
+import com.example.proyectouwu.Beans.Ban;
 import com.example.proyectouwu.Beans.Usuario;
 import com.example.proyectouwu.Daos.*;
 import jakarta.servlet.*;
@@ -18,7 +19,12 @@ public class InicioSesionServlet extends HttpServlet {
         String action = request.getParameter("action") == null ? "default" : request.getParameter("action");
         switch (action) {
             case "default":
-                request.getRequestDispatcher("inicioSesion.jsp").forward(request,response);
+                Usuario usuario=(Usuario) request.getSession().getAttribute("usuario");
+                if(usuario!=null){
+                    response.sendRedirect("ListaDeActividadesServlet");
+                }else{
+                    request.getRequestDispatcher("inicioSesion.jsp").forward(request,response);
+                }
                 break;
         }
     }
@@ -34,27 +40,30 @@ public class InicioSesionServlet extends HttpServlet {
             case "logIn":
                 String correo = request.getParameter("correoPucp");
                 String contrasena = request.getParameter("contrasena");
-                ArrayList <Usuario> listaUsuario = new DaoUsuario().listarUsuariosTotal();
-                int usuarioId = 0;
-                boolean existeUsuario=  false;
-                bucleUsuarios:
-                for(Usuario user: listaUsuario){
-                    if(correo.equals(user.getCorreo()) && contrasena.equals(user.getContrasena())){
-                        usuarioId = user.getIdUsuario();
-                        existeUsuario= true;
-                        break bucleUsuarios;
-                    }
-                }
-                if(existeUsuario && new DaoUsuario().getEstadoDeResgitroPorId(usuarioId).equals("Registrado") && new DaoUsuario().estaBaneadoporId(usuarioId)) {
-                    response.sendRedirect(request.getContextPath() + "/ListaDeActividadesServlet?idUsuario="+usuarioId);
-                }else if(!new DaoUsuario().estaBaneadoporId(usuarioId)){
-                    request.setAttribute("motivoBan",new DaoBan().obtenerMotivoBanPorId(usuarioId));
+                //ArrayList <Usuario> listaUsuario = new DaoUsuario().listarUsuariosTotal();
+                Ban b= new DaoUsuario().logIn(correo,contrasena);
+                //int usuarioId = 0;
+                //boolean existeUsuario=  false;
+                //bucleUsuarios:
+                //for(Usuario user: listaUsuario){
+                //    if(correo.equals(user.getCorreo()) && contrasena.equals(user.getContrasena())){
+                 //       usuarioId = user.getIdUsuario();
+                 //       existeUsuario= true;
+                 //       break bucleUsuarios;
+                  //  }
+                //}
+                if(b==null) {
+                    request.getSession().setAttribute("popup","4");
+                    request.getRequestDispatcher("inicioSesion.jsp").forward(request,response);
+                }else if(b.getMotivoBan()!=null){
+                    request.setAttribute("motivoBan",b.getMotivoBan());
                     request.setAttribute("correosDelegadosGenerales",new DaoUsuario().listarCorreosDelegadosGenerales());
-                    request.setAttribute("popup","6");
+                    request.getSession().setAttribute("popup","6");
                     request.getRequestDispatcher("inicioSesion.jsp").forward(request,response);
                 }else{
-                    request.setAttribute("popup","4");
-                    request.getRequestDispatcher("inicioSesion.jsp").forward(request,response);
+                    request.getSession().setAttribute("usuario",new DaoUsuario().usuarioSesion(b.getUsuario().getIdUsuario()));
+                    request.getSession().setMaxInactiveInterval(60);
+                    response.sendRedirect("ListaDeActividadesServlet");
                 }
                 break;
             case "registro":
@@ -62,16 +71,20 @@ public class InicioSesionServlet extends HttpServlet {
                 //Debemos guardarlo en algun lado para mandar el correo
                 //Debemos asegurarnos que el correo no tenga una cuenta ya asociada y en caso tenga que mande un mensaje de error al usuario
                 if(new DaoUsuario().obtenerIdPorCorreo(correo2) != 0) {
-                    request.setAttribute("popup","3");
+                    request.getSession().setAttribute("popup","3");
                 }else{
                     DaoValidacion daoValidacion = new DaoValidacion();
                     daoValidacion.agregarCorreoParaEnviarLink(correo2);
                     String popup=request.getParameter("popup");
                     if(popup!=null) {
-                        request.setAttribute("popup", popup);
+                        request.getSession().setAttribute("popup", popup);
                     }
                 }
                 request.getRequestDispatcher("inicioSesion.jsp").forward(request,response);
+                break;
+            case "logOut":
+                request.getSession().invalidate();
+                response.sendRedirect(request.getContextPath());
                 break;
         }
 

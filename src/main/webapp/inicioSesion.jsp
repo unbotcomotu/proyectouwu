@@ -7,7 +7,7 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%String popup=(String) request.getAttribute("popup");%>
+<%String popup=(String) request.getSession().getAttribute("popup");%>
 <html>
 <head>
     <meta charset="utf-8">
@@ -43,7 +43,7 @@
 
                                     <div class="col-lg-6 text-right">
 
-                                        <a class="small" href="<%=request.getContextPath()%>/recuperarContrasenaPrimerPaso.jsp">¿Has olvidado tu contraseña?</a>
+                                        <a class="small" href="RecuperarContrasenaPrimerPasoServlet">¿Has olvidado tu contraseña?</a>
 
 
                                     </div>
@@ -139,6 +139,7 @@
         </p>
     </div>
 </div>
+<%request.getSession().removeAttribute("popup");%>
 <%}%>
 <script>
 

@@ -1,6 +1,7 @@
 package com.example.proyectouwu.Servlets;
 
 import com.example.proyectouwu.Beans.Donacion;
+import com.example.proyectouwu.Beans.Usuario;
 import com.example.proyectouwu.Daos.DaoActividad;
 import com.example.proyectouwu.Daos.DaoDonacion;
 import com.example.proyectouwu.Daos.DaoUsuario;
@@ -23,24 +24,23 @@ public class MisDonacionesServlet extends HttpServlet {
         response.setContentType("text/html");
         DaoUsuario dUsuario=new DaoUsuario();
         DaoDonacion dDonacion=new DaoDonacion();
-        int idUsuario=Integer.parseInt(request.getParameter("idUsuario"));
-        String rolUsuario=dUsuario.rolUsuarioPorId(idUsuario);
-        request.setAttribute("idUsuario",idUsuario);
-        request.setAttribute("rolUsuario",rolUsuario);
-        request.setAttribute("nombreCompletoUsuario",dUsuario.nombreCompletoUsuarioPorId(idUsuario));
-        request.setAttribute("vistaActual","misDonaciones");
-        request.setAttribute("correosDelegadosGenerales",dUsuario.listarCorreosDelegadosGenerales());
-        request.setAttribute("listaDonaciones",dDonacion.listarDonacionesVistaUsuario(idUsuario));
-        request.setAttribute("totalDonaciones",dDonacion.totalDonaciones(idUsuario));
-        String action = request.getParameter("action") == null ? "default" : request.getParameter("action");
-        if(request.getParameter("confirmacion")!=null){
-            request.setAttribute("confirmacion","1");
+        Usuario usuario=(Usuario) request.getSession().getAttribute("usuario");
+        if(usuario==null){
+            response.sendRedirect("InicioSesionServlet");
+        }else{
+            request.setAttribute("vistaActual","misDonaciones");
+            request.setAttribute("correosDelegadosGenerales",dUsuario.listarCorreosDelegadosGenerales());
+            request.setAttribute("listaDonaciones",dDonacion.listarDonacionesVistaUsuario(usuario.getIdUsuario()));
+            request.setAttribute("totalDonaciones",dDonacion.totalDonaciones(usuario.getIdUsuario()));
+            String action = request.getParameter("action") == null ? "default" : request.getParameter("action");
+            if(request.getParameter("confirmacion")!=null){
+                request.setAttribute("confirmacion","1");
+            }
+            switch (action){
+                case "default":
+                    request.getRequestDispatcher("donaciones.jsp").forward(request,response);
+            }
         }
-        switch (action){
-            case "default":
-                request.getRequestDispatcher("donaciones.jsp").forward(request,response);
-        }
-
     }
 
     @Override
@@ -48,10 +48,9 @@ public class MisDonacionesServlet extends HttpServlet {
         response.setContentType("text/html");
         String action = request.getParameter("action") == null ? "default" : request.getParameter("action");
         DaoDonacion daoDonacion = new DaoDonacion();
-
         switch (action){
             case "registDon":
-                int idUsuario = Integer.parseInt(request.getParameter("idUsuario"));
+                Usuario usuario=(Usuario) request.getSession().getAttribute("usuario");
                 String medioPago = request.getParameter("medio");
                 int monto = Integer.parseInt(request.getParameter("monto"));
                 //Ayuda para lo del blob en captura
@@ -63,8 +62,8 @@ public class MisDonacionesServlet extends HttpServlet {
                 } catch (SQLException e) {
                     throw new RuntimeException(e);
                 }*/
-                daoDonacion.agregarDonacionUsuario(idUsuario,medioPago,monto,"ola");
-                response.sendRedirect(request.getContextPath()+"/MisDonacionesServlet?idUsuario="+idUsuario+"&confirmacion=1");
+                daoDonacion.agregarDonacionUsuario(usuario.getIdUsuario(),medioPago,monto,"ola");
+                response.sendRedirect("MisDonacionesServlet?confirmacion=1");
                 break;
             case "default":
                 request.getRequestDispatcher("donaciones.jsp").forward(request,response);

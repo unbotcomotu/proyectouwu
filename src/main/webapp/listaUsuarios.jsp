@@ -5,6 +5,7 @@
 <html>
 <head>
   <%int idUsuario=(int) request.getAttribute("idUsuario");
+    Integer pagActual = request.getAttribute("pagActual") != null ? (Integer) request.getAttribute("pagActual") : 1;
     String rolUsuario=(String) request.getAttribute("rolUsuario");
     String nombreCompletoUsuario=(String) request.getAttribute("nombreCompletoUsuario");
     ArrayList<Usuario>listaUsuarios=(ArrayList<Usuario>) request.getAttribute("listaUsuarios");
@@ -1638,6 +1639,7 @@
       <form method="get" action="<%=request.getContextPath()%>/ListaDeUsuariosServlet" class="form">
         <input type="hidden" name="idUsuario" value="<%=idUsuario%>">
         <input type="hidden" name="action" value="buscarUsuario">
+        <input type="hidden" name="p" value="<%=pagActual%>">
         <!-- FORM ITEM -->
         <div class="form-item split">
           <!-- FORM INPUT -->
@@ -1669,6 +1671,7 @@
       <form method="get" action="<%=request.getContextPath()%>/ListaDeUsuariosServlet" class="form">
         <input type="hidden" name="idUsuario" value="<%=idUsuario%>">
         <input type="hidden" name="action" value="filtroUsuario">
+        <input type="hidden" name="p" value="<%=pagActual%>">
         <!-- FORM ITEM -->
         <div class="form-item split medium">
           <%Integer idFiltroUsuario=(Integer) request.getAttribute("idFiltroUsuario");%>
@@ -1861,16 +1864,30 @@
     <div class="section-pager">
       <!-- SECTION PAGER ITEM -->
       <%int cantidadTotalUsuarios = (int)Math.ceil((int)request.getAttribute("cantidadUsuariosTotal")/8.0);
-      Integer pagActual = (Integer) request.getAttribute("pagActual") != null ? (Integer) request.getAttribute("pagActual") : 1;
+      String action = request.getParameter("action") != null ? request.getParameter("action") : "";
       for(int p=0;p<cantidadTotalUsuarios; p++){%>
       <div class="section-pager-item <%if(pagActual==p+1){%>active<%}%>">
+        <%if(action.equals("buscarUsuario")){%>
         <!-- SECTION PAGER ITEM TEXT -->
+        <%if(p<9){%>
+        <a class="section-pager-item-text" href="<%=request.getContextPath()%>/ListaDeUsuariosServlet?idUsuario=<%=idUsuario%>&action=<%=action%>&usuario=<%=busqueda%>&p=<%=p+1%>">0<%=p+1%></a>
+        <%}else{%>
+        <a class="section-pager-item-text" href="<%=request.getContextPath()%>/ListaDeUsuariosServlet?idUsuario=<%=idUsuario%>&action=<%=action%>&usuario=<%=busqueda%>&p=<%=p+1%>"><%=p+1%></a>
+        <%}%>
+        <!-- /SECTION PAGER ITEM TEXT -->
+        <%}else if(action.equals("filtroUsuario")){%>
+        <%if(p<9){%>
+        <a class="section-pager-item-text" href="<%=request.getContextPath()%>/ListaDeUsuariosServlet?idUsuario=<%=idUsuario%>&action=<%=action%>&idFiltroUsuario=<%=idFiltroUsuario%>&idOrdenarUsuario=<%=idOrdenarUsuario%>&p=<%=p+1%>">0<%=p+1%></a>
+        <%}else{%>
+        <a class="section-pager-item-text" href="<%=request.getContextPath()%>/ListaDeUsuariosServlet?idUsuario=<%=idUsuario%>&action=<%=action%>&idFiltroUsuario=<%=idFiltroUsuario%>&idOrdenarUsuario=<%=idOrdenarUsuario%>&p=<%=p+1%>"><%=p+1%></a>
+        <%}%>
+        <%}else{%>
         <%if(p<9){%>
         <a class="section-pager-item-text" href="<%=request.getContextPath()%>/ListaDeUsuariosServlet?idUsuario=<%=idUsuario%>&p=<%=p+1%>">0<%=p+1%></a>
         <%}else{%>
         <a class="section-pager-item-text" href="<%=request.getContextPath()%>/ListaDeUsuariosServlet?idUsuario=<%=idUsuario%>&p=<%=p+1%>"><%=p+1%></a>
         <%}%>
-        <!-- /SECTION PAGER ITEM TEXT -->
+        <%}%>
       </div>
       <!-- /SECTION PAGER ITEM -->
       <%}%>

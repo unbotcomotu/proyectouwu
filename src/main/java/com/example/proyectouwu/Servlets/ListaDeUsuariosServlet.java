@@ -37,7 +37,9 @@ public class ListaDeUsuariosServlet extends HttpServlet {
                 break;
             case "buscarUsuario":
                 String usuario=request.getParameter("usuario");
-                request.setAttribute("listaUsuarios",new DaoUsuario().listarUsuarioXnombre(usuario));
+                request.setAttribute("listaUsuarios",new DaoUsuario().listarUsuarioXnombre(usuario,Integer.parseInt(pagina)-1));
+                request.setAttribute("cantidadUsuariosTotal",new DaoUsuario().listarUsuarioXnombre(usuario).size());
+                request.setAttribute("action",action);
                 request.setAttribute("usuario",usuario);
                 if(rolUsuario.equals("Alumno")||rolUsuario.equals("Delegado General")){
                     request.getRequestDispatcher("listaUsuarios.jsp").forward(request,response);
@@ -46,8 +48,10 @@ public class ListaDeUsuariosServlet extends HttpServlet {
             case "filtroUsuario":
                 int idFiltroUsuario=Integer.parseInt(request.getParameter("idFiltroUsuario"));
                 int idOrdenarUsuario=Integer.parseInt(request.getParameter("idOrdenarUsuario"));
+                request.setAttribute("action",action);
                 //request.setAttribute("listaUsuario",new DaoUsuario().listarUsuariosTotal(idFiltroActividades,idOrdenarActividades,idUsuario));
-                request.setAttribute("listaUsuarios",new DaoUsuario().listarUsuariosFiltro(idFiltroUsuario,idOrdenarUsuario));
+                request.setAttribute("listaUsuarios",new DaoUsuario().listarUsuariosFiltro(idFiltroUsuario,idOrdenarUsuario,Integer.parseInt(pagina)-1));
+                request.setAttribute("cantidadUsuariosTotal",new DaoUsuario().listarUsuariosFiltro(idFiltroUsuario,idOrdenarUsuario).size());
                 request.setAttribute("idFiltroUsuario",idFiltroUsuario);
                 request.setAttribute("idOrdenarUsuario",idOrdenarUsuario);
                 request.getRequestDispatcher("listaUsuarios.jsp").forward(request,response);

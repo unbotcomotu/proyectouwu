@@ -667,8 +667,6 @@
         </div>
         <!-- /ACTION ITEM -->
 
-        <!-- DROPDOWN NAVIGATION -->
-
     </div>
     <!-- /ACTION ITEM WRAP -->
     <%}else if(rolUsuario.equals("Delegado de Actividad")){%>

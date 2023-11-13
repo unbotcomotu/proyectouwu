@@ -633,10 +633,9 @@
         <!-- ACTION ITEM -->
         <div class="action-item dark header-settings-dropdown-trigger">
             <!-- ACTION ITEM ICON -->
-            <form id="cerrarSesion3" method="post" action="InicioSesionServlet?action=logOut">
-                <a onclick="enviarFormulario('cerrarSesion3')"><img src="css/logOut.png" width="30%" style="margin-left: 25px;" alt=""></a>
+            <form method="post" action="InicioSesionServlet?action=logOut">
+                <button style="border:0;background: none;color: inherit" type="submit"><a><img src="css/logOut.png" width="30%" style="" alt=""></a></button>
             </form>
-            <script></script>
             <!-- /ACTION ITEM ICON -->
         </div>
         <!-- /ACTION ITEM -->
@@ -887,10 +886,9 @@
             <!-- ACTION ITEM -->
             <div class="action-item dark header-settings-dropdown-trigger">
                 <!-- ACTION ITEM ICON -->
-                <form id="cerrarSesion2" method="post" action="InicioSesionServlet?action=logOut">
-                    <a onclick="enviarFormulario('cerrarSesion2')"><img src="css/logOut.png" width="30%" style="margin-left: 25px;" alt=""></a>
+                <form method="post" action="InicioSesionServlet?action=logOut">
+                    <button style="border:0;background: none;color: inherit" type="submit"><a><img src="css/logOut.png" width="30%" style="" alt=""></a></button>
                 </form>
-                <script></script>
                 <!-- /ACTION ITEM ICON -->
             </div>
             <!-- /ACTION ITEM -->
@@ -1607,10 +1605,9 @@
             <!-- ACTION ITEM -->
             <div class="action-item dark header-settings-dropdown-trigger">
                 <!-- ACTION ITEM ICON -->
-                <form id="cerrarSesion1" method="post" action="InicioSesionServlet?action=logOut">
-                    <a onclick="enviarFormulario('cerrarSesion1')"><img src="css/logOut.png" width="30%" style="margin-left: 25px;" alt=""></a>
+                <form method="post" action="InicioSesionServlet?action=logOut">
+                    <button style="border:0;background: none;color: inherit" type="submit"><a><img src="css/logOut.png" width="30%" style="" alt=""></a></button>
                 </form>
-                <script></script>
                 <!-- /ACTION ITEM ICON -->
             </div>
             <!-- /ACTION ITEM -->

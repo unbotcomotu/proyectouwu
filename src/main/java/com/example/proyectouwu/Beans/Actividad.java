@@ -8,6 +8,7 @@ public class Actividad {
     private int idActividad;
     private Usuario delegadoDeActividad=new Usuario();
     private String nombre;
+    //ola
     private Blob fotoMiniatura;
     private Blob fotoCabecera;
     private int cantPuntosPrimerLugar;

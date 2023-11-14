@@ -137,6 +137,7 @@ public class DaoDonacion extends DaoPadre  {
     public float[] donacionesEgresadosUltimaSemana(){
         String sql="select round(sum(d.monto),2) from donacion d inner join usuario u on u.idUsuario=d.idUsuario where u.condicion='Egresado' and datediff(now(),d.fechaHora)=? and d.estadoDonacion='Validado'";
         float[] listaDonaciones=new float[7];
+
         for (int i=1;i<8;i++){
             int aux=7-i;
             try(Connection conn=this.getConnection(); PreparedStatement pstmt=conn.prepareStatement(sql)){

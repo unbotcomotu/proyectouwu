@@ -270,9 +270,12 @@ public class DaoActividad extends DaoPadre {
 
     public ArrayList<Integer>cantidadApoyosEstudiantesPorActividadOrden(){
         ArrayList<Integer>lista=new ArrayList<>();
-        String sql="select count(ae.idAlumnoPorEvento) from AlumnoPorEvento ae inner join Evento e on ae.idEvento=e.idEvento inner join Actividad a on e.idActividad=a.idActividad inner join Usuario u on ae.idAlumno=u.idUsuario where u.condicion='Estudiante' group by a.nombre order by a.nombre";
+        String sql="select count(aux.idActividad) from actividad ac left join (select a.idActividad as 'idActividad' from actividad a left join evento e on a.idActividad=e.idActividad left join alumnoporevento ae on e.idEvento=ae.idEvento inner join usuario u on ae.idAlumno=u.idUsuario where u.condicion='Estudiante') aux on ac.idActividad=aux.idActividad group by ac.nombre order by ac.nombre";
         try(Connection conn=this.getConnection(); ResultSet rs=conn.createStatement().executeQuery(sql)){
             while (rs.next()){
+                if(rs.getInt(1)!=0){
+
+                }
                 lista.add(rs.getInt(1));
             }return lista;
         } catch (SQLException e) {
@@ -281,7 +284,7 @@ public class DaoActividad extends DaoPadre {
     }
     public ArrayList<Integer>cantidadApoyosEgresadosPorActividadOrden(){
         ArrayList<Integer>lista=new ArrayList<>();
-        String sql="select count(ae.idAlumnoPorEvento) from AlumnoPorEvento ae inner join Evento e on ae.idEvento=e.idEvento inner join Actividad a on e.idActividad=a.idActividad inner join Usuario u on ae.idAlumno=u.idUsuario where u.condicion='Egresado' group by a.nombre order by a.nombre";
+        String sql="select count(aux.idActividad) from actividad ac left join (select a.idActividad as 'idActividad' from actividad a left join evento e on a.idActividad=e.idActividad left join alumnoporevento ae on e.idEvento=ae.idEvento inner join usuario u on ae.idAlumno=u.idUsuario where u.condicion='Egresado') aux on ac.idActividad=aux.idActividad group by ac.nombre order by ac.nombre";
         try(Connection conn=this.getConnection(); ResultSet rs=conn.createStatement().executeQuery(sql)){
             while (rs.next()){
                 lista.add(rs.getInt(1));

@@ -2347,7 +2347,185 @@
         </div>
         <!-- /SECTION HEADER -->
 
+        <div class="widget-box">
+            <!-- WIDGET BOX ACTIONS -->
+            <div class="widget-box-actions">
+                <!-- WIDGET BOX ACTION -->
+                <div class="widget-box-action">
+                    <!-- WIDGET BOX TITLE -->
+                    <p class="widget-box-title">Revisión de cantidad de apoyos por actividad</p>
+                    <!-- /WIDGET BOX TITLE -->
+                </div>
+                <!-- /WIDGET BOX ACTION -->
 
+                <!-- WIDGET BOX ACTION -->
+                <div class="widget-box-action">
+                    <!-- REFERENCE ITEM LIST -->
+                    <div class="reference-item-list">
+                        <!-- REFERENCE ITEM -->
+                        <div class="reference-item">
+                            <!-- REFERENCE BULLET -->
+                            <div class="reference-bullet primary"></div>
+                            <!-- REFERENCE BULLET -->
+
+                            <!-- REFERENCE ITEM TEXT -->
+                            <p class="reference-item-text">Egresados</p>
+                            <!-- /REFERENCE ITEM TEXT -->
+                        </div>
+                        <!-- /REFERENCE ITEM -->
+
+                        <!-- REFERENCE ITEM -->
+                        <div class="reference-item">
+                            <!-- REFERENCE BULLET -->
+                            <div class="reference-bullet secondary"></div>
+                            <!-- REFERENCE BULLET -->
+
+                            <!-- REFERENCE ITEM TEXT -->
+                            <p class="reference-item-text">Estudiantes</p>
+                            <!-- /REFERENCE ITEM TEXT -->
+                        </div>
+                        <!-- /REFERENCE ITEM -->
+                    </div>
+                    <!-- /REFERENCE ITEM LIST -->
+                </div>
+                <!-- /WIDGET BOX ACTION -->
+            </div>
+            <!-- /WIDGET BOX ACTIONS -->
+
+            <!-- WIDGET BOX CONTENT -->
+            <div class="widget-box-content">
+                <!-- CHART WRAP -->
+                <div class="chart-wrap">
+                    <!-- CHART -->
+                    <div class="chart">
+                        <canvas id="ve-monthly-report-chart"></canvas>
+                    </div>
+                    <!-- /CHART -->
+                </div>
+                <!-- /CHART WRAP -->
+            </div>
+            <!-- WIDGET BOX CONTENT -->
+
+            <!-- WIDGET BOX FOOTER -->
+            <div class="widget-box-footer">
+                <!-- CHART INFO -->
+                <div class="chart-info">
+                    <!-- PROGRESS ARC WRAP -->
+                    <div class="progress-arc-wrap tiny">
+                        <!-- PROGRESS ARC -->
+                        <div class="progress-arc">
+                            <canvas id="ve-monthly-report-ratio-chart"></canvas>
+                        </div>
+                        <!-- PROGRESS ARC -->
+
+                        <!-- PROGRESS ARC INFO -->
+                        <div class="progress-arc-info">
+                            <!-- PROGRESS ARC TITLE -->
+                            <p class="progress-arc-title">Ratio</p>
+                            <!-- /PROGRESS ARC TITLE -->
+                        </div>
+                        <!-- /PROGRESS ARC INFO -->
+                    </div>
+                    <!-- /PROGRESS ARC WRAP -->
+
+                    <!-- USER STATS -->
+                    <div class="user-stats">
+                        <!-- USER STAT -->
+                        <div class="user-stat big">
+                            <!-- USER STAT TITLE -->
+                            <p class="user-stat-title"><%=cantidadTotalApoyosEgresados+cantidadTotalApoyosEstudiantes%></p>
+                            <!-- /USER STAT TITLE -->
+
+                            <!-- USER STAT TEXT -->
+                            <p class="user-stat-text">Total de apoyos</p>
+                            <!-- /USER STAT TEXT -->
+                        </div>
+                        <!-- /USER STAT -->
+
+                        <!-- USER STAT -->
+                        <div class="user-stat big">
+                            <!-- USER STAT TITLE -->
+                            <p class="user-stat-title"><%=cantidadTotalApoyosEstudiantes%></p>
+                            <!-- /USER STAT TITLE -->
+
+                            <!-- USER STAT TEXT -->
+                            <p class="user-stat-text">Estudiantes</p>
+                            <!-- /USER STAT TEXT -->
+                        </div>
+                        <!-- /USER STAT -->
+
+                        <!-- USER STAT -->
+                        <div class="user-stat big">
+                            <!-- USER STAT TITLE -->
+                            <p class="user-stat-title"><%=cantidadTotalApoyosEgresados%></p>
+                            <!-- /USER STAT TITLE -->
+
+                            <!-- USER STAT TEXT -->
+                            <p class="user-stat-text">Egresados</p>
+                            <!-- /USER STAT TEXT -->
+                        </div>
+                        <!-- /USER STAT -->
+
+                        <!-- USER STAT -->
+                        <div class="user-stat big">
+                            <%int posicionMayorCantidadApoyos=0;
+                                int mayorCantidadApoyos=0;
+                                for(int i=0;i<listaNombresActividadesOrden.size();i++){
+                                    if(cantidadApoyosEstudiantesPorActividadOrden.get(i)+cantidadApoyosEgresadosPorActividadOrden.get(i)>mayorCantidadApoyos){
+                                        mayorCantidadApoyos=cantidadApoyosEgresadosPorActividadOrden.get(i)+cantidadApoyosEstudiantesPorActividadOrden.get(i);
+                                        posicionMayorCantidadApoyos=i;
+                                    }
+                                }
+                            %>
+                            <!-- USER STAT TITLE -->
+                            <p class="user-stat-title"><%=listaNombresActividadesOrden.get(posicionMayorCantidadApoyos)%></p>
+                            <!-- /USER STAT TITLE -->
+
+                            <!-- USER STAT TEXT -->
+                            <p class="user-stat-text">Mayor cantidad de apoyos</p>
+                            <!-- /USER STAT TEXT -->
+                        </div>
+                        <!-- /USER STAT -->
+
+                        <!-- USER STAT -->
+                        <div class="user-stat big">
+                            <%int posicionMenorCantidadApoyos=0;
+                                int menorCantidadApoyos=999999;
+                                for(int i=0;i<listaNombresActividadesOrden.size();i++){
+                                    if(cantidadApoyosEstudiantesPorActividadOrden.get(i)+cantidadApoyosEgresadosPorActividadOrden.get(i)>menorCantidadApoyos){
+                                        menorCantidadApoyos=cantidadApoyosEgresadosPorActividadOrden.get(i)+cantidadApoyosEstudiantesPorActividadOrden.get(i);
+                                        posicionMenorCantidadApoyos=i;
+                                    }
+                                }
+                            %>
+                            <!-- USER STAT TITLE -->
+                            <p class="user-stat-title"><%=listaNombresActividadesOrden.get(posicionMenorCantidadApoyos)%></p>
+                            <!-- /USER STAT TITLE -->
+
+                            <!-- USER STAT TEXT -->
+                            <p class="user-stat-text">Menor cantidad de apoyos</p>
+                            <!-- /USER STAT TEXT -->
+                        </div>
+                        <!-- /USER STAT -->
+
+                        <!-- USER STAT -->
+                        <div class="user-stat big">
+                            <!-- USER STAT TITLE -->
+                            <p class="user-stat-title"><%=(cantidadTotalApoyosEgresados+cantidadTotalApoyosEstudiantes)/listaNombresActividadesOrden.size()%></p>
+                            <!-- /USER STAT TITLE -->
+
+                            <!-- USER STAT TEXT -->
+                            <p class="user-stat-text">Promedio de apoyos por actividad</p>
+                            <!-- /USER STAT TEXT -->
+                        </div>
+                        <!-- /USER STAT -->
+                    </div>
+                    <!-- /USER STATS -->
+                </div>
+                <!-- /CHART INFO -->
+            </div>
+            <!-- /WIDGET BOX FOOTER -->
+        </div>
 
 
 
@@ -3076,6 +3254,15 @@
         }document.getElementById('actividadMenorCantApoyos').textContent = actividadesLista[posicion];
     }
 
+    function maximo(array){
+        let max=0;
+        for(let i=0;i<array.length;i++){
+            if(array[i]>max){
+                max=array[i];
+            }
+        }return max;
+    }
+
     function hallarPromedioApoyosActividades(){
         let suma=0;
         for(let i=0; i<apoyosEstudiantes.length; i++){
@@ -3424,8 +3611,8 @@
                 labels: actividadesLista,
                 datasets: [
                     {
-                        label: 'Alumnos',
-                        data: apoyosAlumnos,
+                        label: 'Estudiantes',
+                        data: apoyosEstudiantes,
                         maxBarThickness: 16,
                         backgroundColor: '#615dfa'
                     },
@@ -3591,8 +3778,8 @@
                                 fontSize: 12,
                                 fontStyle: 500,
                                 min: 0,
-                                max: 1000,
-                                stepSize: 50
+                                max: maximo([maximo(donacionesUltimaSemanaEgresados),maximo(donacionesUltimaSemanaEstudiantes)]),
+                                stepSize: maximo([maximo(donacionesUltimaSemanaEgresados),maximo(donacionesUltimaSemanaEstudiantes)])/20,
                             }
                         }
                     ]

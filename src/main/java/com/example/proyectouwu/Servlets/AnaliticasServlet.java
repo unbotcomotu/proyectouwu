@@ -47,6 +47,11 @@ public class AnaliticasServlet extends HttpServlet {
             request.setAttribute("totalEgresadosRegistrados",dUsuario.totalEgresadosRegistrados());
             request.setAttribute("totalDonacionesEgresados",dDonacion.donacionesTotalesEgresados());
             request.setAttribute("totalDonacionesEstudiantes",dDonacion.donacionesTotalesEstudiantes());
+            request.setAttribute("topDonadorTotal",dDonacion.hallarTopDonador());
+            request.setAttribute("topDonadorUltimaSemana",dDonacion.hallarTopDonadorUltimaSemana());
+            if(usuario.getRol().equals("Delegado General")){
+                request.setAttribute("listaNotificacionesCampanita",new DaoNotificacionDelegadoGeneral().listarNotificacionesDelegadoGeneral());
+            }
             request.setAttribute("topApoyoUltimaSemana",dAE.topApoyoUltimaSemana());
             request.setAttribute("topApoyoTotal",dAE.topApoyoTotal());
             request.setAttribute("listaNotificacionesCampanita",dN.listarNotificacionesDelegadoGeneral());

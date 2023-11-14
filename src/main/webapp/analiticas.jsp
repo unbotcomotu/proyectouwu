@@ -5,6 +5,7 @@
 <%@ page import="java.util.Arrays" %>
 <%@ page import="com.example.proyectouwu.Beans.*" %>
 <%@ page import="com.example.proyectouwu.Daos.*" %>
+<%@ page import="com.example.proyectouwu.DTOs.TopDonador" %>
 <%@ page import="com.example.proyectouwu.DTOs.TopApoyo" %>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <!DOCTYPE html>
@@ -52,6 +53,8 @@
         float totalDonacionesEgresados=(float) request.getAttribute("totalDonacionesEgresados");
         TopApoyo topApoyoUltimaSemana=(TopApoyo) request.getAttribute("topApoyoUltimaSemana");
         TopApoyo topApoyoTotal=(TopApoyo) request.getAttribute("topApoyoTotal");
+        TopDonador topDonadorTotal = (TopDonador) request.getAttribute("topDonadorTotal");
+        TopDonador topDonadorUltimaSemana = (TopDonador) request.getAttribute("topDonadorUltimaSemana");
         for(int i=0;i<fechas.length;i++){
             if(diaMesActual.equals(fechas[i].split(" ")[1])){
                 for(int j=0;j<7;j++){
@@ -2104,7 +2107,7 @@
                     <!-- /USER AVATAR -->
 
                     <!-- FEATURED STAT BOX TITLE -->
-                    <p class="featured-stat-box-title">500</p>
+                    <p class="featured-stat-box-title"><%=topDonadorUltimaSemana.getMontoTotal()%></p>
                     <!-- /FEATURED STAT BOX TITLE -->
 
                     <!-- FEATURED STAT BOX SUBTITLE -->
@@ -2112,7 +2115,7 @@
                     <!-- /FEATURED STAT BOX SUBTITLE -->
 
                     <!-- FEATURED STAT BOX TEXT -->
-                    <p class="featured-stat-box-text">Stuardo Lucho</p>
+                    <p class="featured-stat-box-text"><%=topDonadorUltimaSemana.getUsuario().getNombre()+" "+topDonadorUltimaSemana.getUsuario().getApellido()%></p>
                     <!-- /FEATURED STAT BOX TEXT -->
                 </div>
                 <!-- /FEATURED STAT BOX INFO -->
@@ -2172,7 +2175,7 @@
                     <!-- /USER AVATAR -->
 
                     <!-- FEATURED STAT BOX TITLE -->
-                    <p class="featured-stat-box-title">1569</p>
+                    <p class="featured-stat-box-title"><%=topDonadorTotal.getMontoTotal()%></p>
                     <!-- /FEATURED STAT BOX TITLE -->
 
                     <!-- FEATURED STAT BOX SUBTITLE -->
@@ -2180,7 +2183,7 @@
                     <!-- /FEATURED STAT BOX SUBTITLE -->
 
                     <!-- FEATURED STAT BOX TEXT -->
-                    <p class="featured-stat-box-text">Mariana Cupe</p>
+                    <p class="featured-stat-box-text"><%=topDonadorTotal.getUsuario().getNombre()+" "+topDonadorTotal.getUsuario().getApellido()%></p>
                     <!-- /FEATURED STAT BOX TEXT -->
                 </div>
                 <!-- /FEATURED STAT BOX INFO -->

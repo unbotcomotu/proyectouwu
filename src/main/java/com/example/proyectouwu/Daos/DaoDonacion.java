@@ -2,6 +2,7 @@ package com.example.proyectouwu.Daos;
 
 import com.example.proyectouwu.Beans.Donacion;
 import com.example.proyectouwu.Beans.Usuario;
+import com.example.proyectouwu.DTOs.TopDonador;
 
 import java.awt.image.BufferedImage;
 import java.sql.*;
@@ -82,10 +83,10 @@ public class DaoDonacion extends DaoPadre  {
         }
     }
 
-    public Integer sumarMontoDonadoPorEgresado(){
+    /*public Integer sumarMontoDonadoPorEgresado(){
         int montoEgresado = 0;
         int montoCopia = 0;
-        String sql = "select sum(monto) from donacion where idUser = ?";
+        //String sql = "select sum(monto) from donacion where idUser = ?";
         
         DaoUsuario daoUsuario = new DaoUsuario();
         ArrayList<Integer> egresadosIds = daoUsuario.listaIdEgresados();
@@ -105,7 +106,7 @@ public class DaoDonacion extends DaoPadre  {
         }
         return montoEgresado;
     }
-
+    */
 
     public Donacion buscarPorId(String id){
 
@@ -244,6 +245,46 @@ public class DaoDonacion extends DaoPadre  {
                 }else{
                     return null;
                 }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public TopDonador hallarTopDonador(){
+        TopDonador topDonador = new TopDonador();
+        String sql = "select u.nombre, u.apellido, u.fotoPerfil, subQuery.montoTotal from usuario u inner join (select idUsuario, round(sum(monto),2) as `montoTotal`, max(fechaHora) as `fecha` from donacion where estadoDonacion='Validado' group by idUsuario having max(fechaHora) order by montoTotal desc,fecha desc limit 1) subQuery on (u.idUsuario = subQuery.idUsuario)";
+        try(Connection conn = getConnection();
+            ResultSet rs = conn.prepareStatement(sql).executeQuery()){
+            if(rs.next()){
+                Usuario usuario = new Usuario();
+                usuario.setNombre(rs.getString(1));
+                usuario.setApellido(rs.getString(2));
+                usuario.setFotoPerfil(rs.getBlob(3));
+                topDonador.setUsuario(usuario);
+                topDonador.setMontoTotal(rs.getFloat(4));
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return topDonador;
+    }
+
+    public TopDonador hallarTopDonadorUltimaSemana(){
+        TopDonador topDonador = new TopDonador();
+        String sql = "select u.nombre, u.apellido, u.fotoPerfil, subQuery.montoTotal from usuario u inner join (select idUsuario, round(sum(monto),2) as `montoTotal`, max(fechaHora) as `fecha` from donacion where estadoDonacion='Validado' and datediff(now(),fechaHora)<=7 group by idUsuario having max(fechaHora) order by montoTotal desc,fecha desc limit 1) subQuery on (u.idUsuario = subQuery.idUsuario)";
+        try(Connection conn = getConnection();
+            ResultSet rs = conn.prepareStatement(sql).executeQuery()){
+            if(rs.next()){
+                Usuario usuario = new Usuario();
+                usuario.setNombre(rs.getString(1));
+                usuario.setApellido(rs.getString(2));
+                usuario.setFotoPerfil(rs.getBlob(3));
+                topDonador.setUsuario(usuario);
+                topDonador.setMontoTotal(rs.getFloat(4));
+                return topDonador;
+            }else{
+                return null;
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);

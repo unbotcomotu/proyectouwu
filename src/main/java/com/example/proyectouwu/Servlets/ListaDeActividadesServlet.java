@@ -188,9 +188,32 @@ public class ListaDeActividadesServlet extends HttpServlet {
                         }else{
                             ocultoEditarActividad=false;
                         }
-                        String fotoCabeceraEditar="ola";
-                        String fotoMiniaturaEditar="ola";
-                        dActividad.editarActividad(idActividadEditar,nombreEditarActividad,idDelegadoActividadEditar,puntajeEditarActividad,ocultoEditarActividad,fotoCabeceraEditar,fotoMiniaturaEditar,idDelegadoActividadAnterior);
+                        //String fotoCabeceraEditar==inputCab;
+                        partCab = request.getPart("updateFotoCabecera");
+
+                        // Obtenemos el flujo de bytes
+                        if (partCab != null) {
+                            inputCab = partCab.getInputStream();
+                        }
+
+                        validarLongitudCab = inputCab.available() > 10;
+
+
+                        //String fotoMiniaturaEditar==inputMin;
+                        partMin = request.getPart("updateFotoMiniatura");
+
+                        // Obtenemos el flujo de bytes
+                        if (partMin != null) {
+                            inputMin = partMin.getInputStream();
+                        }
+
+                        validarLongitudMin = inputMin.available() > 10;
+
+                        try {
+                            dActividad.editarActividad(idActividadEditar,nombreEditarActividad,idDelegadoActividadEditar,puntajeEditarActividad,ocultoEditarActividad,inputCab,inputMin,idDelegadoActividadAnterior,validarLongitudCab,validarLongitudMin);
+                        } catch (SQLException e) {
+                            throw new RuntimeException(e);
+                        }
                         response.sendRedirect("ListaDeActividadesServlet");
                     }catch (NumberFormatException e){
                         request.getSession().setAttribute("puntajeNoNumerico","1");

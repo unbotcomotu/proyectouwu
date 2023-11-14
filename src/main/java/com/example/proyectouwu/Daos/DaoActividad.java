@@ -1,11 +1,13 @@
 package com.example.proyectouwu.Daos;
 
 import com.example.proyectouwu.Beans.Actividad;
+import com.example.proyectouwu.Beans.Evento;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.sql.*;
 import java.util.ArrayList;
+
 
 public class DaoActividad extends DaoPadre {
     
@@ -324,9 +326,64 @@ public class DaoActividad extends DaoPadre {
             throw new RuntimeException(e);
         }
     }
+    /////
+    public void editarActividad(int idActividad,String nombre,int idDelegadoDeActividad,int puntaje,boolean oculto,InputStream fotoCabecera,InputStream fotoMiniatura,int idDelegadoActividadAnterior, boolean validarLongitudCab, boolean validarLongitudMin) throws SQLException, IOException {
 
-    public void editarActividad(int idActividad,String nombre,int idDelegadoDeActividad,int puntaje,boolean oculto,String fotoCabecera,String fotoMiniatura,int idDelegadoActividadAnterior){
-        String sql="update actividad set idDelegadoDeActividad=?,nombre=?,fotoMiniatura=?,fotoCabecera=?,cantidadPuntosPrimerLugar=?,actividadOculta=? where idActividad=?";
+        //validar la longitud minima 10
+        String secFotoCab = "";
+        String secFotoMin = "";
+        if(validarLongitudCab){
+            secFotoCab = ",fotoCabecera=?";
+        }
+        if(validarLongitudMin){
+            secFotoMin = ",fotoCabecera=?";
+        }
+
+        String sql="update actividad set idDelegadoDeActividad=?,nombre=?,cantidadPuntosPrimerLugar=?,actividadOculta=?"+secFotoMin+secFotoCab+"where idActividad=?";
+
+        try(Connection conn=this.getConnection(); PreparedStatement pstmt= conn.prepareStatement(sql)){
+            pstmt.setInt(1,idDelegadoDeActividad);
+            pstmt.setString(2,nombre);
+            pstmt.setInt(3,puntaje);
+            pstmt.setBoolean(4,oculto);
+            pstmt.setInt(5,idActividad);
+            //pstmt.setString(3,fotoMiniatura);
+            if(validarLongitudMin){
+                pstmt.setBinaryStream(6,fotoMiniatura,fotoMiniatura.available());
+                pstmt.setInt(7,idActividad);
+            }else{
+                pstmt.setInt(6,idActividad);
+            }
+            //pstmt.setString(4,fotoCabecera);
+            if(validarLongitudCab){
+                pstmt.setBinaryStream(7,fotoCabecera,fotoCabecera.available());
+                pstmt.setInt(8,idActividad);
+            }else{
+                pstmt.setInt(7,idActividad);
+            }
+            pstmt.executeUpdate();
+        }catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        sql="update usuario set rol='Delegado de Actividad' where idUsuario=?";
+        try(Connection conn=this.getConnection(); PreparedStatement pstmt= conn.prepareStatement(sql)){
+            pstmt.setInt(1,idDelegadoDeActividad);
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        sql="update usuario set rol='Alumno' where idUsuario=?";
+        try(Connection conn=this.getConnection(); PreparedStatement pstmt= conn.prepareStatement(sql)){
+            pstmt.setInt(1,idDelegadoActividadAnterior);
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    /*public void editarActividad(int idActividad,String nombre,int idDelegadoDeActividad,int puntaje,boolean oculto,String fotoCabecera,String fotoMiniatura,int idDelegadoActividadAnterior){
+        //String sql="update actividad set idDelegadoDeActividad=?,nombre=?,fotoMiniatura=?,fotoCabecera=?,cantidadPuntosPrimerLugar=?,actividadOculta=? where idActividad=?";
         try(Connection conn=this.getConnection(); PreparedStatement pstmt= conn.prepareStatement(sql)){
             pstmt.setInt(1,idDelegadoDeActividad);
             pstmt.setString(2,nombre);
@@ -353,7 +410,7 @@ public class DaoActividad extends DaoPadre {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-    }
+    }*/
 
     public Integer eventosNoFinalizadosActividad(int idActividad){
         String sql="select count(e.idEvento) from Evento e inner join Actividad a on e.idActividad=a.idActividad where e.eventoFinalizado=false and a.idActividad=?";

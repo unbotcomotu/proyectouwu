@@ -10,6 +10,7 @@ import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 @WebServlet(name = "ListaDeUsuariosServlet", value = "/ListaDeUsuariosServlet")
 public class ListaDeUsuariosServlet extends HttpServlet {
@@ -26,33 +27,45 @@ public class ListaDeUsuariosServlet extends HttpServlet {
             request.setAttribute("listaNotificacionesCampanita",new DaoNotificacionDelegadoGeneral().listarNotificacionesDelegadoGeneral());
             String action = request.getParameter("action") == null ? "listarUsuarios" : request.getParameter("action");
             String pagina = request.getParameter("p") == null ? "1" : request.getParameter("p");
+            String filtro = request.getParameter("idFiltroUsuario") != null ? request.getParameter("idFiltroUsuario") : "";
             switch (action) {
                 case "listarUsuarios":
-                    request.setAttribute("listaUsuarios", dUsuario.listarUsuarios(Integer.parseInt(pagina)-1));
-                    request.setAttribute("cantidadUsuariosTotal", dUsuario.listarUsuarios().size());
-                    request.setAttribute("pagActual", Integer.parseInt(pagina));
-                    request.getRequestDispatcher("listaUsuarios.jsp").forward(request, response);
-                    break;
-                case "buscarUsuario":
-                    String usuario2=request.getParameter("usuario");
-                    request.setAttribute("listaUsuarios",new DaoUsuario().listarUsuarioXnombre(usuario2,Integer.parseInt(pagina)-1));
-                    request.setAttribute("cantidadUsuariosTotal",new DaoUsuario().listarUsuarioXnombre(usuario2).size());
-                    request.setAttribute("action",action);
-                    request.setAttribute("usuario",usuario2);
-                    if(usuario.getRol().equals("Alumno")||usuario.getRol().equals("Delegado General")){
-                        request.getRequestDispatcher("listaUsuarios.jsp").forward(request,response);
+                    if(filtro.isEmpty()){
+                        request.setAttribute("listaUsuarios", dUsuario.listarUsuarios(Integer.parseInt(pagina)-1));
+                        request.setAttribute("cantidadUsuariosTotal", dUsuario.listarUsuarios().size());
+                        request.setAttribute("pagActual", Integer.parseInt(pagina));
+                        request.getRequestDispatcher("listaUsuarios.jsp").forward(request, response);
+                    }else{
+                        int idOrdenarUsuario=Integer.parseInt(request.getParameter("idOrdenarUsuario"));
+                        request.setAttribute("listaUsuarios", dUsuario.listarUsuariosFiltro(Integer.parseInt(filtro),idOrdenarUsuario,Integer.parseInt(pagina)-1));
+                        request.setAttribute("cantidadUsuariosTotal", dUsuario.listarUsuarios().size());
+                        request.setAttribute("idFiltroUsuario",Integer.parseInt(filtro));
+                        request.setAttribute("idOrdenarUsuario",idOrdenarUsuario);
+                        request.setAttribute("pagActual", Integer.parseInt(pagina));
+                        request.getRequestDispatcher("listaUsuarios.jsp").forward(request, response);
                     }
                     break;
-                case "filtroUsuario":
-                    int idFiltroUsuario=Integer.parseInt(request.getParameter("idFiltroUsuario"));
-                    int idOrdenarUsuario=Integer.parseInt(request.getParameter("idOrdenarUsuario"));
-                    request.setAttribute("action",action);
-                    //request.setAttribute("listaUsuario",new DaoUsuario().listarUsuariosTotal(idFiltroActividades,idOrdenarActividades,idUsuario));
-                    request.setAttribute("listaUsuarios",new DaoUsuario().listarUsuariosFiltro(idFiltroUsuario,idOrdenarUsuario,Integer.parseInt(pagina)-1));
-                    request.setAttribute("cantidadUsuariosTotal",new DaoUsuario().listarUsuariosFiltro(idFiltroUsuario,idOrdenarUsuario).size());
-                    request.setAttribute("idFiltroUsuario",idFiltroUsuario);
-                    request.setAttribute("idOrdenarUsuario",idOrdenarUsuario);
-                    request.getRequestDispatcher("listaUsuarios.jsp").forward(request,response);
+                case "buscarUsuario":
+                    if(filtro.isEmpty()) {
+                        String usuario2 = request.getParameter("usuario");
+                        request.setAttribute("listaUsuarios", new DaoUsuario().listarUsuarioXnombre(usuario2, Integer.parseInt(pagina) - 1));
+                        request.setAttribute("cantidadUsuariosTotal", new DaoUsuario().listarUsuarioXnombre(usuario2).size());
+                        request.setAttribute("action", action);
+                        request.setAttribute("usuario", usuario2);
+                        request.setAttribute("pagActual", Integer.parseInt(pagina));
+                        request.getRequestDispatcher("listaUsuarios.jsp").forward(request, response);
+                    }else{
+                        String usuario2 = request.getParameter("usuario");
+                        int idOrdenarUsuario=Integer.parseInt(request.getParameter("idOrdenarUsuario"));
+                        request.setAttribute("listaUsuarios", dUsuario.listarUsuarioXnombre(usuario2, Integer.parseInt(pagina) - 1,Integer.parseInt(filtro),idOrdenarUsuario));
+                        request.setAttribute("cantidadUsuariosTotal", new DaoUsuario().listarUsuarioXnombre(usuario2).size());
+                        request.setAttribute("idFiltroUsuario",Integer.parseInt(filtro));
+                        request.setAttribute("idOrdenarUsuario",idOrdenarUsuario);
+                        request.setAttribute("action", action);
+                        request.setAttribute("usuario", usuario2);
+                        request.setAttribute("pagActual", Integer.parseInt(pagina));
+                        request.getRequestDispatcher("listaUsuarios.jsp").forward(request, response);
+                    }
                     break;
             }
         }

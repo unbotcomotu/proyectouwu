@@ -62,7 +62,7 @@ public class InicioSesionServlet extends HttpServlet {
                     request.getRequestDispatcher("inicioSesion.jsp").forward(request,response);
                 }else{
                     request.getSession().setAttribute("usuario",new DaoUsuario().usuarioSesion(b.getUsuario().getIdUsuario()));
-                    request.getSession().setMaxInactiveInterval(60);
+                    request.getSession().setMaxInactiveInterval(600);
                     response.sendRedirect("ListaDeActividadesServlet");
                 }
                 break;

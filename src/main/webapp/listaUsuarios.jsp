@@ -5,24 +5,26 @@
 <html>
 <head>
   <%Usuario usuarioActual=(Usuario) request.getSession().getAttribute("usuario");
-    int idUsuario=usuarioActual.getIdUsuario();
-    String rolUsuario=usuarioActual.getRol();
-    String nombreCompletoUsuario=usuarioActual.getNombre()+" "+usuarioActual.getApellido();
-    Integer pagActual = request.getAttribute("pagActual") != null ? (Integer) request.getAttribute("pagActual") : 1;
-    ArrayList<Usuario>listaUsuarios=(ArrayList<Usuario>) request.getAttribute("listaUsuarios");
-    String vistaActual=(String) request.getAttribute("vistaActual");
-    ArrayList<String> listaCorreosDelegadosGenerales=(ArrayList<String>)request.getAttribute("correosDelegadosGenerales");
-    String busqueda=(String) request.getAttribute("usuario");
-    String colorRol;
-    String servletActual="ListaDeUsuariosServlet";
-    ArrayList<NotificacionDelegadoGeneral>listaNotificacionesCampanita=(ArrayList<NotificacionDelegadoGeneral>) request.getAttribute("listaNotificacionesCampanita");
-    if(rolUsuario.equals("Alumno")){
+  int cantidadTotalUsuarios = (int)Math.ceil((int)request.getAttribute("cantidadUsuariosTotal")/8.0);
+  String action = request.getParameter("action") != null ? request.getParameter("action") : "";
+  int idUsuario=usuarioActual.getIdUsuario();
+  String rolUsuario=usuarioActual.getRol();
+  String nombreCompletoUsuario=usuarioActual.getNombre()+" "+usuarioActual.getApellido();
+  Integer pagActual = request.getAttribute("pagActual") != null ? (Integer) request.getAttribute("pagActual") : 1;
+  ArrayList<Usuario>listaUsuarios=(ArrayList<Usuario>) request.getAttribute("listaUsuarios");
+  String vistaActual=(String) request.getAttribute("vistaActual");
+  ArrayList<String> listaCorreosDelegadosGenerales=(ArrayList<String>)request.getAttribute("correosDelegadosGenerales");
+  String busqueda=(String) request.getAttribute("usuario");
+  String colorRol;
+  String servletActual="ListaDeUsuariosServlet";
+  ArrayList<NotificacionDelegadoGeneral>listaNotificacionesCampanita=(ArrayList<NotificacionDelegadoGeneral>) request.getAttribute("listaNotificacionesCampanita");
+  if(rolUsuario.equals("Alumno")){
       colorRol="";
-    }else if(rolUsuario.equals("Delegado de Actividad")){
+  }else if(rolUsuario.equals("Delegado de Actividad")){
       colorRol="green";
-    }else{
+  }else{
       colorRol="orange";
-    }
+  }
   %>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -1674,7 +1676,11 @@
         <div class="section-filters-bar-actions">
             <!-- FORM -->
             <form method="get" action="ListaDeUsuariosServlet" class="form">
-                <input type="hidden" name="action" value="filtroUsuario">
+                <input type="hidden" name="action" value="<%=action%>">
+                <%if(busqueda != null){%>
+                <%request.setAttribute("listaActual",listaUsuarios);%>
+                <input type="hidden" name="usuario" value="<%=busqueda%>">
+                <%}%>
                 <input type="hidden" name="p" value="<%=pagActual%>">
                 <!-- FORM ITEM -->
                 <div class="form-item split medium">
@@ -1867,9 +1873,7 @@
         <!-- SECTION PAGER -->
         <div class="section-pager">
             <!-- SECTION PAGER ITEM -->
-            <%int cantidadTotalUsuarios = (int)Math.ceil((int)request.getAttribute("cantidadUsuariosTotal")/8.0);
-                String action = request.getParameter("action") != null ? request.getParameter("action") : "";
-                for(int p=0;p<cantidadTotalUsuarios; p++){%>
+            <%for(int p=0;p<cantidadTotalUsuarios; p++){%>
             <div class="section-pager-item <%if(pagActual==p+1){%>active<%}%>">
                 <%if(action.equals("buscarUsuario")){%>
                 <!-- SECTION PAGER ITEM TEXT -->

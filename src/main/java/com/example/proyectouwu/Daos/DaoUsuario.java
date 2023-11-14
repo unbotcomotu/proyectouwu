@@ -186,11 +186,59 @@ public class DaoUsuario extends DaoPadre {
 
     public ArrayList<Usuario>listarUsuarioXnombre(String nombre, int pagina){
         ArrayList<Usuario>listaUsuarios=new ArrayList<>();
-        String sql = "select idUsuario, nombre, apellido, rol, codigoPUCP, condicion, fotoPerfil, descripcionPerfil from usuario where estadoRegistro='Registrado' AND rol!='Delegado General' and (nombre like ? or apellido like ? ) limit 8 offset ?";
+        String sql = "select idUsuario, nombre, apellido, rol, codigoPUCP, condicion, fotoPerfil, descripcionPerfil from usuario where estadoRegistro='Registrado' AND rol!='Delegado General' and concat(nombre,' ',apellido) like ? limit 8 offset ?";
         try(Connection conn=this.getConnection(); PreparedStatement pstmt=conn.prepareStatement(sql)){
             pstmt.setString(1,"%"+nombre+"%");
-            pstmt.setString(2,"%"+nombre+"%");
-            pstmt.setInt(3,pagina*8);
+            pstmt.setInt(2,pagina*8);
+            try (ResultSet rs=pstmt.executeQuery()){
+                while (rs.next()){
+                    Usuario u=new Usuario();
+                    u.setIdUsuario(rs.getInt(1));
+                    u.setNombre(rs.getString(2));
+                    u.setApellido(rs.getString(3));
+                    u.setRol(rs.getString(4));
+                    u.setCodigoPUCP(rs.getString(5));
+                    u.setCondicion(rs.getString(6));
+                    u.setFotoPerfil(rs.getBlob(7));
+                    u.setDescripcionPerfil(rs.getString(8));
+                    listaUsuarios.add(u);
+                }return listaUsuarios;
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public ArrayList<Usuario>listarUsuarioXnombre(String nombre, int pagina, int idFiltroUsuarios, int idOrdenarUsuarios){
+        ArrayList<Usuario>listaUsuarios=new ArrayList<>();
+        String sql="";
+        if(idFiltroUsuarios==0){
+            if(idOrdenarUsuarios==1){
+                sql = "select idUsuario, nombre, apellido, rol, codigoPUCP, condicion, fotoPerfil, descripcionPerfil from usuario where estadoRegistro='Registrado' AND rol!='Delegado General' and concat(nombre,' ',apellido) like ? order by nombre desc limit 8 offset ?";
+            }else{
+                sql = "select idUsuario, nombre, apellido, rol, codigoPUCP, condicion, fotoPerfil, descripcionPerfil from usuario where estadoRegistro='Registrado' AND rol!='Delegado General' and concat(nombre,' ',apellido) like ? order by nombre asc limit 8 offset ?";
+            }
+        }else if(idFiltroUsuarios==1){
+            if(idOrdenarUsuarios==1){
+                sql = "select idUsuario, nombre, apellido, rol, codigoPUCP, condicion, fotoPerfil, descripcionPerfil from usuario where estadoRegistro='Registrado' AND rol!='Delegado General' and concat(nombre,' ',apellido) like ? order by codigoPUCP desc limit 8 offset ?";
+            }else{
+                sql = "select idUsuario, nombre, apellido, rol, codigoPUCP, condicion, fotoPerfil, descripcionPerfil from usuario where estadoRegistro='Registrado' AND rol!='Delegado General' and concat(nombre,' ',apellido) like ? order by codigoPUCP asc limit 8 offset ?";
+            }
+        }else if(idFiltroUsuarios==2){
+            if(idOrdenarUsuarios==1){
+                sql = "select idUsuario, nombre, apellido, rol, codigoPUCP, condicion, fotoPerfil, descripcionPerfil from usuario where estadoRegistro='Registrado' AND rol!='Delegado General' and concat(nombre,' ',apellido) like ? order by if(condicion='Estudiante',1,0) limit 8 offset ?";
+            }else{
+                sql = "select idUsuario, nombre, apellido, rol, codigoPUCP, condicion, fotoPerfil, descripcionPerfil from usuario where estadoRegistro='Registrado' AND rol!='Delegado General' and concat(nombre,' ',apellido) like ? order by if(condicion='Estudiante',0,1) limit 8 offset ?";
+            }
+        }else if(idFiltroUsuarios==3) {
+            if (idOrdenarUsuarios == 1) {
+                sql = "select u.idUsuario, u.nombre, u.apellido, u.rol, u.codigoPUCP, u.condicion, u.fotoPerfil, u.descripcionPerfil from usuario u left join ban b on u.idUsuario=b.idUsuario where estadoRegistro='Registrado' AND rol!='Delegado General' and concat(u.nombre,' ',u.apellido) like ? order by if(b.idBan is not null,1,0) limit 8 offset ?";
+            } else {
+                sql = "select u.idUsuario, u.nombre, u.apellido, u.rol, u.codigoPUCP, u.condicion, u.fotoPerfil, u.descripcionPerfil from usuario u left join ban b on u.idUsuario=b.idUsuario where estadoRegistro='Registrado' AND rol!='Delegado General' and concat(u.nombre,' ',u.apellido) like ? order by if(b.idBan is not null,0,1) limit 8 offset ?";           }
+        }
+        try(Connection conn=this.getConnection(); PreparedStatement pstmt=conn.prepareStatement(sql)){
+            pstmt.setString(1,"%"+nombre+"%");
+            pstmt.setInt(2,pagina*8);
             try (ResultSet rs=pstmt.executeQuery()){
                 while (rs.next()){
                     Usuario u=new Usuario();
@@ -212,10 +260,9 @@ public class DaoUsuario extends DaoPadre {
 
     public ArrayList<Usuario>listarUsuarioXnombre(String nombre){
         ArrayList<Usuario>listaUsuarios=new ArrayList<>();
-        String sql = "select idUsuario, nombre, apellido, rol, codigoPUCP, condicion, fotoPerfil, descripcionPerfil from usuario where estadoRegistro='Registrado' AND rol!='Delegado General' and (nombre like ? or apellido like ? )";
+        String sql = "select idUsuario, nombre, apellido, rol, codigoPUCP, condicion, fotoPerfil, descripcionPerfil from usuario where estadoRegistro='Registrado' AND rol!='Delegado General' and concat(nombre,' ',apellido) like ?";
         try(Connection conn=this.getConnection(); PreparedStatement pstmt=conn.prepareStatement(sql)){
             pstmt.setString(1,"%"+nombre+"%");
-            pstmt.setString(2,"%"+nombre+"%");
             try (ResultSet rs=pstmt.executeQuery()){
                 while (rs.next()){
                     Usuario u=new Usuario();

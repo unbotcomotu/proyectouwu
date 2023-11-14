@@ -25,15 +25,20 @@ public class RegistroServlet extends HttpServlet {
             case "default" :
                 //Alex auxilio
                 //int codigoValidacion = Integer.parseInt(request.getParameter("codigoValidacion"));
-                String idCorreoValidacion = request.getParameter("idCorreoValidacion");
                 Validacion validacion= new Validacion();
-                validacion.setIdCorreoValidacion(Integer.parseInt(idCorreoValidacion));
-                validacion.setCodigoValidacion(new DaoValidacion().getCodigoValidacionPorIdCorreoValidacion(idCorreoValidacion));
-
-                //request.setAttribute("codigoValidacion ",codigoValidacion);
-                request.setAttribute("validacion", validacion);
-                RequestDispatcher rd = request.getRequestDispatcher("Registro.jsp");
-                rd.forward(request,response);
+                String idCorreoValidacion = request.getParameter("idCorreoValidacion");
+                String codigoValidacion=request.getParameter("codigoValidacion");
+                try{
+                    validacion.setIdCorreoValidacion(Integer.parseInt(idCorreoValidacion));
+                    if(Integer.parseInt(idCorreoValidacion)==new DaoValidacion().getIdPorcodigoValidacion(Integer.parseInt(codigoValidacion))){
+                        request.setAttribute("validacion",validacion);
+                        request.getRequestDispatcher("Registro.jsp").forward(request,response);
+                    }else{
+                        response.sendRedirect("InicioSesionServlet");
+                    }
+                }catch (NumberFormatException e){
+                    response.sendRedirect("InicioSesionServlet");
+                }
                 break;
             case "registro" :
                 break;

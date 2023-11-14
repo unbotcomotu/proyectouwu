@@ -161,13 +161,13 @@ public class ListaDeActividadesServlet extends HttpServlet {
                         }
 
                         //response.sendRedirect("ListaDeActividadesServlet");
+                        inputMin.close();
+                        inputCab.close();
                     }catch (NumberFormatException e){
                         request.getSession().setAttribute("puntajeNoNumerico","1");
                         response.sendRedirect("ListaDeActividadesServlet");
                     }
                 }
-                inputMin.close();
-                inputCab.close();
                 break;
             case "editarActividad":
                 Integer idDelegadoActividadAnterior=Integer.parseInt(request.getParameter("idDelegadoActividadAnterior"));

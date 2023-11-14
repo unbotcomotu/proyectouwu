@@ -60,7 +60,7 @@
 <div class="container">
     <main>
         <div class="py-5 text-center">
-            <img class="d-block mx-auto mb-4" src="css/telito.png" alt="" width="50%" height="50%">
+            <img class="d-block mx-auto mb-4" src="css/telito.png" alt="" width="50%">
             <h2 class = "mb-4 texto">SEMANA DE INGENIERÍA </h2>
             <p class="lead texto">Bienvenido y gracias por animarte a participar de la semana de ingeniería. Ahora solo necesitas crear una cuenta registrando tus datos</p>
         </div>

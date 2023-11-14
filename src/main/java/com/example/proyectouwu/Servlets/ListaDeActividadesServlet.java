@@ -159,15 +159,15 @@ public class ListaDeActividadesServlet extends HttpServlet {
                         }catch (SQLException e) {
                             throw new RuntimeException(e);
                         }
-                        inputMin.close();
-                        inputCab.close();
 
-                        response.sendRedirect("ListaDeActividadesServlet");
+                        //response.sendRedirect("ListaDeActividadesServlet");
                     }catch (NumberFormatException e){
                         request.getSession().setAttribute("puntajeNoNumerico","1");
                         response.sendRedirect("ListaDeActividadesServlet");
                     }
                 }
+                inputMin.close();
+                inputCab.close();
                 break;
             case "editarActividad":
                 Integer idDelegadoActividadAnterior=Integer.parseInt(request.getParameter("idDelegadoActividadAnterior"));

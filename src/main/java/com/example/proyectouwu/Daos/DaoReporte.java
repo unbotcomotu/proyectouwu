@@ -52,4 +52,17 @@ public class DaoReporte extends DaoPadre {
         }
     }
 
+    public Integer cantidadTotalReportados(){
+        String sql = "select count(idReporte) from reporte";
+        try(Connection conn=this.getConnection(); ResultSet rs=conn.createStatement().executeQuery(sql)) {
+            if(rs.next()){
+                return rs.getInt(1);
+            }else{
+                return 0;
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
 }

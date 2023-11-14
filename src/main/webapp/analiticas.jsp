@@ -7,6 +7,7 @@
 <%@ page import="com.example.proyectouwu.Daos.*" %>
 <%@ page import="com.example.proyectouwu.DTOs.TopDonador" %>
 <%@ page import="com.example.proyectouwu.DTOs.TopApoyo" %>
+<%@ page import="java.sql.Blob" %>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <!DOCTYPE html>
 <html lang="en">
@@ -33,6 +34,7 @@
             colorRol="orange";
         }
         Integer cantidadTotalBaneados=(Integer)request.getAttribute("cantidadTotalBaneados");
+        Integer cantidadTotalReportados=(Integer)request.getAttribute("cantidadTotalReportados");
         float[]donacionesUltimaSemanaEgresados=(float[])request.getAttribute("donacionesUltimaSemanaEgresados");
         float[]donacionesUltimaSemanaEstudiantes=(float[]) request.getAttribute("donacionesUltimaSemanaEstudiantes");
         String[] fechas={"Lunes 25-09","Martes 26-09","Miércoles 27-09","Jueves 28-09","Viernes 29-09","Sábado 30-09","Domingo 01-10","Lunes 02-10","Martes 03-10","Miércoles 04-10","Jueves 05-10","Viernes 06-10","Sábado 07-10","Domingo 08-10","Lunes 09-10","Martes 10-10","Miércoles 11-10","Jueves 12-10","Viernes 13-10","Sábado 14-10","Domingo 15-10","Lunes 16-10","Martes 17-10","Miércoles 18-10","Jueves 19-10","Viernes 29-10","Sábado 21-10","Domingo 22-10","Lunes 23-10","Martes 24-10","Miércoles 25-10","Jueves 26-10","Viernes 27-10","Sábado 28-10","Domingo 29-10","Lunes 30-10","Martes 31-10","Miércoles 01-11","Jueves 02-11","Viernes 03-11","Sábado 04-11","Domingo 05-11","Lunes 06-11","Martes 07-11","Miércoles 08-11","Jueves 09-11","Viernes 10-11","Sábado 11-11","Domingo 12-11","Lunes 13-11","Martes 14-11","Miércoles 15-11","Jueves 16-11","Viernes 17-11","Sábado 18-11","Domingo 19-11","Lunes 20-11","Martes 21-11","Miércoles 22-11","Jueves 23-11","Viernes 24-11","Sábado 25-11","Domingo 26-11","Lunes 27-11","Martes 28-11","Miércoles 29-11","Jueves 30-11","Viernes 01-12","Sábado 02-12"};
@@ -2078,8 +2080,9 @@
 
                         <!-- USER AVATAR CONTENT -->
                         <div class="user-avatar-content">
+                            <%request.getSession().setAttribute("foto1",topDonadorUltimaSemana.getUsuario().getFotoPerfil());%>
                             <!-- HEXAGON -->
-                            <div class="hexagon-image-30-32" data-src="css/stuardo.jpg"></div>
+                            <div class="hexagon-image-30-32" data-src="Imagen?id=1"></div>
                             <!-- /HEXAGON -->
                         </div>
                         <!-- /USER AVATAR CONTENT -->
@@ -2150,8 +2153,9 @@
 
                         <!-- USER AVATAR CONTENT -->
                         <div class="user-avatar-content">
+                            <%request.getSession().setAttribute("foto2",topDonadorTotal.getUsuario().getFotoPerfil());%>
                             <!-- HEXAGON -->
-                            <div class="hexagon-image-30-32" data-src="css/mariana.png"></div>
+                            <div class="hexagon-image-30-32" data-src="Imagen?id=2"></div>
                             <!-- /HEXAGON -->
                         </div>
                         <!-- /USER AVATAR CONTENT -->
@@ -2219,7 +2223,8 @@
                         <!-- USER AVATAR CONTENT -->
                         <div class="user-avatar-content">
                             <!-- HEXAGON AQUÍ SE PONE LA FOTO DEL TOP APOYO ÚLTIMA SEMANA-->
-                            <div class="hexagon-image-30-32" data-src="css/julio.png"></div>
+                            <%request.getSession().setAttribute("foto3",topApoyoUltimaSemana.getUsuario().getFotoPerfil());%>
+                            <div class="hexagon-image-30-32" data-src="Imagen?id=3"></div>
                             <!-- /HEXAGON -->
                         </div>
                         <!-- /USER AVATAR CONTENT -->
@@ -2288,7 +2293,8 @@
                         <!-- USER AVATAR CONTENT -->
                         <div class="user-avatar-content">
                             <!-- HEXAGON AQUÍ SE PONE LA FOTO DEL TOP APOYO TOTAL-->
-                            <div class="hexagon-image-30-32" data-src="css/gineil.png"></div>
+                            <%request.getSession().setAttribute("foto4",topApoyoTotal.getUsuario().getFotoPerfil());%>
+                            <div class="hexagon-image-30-32" data-src="Imagen?id=4"></div>
                             <!-- /HEXAGON -->
                         </div>
                         <!-- /USER AVATAR CONTENT -->
@@ -3199,7 +3205,7 @@
 <script>
     //Mis constantes
     let usuariosBaneados=<%=cantidadTotalBaneados%>;
-    let usuariosReportados=100;
+    let usuariosReportados=<%=cantidadTotalReportados%>;
     let totalEstudiantesRegistrados=<%=totalEstudiantesRegistrados%>;
     let totalEgresadosRegistrados=<%=totalEgresadosRegistrados%>;
     const listaDonacionesEgresados=[450,500,450,600];

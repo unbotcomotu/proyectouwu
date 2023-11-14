@@ -20,8 +20,6 @@ public class RecuperarContrasenaSegundoCasoServlet extends HttpServlet {
 //                request.getRequestDispatcher("inicioSesion.jsp").forward(request,response);
                 Integer idCorreoValidacion = Integer.parseInt(request.getParameter("idCorreoValidacion"));
                 Integer codigoValidacion = Integer.parseInt(request.getParameter("codigoValidacion"));
-                System.out.println(idCorreoValidacion);
-                System.out.println(new DaoValidacion().getIdPorcodigoValidacion(codigoValidacion));
                 //Nos aseguramos de que exista dicha persona y que su idCorreoValidacion le corresponda a su codigo de validacion
                 if(idCorreoValidacion == new DaoValidacion().getIdPorcodigoValidacion(codigoValidacion) ){
                     request.setAttribute("idCorreoValidacion",idCorreoValidacion);

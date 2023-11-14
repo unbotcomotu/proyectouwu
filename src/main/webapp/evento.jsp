@@ -1215,12 +1215,6 @@
                                     <p class="user-status-title"><a class="bold"><%=d.getUsuario().getNombre()%> <%=d.getUsuario().getApellido()%></a> realizó una <a class="highlighted">donación</a> de <a style="color: orange;">S/. <%=d.getMonto()%></a>.</p>
                                     <!-- /USER STATUS TITLE -->
                                     <%Integer diferenciaFechas[]=new DaoNotificacionDelegadoGeneral().obtenerDiferenciaEntre2FechasNotificaciones(noti.getIdNotificacion());
-                                        System.out.println(diferenciaFechas[0]);
-                                        System.out.println(diferenciaFechas[1]);
-                                        System.out.println(diferenciaFechas[2]);
-                                        System.out.println(diferenciaFechas[3]);
-                                        System.out.println(diferenciaFechas[4]);
-                                        System.out.println(diferenciaFechas[5]);
                                         if(diferenciaFechas[0]>0){
                                             if(diferenciaFechas[0]==1){%>
                                     <!-- USER STATUS TIMESTAMP -->

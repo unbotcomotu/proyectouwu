@@ -35,6 +35,7 @@ public class AnaliticasServlet extends HttpServlet {
             request.setAttribute("donacionesUltimaSemanaEgresados",dDonacion.donacionesEgresadosUltimaSemana());
             request.setAttribute("donacionesUltimaSemanaEstudiantes",dDonacion.donacionesEstudiantesUltimaSemana());
             request.setAttribute("cantidadTotalBaneados",dBan.cantidadTotalBaneados());
+            request.setAttribute("cantidadTotalReportados",dReporte.cantidadTotalReportados());
             request.setAttribute("donacionesHoy",dDonacion.donacionesHaceNdias(0));
             request.setAttribute("donacionesAyer",dDonacion.donacionesHaceNdias(1));
             request.setAttribute("reportesHoy",dReporte.cantidadReportadosHaceNdias(0));

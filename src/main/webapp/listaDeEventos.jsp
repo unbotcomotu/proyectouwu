@@ -289,30 +289,6 @@
             <!-- /HEXAGON -->
         </div>
         <!-- /USER AVATAR PROGRESS BORDER -->
-
-        <!-- USER AVATAR BADGE -->
-        <div class="user-avatar-badge">
-            <!-- USER AVATAR BADGE BORDER -->
-            <div class="user-avatar-badge-border">
-                <!-- HEXAGON -->
-                <div class="hexagon-22-24"></div>
-                <!-- /HEXAGON -->
-            </div>
-            <!-- /USER AVATAR BADGE BORDER -->
-
-            <!-- USER AVATAR BADGE CONTENT -->
-            <div class="user-avatar-badge-content">
-                <!-- HEXAGON -->
-                <div class="hexagon-dark-16-18"></div>
-                <!-- /HEXAGON -->
-            </div>
-            <!-- /USER AVATAR BADGE CONTENT -->
-
-            <!-- USER AVATAR BADGE TEXT -->
-            <p class="user-avatar-badge-text">24</p>
-            <!-- /USER AVATAR BADGE TEXT -->
-        </div>
-        <!-- /USER AVATAR BADGE -->
     </a>
     <!-- /USER AVATAR -->
 
@@ -594,17 +570,14 @@
             <!-- /NAVIGATION WIDGET INFO TEXT -->
         </div>
         <!-- /NAVIGATION WIDGET INFO -->
-
-        <!-- NAVIGATION WIDGET BUTTON -->
-        <a href="IndexServlet"><p class="navigation-widget-info-button button small secondary">Cerrar sesión</p></a>
-        <!-- /NAVIGATION WIDGET BUTTON -->
+        <form method="post" action="InicioSesionServlet?action=logOut">
+            <button style="border:0;background: none;color: inherit" type="submit"><a><p class="navigation-widget-info-button button small secondary">Cerrar sesión</p></a></button>
+        </form>
     </div>
     <!-- /NAVIGATION WIDGET INFO WRAP -->
 
     <!-- MENU -->
     <ul class="menu">
-
-
 
         <!-- NAVIGATION WIDGET SECTION TITLE -->
         <p class="navigation-widget-section-title">Perfil</p>

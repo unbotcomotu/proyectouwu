@@ -8,6 +8,8 @@ import jakarta.servlet.*;
 import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
 
+import java.sql.SQLException;
+import java.io.InputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
 
@@ -87,6 +89,17 @@ public class ListaDeActividadesServlet extends HttpServlet {
         DaoActividad dActividad = new DaoActividad();
         DaoNotificacionDelegadoGeneral dN = new DaoNotificacionDelegadoGeneral();
         String action = request.getParameter("action") == null ? "default" : request.getParameter("action");
+
+        // Parámetros auxiliares para imagenes cabecera y miniatura
+        Part partMin = null;
+        Part partCab = null;
+        InputStream inputMin = null;
+        InputStream inputCab = null;
+        boolean validarLongitudMin;
+        boolean validarLongitudCab;
+        String rutaImagenPredeterminada = "/css/fibraVShormigon.png";
+
+
         switch (action){
             case "finalizarActividad":
                 Integer idActividadFinalizar=Integer.parseInt(request.getParameter("idActividadFinalizar"));
@@ -109,9 +122,46 @@ public class ListaDeActividadesServlet extends HttpServlet {
                         }else{
                             ocultoCrearActividad=false;
                         }
-                        String fotoCabecera="ola";
-                        String fotoMiniatura="ola";
-                        dActividad.crearActividad(nombreCrearActividad,idDelegadoActividadCrear,puntajeCrearActividad,ocultoCrearActividad,fotoCabecera,fotoMiniatura);
+                        //fotoCabecera=inputCab;
+                        partCab = request.getPart("addfotoCabecera");
+
+                        // Obtenemos el flujo de bytes
+                        if(partCab != null){
+                            inputCab = partCab.getInputStream();
+                        }else{
+                            inputCab = getServletContext().getResourceAsStream(rutaImagenPredeterminada);
+                        }
+
+                        validarLongitudCab = inputCab.available()>10;
+
+                        if(!validarLongitudCab){
+                            inputCab = getServletContext().getResourceAsStream(rutaImagenPredeterminada);
+                        }
+
+                        // fotoMiniatura==inputMin;
+                        partMin = request.getPart("addfotoMiniatura");
+
+                        // Obtenemos el flujo de bytes
+                        if(partMin != null){
+                            inputMin = partMin.getInputStream();
+                        }else{
+                            inputMin = getServletContext().getResourceAsStream(rutaImagenPredeterminada);
+                        }
+
+                        validarLongitudMin = inputMin.available()>10;
+
+                        if(!validarLongitudMin){
+                            inputMin = getServletContext().getResourceAsStream(rutaImagenPredeterminada);
+                        }
+
+                        try{
+                            dActividad.crearActividad(nombreCrearActividad,idDelegadoActividadCrear,puntajeCrearActividad,ocultoCrearActividad,inputCab,inputMin);
+                        }catch (SQLException e) {
+                            throw new RuntimeException(e);
+                        }
+                        inputMin.close();
+                        inputCab.close();
+
                         response.sendRedirect("ListaDeActividadesServlet");
                     }catch (NumberFormatException e){
                         request.getSession().setAttribute("puntajeNoNumerico","1");

@@ -1983,15 +1983,19 @@
                 </div>
                 <div class="col-sm-5 contenedor2" style="top: 30px">
                     <div class="container-fluid btn btn-file1">
-                        <img class="img-fluid" src="css/subirArchivo.jpg" width="80%" style="opacity: 50%;" alt="">
-                        <p><b>Agregar foto de cabecera</b></p>
-                        <input type="file" style="background-color: white; margin-top: 25px;" accept="image/png, .jpeg, .jpg"></input>
+                        <div id="contenedorImagenCabeceraCrear">
+                            <img id="imagenActualCabeceraCrear" class="img-fluid" src="css/subirArchivo.jpg" style="opacity: 50%;" alt="">
+                        </div>
+                        <p style="margin-top: 10px"><b>Agregar foto de cabecera</b></p>
+                        <input type="file" id="inputCabeceraCrear" name="addfotoCabecera" style="background-color: white; margin-top: 25px;" accept="image/png, .jpeg, .jpg" onchange="mostrarImagen('imagenActualCabeceraCrear','contenedorImagenCabeceraCrear','inputCabeceraCrear')"></input>
                     </div>
                     <br>
                     <div class="container-fluid btn btn-file1">
-                        <img class="img-fluid" src="css/subirArchivo.jpg" width="80%" style="opacity: 50%;" alt="">
-                        <p><b>Agregar foto de miniatura</b></p>
-                        <input type="file" style="background-color: white; margin-top: 25px;" accept="image/png, .jpeg, .jpg"></input>
+                        <div id="contenedorImagenCrear">
+                            <img id="imagenActualCrear" class="img-fluid" src="css/subirArchivo.jpg" style="opacity: 50%;" alt="">
+                        </div>
+                        <p style="margin-top: 10px"><b>Agregar foto miniatura</b></p>
+                        <input type="file" id="inputCrear" name="addfotoMiniatura" style="background-color: white; margin-top: 25px;" accept="image/png, .jpeg, .jpg" onchange="mostrarImagen('imagenActualCrear','contenedorImagenCrear','inputCrear')"></input>
                     </div>
                 </div>
             </div>
@@ -2081,6 +2085,40 @@
     </form>
 </div>
 <%}}}%>
+<script>
+    function mostrarImagen(idImagen, idImagenContainer, idInputArchivo) {
+        var imagenContainer = document.getElementById(idImagenContainer);
+        var imagen = document.getElementById(idImagen);
+        var inputArchivo = document.getElementById(idInputArchivo);
+
+        if (inputArchivo.files && inputArchivo.files[0]) {
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                // Cambiar la imagen por la q recien se subió mediante el input
+                imagen.src = e.target.result;
+            };
+            reader.readAsDataURL(inputArchivo.files[0]);
+            imagenContainer.style.display = 'block';
+        } else {
+            imagenContainer.style.display = 'none';
+        }
+    }
+</script>
+
+<!-- Función para mostrar la imagen antes de enviarla -->
+<script type="text/javascript">
+    function previewImage(event,idS) {
+        var input = event.target;
+        var image = document.getElementById(idS);
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+            reader.onload = function(e) {
+                image.src = e.target.result;
+            }
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+</script>
 <script>
     //document.getElementById('cerrarPopupFinalizar1').addEventListener('click',document.getElementById(String(textElement.value)).style.opacity = '50%');
     function popupFunc(popupId,abrirId,cerrarClass,overlayId){

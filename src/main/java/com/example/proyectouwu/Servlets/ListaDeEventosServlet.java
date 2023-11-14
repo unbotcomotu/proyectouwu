@@ -180,7 +180,7 @@ public class ListaDeEventosServlet extends HttpServlet {
                     addLugarId = dLugarEvento.crearLugar(addLugar); // Id del nuevo lugar
                 }
                 // Foto Miniatura
-                part = request.getPart("updateFotoMiniatura");
+                part = request.getPart("addfotoMiniatura");
 
                 // Obtenemos el flujo de bytes
                 if(part != null){

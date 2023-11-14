@@ -2,6 +2,8 @@ package com.example.proyectouwu.Daos;
 
 import com.example.proyectouwu.Beans.Actividad;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.sql.*;
 import java.util.ArrayList;
 
@@ -301,13 +303,13 @@ public class DaoActividad extends DaoPadre {
         }
     }
 
-    public void crearActividad(String nombre,int idDelegadoDeActividad,int puntaje,boolean oculto,String fotoCabecera,String fotoMiniatura){
+    public void crearActividad(String nombre, int idDelegadoDeActividad, int puntaje, boolean oculto, InputStream fotoCabecera, InputStream fotoMiniatura)throws SQLException, IOException {
         String sql="insert into actividad (idDelegadoDeActividad,nombre,fotoMiniatura,fotoCabecera,cantidadPuntosPrimerLugar,actividadFinalizada,actividadOculta) values(?,?,?,?,?,false,?)";
         try(Connection conn=this.getConnection(); PreparedStatement pstmt= conn.prepareStatement(sql)){
             pstmt.setInt(1,idDelegadoDeActividad);
             pstmt.setString(2,nombre);
-            pstmt.setString(3,fotoMiniatura);
-            pstmt.setString(4,fotoCabecera);
+            pstmt.setBinaryStream(3, fotoMiniatura,(int)fotoMiniatura.available());
+            pstmt.setBinaryStream(4, fotoCabecera,(int)fotoCabecera.available());
             pstmt.setInt(5,puntaje);
             pstmt.setBoolean(6,oculto);
             pstmt.executeUpdate();

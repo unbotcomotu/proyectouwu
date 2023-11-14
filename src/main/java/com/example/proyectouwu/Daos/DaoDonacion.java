@@ -135,17 +135,17 @@ public class DaoDonacion extends DaoPadre  {
         return donacion;
     }
     public float[] donacionesEgresadosUltimaSemana(){
-        String sql="select sum(d.monto) from donacion d inner join usuario u where u.condicion='Egresado' and datediff(now(),d.fechaHora)=?";
+        String sql="select round(sum(d.monto),2) from donacion d inner join usuario u on u.idUsuario=d.idUsuario where u.condicion='Egresado' and datediff(now(),d.fechaHora)=? and d.estadoDonacion='Validado'";
         float[] listaDonaciones=new float[7];
-        for (int i=0;i<7;i++){
+        for (int i=1;i<8;i++){
             int aux=7-i;
             try(Connection conn=this.getConnection(); PreparedStatement pstmt=conn.prepareStatement(sql)){
                 pstmt.setInt(1,aux);
                 try(ResultSet rs = pstmt.executeQuery()) {
                     if (rs.next()){
-                        listaDonaciones[i]=rs.getFloat(1);
+                        listaDonaciones[i-1]=rs.getFloat(1);
                     }else{
-                        listaDonaciones[i]=0;
+                        listaDonaciones[i-1]=0;
                     }
                 }
             } catch (SQLException e) {
@@ -154,17 +154,17 @@ public class DaoDonacion extends DaoPadre  {
         } return listaDonaciones;
     }
     public float[] donacionesEstudiantesUltimaSemana(){
-        String sql="select sum(d.monto) from donacion d inner join usuario u where u.condicion='Estudiante' and datediff(now(),d.fechaHora)=?";
+        String sql="select round(sum(d.monto),2) from donacion d inner join usuario u on d.idUsuario = u.idUsuario where u.condicion='Estudiante' and datediff(now(),d.fechaHora)=? and d.estadoDonacion='Validado'";
         float[] listaDonaciones=new float[7];
-        for (int i=0;i<7;i++){
+        for (int i=1;i<8;i++){
             int aux=7-i;
             try(Connection conn=this.getConnection(); PreparedStatement pstmt=conn.prepareStatement(sql)){
                 pstmt.setInt(1,aux);
                 try(ResultSet rs = pstmt.executeQuery()) {
                     if (rs.next()){
-                        listaDonaciones[i]=rs.getFloat(1);
+                        listaDonaciones[i-1]=rs.getFloat(1);
                     }else{
-                        listaDonaciones[i]=0;
+                        listaDonaciones[i-1]=0;
                     }
                 }
             } catch (SQLException e) {
@@ -174,7 +174,7 @@ public class DaoDonacion extends DaoPadre  {
     }
 
     public float donacionesHaceNdias(int n){
-        String sql="select sum(monto) from donacion where datediff(now(),fechaHora)=? and estadoDonacion='Validado'";
+        String sql="select round(sum(monto),2) from donacion where datediff(now(),fechaHora)=? and estadoDonacion='Validado'";
         try(Connection conn=this.getConnection(); PreparedStatement pstmt=conn.prepareStatement(sql)) {
             pstmt.setInt(1,n);
             try(ResultSet rs=pstmt.executeQuery()) {
@@ -205,7 +205,7 @@ public class DaoDonacion extends DaoPadre  {
 
 
     public float donacionesTotalesEgresados(){
-        String sql="select sum(d.monto) from donacion d inner join usuario u on d.idUsuario=u.idUsuario where u.condicion='Egresado' and d.estadoDonacion='Validado'";
+        String sql="select round(sum(d.monto),2) from donacion d inner join usuario u on d.idUsuario=u.idUsuario where u.condicion='Egresado' and d.estadoDonacion='Validado'";
         try(Connection conn=this.getConnection(); ResultSet rs=conn.createStatement().executeQuery(sql)){
             if(rs.next()){
                 return rs.getFloat(1);
@@ -217,7 +217,7 @@ public class DaoDonacion extends DaoPadre  {
         }
     }
     public float donacionesTotalesEstudiantes(){
-        String sql="select sum(d.monto) from donacion d inner join usuario u on d.idUsuario=u.idUsuario where u.condicion='Estudiante' and d.estadoDonacion='Validado'";
+        String sql="select round(sum(d.monto),2) from donacion d inner join usuario u on d.idUsuario=u.idUsuario where u.condicion='Estudiante' and d.estadoDonacion='Validado'";
         try(Connection conn=this.getConnection(); ResultSet rs=conn.createStatement().executeQuery(sql)){
             if(rs.next()){
                 return rs.getFloat(1);

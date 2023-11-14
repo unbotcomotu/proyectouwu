@@ -25,12 +25,13 @@ public class ImagenActividadServlet extends HttpServlet {
 
         try {
             Blob fotoBytesMiniatura = dActividad.obtenerFotoMiniaturaXIdActividad(Integer.parseInt(idActividad));
-            Blob fotoBytesCabecera = dActividad.obtenerFotoCabeceraXIdActividad(Integer.parseInt(Actividad));
+            Blob fotoBytesCabecera = dActividad.obtenerFotoCabeceraXIdActividad(Integer.parseInt(idActividad));
 
             int longitudMiniatura = (int) fotoBytesMiniatura.length();
             int longitudCabecera = (int) fotoBytesCabecera.length();
 
             byte[] fotoMiniatura = null;
+            byte[] fotoCabecera = null;
 
             if(longitudMiniatura<=100){
                 InputStream inputMini = getServletContext().getResourceAsStream(rutaImagenPredeterminada);
@@ -43,6 +44,18 @@ public class ImagenActividadServlet extends HttpServlet {
 
             ServletOutputStream outputMini = response.getOutputStream();
             outputMini.write(fotoMiniatura);
+
+            if(longitudCabecera<=100){
+                InputStream inputCabecera= getServletContext().getResourceAsStream(rutaImagenPredeterminada);
+                fotoCabecera = new byte[inputCabecera.available()];
+                inputCabecera.read(fotoCabecera);
+                inputCabecera.close();
+            }else{
+                fotoCabecera = fotoBytesCabecera.getBytes(1,(int) fotoBytesCabecera.length());
+            }
+
+            ServletOutputStream outputCabecera = response.getOutputStream();
+            outputCabecera.write(fotoCabecera);
 
         } catch (SQLException e) {
             ServletOutputStream output = response.getOutputStream();

@@ -399,5 +399,21 @@ public class DaoActividad extends DaoPadre {
             throw new RuntimeException(e);
         }
     }
+   //Separa metodos para poder facilitar mostrar las notificaciones de validar foto en delegado general
+    public Blob obtenerFotoCabeceraXIdActividad(int idActividad){
+        String sql="select fotoCabecera from actividad where idActividad=?";
+
+        try(Connection conn=this.getConnection(); PreparedStatement pstmt= conn.prepareStatement(sql)){
+            pstmt.setInt(1,idActividad);
+            try(ResultSet rs=pstmt.executeQuery()){
+                if(rs.next()){
+                    return rs.getBlob(1);
+                }else
+                    return null;
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }
 

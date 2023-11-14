@@ -63,6 +63,35 @@ public class DaoNotificacionDelegadoGeneral extends DaoPadre {
         return listaSolicitudes;
     }
 
+
+
+    public ArrayList<Usuario> listarSolicitudesRegistroPorPage(int pagina){
+        ArrayList<Usuario> listaSolicitudesPage = new ArrayList<>();
+        String sql = "select nombre, apellido, correo ,codigoPUCP, condicion,  from usuario where estadoRegistro='Pendiente'  limit 8 offset ?";
+        try(Connection conn=this.getConnection();
+            PreparedStatement pstmt = conn.prepareStatement(sql)){
+            pstmt.setInt(1,pagina*8);
+            try(ResultSet rs = pstmt.executeQuery()) {
+                while (rs.next()) {
+                    Usuario usuario = new Usuario();
+
+                    usuario.setNombre(rs.getString(1));
+                    usuario.setApellido(rs.getString(2));
+                    usuario.setCorreo(rs.getString(3));
+                    usuario.setCodigoPUCP(rs.getString(4));
+                    usuario.setCondicion(rs.getString(5));
+
+                    listaSolicitudesPage.add(usuario);
+                }
+                return listaSolicitudesPage;
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+
+
     public ArrayList<Reporte> listarNotificacionesReporte( ){
 
         ArrayList<Reporte> reportList= new ArrayList<>();

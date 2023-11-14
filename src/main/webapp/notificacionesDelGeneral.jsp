@@ -1815,9 +1815,6 @@
                                 </div>
 
                             </div>
-
-
-                            <!-- /USER STATS -->
                         </div>
 
                     </div>
@@ -1863,6 +1860,8 @@
             <!-- SECTION PAGER -->
             <div class="section-pager">
                 <!-- SECTION PAGER ITEM -->
+
+
                 <div class="section-pager-item active">
                     <!-- SECTION PAGER ITEM TEXT -->
                     <p class="section-pager-item-text">01</p>

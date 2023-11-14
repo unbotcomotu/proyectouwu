@@ -1,6 +1,7 @@
+<%@ page import="com.example.proyectouwu.Beans.Usuario" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <jsp:useBean id="donacion" type="com.example.proyectouwu.Beans.Donacion" scope="request" />
-<%int idUsuario=(int) request.getAttribute("idUsuario");
+<%Usuario usuario= (Usuario) request.getSession().getAttribute("usuario");
 String alerta=(String) request.getAttribute("alerta");%>
 <!DOCTYPE html>
 <html>
@@ -17,7 +18,7 @@ String alerta=(String) request.getAttribute("alerta");%>
 <div class='container'>
     <h1 class='mb-3'>Editar</h1>
     <form method="post" action="<%=request.getContextPath()%>/NotificacionesServlet?action=edit">
-        <input type="hidden" name="idUsuario" value="<%=idUsuario%>">
+        <input type="hidden" name="idUsuario" value="<%=usuario.getIdUsuario()%>">
         <div class="mb-3">
             <input type="hidden" class="form-control" name="idDonacion" value="<%=donacion.getIdDonacion()%>">
         </div>
@@ -33,7 +34,7 @@ String alerta=(String) request.getAttribute("alerta");%>
                 <option value="Pendiente" <%if(donacion.getEstadoDonacion().equals("Pendiente")){%>selected<%}%>>Pendiente</option>
             </select>
         </div>
-        <a href="<%=request.getContextPath()%>/NotificacionesServlet?idUsuario=<%=idUsuario%>" class="btn btn-danger">Regresar</a>
+        <a href="<%=request.getContextPath()%>/NotificacionesServlet?idUsuario=<%=usuario.getIdUsuario()%>" class="btn btn-danger">Regresar</a>
         <button type="submit" class="btn btn-primary">Confirmar</button>
     </form>
 </div>

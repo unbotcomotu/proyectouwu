@@ -202,7 +202,6 @@ public class DaoEvento extends DaoPadre {
             pstmt.setBoolean(9,eventoOculto);
             pstmt.executeUpdate();
         }catch (SQLException ee){
-            System.out.println("oli");
             throw new RuntimeException(ee);
         }
     }

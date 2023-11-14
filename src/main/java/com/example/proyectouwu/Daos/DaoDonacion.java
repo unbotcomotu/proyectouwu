@@ -64,12 +64,12 @@ public class DaoDonacion extends DaoPadre  {
         }
     }
     //Este método permite agregar el monto y foto que ha donado una persona
-    public void agregarDonacionUsuario(int idUser,String medioPago, int monto, String captura){
+    public void agregarDonacionUsuario(int idUser,String medioPago, float monto, String captura){
         String sql = " insert into donacion(idUsuario, medioPago, monto,fechaHora,captura,estadoDonacion) values (?, ?, ?,now(), ?,?)";
         try(Connection conn=this.getConnection(); PreparedStatement pstmt=conn.prepareStatement(sql,Statement.RETURN_GENERATED_KEYS)){
             pstmt.setInt(1, idUser);
             pstmt.setString(2,medioPago);
-            pstmt.setInt(3,monto);
+            pstmt.setFloat(3,monto);
             pstmt.setString(4,captura);
             pstmt.setString(5,"Pendiente");
             pstmt.executeUpdate();
@@ -123,7 +123,7 @@ public class DaoDonacion extends DaoPadre  {
                     donacion.setIdDonacion(rs.getInt(1));
                     donacion.getUsuario().setIdUsuario(rs.getInt(2));
                     donacion.setMedioPago(rs.getString(3));
-                    donacion.setMonto(rs.getInt(4));
+                    donacion.setMonto(rs.getFloat(4));
                     donacion.setEstadoDonacion(rs.getString(7));
                 }
             }
@@ -173,7 +173,7 @@ public class DaoDonacion extends DaoPadre  {
     }
 
     public float donacionesHaceNdias(int n){
-        String sql="select sum(monto) from donacion where datediff(now(),fechaHora)=?";
+        String sql="select sum(monto) from donacion where datediff(now(),fechaHora)=? and estadoDonacion='Validado'";
         try(Connection conn=this.getConnection(); PreparedStatement pstmt=conn.prepareStatement(sql)) {
             pstmt.setInt(1,n);
             try(ResultSet rs=pstmt.executeQuery()) {
@@ -204,7 +204,7 @@ public class DaoDonacion extends DaoPadre  {
 
 
     public float donacionesTotalesEgresados(){
-        String sql="select sum(d.monto) from donacion d inner join usuario u on d.idUsuario=u.idUsuario where u.condicion='Egresado'";
+        String sql="select sum(d.monto) from donacion d inner join usuario u on d.idUsuario=u.idUsuario where u.condicion='Egresado' and d.estadoDonacion='Validado'";
         try(Connection conn=this.getConnection(); ResultSet rs=conn.createStatement().executeQuery(sql)){
             if(rs.next()){
                 return rs.getFloat(1);
@@ -216,7 +216,7 @@ public class DaoDonacion extends DaoPadre  {
         }
     }
     public float donacionesTotalesEstudiantes(){
-        String sql="select sum(d.monto) from donacion d inner join usuario u on d.idUsuario=u.idUsuario where u.condicion='Estudiante'";
+        String sql="select sum(d.monto) from donacion d inner join usuario u on d.idUsuario=u.idUsuario where u.condicion='Estudiante' and d.estadoDonacion='Validado'";
         try(Connection conn=this.getConnection(); ResultSet rs=conn.createStatement().executeQuery(sql)){
             if(rs.next()){
                 return rs.getFloat(1);

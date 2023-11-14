@@ -231,7 +231,7 @@ public class DaoNotificacionDelegadoGeneral extends DaoPadre {
 
         
 
-        String sql = "select correo,tipo,codigoValidacion,fechaHora,idCorreoValidacion from validacion where linkEnviado = 0 order by idCorreoValidacion desc";
+        String sql = "select correo,tipo,codigoValidacion,fechaHora,idCorreoValidacion,linkEnviado from validacion order by if(linkEnviado is false,0,1),idCorreoValidacion desc";
         try (Connection conn=this.getConnection(); ResultSet rs=conn.createStatement().executeQuery(sql)) {
 
             while (rs.next()) {
@@ -242,6 +242,7 @@ public class DaoNotificacionDelegadoGeneral extends DaoPadre {
                 validacion.setCodigoValidacion(rs.getInt(3));
                 validacion.setFechaHora(rs.getDate(4));
                 validacion.setIdCorreoValidacion(rs.getInt(5));
+                validacion.setLinkEnviado(rs.getBoolean(6));
                 validacionList.add(validacion);
             }
 

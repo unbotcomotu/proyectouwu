@@ -2,7 +2,7 @@
 let usuariosBaneados=25;
 let usuariosReportados=100;
 let totalAlumnosRegistrados=1000;
-let totalEgresadosRegistrados=150;
+let totalEgresadosRegistrados=1500;
 const listaDonacionesEgresados=[450,500,450,600];
 const listaDonacionesAlumnos=[650,350,950,450];
 const donacionesUltimaSemanaEgresados=[0,0,0,450,500,450,600];

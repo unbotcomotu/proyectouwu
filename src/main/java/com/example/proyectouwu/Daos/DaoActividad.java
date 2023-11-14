@@ -352,5 +352,20 @@ public class DaoActividad extends DaoPadre {
             throw new RuntimeException(e);
         }
     }
+
+    public Integer eventosNoFinalizadosActividad(int idActividad){
+        String sql="select count(e.idEvento) from Evento e inner join Actividad a on e.idActividad=a.idActividad where e.eventoFinalizado=false and a.idActividad=?";
+        try(Connection conn=this.getConnection(); PreparedStatement pstmt= conn.prepareStatement(sql)){
+            pstmt.setInt(1,idActividad);
+            try(ResultSet rs=pstmt.executeQuery()){
+                if(rs.next()){
+                    return rs.getInt(1);
+                }else
+                    return 0;
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }
 

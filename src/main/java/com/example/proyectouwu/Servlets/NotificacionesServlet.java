@@ -4,6 +4,7 @@ import com.example.proyectouwu.Beans.*;
 import com.example.proyectouwu.Daos.DaoDonacion;
 import com.example.proyectouwu.Daos.DaoNotificacionDelegadoGeneral;
 import com.example.proyectouwu.Daos.DaoUsuario;
+import com.example.proyectouwu.Daos.DaoValidacion;
 import jakarta.servlet.*;
 import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
@@ -198,7 +199,8 @@ public class NotificacionesServlet extends HttpServlet {
 
                 break;
             case "enviar":
-                //cómo hago para que envíe link?
+                new DaoValidacion().linkEnviado(Integer.parseInt(request.getParameter("idCorreoValidacion")));
+                response.sendRedirect("NotificacionesServlet?vistaActualNueva=Recuperacion");
                 break;
             case "aceptarRegistro":
                 String idUsuarioARegistrar = request.getParameter("idUsuarioARegistrar");

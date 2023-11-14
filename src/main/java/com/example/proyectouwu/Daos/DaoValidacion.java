@@ -159,4 +159,14 @@ public class DaoValidacion extends DaoPadre {
             throw new RuntimeException(e);
         }
     }
+
+    public void linkEnviado(int idCorreoValidacion){
+        String sql = "update validacion set linkEnviado=true where idCorreoValidacion = ?";
+        try (Connection conn=this.getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setInt(1,idCorreoValidacion);
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }

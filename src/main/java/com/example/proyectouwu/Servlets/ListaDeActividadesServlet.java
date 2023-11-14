@@ -39,7 +39,7 @@ public class ListaDeActividadesServlet extends HttpServlet {
                         request.setAttribute("listaNotificacionesCampanita",new DaoNotificacionDelegadoGeneral().listarNotificacionesDelegadoGeneral());
                         request.getRequestDispatcher("listaDeActividades.jsp").forward(request,response);
                     }else if(usuario.getRol().equals("Delegado de Actividad")){
-                        int idActividadDelegatura=new DaoActividad().idDelegaturaPorIdDelegadoDeActividad(usuario.getIdUsuario());
+                        Integer idActividadDelegatura=new DaoActividad().idDelegaturaPorIdDelegadoDeActividad(usuario.getIdUsuario());
                         request.setAttribute("idActividadDelegatura",idActividadDelegatura);
                         request.getRequestDispatcher("listaDeActividades.jsp").forward(request,response);
                     }
@@ -54,7 +54,7 @@ public class ListaDeActividadesServlet extends HttpServlet {
                         request.setAttribute("listaNotificacionesCampanita",new DaoNotificacionDelegadoGeneral().listarNotificacionesDelegadoGeneral());
                         request.getRequestDispatcher("listaDeActividades.jsp").forward(request,response);
                     }else if(usuario.getRol().equals("Delegado de Actividad")){
-                        int idActividadDelegatura=new DaoActividad().idDelegaturaPorIdDelegadoDeActividad(usuario.getIdUsuario());
+                        Integer idActividadDelegatura=new DaoActividad().idDelegaturaPorIdDelegadoDeActividad(usuario.getIdUsuario());
                         request.setAttribute("idActividadDelegatura",idActividadDelegatura);
                         request.getRequestDispatcher("listaDeActividades.jsp").forward(request,response);
                     }
@@ -71,7 +71,7 @@ public class ListaDeActividadesServlet extends HttpServlet {
                         request.setAttribute("listaNotificacionesCampanita",new DaoNotificacionDelegadoGeneral().listarNotificacionesDelegadoGeneral());
                         request.getRequestDispatcher("listaDeActividades.jsp").forward(request,response);
                     }else if(usuario.getRol().equals("Delegado de Actividad")){
-                        int idActividadDelegatura=new DaoActividad().idDelegaturaPorIdDelegadoDeActividad(usuario.getIdUsuario());
+                        Integer idActividadDelegatura=new DaoActividad().idDelegaturaPorIdDelegadoDeActividad(usuario.getIdUsuario());
                         request.setAttribute("idActividadDelegatura",idActividadDelegatura);
                         request.getRequestDispatcher("listaDeActividades.jsp").forward(request,response);
                     }

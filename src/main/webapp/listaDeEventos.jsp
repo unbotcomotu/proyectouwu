@@ -23,10 +23,6 @@
         Integer eventoHoy = (Integer) request.getAttribute("eventosHoy");
         Integer eventoManana = (Integer) request.getAttribute("eventosManana");
         Integer eventoMasDias = (Integer) request.getAttribute("eventosMasDias");
-        Integer idEventoElegido=(Integer)request.getAttribute("idEventoElegido");
-        String fechaNoNumerica=(String)request.getAttribute("fechaNoNumerica");
-        String horaInvalida=(String)request.getAttribute("horaInvalida");
-        String servletActual="ListaDeEventosServlet";
         ArrayList<NotificacionDelegadoGeneral>listaNotificacionesCampanita=(ArrayList<NotificacionDelegadoGeneral>) request.getAttribute("listaNotificacionesCampanita");
         String colorRol;
         if(rolUsuario.equals("Alumno")){
@@ -1201,12 +1197,6 @@
                                     <p class="user-status-title"><a class="bold"><%=d.getUsuario().getNombre()%> <%=d.getUsuario().getApellido()%></a> realizó una <a class="highlighted">donación</a> de <a style="color: orange;">S/. <%=d.getMonto()%></a>.</p>
                                     <!-- /USER STATUS TITLE -->
                                     <%Integer diferenciaFechas[]=new DaoNotificacionDelegadoGeneral().obtenerDiferenciaEntre2FechasNotificaciones(noti.getIdNotificacion());
-                                        System.out.println(diferenciaFechas[0]);
-                                        System.out.println(diferenciaFechas[1]);
-                                        System.out.println(diferenciaFechas[2]);
-                                        System.out.println(diferenciaFechas[3]);
-                                        System.out.println(diferenciaFechas[4]);
-                                        System.out.println(diferenciaFechas[5]);
                                         if(diferenciaFechas[0]>0){
                                             if(diferenciaFechas[0]==1){%>
                                     <!-- USER STATUS TIMESTAMP -->
@@ -2096,8 +2086,48 @@
         <div class="marketplace-content">
             <!-- GRID -->
             <div class="grid grid-3-3-3 centered">
-                <%if(listaEventos!=null){%>
-                <%for(Evento e:listaEventos){%>
+                <%if(listaEventos!=null){
+                    for(Evento e:listaEventos){
+                String mes="";
+                String fechaAux=e.getFecha().toString().split("-")[1];
+                switch (fechaAux){
+                    case "01":
+                        mes="Enero";
+                        break;
+                    case "02":
+                        mes="Febrero";
+                        break;
+                    case "03":
+                        mes="Marzo";
+                        break;
+                    case "04":
+                        mes="Abril";
+                        break;
+                    case "05":
+                        mes="Mayo";
+                        break;
+                    case "06":
+                        mes="Junio";
+                        break;
+                    case "07":
+                        mes="Julio";
+                        break;
+                    case "08":
+                        mes="Agosto";
+                        break;
+                    case "09":
+                        mes="Septiembre";
+                        break;
+                    case "10":
+                        mes= "Octubre";
+                        break;
+                    case "11":
+                        mes="Noviembre";
+                        break;
+                    case "12":
+                        mes="Diciembre";
+                        break;
+                }%>
                 <!-- PRODUCT PREVIEW -->
                 <%if(delegadoDeEstaActividadID==idUsuario||rolUsuario.equals("Delegado General")){%>
                 <div class="product-preview" style="<%if(e.isEventoFinalizado()){%>opacity: 0.5<%}%>">
@@ -2125,7 +2155,7 @@
                         </p>
                         <p class="text-sticker"><span class="highlighted">Fecha: </span>
                             <%if(e.isEventoFinalizado()){%>
-                            <span style="color: purple;"><%=Integer.parseInt(e.getFecha().toString().split("-")[2])%> de Octubre</span>
+                            <span style="color: purple;"><%=Integer.parseInt(e.getFecha().toString().split("-")[2])%> de <%=mes%></span>
                             <%}else{%>
                             <%int diasQueFaltanParaElEvento=new DaoEvento().diferenciaDiasEventoActualidad(e.getIdEvento());
                                 if(diasQueFaltanParaElEvento==0){%>
@@ -2135,7 +2165,7 @@
                             <%}else if(diasQueFaltanParaElEvento==2){%>
                             <span style="color: orange;">En 2 días</span>
                             <%}else{%>
-                            <span style="color: purple;"><%=Integer.parseInt(e.getFecha().toString().split("-")[2])%> de Octubre</span>
+                            <span style="color: purple;"><%=Integer.parseInt(e.getFecha().toString().split("-")[2])%> de <%=mes%></span>
                             <%}}%>
                         </p>
                         <!-- /TEXT STICKER -->
@@ -2224,7 +2254,7 @@
                         <%}%>
                         <p class="text-sticker"><span class="highlighted">Fecha: </span>
                             <%if(e.isEventoFinalizado()){%>
-                            <span style="color: purple;"><%=Integer.parseInt(e.getFecha().toString().split("-")[2])%> de Octubre</span>
+                            <span style="color: purple;"><%=Integer.parseInt(e.getFecha().toString().split("-")[2])%> de <%=mes%></span>
                             <%}else{%>
                             <%int diasQueFaltanParaElEvento=new DaoEvento().diferenciaDiasEventoActualidad(e.getIdEvento());
                                 if(diasQueFaltanParaElEvento==0){%>
@@ -2234,7 +2264,7 @@
                             <%}else if(diasQueFaltanParaElEvento==2){%>
                             <span style="color: orange;">En 2 días</span>
                             <%}else{%>
-                            <span style="color: purple;"><%=Integer.parseInt(e.getFecha().toString().split("-")[2])%> de Octubre</span>
+                            <span style="color: purple;"><%=Integer.parseInt(e.getFecha().toString().split("-")[2])%> de <%=mes%></span>
                             <%}}%>
                         </p>
                         <!-- /TEXT STICKER -->
@@ -2427,8 +2457,8 @@
     </div>
 </footer>
 <%if(delegadoDeEstaActividadID==idUsuario){%>
-<div class="overlay" id="overlayCrear" <%if((horaInvalida!=null || fechaNoNumerica!=null) && idEventoElegido==null){%>style="display: block"<%}%>>
-<div class="popup contenedorCrear" style="width: 700px; <%if((horaInvalida!=null || fechaNoNumerica!=null) && idEventoElegido==null){%> display: block <%}%>" id="popupCrear">
+<div class="overlay" id="overlayCrear">
+<div class="popup contenedorCrear" style="width: 700px;" id="popupCrear">
     <svg class="cerrarPopup" id="cerrarPopupCrear" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path d="M11.4142 10L16.7071 4.70711C17.0976 4.31658 17.0976 3.68342 16.7071 3.29289C16.3166 2.90237 15.6834 2.90237 15.2929 3.29289L10 8.58579L4.70711 3.29289C4.31658 2.90237 3.68342 2.90237 3.29289 3.29289C2.90237 3.68342 2.90237 4.31658 3.29289 4.70711L8.58579 10L3.29289 15.2929C2.90237 15.6834 2.90237 16.3166 3.29289 16.7071C3.68342 17.0976 4.31658 17.0976 4.70711 16.7071L10 11.4142L15.2929 16.7071C15.6834 17.0976 16.3166 17.0976 16.7071 16.7071C17.0976 16.3166 17.0976 15.6834 16.7071 15.2929L11.4142 10Z" fill="black"/>
     </svg>
@@ -2448,11 +2478,8 @@
                 <input type="text" id="descripcionCrearEvento" name="addDescripcionEventoActivo" placeholder="Descripción" required>
                 <div class="row" style="margin-top: 25px;">
                     <div class="col-6">
-                        <label for="horaCrearEvento"><b>Hora (HH:MM):</b></label>
-                        <input type="text" id="horaCrearEvento" name="addHora" placeholder="00:00" required>
-                        <%if(horaInvalida!=null && idEventoElegido==null){%>
-                        <a style="color: red">Ingrese el formato indicado</a>
-                        <%}%>
+                        <label for="horaCrearEvento"><b>Hora:</b></label>
+                        <input style="height: 55px;padding-left: 20px" type="time" id="horaCrearEvento" name="addHora" required>
                     </div>
                     <div class="col-6">
                         <label for="lugarCrearEvento"><b>Lugar:</b></label>
@@ -2466,10 +2493,7 @@
                 <div class="row" style="margin-top: 25px;">
                     <div class="col-6">
                         <label for="fechaCrearEvento"><b>Fecha (día):</b></label>
-                        <input type="text" id="fechaCrearEvento" name="addFecha" multiple placeholder="... de Octubre" required>
-                        <%if(fechaNoNumerica!=null && idEventoElegido==null){%>
-                        <a style="color: red">Ingrese un número</a>
-                        <%}%>
+                        <input style="height: 55px;padding-left: 20px" type="date" id="fechaCrearEvento" name="addFecha" multiple required>
                     </div>
                     <div class="col-6">
                         <p style="width: 100%;"><b>Ocultar evento:</b></p>
@@ -2526,8 +2550,8 @@
                 </div>
                 <label style="margin-top: 25px;"><b>Resumen:</b></label>
                 <input type="text" name="finResumen" placeholder="Resumen" required>
-                <label style="margin-top: 25px;"><b>Resultado:</b></label>
-                <select style="padding: 12.5px" name="resultado" id="resultado" required>
+                <label for="resultado2" style="margin-top: 25px;"><b>Resultado:</b></label>
+                <select style="padding: 12.5px" name="resultado" id="resultado2" required>
                     <option value="Victoria">Victoria</option>
                     <option value="Derrota">Derrota</option>
                 </select>
@@ -2552,8 +2576,8 @@
 </div>
 <%if(!listaEventos.isEmpty()){
     for(Evento e:listaEventos){%>
-<div class="overlay" id="overlayEditarEvento<%=listaEventos.indexOf(e)%>" <%if((horaInvalida!=null || fechaNoNumerica!=null) && idEventoElegido!=null && idEventoElegido==e.getIdEvento()){%>style="display: block"<%}%>>
-<div class="popup contenedorCrear" style="width: 700px; <%if((horaInvalida!=null || fechaNoNumerica!=null) && idEventoElegido!=null && idEventoElegido==e.getIdEvento()){%> display: block <%}%>" id="popupEditarEvento<%=listaEventos.indexOf(e)%>">
+<div class="overlay" id="overlayEditarEvento<%=listaEventos.indexOf(e)%>">
+<div class="popup contenedorCrear" style="width: 700px;" id="popupEditarEvento<%=listaEventos.indexOf(e)%>">
     <svg class="cerrarPopup" id="cerrarPopupEditarEvento<%=listaEventos.indexOf(e)%>" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path d="M11.4142 10L16.7071 4.70711C17.0976 4.31658 17.0976 3.68342 16.7071 3.29289C16.3166 2.90237 15.6834 2.90237 15.2929 3.29289L10 8.58579L4.70711 3.29289C4.31658 2.90237 3.68342 2.90237 3.29289 3.29289C2.90237 3.68342 2.90237 4.31658 3.29289 4.70711L8.58579 10L3.29289 15.2929C2.90237 15.6834 2.90237 16.3166 3.29289 16.7071C3.68342 17.0976 4.31658 17.0976 4.70711 16.7071L10 11.4142L15.2929 16.7071C15.6834 17.0976 16.3166 17.0976 16.7071 16.7071C17.0976 16.3166 17.0976 15.6834 16.7071 15.2929L11.4142 10Z" fill="black"/>
     </svg>
@@ -2592,11 +2616,8 @@
                 <input type="text" id="editarDescripcionEvento<%=listaEventos.indexOf(e)%>" name="updateDescripcionEventoActivo" placeholder="Descripción" value="<%=e.getDescripcionEventoActivo()%>" required>
                 <div class="row" style="margin-top: 25px;">
                     <div class="col-6">
-                        <label for="editarHoraEvento<%=listaEventos.indexOf(e)%>"><b>Hora (HH:MM):</b></label>
-                        <input type="text" id="editarHoraEvento<%=listaEventos.indexOf(e)%>" name="updateHora" placeholder="00:00" value="<%=Integer.parseInt(e.getHora().toString().split(":")[0])+":"+e.getHora().toString().split(":")[1]%>" required>
-                        <%if(horaInvalida!=null && idEventoElegido!=null && idEventoElegido==e.getIdEvento()){%>
-                        <a style="color: red">Ingrese el formato indicado</a>
-                        <%}%>
+                        <label for="editarHoraEvento<%=listaEventos.indexOf(e)%>"><b>Hora:</b></label>
+                        <input style="height: 55px;padding-left: 20px;font-size: 0.875rem;line-height: 1.7142857143em;font-weight: 500;" type="time" id="editarHoraEvento<%=listaEventos.indexOf(e)%>" name="updateHora" value="<%=Integer.parseInt(e.getHora().toString().split(":")[0])+":"+e.getHora().toString().split(":")[1]%>" required>
                     </div>
                     <div class="col-6">
                         <label for="editarLugarEvento<%=listaEventos.indexOf(e)%>"><b>Lugar:</b></label>
@@ -2610,10 +2631,7 @@
                 <div class="row" style="margin-top: 25px;">
                     <div class="col-6">
                         <label><b>Fecha (día):</b></label>
-                        <input type="text" name="updateFecha" multiple id="editarFechaEvento<%=listaEventos.indexOf(e)%>" placeholder="... de Octubre" value="<%=Integer.parseInt(e.getFecha().toString().split("-")[2])%>" required>
-                        <%if(fechaNoNumerica!=null && idEventoElegido!=null && idEventoElegido==e.getIdEvento()){%>
-                        <a style="color: red">Ingrese el formato indicado</a>
-                        <%}%>
+                        <input style="height: 55px;padding-left: 20px;font-size: 0.875rem;line-height: 1.7142857143em;font-weight: 500;" type="date" name="updateFecha" multiple id="editarFechaEvento<%=listaEventos.indexOf(e)%>" value="<%=e.getFecha()%>" required>
                     </div>
                     <div class="col-6">
                         <p style="width: 100%;"><b>Ocultar evento:</b></p>

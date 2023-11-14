@@ -48,21 +48,10 @@ public class ListaDeEventosServlet extends HttpServlet {
             if(usuario.getRol().equals("Delegado General")){
                 request.setAttribute("listaNotificacionesCampanita",new DaoNotificacionDelegadoGeneral().listarNotificacionesDelegadoGeneral());
             }
+            System.out.println("ola");
             String action = request.getParameter("action") == null ? "default" : request.getParameter("action");
             switch (action){
                 case "default":
-                    String fechaNoNumerica=request.getParameter("fechaNoNumerica");
-                    if(fechaNoNumerica!=null){
-                        request.setAttribute("fechaNoNumerica",fechaNoNumerica);
-                    }
-                    String horaInvalida= request.getParameter("horaInvalida");
-                    if(horaInvalida!=null){
-                        request.setAttribute("horaInvalida",horaInvalida);
-                    }
-                    String idEventoElegidoAux=request.getParameter("idEventoElegido");
-                    if(idEventoElegidoAux!=null){
-                        request.setAttribute("idEventoElegidoAux",Integer.parseInt(idEventoElegidoAux));
-                    }
                     request.getRequestDispatcher("listaDeEventos.jsp").forward(request,response);
                     break;
                 case "filtrarEventos":
@@ -179,71 +168,40 @@ public class ListaDeEventosServlet extends HttpServlet {
                 String addFraseMotivacional = request.getParameter("addFraseMotivacional");
                 String addEventoOcultoStr = request.getParameter("addEventoOculto");
                 String addFechaStrAux = request.getParameter("addFecha");
-                try{
-                    Integer addFechaStr=Integer.parseInt(addFechaStrAux);
-                    // Conversión al tipo de variables de la tabla:
-                    Boolean addEventoOculto = false;
-                    if(!(addEventoOcultoStr == null)){
-                        addEventoOculto = true;
-                    }
-                    String addHoraAux[]=addHoraStr.split(":");
-                    try{
-                        if(addHoraAux.length==2){
-                            Integer horaAux = Integer.parseInt(addHoraAux[0]);
-                            System.out.println(addHoraStr);
-                            Integer minutoAux = Integer.parseInt(addHoraAux[1]);
-                            System.out.println(addHoraStr);
-                            if (horaAux >= 0 && horaAux < 24 && minutoAux >= 0 && minutoAux < 60) {
-                                Date addFecha = Date.valueOf("2023-10-" + addFechaStrAux);
-                                Time addHora = Time.valueOf(addHoraStr + ":00");
-
-                                // Verificar lugar:
-                                int addLugarId = dLugarEvento.idLugarPorNombre(addLugar);
-                                // En caso no exista el lugar, se crea uno nuevo
-                                if (addLugarId == 0) {
-                                    addLugarId = dLugarEvento.crearLugar(addLugar); // Id del nuevo lugar
-                                }
-
-                                try{
-                                    // Foto Miniatura
-                                    part = request.getPart("updateFotoMiniatura");
-
-                                    // Obtenemos el flujo de bytes
-                                    if(part != null){
-                                        input = part.getInputStream();
-                                    }else{
-                                        input = getServletContext().getResourceAsStream(rutaImagenPredeterminada);
-                                    }
-
-                                    validarLongitud = input.available()>10;
-
-                                    if(!validarLongitud){
-                                        input = getServletContext().getResourceAsStream(rutaImagenPredeterminada);
-                                    }
-
-                                    try {
-                                        // Crear evento:
-                                        dEvento.crearEvento(idActividad, addLugarId, addTitulo, addFecha, addHora, addDescripcionEventoActivo, addFraseMotivacional, input, addEventoOculto);
-                                    } catch (SQLException e) {
-                                    }
-                                    input.close();
-                                }catch (IOException e){
-                                }
-                                response.sendRedirect( "ListaDeEventosServlet?idActividad=" + idActividad);
-                            } else {
-                                response.sendRedirect("ListaDeEventosServlet?idActividad=" + idActividad + "&horaInvalida=1");
-                            }
-                        }else{
-                            response.sendRedirect("ListaDeEventosServlet?idActividad=" + idActividad + "&horaInvalida=1");
-                        }
-
-                    }catch (NumberFormatException i) {
-                        response.sendRedirect("ListaDeEventosServlet?idActividad=" + idActividad + "&horaInvalida=1");
-                    }
-
-                }catch (NumberFormatException e){
-                    response.sendRedirect("ListaDeEventosServlet?idActividad="+idActividad+"&fechaNoNumerica=1");
+                Boolean addEventoOculto = false;
+                if (!(addEventoOcultoStr == null)) {
+                    addEventoOculto = true;
                 }
+                Date addFecha = Date.valueOf(addFechaStrAux);
+                Time addHora = Time.valueOf(addHoraStr + ":00");
+                // Verificar lugar:
+                int addLugarId = dLugarEvento.idLugarPorNombre(addLugar);
+                // En caso no exista el lugar, se crea uno nuevo
+                if (addLugarId == 0) {
+                    addLugarId = dLugarEvento.crearLugar(addLugar); // Id del nuevo lugar
+                }
+                // Foto Miniatura
+                part = request.getPart("updateFotoMiniatura");
+
+                // Obtenemos el flujo de bytes
+                if(part != null){
+                    input = part.getInputStream();
+                }else{
+                    input = getServletContext().getResourceAsStream(rutaImagenPredeterminada);
+                }
+
+                validarLongitud = input.available()>10;
+
+                if(!validarLongitud){
+                    input = getServletContext().getResourceAsStream(rutaImagenPredeterminada);
+                }
+                try {
+                    dEvento.crearEvento(idActividad, addLugarId, addTitulo, addFecha, addHora, addDescripcionEventoActivo, addFraseMotivacional, input, addEventoOculto);
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
+                input.close();
+                response.sendRedirect("ListaDeEventosServlet?idActividad="+idActividad);
                 break;
             case "updateConfirm":
 
@@ -261,76 +219,48 @@ public class ListaDeEventosServlet extends HttpServlet {
                 String updateResultado = request.getParameter("updateResultado");
                 String updateEventoOcultoStr1 = request.getParameter("updateEventoOculto");
                 String updateEventoOcultoStr2 = request.getParameter("updateEventoOcultoAlt");
-                try{
-                    Integer updateFechaStrAux=Integer.parseInt(updateFechaStr);
-                    String updateHoraStrAux[]=updateHoraStr.split(":");
-                    try{
-                        if(updateHoraStrAux.length==2){
-                            Integer horaAux=Integer.parseInt(updateHoraStrAux[0]);
-                            Integer minutoAux=Integer.parseInt(updateHoraStrAux[1]);
-                            if(horaAux>=0 && horaAux<24 && minutoAux>=0 && minutoAux<60) {
-                                // Conversión de variables según el estado del evento:
-                                if(estadoEvento.equals("true")){
 
-                                    Boolean updateEventoOcultoAlt = false;
-                                    if(!(updateEventoOcultoStr2 == null)){
-                                        updateEventoOcultoAlt = true;
-                                    }
+                if(estadoEvento.equals("true")){
 
-                                    dEvento.editarEvento(idEvento,updateTitulo,updateResumen,updateResultado,updateEventoOcultoAlt);
-                                }else{
+                    Boolean updateEventoOcultoAlt = false;
+                    if(!(updateEventoOcultoStr2 == null)){
+                        updateEventoOcultoAlt = true;
+                    }
+                    dEvento.editarEvento(idEvento,updateTitulo,updateResumen,updateResultado,updateEventoOcultoAlt);
+                }else {
 
-                                    Boolean updateEventoOculto = false;
-                                    if(!(updateEventoOcultoStr1 == null)){
-                                        updateEventoOculto = true;
-                                    }
+                    Boolean updateEventoOculto = false;
+                    if (!(updateEventoOcultoStr1 == null)) {
+                        updateEventoOculto = true;
+                    }
+                    // Verificar lugar:
 
-                                    // Verificar lugar:
-
-                                    int updateLugarId = dLugarEvento.idLugarPorNombre(updateLugar);
-                                    // En caso no exista el lugar, se crea uno nuevo
-                                    if(updateLugarId==0){
-                                        updateLugarId = dLugarEvento.crearLugar(updateLugar); // Id del nuevo lugar
-                                    }
-
-                                    Date updateFecha = Date.valueOf("2023-10-"+updateFechaStr);
-                                    Time updateHora = Time.valueOf(updateHoraStr+":00");
-
-                                    try{
-                                        // Foto Miniatura
-                                        part = request.getPart("updateFotoMiniatura");
-
-                                        // Obtenemos el flujo de bytes
-                                        if(part != null){
-                                            input = part.getInputStream();
-                                        }
-
-                                        validarLongitud = input.available()>10;
-
-                                        try {
-                                            dEvento.editarEvento(idEvento,updateLugarId,updateTitulo,updateFecha,updateHora,updateDescripcionEventoActivo,updateFraseMotivacional,input,updateEventoOculto,validarLongitud);
-                                        } catch (SQLException e) {
-                                        }
-                                        input.close();
-                                    }catch (IOException e){
-                                    }
-                                }
-                                // Envío a la vista de lista de eventos:
-                                response.sendRedirect("ListaDeEventosServlet?idActividad="+idActividad);
-                            }else {
-                                response.sendRedirect("ListaDeEventosServlet?idActividad="+idActividad+"&horaInvalida=1"+"&idEventoElegido="+idEvento);
-                            }
-                        }else{
-                            response.sendRedirect("ListaDeEventosServlet?idActividad="+idActividad+"&fechaNoNumerica=1"+"&idEventoElegido="+idEvento);
-                        }
-                    }catch (NumberFormatException i){
-                        response.sendRedirect("ListaDeEventosServlet?idActividad="+idActividad+"&fechaNoNumerica=1"+"&idEventoElegido="+idEvento);
+                    int updateLugarId = dLugarEvento.idLugarPorNombre(updateLugar);
+                    // En caso no exista el lugar, se crea uno nuevo
+                    if (updateLugarId == 0) {
+                        updateLugarId = dLugarEvento.crearLugar(updateLugar); // Id del nuevo lugar
                     }
 
+                    Date updateFecha = Date.valueOf(updateFechaStr);
+                    Time updateHora = Time.valueOf(updateHoraStr + ":00");
+                    // Foto Miniatura
+                    part = request.getPart("updateFotoMiniatura");
 
-                }catch (NumberFormatException e){
-                    response.sendRedirect("ListaDeEventosServlet?idActividad="+idActividad+"&fechaNoNumerica=1"+"&idEventoElegido="+idEvento);
+                    // Obtenemos el flujo de bytes
+                    if (part != null) {
+                        input = part.getInputStream();
+                    }
+
+                    validarLongitud = input.available() > 10;
+
+                    try {
+                        dEvento.editarEvento(idEvento, updateLugarId, updateTitulo, updateFecha, updateHora, updateDescripcionEventoActivo, updateFraseMotivacional, input, updateEventoOculto, validarLongitud);
+                    } catch (SQLException e) {
+                        throw new RuntimeException(e);
+                    }
+                    input.close();
                 }
+                response.sendRedirect("ListaDeEventosServlet?idActividad="+idActividad);
                 break;
             case "finConfirm":
                 String finEventoNombre = request.getParameter("finEventoNombre");

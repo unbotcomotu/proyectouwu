@@ -39,7 +39,6 @@
         String fecha1=(String) request.getAttribute("fecha1");
         String fecha2=(String) request.getAttribute("fecha2");
         String buscarReportes=(String) request.getAttribute("buscarReportes");
-        System.out.println(vistaActualNueva );
     %>
 
 
@@ -1114,12 +1113,6 @@
                                     <p class="user-status-title"><a class="bold"><%=d.getUsuario().getNombre()%> <%=d.getUsuario().getApellido()%></a> realizó una <a class="highlighted">donación</a> de <a style="color: orange;">S/. <%=d.getMonto()%></a>.</p>
                                     <!-- /USER STATUS TITLE -->
                                     <%Integer diferenciaFechas[]=new DaoNotificacionDelegadoGeneral().obtenerDiferenciaEntre2FechasNotificaciones(noti.getIdNotificacion());
-                                        System.out.println(diferenciaFechas[0]);
-                                        System.out.println(diferenciaFechas[1]);
-                                        System.out.println(diferenciaFechas[2]);
-                                        System.out.println(diferenciaFechas[3]);
-                                        System.out.println(diferenciaFechas[4]);
-                                        System.out.println(diferenciaFechas[5]);
                                         if(diferenciaFechas[0]>0){
                                             if(diferenciaFechas[0]==1){%>
                                     <!-- USER STATUS TIMESTAMP -->
@@ -2622,7 +2615,7 @@
                     </div>
                     <!-- /TABLE HEADER COLUMN -->
 
-                    <div class="table-header-column centered padded">
+                    <div class="table-header-column centered padded" style="display: none">
                         <!-- TABLE HEADER TITLE -->
                         <p class="table-header-title">link</p>
                         <!-- /TABLE HEADER TITLE -->
@@ -2682,7 +2675,7 @@
                         <!-- /TABLE COLUMN -->
 
                         <!-- TABLE COLUMN -->
-                        <div class="table-column centered padded" style="opacity: 0">
+                        <div class="table-column centered padded" style="display: none">
                             <!-- TABLE TITLE -->
                             <%String link = "mips";%>
                             <%if(validacion.getTipo().equals("enviarLinkACorreo")) {
@@ -2695,26 +2688,34 @@
                         <div class="table-column centered padded">
                             <!-- TABLE TITLE -->
                             <%if(validacion.getTipo().equals("enviarLinkACorreo")){%>
-                            <a class="button-accept" href="mailto:<%=validacion.getCorreo()%>?subject=Solicitud de verificación de correo electrónico - Siempre Fibra&body=¡Continúa con tu registro! Haz clic en el siguiente link y completa tus datos: <%=link%>">Enviar</a>
+                            <a href="mailto:<%=validacion.getCorreo()%>?subject=Solicitud de verificación de correo electrónico - Siempre Fibra&body=¡Continúa con tu registro! Haz clic en el siguiente link y completa tus datos: <%=link%>">
+                                <button class="button-accept">Enviar</button>
+                            </a>
                             <%}else{%>
-                            <a class="button-accept" href="mailto:<%=validacion.getCorreo()%>?subject=Solicitud de recuperación de contraseña - Siempre Fibra&body=¡Continúa con el proceso de recuperación de contraseña! Haz clic en el siguiente link e ingrese su nueva contraseña: <%=link%>">Enviar</a>
+                            <a href="mailto:<%=validacion.getCorreo()%>?subject=Solicitud de recuperación de contraseña - Siempre Fibra&body=¡Continúa con el proceso de recuperación de contraseña! Haz clic en el siguiente link e ingrese su nueva contraseña: <%=link%>">
+                                <button class="button-accept">Enviar</button>
+                            </a>
                             <%}%>
                             <!-- /TABLE TITLE -->
                         </div>
-
-                        <div class="table-column centered padded">
-
-                            <a class="button-accept" href="<%=request.getContextPath()%>/NotificacionesServlet?action=enviar&idCorreoValidacion=<%=validacion.getIdCorreoValidacion()%>&idUsuario=<%=idUsuario%>">Enviado</a>
+                        <div class="table-column centered padded" style="width: 20%">
+                            <%if(!validacion.isLinkEnviado()){%>
+                            <form method="post" action="?action=enviar">
+                                <input type="hidden" name="idCorreoValidacion" value="<%=validacion.getIdCorreoValidacion()%>">
+                                <button class="button-accept" type="submit">
+                                    Marcar como enviado
+                                </button>
+                            </form>
+                            <%}else{%>
+                                <button class="button-accept" style="opacity: 0.5">
+                                    Enviado
+                                </button>
+                            <%}%>
                         </div>
-
-
                         <!-- /TABLE COLUMN -->
                     </div>
                     <!-- /TABLE ROW -->
-
                     <%}%>
-
-
                 </div>
                 <!-- /TABLE BODY -->
             </div>

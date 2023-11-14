@@ -1136,12 +1136,6 @@
                                     <p class="user-status-title"><a class="bold"><%=d.getUsuario().getNombre()%> <%=d.getUsuario().getApellido()%></a> realizó una <a class="highlighted">donación</a> de <a style="color: orange;">S/. <%=d.getMonto()%></a>.</p>
                                     <!-- /USER STATUS TITLE -->
                                     <%Integer diferenciaFechas[]=new DaoNotificacionDelegadoGeneral().obtenerDiferenciaEntre2FechasNotificaciones(noti.getIdNotificacion());
-                                        System.out.println(diferenciaFechas[0]);
-                                        System.out.println(diferenciaFechas[1]);
-                                        System.out.println(diferenciaFechas[2]);
-                                        System.out.println(diferenciaFechas[3]);
-                                        System.out.println(diferenciaFechas[4]);
-                                        System.out.println(diferenciaFechas[5]);
                                         if(diferenciaFechas[0]>0){
                                             if(diferenciaFechas[0]==1){%>
                                     <!-- USER STATUS TIMESTAMP -->
@@ -1815,7 +1809,7 @@
                     aux=0;
                 }%>
         <!-- PRODUCT CATEGORY BOX -->
-        <a class="product-category-box category-all" href="<%=request.getContextPath()%>/ListaDeEventosServlet?idUsuario=<%=idUsuario%>&idActividad=<%=a.getIdActividad()%>" style="background: url('css/fotoVoleyActividades.png') no-repeat right top, linear-gradient(to right, <%=color1%>, <%=color2%>) <%if(a.isActividadFinalizada()){%><%=";opacity: 50%;"%><%}%> ">
+        <a class="product-category-box category-all" href="ListaDeEventosServlet?idActividad=<%=a.getIdActividad()%>" style="background: url('css/fotoVoleyActividades.png') no-repeat right top, linear-gradient(to right, <%=color1%>, <%=color2%>) <%if(a.isActividadFinalizada()){%><%=";opacity: 50%;"%><%}%> ">
             <!-- PRODUCT CATEGORY BOX TITLE -->
             <p class="product-category-box-title"><%=a.getNombre()%></p>
             <!-- /PRODUCT CATEGORY BOX TITLE -->
@@ -1909,11 +1903,12 @@
     <svg class="cerrarPopup" id="cerrarPopupFinalizar" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path d="M11.4142 10L16.7071 4.70711C17.0976 4.31658 17.0976 3.68342 16.7071 3.29289C16.3166 2.90237 15.6834 2.90237 15.2929 3.29289L10 8.58579L4.70711 3.29289C4.31658 2.90237 3.68342 2.90237 3.29289 3.29289C2.90237 3.68342 2.90237 4.31658 3.29289 4.70711L8.58579 10L3.29289 15.2929C2.90237 15.6834 2.90237 16.3166 3.29289 16.7071C3.68342 17.0976 4.31658 17.0976 4.70711 16.7071L10 11.4142L15.2929 16.7071C15.6834 17.0976 16.3166 17.0976 16.7071 16.7071C17.0976 16.3166 17.0976 15.6834 16.7071 15.2929L11.4142 10Z" fill="black"/>
     </svg>
+    <%if(new DaoActividad().eventosNoFinalizadosActividad(idActividadDelegatura)==0){%>
     <div class="container-fluid">
         <div class="row">
             <div class="col-sm-1"></div>
             <div class="col-sm-10">
-                <h5 style="text-align: center;">¿Está seguro de finalizar la actividad <span style="color: red"><%=new DaoActividad().nombreActividadPorID(new DaoActividad().idDelegaturaPorIdDelegadoDeActividad(idUsuario))%></span> ?</h5>
+                <h5 style="text-align: center;">¿Está seguro de finalizar la actividad <span style="color: red"><%=new DaoActividad().nombreActividadPorID(idActividadDelegatura)%></span> ?</h5>
             </div>
             <div class="col-sm-1"></div>
         </div>
@@ -1932,6 +1927,22 @@
             </div>
         </div>
     </div>
+    <%}else{%>
+    <div class="container-fluid">
+        <div class="text-center" style="margin-bottom: 10px">
+            <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" fill="currentColor" class="bi bi-exclamation-circle-fill" viewBox="0 0 16 16">
+                <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8 4a.905.905 0 0 0-.9.995l.35 3.507a.552.552 0 0 0 1.1 0l.35-3.507A.905.905 0 0 0 8 4zm.002 6a1 1 0 1 0 0 2 1 1 0 0 0 0-2z"/>
+            </svg>
+        </div>
+        <div class="row">
+            <div class="col-sm-1"></div>
+            <div class="col-sm-10">
+                <h5 style="text-align: center;">Antes de poder finalizar una actividad, todos sus eventos deben de haber sido finalizados</h5>
+            </div>
+            <div class="col-sm-1"></div>
+        </div>
+    </div>
+    <%}%>
 </div>
 <%}else if(rolUsuario.equals("Delegado General")){%>
 <div class="overlay" <%if(puntajeNoNumerico!=null && idActividadElegida==null){%>style="display: block"<%}%> id="overlayCrear"></div>
@@ -2116,7 +2127,7 @@
         }
     }
     <%if(rolUsuario.equals("Delegado de Actividad")){%>
-    popupFunc('popupFinalizar','mostrarPopupFinalizar',['cerrarPopupFinalizar','cerrarPopupFinalizar1','cerrarPopupFinalizar2'],'overlayFinalizar');
+    popupFunc('popupFinalizar','mostrarPopupFinalizar',['cerrarPopupFinalizar'<%if(new DaoActividad().eventosNoFinalizadosActividad(idActividadDelegatura)==0){%>,'cerrarPopupFinalizar1','cerrarPopupFinalizar2'<%}%>],'overlayFinalizar');
     <%}else if(rolUsuario.equals("Delegado General")){%>
     var elementos=['nombreCrearActividad','idDelegadoActividadCrear','puntajeCrearActividad'];
     verificarInput(elementos,'cerrarPopupCrear1');

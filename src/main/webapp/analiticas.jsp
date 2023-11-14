@@ -1111,12 +1111,6 @@
                                     <p class="user-status-title"><a class="bold"><%=d.getUsuario().getNombre()%> <%=d.getUsuario().getApellido()%></a> realizó una <a class="highlighted">donación</a> de <a style="color: orange;">S/. <%=d.getMonto()%></a>.</p>
                                     <!-- /USER STATUS TITLE -->
                                     <%Integer diferenciaFechas[]=new DaoNotificacionDelegadoGeneral().obtenerDiferenciaEntre2FechasNotificaciones(noti.getIdNotificacion());
-                                        System.out.println(diferenciaFechas[0]);
-                                        System.out.println(diferenciaFechas[1]);
-                                        System.out.println(diferenciaFechas[2]);
-                                        System.out.println(diferenciaFechas[3]);
-                                        System.out.println(diferenciaFechas[4]);
-                                        System.out.println(diferenciaFechas[5]);
                                         if(diferenciaFechas[0]>0){
                                             if(diferenciaFechas[0]==1){%>
                                     <!-- USER STATUS TIMESTAMP -->
@@ -1905,7 +1899,7 @@
                             <!-- PROGRESS ARC INFO -->
                             <div class="progress-arc-info">
                                 <!-- PROGRESS ARC TITLE -->
-                                <p class="progress-arc-title" id="totalUsuariosRegistrados"></p>
+                                <p class="progress-arc-title"><%=totalEstudiantesRegistrados+totalEgresadosRegistrados%></p>
                                 <!-- /PROGRESS ARC TITLE -->
 
                                 <!-- PROGRESS ARC TEXT -->
@@ -1925,7 +1919,7 @@
                                 <!-- /REFERENCE BULLET -->
 
                                 <!-- USER STAT TITLE -->
-                                <p class="user-stat-title" id="totalEstudiantesRegistrados"></p>
+                                <p class="user-stat-title"><%=totalEstudiantesRegistrados%></p>
                                 <!-- /USER STAT TITLE -->
 
                                 <!-- USER STAT TEXT -->
@@ -1941,7 +1935,7 @@
                                 <!-- /REFERENCE BULLET -->
 
                                 <!-- USER STAT TITLE -->
-                                <p class="user-stat-title" id="totalEgresadosRegistrados"></p>
+                                <p class="user-stat-title"><%=totalEgresadosRegistrados%></p>
                                 <!-- /USER STAT TITLE -->
 
                                 <!-- USER STAT TEXT -->
@@ -1987,7 +1981,7 @@
                             <!-- PROGRESS ARC INFO -->
                             <div class="progress-arc-info">
                                 <!-- PROGRESS ARC TITLE -->
-                                <p class="progress-arc-title" id="totalDonacionesRegistradas"></p>
+                                <p class="progress-arc-title"><%=totalDonacionesEgresados+totalDonacionesEstudiantes%></p>
                                 <!-- /PROGRESS ARC TITLE -->
 
                                 <!-- PROGRESS ARC TEXT -->
@@ -2007,7 +2001,7 @@
                                 <!-- /REFERENCE BULLET -->
 
                                 <!-- USER STAT TITLE -->
-                                <p class="user-stat-title" id="totalEstudiantesDonaciones"></p>
+                                <p class="user-stat-title">S/. <%=totalDonacionesEstudiantes%></p>
                                 <!-- /USER STAT TITLE -->
 
                                 <!-- USER STAT TEXT -->
@@ -2023,7 +2017,7 @@
                                 <!-- /REFERENCE BULLET -->
 
                                 <!-- USER STAT TITLE -->
-                                <p class="user-stat-title" id="totalEgresadosDonaciones"></p>
+                                <p class="user-stat-title">S/. <%=totalDonacionesEgresados%></p>
                                 <!-- /USER STAT TITLE -->
 
                                 <!-- USER STAT TEXT -->

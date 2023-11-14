@@ -52,7 +52,7 @@ public class MisDonacionesServlet extends HttpServlet {
             case "registDon":
                 Usuario usuario=(Usuario) request.getSession().getAttribute("usuario");
                 String medioPago = request.getParameter("medio");
-                int monto = Integer.parseInt(request.getParameter("monto"));
+                float monto = Float.parseFloat(request.getParameter("monto"));
                 //Ayuda para lo del blob en captura
                 //byte[] bytes = request.getParameter("captura").getBytes("UTF-8");
                 /*try {
@@ -63,7 +63,8 @@ public class MisDonacionesServlet extends HttpServlet {
                     throw new RuntimeException(e);
                 }*/
                 daoDonacion.agregarDonacionUsuario(usuario.getIdUsuario(),medioPago,monto,"ola");
-                response.sendRedirect("MisDonacionesServlet?confirmacion=1");
+                request.getSession().setAttribute("confirmacion","1");
+                response.sendRedirect("MisDonacionesServlet");
                 break;
             case "default":
                 request.getRequestDispatcher("donaciones.jsp").forward(request,response);

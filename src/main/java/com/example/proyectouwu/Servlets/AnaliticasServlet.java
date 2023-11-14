@@ -20,6 +20,7 @@ public class AnaliticasServlet extends HttpServlet {
         DaoDonacion dDonacion=new DaoDonacion();
         DaoBan dBan=new DaoBan();
         DaoReporte dReporte=new DaoReporte();
+        DaoNotificacionDelegadoGeneral dN=new DaoNotificacionDelegadoGeneral();
         Usuario usuario=(Usuario) request.getSession().getAttribute("usuario");
         if(usuario==null){
             response.sendRedirect("InicioSesionServlet");
@@ -46,9 +47,9 @@ public class AnaliticasServlet extends HttpServlet {
             request.setAttribute("totalEgresadosRegistrados",dUsuario.totalEgresadosRegistrados());
             request.setAttribute("totalDonacionesEgresados",dDonacion.donacionesTotalesEgresados());
             request.setAttribute("totalDonacionesEstudiantes",dDonacion.donacionesTotalesEstudiantes());
-            if(usuario.getRol().equals("Delegado General")){
-                request.setAttribute("listaNotificacionesCampanita",new DaoNotificacionDelegadoGeneral().listarNotificacionesDelegadoGeneral());
-            }
+            request.setAttribute("topApoyoUltimaSemana",dAE.topApoyoUltimaSemana());
+            request.setAttribute("topApoyoTotal",dAE.topApoyoTotal());
+            request.setAttribute("listaNotificacionesCampanita",dN.listarNotificacionesDelegadoGeneral());
             String action = request.getParameter("action") == null ? "default" : request.getParameter("action");
             switch (action){
                 case "default":

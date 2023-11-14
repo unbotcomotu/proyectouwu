@@ -5,6 +5,7 @@
 <%@ page import="java.util.Arrays" %>
 <%@ page import="com.example.proyectouwu.Beans.*" %>
 <%@ page import="com.example.proyectouwu.Daos.*" %>
+<%@ page import="com.example.proyectouwu.DTOs.TopApoyo" %>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <!DOCTYPE html>
 <html lang="en">
@@ -49,6 +50,8 @@
         Integer totalEgresadosRegistrados=(Integer) request.getAttribute("totalEgresadosRegistrados");
         float totalDonacionesEstudiantes=(float) request.getAttribute("totalDonacionesEstudiantes");
         float totalDonacionesEgresados=(float) request.getAttribute("totalDonacionesEgresados");
+        TopApoyo topApoyoUltimaSemana=(TopApoyo) request.getAttribute("topApoyoUltimaSemana");
+        TopApoyo topApoyoTotal=(TopApoyo) request.getAttribute("topApoyoTotal");
         for(int i=0;i<fechas.length;i++){
             if(diaMesActual.equals(fechas[i].split(" ")[1])){
                 for(int j=0;j<7;j++){
@@ -2212,7 +2215,7 @@
 
                         <!-- USER AVATAR CONTENT -->
                         <div class="user-avatar-content">
-                            <!-- HEXAGON -->
+                            <!-- HEXAGON AQUÍ SE PONE LA FOTO DEL TOP APOYO ÚLTIMA SEMANA-->
                             <div class="hexagon-image-30-32" data-src="css/julio.png"></div>
                             <!-- /HEXAGON -->
                         </div>
@@ -2238,7 +2241,7 @@
                     <!-- /USER AVATAR -->
 
                     <!-- FEATURED STAT BOX TITLE -->
-                    <p class="featured-stat-box-title">12</p>
+                    <p class="featured-stat-box-title"><%=topApoyoUltimaSemana.getCantidadEventosApoyados()%></p>
                     <!-- /FEATURED STAT BOX TITLE -->
 
                     <!-- FEATURED STAT BOX SUBTITLE -->
@@ -2246,7 +2249,7 @@
                     <!-- /FEATURED STAT BOX SUBTITLE -->
 
                     <!-- FEATURED STAT BOX TEXT -->
-                    <p class="featured-stat-box-text">Julio Carrión</p>
+                    <p class="featured-stat-box-text"><%=topApoyoUltimaSemana.getUsuario().getNombre()%> <%=topApoyoUltimaSemana.getUsuario().getApellido()%></p>
                     <!-- /FEATURED STAT BOX TEXT -->
                 </div>
                 <!-- /FEATURED STAT BOX INFO -->
@@ -2281,7 +2284,7 @@
 
                         <!-- USER AVATAR CONTENT -->
                         <div class="user-avatar-content">
-                            <!-- HEXAGON -->
+                            <!-- HEXAGON AQUÍ SE PONE LA FOTO DEL TOP APOYO TOTAL-->
                             <div class="hexagon-image-30-32" data-src="css/gineil.png"></div>
                             <!-- /HEXAGON -->
                         </div>
@@ -2308,7 +2311,7 @@
                     <!-- /USER AVATAR -->
 
                     <!-- FEATURED STAT BOX TITLE -->
-                    <p class="featured-stat-box-title">20</p>
+                    <p class="featured-stat-box-title"><%=topApoyoTotal.getCantidadEventosApoyados()%></p>
                     <!-- /FEATURED STAT BOX TITLE -->
 
                     <!-- FEATURED STAT BOX SUBTITLE -->
@@ -2316,7 +2319,7 @@
                     <!-- /FEATURED STAT BOX SUBTITLE -->
 
                     <!-- FEATURED STAT BOX TEXT -->
-                    <p class="featured-stat-box-text">Hineill Céspedes</p>
+                    <p class="featured-stat-box-text"><%=topApoyoTotal.getUsuario().getNombre()%> <%=topApoyoTotal.getUsuario().getApellido()%></p>
                     <!-- /FEATURED STAT BOX TEXT -->
                 </div>
                 <!-- /FEATURED STAT BOX INFO -->

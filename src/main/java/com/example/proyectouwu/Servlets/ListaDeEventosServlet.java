@@ -48,7 +48,6 @@ public class ListaDeEventosServlet extends HttpServlet {
             if(usuario.getRol().equals("Delegado General")){
                 request.setAttribute("listaNotificacionesCampanita",new DaoNotificacionDelegadoGeneral().listarNotificacionesDelegadoGeneral());
             }
-            System.out.println("ola");
             String action = request.getParameter("action") == null ? "default" : request.getParameter("action");
             switch (action){
                 case "default":

@@ -1,6 +1,7 @@
 package com.example.proyectouwu.Daos;
 
 import com.example.proyectouwu.Beans.Evento;
+import com.example.proyectouwu.DTOs.TopApoyo;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -102,6 +103,41 @@ public class DaoAlumnoPorEvento extends DaoPadre {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+    }
 
+    public TopApoyo topApoyoUltimaSemana(){
+        String sql = "select u.nombre,u.apellido,u.fotoPerfil,aux.cantidadApoyos from usuario u inner join (select uAux.idUsuario as 'id',count(ae.idAlumnoPorEvento) as 'cantidadApoyos' from alumnoporevento ae inner join usuario uAux on uAux.idUsuario=ae.idAlumno and datediff(now(),ae.fechaHoraSolicitud)<=7 group by ae.idAlumno order by count(ae.idAlumnoPorEvento) desc,max(fechaHoraSolicitud) desc limit 1) aux on u.idUsuario=aux.id";
+        try(Connection conn=this.getConnection(); ResultSet rs=conn.createStatement().executeQuery(sql)){
+            if(rs.next()) {
+                TopApoyo t=new TopApoyo();
+                t.getUsuario().setNombre(rs.getString(1));
+                t.getUsuario().setApellido(rs.getString(2));
+                t.getUsuario().setFotoPerfil(rs.getBlob(3));
+                t.setCantidadEventosApoyados(rs.getInt(4));
+                return t;
+            }else{
+                return null;
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public TopApoyo topApoyoTotal(){
+        String sql = "select u.nombre,u.apellido,u.fotoPerfil,aux.cantidadApoyos from usuario u inner join (select uAux.idUsuario as 'id',count(ae.idAlumnoPorEvento) as 'cantidadApoyos' from alumnoporevento ae inner join usuario uAux on uAux.idUsuario=ae.idAlumno group by ae.idAlumno order by count(ae.idAlumnoPorEvento) desc,max(fechaHoraSolicitud) desc limit 1) aux on u.idUsuario=aux.id";
+        try(Connection conn=this.getConnection(); ResultSet rs=conn.createStatement().executeQuery(sql)){
+            if(rs.next()) {
+                TopApoyo t=new TopApoyo();
+                t.getUsuario().setNombre(rs.getString(1));
+                t.getUsuario().setApellido(rs.getString(2));
+                t.getUsuario().setFotoPerfil(rs.getBlob(3));
+                t.setCantidadEventosApoyados(rs.getInt(4));
+                return t;
+            }else{
+                return null;
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

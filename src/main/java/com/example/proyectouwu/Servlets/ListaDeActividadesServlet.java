@@ -14,6 +14,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 
 @WebServlet(name = "ListaDeActividadesServlet", value = "/ListaDeActividadesServlet")
+@MultipartConfig(maxFileSize = 10000000)
 public class ListaDeActividadesServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -160,9 +161,10 @@ public class ListaDeActividadesServlet extends HttpServlet {
                             throw new RuntimeException(e);
                         }
 
-                        //response.sendRedirect("ListaDeActividadesServlet");
+
                         inputMin.close();
                         inputCab.close();
+                        response.sendRedirect("ListaDeActividadesServlet");
                     }catch (NumberFormatException e){
                         request.getSession().setAttribute("puntajeNoNumerico","1");
                         response.sendRedirect("ListaDeActividadesServlet");

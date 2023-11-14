@@ -3220,6 +3220,14 @@
         }
         return suma;
     }
+
+    function sumaArrays(array1,array2){
+        let array3=new Array(array1.length);
+        for(let i=0;i<array1.length;i++){
+            array3[i]=array1[i]+array2[i];
+        }return array3;
+    }
+
     function hallarEstudiantesNoApoyos(){
         document.getElementById('totalEstudiantesNoApoyos').textContent = totalEstudiantesRegistrados-suma(apoyosEstudiantes);
     }
@@ -3667,8 +3675,8 @@
                                 fontColor: '#8f91ac',
                                 fontSize: 12,
                                 fontStyle: 500,
-                                max: 55,
-                                stepSize: 5
+                                max: maximo(sumaArrays(apoyosEgresados,apoyosEstudiantes)),
+                                stepSize: Math.ceil(maximo(sumaArrays(apoyosEgresados,apoyosEstudiantes))/10),
                             }
                         }
                     ]
@@ -3778,8 +3786,8 @@
                                 fontSize: 12,
                                 fontStyle: 500,
                                 min: 0,
-                                max: maximo([maximo(donacionesUltimaSemanaEgresados),maximo(donacionesUltimaSemanaEstudiantes)]),
-                                stepSize: maximo([maximo(donacionesUltimaSemanaEgresados),maximo(donacionesUltimaSemanaEstudiantes)])/20,
+                                max: Math.ceil(maximo([maximo(donacionesUltimaSemanaEgresados),maximo(donacionesUltimaSemanaEstudiantes)])),
+                                stepSize: Math.ceil(maximo([maximo(donacionesUltimaSemanaEgresados),maximo(donacionesUltimaSemanaEstudiantes)])/20),
                             }
                         }
                     ]

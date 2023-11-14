@@ -1716,7 +1716,7 @@
         <!-- SECTION BANNER TITLE -->
         <p class="section-banner-title"><%=nombreActividad%></p>
         <!-- /SECTION BANNER TITLE -->
-
+        <p class="section-banner-text"><b>Delegado de Actividad: <%=new DaoUsuario().nombreCompletoUsuarioPorId(delegadoDeEstaActividadID)%></b></p>
         <!-- SECTION BANNER TEXT -->
         <p class="section-banner-text">Encuentra todos los eventos dentro de <%=nombreActividad%></p>
         <!-- /SECTION BANNER TEXT -->
@@ -1874,7 +1874,7 @@
                             <!-- /CHECKBOX LINE TEXT -->
                         </div>
                         <!-- /CHECKBOX LINE -->
-                        <%if(!rolUsuario.equals("Delegado General")){%>
+                        <%if(!rolUsuario.equals("Delegado General") && delegadoDeEstaActividadID!=idUsuario){%>
                         <!-- CHECKBOX LINE -->
                         <div class="checkbox-line">
                             <!-- CHECKBOX WRAP -->

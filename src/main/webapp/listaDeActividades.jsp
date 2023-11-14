@@ -1951,7 +1951,7 @@
     <svg class="cerrarPopup" id="cerrarPopupCrear" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path d="M11.4142 10L16.7071 4.70711C17.0976 4.31658 17.0976 3.68342 16.7071 3.29289C16.3166 2.90237 15.6834 2.90237 15.2929 3.29289L10 8.58579L4.70711 3.29289C4.31658 2.90237 3.68342 2.90237 3.29289 3.29289C2.90237 3.68342 2.90237 4.31658 3.29289 4.70711L8.58579 10L3.29289 15.2929C2.90237 15.6834 2.90237 16.3166 3.29289 16.7071C3.68342 17.0976 4.31658 17.0976 4.70711 16.7071L10 11.4142L15.2929 16.7071C15.6834 17.0976 16.3166 17.0976 16.7071 16.7071C17.0976 16.3166 17.0976 15.6834 16.7071 15.2929L11.4142 10Z" fill="black"/>
     </svg>
-    <form method="post" enctype="multipart/form-data" action="<%=request.getContextPath()%>/ListaDeActividadesServlet?action=crearActividad">
+    <form method="post" action="<%=request.getContextPath()%>/ListaDeActividadesServlet?action=crearActividad">
         <div class="container-fluid">
             <div class="row"><div class="col"><h5 style="text-align: center;">Crear actividad</h5></div></div>
             <div class="row">
@@ -1990,7 +1990,7 @@
                         <input type="file" id="inputCabeceraCrear" name="addfotoCabecera" style="background-color: white; margin-top: 25px;" accept="image/png, .jpeg, .jpg" onchange="mostrarImagen('imagenActualCabeceraCrear','contenedorImagenCabeceraCrear','inputCabeceraCrear')"></input>
                     </div>
                     <br>
-                    <div class="container-fluid btn btn-file1">
+                    <div class="container-fluid btn btn-file2">
                         <div id="contenedorImagenCrear">
                             <img id="imagenActualCrear" class="img-fluid" src="css/subirArchivo.jpg" style="opacity: 50%;" alt="">
                         </div>
@@ -2057,16 +2057,30 @@
                     </div>
                 </div>
                 <div class="col-sm-5 contenedor2" style="top: 30px">
+                    <!div class="container-fluid btn btn-file1">
+                        <!!img class="img-fluid" src="css/telitoVoley.png" width="80%" alt="">
+                        <!p><!b>Editar foto de cabecera<!/b><!/p>
+                        <!input type="file" style="background-color: white; margin-top: 25px;" accept="image/png, .jpeg, .jpg"></input>
+                    <!/div>
                     <div class="container-fluid btn btn-file1">
-                        <img class="img-fluid" src="css/telitoVoley.png" width="80%" alt="">
-                        <p><b>Editar foto de cabecera</b></p>
-                        <input type="file" style="background-color: white; margin-top: 25px;" accept="image/png, .jpeg, .jpg"></input>
+                        <div id="contenedorImagenEditar<%=i%>">
+                            <img id="imagenActualEditar<%=i%>" class="img-fluid" src="ImagenActividadServlet?idActividad=<%=i%>" alt="">
+                        </div>
+                        <p style="margin-top: 10px"><b>Editar foto cabecera</b></p>
+                        <input type="file" id="inputEditar<%=i%>" style="background-color: white; margin-top: 25px;" accept="image/png, .jpeg, .jpg" name="updateFotoCabecera" onchange="mostrarImagen('imagenActualEditar<%=i%>','contenedorImagenEditar<%=i%>','inputEditar<%=i%>')"></input>
                     </div>
                     <br>
-                    <div class="container-fluid btn btn-file1">
-                        <img class="img-fluid" src="css/fotoVoleyActividades.png" width="80%" alt="">
-                        <p><b>Editar foto de miniatura</b></p>
-                        <input type="file" style="background-color: white; margin-top: 25px;" accept="image/png, .jpeg, .jpg"></input>
+                    <!div class="container-fluid btn btn-file1">
+                        <!img class="img-fluid" src="css/fotoVoleyActividades.png" width="80%" alt="">
+                        <!p><!b>Editar foto de miniatura<!/b><!/p>
+                        <!input type="file" style="background-color: white; margin-top: 25px;" accept="image/png, .jpeg, .jpg"></input>
+                    <!/div>
+                    <div class="container-fluid btn btn-file2">
+                        <div id="contenedorImagenMinEditar<%=i%>">
+                            <img id="imagenActualMinEditar<%=i%>" class="img-fluid" src="ImagenActividadServlet?idActividad=<%=i%>" alt="">
+                        </div>
+                        <p style="margin-top: 10px"><b>Editar foto miniatura</b></p>
+                        <input type="file" id="inputMinEditar<%=i%>" style="background-color: white; margin-top: 25px;" accept="image/png, .jpeg, .jpg" name="updateFotoMiniatura" onchange="mostrarImagen('imagenActualMinEditar<%=i%>','contenedorImagenMinEditar<%=i%>','inputMinEditar<%=i%>')"></input>
                     </div>
                 </div>
             </div>

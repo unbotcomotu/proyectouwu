@@ -633,10 +633,9 @@
         <!-- ACTION ITEM -->
         <div class="action-item dark header-settings-dropdown-trigger">
             <!-- ACTION ITEM ICON -->
-            <form id="cerrarSesion3" method="post" action="InicioSesionServlet?action=logOut">
-                <a onclick="enviarFormulario('cerrarSesion3')"><img src="css/logOut.png" width="30%" style="margin-left: 25px;" alt=""></a>
+            <form method="post" action="InicioSesionServlet?action=logOut">
+                <button style="border:0;background: none;color: inherit" type="submit"><a><img src="css/logOut.png" width="30%" style="" alt=""></a></button>
             </form>
-            <script></script>
             <!-- /ACTION ITEM ICON -->
         </div>
         <!-- /ACTION ITEM -->
@@ -887,10 +886,9 @@
             <!-- ACTION ITEM -->
             <div class="action-item dark header-settings-dropdown-trigger">
                 <!-- ACTION ITEM ICON -->
-                <form id="cerrarSesion2" method="post" action="InicioSesionServlet?action=logOut">
-                    <a onclick="enviarFormulario('cerrarSesion2')"><img src="css/logOut.png" width="30%" style="margin-left: 25px;" alt=""></a>
+                <form method="post" action="InicioSesionServlet?action=logOut">
+                    <button style="border:0;background: none;color: inherit" type="submit"><a><img src="css/logOut.png" width="30%" style="" alt=""></a></button>
                 </form>
-                <script></script>
                 <!-- /ACTION ITEM ICON -->
             </div>
             <!-- /ACTION ITEM -->
@@ -988,66 +986,66 @@
                                         if(diferenciaFechas[0]>0){
                                             if(diferenciaFechas[0]==1){%>
                                     <!-- USER STATUS TIMESTAMP -->
-                                    <p class="user-status-timestamp">Hace 1 año <a style="color: #20c997;cursor: pointer" onclick="enviarFormulario<%=listaNotificacionesCampanita.indexOf(noti)%>()">Leído</a></p>
+                                    <p class="user-status-timestamp">Hace 1 año <a style="color: #20c997;cursor: pointer" onclick="enviarFormulario('notificacionLeidaCampanita<%=listaNotificacionesCampanita.indexOf(noti)%>')">Leído</a></p>
                                     <!-- /USER STATUS TIMESTAMP -->
                                     <%}else{%>
                                     <!-- USER STATUS TIMESTAMP -->
-                                    <p class="user-status-timestamp">Hace <%=diferenciaFechas[0]%> años <a style="color: #20c997;cursor: pointer" onclick="enviarFormulario<%=listaNotificacionesCampanita.indexOf(noti)%>()">Leído</a></p>
+                                    <p class="user-status-timestamp">Hace <%=diferenciaFechas[0]%> años <a style="color: #20c997;cursor: pointer" onclick="enviarFormulario('notificacionLeidaCampanita<%=listaNotificacionesCampanita.indexOf(noti)%>')">Leído</a></p>
                                     <!-- /USER STATUS TIMESTAMP -->
                                     <%}%>
                                     <%}else if(diferenciaFechas[1]>0){
                                         if(diferenciaFechas[1]==1){%>
                                     <!-- USER STATUS TIMESTAMP -->
-                                    <p class="user-status-timestamp">Hace 1 mes <a style="color: #20c997;cursor: pointer" onclick="enviarFormulario<%=listaNotificacionesCampanita.indexOf(noti)%>()">Leído</a></p>
+                                    <p class="user-status-timestamp">Hace 1 mes <a style="color: #20c997;cursor: pointer" onclick="enviarFormulario('notificacionLeidaCampanita<%=listaNotificacionesCampanita.indexOf(noti)%>')">Leído</a></p>
                                     <!-- /USER STATUS TIMESTAMP -->
                                     <%}else{%>
                                     <!-- USER STATUS TIMESTAMP -->
-                                    <p class="user-status-timestamp">Hace <%=diferenciaFechas[1]%> meses <a style="color: #20c997;cursor: pointer" onclick="enviarFormulario<%=listaNotificacionesCampanita.indexOf(noti)%>()">Leído</a></p>
+                                    <p class="user-status-timestamp">Hace <%=diferenciaFechas[1]%> meses <a style="color: #20c997;cursor: pointer" onclick="enviarFormulario('notificacionLeidaCampanita<%=listaNotificacionesCampanita.indexOf(noti)%>')">Leído</a></p>
                                     <!-- /USER STATUS TIMESTAMP -->
                                     <%}%>
                                     <%}else if(diferenciaFechas[2]>0){
                                         if(diferenciaFechas[2]==1){%>
                                     <!-- USER STATUS TIMESTAMP -->
-                                    <p class="user-status-timestamp">Hace 1 día <a style="color: #20c997;cursor: pointer" onclick="enviarFormulario<%=listaNotificacionesCampanita.indexOf(noti)%>()">Leído</a></p>
+                                    <p class="user-status-timestamp">Hace 1 día <a style="color: #20c997;cursor: pointer" onclick="enviarFormulario('notificacionLeidaCampanita<%=listaNotificacionesCampanita.indexOf(noti)%>')">Leído</a></p>
                                     <!-- /USER STATUS TIMESTAMP -->
                                     <%}else{%>
                                     <!-- USER STATUS TIMESTAMP -->
-                                    <p class="user-status-timestamp">Hace <%=diferenciaFechas[2]%> días <a style="color: #20c997;cursor: pointer" onclick="enviarFormulario<%=listaNotificacionesCampanita.indexOf(noti)%>()">Leído</a></p>
+                                    <p class="user-status-timestamp">Hace <%=diferenciaFechas[2]%> días <a style="color: #20c997;cursor: pointer" onclick="enviarFormulario('notificacionLeidaCampanita<%=listaNotificacionesCampanita.indexOf(noti)%>')">Leído</a></p>
                                     <!-- /USER STATUS TIMESTAMP -->
                                     <%}%>
                                     <%}else if(diferenciaFechas[3]>0){
                                         if(diferenciaFechas[3]==1){%>
                                     <!-- USER STATUS TIMESTAMP -->
-                                    <p class="user-status-timestamp">Hace 1 hora <a style="color: #20c997;cursor: pointer" onclick="enviarFormulario<%=listaNotificacionesCampanita.indexOf(noti)%>()">Leído</a></p>
+                                    <p class="user-status-timestamp">Hace 1 hora <a style="color: #20c997;cursor: pointer" onclick="enviarFormulario('notificacionLeidaCampanita<%=listaNotificacionesCampanita.indexOf(noti)%>')">Leído</a></p>
                                     <!-- /USER STATUS TIMESTAMP -->
                                     <%}else{%>
                                     <!-- USER STATUS TIMESTAMP -->
-                                    <p class="user-status-timestamp">Hace <%=diferenciaFechas[3]%> horas <a style="color: #20c997;cursor: pointer" onclick="enviarFormulario<%=listaNotificacionesCampanita.indexOf(noti)%>()">Leído</a></p>
+                                    <p class="user-status-timestamp">Hace <%=diferenciaFechas[3]%> horas <a style="color: #20c997;cursor: pointer" onclick="enviarFormulario('notificacionLeidaCampanita<%=listaNotificacionesCampanita.indexOf(noti)%>')">Leído</a></p>
                                     <!-- /USER STATUS TIMESTAMP -->
                                     <%}%>
                                     <%}else if(diferenciaFechas[4]>0){
                                         if(diferenciaFechas[4]==1){%>
                                     <!-- USER STATUS TIMESTAMP -->
-                                    <p class="user-status-timestamp">Hace 1 minuto <a style="color: #20c997;cursor: pointer" onclick="enviarFormulario<%=listaNotificacionesCampanita.indexOf(noti)%>()">Leído</a></p>
+                                    <p class="user-status-timestamp">Hace 1 minuto <a style="color: #20c997;cursor: pointer" onclick="enviarFormulario('notificacionLeidaCampanita<%=listaNotificacionesCampanita.indexOf(noti)%>')">Leído</a></p>
                                     <!-- /USER STATUS TIMESTAMP -->
                                     <%}else{%>
                                     <!-- USER STATUS TIMESTAMP -->
-                                    <p class="user-status-timestamp">Hace <%=diferenciaFechas[4]%> minutos <a style="color: #20c997;cursor: pointer" onclick="enviarFormulario<%=listaNotificacionesCampanita.indexOf(noti)%>()">Leído</a></p>
+                                    <p class="user-status-timestamp">Hace <%=diferenciaFechas[4]%> minutos <a style="color: #20c997;cursor: pointer" onclick="enviarFormulario('notificacionLeidaCampanita<%=listaNotificacionesCampanita.indexOf(noti)%>')">Leído</a></p>
                                     <!-- /USER STATUS TIMESTAMP -->
                                     <%}%>
                                     <%}else if(diferenciaFechas[5]>0){
                                         if(diferenciaFechas[5]==1){%>
                                     <!-- USER STATUS TIMESTAMP -->
-                                    <p class="user-status-timestamp">Hace 1 segundo <a style="color: #20c997;cursor: pointer" onclick="enviarFormulario<%=listaNotificacionesCampanita.indexOf(noti)%>()">Leído</a></p>
+                                    <p class="user-status-timestamp">Hace 1 segundo <a style="color: #20c997;cursor: pointer" onclick="enviarFormulario('notificacionLeidaCampanita<%=listaNotificacionesCampanita.indexOf(noti)%>')">Leído</a></p>
                                     <!-- /USER STATUS TIMESTAMP -->
                                     <%}else{%>
                                     <!-- USER STATUS TIMESTAMP -->
-                                    <p class="user-status-timestamp">Hace <%=diferenciaFechas[5]%> segundos <a style="color: #20c997;cursor: pointer" onclick="enviarFormulario<%=listaNotificacionesCampanita.indexOf(noti)%>()">Leído</a></p>
+                                    <p class="user-status-timestamp">Hace <%=diferenciaFechas[5]%> segundos <a style="color: #20c997;cursor: pointer" onclick="enviarFormulario('notificacionLeidaCampanita<%=listaNotificacionesCampanita.indexOf(noti)%>')">Leído</a></p>
                                     <!-- /USER STATUS TIMESTAMP -->
                                     <%}%>
                                     <%}else if(diferenciaFechas[5]==0){%>
                                     <!-- USER STATUS TIMESTAMP -->
-                                    <p class="user-status-timestamp">Ahora mismo <a style="color: #20c997;cursor: pointer" onclick="enviarFormulario<%=listaNotificacionesCampanita.indexOf(noti)%>()">Leído</a></p>
+                                    <p class="user-status-timestamp">Ahora mismo <a style="color: #20c997;cursor: pointer" onclick="enviarFormulario('notificacionLeidaCampanita<%=listaNotificacionesCampanita.indexOf(noti)%>')">Leído</a></p>
                                     <!-- /USER STATUS TIMESTAMP -->
                                     <%}%>
                                     <!-- USER STATUS ICON -->
@@ -1122,66 +1120,66 @@
                                         if(diferenciaFechas[0]>0){
                                             if(diferenciaFechas[0]==1){%>
                                     <!-- USER STATUS TIMESTAMP -->
-                                    <p class="user-status-timestamp">Hace 1 año <a style="color: #20c997;cursor: pointer" onclick="enviarFormulario<%=listaNotificacionesCampanita.indexOf(noti)%>()">Leído</a></p>
+                                    <p class="user-status-timestamp">Hace 1 año <a style="color: #20c997;cursor: pointer" onclick="enviarFormulario('notificacionLeidaCampanita<%=listaNotificacionesCampanita.indexOf(noti)%>')">Leído</a></p>
                                     <!-- /USER STATUS TIMESTAMP -->
                                     <%}else{%>
                                     <!-- USER STATUS TIMESTAMP -->
-                                    <p class="user-status-timestamp">Hace <%=diferenciaFechas[0]%> años <a style="color: #20c997;cursor: pointer" onclick="enviarFormulario<%=listaNotificacionesCampanita.indexOf(noti)%>()">Leído</a></p>
+                                    <p class="user-status-timestamp">Hace <%=diferenciaFechas[0]%> años <a style="color: #20c997;cursor: pointer" onclick="enviarFormulario('notificacionLeidaCampanita<%=listaNotificacionesCampanita.indexOf(noti)%>')">Leído</a></p>
                                     <!-- /USER STATUS TIMESTAMP -->
                                     <%}%>
                                     <%}else if(diferenciaFechas[1]>0){
                                         if(diferenciaFechas[1]==1){%>
                                     <!-- USER STATUS TIMESTAMP -->
-                                    <p class="user-status-timestamp">Hace 1 mes <a style="color: #20c997;cursor: pointer" onclick="enviarFormulario<%=listaNotificacionesCampanita.indexOf(noti)%>()">Leído</a></p>
+                                    <p class="user-status-timestamp">Hace 1 mes <a style="color: #20c997;cursor: pointer" onclick="enviarFormulario('notificacionLeidaCampanita<%=listaNotificacionesCampanita.indexOf(noti)%>')">Leído</a></p>
                                     <!-- /USER STATUS TIMESTAMP -->
                                     <%}else{%>
                                     <!-- USER STATUS TIMESTAMP -->
-                                    <p class="user-status-timestamp">Hace <%=diferenciaFechas[1]%> meses <a style="color: #20c997;cursor: pointer" onclick="enviarFormulario<%=listaNotificacionesCampanita.indexOf(noti)%>()">Leído</a></p>
+                                    <p class="user-status-timestamp">Hace <%=diferenciaFechas[1]%> meses <a style="color: #20c997;cursor: pointer" onclick="enviarFormulario('notificacionLeidaCampanita<%=listaNotificacionesCampanita.indexOf(noti)%>')">Leído</a></p>
                                     <!-- /USER STATUS TIMESTAMP -->
                                     <%}%>
                                     <%}else if(diferenciaFechas[2]>0){
                                         if(diferenciaFechas[2]==1){%>
                                     <!-- USER STATUS TIMESTAMP -->
-                                    <p class="user-status-timestamp">Hace 1 día <a style="color: #20c997;cursor: pointer" onclick="enviarFormulario<%=listaNotificacionesCampanita.indexOf(noti)%>()">Leído</a></p>
+                                    <p class="user-status-timestamp">Hace 1 día <a style="color: #20c997;cursor: pointer" onclick="enviarFormulario('notificacionLeidaCampanita<%=listaNotificacionesCampanita.indexOf(noti)%>')">Leído</a></p>
                                     <!-- /USER STATUS TIMESTAMP -->
                                     <%}else{%>
                                     <!-- USER STATUS TIMESTAMP -->
-                                    <p class="user-status-timestamp">Hace <%=diferenciaFechas[2]%> días <a style="color: #20c997;cursor: pointer" onclick="enviarFormulario<%=listaNotificacionesCampanita.indexOf(noti)%>()">Leído</a></p>
+                                    <p class="user-status-timestamp">Hace <%=diferenciaFechas[2]%> días <a style="color: #20c997;cursor: pointer" onclick="enviarFormulario('notificacionLeidaCampanita<%=listaNotificacionesCampanita.indexOf(noti)%>')">Leído</a></p>
                                     <!-- /USER STATUS TIMESTAMP -->
                                     <%}%>
                                     <%}else if(diferenciaFechas[3]>0){
                                         if(diferenciaFechas[3]==1){%>
                                     <!-- USER STATUS TIMESTAMP -->
-                                    <p class="user-status-timestamp">Hace 1 hora <a style="color: #20c997;cursor: pointer" onclick="enviarFormulario<%=listaNotificacionesCampanita.indexOf(noti)%>()">Leído</a></p>
+                                    <p class="user-status-timestamp">Hace 1 hora <a style="color: #20c997;cursor: pointer" onclick="enviarFormulario('notificacionLeidaCampanita<%=listaNotificacionesCampanita.indexOf(noti)%>')">Leído</a></p>
                                     <!-- /USER STATUS TIMESTAMP -->
                                     <%}else{%>
                                     <!-- USER STATUS TIMESTAMP -->
-                                    <p class="user-status-timestamp">Hace <%=diferenciaFechas[3]%> horas <a style="color: #20c997;cursor: pointer" onclick="enviarFormulario<%=listaNotificacionesCampanita.indexOf(noti)%>()">Leído</a></p>
+                                    <p class="user-status-timestamp">Hace <%=diferenciaFechas[3]%> horas <a style="color: #20c997;cursor: pointer" onclick="enviarFormulario('notificacionLeidaCampanita<%=listaNotificacionesCampanita.indexOf(noti)%>')">Leído</a></p>
                                     <!-- /USER STATUS TIMESTAMP -->
                                     <%}%>
                                     <%}else if(diferenciaFechas[4]>0){
                                         if(diferenciaFechas[4]==1){%>
                                     <!-- USER STATUS TIMESTAMP -->
-                                    <p class="user-status-timestamp">Hace 1 minuto <a style="color: #20c997;cursor: pointer" onclick="enviarFormulario<%=listaNotificacionesCampanita.indexOf(noti)%>()">Leído</a></p>
+                                    <p class="user-status-timestamp">Hace 1 minuto <a style="color: #20c997;cursor: pointer" onclick="enviarFormulario('notificacionLeidaCampanita<%=listaNotificacionesCampanita.indexOf(noti)%>')">Leído</a></p>
                                     <!-- /USER STATUS TIMESTAMP -->
                                     <%}else{%>
                                     <!-- USER STATUS TIMESTAMP -->
-                                    <p class="user-status-timestamp">Hace <%=diferenciaFechas[4]%> minutos <a style="color: #20c997;cursor: pointer" onclick="enviarFormulario<%=listaNotificacionesCampanita.indexOf(noti)%>()">Leído</a></p>
+                                    <p class="user-status-timestamp">Hace <%=diferenciaFechas[4]%> minutos <a style="color: #20c997;cursor: pointer" onclick="enviarFormulario('notificacionLeidaCampanita<%=listaNotificacionesCampanita.indexOf(noti)%>')">Leído</a></p>
                                     <!-- /USER STATUS TIMESTAMP -->
                                     <%}%>
                                     <%}else if(diferenciaFechas[5]>0){
                                         if(diferenciaFechas[5]==1){%>
                                     <!-- USER STATUS TIMESTAMP -->
-                                    <p class="user-status-timestamp">Hace 1 segundo <a style="color: #20c997;cursor: pointer" onclick="enviarFormulario<%=listaNotificacionesCampanita.indexOf(noti)%>()">Leído</a></p>
+                                    <p class="user-status-timestamp">Hace 1 segundo <a style="color: #20c997;cursor: pointer" onclick="enviarFormulario('notificacionLeidaCampanita<%=listaNotificacionesCampanita.indexOf(noti)%>')">Leído</a></p>
                                     <!-- /USER STATUS TIMESTAMP -->
                                     <%}else{%>
                                     <!-- USER STATUS TIMESTAMP -->
-                                    <p class="user-status-timestamp">Hace <%=diferenciaFechas[5]%> segundos <a style="color: #20c997;cursor: pointer" onclick="enviarFormulario<%=listaNotificacionesCampanita.indexOf(noti)%>()">Leído</a></p>
+                                    <p class="user-status-timestamp">Hace <%=diferenciaFechas[5]%> segundos <a style="color: #20c997;cursor: pointer" onclick="enviarFormulario('notificacionLeidaCampanita<%=listaNotificacionesCampanita.indexOf(noti)%>')">Leído</a></p>
                                     <!-- /USER STATUS TIMESTAMP -->
                                     <%}%>
                                     <%}else if(diferenciaFechas[5]==0){%>
                                     <!-- USER STATUS TIMESTAMP -->
-                                    <p class="user-status-timestamp">Ahora mismo <a style="color: #20c997;cursor: pointer" onclick="enviarFormulario<%=listaNotificacionesCampanita.indexOf(noti)%>()">Leído</a></p>
+                                    <p class="user-status-timestamp">Ahora mismo <a style="color: #20c997;cursor: pointer" onclick="enviarFormulario('notificacionLeidaCampanita<%=listaNotificacionesCampanita.indexOf(noti)%>')">Leído</a></p>
                                     <!-- /USER STATUS TIMESTAMP -->
                                     <%}%>
                                     <!-- USER STATUS ICON -->
@@ -1250,66 +1248,66 @@
                                         if(diferenciaFechas[0]>0){
                                             if(diferenciaFechas[0]==1){%>
                                     <!-- USER STATUS TIMESTAMP -->
-                                    <p class="user-status-timestamp">Hace 1 año <a style="color: #20c997;cursor: pointer" onclick="enviarFormulario<%=listaNotificacionesCampanita.indexOf(noti)%>()">Leído</a></p>
+                                    <p class="user-status-timestamp">Hace 1 año <a style="color: #20c997;cursor: pointer" onclick="enviarFormulario('notificacionLeidaCampanita<%=listaNotificacionesCampanita.indexOf(noti)%>')">Leído</a></p>
                                     <!-- /USER STATUS TIMESTAMP -->
                                     <%}else{%>
                                     <!-- USER STATUS TIMESTAMP -->
-                                    <p class="user-status-timestamp">Hace <%=diferenciaFechas[0]%> años <a style="color: #20c997;cursor: pointer" onclick="enviarFormulario<%=listaNotificacionesCampanita.indexOf(noti)%>()">Leído</a></p>
+                                    <p class="user-status-timestamp">Hace <%=diferenciaFechas[0]%> años <a style="color: #20c997;cursor: pointer" onclick="enviarFormulario('notificacionLeidaCampanita<%=listaNotificacionesCampanita.indexOf(noti)%>')">Leído</a></p>
                                     <!-- /USER STATUS TIMESTAMP -->
                                     <%}%>
                                     <%}else if(diferenciaFechas[1]>0){
                                         if(diferenciaFechas[1]==1){%>
                                     <!-- USER STATUS TIMESTAMP -->
-                                    <p class="user-status-timestamp">Hace 1 mes <a style="color: #20c997;cursor: pointer" onclick="enviarFormulario<%=listaNotificacionesCampanita.indexOf(noti)%>()">Leído</a></p>
+                                    <p class="user-status-timestamp">Hace 1 mes <a style="color: #20c997;cursor: pointer" onclick="enviarFormulario('notificacionLeidaCampanita<%=listaNotificacionesCampanita.indexOf(noti)%>')">Leído</a></p>
                                     <!-- /USER STATUS TIMESTAMP -->
                                     <%}else{%>
                                     <!-- USER STATUS TIMESTAMP -->
-                                    <p class="user-status-timestamp">Hace <%=diferenciaFechas[1]%> meses <a style="color: #20c997;cursor: pointer" onclick="enviarFormulario<%=listaNotificacionesCampanita.indexOf(noti)%>()">Leído</a></p>
+                                    <p class="user-status-timestamp">Hace <%=diferenciaFechas[1]%> meses <a style="color: #20c997;cursor: pointer" onclick="enviarFormulario('notificacionLeidaCampanita<%=listaNotificacionesCampanita.indexOf(noti)%>')">Leído</a></p>
                                     <!-- /USER STATUS TIMESTAMP -->
                                     <%}%>
                                     <%}else if(diferenciaFechas[2]>0){
                                         if(diferenciaFechas[2]==1){%>
                                     <!-- USER STATUS TIMESTAMP -->
-                                    <p class="user-status-timestamp">Hace 1 día <a style="color: #20c997;cursor: pointer" onclick="enviarFormulario<%=listaNotificacionesCampanita.indexOf(noti)%>()">Leído</a></p>
+                                    <p class="user-status-timestamp">Hace 1 día <a style="color: #20c997;cursor: pointer" onclick="enviarFormulario('notificacionLeidaCampanita<%=listaNotificacionesCampanita.indexOf(noti)%>')">Leído</a></p>
                                     <!-- /USER STATUS TIMESTAMP -->
                                     <%}else{%>
                                     <!-- USER STATUS TIMESTAMP -->
-                                    <p class="user-status-timestamp">Hace <%=diferenciaFechas[2]%> días <a style="color: #20c997;cursor: pointer" onclick="enviarFormulario<%=listaNotificacionesCampanita.indexOf(noti)%>()">Leído</a></p>
+                                    <p class="user-status-timestamp">Hace <%=diferenciaFechas[2]%> días <a style="color: #20c997;cursor: pointer" onclick="enviarFormulario('notificacionLeidaCampanita<%=listaNotificacionesCampanita.indexOf(noti)%>')">Leído</a></p>
                                     <!-- /USER STATUS TIMESTAMP -->
                                     <%}%>
                                     <%}else if(diferenciaFechas[3]>0){
                                         if(diferenciaFechas[3]==1){%>
                                     <!-- USER STATUS TIMESTAMP -->
-                                    <p class="user-status-timestamp">Hace 1 hora <a style="color: #20c997;cursor: pointer" onclick="enviarFormulario<%=listaNotificacionesCampanita.indexOf(noti)%>()">Leído</a></p>
+                                    <p class="user-status-timestamp">Hace 1 hora <a style="color: #20c997;cursor: pointer" onclick="enviarFormulario('notificacionLeidaCampanita<%=listaNotificacionesCampanita.indexOf(noti)%>')">Leído</a></p>
                                     <!-- /USER STATUS TIMESTAMP -->
                                     <%}else{%>
                                     <!-- USER STATUS TIMESTAMP -->
-                                    <p class="user-status-timestamp">Hace <%=diferenciaFechas[3]%> horas <a style="color: #20c997;cursor: pointer" onclick="enviarFormulario<%=listaNotificacionesCampanita.indexOf(noti)%>()">Leído</a></p>
+                                    <p class="user-status-timestamp">Hace <%=diferenciaFechas[3]%> horas <a style="color: #20c997;cursor: pointer" onclick="enviarFormulario('notificacionLeidaCampanita<%=listaNotificacionesCampanita.indexOf(noti)%>')">Leído</a></p>
                                     <!-- /USER STATUS TIMESTAMP -->
                                     <%}%>
                                     <%}else if(diferenciaFechas[4]>0){
                                         if(diferenciaFechas[4]==1){%>
                                     <!-- USER STATUS TIMESTAMP -->
-                                    <p class="user-status-timestamp">Hace 1 minuto <a style="color: #20c997;cursor: pointer" onclick="enviarFormulario<%=listaNotificacionesCampanita.indexOf(noti)%>()">Leído</a></p>
+                                    <p class="user-status-timestamp">Hace 1 minuto <a style="color: #20c997;cursor: pointer" onclick="enviarFormulario('notificacionLeidaCampanita<%=listaNotificacionesCampanita.indexOf(noti)%>')">Leído</a></p>
                                     <!-- /USER STATUS TIMESTAMP -->
                                     <%}else{%>
                                     <!-- USER STATUS TIMESTAMP -->
-                                    <p class="user-status-timestamp">Hace <%=diferenciaFechas[4]%> minutos <a style="color: #20c997;cursor: pointer" onclick="enviarFormulario<%=listaNotificacionesCampanita.indexOf(noti)%>()">Leído</a></p>
+                                    <p class="user-status-timestamp">Hace <%=diferenciaFechas[4]%> minutos <a style="color: #20c997;cursor: pointer" onclick="enviarFormulario('notificacionLeidaCampanita<%=listaNotificacionesCampanita.indexOf(noti)%>')">Leído</a></p>
                                     <!-- /USER STATUS TIMESTAMP -->
                                     <%}%>
                                     <%}else if(diferenciaFechas[5]>0){
                                         if(diferenciaFechas[5]==1){%>
                                     <!-- USER STATUS TIMESTAMP -->
-                                    <p class="user-status-timestamp">Hace 1 segundo <a style="color: #20c997;cursor: pointer" onclick="enviarFormulario<%=listaNotificacionesCampanita.indexOf(noti)%>()">Leído</a></p>
+                                    <p class="user-status-timestamp">Hace 1 segundo <a style="color: #20c997;cursor: pointer" onclick="enviarFormulario('notificacionLeidaCampanita<%=listaNotificacionesCampanita.indexOf(noti)%>')">Leído</a></p>
                                     <!-- /USER STATUS TIMESTAMP -->
                                     <%}else{%>
                                     <!-- USER STATUS TIMESTAMP -->
-                                    <p class="user-status-timestamp">Hace <%=diferenciaFechas[5]%> segundos <a style="color: #20c997;cursor: pointer" onclick="enviarFormulario<%=listaNotificacionesCampanita.indexOf(noti)%>()">Leído</a></p>
+                                    <p class="user-status-timestamp">Hace <%=diferenciaFechas[5]%> segundos <a style="color: #20c997;cursor: pointer" onclick="enviarFormulario('notificacionLeidaCampanita<%=listaNotificacionesCampanita.indexOf(noti)%>')">Leído</a></p>
                                     <!-- /USER STATUS TIMESTAMP -->
                                     <%}%>
                                     <%}else if(diferenciaFechas[5]==0){%>
                                     <!-- USER STATUS TIMESTAMP -->
-                                    <p class="user-status-timestamp">Ahora mismo <a style="color: #20c997;cursor: pointer" onclick="enviarFormulario<%=listaNotificacionesCampanita.indexOf(noti)%>()">Leído</a></p>
+                                    <p class="user-status-timestamp">Ahora mismo <a style="color: #20c997;cursor: pointer" onclick="enviarFormulario('notificacionLeidaCampanita<%=listaNotificacionesCampanita.indexOf(noti)%>')">Leído</a></p>
                                     <!-- /USER STATUS TIMESTAMP -->
                                     <%}%>
                                     <!-- USER STATUS ICON -->
@@ -1379,66 +1377,66 @@
                                         if(diferenciaFechas[0]>0){
                                             if(diferenciaFechas[0]==1){%>
                                     <!-- USER STATUS TIMESTAMP -->
-                                    <p class="user-status-timestamp">Hace 1 año <a style="color: #20c997;cursor: pointer" onclick="enviarFormulario<%=listaNotificacionesCampanita.indexOf(noti)%>()">Leído</a></p>
+                                    <p class="user-status-timestamp">Hace 1 año <a style="color: #20c997;cursor: pointer" onclick="enviarFormulario('notificacionLeidaCampanita<%=listaNotificacionesCampanita.indexOf(noti)%>')">Leído</a></p>
                                     <!-- /USER STATUS TIMESTAMP -->
                                     <%}else{%>
                                     <!-- USER STATUS TIMESTAMP -->
-                                    <p class="user-status-timestamp">Hace <%=diferenciaFechas[0]%> años <a style="color: #20c997;cursor: pointer" onclick="enviarFormulario<%=listaNotificacionesCampanita.indexOf(noti)%>()">Leído</a></p>
+                                    <p class="user-status-timestamp">Hace <%=diferenciaFechas[0]%> años <a style="color: #20c997;cursor: pointer" onclick="enviarFormulario('notificacionLeidaCampanita<%=listaNotificacionesCampanita.indexOf(noti)%>')">Leído</a></p>
                                     <!-- /USER STATUS TIMESTAMP -->
                                     <%}%>
                                     <%}else if(diferenciaFechas[1]>0){
                                         if(diferenciaFechas[1]==1){%>
                                     <!-- USER STATUS TIMESTAMP -->
-                                    <p class="user-status-timestamp">Hace 1 mes <a style="color: #20c997;cursor: pointer" onclick="enviarFormulario<%=listaNotificacionesCampanita.indexOf(noti)%>()">Leído</a></p>
+                                    <p class="user-status-timestamp">Hace 1 mes <a style="color: #20c997;cursor: pointer" onclick="enviarFormulario('notificacionLeidaCampanita<%=listaNotificacionesCampanita.indexOf(noti)%>')">Leído</a></p>
                                     <!-- /USER STATUS TIMESTAMP -->
                                     <%}else{%>
                                     <!-- USER STATUS TIMESTAMP -->
-                                    <p class="user-status-timestamp">Hace <%=diferenciaFechas[1]%> meses <a style="color: #20c997;cursor: pointer" onclick="enviarFormulario<%=listaNotificacionesCampanita.indexOf(noti)%>()">Leído</a></p>
+                                    <p class="user-status-timestamp">Hace <%=diferenciaFechas[1]%> meses <a style="color: #20c997;cursor: pointer" onclick="enviarFormulario('notificacionLeidaCampanita<%=listaNotificacionesCampanita.indexOf(noti)%>')">Leído</a></p>
                                     <!-- /USER STATUS TIMESTAMP -->
                                     <%}%>
                                     <%}else if(diferenciaFechas[2]>0){
                                         if(diferenciaFechas[2]==1){%>
                                     <!-- USER STATUS TIMESTAMP -->
-                                    <p class="user-status-timestamp">Hace 1 día <a style="color: #20c997;cursor: pointer" onclick="enviarFormulario<%=listaNotificacionesCampanita.indexOf(noti)%>()">Leído</a></p>
+                                    <p class="user-status-timestamp">Hace 1 día <a style="color: #20c997;cursor: pointer" onclick="enviarFormulario('notificacionLeidaCampanita<%=listaNotificacionesCampanita.indexOf(noti)%>')">Leído</a></p>
                                     <!-- /USER STATUS TIMESTAMP -->
                                     <%}else{%>
                                     <!-- USER STATUS TIMESTAMP -->
-                                    <p class="user-status-timestamp">Hace <%=diferenciaFechas[2]%> días <a style="color: #20c997;cursor: pointer" onclick="enviarFormulario<%=listaNotificacionesCampanita.indexOf(noti)%>()">Leído</a></p>
+                                    <p class="user-status-timestamp">Hace <%=diferenciaFechas[2]%> días <a style="color: #20c997;cursor: pointer" onclick="enviarFormulario('notificacionLeidaCampanita<%=listaNotificacionesCampanita.indexOf(noti)%>')">Leído</a></p>
                                     <!-- /USER STATUS TIMESTAMP -->
                                     <%}%>
                                     <%}else if(diferenciaFechas[3]>0){
                                         if(diferenciaFechas[3]==1){%>
                                     <!-- USER STATUS TIMESTAMP -->
-                                    <p class="user-status-timestamp">Hace 1 hora <a style="color: #20c997;cursor: pointer" onclick="enviarFormulario<%=listaNotificacionesCampanita.indexOf(noti)%>()">Leído</a></p>
+                                    <p class="user-status-timestamp">Hace 1 hora <a style="color: #20c997;cursor: pointer" onclick="enviarFormulario('notificacionLeidaCampanita<%=listaNotificacionesCampanita.indexOf(noti)%>')">Leído</a></p>
                                     <!-- /USER STATUS TIMESTAMP -->
                                     <%}else{%>
                                     <!-- USER STATUS TIMESTAMP -->
-                                    <p class="user-status-timestamp">Hace <%=diferenciaFechas[3]%> horas <a style="color: #20c997;cursor: pointer" onclick="enviarFormulario<%=listaNotificacionesCampanita.indexOf(noti)%>()">Leído</a></p>
+                                    <p class="user-status-timestamp">Hace <%=diferenciaFechas[3]%> horas <a style="color: #20c997;cursor: pointer" onclick="enviarFormulario('notificacionLeidaCampanita<%=listaNotificacionesCampanita.indexOf(noti)%>')">Leído</a></p>
                                     <!-- /USER STATUS TIMESTAMP -->
                                     <%}%>
                                     <%}else if(diferenciaFechas[4]>0){
                                         if(diferenciaFechas[4]==1){%>
                                     <!-- USER STATUS TIMESTAMP -->
-                                    <p class="user-status-timestamp">Hace 1 minuto <a style="color: #20c997;cursor: pointer" onclick="enviarFormulario<%=listaNotificacionesCampanita.indexOf(noti)%>()">Leído</a></p>
+                                    <p class="user-status-timestamp">Hace 1 minuto <a style="color: #20c997;cursor: pointer" onclick="enviarFormulario('notificacionLeidaCampanita<%=listaNotificacionesCampanita.indexOf(noti)%>')">Leído</a></p>
                                     <!-- /USER STATUS TIMESTAMP -->
                                     <%}else{%>
                                     <!-- USER STATUS TIMESTAMP -->
-                                    <p class="user-status-timestamp">Hace <%=diferenciaFechas[4]%> minutos <a style="color: #20c997;cursor: pointer" onclick="enviarFormulario<%=listaNotificacionesCampanita.indexOf(noti)%>()">Leído</a></p>
+                                    <p class="user-status-timestamp">Hace <%=diferenciaFechas[4]%> minutos <a style="color: #20c997;cursor: pointer" onclick="enviarFormulario('notificacionLeidaCampanita<%=listaNotificacionesCampanita.indexOf(noti)%>')">Leído</a></p>
                                     <!-- /USER STATUS TIMESTAMP -->
                                     <%}%>
                                     <%}else if(diferenciaFechas[5]>0){
                                         if(diferenciaFechas[5]==1){%>
                                     <!-- USER STATUS TIMESTAMP -->
-                                    <p class="user-status-timestamp">Hace 1 segundo <a style="color: #20c997;cursor: pointer" onclick="enviarFormulario<%=listaNotificacionesCampanita.indexOf(noti)%>()">Leído</a></p>
+                                    <p class="user-status-timestamp">Hace 1 segundo <a style="color: #20c997;cursor: pointer" onclick="enviarFormulario('notificacionLeidaCampanita<%=listaNotificacionesCampanita.indexOf(noti)%>')">Leído</a></p>
                                     <!-- /USER STATUS TIMESTAMP -->
                                     <%}else{%>
                                     <!-- USER STATUS TIMESTAMP -->
-                                    <p class="user-status-timestamp">Hace <%=diferenciaFechas[5]%> segundos <a style="color: #20c997;cursor: pointer" onclick="enviarFormulario<%=listaNotificacionesCampanita.indexOf(noti)%>()">Leído</a></p>
+                                    <p class="user-status-timestamp">Hace <%=diferenciaFechas[5]%> segundos <a style="color: #20c997;cursor: pointer" onclick="enviarFormulario('notificacionLeidaCampanita<%=listaNotificacionesCampanita.indexOf(noti)%>')">Leído</a></p>
                                     <!-- /USER STATUS TIMESTAMP -->
                                     <%}%>
                                     <%}else if(diferenciaFechas[5]==0){%>
                                     <!-- USER STATUS TIMESTAMP -->
-                                    <p class="user-status-timestamp">Ahora mismo <a style="color: #20c997;cursor: pointer" onclick="enviarFormulario<%=listaNotificacionesCampanita.indexOf(noti)%>()">Leído</a></p>
+                                    <p class="user-status-timestamp">Ahora mismo <a style="color: #20c997;cursor: pointer" onclick="enviarFormulario('notificacionLeidaCampanita<%=listaNotificacionesCampanita.indexOf(noti)%>')">Leído</a></p>
                                     <!-- /USER STATUS TIMESTAMP -->
                                     <%}%>
                                     <!-- USER STATUS ICON -->
@@ -1507,66 +1505,66 @@
                                         if(diferenciaFechas[0]>0){
                                             if(diferenciaFechas[0]==1){%>
                                     <!-- USER STATUS TIMESTAMP -->
-                                    <p class="user-status-timestamp">Hace 1 año <a style="color: #20c997;cursor: pointer" onclick="enviarFormulario<%=listaNotificacionesCampanita.indexOf(noti)%>()">Leído</a></p>
+                                    <p class="user-status-timestamp">Hace 1 año <a style="color: #20c997;cursor: pointer" onclick="enviarFormulario('notificacionLeidaCampanita<%=listaNotificacionesCampanita.indexOf(noti)%>')">Leído</a></p>
                                     <!-- /USER STATUS TIMESTAMP -->
                                     <%}else{%>
                                     <!-- USER STATUS TIMESTAMP -->
-                                    <p class="user-status-timestamp">Hace <%=diferenciaFechas[0]%> años <a style="color: #20c997;cursor: pointer" onclick="enviarFormulario<%=listaNotificacionesCampanita.indexOf(noti)%>()">Leído</a></p>
+                                    <p class="user-status-timestamp">Hace <%=diferenciaFechas[0]%> años <a style="color: #20c997;cursor: pointer" onclick="enviarFormulario('notificacionLeidaCampanita<%=listaNotificacionesCampanita.indexOf(noti)%>')">Leído</a></p>
                                     <!-- /USER STATUS TIMESTAMP -->
                                     <%}%>
                                     <%}else if(diferenciaFechas[1]>0){
                                         if(diferenciaFechas[1]==1){%>
                                     <!-- USER STATUS TIMESTAMP -->
-                                    <p class="user-status-timestamp">Hace 1 mes <a style="color: #20c997;cursor: pointer" onclick="enviarFormulario<%=listaNotificacionesCampanita.indexOf(noti)%>()">Leído</a></p>
+                                    <p class="user-status-timestamp">Hace 1 mes <a style="color: #20c997;cursor: pointer" onclick="enviarFormulario('notificacionLeidaCampanita<%=listaNotificacionesCampanita.indexOf(noti)%>')">Leído</a></p>
                                     <!-- /USER STATUS TIMESTAMP -->
                                     <%}else{%>
                                     <!-- USER STATUS TIMESTAMP -->
-                                    <p class="user-status-timestamp">Hace <%=diferenciaFechas[1]%> meses <a style="color: #20c997;cursor: pointer" onclick="enviarFormulario<%=listaNotificacionesCampanita.indexOf(noti)%>()">Leído</a></p>
+                                    <p class="user-status-timestamp">Hace <%=diferenciaFechas[1]%> meses <a style="color: #20c997;cursor: pointer" onclick="enviarFormulario('notificacionLeidaCampanita<%=listaNotificacionesCampanita.indexOf(noti)%>')">Leído</a></p>
                                     <!-- /USER STATUS TIMESTAMP -->
                                     <%}%>
                                     <%}else if(diferenciaFechas[2]>0){
                                         if(diferenciaFechas[2]==1){%>
                                     <!-- USER STATUS TIMESTAMP -->
-                                    <p class="user-status-timestamp">Hace 1 día <a style="color: #20c997;cursor: pointer" onclick="enviarFormulario<%=listaNotificacionesCampanita.indexOf(noti)%>()">Leído</a></p>
+                                    <p class="user-status-timestamp">Hace 1 día <a style="color: #20c997;cursor: pointer" onclick="enviarFormulario('notificacionLeidaCampanita<%=listaNotificacionesCampanita.indexOf(noti)%>')">Leído</a></p>
                                     <!-- /USER STATUS TIMESTAMP -->
                                     <%}else{%>
                                     <!-- USER STATUS TIMESTAMP -->
-                                    <p class="user-status-timestamp">Hace <%=diferenciaFechas[2]%> días <a style="color: #20c997;cursor: pointer" onclick="enviarFormulario<%=listaNotificacionesCampanita.indexOf(noti)%>()">Leído</a></p>
+                                    <p class="user-status-timestamp">Hace <%=diferenciaFechas[2]%> días <a style="color: #20c997;cursor: pointer" onclick="enviarFormulario('notificacionLeidaCampanita<%=listaNotificacionesCampanita.indexOf(noti)%>')">Leído</a></p>
                                     <!-- /USER STATUS TIMESTAMP -->
                                     <%}%>
                                     <%}else if(diferenciaFechas[3]>0){
                                         if(diferenciaFechas[3]==1){%>
                                     <!-- USER STATUS TIMESTAMP -->
-                                    <p class="user-status-timestamp">Hace 1 hora <a style="color: #20c997;cursor: pointer" onclick="enviarFormulario<%=listaNotificacionesCampanita.indexOf(noti)%>()">Leído</a></p>
+                                    <p class="user-status-timestamp">Hace 1 hora <a style="color: #20c997;cursor: pointer" onclick="enviarFormulario('notificacionLeidaCampanita<%=listaNotificacionesCampanita.indexOf(noti)%>')">Leído</a></p>
                                     <!-- /USER STATUS TIMESTAMP -->
                                     <%}else{%>
                                     <!-- USER STATUS TIMESTAMP -->
-                                    <p class="user-status-timestamp">Hace <%=diferenciaFechas[3]%> horas <a style="color: #20c997;cursor: pointer" onclick="enviarFormulario<%=listaNotificacionesCampanita.indexOf(noti)%>()">Leído</a></p>
+                                    <p class="user-status-timestamp">Hace <%=diferenciaFechas[3]%> horas <a style="color: #20c997;cursor: pointer" onclick="enviarFormulario('notificacionLeidaCampanita<%=listaNotificacionesCampanita.indexOf(noti)%>')">Leído</a></p>
                                     <!-- /USER STATUS TIMESTAMP -->
                                     <%}%>
                                     <%}else if(diferenciaFechas[4]>0){
                                         if(diferenciaFechas[4]==1){%>
                                     <!-- USER STATUS TIMESTAMP -->
-                                    <p class="user-status-timestamp">Hace 1 minuto <a style="color: #20c997;cursor: pointer" onclick="enviarFormulario<%=listaNotificacionesCampanita.indexOf(noti)%>()">Leído</a></p>
+                                    <p class="user-status-timestamp">Hace 1 minuto <a style="color: #20c997;cursor: pointer" onclick="enviarFormulario('notificacionLeidaCampanita<%=listaNotificacionesCampanita.indexOf(noti)%>')">Leído</a></p>
                                     <!-- /USER STATUS TIMESTAMP -->
                                     <%}else{%>
                                     <!-- USER STATUS TIMESTAMP -->
-                                    <p class="user-status-timestamp">Hace <%=diferenciaFechas[4]%> minutos <a style="color: #20c997;cursor: pointer" onclick="enviarFormulario<%=listaNotificacionesCampanita.indexOf(noti)%>()">Leído</a></p>
+                                    <p class="user-status-timestamp">Hace <%=diferenciaFechas[4]%> minutos <a style="color: #20c997;cursor: pointer" onclick="enviarFormulario('notificacionLeidaCampanita<%=listaNotificacionesCampanita.indexOf(noti)%>')">Leído</a></p>
                                     <!-- /USER STATUS TIMESTAMP -->
                                     <%}%>
                                     <%}else if(diferenciaFechas[5]>0){
                                         if(diferenciaFechas[5]==1){%>
                                     <!-- USER STATUS TIMESTAMP -->
-                                    <p class="user-status-timestamp">Hace 1 segundo <a style="color: #20c997;cursor: pointer" onclick="enviarFormulario<%=listaNotificacionesCampanita.indexOf(noti)%>()">Leído</a></p>
+                                    <p class="user-status-timestamp">Hace 1 segundo <a style="color: #20c997;cursor: pointer" onclick="enviarFormulario('notificacionLeidaCampanita<%=listaNotificacionesCampanita.indexOf(noti)%>')">Leído</a></p>
                                     <!-- /USER STATUS TIMESTAMP -->
                                     <%}else{%>
                                     <!-- USER STATUS TIMESTAMP -->
-                                    <p class="user-status-timestamp">Hace <%=diferenciaFechas[5]%> segundos <a style="color: #20c997;cursor: pointer" onclick="enviarFormulario<%=listaNotificacionesCampanita.indexOf(noti)%>()">Leído</a></p>
+                                    <p class="user-status-timestamp">Hace <%=diferenciaFechas[5]%> segundos <a style="color: #20c997;cursor: pointer" onclick="enviarFormulario('notificacionLeidaCampanita<%=listaNotificacionesCampanita.indexOf(noti)%>')">Leído</a></p>
                                     <!-- /USER STATUS TIMESTAMP -->
                                     <%}%>
                                     <%}else if(diferenciaFechas[5]==0){%>
                                     <!-- USER STATUS TIMESTAMP -->
-                                    <p class="user-status-timestamp">Ahora mismo <a style="color: #20c997;cursor: pointer" onclick="enviarFormulario<%=listaNotificacionesCampanita.indexOf(noti)%>()">Leído</a></p>
+                                    <p class="user-status-timestamp">Ahora mismo <a style="color: #20c997;cursor: pointer" onclick="enviarFormulario('notificacionLeidaCampanita<%=listaNotificacionesCampanita.indexOf(noti)%>')">Leído</a></p>
                                     <!-- /USER STATUS TIMESTAMP -->
                                     <%}%>
                                     <!-- USER STATUS ICON -->
@@ -1582,8 +1580,8 @@
                             <!-- Validación recuperar contraseña -->
                             <%}}%>
                             <script>
-                                function enviarFormulario<%=listaNotificacionesCampanita.indexOf(noti)%>() {
-                                    var formulario = document.getElementById('notificacionLeidaCampanita<%=listaNotificacionesCampanita.indexOf(noti)%>');
+                                function enviarFormulario(idForm) {
+                                    var formulario = document.getElementById(idForm);
                                     formulario.submit();
                                 }
                             </script>
@@ -1607,10 +1605,9 @@
             <!-- ACTION ITEM -->
             <div class="action-item dark header-settings-dropdown-trigger">
                 <!-- ACTION ITEM ICON -->
-                <form id="cerrarSesion1" method="post" action="InicioSesionServlet?action=logOut">
-                    <a onclick="enviarFormulario('cerrarSesion1')"><img src="css/logOut.png" width="30%" style="margin-left: 25px;" alt=""></a>
+                <form method="post" action="InicioSesionServlet?action=logOut">
+                    <button style="border:0;background: none;color: inherit" type="submit"><a><img src="css/logOut.png" width="30%" style="" alt=""></a></button>
                 </form>
-                <script></script>
                 <!-- /ACTION ITEM ICON -->
             </div>
             <!-- /ACTION ITEM -->

@@ -108,9 +108,10 @@ public class ListaDeActividadesServlet extends HttpServlet {
                     String fotoCabecera="ola";
                     String fotoMiniatura="ola";
                     dActividad.crearActividad(nombreCrearActividad,idDelegadoActividadCrear,puntajeCrearActividad,ocultoCrearActividad,fotoCabecera,fotoMiniatura);
-                    response.sendRedirect("ListaDeActividadesServlet?");
+                    response.sendRedirect("ListaDeActividadesServlet");
                 }catch (NumberFormatException e){
-                    response.sendRedirect("ListaDeActividadesServlet?puntajeNoNumerico=1");
+                    request.getSession().setAttribute("puntajeNoNumerico","1");
+                    response.sendRedirect("ListaDeActividadesServlet");
                 }
                 break;
             case "editarActividad":
@@ -132,7 +133,9 @@ public class ListaDeActividadesServlet extends HttpServlet {
                     dActividad.editarActividad(idActividadEditar,nombreEditarActividad,idDelegadoActividadEditar,puntajeEditarActividad,ocultoEditarActividad,fotoCabeceraEditar,fotoMiniaturaEditar,idDelegadoActividadAnterior);
                     response.sendRedirect("ListaDeActividadesServlet");
                 }catch (NumberFormatException e){
-                    response.sendRedirect("ListaDeActividadesServlet?idActividadElegida="+idActividadEditar+"&puntajeNoNumerico=1");
+                    request.getSession().setAttribute("puntajeNoNumerico","1");
+                    request.getSession().setAttribute("idActividadElegida",idActividadEditar);
+                    response.sendRedirect("ListaDeActividadesServlet");
                 }
 
                 break;

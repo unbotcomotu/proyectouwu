@@ -75,6 +75,38 @@ public class DaoEvento extends DaoPadre {
         }
     }
 
+    public ArrayList<Evento> listarEventos(int idActividad, int pagina) {
+        ArrayList<Evento> listaEventos = new ArrayList<>();
+        String sql = "select e.idEvento,e.idLugarEvento,e.titulo,e.fecha,e.hora,e.descripcionEventoActivo,e.fraseMotivacional,e.fotoMiniatura,e.eventoFinalizado,e.eventoOculto,e.resumen,e.resultadoEvento from Evento e inner join Actividad a on e.idActividad=a.idActividad where a.idActividad=? limit 8 offset ?";
+        try (Connection conn=this.getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setInt(1, idActividad);
+            pstmt.setInt(1,pagina*8);
+
+            try (ResultSet rs = pstmt.executeQuery()) {
+                while (rs.next()) {
+                    Evento e = new Evento();
+                    e.setIdEvento(rs.getInt(1));
+                    e.getLugarEvento().setIdLugarEvento(rs.getInt(2));
+                    e.setTitulo(rs.getString(3));
+                    e.setFecha(rs.getDate(4));
+                    e.setHora(rs.getTime(5));
+                    e.setDescripcionEventoActivo(rs.getString(6));
+                    e.setFraseMotivacional(rs.getString(7));
+                    e.setFotoMiniatura(rs.getBlob(8));
+                    e.setEventoFinalizado(rs.getBoolean(9));
+                    e.setEventoOculto(rs.getBoolean(10));
+                    e.setResumen(rs.getString(11));
+                    e.setResultadoEvento(rs.getString(12));
+                    listaEventos.add(e);
+                }
+            }
+            return listaEventos;
+        } catch (SQLException ex) {
+            throw new RuntimeException(ex);
+        }
+    }
+
+
     public String actividadDeEventoPorID(int idEvento) {
         //Busqueda de un evento
         String sql = "select a.nombre from Evento e inner join Actividad a on e.idActividad=a.idActividad where idEvento=?";

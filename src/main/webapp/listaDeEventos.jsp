@@ -7,6 +7,8 @@
 <html lang="en">
 <head>
     <%Usuario usuarioActual=(Usuario) request.getSession().getAttribute("usuario");
+        String action = request.getParameter("action") != null ? request.getParameter("action") : "";
+
         int idUsuario=usuarioActual.getIdUsuario();
         String rolUsuario=usuarioActual.getRol();
         String nombreCompletoUsuario=usuarioActual.getNombre()+" "+usuarioActual.getApellido();
@@ -17,6 +19,11 @@
         String nombreActividad=(String)request.getAttribute("nombreActividad");
         ArrayList<LugarEvento>listaLugares=(ArrayList<LugarEvento>) request.getAttribute("listaLugares");
         int delegadoDeEstaActividadID=(int)request.getAttribute("delegadoDeEstaActividadID");
+
+        int cantidadTotalEventos = (int)Math.ceil((int)request.getAttribute("cantidadEventosTotal")/8.0);
+        Integer pagActual = request.getAttribute("pagActual") != null ? (Integer) request.getAttribute("pagActual") : 1;
+
+
         Integer eventoOculto = (Integer) request.getAttribute("eventoOculto");
         Integer eventoFinalizado = (Integer) request.getAttribute("eventoFinalizado");
         Integer eventoApoyado = (Integer) request.getAttribute("eventoApoyando");
@@ -1741,6 +1748,8 @@
                         <label for="items-search">Buscar evento</label>
                         <input type="text" id="items-search" name="nombreEvento" value="<%=request.getAttribute("busqueda") != null ? request.getAttribute("busqueda") : ""%>">
                         <input type="hidden" name="idActividad" value="<%=idActividad%>">
+                        <input type="hidden" name="p" value="<%=pagActual%>">
+
                     </div>
                     <!-- /FORM INPUT -->
 
@@ -1766,6 +1775,8 @@
             <form method="get" action="<%=request.getContextPath()%>/ListaDeEventosServlet" class="form">
                 <input type="hidden" name="action" value="filtroOrdenarEvento">
                 <input type="hidden" name="idActividad" value="<%=idActividad%>">
+                <input type="hidden" name="p" value="<%=pagActual%>">
+
                 <!-- FORM ITEM -->
                 <div class="form-item split medium">
                     <%Integer idOrdenarEventos=(Integer) request.getAttribute("idOrdenarEventos");%>
@@ -1819,6 +1830,8 @@
             <div class="sidebar-box">
                 <form method="get" action="<%=request.getContextPath()%>/ListaDeEventosServlet">
                     <input type="hidden" name="idActividad" value="<%=idActividad%>">
+                    <input type="hidden" name="p" value="<%=pagActual%>">
+
                     <input type="hidden" name="action" value="filtrarEventos">
                     <!-- SIDEBAR BOX TITLE -->
                     <p class="sidebar-box-title">Estado</p>
@@ -2313,19 +2326,20 @@
                     <!-- SECTION PAGER -->
                     <div class="section-pager">
                         <!-- SECTION PAGER ITEM -->
-                        <div class="section-pager-item active">
+                        <%for(int p=0;p<cantidadTotalEventos; p++){%>
+                        <div class="section-pager-item <%if(pagActual==p+1){%>active<%}%>">
+                            <%if(action.equals("buscarUsuario")){%>
                             <!-- SECTION PAGER ITEM TEXT -->
-                            <p class="section-pager-item-text">01</p>
+                            <%if(p<9){%>
+                            <a class="section-pager-item-text" href="ListaDeEventosServlet?action=<%=action%>&idActividad=<%=busqueda%>&p=<%=p+1%>">0<%=p+1%></a>
+                            <%}else{%>
+                            <a class="section-pager-item-text" href="ListaEventosServlet?i&action=<%=action%>&idActividad<%=busqueda%>&p=<%=p+1%>"><%=p+1%></a>
+                            <%}%>
                             <!-- /SECTION PAGER ITEM TEXT -->
                         </div>
                         <!-- /SECTION PAGER ITEM -->
-
-                        <!-- SECTION PAGER ITEM -->
-                        <div class="section-pager-item">
-                            <!-- SECTION PAGER ITEM TEXT -->
-                            <p class="section-pager-item-text">02</p>
-                            <!-- /SECTION PAGER ITEM TEXT -->
-                        </div>
+                        <%}%>
+                    </div>
                         <!-- /SECTION PAGER ITEM -->
 
                         <!-- SECTION PAGER ITEM -->
@@ -2349,6 +2363,19 @@
                             <!-- SECTION PAGER ITEM TEXT -->
                             <p class="section-pager-item-text">05</p>
                             <!-- /SECTION PAGER ITEM TEXT -->
+                            <%}else if(action.equals("filtroUsuario")){%>
+                            <%if(p<9){%>
+                            <a class="section-pager-item-text" href="ListaDeUsuariosServlet?&action=<%=action%>&idFiltroUsuario=<%=idFiltroUsuario%>&idOrdenarUsuario=<%=idOrdenarUsuario%>&p=<%=p+1%>">0<%=p+1%></a>
+                            <%}else{%>
+                            <a class="section-pager-item-text" href="ListaDeUsuariosServlet?&action=<%=action%>&idFiltroUsuario=<%=idFiltroUsuario%>&idOrdenarUsuario=<%=idOrdenarUsuario%>&p=<%=p+1%>"><%=p+1%></a>
+                            <%}%>
+                            <%}else{%>
+                            <%if(p<9){%>
+                            <a class="section-pager-item-text" href="ListaDeUsuariosServlet?&p=<%=p+1%>">0<%=p+1%></a>
+                            <%}else{%>
+                            <a class="section-pager-item-text" href="ListaDeUsuariosServlet?&p=<%=p+1%>"><%=p+1%></a>
+                            <%}%>
+                            <%}%>
                         </div>
                         <!-- /SECTION PAGER ITEM -->
 

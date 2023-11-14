@@ -27,6 +27,9 @@ public class ListaDeEventosServlet extends HttpServlet {
         DaoEvento dEvento=new DaoEvento();
         DaoActividad dActividad=new DaoActividad();
         Usuario usuario=(Usuario) request.getSession().getAttribute("usuario");
+        String pag = request.getParameter("p") == null ? "1" : request.getParameter("p");
+        int pagina = Integer.parseInt(pag);
+
         if(usuario==null){
             response.sendRedirect("InicioSesionServlet");
         }else {
@@ -34,7 +37,8 @@ public class ListaDeEventosServlet extends HttpServlet {
             request.setAttribute("idActividad",idActividad);
             request.setAttribute("vistaActual","listaDeActividades");
             request.setAttribute("correosDelegadosGenerales",dUsuario.listarCorreosDelegadosGenerales());
-            request.setAttribute("listaEventos",dEvento.listarEventos(idActividad));
+
+
             request.setAttribute("nombreActividad",dActividad.nombreActividadPorID(idActividad));
             request.setAttribute("delegadoDeEstaActividadID",dActividad.idDelegadoDeActividadPorActividad(idActividad));
             request.setAttribute("listaLugares",new DaoLugarEvento().listarLugares());
@@ -45,12 +49,18 @@ public class ListaDeEventosServlet extends HttpServlet {
             request.setAttribute("cantidadEventosHoy",dActividad.cantidadEventosEnNdiasPorActividad(idActividad,0));
             request.setAttribute("cantidadEventosManana",dActividad.cantidadEventosEnNdiasPorActividad(idActividad,1));
             request.setAttribute("cantidadEventos2DiasMas", dActividad.cantidadEventosEn2DiasAMasPorActividad(idActividad));
+
+
+
             if(usuario.getRol().equals("Delegado General")){
                 request.setAttribute("listaNotificacionesCampanita",new DaoNotificacionDelegadoGeneral().listarNotificacionesDelegadoGeneral());
             }
             String action = request.getParameter("action") == null ? "default" : request.getParameter("action");
             switch (action){
                 case "default":
+                    request.setAttribute("pagActual", pagina);
+                    request.setAttribute("listaEventos",dEvento.listarEventos(idActividad,pagina-1));
+                    request.setAttribute("cantidadEventosTotal", dEvento.listarEventos(idActividad).size());
                     request.getRequestDispatcher("listaDeEventos.jsp").forward(request,response);
                     break;
                 case "filtrarEventos":

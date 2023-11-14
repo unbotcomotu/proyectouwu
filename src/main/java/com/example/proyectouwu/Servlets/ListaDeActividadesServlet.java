@@ -95,49 +95,59 @@ public class ListaDeActividadesServlet extends HttpServlet {
                 break;
             case "crearActividad":
                 String nombreCrearActividad=request.getParameter("nombreCrearActividad");
-                Integer idDelegadoActividadCrear=Integer.parseInt(request.getParameter("idDelegadoActividadCrear"));
-                String puntajeAux=request.getParameter("puntajeCrearActividad");
-                try{
-                    Integer puntajeCrearActividad=Integer.parseInt(puntajeAux);
-                    boolean ocultoCrearActividad;
-                    if(request.getParameter("ocultoCrearActividad")!=null){
-                        ocultoCrearActividad=true;
-                    }else{
-                        ocultoCrearActividad=false;
+                if(dActividad.verificarActividadRepetida(nombreCrearActividad)){
+                    request.getSession().setAttribute("actividadRepetida","1");
+                    response.sendRedirect("ListaDeActividadesServlet");
+                }else {
+                    Integer idDelegadoActividadCrear=Integer.parseInt(request.getParameter("idDelegadoActividadCrear"));
+                    String puntajeAux=request.getParameter("puntajeCrearActividad");
+                    try{
+                        Integer puntajeCrearActividad=Integer.parseInt(puntajeAux);
+                        boolean ocultoCrearActividad;
+                        if(request.getParameter("ocultoCrearActividad")!=null){
+                            ocultoCrearActividad=true;
+                        }else{
+                            ocultoCrearActividad=false;
+                        }
+                        String fotoCabecera="ola";
+                        String fotoMiniatura="ola";
+                        dActividad.crearActividad(nombreCrearActividad,idDelegadoActividadCrear,puntajeCrearActividad,ocultoCrearActividad,fotoCabecera,fotoMiniatura);
+                        response.sendRedirect("ListaDeActividadesServlet");
+                    }catch (NumberFormatException e){
+                        request.getSession().setAttribute("puntajeNoNumerico","1");
+                        response.sendRedirect("ListaDeActividadesServlet");
                     }
-                    String fotoCabecera="ola";
-                    String fotoMiniatura="ola";
-                    dActividad.crearActividad(nombreCrearActividad,idDelegadoActividadCrear,puntajeCrearActividad,ocultoCrearActividad,fotoCabecera,fotoMiniatura);
-                    response.sendRedirect("ListaDeActividadesServlet");
-                }catch (NumberFormatException e){
-                    request.getSession().setAttribute("puntajeNoNumerico","1");
-                    response.sendRedirect("ListaDeActividadesServlet");
                 }
                 break;
             case "editarActividad":
                 Integer idDelegadoActividadAnterior=Integer.parseInt(request.getParameter("idDelegadoActividadAnterior"));
                 Integer idActividadEditar=Integer.parseInt(request.getParameter("idActividadEditar"));
                 String nombreEditarActividad=request.getParameter("nombreEditarActividad");
-                Integer idDelegadoActividadEditar=Integer.parseInt(request.getParameter("idDelegadoActividadEditar"));
-                String puntajeAux2=request.getParameter("puntajeEditarActividad");
-                try{
-                    Integer puntajeEditarActividad=Integer.parseInt(puntajeAux2);
-                    boolean ocultoEditarActividad;
-                    if(request.getParameter("ocultoEditarActividad")!=null){
-                        ocultoEditarActividad=true;
-                    }else{
-                        ocultoEditarActividad=false;
-                    }
-                    String fotoCabeceraEditar="ola";
-                    String fotoMiniaturaEditar="ola";
-                    dActividad.editarActividad(idActividadEditar,nombreEditarActividad,idDelegadoActividadEditar,puntajeEditarActividad,ocultoEditarActividad,fotoCabeceraEditar,fotoMiniaturaEditar,idDelegadoActividadAnterior);
-                    response.sendRedirect("ListaDeActividadesServlet");
-                }catch (NumberFormatException e){
-                    request.getSession().setAttribute("puntajeNoNumerico","1");
+                if(dActividad.verificarActividadRepetida(nombreEditarActividad)){
+                    request.getSession().setAttribute("actividadRepetida","1");
                     request.getSession().setAttribute("idActividadElegida",idActividadEditar);
                     response.sendRedirect("ListaDeActividadesServlet");
+                }else {
+                    Integer idDelegadoActividadEditar=Integer.parseInt(request.getParameter("idDelegadoActividadEditar"));
+                    String puntajeAux2=request.getParameter("puntajeEditarActividad");
+                    try{
+                        Integer puntajeEditarActividad=Integer.parseInt(puntajeAux2);
+                        boolean ocultoEditarActividad;
+                        if(request.getParameter("ocultoEditarActividad")!=null){
+                            ocultoEditarActividad=true;
+                        }else{
+                            ocultoEditarActividad=false;
+                        }
+                        String fotoCabeceraEditar="ola";
+                        String fotoMiniaturaEditar="ola";
+                        dActividad.editarActividad(idActividadEditar,nombreEditarActividad,idDelegadoActividadEditar,puntajeEditarActividad,ocultoEditarActividad,fotoCabeceraEditar,fotoMiniaturaEditar,idDelegadoActividadAnterior);
+                        response.sendRedirect("ListaDeActividadesServlet");
+                    }catch (NumberFormatException e){
+                        request.getSession().setAttribute("puntajeNoNumerico","1");
+                        request.getSession().setAttribute("idActividadElegida",idActividadEditar);
+                        response.sendRedirect("ListaDeActividadesServlet");
+                    }
                 }
-
                 break;
             case "notificacionLeidaCampanita":
                 dN.notificacionLeida(Integer.parseInt(request.getParameter("idNotificacion")));

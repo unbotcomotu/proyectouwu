@@ -273,9 +273,6 @@ public class DaoActividad extends DaoPadre {
         String sql="select count(aux.idActividad) from actividad ac left join (select a.idActividad as 'idActividad' from actividad a left join evento e on a.idActividad=e.idActividad left join alumnoporevento ae on e.idEvento=ae.idEvento inner join usuario u on ae.idAlumno=u.idUsuario where u.condicion='Estudiante') aux on ac.idActividad=aux.idActividad group by ac.nombre order by ac.nombre";
         try(Connection conn=this.getConnection(); ResultSet rs=conn.createStatement().executeQuery(sql)){
             while (rs.next()){
-                if(rs.getInt(1)!=0){
-
-                }
                 lista.add(rs.getInt(1));
             }return lista;
         } catch (SQLException e) {
@@ -365,6 +362,21 @@ public class DaoActividad extends DaoPadre {
                     return rs.getInt(1);
                 }else
                     return 0;
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public boolean verificarActividadRepetida(String nombre){
+        String sql="select idActividad from Actividad where lower(nombre)=lower(?)";
+        try(Connection conn=this.getConnection(); PreparedStatement pstmt= conn.prepareStatement(sql)){
+            pstmt.setString(1,nombre);
+            try(ResultSet rs=pstmt.executeQuery()){
+                if(rs.next()){
+                    return true;
+                }else
+                    return false;
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);

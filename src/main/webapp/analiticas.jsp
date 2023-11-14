@@ -51,10 +51,10 @@
         Integer totalEgresadosRegistrados=(Integer) request.getAttribute("totalEgresadosRegistrados");
         float totalDonacionesEstudiantes=(float) request.getAttribute("totalDonacionesEstudiantes");
         float totalDonacionesEgresados=(float) request.getAttribute("totalDonacionesEgresados");
-        TopApoyo topApoyoUltimaSemana=(TopApoyo) request.getAttribute("topApoyoUltimaSemana");
-        TopApoyo topApoyoTotal=(TopApoyo) request.getAttribute("topApoyoTotal");
-        TopDonador topDonadorTotal = (TopDonador) request.getAttribute("topDonadorTotal");
-        TopDonador topDonadorUltimaSemana = (TopDonador) request.getAttribute("topDonadorUltimaSemana");
+        TopApoyo topApoyoUltimaSemana= request.getAttribute("topApoyoUltimaSemana") != null ? (TopApoyo) request.getAttribute("topApoyoUltimaSemana") : new TopApoyo();
+        TopApoyo topApoyoTotal= request.getAttribute("topApoyoTotal") != null ? (TopApoyo) request.getAttribute("topApoyoTotal") : new TopApoyo();
+        TopDonador topDonadorTotal = request.getAttribute("topDonadorTotal") != null ? (TopDonador) request.getAttribute("topDonadorTotal") : new TopDonador();
+        TopDonador topDonadorUltimaSemana = request.getAttribute("topDonadorUltimaSemana") != null ? (TopDonador) request.getAttribute("topDonadorUltimaSemana") : new TopDonador();
         for(int i=0;i<fechas.length;i++){
             if(diaMesActual.equals(fechas[i].split(" ")[1])){
                 for(int j=0;j<7;j++){

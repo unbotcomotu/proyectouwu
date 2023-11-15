@@ -27,10 +27,10 @@ public class RegistroServlet extends HttpServlet {
                 //int codigoValidacion = Integer.parseInt(request.getParameter("codigoValidacion"));
                 Validacion validacion= new Validacion();
                 String idCorreoValidacion = request.getParameter("idCorreoValidacion");
-                String codigoValidacion=request.getParameter("codigoValidacion");
+                String codigoValidacion256=request.getParameter("codigoValidacion256");
                 try{
                     validacion.setIdCorreoValidacion(Integer.parseInt(idCorreoValidacion));
-                    if(Integer.parseInt(idCorreoValidacion)==new DaoValidacion().getIdPorcodigoValidacion(Integer.parseInt(codigoValidacion))){
+                    if(codigoValidacion256.equals(new DaoValidacion().codigoValidacion256PorID(Integer.parseInt(idCorreoValidacion)))){
                         request.setAttribute("validacion",validacion);
                         request.getRequestDispatcher("Registro.jsp").forward(request,response);
                     }else{

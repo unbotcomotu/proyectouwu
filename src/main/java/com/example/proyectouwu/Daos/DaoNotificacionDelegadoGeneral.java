@@ -11,6 +11,8 @@ import java.util.Date;
 import java.util.Calendar;
 import java.time.Period;
 import java.time.LocalDate;
+import java.util.HashSet;
+
 public class DaoNotificacionDelegadoGeneral extends DaoPadre {
 
     public ArrayList<Usuario>listarSolicitudesDeRegistro(){
@@ -164,13 +166,9 @@ public class DaoNotificacionDelegadoGeneral extends DaoPadre {
         return reportList;
     }
 
-    public ArrayList<Donacion> listarNotificacionesDonaciones( ){
-
+    public ArrayList<Donacion> listarNotificacionesDonaciones(){
         ArrayList<Donacion> donacionList= new ArrayList<>();
-
-        
-
-        String sql = "SELECT idDonacion, idUsuario, medioPago, monto,fechaHora,estadoDonacion FROM donacion order by if(estadoDonacion='Pendiente',0,1),fechaHora desc";
+        String sql = "SELECT idDonacion, idUsuario, medioPago, monto,fechaHora,estadoDonacion,captura FROM donacion order by if(estadoDonacion='Pendiente',0,1),fechaHora desc";
         try (Connection conn=this.getConnection(); ResultSet rs=conn.createStatement().executeQuery(sql)) {
 
             while (rs.next()) {
@@ -181,6 +179,7 @@ public class DaoNotificacionDelegadoGeneral extends DaoPadre {
                 donacion.setMonto(rs.getFloat(4));
                 donacion.setFecha(rs.getDate(5));
                 donacion.setEstadoDonacion(rs.getString(6));
+                donacion.setCaptura(rs.getBlob(7));
                 donacionList.add(donacion);
             }
 
@@ -190,12 +189,58 @@ public class DaoNotificacionDelegadoGeneral extends DaoPadre {
         return donacionList;
     }
 
-    public ArrayList<Donacion> listarNotificacionesDonaciones(String buscar){
-
+    public ArrayList<Donacion> listarNotificacionesDonaciones(int pagina){
         ArrayList<Donacion> donacionList= new ArrayList<>();
+        String sql = "SELECT idDonacion, idUsuario, medioPago, monto,fechaHora,estadoDonacion FROM donacion order by if(estadoDonacion='Pendiente',0,1),fechaHora desc limit 8 offset ?";
+        try (Connection conn=this.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)){
+            pstmt.setInt(1,pagina*8);
+            try(ResultSet rs=pstmt.executeQuery()){
+                while (rs.next()) {
+                    Donacion donacion = new Donacion();
+                    donacion.setIdDonacion(rs.getInt(1));
+                    donacion.getUsuario().setIdUsuario(rs.getInt(2));
+                    donacion.setMedioPago(rs.getString(3));
+                    donacion.setMonto(rs.getFloat(4));
+                    donacion.setFecha(rs.getDate(5));
+                    donacion.setEstadoDonacion(rs.getString(6));
+                    donacionList.add(donacion);
+                }
+            }
 
-        
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return donacionList;
+    }
 
+    public ArrayList<Donacion> listarNotificacionesDonaciones(String buscar, int pagina){
+        ArrayList<Donacion> donacionList= new ArrayList<>();
+        String sql = "SELECT d.idDonacion, d.idUsuario, d.medioPago, d.monto,d.fechaHora,d.estadoDonacion FROM donacion d inner join usuario u on d.idUsuario=u.idUsuario where concat(u.nombre,' ',u.apellido) like ? order by if(d.estadoDonacion='Pendiente',0,1),fechaHora desc limit 8 offset ?";
+        try (Connection conn=this.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setString(1,"%"+buscar+"%");
+            pstmt.setInt(2,pagina*8);
+            try(ResultSet rs=pstmt.executeQuery()){
+                while (rs.next()) {
+                    Donacion donacion = new Donacion();
+                    donacion.setIdDonacion(rs.getInt(1));
+                    donacion.getUsuario().setIdUsuario(rs.getInt(2));
+                    donacion.setMedioPago(rs.getString(3));
+                    donacion.setMonto(rs.getFloat(4));
+                    donacion.setFecha(rs.getDate(5));
+                    donacion.setEstadoDonacion(rs.getString(6));
+                    donacionList.add(donacion);
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return donacionList;
+    }
+
+    public ArrayList<Donacion> listarNotificacionesDonaciones(String buscar){
+        ArrayList<Donacion> donacionList= new ArrayList<>();
         String sql = "SELECT d.idDonacion, d.idUsuario, d.medioPago, d.monto,d.fechaHora,d.estadoDonacion FROM donacion d inner join usuario u on d.idUsuario=u.idUsuario where u.nombre like ? or u.apellido like ? order by if(d.estadoDonacion='Pendiente',0,1),fechaHora desc";
         try (Connection conn=this.getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setString(1,"%"+buscar+"%");
@@ -217,15 +262,38 @@ public class DaoNotificacionDelegadoGeneral extends DaoPadre {
         }
         return donacionList;
     }
+
+    public ArrayList<Donacion> listarNotificacionesDonaciones(String fecha1,String fecha2, int pagina){
+        ArrayList<Donacion> donacionList= new ArrayList<>();
+        String sql = "SELECT idDonacion, idUsuario, medioPago, monto,fechaHora,estadoDonacion FROM donacion where date(fechaHora) between ? and ? order by if(estadoDonacion='Pendiente',0,1),fechaHora desc limit 8 offset ?";
+        try (Connection conn=this.getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setString(1,fecha1);
+            pstmt.setString(2,fecha2);
+            pstmt.setInt(3,pagina*8);
+            try(ResultSet rs=pstmt.executeQuery()){
+                while (rs.next()) {
+                    Donacion donacion = new Donacion();
+                    donacion.setIdDonacion(rs.getInt(1));
+                    donacion.getUsuario().setIdUsuario(rs.getInt(2));
+                    donacion.setMedioPago(rs.getString(3));
+                    donacion.setMonto(rs.getFloat(4));
+                    donacion.setFecha(rs.getDate(5));
+                    donacion.setEstadoDonacion(rs.getString(6));
+                    donacionList.add(donacion);
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return donacionList;
+    }
+
     public ArrayList<Donacion> listarNotificacionesDonaciones(String fecha1,String fecha2){
         String fecha1aux[]=fecha1.split("/");
         String fecha1final=fecha1aux[2]+"/"+fecha1aux[1]+"/"+fecha1aux[0];
         String fecha2aux[]=fecha2.split("/");
         String fecha2final=fecha2aux[2]+"/"+fecha2aux[1]+"/"+fecha2aux[0];
         ArrayList<Donacion> donacionList= new ArrayList<>();
-
-        
-
         String sql = "SELECT idDonacion, idUsuario, medioPago, monto,fechaHora,estadoDonacion FROM donacion where date(fechaHora) between ? and ? order by if(estadoDonacion='Pendiente',0,1),fechaHora desc";
         try (Connection conn=this.getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setString(1,fecha1final);
@@ -247,13 +315,78 @@ public class DaoNotificacionDelegadoGeneral extends DaoPadre {
         }
         return donacionList;
     }
+
+    public ArrayList<Donacion> juntarListas(ArrayList<Donacion> lista1, ArrayList<Donacion> lista2){
+        ArrayList<Donacion> listaFinal = new ArrayList<>();
+        HashSet<Integer> ids1 = new HashSet<Integer>();
+        HashSet<Integer> ids2 = new HashSet<Integer>();
+        for(Donacion d1: lista1){
+            ids1.add(d1.getIdDonacion());
+        }
+        for(Donacion d2: lista2){
+            ids2.add(d2.getIdDonacion());
+        }
+        ids1.retainAll(ids2);
+        for(int id : ids1){
+            listaFinal.add(obtenerDonacionPorID(id));
+        }
+        return listaFinal;
+    }
+
+    public Donacion obtenerDonacionPorID(int idDonacion){
+        Donacion donacion = new Donacion();
+        String sql = "SELECT idDonacion, idUsuario, medioPago, monto,fechaHora,estadoDonacion FROM donacion where idDonacion=?";
+        try(Connection conn = getConnection();
+            PreparedStatement pstmt = conn.prepareStatement(sql)){
+            pstmt.setInt(1,idDonacion);
+            try(ResultSet rs = pstmt.executeQuery()){
+                if(rs.next()){
+                    donacion.setIdDonacion(rs.getInt(1));
+                    donacion.getUsuario().setIdUsuario(rs.getInt(2));
+                    donacion.setMedioPago(rs.getString(3));
+                    donacion.setMonto(rs.getFloat(4));
+                    donacion.setFecha(rs.getDate(5));
+                    donacion.setEstadoDonacion(rs.getString(6));
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return donacion;
+    }
+
+    public ArrayList<Validacion> listarNotificacionesRecuperacion(int pagina){
+        ArrayList<Validacion> validacionList= new ArrayList<>();
+        String sql = "select correo,tipo,codigoValidacion,fechaHora,idCorreoValidacion,linkEnviado from validacion order by if(linkEnviado is false,0,1),idCorreoValidacion desc limit 8 offset ?";
+        try (Connection conn=this.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)){
+            pstmt.setInt(1,pagina*8);
+            try(ResultSet rs=pstmt.executeQuery()) {
+
+                while (rs.next()) {
+
+                    Validacion validacion = new Validacion();
+                    validacion.setCorreo(rs.getString(1));
+                    validacion.setTipo(rs.getString(2));
+                    validacion.setCodigoValidacion(rs.getInt(3));
+                    validacion.setFechaHora(rs.getDate(4));
+                    validacion.setIdCorreoValidacion(rs.getInt(5));
+                    validacion.setLinkEnviado(rs.getBoolean(6));
+                    validacionList.add(validacion);
+                }
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return validacionList;
+    }
+
     public ArrayList<Validacion> listarNotificacionesRecuperacion( ){
 
         ArrayList<Validacion> validacionList= new ArrayList<>();
 
-        
-
-        String sql = "select correo,tipo,codigoValidacion,fechaHora,idCorreoValidacion,linkEnviado from validacion order by if(linkEnviado is false,0,1),idCorreoValidacion desc";
+        String sql = "select correo,tipo,codigoValidacion,fechaHora,idCorreoValidacion,linkEnviado,codigoValidacion256 from validacion order by if(linkEnviado is false,0,1),idCorreoValidacion desc";
         try (Connection conn=this.getConnection(); ResultSet rs=conn.createStatement().executeQuery(sql)) {
 
             while (rs.next()) {
@@ -265,6 +398,7 @@ public class DaoNotificacionDelegadoGeneral extends DaoPadre {
                 validacion.setFechaHora(rs.getDate(4));
                 validacion.setIdCorreoValidacion(rs.getInt(5));
                 validacion.setLinkEnviado(rs.getBoolean(6));
+                validacion.setCodigoValidacion256(rs.getString(7));
                 validacionList.add(validacion);
             }
 

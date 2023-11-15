@@ -191,7 +191,8 @@
         <!-- USER AVATAR CONTENT -->
         <div class="user-avatar-content">
             <!-- HEXAGON -->
-            <div class="hexagon-image-30-32" data-src="css/fotoMichi.png"></div>
+            <%request.getSession().setAttribute("fotoPersonal0",usuarioActual.getFotoPerfil());%>
+            <div class="hexagon-image-30-32" data-src="Imagen?tipoDeFoto=fotoPerfil&id=Personal0"></div>
             <!-- /HEXAGON -->
         </div>
         <!-- /USER AVATAR CONTENT -->
@@ -211,7 +212,6 @@
             <!-- /HEXAGON -->
         </div>
         <!-- /USER AVATAR PROGRESS BORDER -->
-
     </a>
     <!-- /USER AVATAR -->
 
@@ -309,7 +309,8 @@
             <!-- USER AVATAR CONTENT -->
             <div class="user-avatar-content">
                 <!-- HEXAGON -->
-                <div class="hexagon-image-82-90" data-src="css/fotoMichi.png"></div>
+                <%request.getSession().setAttribute("fotoPersonal1",usuarioActual.getFotoPerfil());%>
+                <div class="hexagon-image-82-90" data-src="Imagen?tipoDeFoto=fotoPerfil&id=Personal1"></div>
                 <!-- /HEXAGON -->
             </div>
             <!-- /USER AVATAR CONTENT -->
@@ -450,7 +451,8 @@
                 <!-- USER AVATAR CONTENT -->
                 <div class="user-avatar-content">
                     <!-- HEXAGON -->
-                    <div class="hexagon-image-30-32" data-src="css/fotoMichi.png"></div>
+                    <%request.getSession().setAttribute("fotoPersonal2",usuarioActual.getFotoPerfil());%>
+                    <div class="hexagon-image-30-32" data-src="Imagen?tipoDeFoto=fotoPerfil&id=Personal2"></div>
                     <!-- /HEXAGON -->
                 </div>
                 <!-- /USER AVATAR CONTENT -->
@@ -494,11 +496,9 @@
         </div>
         <!-- /NAVIGATION WIDGET INFO -->
 
-        <!-- NAVIGATION WIDGET BUTTON -->
         <form method="post" action="InicioSesionServlet?action=logOut">
             <button style="border:0;background: none;color: inherit" type="submit"><a><p class="navigation-widget-info-button button small secondary">Cerrar sesión</p></a></button>
         </form>
-        <!-- /NAVIGATION WIDGET BUTTON -->
     </div>
     <!-- /NAVIGATION WIDGET INFO WRAP -->
 
@@ -930,9 +930,9 @@
                                         <div class="user-avatar small no-outline">
                                             <!-- USER AVATAR CONTENT -->
                                             <div class="user-avatar-content">
+                                                <%request.getSession().setAttribute("foto0"+listaNotificacionesCampanita.indexOf(noti),new DaoReporte().getFotoPerfilPorIDReporte(noti.getReporte().getIdReporte()));%>
                                                 <!-- HEXAGON AQUÍ FALTA LA FOTOOOO -->
-                                                <%request.getSession().setAttribute("foto"+listaNotificacionesCampanita.indexOf(noti)+"l",noti.getUsuario().getFotoPerfil());%>
-                                                <div class="hexagon-image-30-32" data-src="Imagen?id=<%=listaNotificacionesCampanita.indexOf(noti)%>l"></div>
+                                                <div class="hexagon-image-30-32" data-src="Imagen?tipoDeFoto=fotoPerfil&id=0<%=listaNotificacionesCampanita.indexOf(noti)%>"></div>
                                                 <!-- /HEXAGON -->
                                             </div>
                                             <!-- /USER AVATAR CONTENT -->
@@ -1059,9 +1059,9 @@
                                         <div class="user-avatar small no-outline">
                                             <!-- USER AVATAR CONTENT -->
                                             <div class="user-avatar-content">
+                                                <%request.getSession().setAttribute("foto0"+listaNotificacionesCampanita.indexOf(noti),new DaoDonacion().getFotoPerfilPorIDDonacion(noti.getDonacion().getIdDonacion()));%>
                                                 <!-- HEXAGON AQUÍ FALTA LA FOTOOOO -->
-                                                <%request.getSession().setAttribute("foto"+listaNotificacionesCampanita.indexOf(noti)+"l",noti.getUsuario().getFotoPerfil());%>
-                                                <div class="hexagon-image-30-32" data-src="Imagen?id=<%=listaNotificacionesCampanita.indexOf(noti)%>l"></div>
+                                                <div class="hexagon-image-30-32" data-src="Imagen?tipoDeFoto=fotoPerfil&id=0<%=listaNotificacionesCampanita.indexOf(noti)%>"></div>
                                                 <!-- /HEXAGON -->
                                             </div>
                                             <!-- /USER AVATAR CONTENT -->
@@ -1317,9 +1317,8 @@
                                         <div class="user-avatar small no-outline">
                                             <!-- USER AVATAR CONTENT -->
                                             <div class="user-avatar-content">
-                                                <!-- HEXAGON AQUÍ ESTA FOTO SE CAMBIAAA -->
-                                                <%request.getSession().setAttribute("foto"+listaNotificacionesCampanita.indexOf(noti)+"l",noti.getUsuario().getFotoPerfil());%>
-                                                <div class="hexagon-image-30-32" data-src="Imagen?id=<%=listaNotificacionesCampanita.indexOf(noti)%>l"></div>
+                                                <!-- HEXAGON AQUÍ ESTA FOTO ES ESTÁTICA -->
+                                                <div class="hexagon-image-30-32" data-src="css/iconoPerfil.png"></div>
                                                 <!-- /HEXAGON -->
                                             </div>
                                             <!-- /USER AVATAR CONTENT -->
@@ -1446,9 +1445,9 @@
                                         <div class="user-avatar small no-outline">
                                             <!-- USER AVATAR CONTENT -->
                                             <div class="user-avatar-content">
-                                                <!-- HEXAGON AQUÍ ESTA FOTO SE CAMBIAAA -->
-                                                <%request.getSession().setAttribute("foto"+listaNotificacionesCampanita.indexOf(noti)+"l",noti.getUsuario().getFotoPerfil());%>
-                                                <div class="hexagon-image-30-32" data-src="Imagen?id=<%=listaNotificacionesCampanita.indexOf(noti)%>l"></div>
+                                                <%request.getSession().setAttribute("foto0"+listaNotificacionesCampanita.indexOf(noti),new DaoValidacion().getFotoPerfilPorIDCorreoValidacion(noti.getValidacion().getIdCorreoValidacion()));%>
+                                                <!-- HEXAGON AQUÍ FALTA LA FOTOOOO -->
+                                                <div class="hexagon-image-30-32" data-src="Imagen?tipoDeFoto=fotoPerfil&id=0<%=listaNotificacionesCampanita.indexOf(noti)%>"></div>
                                                 <!-- /HEXAGON -->
                                             </div>
                                             <!-- /USER AVATAR CONTENT -->
@@ -1609,7 +1608,6 @@
 <!-- /HEADER -->
 
 <!-- CONTENT GRID -->
-
 <div class="content-grid">
     <!-- SECTION BANNER -->
     <div class="section-banner">

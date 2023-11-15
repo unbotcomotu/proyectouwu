@@ -143,135 +143,139 @@ public class ListaDeEventosServlet extends HttpServlet {
         DaoEvento dEvento = new DaoEvento();
         DaoNotificacionDelegadoGeneral dN=new DaoNotificacionDelegadoGeneral();
         Usuario usuario = (Usuario) request.getSession().getAttribute("usuario");
-        int idActividad = Integer.parseInt(request.getParameter("idActividad"));
-        // Parámetros principales:
-        int idEvento;
-        // Parámetros auxiliares
-        Part part = null;
-        InputStream input = null;
-        InputStream inputAlt = null;
-        boolean validarLongitud;
-        String rutaImagenPredeterminada = "/css/fibraVShormigon.png";
+        if(usuario==null){
+            response.sendRedirect("InicioSesionServlet");
+        }else {
+            int idActividad = Integer.parseInt(request.getParameter("idActividad"));
+            // Parámetros principales:
+            int idEvento;
+            // Parámetros auxiliares
+            Part part = null;
+            InputStream input = null;
+            InputStream inputAlt = null;
+            boolean validarLongitud;
+            String rutaImagenPredeterminada = "/css/fibraVShormigon.png";
 
-        switch (action) {
+            switch (action) {
 
-            case "addConfirm":
-                // Parámetros:
-                String addLugar = request.getParameter("addLugar");
-                String addTitulo = request.getParameter("addTitulo");
-                String addHoraStr = request.getParameter("addHora");
-                String addDescripcionEventoActivo = request.getParameter("addDescripcionEventoActivo");
-                String addFraseMotivacional = request.getParameter("addFraseMotivacional");
-                String addEventoOcultoStr = request.getParameter("addEventoOculto");
-                String addFechaStrAux = request.getParameter("addFecha");
-                Boolean addEventoOculto = false;
-                if (!(addEventoOcultoStr == null)) {
-                    addEventoOculto = true;
-                }
-                Date addFecha = Date.valueOf(addFechaStrAux);
-                Time addHora = Time.valueOf(addHoraStr + ":00");
-                // Verificar lugar:
-                int addLugarId = dLugarEvento.idLugarPorNombre(addLugar);
-                // En caso no exista el lugar, se crea uno nuevo
-                if (addLugarId == 0) {
-                    addLugarId = dLugarEvento.crearLugar(addLugar); // Id del nuevo lugar
-                }
-                // Foto Miniatura
-                part = request.getPart("addfotoMiniatura");
-
-                // Obtenemos el flujo de bytes
-                if(part != null){
-                    input = part.getInputStream();
-                }else{
-                    input = getServletContext().getResourceAsStream(rutaImagenPredeterminada);
-                }
-
-                validarLongitud = input.available()>10;
-
-                if(!validarLongitud){
-                    input = getServletContext().getResourceAsStream(rutaImagenPredeterminada);
-                }
-                try {
-                    dEvento.crearEvento(idActividad, addLugarId, addTitulo, addFecha, addHora, addDescripcionEventoActivo, addFraseMotivacional, input, addEventoOculto);
-                } catch (SQLException e) {
-                    throw new RuntimeException(e);
-                }
-                input.close();
-                response.sendRedirect("ListaDeEventosServlet?idActividad="+idActividad);
-                break;
-            case "updateConfirm":
-
-                // Parámetros
-                idEvento = Integer.parseInt(request.getParameter("idEvento"));
-                String estadoEvento = request.getParameter("estadoEvento");
-
-                String updateLugar = request.getParameter("updateLugar");
-                String updateTitulo = request.getParameter("updateTitulo");
-                String updateFechaStr = request.getParameter("updateFecha");
-                String updateHoraStr = request.getParameter("updateHora");
-                String updateDescripcionEventoActivo = request.getParameter("updateDescripcionEventoActivo");
-                String updateFraseMotivacional = request.getParameter("updateFraseMotivacional");
-                String updateResumen = request.getParameter("updateResumen");
-                String updateResultado = request.getParameter("updateResultado");
-                String updateEventoOcultoStr1 = request.getParameter("updateEventoOculto");
-                String updateEventoOcultoStr2 = request.getParameter("updateEventoOcultoAlt");
-
-                if(estadoEvento.equals("true")){
-
-                    Boolean updateEventoOcultoAlt = false;
-                    if(!(updateEventoOcultoStr2 == null)){
-                        updateEventoOcultoAlt = true;
+                case "addConfirm":
+                    // Parámetros:
+                    String addLugar = request.getParameter("addLugar");
+                    String addTitulo = request.getParameter("addTitulo");
+                    String addHoraStr = request.getParameter("addHora");
+                    String addDescripcionEventoActivo = request.getParameter("addDescripcionEventoActivo");
+                    String addFraseMotivacional = request.getParameter("addFraseMotivacional");
+                    String addEventoOcultoStr = request.getParameter("addEventoOculto");
+                    String addFechaStrAux = request.getParameter("addFecha");
+                    Boolean addEventoOculto = false;
+                    if (!(addEventoOcultoStr == null)) {
+                        addEventoOculto = true;
                     }
-                    dEvento.editarEvento(idEvento,updateTitulo,updateResumen,updateResultado,updateEventoOcultoAlt);
-                }else {
-
-                    Boolean updateEventoOculto = false;
-                    if (!(updateEventoOcultoStr1 == null)) {
-                        updateEventoOculto = true;
-                    }
+                    Date addFecha = Date.valueOf(addFechaStrAux);
+                    Time addHora = Time.valueOf(addHoraStr + ":00");
                     // Verificar lugar:
-
-                    int updateLugarId = dLugarEvento.idLugarPorNombre(updateLugar);
+                    int addLugarId = dLugarEvento.idLugarPorNombre(addLugar);
                     // En caso no exista el lugar, se crea uno nuevo
-                    if (updateLugarId == 0) {
-                        updateLugarId = dLugarEvento.crearLugar(updateLugar); // Id del nuevo lugar
+                    if (addLugarId == 0) {
+                        addLugarId = dLugarEvento.crearLugar(addLugar); // Id del nuevo lugar
                     }
-
-                    Date updateFecha = Date.valueOf(updateFechaStr);
-                    Time updateHora = Time.valueOf(updateHoraStr + ":00");
                     // Foto Miniatura
-                    part = request.getPart("updateFotoMiniatura");
+                    part = request.getPart("addfotoMiniatura");
 
                     // Obtenemos el flujo de bytes
-                    if (part != null) {
+                    if(part != null){
                         input = part.getInputStream();
+                    }else{
+                        input = getServletContext().getResourceAsStream(rutaImagenPredeterminada);
                     }
 
-                    validarLongitud = input.available() > 10;
+                    validarLongitud = input.available()>10;
 
+                    if(!validarLongitud){
+                        input = getServletContext().getResourceAsStream(rutaImagenPredeterminada);
+                    }
                     try {
-                        dEvento.editarEvento(idEvento, updateLugarId, updateTitulo, updateFecha, updateHora, updateDescripcionEventoActivo, updateFraseMotivacional, input, updateEventoOculto, validarLongitud);
+                        dEvento.crearEvento(idActividad, addLugarId, addTitulo, addFecha, addHora, addDescripcionEventoActivo, addFraseMotivacional, input, addEventoOculto);
                     } catch (SQLException e) {
                         throw new RuntimeException(e);
                     }
                     input.close();
-                }
-                response.sendRedirect("ListaDeEventosServlet?idActividad="+idActividad);
-                break;
-            case "finConfirm":
-                String finEventoNombre = request.getParameter("finEventoNombre");
-                String finResumen = request.getParameter("finResumen");
-                String resultado = request.getParameter("resultado");
+                    response.sendRedirect("ListaDeEventosServlet?idActividad="+idActividad);
+                    break;
+                case "updateConfirm":
 
-                int finEventoId = dEvento.idEventoPorNombre(finEventoNombre);
+                    // Parámetros
+                    idEvento = Integer.parseInt(request.getParameter("idEvento"));
+                    String estadoEvento = request.getParameter("estadoEvento");
 
-                dEvento.finalizarEvento(finEventoId,finResumen,resultado);
-                response.sendRedirect("ListaDeEventosServlet?idActividad="+idActividad);
-                break;
-            case "notificacionLeidaCampanita":
-                dN.notificacionLeida(Integer.parseInt(request.getParameter("idNotificacion")));
-                response.sendRedirect("ListaDeEventosServlet?idActividad="+idActividad);
-                break;
+                    String updateLugar = request.getParameter("updateLugar");
+                    String updateTitulo = request.getParameter("updateTitulo");
+                    String updateFechaStr = request.getParameter("updateFecha");
+                    String updateHoraStr = request.getParameter("updateHora");
+                    String updateDescripcionEventoActivo = request.getParameter("updateDescripcionEventoActivo");
+                    String updateFraseMotivacional = request.getParameter("updateFraseMotivacional");
+                    String updateResumen = request.getParameter("updateResumen");
+                    String updateResultado = request.getParameter("updateResultado");
+                    String updateEventoOcultoStr1 = request.getParameter("updateEventoOculto");
+                    String updateEventoOcultoStr2 = request.getParameter("updateEventoOcultoAlt");
+
+                    if(estadoEvento.equals("true")){
+
+                        Boolean updateEventoOcultoAlt = false;
+                        if(!(updateEventoOcultoStr2 == null)){
+                            updateEventoOcultoAlt = true;
+                        }
+                        dEvento.editarEvento(idEvento,updateTitulo,updateResumen,updateResultado,updateEventoOcultoAlt);
+                    }else {
+
+                        Boolean updateEventoOculto = false;
+                        if (!(updateEventoOcultoStr1 == null)) {
+                            updateEventoOculto = true;
+                        }
+                        // Verificar lugar:
+
+                        int updateLugarId = dLugarEvento.idLugarPorNombre(updateLugar);
+                        // En caso no exista el lugar, se crea uno nuevo
+                        if (updateLugarId == 0) {
+                            updateLugarId = dLugarEvento.crearLugar(updateLugar); // Id del nuevo lugar
+                        }
+
+                        Date updateFecha = Date.valueOf(updateFechaStr);
+                        Time updateHora = Time.valueOf(updateHoraStr + ":00");
+                        // Foto Miniatura
+                        part = request.getPart("updateFotoMiniatura");
+
+                        // Obtenemos el flujo de bytes
+                        if (part != null) {
+                            input = part.getInputStream();
+                        }
+
+                        validarLongitud = input.available() > 10;
+
+                        try {
+                            dEvento.editarEvento(idEvento, updateLugarId, updateTitulo, updateFecha, updateHora, updateDescripcionEventoActivo, updateFraseMotivacional, input, updateEventoOculto, validarLongitud);
+                        } catch (SQLException e) {
+                            throw new RuntimeException(e);
+                        }
+                        input.close();
+                    }
+                    response.sendRedirect("ListaDeEventosServlet?idActividad="+idActividad);
+                    break;
+                case "finConfirm":
+                    String finEventoNombre = request.getParameter("finEventoNombre");
+                    String finResumen = request.getParameter("finResumen");
+                    String resultado = request.getParameter("resultado");
+
+                    int finEventoId = dEvento.idEventoPorNombre(finEventoNombre);
+
+                    dEvento.finalizarEvento(finEventoId,finResumen,resultado);
+                    response.sendRedirect("ListaDeEventosServlet?idActividad="+idActividad);
+                    break;
+                case "notificacionLeidaCampanita":
+                    dN.notificacionLeida(Integer.parseInt(request.getParameter("idNotificacion")));
+                    response.sendRedirect("ListaDeEventosServlet?idActividad="+idActividad);
+                    break;
+            }
         }
     }
 }

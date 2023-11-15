@@ -16,7 +16,7 @@ public class Evento {
     private String descripcionEventoActivo;
     private String fraseMotivacional;
     private Blob fotoMiniatura;
-    private ArrayList<Blob> carruselFotos;
+    private ArrayList<Blob> carruselFotos=new ArrayList<>();
     private boolean eventoFinalizado = false;
     private boolean eventoOculto;
     private String resultadoEvento;

@@ -269,13 +269,13 @@
 <!-- /PAGE LOADER -->
 
 <nav id="navigation-widget-small" class="navigation-widget navigation-widget-desktop closed sidebar left delayed">
-
     <!-- USER AVATAR -->
     <a class="user-avatar small no-outline online">
         <!-- USER AVATAR CONTENT -->
         <div class="user-avatar-content">
             <!-- HEXAGON -->
-            <div class="hexagon-image-30-32" data-src="ImagenUsuarioServlet?idUsuario=<%=idUsuario%>"><div class="hexagon-image-30-32" data-src="css/sin_foto_De_perfil.png"></div></div>
+            <%request.getSession().setAttribute("fotoPersonal0",usuarioActual.getFotoPerfil());%>
+            <div class="hexagon-image-30-32" data-src="Imagen?tipoDeFoto=fotoPerfil&id=Personal0"></div>
             <!-- /HEXAGON -->
         </div>
         <!-- /USER AVATAR CONTENT -->
@@ -295,30 +295,6 @@
             <!-- /HEXAGON -->
         </div>
         <!-- /USER AVATAR PROGRESS BORDER -->
-
-        <!-- USER AVATAR BADGE -->
-        <div class="user-avatar-badge">
-            <!-- USER AVATAR BADGE BORDER -->
-            <div class="user-avatar-badge-border">
-                <!-- HEXAGON -->
-                <div class="hexagon-22-24"></div>
-                <!-- /HEXAGON -->
-            </div>
-            <!-- /USER AVATAR BADGE BORDER -->
-
-            <!-- USER AVATAR BADGE CONTENT -->
-            <div class="user-avatar-badge-content">
-                <!-- HEXAGON -->
-                <div class="hexagon-dark-16-18"></div>
-                <!-- /HEXAGON -->
-            </div>
-            <!-- /USER AVATAR BADGE CONTENT -->
-
-            <!-- USER AVATAR BADGE TEXT -->
-            <p class="user-avatar-badge-text">24</p>
-            <!-- /USER AVATAR BADGE TEXT -->
-        </div>
-        <!-- /USER AVATAR BADGE -->
     </a>
     <!-- /USER AVATAR -->
 
@@ -401,7 +377,6 @@
     </figure>
     <!-- /NAVIGATION WIDGET COVER -->
 
-
     <!-- USER SHORT DESCRIPTION -->
     <div class="user-short-description">
         <!-- USER SHORT DESCRIPTION AVATAR -->
@@ -417,7 +392,8 @@
             <!-- USER AVATAR CONTENT -->
             <div class="user-avatar-content">
                 <!-- HEXAGON -->
-                <div class="hexagon-image-82-90" data-src="ImagenUsuarioServlet?idUsuario=<%=idUsuario%>"><div class="hexagon-image-82-90" data-src="css/sin_foto_De_perfil.png"></div></div>
+                <%request.getSession().setAttribute("fotoPersonal1",usuarioActual.getFotoPerfil());%>
+                <div class="hexagon-image-82-90" data-src="Imagen?tipoDeFoto=fotoPerfil&id=Personal1"></div>
                 <!-- /HEXAGON -->
             </div>
             <!-- /USER AVATAR CONTENT -->
@@ -549,7 +525,6 @@
     </div>
     <!-- /NAVIGATION WIDGET CLOSE BUTTON -->
 
-
     <!-- NAVIGATION WIDGET INFO WRAP -->
     <div class="navigation-widget-info-wrap">
         <!-- NAVIGATION WIDGET INFO -->
@@ -559,7 +534,8 @@
                 <!-- USER AVATAR CONTENT -->
                 <div class="user-avatar-content">
                     <!-- HEXAGON -->
-                    <div class="hexagon-image-30-32" data-src="ImagenUsuarioServlet?idUsuario=<%=idUsuario%>"><div class="hexagon-image-30-32" data-src="css/sin_foto_De_perfil.png"></div></div>
+                    <%request.getSession().setAttribute("fotoPersonal2",usuarioActual.getFotoPerfil());%>
+                    <div class="hexagon-image-30-32" data-src="Imagen?tipoDeFoto=fotoPerfil&id=Personal2"></div>
                     <!-- /HEXAGON -->
                 </div>
                 <!-- /USER AVATAR CONTENT -->
@@ -603,9 +579,9 @@
         </div>
         <!-- /NAVIGATION WIDGET INFO -->
 
-        <!-- NAVIGATION WIDGET BUTTON -->
-        <a href="IndexServlet"><p class="navigation-widget-info-button button small secondary">Cerrar sesión</p></a>
-        <!-- /NAVIGATION WIDGET BUTTON -->
+        <form method="post" action="InicioSesionServlet?action=logOut">
+            <button style="border:0;background: none;color: inherit" type="submit"><a><p class="navigation-widget-info-button button small secondary">Cerrar sesión</p></a></button>
+        </form>
     </div>
     <!-- /NAVIGATION WIDGET INFO WRAP -->
 
@@ -1329,7 +1305,7 @@
             <%}%>
 
             <!-- POPUP EVENT BUTTON -->
-            <a href="<%=request.getContextPath()%>/EventoServlet?idUsuario=<%=idUsuario%>&idEvento=<%=e.getIdEvento()%>"><p class="popupAux-event-button button cerrar-btn">Ingresar a la página del evento</p></a>
+            <a href="<%=request.getContextPath()%>/EventoServlet?idEvento=<%=e.getIdEvento()%>"><p class="popupAux-event-button button cerrar-btn">Ingresar a la página del evento</p></a>
             <!-- /POPUP EVENT BUTTON -->
         </div>
         <!-- /POPUP EVENT INFO -->

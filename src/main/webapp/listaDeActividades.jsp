@@ -211,7 +211,8 @@
         <!-- USER AVATAR CONTENT -->
         <div class="user-avatar-content">
             <!-- HEXAGON -->
-            <div class="hexagon-image-30-32" data-src="ImagenUsuarioServlet?idUsuario=<%=idUsuario%>"><div class="hexagon-image-30-32" data-src="css/sin_foto_De_perfil.png"></div></div>
+            <%request.getSession().setAttribute("fotoPersonal0",usuarioActual.getFotoPerfil());%>
+            <div class="hexagon-image-30-32" data-src="Imagen?tipoDeFoto=fotoPerfil&id=Personal0"></div>
             <!-- /HEXAGON -->
         </div>
         <!-- /USER AVATAR CONTENT -->
@@ -328,7 +329,8 @@
             <!-- USER AVATAR CONTENT -->
             <div class="user-avatar-content">
                 <!-- HEXAGON -->
-                <div class="hexagon-image-82-90" data-src="ImagenUsuarioServlet?idUsuario=<%=idUsuario%>"><div class="hexagon-image-82-90" data-src="css/sin_foto_De_perfil.png"></div></div>
+                <%request.getSession().setAttribute("fotoPersonal1",usuarioActual.getFotoPerfil());%>
+                <div class="hexagon-image-82-90" data-src="Imagen?tipoDeFoto=fotoPerfil&id=Personal1"></div>
                 <!-- /HEXAGON -->
             </div>
             <!-- /USER AVATAR CONTENT -->
@@ -469,7 +471,8 @@
                 <!-- USER AVATAR CONTENT -->
                 <div class="user-avatar-content">
                     <!-- HEXAGON -->
-                    <div class="hexagon-image-30-32" data-src="ImagenUsuarioServlet?idUsuario=<%=idUsuario%>"><div class="hexagon-image-30-32" data-src="css/sin_foto_De_perfil.png"></div></div>
+                    <%request.getSession().setAttribute("fotoPersonal2",usuarioActual.getFotoPerfil());%>
+                    <div class="hexagon-image-30-32" data-src="Imagen?tipoDeFoto=fotoPerfil&id=Personal2"></div>
                     <!-- /HEXAGON -->
                 </div>
                 <!-- /USER AVATAR CONTENT -->
@@ -513,11 +516,9 @@
         </div>
         <!-- /NAVIGATION WIDGET INFO -->
 
-        <!-- NAVIGATION WIDGET BUTTON -->
         <form method="post" action="InicioSesionServlet?action=logOut">
             <button style="border:0;background: none;color: inherit" type="submit"><a><p class="navigation-widget-info-button button small secondary">Cerrar sesión</p></a></button>
         </form>
-        <!-- /NAVIGATION WIDGET BUTTON -->
     </div>
     <!-- /NAVIGATION WIDGET INFO WRAP -->
 
@@ -645,6 +646,8 @@
             <!-- /ACTION ITEM ICON -->
         </div>
         <!-- /ACTION ITEM -->
+
+        <!-- DROPDOWN NAVIGATION -->
 
     </div>
     <!-- /ACTION ITEM WRAP -->
@@ -933,7 +936,7 @@
                     <!-- DROPDOWN BOX LIST -->
                     <div class="dropdown-box-list" data-simplebar>
                         <%for(NotificacionDelegadoGeneral noti:listaNotificacionesCampanita){%>
-                        <form id="notificacionLeidaCampanita<%=listaNotificacionesCampanita.indexOf(noti)%>" method="post" action="?action=notificacionLeidaCampanita">
+                        <form id="notificacionLeidaCampanita<%=listaNotificacionesCampanita.indexOf(noti)%>" method="post" action="/<%=servletActual%>?action=notificacionLeidaCampanita">
                             <input type="hidden" name="idNotificacion" value="<%=noti.getIdNotificacion()%>">
                             <%if(noti.getReporte().getIdReporte()!=0){
                                 Reporte r=new DaoReporte().reportePorIdReporteNotificacion(noti.getReporte().getIdReporte());%>
@@ -945,12 +948,11 @@
                                     <a class="user-status-avatar">
                                         <!-- USER AVATAR -->
                                         <div class="user-avatar small no-outline">
-
                                             <!-- USER AVATAR CONTENT -->
                                             <div class="user-avatar-content">
+                                                <%request.getSession().setAttribute("foto0"+listaNotificacionesCampanita.indexOf(noti),new DaoReporte().getFotoPerfilPorIDReporte(noti.getReporte().getIdReporte()));%>
                                                 <!-- HEXAGON AQUÍ FALTA LA FOTOOOO -->
-                                                <%request.getSession().setAttribute("foto"+listaNotificacionesCampanita.indexOf(noti)+"l",noti.getUsuario().getFotoPerfil());%>
-                                                <div class="hexagon-image-30-32" data-src="Imagen?id=<%=listaNotificacionesCampanita.indexOf(noti)%>l"></div>
+                                                <div class="hexagon-image-30-32" data-src="Imagen?tipoDeFoto=fotoPerfil&id=0<%=listaNotificacionesCampanita.indexOf(noti)%>"></div>
                                                 <!-- /HEXAGON -->
                                             </div>
                                             <!-- /USER AVATAR CONTENT -->
@@ -1075,12 +1077,11 @@
                                     <a class="user-status-avatar">
                                         <!-- USER AVATAR -->
                                         <div class="user-avatar small no-outline">
-
                                             <!-- USER AVATAR CONTENT -->
                                             <div class="user-avatar-content">
+                                                <%request.getSession().setAttribute("foto0"+listaNotificacionesCampanita.indexOf(noti),new DaoDonacion().getFotoPerfilPorIDDonacion(noti.getDonacion().getIdDonacion()));%>
                                                 <!-- HEXAGON AQUÍ FALTA LA FOTOOOO -->
-                                                <%request.getSession().setAttribute("foto"+listaNotificacionesCampanita.indexOf(noti)+"l",noti.getUsuario().getFotoPerfil());%>
-                                                <div class="hexagon-image-30-32" data-src="Imagen?id=<%=listaNotificacionesCampanita.indexOf(noti)%>l"></div>
+                                                <div class="hexagon-image-30-32" data-src="Imagen?tipoDeFoto=fotoPerfil&id=0<%=listaNotificacionesCampanita.indexOf(noti)%>"></div>
                                                 <!-- /HEXAGON -->
                                             </div>
                                             <!-- /USER AVATAR CONTENT -->
@@ -1336,9 +1337,8 @@
                                         <div class="user-avatar small no-outline">
                                             <!-- USER AVATAR CONTENT -->
                                             <div class="user-avatar-content">
-                                                <!-- HEXAGON AQUÍ ESTA FOTO SE CAMBIAAA -->
-                                                <%request.getSession().setAttribute("foto"+listaNotificacionesCampanita.indexOf(noti)+"l",noti.getUsuario().getFotoPerfil());%>
-                                                <div class="hexagon-image-30-32" data-src="Imagen?id=<%=listaNotificacionesCampanita.indexOf(noti)%>l"></div>
+                                                <!-- HEXAGON AQUÍ ESTA FOTO ES ESTÁTICA -->
+                                                <div class="hexagon-image-30-32" data-src="css/iconoPerfil.png"></div>
                                                 <!-- /HEXAGON -->
                                             </div>
                                             <!-- /USER AVATAR CONTENT -->
@@ -1463,12 +1463,11 @@
                                     <a class="user-status-avatar">
                                         <!-- USER AVATAR -->
                                         <div class="user-avatar small no-outline">
-
                                             <!-- USER AVATAR CONTENT -->
                                             <div class="user-avatar-content">
-                                                <!-- HEXAGON AQUÍ ESTA FOTO SE CAMBIAAA -->
-                                                <%request.getSession().setAttribute("foto"+listaNotificacionesCampanita.indexOf(noti)+"l",noti.getUsuario().getFotoPerfil());%>
-                                                <div class="hexagon-image-30-32" data-src="Imagen?id=<%=listaNotificacionesCampanita.indexOf(noti)%>l"></div>
+                                                <%request.getSession().setAttribute("foto0"+listaNotificacionesCampanita.indexOf(noti),new DaoValidacion().getFotoPerfilPorIDCorreoValidacion(noti.getValidacion().getIdCorreoValidacion()));%>
+                                                <!-- HEXAGON AQUÍ FALTA LA FOTOOOO -->
+                                                <div class="hexagon-image-30-32" data-src="Imagen?tipoDeFoto=fotoPerfil&id=0<%=listaNotificacionesCampanita.indexOf(noti)%>"></div>
                                                 <!-- /HEXAGON -->
                                             </div>
                                             <!-- /USER AVATAR CONTENT -->
@@ -1610,13 +1609,9 @@
             <!-- ACTION ITEM -->
             <div class="action-item dark header-settings-dropdown-trigger">
                 <!-- ACTION ITEM ICON -->
-                <div class="action-item dark header-settings-dropdown-trigger">
-                    <!-- ACTION ITEM ICON -->
-                    <form method="post" action="InicioSesionServlet?action=logOut">
-                        <button style="border:0;background: none;color: inherit" type="submit"><a><img src="css/logOut.png" width="30%" style="" alt=""></a></button>
-                    </form>
-                    <!-- /ACTION ITEM ICON -->
-                </div>
+                <form method="post" action="InicioSesionServlet?action=logOut">
+                    <button style="border:0;background: none;color: inherit" type="submit"><a><img src="css/logOut.png" width="30%" style="" alt=""></a></button>
+                </form>
                 <!-- /ACTION ITEM ICON -->
             </div>
             <!-- /ACTION ITEM -->
@@ -1795,7 +1790,8 @@
                     aux=0;
                 }%>
         <!-- PRODUCT CATEGORY BOX -->
-        <a class="product-category-box category-all" href="ListaDeEventosServlet?idActividad=<%=a.getIdActividad()%>" style="background: url('css/fotoVoleyActividades.png') no-repeat right top, linear-gradient(to right, <%=color1%>, <%=color2%>) <%if(a.isActividadFinalizada()){%><%=";opacity: 50%;"%><%}%> ">
+        <%request.getSession().setAttribute("fotoActividadMiniatura"+listaActividades.indexOf(a),a.getFotoMiniatura());%>
+        <a class="product-category-box category-all" href="ListaDeEventosServlet?idActividad=<%=a.getIdActividad()%>" style="background: url('Imagen?tipoDeFoto=fotoActividadMiniatura&id=ActividadMiniatura<%=listaActividades.indexOf(a)%>') no-repeat right top, linear-gradient(to right, <%=color1%>, <%=color2%>) <%if(a.isActividadFinalizada()){%><%=";opacity: 50%;"%><%}%> ">
             <!-- PRODUCT CATEGORY BOX TITLE -->
             <p class="product-category-box-title"><%=a.getNombre()%></p>
             <!-- /PRODUCT CATEGORY BOX TITLE -->
@@ -2049,7 +2045,8 @@
                     <!/div>
                     <div class="container-fluid btn btn-file1">
                         <div id="contenedorImagenEditar<%=i%>">
-                            <img id="imagenActualEditar<%=i%>" class="img-fluid" src="ImagenActividadServlet?idActividad=<%=listaActividades.get(i).getIdActividad()%>" alt="">
+                            <%request.getSession().setAttribute("fotoActividadCabecera"+i,listaActividades.get(i).getFotoCabecera());%>
+                            <img id="imagenActualEditar<%=i%>" class="img-fluid" src="Imagen?tipoDeFoto=fotoActividadCabecera&id=ActividadCabecera<%=i%>" alt="">
                         </div>
                         <p style="margin-top: 10px"><b>Editar foto cabecera</b></p>
                         <input type="file" id="inputEditar<%=i%>" style="background-color: white; margin-top: 25px;" accept="image/png, .jpeg, .jpg" name="updateFotoCabecera" onchange="mostrarImagen('imagenActualEditar<%=i%>','contenedorImagenEditar<%=i%>','inputEditar<%=i%>')"></input>
@@ -2062,7 +2059,8 @@
                     <!/div>
                     <div class="container-fluid btn btn-file1">
                         <div id="contenedorImagenMinEditar<%=i%>">
-                            <img id="imagenActualMinEditar<%=i%>" class="img-fluid" src="ImagenActividadServlet?idActividad=<%=listaActividades.get(i).getIdActividad()%>" alt="">
+                            <%request.getSession().setAttribute("fotoActividadMiniatura"+i,listaActividades.get(i).getFotoMiniatura());%>
+                            <img id="imagenActualEditar<%=i%>" class="img-fluid" src="Imagen?tipoDeFoto=fotoActividadMiniatura&id=ActividadMiniatura<%=i%>" alt="">
                         </div>
                         <p style="margin-top: 10px"><b>Editar foto miniatura</b></p>
                         <input type="file" id="inputMinEditar<%=i%>" style="background-color: white; margin-top: 25px;" accept="image/png, .jpeg, .jpg" name="updateFotoMiniatura" onchange="mostrarImagen('imagenActualMinEditar<%=i%>','contenedorImagenMinEditar<%=i%>','inputMinEditar<%=i%>')"></input>

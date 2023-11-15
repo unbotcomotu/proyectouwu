@@ -175,13 +175,13 @@
 <!-- /PAGE LOADER -->
 
 <nav id="navigation-widget-small" class="navigation-widget navigation-widget-desktop closed sidebar left delayed">
-
     <!-- USER AVATAR -->
     <a class="user-avatar small no-outline online">
         <!-- USER AVATAR CONTENT -->
         <div class="user-avatar-content">
             <!-- HEXAGON -->
-            <div class="hexagon-image-30-32" data-src="ImagenUsuarioServlet?idUsuario=<%=idUsuario%>"><div class="hexagon-image-30-32" data-src="css/sin_foto_De_perfil.png"></div></div>
+            <%request.getSession().setAttribute("fotoPersonal0",usuarioActual.getFotoPerfil());%>
+            <div class="hexagon-image-30-32" data-src="Imagen?tipoDeFoto=fotoPerfil&id=Personal0"></div>
             <!-- /HEXAGON -->
         </div>
         <!-- /USER AVATAR CONTENT -->
@@ -283,7 +283,6 @@
     </figure>
     <!-- /NAVIGATION WIDGET COVER -->
 
-
     <!-- USER SHORT DESCRIPTION -->
     <div class="user-short-description">
         <!-- USER SHORT DESCRIPTION AVATAR -->
@@ -299,7 +298,8 @@
             <!-- USER AVATAR CONTENT -->
             <div class="user-avatar-content">
                 <!-- HEXAGON -->
-                <div class="hexagon-image-82-90" data-src="ImagenUsuarioServlet?idUsuario=<%=idUsuario%>"><div class="hexagon-image-82-90" data-src="css/sin_foto_De_perfil.png"></div></div>
+                <%request.getSession().setAttribute("fotoPersonal1",usuarioActual.getFotoPerfil());%>
+                <div class="hexagon-image-82-90" data-src="Imagen?tipoDeFoto=fotoPerfil&id=Personal1"></div>
                 <!-- /HEXAGON -->
             </div>
             <!-- /USER AVATAR CONTENT -->
@@ -431,7 +431,6 @@
     </div>
     <!-- /NAVIGATION WIDGET CLOSE BUTTON -->
 
-
     <!-- NAVIGATION WIDGET INFO WRAP -->
     <div class="navigation-widget-info-wrap">
         <!-- NAVIGATION WIDGET INFO -->
@@ -441,7 +440,8 @@
                 <!-- USER AVATAR CONTENT -->
                 <div class="user-avatar-content">
                     <!-- HEXAGON -->
-                    <div class="hexagon-image-30-32" data-src="ImagenUsuarioServlet?idUsuario=<%=idUsuario%>"><div class="hexagon-image-30-32" data-src="css/sin_foto_De_perfil.png"></div></div>
+                    <%request.getSession().setAttribute("fotoPersonal2",usuarioActual.getFotoPerfil());%>
+                    <div class="hexagon-image-30-32" data-src="Imagen?tipoDeFoto=fotoPerfil&id=Personal2"></div>
                     <!-- /HEXAGON -->
                 </div>
                 <!-- /USER AVATAR CONTENT -->
@@ -905,7 +905,7 @@
                     <!-- DROPDOWN BOX LIST -->
                     <div class="dropdown-box-list" data-simplebar>
                         <%for(NotificacionDelegadoGeneral noti:listaNotificacionesCampanita){%>
-                        <form id="notificacionLeidaCampanita<%=listaNotificacionesCampanita.indexOf(noti)%>" method="post" action="?action=notificacionLeidaCampanita">
+                        <form id="notificacionLeidaCampanita<%=listaNotificacionesCampanita.indexOf(noti)%>" method="post" action="/<%=servletActual%>?action=notificacionLeidaCampanita">
                             <input type="hidden" name="idNotificacion" value="<%=noti.getIdNotificacion()%>">
                             <%if(noti.getReporte().getIdReporte()!=0){
                                 Reporte r=new DaoReporte().reportePorIdReporteNotificacion(noti.getReporte().getIdReporte());%>
@@ -919,9 +919,9 @@
                                         <div class="user-avatar small no-outline">
                                             <!-- USER AVATAR CONTENT -->
                                             <div class="user-avatar-content">
+                                                <%request.getSession().setAttribute("foto0"+listaNotificacionesCampanita.indexOf(noti),new DaoReporte().getFotoPerfilPorIDReporte(noti.getReporte().getIdReporte()));%>
                                                 <!-- HEXAGON AQUÍ FALTA LA FOTOOOO -->
-                                                <%request.getSession().setAttribute("foto"+listaNotificacionesCampanita.indexOf(noti)+"l",noti.getUsuario().getFotoPerfil());%>
-                                                <div class="hexagon-image-30-32" data-src="Imagen?id=<%=listaNotificacionesCampanita.indexOf(noti)%>l"></div>
+                                                <div class="hexagon-image-30-32" data-src="Imagen?tipoDeFoto=fotoPerfil&id=0<%=listaNotificacionesCampanita.indexOf(noti)%>"></div>
                                                 <!-- /HEXAGON -->
                                             </div>
                                             <!-- /USER AVATAR CONTENT -->
@@ -1048,9 +1048,9 @@
                                         <div class="user-avatar small no-outline">
                                             <!-- USER AVATAR CONTENT -->
                                             <div class="user-avatar-content">
+                                                <%request.getSession().setAttribute("foto0"+listaNotificacionesCampanita.indexOf(noti),new DaoDonacion().getFotoPerfilPorIDDonacion(noti.getDonacion().getIdDonacion()));%>
                                                 <!-- HEXAGON AQUÍ FALTA LA FOTOOOO -->
-                                                <%request.getSession().setAttribute("foto"+listaNotificacionesCampanita.indexOf(noti)+"l",noti.getUsuario().getFotoPerfil());%>
-                                                <div class="hexagon-image-30-32" data-src="Imagen?id=<%=listaNotificacionesCampanita.indexOf(noti)%>l"></div>
+                                                <div class="hexagon-image-30-32" data-src="Imagen?tipoDeFoto=fotoPerfil&id=0<%=listaNotificacionesCampanita.indexOf(noti)%>"></div>
                                                 <!-- /HEXAGON -->
                                             </div>
                                             <!-- /USER AVATAR CONTENT -->
@@ -1306,9 +1306,8 @@
                                         <div class="user-avatar small no-outline">
                                             <!-- USER AVATAR CONTENT -->
                                             <div class="user-avatar-content">
-                                                <!-- HEXAGON AQUÍ ESTA FOTO SE CAMBIAAA -->
-                                                <%request.getSession().setAttribute("foto"+listaNotificacionesCampanita.indexOf(noti)+"l",noti.getUsuario().getFotoPerfil());%>
-                                                <div class="hexagon-image-30-32" data-src="Imagen?id=<%=listaNotificacionesCampanita.indexOf(noti)%>l"></div>
+                                                <!-- HEXAGON AQUÍ ESTA FOTO ES ESTÁTICA -->
+                                                <div class="hexagon-image-30-32" data-src="css/iconoPerfil.png"></div>
                                                 <!-- /HEXAGON -->
                                             </div>
                                             <!-- /USER AVATAR CONTENT -->
@@ -1435,9 +1434,9 @@
                                         <div class="user-avatar small no-outline">
                                             <!-- USER AVATAR CONTENT -->
                                             <div class="user-avatar-content">
-                                                <!-- HEXAGON AQUÍ ESTA FOTO SE CAMBIAAA -->
-                                                <%request.getSession().setAttribute("foto"+listaNotificacionesCampanita.indexOf(noti)+"l",noti.getUsuario().getFotoPerfil());%>
-                                                <div class="hexagon-image-30-32" data-src="Imagen?id=<%=listaNotificacionesCampanita.indexOf(noti)%>l"></div>
+                                                <%request.getSession().setAttribute("foto0"+listaNotificacionesCampanita.indexOf(noti),new DaoValidacion().getFotoPerfilPorIDCorreoValidacion(noti.getValidacion().getIdCorreoValidacion()));%>
+                                                <!-- HEXAGON AQUÍ FALTA LA FOTOOOO -->
+                                                <div class="hexagon-image-30-32" data-src="Imagen?tipoDeFoto=fotoPerfil&id=0<%=listaNotificacionesCampanita.indexOf(noti)%>"></div>
                                                 <!-- /HEXAGON -->
                                             </div>
                                             <!-- /USER AVATAR CONTENT -->
@@ -1735,8 +1734,8 @@
                         <!-- USER AVATAR CONTENT -->
                         <div class="user-avatar-content">
                             <!-- HEXAGON -->
-                            <%request.getSession().setAttribute("foto"+listaUsuarios.indexOf(usuario),usuario.getFotoPerfil());%>
-                            <div class="hexagon-image-82-90" data-src="Imagen?id=<%=listaUsuarios.indexOf(usuario)%>"></div>
+                            <%request.getSession().setAttribute("fotoUsuario"+listaUsuarios.indexOf(usuario),usuario.getFotoPerfil());%>
+                            <div class="hexagon-image-82-90" data-src="Imagen?tipoDeFoto=fotoPerfil&id=Usuario<%=listaUsuarios.indexOf(usuario)%>"></div>
                             <!-- /HEXAGON -->
                         </div>
                         <!-- /USER AVATAR CONTENT -->
@@ -1879,30 +1878,6 @@
             <%}%>
         </div>
         <!-- /SECTION PAGER -->
-
-        <!-- SECTION PAGER CONTROLS -->
-        <div class="section-pager-controls">
-            <!-- SLIDER CONTROL -->
-            <div class="slider-control left disabled">
-                <!-- SLIDER CONTROL ICON -->
-                <svg class="slider-control-icon icon-small-arrow">
-                    <use xlink:href="#svg-small-arrow"></use>
-                </svg>
-                <!-- /SLIDER CONTROL ICON -->
-            </div>
-            <!-- /SLIDER CONTROL -->
-
-            <!-- SLIDER CONTROL -->
-            <div class="slider-control right">
-                <!-- SLIDER CONTROL ICON -->
-                <svg class="slider-control-icon icon-small-arrow">
-                    <use xlink:href="#svg-small-arrow"></use>
-                </svg>
-                <!-- /SLIDER CONTROL ICON -->
-            </div>
-            <!-- /SLIDER CONTROL -->
-        </div>
-        <!-- /SECTION PAGER CONTROLS -->
     </div>
     <!-- /SECTION PAGER BAR -->
 

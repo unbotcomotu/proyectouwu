@@ -65,4 +65,19 @@ public class DaoReporte extends DaoPadre {
         }
     }
 
+    public Blob getFotoPerfilPorIDReporte(int idDonacion){
+        String sql = "select u.fotoPerfil from usuario u inner join reporte r on u.idUsuario = r.idUsuarioReportado where r.idReporte=?";
+        try(Connection conn=this.getConnection(); PreparedStatement pstmt=conn.prepareStatement(sql)){
+            pstmt.setInt(1,idDonacion);
+            try(ResultSet rs = pstmt.executeQuery()){
+                if(rs.next()){
+                    return rs.getBlob(1);
+                }else{
+                    return null;
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }

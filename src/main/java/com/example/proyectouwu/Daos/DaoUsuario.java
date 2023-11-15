@@ -507,7 +507,7 @@ public class DaoUsuario extends DaoPadre {
         }
     }
     public void registroDeAlumno(String name, String apellido, String correo, String contrasena, String codigoPUCP, String condicion){
-        String sql = "insert into usuario( rol, nombre, apellido, correo, contrasena, codigoPUCP, estadoRegistro, fechaHoraRegistro,condicion ,DescripcionPerfil) values (?,?,?,?,sha2(?,256),?,?,(select now()),?, 'Vamos Fibra')";
+        String sql = "insert into usuario( rol, nombre, apellido, correo, contrasena, codigoPUCP, estadoRegistro, fechaHoraRegistro,condicion,DescripcionPerfil) values (?,?,?,?,sha2(?,256),?,?,(select now()),?, 'Vamos Fibra')";
         try (Connection conn=this.getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql,Statement.RETURN_GENERATED_KEYS)) {
             //pstmt.setInt(1,idUser);
             pstmt.setString(1,"Alumno"); //nuevos usuarios se registran como alumnos
@@ -753,6 +753,22 @@ public class DaoUsuario extends DaoPadre {
                     b.setIdBan(rs.getInt(3));
                     b.setMotivoBan(rs.getString(4));
                     return b;
+                }else{
+                    return null;
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public Blob getFotoPerfilPorIDUsuario(int idUsuario){
+        String sql = "select fotoPerfil from usuario where idUsuario=?";
+        try(Connection conn=this.getConnection(); PreparedStatement pstmt=conn.prepareStatement(sql)){
+            pstmt.setInt(1,idUsuario);
+            try(ResultSet rs = pstmt.executeQuery()){
+                if(rs.next()){
+                    return rs.getBlob(1);
                 }else{
                     return null;
                 }

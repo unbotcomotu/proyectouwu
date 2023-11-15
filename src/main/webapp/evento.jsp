@@ -1,6 +1,7 @@
 <%@ page import="java.util.ArrayList" %>
 <%@ page import="com.example.proyectouwu.Beans.*" %>
 <%@ page import="com.example.proyectouwu.Daos.*" %>
+<%@ page import="java.sql.Blob" %>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <!DOCTYPE html>
 <html lang="en">
@@ -287,7 +288,8 @@
         <!-- USER AVATAR CONTENT -->
         <div class="user-avatar-content">
             <!-- HEXAGON -->
-            <div class="hexagon-image-30-32" data-src="ImagenUsuarioServlet?idUsuario=<%=idUsuario%>"><div class="hexagon-image-30-32" data-src="css/sin_foto_De_perfil.png"></div></div>
+            <%request.getSession().setAttribute("fotoPersonal0",usuarioActual.getFotoPerfil());%>
+            <div class="hexagon-image-30-32" data-src="Imagen?tipoDeFoto=fotoPerfil&id=Personal0"></div>
             <!-- /HEXAGON -->
         </div>
         <!-- /USER AVATAR CONTENT -->
@@ -307,7 +309,6 @@
             <!-- /HEXAGON -->
         </div>
         <!-- /USER AVATAR PROGRESS BORDER -->
-
     </a>
     <!-- /USER AVATAR -->
 
@@ -405,7 +406,8 @@
             <!-- USER AVATAR CONTENT -->
             <div class="user-avatar-content">
                 <!-- HEXAGON -->
-                <div class="hexagon-image-82-90" data-src="ImagenUsuarioServlet?idUsuario=<%=idUsuario%>"><div class="hexagon-image-82-90" data-src="css/sin_foto_De_perfil.png"></div></div>
+                <%request.getSession().setAttribute("fotoPersonal1",usuarioActual.getFotoPerfil());%>
+                <div class="hexagon-image-82-90" data-src="Imagen?tipoDeFoto=fotoPerfil&id=Personal1"></div>
                 <!-- /HEXAGON -->
             </div>
             <!-- /USER AVATAR CONTENT -->
@@ -546,7 +548,8 @@
                 <!-- USER AVATAR CONTENT -->
                 <div class="user-avatar-content">
                     <!-- HEXAGON -->
-                    <div class="hexagon-image-30-32" data-src="ImagenUsuarioServlet?idUsuario=<%=idUsuario%>"><div class="hexagon-image-30-32" data-src="css/sin_foto_De_perfil.png"></div></div>
+                    <%request.getSession().setAttribute("fotoPersonal2",usuarioActual.getFotoPerfil());%>
+                    <div class="hexagon-image-30-32" data-src="Imagen?tipoDeFoto=fotoPerfil&id=Personal2"></div>
                     <!-- /HEXAGON -->
                 </div>
                 <!-- /USER AVATAR CONTENT -->
@@ -590,11 +593,9 @@
         </div>
         <!-- /NAVIGATION WIDGET INFO -->
 
-        <!-- NAVIGATION WIDGET BUTTON -->
         <form method="post" action="InicioSesionServlet?action=logOut">
             <button style="border:0;background: none;color: inherit" type="submit"><a><p class="navigation-widget-info-button button small secondary">Cerrar sesión</p></a></button>
         </form>
-        <!-- /NAVIGATION WIDGET BUTTON -->
     </div>
     <!-- /NAVIGATION WIDGET INFO WRAP -->
 
@@ -1012,7 +1013,7 @@
                     <!-- DROPDOWN BOX LIST -->
                     <div class="dropdown-box-list" data-simplebar>
                         <%for(NotificacionDelegadoGeneral noti:listaNotificacionesCampanita){%>
-                        <form id="notificacionLeidaCampanita<%=listaNotificacionesCampanita.indexOf(noti)%>" method="post" action="?action=notificacionLeidaCampanita">
+                        <form id="notificacionLeidaCampanita<%=listaNotificacionesCampanita.indexOf(noti)%>" method="post" action="/<%=servletActual%>?action=notificacionLeidaCampanita">
                             <input type="hidden" name="idNotificacion" value="<%=noti.getIdNotificacion()%>">
                             <%if(noti.getReporte().getIdReporte()!=0){
                                 Reporte r=new DaoReporte().reportePorIdReporteNotificacion(noti.getReporte().getIdReporte());%>
@@ -1024,12 +1025,11 @@
                                     <a class="user-status-avatar">
                                         <!-- USER AVATAR -->
                                         <div class="user-avatar small no-outline">
-
                                             <!-- USER AVATAR CONTENT -->
                                             <div class="user-avatar-content">
+                                                <%request.getSession().setAttribute("foto0"+listaNotificacionesCampanita.indexOf(noti),new DaoReporte().getFotoPerfilPorIDReporte(noti.getReporte().getIdReporte()));%>
                                                 <!-- HEXAGON AQUÍ FALTA LA FOTOOOO -->
-                                                <%request.getSession().setAttribute("foto"+listaNotificacionesCampanita.indexOf(noti)+"l",noti.getUsuario().getFotoPerfil());%>
-                                                <div class="hexagon-image-30-32" data-src="Imagen?id=<%=listaNotificacionesCampanita.indexOf(noti)%>l"></div>
+                                                <div class="hexagon-image-30-32" data-src="Imagen?tipoDeFoto=fotoPerfil&id=0<%=listaNotificacionesCampanita.indexOf(noti)%>"></div>
                                                 <!-- /HEXAGON -->
                                             </div>
                                             <!-- /USER AVATAR CONTENT -->
@@ -1154,12 +1154,11 @@
                                     <a class="user-status-avatar">
                                         <!-- USER AVATAR -->
                                         <div class="user-avatar small no-outline">
-
                                             <!-- USER AVATAR CONTENT -->
                                             <div class="user-avatar-content">
+                                                <%request.getSession().setAttribute("foto0"+listaNotificacionesCampanita.indexOf(noti),new DaoDonacion().getFotoPerfilPorIDDonacion(noti.getDonacion().getIdDonacion()));%>
                                                 <!-- HEXAGON AQUÍ FALTA LA FOTOOOO -->
-                                                <%request.getSession().setAttribute("foto"+listaNotificacionesCampanita.indexOf(noti)+"l",noti.getUsuario().getFotoPerfil());%>
-                                                <div class="hexagon-image-30-32" data-src="Imagen?id=<%=listaNotificacionesCampanita.indexOf(noti)%>l"></div>
+                                                <div class="hexagon-image-30-32" data-src="Imagen?tipoDeFoto=fotoPerfil&id=0<%=listaNotificacionesCampanita.indexOf(noti)%>"></div>
                                                 <!-- /HEXAGON -->
                                             </div>
                                             <!-- /USER AVATAR CONTENT -->
@@ -1413,12 +1412,10 @@
                                     <a class="user-status-avatar">
                                         <!-- USER AVATAR -->
                                         <div class="user-avatar small no-outline">
-
                                             <!-- USER AVATAR CONTENT -->
                                             <div class="user-avatar-content">
-                                                <!-- HEXAGON AQUÍ ESTA FOTO SE CAMBIAAA -->
-                                                <%request.getSession().setAttribute("foto"+listaNotificacionesCampanita.indexOf(noti)+"l",noti.getUsuario().getFotoPerfil());%>
-                                                <div class="hexagon-image-30-32" data-src="Imagen?id=<%=listaNotificacionesCampanita.indexOf(noti)%>l"></div>
+                                                <!-- HEXAGON AQUÍ ESTA FOTO ES ESTÁTICA -->
+                                                <div class="hexagon-image-30-32" data-src="css/iconoPerfil.png"></div>
                                                 <!-- /HEXAGON -->
                                             </div>
                                             <!-- /USER AVATAR CONTENT -->
@@ -1543,12 +1540,11 @@
                                     <a class="user-status-avatar">
                                         <!-- USER AVATAR -->
                                         <div class="user-avatar small no-outline">
-
                                             <!-- USER AVATAR CONTENT -->
                                             <div class="user-avatar-content">
-                                                <!-- HEXAGON AQUÍ ESTA FOTO SE CAMBIAAA -->
-                                                <%request.getSession().setAttribute("foto"+listaNotificacionesCampanita.indexOf(noti)+"l",noti.getUsuario().getFotoPerfil());%>
-                                                <div class="hexagon-image-30-32" data-src="Imagen?id=<%=listaNotificacionesCampanita.indexOf(noti)%>l"></div>
+                                                <%request.getSession().setAttribute("foto0"+listaNotificacionesCampanita.indexOf(noti),new DaoValidacion().getFotoPerfilPorIDCorreoValidacion(noti.getValidacion().getIdCorreoValidacion()));%>
+                                                <!-- HEXAGON AQUÍ FALTA LA FOTOOOO -->
+                                                <div class="hexagon-image-30-32" data-src="Imagen?tipoDeFoto=fotoPerfil&id=0<%=listaNotificacionesCampanita.indexOf(noti)%>"></div>
                                                 <!-- /HEXAGON -->
                                             </div>
                                             <!-- /USER AVATAR CONTENT -->
@@ -2070,16 +2066,20 @@
             <!-- STREAM BOX -->
             <div class="stream-box big">
                 <!-- STREAM BOX VIDEO -->
+                <%ArrayList<Blob>carrusel=e.getCarruselFotos();%>
                 <div class="carousel">
                     <div class="carousel-inner">
                         <div class="carousel-item active">
-                            <img src="css/fibraVSelectroMedio.png" alt="Imagen 1">
+                            <%request.getSession().setAttribute("fotoCarrusel0",carrusel.get(0));%>
+                            <img class="img-fluid" src="Imagen?tipoDeFoto=fotoCarrusel&id=Carrusel0" alt="Imagen 1">
                         </div>
                         <div class="carousel-item">
-                            <img src="https://files.pucp.education/puntoedu/wp-content/uploads/2021/01/23021428/dsc_0981-web-920x613-1.jpg" alt="Imagen 2">
+                            <%request.getSession().setAttribute("fotoCarrusel1",carrusel.get(1));%>
+                            <img class="img-fluid" src="Imagen?tipoDeFoto=fotoCarrusel&id=Carrusel1" alt="Imagen 2">
                         </div>
                         <div class="carousel-item">
-                            <img src="https://fundeu.fiile.org.ar/uploadsfotos/voley.jpg" alt="Imagen 3">
+                            <%request.getSession().setAttribute("fotoCarrusel2",carrusel.get(2));%>
+                            <img class="img-fluid" src="Imagen?tipoDeFoto=fotoCarrusel&id=Carrusel2" alt="Imagen 3">
                         </div>
                     </div>
                     <a class="carousel-control-prev" role="button" data-slide="prev">
@@ -2249,35 +2249,44 @@
     <svg class="cerrarPopup" id="cerrarPopupImagenes" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path d="M11.4142 10L16.7071 4.70711C17.0976 4.31658 17.0976 3.68342 16.7071 3.29289C16.3166 2.90237 15.6834 2.90237 15.2929 3.29289L10 8.58579L4.70711 3.29289C4.31658 2.90237 3.68342 2.90237 3.29289 3.29289C2.90237 3.68342 2.90237 4.31658 3.29289 4.70711L8.58579 10L3.29289 15.2929C2.90237 15.6834 2.90237 16.3166 3.29289 16.7071C3.68342 17.0976 4.31658 17.0976 4.70711 16.7071L10 11.4142L15.2929 16.7071C15.6834 17.0976 16.3166 17.0976 16.7071 16.7071C17.0976 16.3166 17.0976 15.6834 16.7071 15.2929L11.4142 10Z" fill="black"/>
     </svg>
-    <div class="row">
-        <div class="col-sm-4">
-            <div class="bloque-izquierda btn-file1 d-flex align-items-center justify-content-center" style="position: absolute;">
-                <a style="font-size: 200%; cursor: pointer;">Cambiar</a>
-                <input type="file" style="background-color: white; margin-top: 25px;" accept="image/png, .jpeg, .jpg"></input>
+    <form method="post" action="EventoServlet?action=editarCarrusel" enctype='multipart/form-data'>
+        <input type="hidden" name="idEvento" value="<%=e.getIdEvento()%>">
+        <div class="row d-flex align-items-center justify-content-center">
+            <div id="containerImagen1" class="col-sm-4">
+                <div id="auxBorrar1" class="bloque-izquierda btn-file1 d-flex align-items-center justify-content-center" style="position: absolute;">
+                    <a style="font-size: 200%; cursor: pointer;">Cambiar</a>
+                    <input id="inputImagen1" type="file" onchange="mostrarImagen('imagen1','containerImagen1','inputImagen1')" name="foto1" style="background-color: white; margin-top: 25px;" accept="image/png, .jpeg, .jpg"></input>
+                </div>
+                <%request.getSession().setAttribute("fotoCarrusel3",carrusel.get(0));%>
+                <input id="borrar1" type="hidden" name="borrar1" value="0">
+                <a onclick="borrarImagen(['imagen1','inputImagen1','borrarImagen1','auxBorrar1'],'imagenBorrar1','borrar1')" class="bloque-derecha d-flex align-items-center justify-content-center" id="borrarImagen1" style="font-size: 200%; cursor: pointer;">Borrar</a>
+                <img id="imagenBorrar1" src="/css/imagenBorrada.png" style="display: none;" alt="">
+                <img src="Imagen?tipoDeFoto=fotoCarrusel&id=Carrusel3" id="imagen1" width="100%" height="auto">
             </div>
-            <a class="bloque-derecha d-flex align-items-center justify-content-center" id="borrarImagen1" style="font-size: 200%; cursor: pointer;">Borrar</a>
-            <img src="https://cdn.www.gob.pe/uploads/document/file/965350/standard_310867105bd77816115eb8beca878465_L20200708-22286-1yuo6tw.jpg" id="imagen1" width="100%" height="auto">
-
-        </div>
-        <div class="col-sm-4">
-            <div class="bloque-izquierda btn-file1 d-flex align-items-center justify-content-center" style="position: absolute;">
-                <a style="font-size: 200%; cursor: pointer;">Cambiar</a>
-                <input type="file" style="background-color: white; margin-top: 25px;" accept="image/png, .jpeg, .jpg"></input>
+            <div id="containerImagen2" class="col-sm-4">
+                <div id="auxBorrar2" class="bloque-izquierda btn-file1 d-flex align-items-center justify-content-center" style="position: absolute;">
+                    <a style="font-size: 200%; cursor: pointer;">Cambiar</a>
+                    <input id="inputImagen2" type="file" onchange="mostrarImagen('imagen2','containerImagen2','inputImagen2')" name="foto2" style="background-color: white; margin-top: 25px;" accept="image/png, .jpeg, .jpg"></input>
+                </div>
+                <%request.getSession().setAttribute("fotoCarrusel4",carrusel.get(1));%>
+                <input id="borrar2" type="hidden" name="borrar2" value="0">
+                <a onclick="borrarImagen(['imagen2','inputImagen2','borrarImagen2','auxBorrar2'],'imagenBorrar2','borrar2')" class="bloque-derecha d-flex align-items-center justify-content-center" style="font-size: 200%; cursor: pointer;">Borrar</a>
+                <img id="imagenBorrar2" src="/css/imagenBorrada.png" style="display: none;" alt="">
+                <img id="imagen2" src="Imagen?tipoDeFoto=fotoCarrusel&id=Carrusel4" width="100%" height="auto">
             </div>
-            <a class="bloque-derecha d-flex align-items-center justify-content-center" style="font-size: 200%; cursor: pointer;">Borrar</a>
-            <img src="https://cdn.www.gob.pe/uploads/document/file/965350/standard_310867105bd77816115eb8beca878465_L20200708-22286-1yuo6tw.jpg" width="100%" height="auto">
-
-        </div>
-        <div class="col-sm-4">
-            <div class="bloque-izquierda btn-file1 d-flex align-items-center justify-content-center" style="position: absolute;">
-                <a style="font-size: 200%; cursor: pointer;">Cambiar</a>
-                <input type="file" style="background-color: white; margin-top: 25px;" accept="image/png, .jpeg, .jpg"></input>
+            <div id="containerImagen3" class="col-sm-4">
+                <div id="auxBorrar3" class="bloque-izquierda btn-file1 d-flex align-items-center justify-content-center" style="position: absolute;">
+                    <a style="font-size: 200%; cursor: pointer;">Cambiar</a>
+                    <input id="inputImagen3" type="file" onchange="mostrarImagen('imagen3','containerImagen3','inputImagen3')" name="foto3" style="background-color: white; margin-top: 25px;" accept="image/png, .jpeg, .jpg"></input>
+                </div>
+                <%request.getSession().setAttribute("fotoCarrusel5",carrusel.get(2));%>
+                <input id="borrar3" type="hidden" name="borrar3" value="0">
+                <a onclick="borrarImagen(['imagen3','inputImagen3','borrarImagen3','auxBorrar3'],'imagenBorrar3','borrar3')" class="bloque-derecha d-flex align-items-center justify-content-center" style="font-size: 200%; cursor: pointer;">Borrar</a>
+                <img id="imagenBorrar3" src="/css/imagenBorrada.png" style="display: none;" alt="">
+                <img id="imagen3" src="Imagen?tipoDeFoto=fotoCarrusel&id=Carrusel5" width="100%" height="auto">
             </div>
-            <a class="bloque-derecha d-flex align-items-center justify-content-center" style="font-size: 200%; cursor: pointer;">Borrar</a>
-            <img src="https://cdn.www.gob.pe/uploads/document/file/965350/standard_310867105bd77816115eb8beca878465_L20200708-22286-1yuo6tw.jpg" width="100%" height="auto">
-
         </div>
-    </div>
+
     <div class="row d-flex justify-content-center" style="margin-top: 10px;">
         <div class="col-sm-6" style="margin-top: 5px;">
             <button type="submit" class="button secondary" id="cerrarPopupImagenes1">Confirmar cambios</button>
@@ -2286,9 +2295,40 @@
             <button class="button secondary" id="cerrarPopupImagenes2" style="background-color: grey;">Cancelar</button>
         </div>
     </div>
+    </form>
 </div>
 <%}%>
 <script>
+    function borrarImagen(IDsBorrar,idImagenBorrada,idParametroExtra){
+        var imagenBorrada = document.getElementById(idImagenBorrada);
+        imagenBorrada.style.display='block';
+        var parametroExtra=document.getElementById(idParametroExtra);
+        parametroExtra.value='1';
+        for(let i=0;i<IDsBorrar.length;i++){
+            let aux=document.getElementById(IDsBorrar[i]);
+            aux.style.display='none';
+            aux.disabled=true;
+        }
+    }
+
+    function mostrarImagen(idImagen, idImagenContainer, idInputArchivo) {
+        var imagenContainer = document.getElementById(idImagenContainer);
+        var imagen = document.getElementById(idImagen);
+        var inputArchivo = document.getElementById(idInputArchivo);
+
+        if (inputArchivo.files && inputArchivo.files[0]) {
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                // Cambiar la imagen por la q recien se subió mediante el input
+                imagen.src = e.target.result;
+            };
+            reader.readAsDataURL(inputArchivo.files[0]);
+            imagenContainer.style.display = 'block';
+        } else {
+            imagenContainer.style.display = 'none';
+        }
+    }
+
     function blockButton(id){
         document.getElementById(id).style.pointerEvents = "none";
         document.getElementById(id).style.opacity = "0.5";

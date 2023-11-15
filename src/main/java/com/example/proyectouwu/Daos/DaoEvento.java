@@ -30,10 +30,13 @@ public class DaoEvento extends DaoPadre {
                     e.setEventoOculto(rs.getBoolean(10));
                     e.setResumen(rs.getString(11));
                     e.setResultadoEvento(rs.getString(12));
-                    String sql2 = "select c.foto from Evento e inner join FotoEventoCarrusel c on e.idEvento=c.idEvento";
-                    try (ResultSet rs2 = conn.createStatement().executeQuery(sql2)) {
-                        while (rs2.next()) {
-                            e.getCarruselFotos().add(rs2.getBlob(1));
+                    String sql2 = "select idFotoEventoCarrusel,foto from FotoEventoCarrusel where idEvento=?";
+                    try (PreparedStatement pstmt2=conn.prepareStatement(sql2)) {
+                        pstmt2.setInt(rs.getInt(1),1);
+                        try(ResultSet rs2=pstmt2.executeQuery()){
+                            while (rs2.next()) {
+                                e.getCarruselFotos().add(rs2.getBlob(2));
+                            }
                         }
                     }
                     return e;
@@ -697,5 +700,4 @@ public class DaoEvento extends DaoPadre {
             throw new RuntimeException(e);
         }
     }
-
 }

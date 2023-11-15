@@ -11,7 +11,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-
     <%Usuario usuarioActual=(Usuario) request.getSession().getAttribute("usuario");
         int idUsuario=usuarioActual.getIdUsuario();
         String rolUsuario=usuarioActual.getRol();
@@ -20,7 +19,11 @@
         String nombreCompletoUsuario=usuarioActual.getNombre()+" "+usuarioActual.getApellido();
         ArrayList<Usuario> listaSolicitudes=(ArrayList<Usuario>) request.getAttribute("listaSolicitudes");
         int cantidadTotalPageSolicitudes =request.getAttribute("cantidadTotalSolicitudes")!= null ? (int)Math.ceil((int)request.getAttribute("cantidadTotalSolicitudes")/8.0):0;
+        int cantidadTotalPageDonaciones = request.getAttribute("cantidadTotalDonaciones") != null ? (int)Math.ceil((int)request.getAttribute("cantidadTotalDonaciones")/8.0):0;
+        int cantidadTotalPageValidacion = request.getAttribute("cantidadTotalValidaciones") != null ? (int)Math.ceil((int)request.getAttribute("cantidadTotalValidaciones")/8.0):0;
         Integer pagActual = request.getAttribute("pagActual") != null ? (Integer) request.getAttribute("pagActual") : 1;
+        Integer pagActualD = request.getAttribute("pagActualD") != null ? (Integer) request.getAttribute("pagActualD") : 1;
+        Integer pagActualV = request.getAttribute("pagActualV") != null ? (Integer) request.getAttribute("pagActualV") : 1;
         ArrayList<Reporte> reportList = (ArrayList<Reporte>) request.getAttribute("reportList");
         ArrayList<Donacion> donacionList = (ArrayList<Donacion>) request.getAttribute("donacionList");
         ArrayList<Validacion> recuperacionList = (ArrayList<Validacion>) request.getAttribute("recuperacionList");
@@ -44,9 +47,6 @@
         String fecha2=(String) request.getAttribute("fecha2");
         String buscarReportes=(String) request.getAttribute("buscarReportes");
     %>
-
-
-
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <!-- bootstrap 4.3.1 -->
@@ -61,7 +61,6 @@
     <!-- favicon -->
     <link rel="icon" href="img/favicon.ico">
     <title>Notificaciones - Siempre Fibra</title>
-
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <style>
         /* Estilos para resaltar las opciones clickeables */
@@ -76,8 +75,6 @@
             display: none;
         }
     </style>
-
-
     <style>
         .button-reject {
             background-color: red; /* Cambia el fondo del botón a rojo */
@@ -85,7 +82,6 @@
             /* Puedes ajustar otros estilos según tus preferencias, como el tamaño del texto, el borde, etc. */
         }
     </style>
-
     <style>
         @media screen and (max-width: 680px) {
             .auxResponsiveUwu{
@@ -93,9 +89,6 @@
             }
         }
     </style>
-
-
-
     <style>
         .overlay {
             display: none;
@@ -142,7 +135,6 @@
             transition: background-color .2s ease-in-out;
         }
     </style>
-
 </head>
 <body>
 
@@ -184,13 +176,13 @@
 <!-- /PAGE LOADER -->
 
 <nav id="navigation-widget-small" class="navigation-widget navigation-widget-desktop closed sidebar left delayed">
-
     <!-- USER AVATAR -->
     <a class="user-avatar small no-outline online">
         <!-- USER AVATAR CONTENT -->
         <div class="user-avatar-content">
             <!-- HEXAGON -->
-            <div class="hexagon-image-30-32" data-src="ImagenUsuarioServlet?idUsuario=<%=idUsuario%>"><div class="hexagon-image-30-32" data-src="css/sin_foto_De_perfil.png"></div></div>
+            <%request.getSession().setAttribute("fotoPersonal0",usuarioActual.getFotoPerfil());%>
+            <div class="hexagon-image-30-32" data-src="Imagen?tipoDeFoto=fotoPerfil&id=Personal0"></div>
             <!-- /HEXAGON -->
         </div>
         <!-- /USER AVATAR CONTENT -->
@@ -292,7 +284,6 @@
     </figure>
     <!-- /NAVIGATION WIDGET COVER -->
 
-
     <!-- USER SHORT DESCRIPTION -->
     <div class="user-short-description">
         <!-- USER SHORT DESCRIPTION AVATAR -->
@@ -308,7 +299,8 @@
             <!-- USER AVATAR CONTENT -->
             <div class="user-avatar-content">
                 <!-- HEXAGON -->
-                <div class="hexagon-image-82-90" data-src="ImagenUsuarioServlet?idUsuario=<%=idUsuario%>"><div class="hexagon-image-82-90" data-src="css/sin_foto_De_perfil.png"></div></div>
+                <%request.getSession().setAttribute("fotoPersonal1",usuarioActual.getFotoPerfil());%>
+                <div class="hexagon-image-82-90" data-src="Imagen?tipoDeFoto=fotoPerfil&id=Personal1"></div>
                 <!-- /HEXAGON -->
             </div>
             <!-- /USER AVATAR CONTENT -->
@@ -440,7 +432,6 @@
     </div>
     <!-- /NAVIGATION WIDGET CLOSE BUTTON -->
 
-
     <!-- NAVIGATION WIDGET INFO WRAP -->
     <div class="navigation-widget-info-wrap">
         <!-- NAVIGATION WIDGET INFO -->
@@ -450,7 +441,8 @@
                 <!-- USER AVATAR CONTENT -->
                 <div class="user-avatar-content">
                     <!-- HEXAGON -->
-                    <div class="hexagon-image-30-32" data-src="ImagenUsuarioServlet?idUsuario=<%=idUsuario%>"><div class="hexagon-image-30-32" data-src="css/sin_foto_De_perfil.png"></div></div>
+                    <%request.getSession().setAttribute("fotoPersonal2",usuarioActual.getFotoPerfil());%>
+                    <div class="hexagon-image-30-32" data-src="Imagen?tipoDeFoto=fotoPerfil&id=Personal2"></div>
                     <!-- /HEXAGON -->
                 </div>
                 <!-- /USER AVATAR CONTENT -->
@@ -494,11 +486,9 @@
         </div>
         <!-- /NAVIGATION WIDGET INFO -->
 
-        <!-- NAVIGATION WIDGET BUTTON -->
         <form method="post" action="InicioSesionServlet?action=logOut">
             <button style="border:0;background: none;color: inherit" type="submit"><a><p class="navigation-widget-info-button button small secondary">Cerrar sesión</p></a></button>
         </form>
-        <!-- /NAVIGATION WIDGET BUTTON -->
     </div>
     <!-- /NAVIGATION WIDGET INFO WRAP -->
 
@@ -881,7 +871,6 @@
             <!-- /ACTION ITEM -->
 
             <!-- DROPDOWN NAVIGATION -->
-
         </div>
         <!-- /ACTION ITEM WRAP -->
     </div>
@@ -916,7 +905,7 @@
                     <!-- DROPDOWN BOX LIST -->
                     <div class="dropdown-box-list" data-simplebar>
                         <%for(NotificacionDelegadoGeneral noti:listaNotificacionesCampanita){%>
-                        <form id="notificacionLeidaCampanita<%=listaNotificacionesCampanita.indexOf(noti)%>" method="post" action="?action=notificacionLeidaCampanita">
+                        <form id="notificacionLeidaCampanita<%=listaNotificacionesCampanita.indexOf(noti)%>" method="post" action="/<%=servletActual%>?action=notificacionLeidaCampanita">
                             <input type="hidden" name="idNotificacion" value="<%=noti.getIdNotificacion()%>">
                             <%if(noti.getReporte().getIdReporte()!=0){
                                 Reporte r=new DaoReporte().reportePorIdReporteNotificacion(noti.getReporte().getIdReporte());%>
@@ -930,9 +919,9 @@
                                         <div class="user-avatar small no-outline">
                                             <!-- USER AVATAR CONTENT -->
                                             <div class="user-avatar-content">
+                                                <%request.getSession().setAttribute("foto0"+listaNotificacionesCampanita.indexOf(noti),new DaoDonacion().getFotoPerfilPorIDDonacion(noti.getDonacion().getIdDonacion()));%>
                                                 <!-- HEXAGON AQUÍ FALTA LA FOTOOOO -->
-                                                <%request.getSession().setAttribute("foto"+listaNotificacionesCampanita.indexOf(noti)+"l",noti.getUsuario().getFotoPerfil());%>
-                                                <div class="hexagon-image-30-32" data-src="Imagen?id=<%=listaNotificacionesCampanita.indexOf(noti)%>l"></div>
+                                                <div class="hexagon-image-30-32" data-src="Imagen?tipoDeFoto=fotoPerfil&id=0<%=listaNotificacionesCampanita.indexOf(noti)%>"></div>
                                                 <!-- /HEXAGON -->
                                             </div>
                                             <!-- /USER AVATAR CONTENT -->
@@ -1059,9 +1048,9 @@
                                         <div class="user-avatar small no-outline">
                                             <!-- USER AVATAR CONTENT -->
                                             <div class="user-avatar-content">
+                                                <%request.getSession().setAttribute("foto0"+listaNotificacionesCampanita.indexOf(noti),new DaoReporte().getFotoPerfilPorIDReporte(noti.getReporte().getIdReporte()));%>
                                                 <!-- HEXAGON AQUÍ FALTA LA FOTOOOO -->
-                                                <%request.getSession().setAttribute("foto"+listaNotificacionesCampanita.indexOf(noti)+"l",noti.getUsuario().getFotoPerfil());%>
-                                                <div class="hexagon-image-30-32" data-src="Imagen?id=<%=listaNotificacionesCampanita.indexOf(noti)%>l"></div>
+                                                <div class="hexagon-image-30-32" data-src="Imagen?tipoDeFoto=fotoPerfil&id=0<%=listaNotificacionesCampanita.indexOf(noti)%>"></div>
                                                 <!-- /HEXAGON -->
                                             </div>
                                             <!-- /USER AVATAR CONTENT -->
@@ -1317,9 +1306,9 @@
                                         <div class="user-avatar small no-outline">
                                             <!-- USER AVATAR CONTENT -->
                                             <div class="user-avatar-content">
-                                                <!-- HEXAGON AQUÍ ESTA FOTO SE CAMBIAAA -->
-                                                <%request.getSession().setAttribute("foto"+listaNotificacionesCampanita.indexOf(noti)+"l",noti.getUsuario().getFotoPerfil());%>
-                                                <div class="hexagon-image-30-32" data-src="Imagen?id=<%=listaNotificacionesCampanita.indexOf(noti)%>l"></div>
+                                                <%request.getSession().setAttribute("foto0"+listaNotificacionesCampanita.indexOf(noti),new DaoValidacion().getFotoPerfilPorIDCorreoValidacion(noti.getValidacion().getIdCorreoValidacion()));%>
+                                                <!-- HEXAGON AQUÍ FALTA LA FOTOOOO -->
+                                                <div class="hexagon-image-30-32" data-src="Imagen?tipoDeFoto=fotoPerfil&id=0<%=listaNotificacionesCampanita.indexOf(noti)%>"></div>
                                                 <!-- /HEXAGON -->
                                             </div>
                                             <!-- /USER AVATAR CONTENT -->
@@ -1446,9 +1435,8 @@
                                         <div class="user-avatar small no-outline">
                                             <!-- USER AVATAR CONTENT -->
                                             <div class="user-avatar-content">
-                                                <!-- HEXAGON AQUÍ ESTA FOTO SE CAMBIAAA -->
-                                                <%request.getSession().setAttribute("foto"+listaNotificacionesCampanita.indexOf(noti)+"l",noti.getUsuario().getFotoPerfil());%>
-                                                <div class="hexagon-image-30-32" data-src="Imagen?id=<%=listaNotificacionesCampanita.indexOf(noti)%>l"></div>
+                                                <!-- HEXAGON AQUÍ ESTA FOTO ES ESTÁTICA -->
+                                                <div class="hexagon-image-30-32" data-src="css/iconoPerfil.png"></div>
                                                 <!-- /HEXAGON -->
                                             </div>
                                             <!-- /USER AVATAR CONTENT -->
@@ -1549,7 +1537,7 @@
                                     <%}%>
                                     <%}else if(diferenciaFechas[5]==0){%>
                                     <!-- USER STATUS TIMESTAMP -->
-                                    <p class="user-status-timestamp">Ahora mismo <a style="color: #20c997;cursor: pointer" onclick="enviarFormulario<%=listaNotificacionesCampanita.indexOf(noti)%>('notificacionLeidaCampanita<%=listaNotificacionesCampanita.indexOf(noti)%>')">Leído</a></p>
+                                    <p class="user-status-timestamp">Ahora mismo <a style="color: #20c997;cursor: pointer" onclick="enviarFormulario('notificacionLeidaCampanita<%=listaNotificacionesCampanita.indexOf(noti)%>')">Leído</a></p>
                                     <!-- /USER STATUS TIMESTAMP -->
                                     <%}%>
                                     <!-- USER STATUS ICON -->
@@ -1654,7 +1642,7 @@
                     </div>
                     <!-- /FORM INPUT -->
                     <!-- FORM SELECT -->
-                    <!--<div class="form-select">
+                    <div class="form-select">
                         <label for="friends-filter-category_1">Filter By</label>
                         <select id="friends-filter-category_1">
                             <option>Solicitudes de Registro</option>
@@ -1662,12 +1650,12 @@
                             <option>Reportes</option>
                             <option>Solicitudes de Validación</option>
                         </select>
-                        FORM SELECT ICON -->
-                        <!--<svg class="form-select-icon icon-small-arrow">
+                        <!--FORM SELECT ICON -->
+                        <svg class="form-select-icon icon-small-arrow">
                             <use xlink:href="#svg-small-arrow"></use>
                         </svg>
-                         /FORM SELECT ICON -->
-                    <!--</div>-->
+                        <!--/FORM SELECT ICON -->
+                    </div>
                     <!-- /FORM SELECT -->
                 </form>
                 <!-- /FORM -->
@@ -1843,7 +1831,7 @@
                 <%  for(int p=0;p<cantidadTotalPageSolicitudes; p++){%>
                     <div class="section-pager-item <%if(pagActual==p+1){%>active<%}%>">
                         <%if(action.equals("buscarUsuario")){%>
-                        <%if (p<=9){%>
+                        <%if (p<9){%>
                         <!-- SECTION PAGER ITEM TEXT -->
                         <a class="section-pager-item-text" href="NotificacionesServlet?action=<%=action%>&buscarUsuario=<%=busquedaSolicitudes%>&p=<%=p+1%>">0<%=p+1%></a>
                         <!-- /SECTION PAGER ITEM TEXT -->
@@ -1852,7 +1840,7 @@
                         <a class="section-pager-item-text" href="NotificacionesServlet?action=<%=action%>&buscarUsuario=<%=busquedaSolicitudes%>&p=<%=p+1%>"><%=p+1%></a>
                         <!-- /SECTION PAGER ITEM TEXT -->
                         <%}}else{%>
-                        <%if (p<=9){%>
+                        <%if (p<9){%>
                         <!-- SECTION PAGER ITEM TEXT -->
                         <a class="section-pager-item-text" href="NotificacionesServlet?p=<%=p+1%>">0<%=p+1%></a>
                         <!-- /SECTION PAGER ITEM TEXT -->
@@ -1868,29 +1856,6 @@
             </div>
             <!-- /SECTION PAGER -->
 
-            <!-- SECTION PAGER CONTROLS -->
-            <div class="section-pager-controls">
-                <!-- SLIDER CONTROL -->
-                <div class="slider-control left disabled">
-                    <!-- SLIDER CONTROL ICON -->
-                    <svg class="slider-control-icon icon-small-arrow">
-                        <use xlink:href="#svg-small-arrow"></use>
-                    </svg>
-                    <!-- /SLIDER CONTROL ICON -->
-                </div>
-                <!-- /SLIDER CONTROL -->
-
-                <!-- SLIDER CONTROL -->
-                <div class="slider-control right">
-                    <!-- SLIDER CONTROL ICON -->
-                    <svg class="slider-control-icon icon-small-arrow">
-                        <use xlink:href="#svg-small-arrow"></use>
-                    </svg>
-                    <!-- /SLIDER CONTROL ICON -->
-                </div>
-                <!-- /SLIDER CONTROL -->
-            </div>
-            <!-- /SECTION PAGER CONTROLS -->
         </div>
         <!-- /SECTION PAGER BAR -->
 
@@ -1907,10 +1872,13 @@
                 <!-- FORM -->
                 <form method="get" action="<%=request.getContextPath()%>/NotificacionesServlet" class="form">
                     <input type="hidden" name="action" value="buscarDonaciones">
+                    <input type="hidden" name="pd" value="<%=pagActualD%>">
+                    <input type="hidden" name="fecha1" <%if(fecha1!=null){%>value="<%=fecha1%>"<%}%>>
+                    <input type="hidden" name="fecha2" <%if(fecha2!=null){%>value="<%=fecha2%>"<%}%>>
                     <!-- FORM INPUT -->
                     <div class="form-input small with-button">
-                        <label for="friends-search_2">Buscar usuarios</label>
-                        <input type="text" id="friends-search_2" name="buscar" <%if(buscar!=null){%> value="<%=buscar%> <%}%>">
+                        <label for="friends-search_5">Buscar usuarios</label>
+                        <input type="text" id="friends-search_5" name="buscar" <%if(buscar!=null){%> value="<%=buscar%> <%}%>">
                         <!-- BUTTON -->
                         <button type="submit" class="button primary">
                             <!-- ICON MAGNIFYING GLASS -->
@@ -1926,7 +1894,7 @@
                     <!-- FORM SELECT -->
                     <div class="form-select">
                         <label for="friends-filter-category_2">Filter By</label>
-                        <select id="friends-filter-category_2" name="friends_filter_category">
+                        <select id="friends-filter-category_2">
                             <option >Solicitudes de Registro</option>
                             <option >Donaciones</option>
                             <option >Reportes</option>
@@ -1983,6 +1951,8 @@
                 <!-- FORM -->
                 <form method="get" action="<%=request.getContextPath()%>/NotificacionesServlet" class="form">
                     <input type="hidden" name="action" value="filtrarDonaciones">
+                    <input type="hidden" name="pd" value="<%=pagActualD%>">
+                    <input type="hidden" id="friends-search_2" name="buscar" <%if(buscar!=null){%> value="<%=buscar%><%}%>">
                     <!-- FORM ITEM -->
                     <div class="form-item split">
                         <!-- FORM INPUT DECORATED -->
@@ -1990,7 +1960,7 @@
                             <!-- FORM INPUT -->
                             <div class="form-input small active">
                                 <label for="statement-from-date">Fecha de Inicio</label>
-                                <input type="text" id="statement-from-date" name="fecha1" placeholder="DD/MM/20AA" <%if(fecha1!=null){%> value="<%=fecha1%>" <%}%>>
+                                <input type="date" id="statement-from-date" name="fecha1" placeholder="DD/MM/20AA" <%if(fecha1!=null){%> value="<%=fecha1%>" <%}%>>
                             </div>
                             <!-- /FORM INPUT -->
 
@@ -2007,7 +1977,7 @@
                             <!-- FORM INPUT -->
                             <div class="form-input small active">
                                 <label for="statement-to-date">Fecha de Fin</label>
-                                <input type="text" id="statement-to-date" name="fecha2" placeholder="DD/MM/20AA" <%if(fecha2!=null){%> value="<%=fecha2%>" <%}%>>
+                                <input type="date" id="statement-to-date" name="fecha2" placeholder="DD/MM/20AA" <%if(fecha2!=null){%> value="<%=fecha2%>" <%}%>>
                             </div>
                             <!-- /FORM INPUT -->
 
@@ -2114,7 +2084,7 @@
                 <!-- TABLE BODY -->
                 <div class="table-body same-color-rows">
 
-
+                    <%int contadorD = 0;%>
                     <%for (Donacion donacion : donacionList){%>
                     <!-- TABLE ROW -->
                     <div class="table-row micro">
@@ -2189,8 +2159,7 @@
                     </div>
                     <!-- /TABLE ROW -->
 
-                    <%}%>
-
+                    <%contadorD++;}%>
 
                 </div>
                 <!-- /TABLE BODY -->
@@ -2200,49 +2169,34 @@
         <!-- /TABLE WRAP -->
 
         <!-- SECTION PAGER BAR WRAP -->
-        <div class="section-pager-bar-wrap align-right">
+        <div class="section-pager-bar-wrap align-center">
             <!-- SECTION PAGER BAR -->
             <div class="section-pager-bar">
                 <!-- SECTION PAGER -->
                 <div class="section-pager">
                     <!-- SECTION PAGER ITEM -->
-
-                    <% // for(int p=0;p<cantidadTotalPageDonaciones; p++){%>
-
-                    <div class="section-pager-item active">
-                        <!-- SECTION PAGER ITEM TEXT -->
-                        <p class="section-pager-item-text">01</p>
-                        <!-- /SECTION PAGER ITEM TEXT -->
+                    <%for(int p=0;p<cantidadTotalPageDonaciones; p++){%>
+                    <div class="section-pager-item <%if(pagActualD==p+1){%>active<%}%>">
+                        <%if(!action.isEmpty()){%>
+                        <%if(p<9){%>
+                        <a class="section-pager-item-text" href="NotificacionesServlet?action=<%=action%>&pd=<%=p+1%>&buscar=<%=buscar%>&fecha1=<%=fecha1%>&fecha2=<%=fecha2%>&vistaActualNueva=Donaciones">0<%=p+1%></a>
+                        <%}else{%>
+                        <a class="section-pager-item-text" href="NotificacionesServlet?action=<%=action%>&pd=<%=p+1%>&buscar=<%=buscar%>&fecha1=<%=fecha1%>&fecha2=<%=fecha2%>&vistaActualNueva=Donaciones"><%=p+1%></a>
+                        <%}}else{%>
+                        <%if(p<9){%>
+                        <a class="section-pager-item-text" href="NotificacionesServlet?&pd=<%=p+1%>&vistaActualNueva=Donaciones">0<%=p+1%></a>
+                        <%}else{%>
+                        <a class="section-pager-item-text" href="NotificacionesServlet?&pd=<%=p+1%>&vistaActualNueva=Donaciones"><%=p+1%></a>
+                        <%}}%>
                     </div>
                     <!-- /SECTION PAGER ITEM -->
-
-                    <% // }%>
+                    <%}%>
                     <!-- /SECTION PAGER ITEM -->
                 </div>
                 <!-- /SECTION PAGER -->
 
                 <!-- SECTION PAGER CONTROLS -->
-                <div class="section-pager-controls">
-                    <!-- SLIDER CONTROL -->
-                    <div class="slider-control left disabled">
-                        <!-- SLIDER CONTROL ICON -->
-                        <svg class="slider-control-icon icon-small-arrow">
-                            <use xlink:href="#svg-small-arrow"></use>
-                        </svg>
-                        <!-- /SLIDER CONTROL ICON -->
-                    </div>
-                    <!-- /SLIDER CONTROL -->
 
-                    <!-- SLIDER CONTROL -->
-                    <div class="slider-control right">
-                        <!-- SLIDER CONTROL ICON -->
-                        <svg class="slider-control-icon icon-small-arrow">
-                            <use xlink:href="#svg-small-arrow"></use>
-                        </svg>
-                        <!-- /SLIDER CONTROL ICON -->
-                    </div>
-                    <!-- /SLIDER CONTROL -->
-                </div>
                 <!-- /SECTION PAGER CONTROLS -->
             </div>
             <!-- /SECTION PAGER BAR -->
@@ -2277,7 +2231,7 @@
                     <!-- FORM SELECT -->
                     <div class="form-select">
                         <label for="friends-filter-category_3">Filter By</label>
-                        <select id="friends-filter-category_3" name="friends_filter_category">
+                        <select id="friends-filter-category_3">
                             <option >Solicitudes de Registro</option>
                             <option >Donaciones</option>
                             <option >Reportes</option>
@@ -2438,12 +2392,12 @@
                     <!-- FORM INPUT -->
                     <div class="form-input small with-button" style="opacity: 0">
                         <label for="friends-search_4">Buscar usuarios</label>
-                        <input type="text" id="friends-search_4" name="friends_search">
+                        <input type="text" id="friends-search_4" name="friends_search" disabled>
                         <!-- BUTTON -->
-                        <button class="button primary">
+                        <button style="cursor: auto;" class="button primary">
                             <!-- ICON MAGNIFYING GLASS -->
-                            <svg class="icon-magnifying-glass">
-                                <use xlink:href="#svg-magnifying-glass"></use>
+                            <svg style="cursor: auto;" class="icon-magnifying-glass">
+                                <use style="cursor: auto;" xlink:href="#svg-magnifying-glass"></use>
                             </svg>
                             <!-- /ICON MAGNIFYING GLASS -->
                         </button>
@@ -2454,7 +2408,7 @@
                     <!-- FORM SELECT -->
                     <div class="form-select">
                         <label for="friends-filter-category_4">Filter By</label>
-                        <select id="friends-filter-category_4" name="friends_filter_category">
+                        <select id="friends-filter-category_4">
                             <option >Solicitudes de Registro</option>
                             <option >Donaciones</option>
                             <option >Reportes</option>
@@ -2612,12 +2566,11 @@
                             <!-- TABLE TITLE -->
                             <%String link = "mips";%>
                             <%if(validacion.getTipo().equals("enviarLinkACorreo")) {
-                                link = "http://localhost:8080/proyectouwu_war_exploded/RegistroServlet?idCorreoValidacion=" + validacion.getIdCorreoValidacion() + "&codigoValidacion=" + validacion.getCodigoValidacion();
-                            }else if(validacion.getTipo().equals("recuperarContrasena")){link = "http://localhost:8080/proyectouwu_war_exploded/RecuperarContrasenaSegundoCasoServlet?idCorreoValidacion="+validacion.getIdCorreoValidacion()+"&codigoValidacion="+validacion.getCodigoValidacion();}%>
+                                link = "http://localhost:8080/proyectouwu_war_exploded/RegistroServlet?idCorreoValidacion=" + validacion.getIdCorreoValidacion() + "&codigoValidacion256=" + validacion.getCodigoValidacion256();
+                            }else if(validacion.getTipo().equals("recuperarContrasena")){link = "http://localhost:8080/proyectouwu_war_exploded/RecuperarContrasenaSegundoCasoServlet?idCorreoValidacion="+validacion.getIdCorreoValidacion()+"&codigoValidacion256="+validacion.getCodigoValidacion256();}%>
                             <p class="table-title"><a href="<%=link%>">Link</a></p>
                             <!-- /TABLE TITLE -->
                         </div>
-
                         <div class="table-column centered padded">
                             <!-- TABLE TITLE -->
                             <%if(validacion.getTipo().equals("enviarLinkACorreo")){%>
@@ -2657,84 +2610,27 @@
         <!-- /TABLE WRAP -->
 
         <!-- SECTION PAGER BAR WRAP -->
-        <div class="section-pager-bar-wrap align-right">
+        <div class="section-pager-bar-wrap align-center">
             <!-- SECTION PAGER BAR -->
             <div class="section-pager-bar">
                 <!-- SECTION PAGER -->
                 <div class="section-pager">
                     <!-- SECTION PAGER ITEM -->
-                    <div class="section-pager-item active">
+                    <%for(int p=0;p<cantidadTotalPageValidacion;p++){%>
+                    <div class="section-pager-item <%if(pagActualV==p+1){%>active<%}%>">
                         <!-- SECTION PAGER ITEM TEXT -->
-                        <p class="section-pager-item-text">01</p>
+                        <%if(p<9){%>
+                        <a class="section-pager-item-text" href="NotificacionesServlet?pv=<%=p+1%>&vistaActualNueva=Recuperacion">0<%=p+1%></a>
+                        <%}else{%>
+                        <a class="section-pager-item-text" href="NotificacionesServlet?pv=<%=p+1%>&vistaActualNueva=Recuperacion"><%=p+1%></a>
+                        <%}%>
                         <!-- /SECTION PAGER ITEM TEXT -->
                     </div>
                     <!-- /SECTION PAGER ITEM -->
-
-                    <!-- SECTION PAGER ITEM -->
-                    <div class="section-pager-item">
-                        <!-- SECTION PAGER ITEM TEXT -->
-                        <p class="section-pager-item-text">02</p>
-                        <!-- /SECTION PAGER ITEM TEXT -->
-                    </div>
-                    <!-- /SECTION PAGER ITEM -->
-
-                    <!-- SECTION PAGER ITEM -->
-                    <div class="section-pager-item">
-                        <!-- SECTION PAGER ITEM TEXT -->
-                        <p class="section-pager-item-text">03</p>
-                        <!-- /SECTION PAGER ITEM TEXT -->
-                    </div>
-                    <!-- /SECTION PAGER ITEM -->
-
-                    <!-- SECTION PAGER ITEM -->
-                    <div class="section-pager-item">
-                        <!-- SECTION PAGER ITEM TEXT -->
-                        <p class="section-pager-item-text">04</p>
-                        <!-- /SECTION PAGER ITEM TEXT -->
-                    </div>
-                    <!-- /SECTION PAGER ITEM -->
-
-                    <!-- SECTION PAGER ITEM -->
-                    <div class="section-pager-item">
-                        <!-- SECTION PAGER ITEM TEXT -->
-                        <p class="section-pager-item-text">05</p>
-                        <!-- /SECTION PAGER ITEM TEXT -->
-                    </div>
-                    <!-- /SECTION PAGER ITEM -->
-
-                    <!-- SECTION PAGER ITEM -->
-                    <div class="section-pager-item">
-                        <!-- SECTION PAGER ITEM TEXT -->
-                        <p class="section-pager-item-text">06</p>
-                        <!-- /SECTION PAGER ITEM TEXT -->
-                    </div>
-                    <!-- /SECTION PAGER ITEM -->
+                    <%}%>
                 </div>
                 <!-- /SECTION PAGER -->
 
-                <!-- SECTION PAGER CONTROLS -->
-                <div class="section-pager-controls">
-                    <!-- SLIDER CONTROL -->
-                    <div class="slider-control left disabled">
-                        <!-- SLIDER CONTROL ICON -->
-                        <svg class="slider-control-icon icon-small-arrow">
-                            <use xlink:href="#svg-small-arrow"></use>
-                        </svg>
-                        <!-- /SLIDER CONTROL ICON -->
-                    </div>
-                    <!-- /SLIDER CONTROL -->
-
-                    <!-- SLIDER CONTROL -->
-                    <div class="slider-control right">
-                        <!-- SLIDER CONTROL ICON -->
-                        <svg class="slider-control-icon icon-small-arrow">
-                            <use xlink:href="#svg-small-arrow"></use>
-                        </svg>
-                        <!-- /SLIDER CONTROL ICON -->
-                    </div>
-                    <!-- /SLIDER CONTROL -->
-                </div>
-                <!-- /SECTION PAGER CONTROLS -->
             </div>
             <!-- /SECTION PAGER BAR -->
         </div>
@@ -2784,8 +2680,9 @@
         <path d="M11.4142 10L16.7071 4.70711C17.0976 4.31658 17.0976 3.68342 16.7071 3.29289C16.3166 2.90237 15.6834 2.90237 15.2929 3.29289L10 8.58579L4.70711 3.29289C4.31658 2.90237 3.68342 2.90237 3.29289 3.29289C2.90237 3.68342 2.90237 4.31658 3.29289 4.70711L8.58579 10L3.29289 15.2929C2.90237 15.6834 2.90237 16.3166 3.29289 16.7071C3.68342 17.0976 4.31658 17.0976 4.70711 16.7071L10 11.4142L15.2929 16.7071C15.6834 17.0976 16.3166 17.0976 16.7071 16.7071C17.0976 16.3166 17.0976 15.6834 16.7071 15.2929L11.4142 10Z" fill="black"/>
     </svg>
     <div class="row">
+        <%request.getSession().setAttribute("fotoDonacion"+i,donacionList.get(i).getCaptura());%>
         <div class="container-fluid">
-            <img src="css/yape.jpeg" class="img-fluid">
+            <img src="Imagen?tipoDeFoto=fotoDonacion&id=Donacion<%=i%>" class="img-fluid">
         </div>
     </div>
 </div>

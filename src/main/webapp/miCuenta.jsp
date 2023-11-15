@@ -13,6 +13,7 @@
         ArrayList<String> listaInfo = (ArrayList<String>) request.getAttribute("listaInfo");
         ArrayList<String> listaCorreosDelegadosGenerales=(ArrayList<String>)request.getAttribute("correosDelegadosGenerales");
         String colorRol;
+
         String servletActual="MiCuentaServlet";
         ArrayList<NotificacionDelegadoGeneral>listaNotificacionesCampanita=(ArrayList<NotificacionDelegadoGeneral>) request.getAttribute("listaNotificacionesCampanita");
         if(rolUsuario.equals("Alumno")){

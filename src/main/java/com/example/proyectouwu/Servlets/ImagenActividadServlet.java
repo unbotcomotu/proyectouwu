@@ -16,7 +16,7 @@ import java.sql.SQLException;
 public class ImagenActividadServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        response.setContentType("image/jpeg");
+        response.setContentType("image/png");
 
         String idActividad = request.getParameter("idActividad");
 

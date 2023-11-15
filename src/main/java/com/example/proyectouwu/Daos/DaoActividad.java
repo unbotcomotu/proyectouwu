@@ -63,7 +63,7 @@ public class DaoActividad extends DaoPadre {
 
     public ArrayList<Actividad>listarActividades(String nombre){
         ArrayList<Actividad>listaActividades=new ArrayList<>();
-        String sql="select idActividad,idDelegadoDeActividad,nombre,fotoMiniatura,cantidadPuntosPrimerLugar,actividadFinalizada,actividadOculta from actividad where lower(nombre) like ?";
+        String sql="select idActividad,idDelegadoDeActividad,nombre,fotoMiniatura,fotoCabecera,cantidadPuntosPrimerLugar,actividadFinalizada,actividadOculta from actividad where lower(nombre) like ?";
         try(Connection conn=this.getConnection(); PreparedStatement pstmt=conn.prepareStatement(sql)){
             pstmt.setString(1,"%"+nombre+"%");
             try (ResultSet rs=pstmt.executeQuery()){
@@ -73,9 +73,10 @@ public class DaoActividad extends DaoPadre {
                     a.getDelegadoDeActividad().setIdUsuario(rs.getInt(2));
                     a.setNombre(rs.getString(3));
                     a.setFotoMiniatura(rs.getBlob(4));
-                    a.setCantPuntosPrimerLugar(rs.getInt(5));
-                    a.setActividadFinalizada(rs.getBoolean(6));
-                    a.setActividadOculta(rs.getBoolean(7));
+                    a.setFotoCabecera(rs.getBlob(5));
+                    a.setCantPuntosPrimerLugar(rs.getInt(6));
+                    a.setActividadFinalizada(rs.getBoolean(7));
+                    a.setActividadOculta(rs.getBoolean(8));
                     listaActividades.add(a);
                 }return listaActividades;
             }

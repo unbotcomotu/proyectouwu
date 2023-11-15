@@ -190,7 +190,7 @@ public class ListaDeActividadesServlet extends HttpServlet {
                         }else{
                             ocultoEditarActividad=false;
                         }
-                        //String fotoCabeceraEditar==inputCab;
+                        //fotoCabeceraEditar==inputCab;
                         partCab = request.getPart("updateFotoCabecera");
 
                         // Obtenemos el flujo de bytes
@@ -201,7 +201,7 @@ public class ListaDeActividadesServlet extends HttpServlet {
                         validarLongitudCab = inputCab.available() > 10;
 
 
-                        //String fotoMiniaturaEditar==inputMin;
+                        //fotoMiniaturaEditar==inputMin;
                         partMin = request.getPart("updateFotoMiniatura");
 
                         // Obtenemos el flujo de bytes
@@ -216,7 +216,14 @@ public class ListaDeActividadesServlet extends HttpServlet {
                         } catch (SQLException e) {
                             throw new RuntimeException(e);
                         }
-                        response.sendRedirect("ListaDeActividadesServlet");
+
+                        if (inputMin != null) {
+                            inputMin.close();
+                        }
+                        if (inputCab != null) {
+                            inputCab.close();
+                        }
+                        //response.sendRedirect("ListaDeActividadesServlet");
                     }catch (NumberFormatException e){
                         request.getSession().setAttribute("puntajeNoNumerico","1");
                         request.getSession().setAttribute("idActividadElegida",idActividadEditar);

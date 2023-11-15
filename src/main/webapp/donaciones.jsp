@@ -1168,9 +1168,11 @@
             <label style="margin-top: 25px;" for="montoPlin1"><b>Monto a donar:</b></label>
             <input type="number" id="montoPlin1" onkeydown="evitarNegativo(event)" onpaste="return false;" onDrop="return false;" autocomplete="off">
             <div class="container-fluid btn btn-file1">
-                <img class="img-fluid" src="css/subirArchivo.jpg" style="opacity: 50%;" alt="">
-                <p><b>Foto del monto donado</b></p>
-                <input type="file" style="background-color: white; margin-top: 25px;" accept="image/png, .jpeg, .jpg">
+                <div id="contenedorImagenPlin">
+                    <img id="imagenActualPlin" class="img-fluid" src="css/subirArchivo.jpg" style="opacity: 50%;" alt="">
+                </div>
+                <p style="margin-top: 10px"><b>Foto del monto donado</b></p>
+                <input type="file" id="inputPlin" name="addFotoMontoPlin" style="background-color: white; margin-top: 25px;" accept="image/png, .jpeg, .jpg" onchange="mostrarImagen('imagenActualPlin','contenedorImagenPlin','inputPlin')"></input>
             </div>
         </div>
         <br>
@@ -1202,9 +1204,11 @@
             <label style="margin-top: 25px;" for="montoYape1"><b>Monto a donar:</b></label>
             <input type="number" id="montoYape1" onkeydown="evitarNegativo(event)" onpaste="return false;" onDrop="return false;" autocomplete="off">
             <div class="container-fluid btn btn-file1">
-                <img class="img-fluid" src="css/subirArchivo.jpg" style="opacity: 50%" alt="">
-                <p><b>Foto del monto donado</b></p>
-                <input type="file" style="background-color: white; margin-top: 25px;" accept="image/png, .jpeg, .jpg">
+                <div id="contenedorImagenYape">
+                    <img id="imagenActualYape" class="img-fluid" src="css/subirArchivo.jpg" style="opacity: 50%;" alt="">
+                </div>
+                <p style="margin-top: 10px"><b>Foto del monto donado</b></p>
+                <input type="file" id="inputYape" name="addFotoMontoYape" style="background-color: white; margin-top: 25px;" accept="image/png, .jpeg, .jpg" onchange="mostrarImagen('imagenActualYape','contenedorImagenYape','inputYape')"></input>
             </div>
         </div>
         <br>
@@ -1293,6 +1297,41 @@
 <script src="js/form/form.utils.js"></script>
 <!-- SVG icons -->
 <script src="js/utils/svg-loader.js"></script>
+
+<script>
+    function mostrarImagen(idImagen, idImagenContainer, idInputArchivo) {
+        var imagenContainer = document.getElementById(idImagenContainer);
+        var imagen = document.getElementById(idImagen);
+        var inputArchivo = document.getElementById(idInputArchivo);
+
+        if (inputArchivo.files && inputArchivo.files[0]) {
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                // Cambiar la imagen por la q recien se subió mediante el input
+                imagen.src = e.target.result;
+            };
+            reader.readAsDataURL(inputArchivo.files[0]);
+            imagenContainer.style.display = 'block';
+        } else {
+            imagenContainer.style.display = 'none';
+        }
+    }
+</script>
+
+<!-- Función para mostrar la imagen antes de enviarla -->
+<script type="text/javascript">
+    function previewImage(event,idS) {
+        var input = event.target;
+        var image = document.getElementById(idS);
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+            reader.onload = function(e) {
+                image.src = e.target.result;
+            }
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+</script>
 <script>
     function enviarForm(idForm){
         document.getElementById(idForm).submit;

@@ -1965,7 +1965,7 @@
                 <div class="col-sm-5 contenedor2" style="top: 30px">
                     <div class="container-fluid btn btn-file1">
                         <div id="contenedorImagenCabeceraCrear">
-                            <img id="imagenActualCabeceraCrear" class="img-fluid" src="css/subirArchivo.jpg" style="opacity: 50%;" alt="">
+                            <img id="imagenActualCabeceraCrear" class="img-fluid" src="css/subirArchivo.jpg" alt="">
                         </div>
                         <p style="margin-top: 10px"><b>Agregar foto de cabecera</b></p>
                         <input type="file" id="inputCabeceraCrear" name="addfotoCabecera" style="background-color: white; margin-top: 25px;" accept="image/png, .jpeg, .jpg" onchange="mostrarImagen('imagenActualCabeceraCrear','contenedorImagenCabeceraCrear','inputCabeceraCrear')"></input>
@@ -1973,7 +1973,7 @@
                     <br>
                     <div class="container-fluid btn btn-file1">
                         <div id="contenedorImagenCrear">
-                            <img id="imagenActualCrear" class="img-fluid" src="css/subirArchivo.jpg" style="opacity: 50%;" alt="">
+                            <img id="imagenActualCrear" class="img-fluid" src="css/subirArchivo.jpg" alt="">
                         </div>
                         <p style="margin-top: 10px"><b>Agregar foto miniatura</b></p>
                         <input type="file" id="inputCrear" name="addfotoMiniatura" style="background-color: white; margin-top: 25px;" accept="image/png, .jpeg, .jpg" onchange="mostrarImagen('imagenActualCrear','contenedorImagenCrear','inputCrear')"></input>
@@ -1985,10 +1985,10 @@
         <div class="container-fluid">
             <div class="row">
                 <div class="col-sm-6" style="margin-top: 5px;">
-                    <button type="submit" style="opacity: 0.5" class="button secondary" id="cerrarPopupCrear1" disabled>Crear</button>
+                    <button style="opacity: 0.5" class="button secondary" id="cerrarPopupCrear1" disabled>Crear</button>
                 </div>
                 <div class="col-sm-6" style="margin-top: 5px;">
-                    <button class="button secondary" id="cerrarPopupCrear2" style="background-color: grey;">Cancelar</button>
+                    <a class="button secondary" id="cerrarPopupCrear2" style="background-color: grey; width: 100%;color: white">Cancelar</a>
                 </div>
             </div>
         </div>
@@ -2060,7 +2060,7 @@
                     <div class="container-fluid btn btn-file1">
                         <div id="contenedorImagenMinEditar<%=i%>">
                             <%request.getSession().setAttribute("fotoActividadMiniatura"+i,listaActividades.get(i).getFotoMiniatura());%>
-                            <img id="imagenActualEditar<%=i%>" class="img-fluid" src="Imagen?tipoDeFoto=fotoActividadMiniatura&id=ActividadMiniatura<%=i%>" alt="">
+                            <img id="imagenActualMinEditar<%=i%>" class="img-fluid" src="Imagen?tipoDeFoto=fotoActividadMiniatura&id=ActividadMiniatura<%=i%>" alt="">
                         </div>
                         <p style="margin-top: 10px"><b>Editar foto miniatura</b></p>
                         <input type="file" id="inputMinEditar<%=i%>" style="background-color: white; margin-top: 25px;" accept="image/png, .jpeg, .jpg" name="updateFotoMiniatura" onchange="mostrarImagen('imagenActualMinEditar<%=i%>','contenedorImagenMinEditar<%=i%>','inputMinEditar<%=i%>')"></input>
@@ -2075,7 +2075,7 @@
                     <button type="submit" class="button secondary" id="cerrarPopupEditar1Actividad<%=i%>">Editar</button>
                 </div>
                 <div class="col-sm-6" style="margin-top: 5px;">
-                    <button class="button secondary" id="cerrarPopupEditar2Actividad<%=i%>" style="background-color: grey;">Cancelar</button>
+                    <a class="button secondary" id="cerrarPopupEditar2Actividad<%=i%>" style="background-color: grey; width: 100%;color: white">Cancelar</a>
                 </div>
             </div>
         </div>

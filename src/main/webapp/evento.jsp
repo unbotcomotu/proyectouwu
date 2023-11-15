@@ -2253,9 +2253,9 @@
         <input type="hidden" name="idEvento" value="<%=e.getIdEvento()%>">
         <div class="row d-flex align-items-center justify-content-center">
             <div id="containerImagen1" class="col-sm-4">
-                <div id="auxBorrar1" class="bloque-izquierda btn-file1 d-flex align-items-center justify-content-center" style="position: absolute;">
+                <div onclick="activarSeleccion('inputImagen1')" id="auxBorrar1" class="bloque-izquierda btn-file1 d-flex align-items-center justify-content-center" style="position: absolute;">
                     <a style="font-size: 200%; cursor: pointer;">Cambiar</a>
-                    <input id="inputImagen1" type="file" onchange="mostrarImagen('imagen1','containerImagen1','inputImagen1')" name="foto1" style="background-color: white; margin-top: 25px;" accept="image/png, .jpeg, .jpg"></input>
+                    <input id="inputImagen1" type="file" onchange="mostrarImagen('imagen1','containerImagen1','inputImagen1')" name="foto1" style="display: none;" accept="image/png, .jpeg, .jpg"></input>
                 </div>
                 <%request.getSession().setAttribute("fotoCarrusel3",carrusel.get(0));%>
                 <input id="borrar1" type="hidden" name="borrar1" value="0">
@@ -2263,10 +2263,10 @@
                 <img id="imagenBorrar1" src="/css/imagenBorrada.png" style="display: none;" alt="">
                 <img src="Imagen?tipoDeFoto=fotoCarrusel&id=Carrusel3" id="imagen1" width="100%" height="auto">
             </div>
-            <div id="containerImagen2" class="col-sm-4">
-                <div id="auxBorrar2" class="bloque-izquierda btn-file1 d-flex align-items-center justify-content-center" style="position: absolute;">
+            <div onclick="activarSeleccion('inputImagen2')" id="containerImagen2" class="col-sm-4">
+                <div  id="auxBorrar2" class="bloque-izquierda btn-file1 d-flex align-items-center justify-content-center" style="position: absolute;">
                     <a style="font-size: 200%; cursor: pointer;">Cambiar</a>
-                    <input id="inputImagen2" type="file" onchange="mostrarImagen('imagen2','containerImagen2','inputImagen2')" name="foto2" style="background-color: white; margin-top: 25px;" accept="image/png, .jpeg, .jpg"></input>
+                    <input id="inputImagen2" type="file" onchange="mostrarImagen('imagen2','containerImagen2','inputImagen2')" name="foto2" style="display: none;" accept="image/png, .jpeg, .jpg"></input>
                 </div>
                 <%request.getSession().setAttribute("fotoCarrusel4",carrusel.get(1));%>
                 <input id="borrar2" type="hidden" name="borrar2" value="0">
@@ -2274,10 +2274,10 @@
                 <img id="imagenBorrar2" src="/css/imagenBorrada.png" style="display: none;" alt="">
                 <img id="imagen2" src="Imagen?tipoDeFoto=fotoCarrusel&id=Carrusel4" width="100%" height="auto">
             </div>
-            <div id="containerImagen3" class="col-sm-4">
+            <div onclick="activarSeleccion('inputImagen3')" id="containerImagen3" class="col-sm-4">
                 <div id="auxBorrar3" class="bloque-izquierda btn-file1 d-flex align-items-center justify-content-center" style="position: absolute;">
                     <a style="font-size: 200%; cursor: pointer;">Cambiar</a>
-                    <input id="inputImagen3" type="file" onchange="mostrarImagen('imagen3','containerImagen3','inputImagen3')" name="foto3" style="background-color: white; margin-top: 25px;" accept="image/png, .jpeg, .jpg"></input>
+                    <input id="inputImagen3" type="file" onchange="mostrarImagen('imagen3','containerImagen3','inputImagen3')" name="foto3" style="display: none;" accept="image/png, .jpeg, .jpg"></input>
                 </div>
                 <%request.getSession().setAttribute("fotoCarrusel5",carrusel.get(2));%>
                 <input id="borrar3" type="hidden" name="borrar3" value="0">
@@ -2299,6 +2299,11 @@
 </div>
 <%}%>
 <script>
+    function activarSeleccion(idInput) {
+        // Simular un clic en el input de tipo "file"
+        document.getElementById(idInput).click();
+    }
+
     function borrarImagen(IDsBorrar,idImagenBorrada,idParametroExtra){
         var imagenBorrada = document.getElementById(idImagenBorrada);
         imagenBorrada.style.display='block';

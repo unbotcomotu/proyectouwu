@@ -1,23 +1,29 @@
 <!DOCTYPE html>
-<html>
+<html lang="es">
 <head>
-    <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            var enlaceConBoton = document.getElementById("enlace-con-boton");
-            var botonDentroDelEnlace = document.getElementById("boton-dentro-del-enlace");
-
-            botonDentroDelEnlace.addEventListener("click", function(e) {
-
-                e.preventDefault();
-                // Aquí puedes ejecutar la acción del botón
-                alert("Acción del botón ejecutada.");
-            });
-        });
-    </script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mostrar Imagen al Hacer Clic</title>
+    <style>
+        #miImagen {
+            display: none;
+        }
+    </style>
 </head>
 <body>
-<a href="https://www.ejemplo.com" id="enlace-con-boton">aaaaaaaaaaaaaaaaaaaa
-    <button id="boton-dentro-del-enlace">Clic aquí</button>
-</a>
+
+<img id="miImagen" src="/css/imagenBorrada.png" alt="Mi Imagen">
+<button onclick="mostrarImagen()">Mostrar Imagen</button>
+<img id="imagenBorrar3" src="/css/imagenBorrada.png">
+<script>
+    function mostrarImagen() {
+        // Obtener la referencia al elemento de la imagen
+        var imagen = document.getElementById('miImagen');
+
+        // Mostrar la imagen cambiando la propiedad de estilo display
+        imagen.style.display = 'block';  // También puedes usar 'inline' u otros valores según tus necesidades
+    }
+</script>
+
 </body>
 </html>

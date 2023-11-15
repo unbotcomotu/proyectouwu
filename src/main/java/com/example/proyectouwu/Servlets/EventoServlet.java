@@ -83,7 +83,9 @@ public class EventoServlet extends HttpServlet {
                     if(borrar1.equals("0")){
                         if(partFoto1!=null){
                             InputStream inputFoto1=partFoto1.getInputStream();
-                            dF.actualizarImagenCarrusel(listaIDs.get(0),inputFoto1);
+                            if(inputFoto1.available()>10){
+                                dF.actualizarImagenCarrusel(listaIDs.get(0),inputFoto1);
+                            }
                             inputFoto1.close();
                         }
                     }else {
@@ -94,7 +96,9 @@ public class EventoServlet extends HttpServlet {
                     if(borrar2.equals("0")){
                         if(partFoto2!=null){
                             InputStream inputFoto2=partFoto2.getInputStream();
-                            dF.actualizarImagenCarrusel(listaIDs.get(1),inputFoto2);
+                            if(inputFoto2.available()>10){
+                                dF.actualizarImagenCarrusel(listaIDs.get(1),inputFoto2);
+                            }
                             inputFoto2.close();
                         }
                     }else {
@@ -105,7 +109,9 @@ public class EventoServlet extends HttpServlet {
                     if(borrar3.equals("0")){
                         if(partFoto3!=null){
                             InputStream inputFoto3=partFoto3.getInputStream();
-                            dF.actualizarImagenCarrusel(listaIDs.get(2),inputFoto3);
+                            if(inputFoto3.available()>10){
+                                dF.actualizarImagenCarrusel(listaIDs.get(2),inputFoto3);
+                            }
                             inputFoto3.close();
                         }
                     }else {

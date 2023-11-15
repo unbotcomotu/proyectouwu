@@ -435,10 +435,11 @@ public class DaoActividad extends DaoPadre {
         }
     }
 
-    public boolean verificarActividadRepetida(String nombre){
-        String sql="select idActividad from Actividad where lower(nombre)=lower(?)";
+    public boolean verificarActividadRepetida(String nombre,int idActividad){
+        String sql="select idActividad from Actividad where lower(nombre)=lower(?) and idActividad!=?";
         try(Connection conn=this.getConnection(); PreparedStatement pstmt= conn.prepareStatement(sql)){
             pstmt.setString(1,nombre);
+            pstmt.setInt(2,idActividad);
             try(ResultSet rs=pstmt.executeQuery()){
                 if(rs.next()){
                     return true;

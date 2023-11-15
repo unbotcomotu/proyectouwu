@@ -112,7 +112,7 @@ public class ListaDeActividadesServlet extends HttpServlet {
                     break;
                 case "crearActividad":
                     String nombreCrearActividad=request.getParameter("nombreCrearActividad");
-                    if(dActividad.verificarActividadRepetida(nombreCrearActividad)){
+                    if(dActividad.verificarActividadRepetida(nombreCrearActividad,0)){
                         request.getSession().setAttribute("actividadRepetida","1");
                         response.sendRedirect("ListaDeActividadesServlet");
                     }else {
@@ -178,7 +178,7 @@ public class ListaDeActividadesServlet extends HttpServlet {
                     Integer idDelegadoActividadAnterior=Integer.parseInt(request.getParameter("idDelegadoActividadAnterior"));
                     Integer idActividadEditar=Integer.parseInt(request.getParameter("idActividadEditar"));
                     String nombreEditarActividad=request.getParameter("nombreEditarActividad");
-                    if(dActividad.verificarActividadRepetida(nombreEditarActividad)){
+                    if(dActividad.verificarActividadRepetida(nombreEditarActividad,idActividadEditar)){
                         request.getSession().setAttribute("actividadRepetida","1");
                         request.getSession().setAttribute("idActividadElegida",idActividadEditar);
                         response.sendRedirect("ListaDeActividadesServlet");

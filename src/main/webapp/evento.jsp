@@ -2282,7 +2282,7 @@
                 <%request.getSession().setAttribute("fotoCarrusel5",carrusel.get(2));%>
                 <input id="borrar3" type="hidden" name="borrar3" value="0">
                 <a onclick="borrarImagen(['imagen3','inputImagen3','borrarImagen3','auxBorrar3'],'imagenBorrar3','borrar3')" class="bloque-derecha d-flex align-items-center justify-content-center" style="font-size: 200%; cursor: pointer;">Borrar</a>
-                <img id="imagenBorrar3" src="/css/imagenBorrada.png" style="display: none;" alt="">
+                <img id="imagenBorrar3" src="/css/imagenBorrada.png" alt="">
                 <img id="imagen3" src="Imagen?tipoDeFoto=fotoCarrusel&id=Carrusel5" width="100%" height="auto">
             </div>
         </div>

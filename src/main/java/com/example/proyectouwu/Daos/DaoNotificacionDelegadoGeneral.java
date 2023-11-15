@@ -189,9 +189,11 @@ public class DaoNotificacionDelegadoGeneral extends DaoPadre {
         return donacionList;
     }
 
+
+
     public ArrayList<Donacion> listarNotificacionesDonaciones(int pagina){
         ArrayList<Donacion> donacionList= new ArrayList<>();
-        String sql = "SELECT idDonacion, idUsuario, medioPago, monto,fechaHora,estadoDonacion FROM donacion order by if(estadoDonacion='Pendiente',0,1),fechaHora desc limit 8 offset ?";
+        String sql = "SELECT idDonacion, idUsuario, medioPago, monto,fechaHora,captura,estadoDonacion,date(fechaHoraValidado),time(fechaHoraValidado) FROM donacion order by if(estadoDonacion='Pendiente',0,1),fechaHora desc limit 8 offset ?";
         try (Connection conn=this.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)){
             pstmt.setInt(1,pagina*8);
@@ -203,7 +205,10 @@ public class DaoNotificacionDelegadoGeneral extends DaoPadre {
                     donacion.setMedioPago(rs.getString(3));
                     donacion.setMonto(rs.getFloat(4));
                     donacion.setFecha(rs.getDate(5));
-                    donacion.setEstadoDonacion(rs.getString(6));
+                    donacion.setCaptura(rs.getBlob(6));
+                    donacion.setEstadoDonacion(rs.getString(7));
+                    donacion.setFechaValidacion(rs.getDate(8));
+                    donacion.setHoraValidacion(rs.getTime(9));
                     donacionList.add(donacion);
                 }
             }

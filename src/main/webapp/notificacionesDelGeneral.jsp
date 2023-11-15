@@ -2132,7 +2132,7 @@
                         <!-- TABLE COLUMN -->
                         <div class="table-column centered padded">
                             <!-- TABLE TITLE -->
-                            <p id="mostrarPopupImagenDonacion<%=donacionList.indexOf(donacion)%>" style="cursor: pointer;" class="table-title" ><span class="highlighted">pulse aquí</span></p>
+                            <p id="mostrarPopupImagenDonacion<%=donacionList.indexOf(donacion)%>" style="cursor: pointer;" class="table-title" ><span class="highlighted">Pulse aquí</span></p>
                             <!-- /TABLE TITLE -->
                         </div>
                         <!-- /TABLE COLUMN -->

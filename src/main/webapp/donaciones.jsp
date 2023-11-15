@@ -1135,6 +1135,8 @@
     </div>
 </div>
 
+
+
 <!-- /CONTENT GRID -->
 <div class="overlay" id="overlayPlin" style="display: none;"></div>
 <div class="popup contenedorCrear" style="max-width: 700px; display: none;" id="popupPlin">
@@ -1167,6 +1169,7 @@
     </div>
 </div>
 
+
 <div class="overlay" id="overlayYape" style="display: none;"></div>
 <div class="popup contenedorCrear" style="display: none;max-width: 700px" id="popupYape">
     <svg class="cerrar-btn-crear" id="cerrarPopupYape" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -1178,21 +1181,21 @@
             <label style="margin-top: 25px;" for="montoYape1"><b>Monto a donar:</b></label>
             <input type="number" id="montoYape1" onkeydown="evitarNegativo(event)" onpaste="return false;" onDrop="return false;" autocomplete="off">
             <form method="post" action="<%=request.getContextPath()%>/MisDonacionesServlet?action=registDon" enctype='multipart/form-data'>
-            <div id="contenedorSubirArchivo1" class="container-fluid btn btn-file1">
-                <img id="subirArchivo1" class="img-fluid" src="css/subirArchivo.jpg" style="opacity: 50%" alt="">
-                <p><b>Foto del monto donado</b></p>
-                <input name="addFotoYape" type="file" onchange="mostrarImagen('subirArchivo1','contenedorSubirArchivo1','archivo1Aux')" style="background-color: white; margin-top: 25px;" accept="image/png, .jpeg, .jpg">
-            </div>
-            <div class="row">
-                <div class="col-sm-6" style="margin-top: 5px;">
-                    <input type="hidden" name="medio" value="Yape">
-                    <input type="hidden" name="monto" id="montoYape2">
-                    <button type="submit" class="button secondary" id="cerrarPopupYape1" disabled="" style="cursor: default; opacity: 0.5;">Donar</button>
+                <div id="contenedorSubirArchivo1" class="container-fluid btn btn-file1">
+                    <img id="subirArchivo1" class="img-fluid" src="css/subirArchivo.jpg" style="opacity: 50%" alt="">
+                    <p><b>Foto del monto donado</b></p>
+                    <input id = "inputsubirArchivo1" name="addFotoYape" type="file" onchange="mostrarImagen('subirArchivo1','contenedorSubirArchivo1','inputsubirArchivo1')" style="background-color: white; margin-top: 25px;" accept="image/png, .jpeg, .jpg">
                 </div>
-                <div class="col-sm-6" style="margin-top: 5px;">
-                    <button class="button secondary" id="cerrarPopupYape2" style="background-color: grey;">Cancelar</button>
+                <div class="row">
+                    <div class="col-sm-6" style="margin-top: 5px;">
+                        <input type="hidden" name="medio" value="Yape">
+                        <input type="hidden" name="monto" id="montoYape2">
+                        <button type="submit" class="button secondary" id="cerrarPopupYape1" disabled="" style="cursor: default; opacity: 0.5;">Donar</button>
+                    </div>
+                    <div class="col-sm-6" style="margin-top: 5px;">
+                        <button class="button secondary" id="cerrarPopupYape2" style="background-color: grey;">Cancelar</button>
+                    </div>
                 </div>
-            </div>
             </form>
         </div>
     </div>

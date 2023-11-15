@@ -2367,29 +2367,6 @@
                         </div>
                     <!-- /SECTION PAGER -->
 
-                    <!-- SECTION PAGER CONTROLS -->
-                    <div class="section-pager-controls">
-                        <!-- SLIDER CONTROL -->
-                        <div class="slider-control left disabled">
-                            <!-- SLIDER CONTROL ICON -->
-                            <svg class="slider-control-icon icon-small-arrow">
-                                <use xlink:href="#svg-small-arrow"></use>
-                            </svg>
-                            <!-- /SLIDER CONTROL ICON -->
-                        </div>
-                        <!-- /SLIDER CONTROL -->
-
-                        <!-- SLIDER CONTROL -->
-                        <div class="slider-control right">
-                            <!-- SLIDER CONTROL ICON -->
-                            <svg class="slider-control-icon icon-small-arrow">
-                                <use xlink:href="#svg-small-arrow"></use>
-                            </svg>
-                            <!-- /SLIDER CONTROL ICON -->
-                        </div>
-                        <!-- /SLIDER CONTROL -->
-                    </div>
-                    <!-- /SECTION PAGER CONTROLS -->
                 </div>
                 <!-- /SECTION PAGER BAR -->
             </div>

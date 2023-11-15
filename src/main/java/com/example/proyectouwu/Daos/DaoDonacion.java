@@ -53,7 +53,7 @@ public class DaoDonacion extends DaoPadre  {
     //Este método se utiliza para el boton de editar donación en la vista de delegado general
     public void editarDonacion(Donacion donacion){ //Editar donacion por Id
 
-        String sql = "update donacion set monto = ?,estadoDonacion = ?, fechaHoraValidado = now()"+captura+" where idDonacion = ?";
+        String sql = "update donacion set monto = ?,estadoDonacion = ?, fechaHoraValidado = now() where idDonacion = ?";
 
         try(Connection conn=this.getConnection(); PreparedStatement pstmt=conn.prepareStatement(sql)){
             pstmt.setFloat(1,donacion.getMonto());
@@ -67,36 +67,53 @@ public class DaoDonacion extends DaoPadre  {
     }
 
     //Este método se utiliza para que un usuario edite la foto o monto de donación
-    public void editarDonacionUsuario(int idDonacion, float montoEditar, InputStream capturaEditar, boolean validarLongitudDonacion) throws SQLException, IOException{ //Editar donacion por Id
+    public void editarDonacionUsuario(int idDonacion, float montoEditar, InputStream capturaEditar, boolean validarLongitudDonacion) throws SQLException, IOException { //Editar donacion por Id
         //Falta verificar que el estado de Donación no este en Confirmado por motivos de seguridad (otra query)
 
-        String captura = "";
-        if(validarLongitudDonacion){
-            captura = ",captura=?";
-        }
-        String sql = "update donacion set monto = ?"+captura+" where idDonacion = ?";
 
-        try(Connection conn=this.getConnection(); PreparedStatement pstmt=conn.prepareStatement(sql)){
-            pstmt.setFloat(1,montoEditar);
-            if(validarLongitudDonacion){
-                pstmt.setBinaryStream(2,capturaEditar,capturaEditar.available());
-                pstmt.setInt(3,idDonacion);
-            }else{
-                pstmt.setInt(2,idDonacion);
+        String sqlVer = " select estadoDonacion from donacion where idDonacion = ?";
+        try (Connection conn = this.getConnection(); PreparedStatement pstmt = conn.prepareStatement(sqlVer)) {
+            pstmt.setInt(1, idDonacion);
+            try (ResultSet rs = pstmt.executeQuery()) {
+                if (rs.next()) {
+                    if (rs.getString(1).equals("Pendiente")) {
+                        String captura = "";
+                        if (validarLongitudDonacion) {
+                            captura = ",captura=?";
+                        }
+
+                        String sql = "update donacion set monto = ?" + captura + " where idDonacion = ?";
+
+                        try (Connection conn1 = this.getConnection(); PreparedStatement pstmt1 = conn.prepareStatement(sql)) {
+                            pstmt.setFloat(1, montoEditar);
+                            if (validarLongitudDonacion) {
+                                pstmt1.setBinaryStream(2, capturaEditar, capturaEditar.available());
+                                pstmt1.setInt(3, idDonacion);
+                            } else {
+                                pstmt1.setInt(2, idDonacion);
+                            }
+
+                            pstmt1.executeUpdate();
+                        } catch (SQLException e) {
+                            throw new RuntimeException(e);
+                        }
+                    }
+                }
+
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
             }
 
-            pstmt.executeUpdate();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
         }
+
     }
     //Este método permite agregar el monto y foto que ha donado una persona
-    public void agregarDonacionUsuario(int idUser,String medioPago, float monto, InputStream captura)throws SQLException, IOException{
+    public void agregarDonacionUsuario(int idUser,String medioPagado, float monto, InputStream captura)throws SQLException, IOException{
 
         String sql = " insert into donacion(idUsuario, medioPago, monto,fechaHora,captura,estadoDonacion) values (?, ?, ?,now(), ?,?)";
         try(Connection conn=this.getConnection(); PreparedStatement pstmt=conn.prepareStatement(sql,Statement.RETURN_GENERATED_KEYS)){
             pstmt.setInt(1, idUser);
-            pstmt.setString(2,medioPago);
+            pstmt.setString(2,medioPagado);
             pstmt.setFloat(3,monto);
             pstmt.setBinaryStream(4, captura,(int)captura.available());
             pstmt.setString(5,"Pendiente");

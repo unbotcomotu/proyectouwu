@@ -5,10 +5,12 @@ import com.example.proyectouwu.Beans.Usuario;
 import com.example.proyectouwu.DTOs.TopDonador;
 
 import java.awt.image.BufferedImage;
+import java.io.InputStream;
 import java.sql.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.io.IOException;
 
 public class DaoDonacion extends DaoPadre  {
     public ArrayList<Donacion>listarDonacionesVistaUsuario(int idUsuario){
@@ -51,8 +53,7 @@ public class DaoDonacion extends DaoPadre  {
     //Este método se utiliza para el boton de editar donación en la vista de delegado general
     public void editarDonacion(Donacion donacion){ //Editar donacion por Id
 
-
-        String sql = "update donacion set monto = ?,estadoDonacion = ?, fechaHoraValidado = now() where idDonacion = ?";
+        String sql = "update donacion set monto = ?,estadoDonacion = ?, fechaHoraValidado = now()"+captura+" where idDonacion = ?";
 
         try(Connection conn=this.getConnection(); PreparedStatement pstmt=conn.prepareStatement(sql)){
             pstmt.setFloat(1,donacion.getMonto());
@@ -64,14 +65,40 @@ public class DaoDonacion extends DaoPadre  {
             throw new RuntimeException(e);
         }
     }
+
+    //Este método se utiliza para que un usuario edite la foto o monto de donación
+    public void editarDonacionUsuario(int idDonacion, float montoEditar, InputStream capturaEditar, boolean validarLongitudDonacion) throws SQLException, IOException{ //Editar donacion por Id
+        //Falta verificar que el estado de Donación no este en Confirmado por motivos de seguridad (otra query)
+
+        String captura = "";
+        if(validarLongitudDonacion){
+            captura = ",captura=?";
+        }
+        String sql = "update donacion set monto = ?"+captura+" where idDonacion = ?";
+
+        try(Connection conn=this.getConnection(); PreparedStatement pstmt=conn.prepareStatement(sql)){
+            pstmt.setFloat(1,montoEditar);
+            if(validarLongitudDonacion){
+                pstmt.setBinaryStream(2,capturaEditar,capturaEditar.available());
+                pstmt.setInt(3,idDonacion);
+            }else{
+                pstmt.setInt(2,idDonacion);
+            }
+
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
     //Este método permite agregar el monto y foto que ha donado una persona
-    public void agregarDonacionUsuario(int idUser,String medioPago, float monto, String captura){
+    public void agregarDonacionUsuario(int idUser,String medioPago, float monto, InputStream captura)throws SQLException, IOException{
+
         String sql = " insert into donacion(idUsuario, medioPago, monto,fechaHora,captura,estadoDonacion) values (?, ?, ?,now(), ?,?)";
         try(Connection conn=this.getConnection(); PreparedStatement pstmt=conn.prepareStatement(sql,Statement.RETURN_GENERATED_KEYS)){
             pstmt.setInt(1, idUser);
             pstmt.setString(2,medioPago);
             pstmt.setFloat(3,monto);
-            pstmt.setString(4,captura);
+            pstmt.setBinaryStream(4, captura,(int)captura.available());
             pstmt.setString(5,"Pendiente");
             pstmt.executeUpdate();
             ResultSet rsKeys=pstmt.getGeneratedKeys();

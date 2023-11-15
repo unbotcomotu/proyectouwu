@@ -10,6 +10,7 @@ import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.PrintWriter;
 import java.sql.Blob;
 import java.sql.SQLException;
@@ -25,6 +26,8 @@ public class MisDonacionesServlet extends HttpServlet {
         DaoUsuario dUsuario=new DaoUsuario();
         DaoDonacion dDonacion=new DaoDonacion();
         Usuario usuario=(Usuario) request.getSession().getAttribute("usuario");
+
+
         if(usuario==null){
             response.sendRedirect("InicioSesionServlet");
         }else{
@@ -48,21 +51,41 @@ public class MisDonacionesServlet extends HttpServlet {
         response.setContentType("text/html");
         String action = request.getParameter("action") == null ? "default" : request.getParameter("action");
         DaoDonacion daoDonacion = new DaoDonacion();
+        //Parametros utilizados para la foto de donación
+        // Y: Yape; P: Plin
+        Part partY = null;
+        Part partP = null;
+
+        InputStream inputY = null;
+        InputStream inputP = null;
+
         switch (action){
             case "registDon":
                 Usuario usuario=(Usuario) request.getSession().getAttribute("usuario");
                 String medioPago = request.getParameter("medio");
                 float monto = Float.parseFloat(request.getParameter("monto"));
-                //Ayuda para lo del blob en captura
-                //byte[] bytes = request.getParameter("captura").getBytes("UTF-8");
-                /*try {
-                    Blob captura =  new SerialBlob(bytes);
-                    //Después se agrega la donación
-                    daoDonacion.agregarDonacionUsuario(idUser,medioPago,monto,captura);
+
+                // Foto Donacion
+                partY = request.getPart("addFotoYape");
+                partP = request.getPart("addFotoPlin");
+
+                // Obtenemos el flujo de bytes
+                inputY = partY.getInputStream();
+                inputP = partP.getInputStream();
+
+                try {
+                    if(inputY!=null && inputY.available()>10){
+                        daoDonacion.agregarDonacionUsuario(usuario.getIdUsuario(),medioPago,monto,inputY);
+                    }
+                    if(inputP!=null && inputP.available()>10){
+                        daoDonacion.agregarDonacionUsuario(usuario.getIdUsuario(),medioPago,monto,inputP);
+                    }
+
                 } catch (SQLException e) {
                     throw new RuntimeException(e);
-                }*/
-                daoDonacion.agregarDonacionUsuario(usuario.getIdUsuario(),medioPago,monto,"ola");
+                }
+                inputY.close();
+                inputP.close();
                 request.getSession().setAttribute("confirmacion","1");
                 response.sendRedirect("MisDonacionesServlet");
                 break;

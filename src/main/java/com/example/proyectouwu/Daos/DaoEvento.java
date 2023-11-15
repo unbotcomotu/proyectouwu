@@ -251,8 +251,8 @@ public class DaoEvento extends DaoPadre {
             sql = "insert into fotoeventocarrusel(idEvento,foto) values (?,?)";
 
             String ruta1 = "/css/fotoYarleque.png";
-            String ruta2 = "/css/fotoYarleque2.png";
-            String ruta3 = "/css/fotoYarleque3.png";
+            String ruta2 = "/css/fotoYarleque2.jpg";
+            String ruta3 = "/css/fotoYarleque3.jpg";
 
             ArrayList<String> rutaArray = new ArrayList<>();
             rutaArray.add(ruta1);
@@ -268,7 +268,6 @@ public class DaoEvento extends DaoPadre {
                     ps.setInt(1,idEvento);
                     ps.setBinaryStream(2,input,(int)input.available());
                     ps.executeUpdate();
-                    input.reset();
                 }
             }
             input.close();

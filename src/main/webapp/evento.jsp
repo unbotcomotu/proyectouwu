@@ -2071,15 +2071,15 @@
                     <div class="carousel-inner">
                         <div class="carousel-item active">
                             <%request.getSession().setAttribute("fotoCarrusel0",carrusel.get(0));%>
-                            <img class="img-fluid" src="Imagen?tipoDeFoto=fotoCarrusel&id=Carrusel0" alt="Imagen 1">
+                            <img class="img-fluid" src="Imagen?tipoDeFoto=fotoCarrusel&id=Carrusel0" alt="Imagen 1" style="max-width: 850px; max-height: 560px">
                         </div>
                         <div class="carousel-item">
                             <%request.getSession().setAttribute("fotoCarrusel1",carrusel.get(1));%>
-                            <img class="img-fluid" src="Imagen?tipoDeFoto=fotoCarrusel&id=Carrusel1" alt="Imagen 2">
+                            <img class="img-fluid" src="Imagen?tipoDeFoto=fotoCarrusel&id=Carrusel1" alt="Imagen 2" style="max-width: 850px; max-height: 560px">
                         </div>
                         <div class="carousel-item">
                             <%request.getSession().setAttribute("fotoCarrusel2",carrusel.get(2));%>
-                            <img class="img-fluid" src="Imagen?tipoDeFoto=fotoCarrusel&id=Carrusel2" alt="Imagen 3">
+                            <img class="img-fluid" src="Imagen?tipoDeFoto=fotoCarrusel&id=Carrusel2" alt="Imagen 3" style="max-width: 850px; max-height: 560px">
                         </div>
                     </div>
                     <a class="carousel-control-prev" role="button" data-slide="prev">

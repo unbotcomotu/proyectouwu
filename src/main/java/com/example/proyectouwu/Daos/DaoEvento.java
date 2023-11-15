@@ -261,8 +261,7 @@ public class DaoEvento extends DaoPadre {
 
             InputStream input = null;
 
-            for(int i=0;i<3;i++){
-                String ruta = rutaArray.get(i);
+            for(String ruta: rutaArray){
                 try(PreparedStatement ps = conn.prepareStatement(sql);){
                     input = sc.getResourceAsStream(ruta);
                     ps.setInt(1,idEvento);

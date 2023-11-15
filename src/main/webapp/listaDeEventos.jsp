@@ -2130,7 +2130,7 @@
             <div class="product-preview" style="<%if(e.isEventoFinalizado()){%>opacity: 0.5<%}%>">
                 <!-- PRODUCT PREVIEW IMAGE -->
                 <figure class="product-preview-image liquid" style="position: relative">
-                    <a href="<%=request.getContextPath()%>/EventoServlet?idEvento=<%=e.getIdEvento()%>&idUsuario=<%=idUsuario%>">
+                    <a href="<%=request.getContextPath()%>/EventoServlet?idEvento=<%=e.getIdEvento()%>">
                         <img src="ImagenEventoServlet?idEvento=<%=e.getIdEvento()%>" style="position: absolute; z-index: 0" height="100%" width="100%" alt="item-01">
                     </a>
                     <%if(delegadoDeEstaActividadID==idUsuario){%>
@@ -2234,7 +2234,7 @@
             <!-- /PRODUCT PREVIEW -->
             <div class="product-preview" style="<%if(e.isEventoFinalizado()){%>opacitiy: 0.5<%}%>">
                 <!-- PRODUCT PREVIEW IMAGE -->
-                <a href="<%=request.getContextPath()%>/EventoServlet?idEvento=<%=e.getIdEvento()%>&idUsuario=<%=idUsuario%>">
+                <a href="<%=request.getContextPath()%>/EventoServlet?idEvento=<%=e.getIdEvento()%>">
                     <figure class="product-preview-image liquid">
                         <img src="ImagenEventoServlet?idEvento=<%=e.getIdEvento()%>" alt="item-01">
                     </figure>

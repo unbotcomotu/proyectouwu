@@ -39,7 +39,6 @@ public class ListaDeEventosServlet extends HttpServlet {
             request.setAttribute("vistaActual","listaDeActividades");
             request.setAttribute("correosDelegadosGenerales",dUsuario.listarCorreosDelegadosGenerales());
 
-
             request.setAttribute("nombreActividad",dActividad.nombreActividadPorID(idActividad));
             request.setAttribute("delegadoDeEstaActividadID",dActividad.idDelegadoDeActividadPorActividad(idActividad));
             request.setAttribute("listaLugares",new DaoLugarEvento().listarLugares());
@@ -195,7 +194,7 @@ public class ListaDeEventosServlet extends HttpServlet {
                         input = getServletContext().getResourceAsStream(rutaImagenPredeterminada);
                     }
                     try {
-                        dEvento.crearEvento(idActividad, addLugarId, addTitulo, addFecha, addHora, addDescripcionEventoActivo, addFraseMotivacional, input, addEventoOculto);
+                        dEvento.crearEvento(idActividad, addLugarId, addTitulo, addFecha, addHora, addDescripcionEventoActivo, addFraseMotivacional, input, addEventoOculto,getServletContext());
                     } catch (SQLException e) {
                         throw new RuntimeException(e);
                     }

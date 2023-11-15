@@ -2,6 +2,7 @@ package com.example.proyectouwu.Daos;
 
 import com.example.proyectouwu.Beans.Donacion;
 import com.example.proyectouwu.Beans.Evento;
+import jakarta.servlet.ServletContext;
 import jakarta.servlet.ServletOutputStream;
 
 import java.io.IOException;
@@ -32,7 +33,7 @@ public class DaoEvento extends DaoPadre {
                     e.setResultadoEvento(rs.getString(12));
                     String sql2 = "select idFotoEventoCarrusel,foto from FotoEventoCarrusel where idEvento=?";
                     try (PreparedStatement pstmt2=conn.prepareStatement(sql2)) {
-                        pstmt2.setInt(rs.getInt(1),1);
+                        pstmt2.setInt(1,idEvento);
                         try(ResultSet rs2=pstmt2.executeQuery()){
                             while (rs2.next()) {
                                 e.getCarruselFotos().add(rs2.getBlob(2));
@@ -222,10 +223,10 @@ public class DaoEvento extends DaoPadre {
         }
     }
 
-    public void crearEvento(int idActividad, int idLugarEvento, String titulo, Date fecha, Time hora, String descripcionEventoActivo, String fraseMotivacional, InputStream fotoMiniatura, Boolean eventoOculto) throws SQLException, IOException{
+    public void crearEvento(int idActividad, int idLugarEvento, String titulo, Date fecha, Time hora, String descripcionEventoActivo, String fraseMotivacional, InputStream fotoMiniatura, Boolean eventoOculto, ServletContext sc) throws SQLException, IOException{
         String sql = "insert into evento(idActividad,idLugarEvento,titulo,fecha,hora,descripcionEventoActivo,fraseMotivacional,fotoMiniatura,eventoFinalizado,eventoOculto) values (?,?,?,?,?,?,?,?,0,?)";
         Evento e = new Evento();
-        try (Connection conn=this.getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
+        try (Connection conn=this.getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql,Statement.RETURN_GENERATED_KEYS)) {
             pstmt.setInt(1, idActividad);
             pstmt.setInt(2, idLugarEvento);
             pstmt.setString(3, titulo);
@@ -236,6 +237,41 @@ public class DaoEvento extends DaoPadre {
             pstmt.setBinaryStream(8, fotoMiniatura,(int)fotoMiniatura.available());
             pstmt.setBoolean(9,eventoOculto);
             pstmt.executeUpdate();
+
+            ResultSet rs = pstmt.getGeneratedKeys();
+
+            //Se adicionan imágenes placeholder para el carrusel:
+
+            int idEvento=0;
+
+            if(rs.next()){
+                idEvento = rs.getInt(1);
+            }
+
+            sql = "insert into fotoeventocarrusel(idEvento,foto) values (?,?)";
+
+            String ruta1 = "/css/fotoYarleque.png";
+            String ruta2 = "/css/fotoYarleque2.png";
+            String ruta3 = "/css/fotoYarleque3.png";
+
+            ArrayList<String> rutaArray = new ArrayList<>();
+            rutaArray.add(ruta1);
+            rutaArray.add(ruta2);
+            rutaArray.add(ruta3);
+
+            InputStream input = null;
+
+            for(int i=0;i<3;i++){
+                String ruta = rutaArray.get(i);
+                try(PreparedStatement ps = conn.prepareStatement(sql);){
+                    input = sc.getResourceAsStream(ruta);
+                    ps.setInt(1,idEvento);
+                    ps.setBinaryStream(2,input,(int)input.available());
+                    ps.executeUpdate();
+                    input.reset();
+                }
+            }
+            input.close();
         }catch (SQLException ee){
             throw new RuntimeException(ee);
         }

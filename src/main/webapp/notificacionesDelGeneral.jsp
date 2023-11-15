@@ -15,10 +15,12 @@
     <%Usuario usuarioActual=(Usuario) request.getSession().getAttribute("usuario");
         int idUsuario=usuarioActual.getIdUsuario();
         String rolUsuario=usuarioActual.getRol();
+        String busquedaSolicitudes=(String) request.getAttribute("busquedaSolicitudes");
+        String action = request.getParameter("action") != null ? request.getParameter("action") : "";
         String nombreCompletoUsuario=usuarioActual.getNombre()+" "+usuarioActual.getApellido();
         ArrayList<Usuario> listaSolicitudes=(ArrayList<Usuario>) request.getAttribute("listaSolicitudes");
-        int cantidadTotalPageSolicitudes =(int)Math.ceil((int)request.getAttribute("cantidadTotalSolicitudes")/8.0);
-
+        int cantidadTotalPageSolicitudes =request.getAttribute("cantidadTotalSolicitudes")!= null ? (int)Math.ceil((int)request.getAttribute("cantidadTotalSolicitudes")/8.0):0;
+        Integer pagActual = request.getAttribute("pagActual") != null ? (Integer) request.getAttribute("pagActual") : 1;
         ArrayList<Reporte> reportList = (ArrayList<Reporte>) request.getAttribute("reportList");
         ArrayList<Donacion> donacionList = (ArrayList<Donacion>) request.getAttribute("donacionList");
         ArrayList<Validacion> recuperacionList = (ArrayList<Validacion>) request.getAttribute("recuperacionList");
@@ -207,30 +209,6 @@
             <!-- /HEXAGON -->
         </div>
         <!-- /USER AVATAR PROGRESS BORDER -->
-
-        <!-- USER AVATAR BADGE -->
-        <div class="user-avatar-badge">
-            <!-- USER AVATAR BADGE BORDER -->
-            <div class="user-avatar-badge-border">
-                <!-- HEXAGON -->
-                <div class="hexagon-22-24"></div>
-                <!-- /HEXAGON -->
-            </div>
-            <!-- /USER AVATAR BADGE BORDER -->
-
-            <!-- USER AVATAR BADGE CONTENT -->
-            <div class="user-avatar-badge-content">
-                <!-- HEXAGON -->
-                <div class="hexagon-dark-16-18"></div>
-                <!-- /HEXAGON -->
-            </div>
-            <!-- /USER AVATAR BADGE CONTENT -->
-
-            <!-- USER AVATAR BADGE TEXT -->
-            <p class="user-avatar-badge-text">24</p>
-            <!-- /USER AVATAR BADGE TEXT -->
-        </div>
-        <!-- /USER AVATAR BADGE -->
     </a>
     <!-- /USER AVATAR -->
 
@@ -514,7 +492,9 @@
         <!-- /NAVIGATION WIDGET INFO -->
 
         <!-- NAVIGATION WIDGET BUTTON -->
-        <a href="IndexServlet"><p class="navigation-widget-info-button button small secondary">Cerrar sesión</p></a>
+        <form method="post" action="InicioSesionServlet?action=logOut">
+            <button style="border:0;background: none;color: inherit" type="submit"><a><p class="navigation-widget-info-button button small secondary">Cerrar sesión</p></a></button>
+        </form>
         <!-- /NAVIGATION WIDGET BUTTON -->
     </div>
     <!-- /NAVIGATION WIDGET INFO WRAP -->
@@ -1650,13 +1630,13 @@
                 <!-- FORM -->
                 <form method="get" action="<%=request.getContextPath()%>/NotificacionesServlet" class="form">
                     <input type="hidden" name="action" value="buscarUsuario">
+                    <input type="hidden" name="p" value="<%=pagActual%>">
                     <!-- FORM INPUT -->
                     <div class="form-input small with-button">
                         <label for="friends-search_1">Buscar usuarios</label>
-                        <%String busquedaSolicitudes=(String) request.getAttribute("busquedaSolicitudes");%>
                         <input type="text" id="friends-search_1" name="busquedaSolicitudes" <%if(busquedaSolicitudes!=null){%> value="<%=busquedaSolicitudes%>"<%}%>>
                         <!-- BUTTON -->
-                        <button class="button primary">
+                        <button type="submit" class="button primary">
                             <!-- ICON MAGNIFYING GLASS -->
                             <svg class="icon-magnifying-glass">
                                 <use xlink:href="#svg-magnifying-glass"></use>
@@ -1666,22 +1646,21 @@
                         <!-- /BUTTON -->
                     </div>
                     <!-- /FORM INPUT -->
-
                     <!-- FORM SELECT -->
-                    <div class="form-select">
+                    <!--<div class="form-select">
                         <label for="friends-filter-category_1">Filter By</label>
                         <select id="friends-filter-category_1">
-                            <option >Solicitudes de Registro</option>
-                            <option >Donaciones</option>
-                            <option >Reportes</option>
+                            <option>Solicitudes de Registro</option>
+                            <option>Donaciones</option>
+                            <option>Reportes</option>
                             <option>Solicitudes de Validación</option>
                         </select>
-                        <!-- FORM SELECT ICON -->
-                        <svg class="form-select-icon icon-small-arrow">
+                        FORM SELECT ICON -->
+                        <!--<svg class="form-select-icon icon-small-arrow">
                             <use xlink:href="#svg-small-arrow"></use>
                         </svg>
-                        <!-- /FORM SELECT ICON -->
-                    </div>
+                         /FORM SELECT ICON -->
+                    <!--</div>-->
                     <!-- /FORM SELECT -->
                 </form>
                 <!-- /FORM -->
@@ -1825,18 +1804,16 @@
                                 <div class="col-sm-6">
                                     <form method="post" action="<%=request.getContextPath()%>/NotificacionesServlet?action=aceptarRegistro">
                                         <input type="hidden" name="idUsuarioARegistrar" value="<%=usuario_pendiente.getIdUsuario()%>">
-                                        <a><button style="background-image: linear-gradient(to right,limegreen,lawngreen);" type="submit" class="button-accept">Aceptar</button></a>
+                                        <a><button style="background-image: linear-gradient(to right,dodgerblue,blueviolet);" type="submit" class="button-accept">Aceptar</button></a>
                                     </form>
                                 </div>
                                 <div class="col-sm-6">
                                     <form method="post" action="<%=request.getContextPath()%>/NotificacionesServlet?action=rechazarRegistro">
                                         <input type="hidden" name="idUsuarioARegistrar" value="<%=usuario_pendiente.getIdUsuario()%>">
-                                        <a><button style="background-image: linear-gradient(to right,mediumvioletred,red);" type="submit" class="button-accept">Rechazar</button></a>
+                                        <a><button style="background-image: linear-gradient(to right,brown,red);" type="submit" class="button-accept">Rechazar</button></a>
                                     </form>
                                 </div>
                             </div>
-                            <!--<button class="button-accept">Aceptar</button>
-                            <button class="button-reject">Rechazar</button>-->
                         </div>
                         <!-- /BUTTON -->
                     </div>
@@ -1857,24 +1834,27 @@
             <div class="section-pager">
                 <!-- SECTION PAGER ITEM -->
                 <%  for(int p=0;p<cantidadTotalPageSolicitudes; p++){%>
-
-
-                <%if (p<=9){%>
-
-                    <div class="section-pager-item active">
+                    <div class="section-pager-item <%if(pagActual==p+1){%>active<%}%>">
+                        <%if(action.equals("buscarUsuario")){%>
+                        <%if (p<=9){%>
+                        <!-- SECTION PAGER ITEM TEXT -->
+                        <a class="section-pager-item-text" href="NotificacionesServlet?action=<%=action%>&buscarUsuario=<%=busquedaSolicitudes%>&p=<%=p+1%>">0<%=p+1%></a>
+                        <!-- /SECTION PAGER ITEM TEXT -->
+                        <%} else {%>
+                        <!-- SECTION PAGER ITEM TEXT -->
+                        <a class="section-pager-item-text" href="NotificacionesServlet?action=<%=action%>&buscarUsuario=<%=busquedaSolicitudes%>&p=<%=p+1%>"><%=p+1%></a>
+                        <!-- /SECTION PAGER ITEM TEXT -->
+                        <%}}else{%>
+                        <%if (p<=9){%>
                         <!-- SECTION PAGER ITEM TEXT -->
                         <a class="section-pager-item-text" href="NotificacionesServlet?p=<%=p+1%>">0<%=p+1%></a>
                         <!-- /SECTION PAGER ITEM TEXT -->
+                        <%} else {%>
+                        <!-- SECTION PAGER ITEM TEXT -->
+                        <a class="section-pager-item-text" href="NotificacionesServlet?&p=<%=p+1%>"><%=p+1%></a>
+                        <!-- /SECTION PAGER ITEM TEXT -->
+                        <%}}%>
                     </div>
-
-                <%} else {%>
-
-                        <div class="section-pager-item active">
-                            <!-- SECTION PAGER ITEM TEXT -->
-                            <a class="section-pager-item-text" href="NotificacionesServlet&p=<%=p+1%>"><%=p+1%></a>
-                            <!-- /SECTION PAGER ITEM TEXT -->
-                        </div>
-                <%}%>
                 <!-- /SECTION PAGER ITEM -->
                 <%}%>
                 <!-- /SECTION PAGER ITEM -->
@@ -2144,7 +2124,7 @@
 
                             <%DaoUsuario usuarioUwu = new DaoUsuario();%>
                             <!-- TABLE LINK -->
-                            <a class="table-link" href="marketplace-product.html"><span class="highlighted"> <%=usuarioUwu.nombreCompletoUsuarioPorId(donacion.getUsuario().getIdUsuario())%>  </span></a>
+                            <p class="table-link"><span class="highlighted"> <%=usuarioUwu.nombreCompletoUsuarioPorId(donacion.getUsuario().getIdUsuario())%>  </span></p>
                             <!-- /TABLE LINK -->
                         </div>
                         <!-- /TABLE COLUMN -->
@@ -2789,7 +2769,6 @@
         </div>
     </div>
 </footer>
-
 
 <%for(int i=0;i<donacionList.size();i++){%>
 <div class="overlay" id="overlayPopupImagenDonacion<%=i%>"></div>

@@ -40,13 +40,13 @@ public class NotificacionesServlet extends HttpServlet {
                         request.setAttribute("vistaActualNueva",vistaActualNueva);
                         //saca del modelo
                         String page = request.getParameter("p")==null? "1" : request.getParameter("p");
-
                         int pagina = Integer.parseInt(page);
                         ArrayList<Usuario> listaSolicitudes = daoNotificacionDelegadoGeneral.listarSolicitudesRegistroPorPage(pagina-1);
                         ArrayList<Reporte> reportList = daoNotificacionDelegadoGeneral.listarNotificacionesReporte();
                         ArrayList<Donacion> donacionList = daoNotificacionDelegadoGeneral.listarNotificacionesDonaciones();
                         ArrayList<Validacion> recuperacionList = daoNotificacionDelegadoGeneral.listarNotificacionesRecuperacion();
                         //mandar la lista a la vista
+                        request.setAttribute("pagActual", Integer.parseInt(page));
                         request.setAttribute("listaSolicitudes",listaSolicitudes);
                         request.setAttribute("cantidadTotalSolicitudes", daoNotificacionDelegadoGeneral.listarSolicitudesDeRegistro().size());
                         request.setAttribute("reportList", reportList);
@@ -69,12 +69,17 @@ public class NotificacionesServlet extends HttpServlet {
                 case "buscarUsuario":
                     request.setAttribute("vistaActualNueva","Solicitudes");
                     if (usuario.getRol().equals("Delegado General")){
+                        String page = request.getParameter("p")==null? "1" : request.getParameter("p");
+                        int pagina = Integer.parseInt(page);
                         String busquedaSolicitudes=request.getParameter("busquedaSolicitudes");
-                        ArrayList<Usuario> listaSolicitudes = daoNotificacionDelegadoGeneral.listarSolicitudesDeRegistro(busquedaSolicitudes);
+                        ArrayList<Usuario> listaSolicitudes = daoNotificacionDelegadoGeneral.listarSolicitudesDeRegistro(busquedaSolicitudes,pagina-1);
                         ArrayList<Reporte> reportList = daoNotificacionDelegadoGeneral.listarNotificacionesReporte();
                         ArrayList<Donacion> donacionList = daoNotificacionDelegadoGeneral.listarNotificacionesDonaciones();
                         ArrayList<Validacion> recuperacionList = daoNotificacionDelegadoGeneral.listarNotificacionesRecuperacion();
 
+                        request.setAttribute("cantidadTotalSolicitudes", daoNotificacionDelegadoGeneral.listarSolicitudesDeRegistro(busquedaSolicitudes).size());
+                        request.setAttribute("action", action);
+                        request.setAttribute("pagActual", Integer.parseInt(page));
                         request.setAttribute("busquedaSolicitudes",busquedaSolicitudes);
                         request.setAttribute("listaSolicitudes",listaSolicitudes);
                         request.setAttribute("reportList", reportList);
@@ -95,11 +100,15 @@ public class NotificacionesServlet extends HttpServlet {
                 case "buscarDonaciones":
                     request.setAttribute("vistaActualNueva","Donaciones");
                     String buscar=request.getParameter("buscar");
-                    ArrayList<Usuario> listaSolicitudes = daoNotificacionDelegadoGeneral.listarSolicitudesDeRegistro();
+                    String page = request.getParameter("p")==null? "1" : request.getParameter("p");
+                    int pagina = Integer.parseInt(page);
+                    ArrayList<Usuario> listaSolicitudes = daoNotificacionDelegadoGeneral.listarSolicitudesRegistroPorPage(pagina-1);
                     ArrayList<Reporte> reportList = daoNotificacionDelegadoGeneral.listarNotificacionesReporte();
                     ArrayList<Donacion> donacionList = daoNotificacionDelegadoGeneral.listarNotificacionesDonaciones(buscar);
                     ArrayList<Validacion> recuperacionList = daoNotificacionDelegadoGeneral.listarNotificacionesRecuperacion();
                     request.setAttribute("buscar",buscar);
+                    request.setAttribute("cantidadTotalSolicitudes", daoNotificacionDelegadoGeneral.listarSolicitudesDeRegistro().size());
+                    request.setAttribute("action", action);
                     request.setAttribute("listaSolicitudes",listaSolicitudes);
                     request.setAttribute("reportList", reportList);
                     request.setAttribute("donacionList",donacionList);

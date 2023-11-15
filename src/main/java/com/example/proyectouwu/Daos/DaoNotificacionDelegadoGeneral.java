@@ -40,12 +40,10 @@ public class DaoNotificacionDelegadoGeneral extends DaoPadre {
 
     public ArrayList<Usuario>listarSolicitudesDeRegistro(String busqueda){
         ArrayList<Usuario> listaSolicitudes = new ArrayList<>();
-        
 
-        String sql = "select nombre, apellido, correo, codigoPUCP, condicion  from Usuario where estadoRegistro = 'Pendiente' and (nombre like ? or apellido like ?) order by fechaHoraRegistro desc";
+        String sql = "select nombre, apellido, correo, codigoPUCP, condicion, idUsuario  from Usuario where estadoRegistro = 'Pendiente' and concat(nombre,' ',apellido) like ? order by fechaHoraRegistro desc";
         try (Connection conn=this.getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql)){
             pstmt.setString(1,"%"+busqueda+"%");
-            pstmt.setString(2,"%"+busqueda+"%");
             try(ResultSet rs=pstmt.executeQuery()){
                 while (rs.next()){
                     Usuario u=new Usuario();
@@ -54,6 +52,7 @@ public class DaoNotificacionDelegadoGeneral extends DaoPadre {
                     u.setCorreo(rs.getString(3));
                     u.setCodigoPUCP(rs.getString(4));
                     u.setCondicion(rs.getString(5));
+                    u.setIdUsuario(rs.getInt(6));
                     listaSolicitudes.add(u);
                 }
             }
@@ -63,11 +62,34 @@ public class DaoNotificacionDelegadoGeneral extends DaoPadre {
         return listaSolicitudes;
     }
 
+    public ArrayList<Usuario>listarSolicitudesDeRegistro(String busqueda, int pagina){
+        ArrayList<Usuario> listaSolicitudes = new ArrayList<>();
 
+        String sql = "select nombre, apellido, correo, codigoPUCP, condicion, idUsuario  from Usuario where estadoRegistro = 'Pendiente' and concat(nombre,' ',apellido) like ? order by fechaHoraRegistro desc limit 8 offset ?";
+        try (Connection conn=this.getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql)){
+            pstmt.setString(1,"%"+busqueda+"%");
+            pstmt.setInt(2,pagina*8);
+            try(ResultSet rs=pstmt.executeQuery()){
+                while (rs.next()){
+                    Usuario u=new Usuario();
+                    u.setNombre(rs.getString(1));
+                    u.setApellido(rs.getString(2));
+                    u.setCorreo(rs.getString(3));
+                    u.setCodigoPUCP(rs.getString(4));
+                    u.setCondicion(rs.getString(5));
+                    u.setIdUsuario(rs.getInt(6));
+                    listaSolicitudes.add(u);
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return listaSolicitudes;
+    }
 
     public ArrayList<Usuario> listarSolicitudesRegistroPorPage(int pagina){
         ArrayList<Usuario> listaSolicitudesPage = new ArrayList<>();
-        String sql = "select nombre, apellido, correo ,codigoPUCP, condicion from usuario where estadoRegistro='Pendiente'  limit 8 offset ?";
+        String sql = "select nombre, apellido, correo ,codigoPUCP, condicion, idUsuario from usuario where estadoRegistro='Pendiente' limit 8 offset ?";
         try(Connection conn=this.getConnection();
             PreparedStatement pstmt = conn.prepareStatement(sql)){
             pstmt.setInt(1,pagina*8);
@@ -80,7 +102,7 @@ public class DaoNotificacionDelegadoGeneral extends DaoPadre {
                     usuario.setCorreo(rs.getString(3));
                     usuario.setCodigoPUCP(rs.getString(4));
                     usuario.setCondicion(rs.getString(5));
-
+                    usuario.setIdUsuario(rs.getInt(6));
                     listaSolicitudesPage.add(usuario);
                 }
                 return listaSolicitudesPage;

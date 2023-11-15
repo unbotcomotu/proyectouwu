@@ -741,7 +741,7 @@ public class DaoUsuario extends DaoPadre {
     }
 
     public Ban logIn(String correo, String contrasena){
-        String sql = "select u.idUsuario,u.estadoRegistro,b.idBan,b.motivoBan from usuario u left join ban b on u.idUsuario=b.idUsuario where u.correo=? and u.contrasena=sha2(?,256)";
+        String sql = "select u.idUsuario,u.estadoRegistro,b.idBan,b.motivoBan from usuario u left join ban b on u.idUsuario=b.idUsuario where u.correo=? and u.contrasena=sha2(?,256) and u.estadoRegistro='Registrado'";
         try(Connection conn=this.getConnection(); PreparedStatement pstmt=conn.prepareStatement(sql)){
             pstmt.setString(1,correo);
             pstmt.setString(2,contrasena);

@@ -949,7 +949,8 @@
                         <!-- USER AVATAR CONTENT -->
                         <div class="user-avatar-content">
                             <!-- HEXAGON -->
-                            <div class="hexagon-image-82-90" data-src="css/fotoAlex.png"></div>
+                            <%request.getSession().setAttribute("foto"+listaSolicitudesApoyo.indexOf(alumnoPorEvento),alumnoPorEvento.getAlumno().getFotoPerfil());%>
+                            <div class="hexagon-image-82-90" data-src="Imagen?id=<%=listaSolicitudesApoyo.indexOf(alumnoPorEvento)%>"></div>
                             <!-- /HEXAGON -->
                         </div>
                         <!-- /USER AVATAR CONTENT -->

@@ -966,7 +966,8 @@
                                             <!-- USER AVATAR CONTENT -->
                                             <div class="user-avatar-content">
                                                 <!-- HEXAGON AQUÍ FALTA LA FOTOOOO -->
-                                                <div class="hexagon-image-30-32" data-src="css/iconoPerfil.png"></div>
+                                                <%request.getSession().setAttribute("foto"+listaNotificacionesCampanita.indexOf(noti)+"l",noti.getUsuario().getFotoPerfil());%>
+                                                <div class="hexagon-image-30-32" data-src="Imagen?id=<%=listaNotificacionesCampanita.indexOf(noti)%>l"></div>
                                                 <!-- /HEXAGON -->
                                             </div>
                                             <!-- /USER AVATAR CONTENT -->
@@ -1094,7 +1095,8 @@
                                             <!-- USER AVATAR CONTENT -->
                                             <div class="user-avatar-content">
                                                 <!-- HEXAGON AQUÍ FALTA LA FOTOOOO -->
-                                                <div class="hexagon-image-30-32" data-src="css/iconoPerfil.png"></div>
+                                                <%request.getSession().setAttribute("foto"+listaNotificacionesCampanita.indexOf(noti)+"l",noti.getUsuario().getFotoPerfil());%>
+                                                <div class="hexagon-image-30-32" data-src="Imagen?id=<%=listaNotificacionesCampanita.indexOf(noti)%>l"></div>
                                                 <!-- /HEXAGON -->
                                             </div>
                                             <!-- /USER AVATAR CONTENT -->
@@ -1351,7 +1353,8 @@
                                             <!-- USER AVATAR CONTENT -->
                                             <div class="user-avatar-content">
                                                 <!-- HEXAGON AQUÍ ESTA FOTO SE CAMBIAAA -->
-                                                <div class="hexagon-image-30-32" data-src="css/iconoPerfil.png"></div>
+                                                <%request.getSession().setAttribute("foto"+listaNotificacionesCampanita.indexOf(noti)+"l",noti.getUsuario().getFotoPerfil());%>
+                                                <div class="hexagon-image-30-32" data-src="Imagen?id=<%=listaNotificacionesCampanita.indexOf(noti)%>l"></div>
                                                 <!-- /HEXAGON -->
                                             </div>
                                             <!-- /USER AVATAR CONTENT -->
@@ -1479,7 +1482,8 @@
                                             <!-- USER AVATAR CONTENT -->
                                             <div class="user-avatar-content">
                                                 <!-- HEXAGON AQUÍ ESTA FOTO SE CAMBIAAA -->
-                                                <div class="hexagon-image-30-32" data-src="css/iconoPerfil.png"></div>
+                                                <%request.getSession().setAttribute("foto"+listaNotificacionesCampanita.indexOf(noti)+"l",noti.getUsuario().getFotoPerfil());%>
+                                                <div class="hexagon-image-30-32" data-src="Imagen?id=<%=listaNotificacionesCampanita.indexOf(noti)%>l"></div>
                                                 <!-- /HEXAGON -->
                                             </div>
                                             <!-- /USER AVATAR CONTENT -->

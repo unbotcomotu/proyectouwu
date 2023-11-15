@@ -339,27 +339,32 @@ public class DaoActividad extends DaoPadre {
             secFotoMin = ",fotoCabecera=?";
         }
 
-        String sql="update actividad set idDelegadoDeActividad=?,nombre=?,cantidadPuntosPrimerLugar=?,actividadOculta=?"+secFotoMin+secFotoCab+"where idActividad=?";
+        String sql="update actividad set idDelegadoDeActividad=?,nombre=?"+secFotoMin+secFotoCab+",cantidadPuntosPrimerLugar=?,actividadOculta=? where idActividad=?";
 
         try(Connection conn=this.getConnection(); PreparedStatement pstmt= conn.prepareStatement(sql)){
             pstmt.setInt(1,idDelegadoDeActividad);
             pstmt.setString(2,nombre);
-            pstmt.setInt(3,puntaje);
-            pstmt.setBoolean(4,oculto);
-            pstmt.setInt(5,idActividad);
-            //pstmt.setString(3,fotoMiniatura);
-            if(validarLongitudMin){
-                pstmt.setBinaryStream(6,fotoMiniatura,fotoMiniatura.available());
+            //pstmt.setInt(7,idActividad);
+            if(validarLongitudCab && validarLongitudMin){
+                pstmt.setBinaryStream(3,fotoMiniatura,fotoMiniatura.available()); //pstmt.setString(3,fotoMiniatura);
+                pstmt.setBinaryStream(4,fotoCabecera,fotoCabecera.available());//pstmt.setString(4,fotoCabecera);
+                pstmt.setInt(5,puntaje);
+                pstmt.setBoolean(6,oculto);
                 pstmt.setInt(7,idActividad);
-            }else{
+            }else if(validarLongitudMin){
+                //pstmt.setString(3,fotoMiniatura);
+                pstmt.setBinaryStream(3,fotoMiniatura,fotoMiniatura.available());
+                pstmt.setInt(4,puntaje);
+                pstmt.setBoolean(5,oculto);
                 pstmt.setInt(6,idActividad);
-            }
-            //pstmt.setString(4,fotoCabecera);
-            if(validarLongitudCab){
-                pstmt.setBinaryStream(7,fotoCabecera,fotoCabecera.available());
-                pstmt.setInt(8,idActividad);
+            }else if(validarLongitudCab){
+                //pstmt.setString(4,fotoCabecera);
+                pstmt.setBinaryStream(3,fotoCabecera,fotoCabecera.available());
+                pstmt.setInt(4,puntaje);
+                pstmt.setBoolean(5,oculto);
+                pstmt.setInt(6,idActividad);
             }else{
-                pstmt.setInt(7,idActividad);
+                pstmt.setInt(5,idActividad);
             }
             pstmt.executeUpdate();
         }catch (SQLException e) {

@@ -80,7 +80,7 @@ public class DaoEvento extends DaoPadre {
         String sql = "select e.idEvento,e.idLugarEvento,e.titulo,e.fecha,e.hora,e.descripcionEventoActivo,e.fraseMotivacional,e.fotoMiniatura,e.eventoFinalizado,e.eventoOculto,e.resumen,e.resultadoEvento from Evento e inner join Actividad a on e.idActividad=a.idActividad where a.idActividad=? limit 8 offset ?";
         try (Connection conn=this.getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setInt(1, idActividad);
-            pstmt.setInt(1,pagina*8);
+            pstmt.setInt(2,pagina*8);
 
             try (ResultSet rs = pstmt.executeQuery()) {
                 while (rs.next()) {

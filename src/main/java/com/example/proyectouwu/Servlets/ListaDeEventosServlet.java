@@ -20,6 +20,8 @@ import java.util.HashSet;
 @WebServlet(name = "ListaDeEventosServlet", value = "/ListaDeEventosServlet")
 @MultipartConfig(maxFileSize = 10000000)
 public class ListaDeEventosServlet extends HttpServlet {
+
+
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.setContentType("text/html");
@@ -29,7 +31,6 @@ public class ListaDeEventosServlet extends HttpServlet {
         Usuario usuario=(Usuario) request.getSession().getAttribute("usuario");
         String pag = request.getParameter("p") == null ? "1" : request.getParameter("p");
         int pagina = Integer.parseInt(pag);
-
         if(usuario==null){
             response.sendRedirect("InicioSesionServlet");
         }else {
@@ -57,8 +58,16 @@ public class ListaDeEventosServlet extends HttpServlet {
             }
             String action = request.getParameter("action") == null ? "default" : request.getParameter("action");
             switch (action){
+                case "buscarEvento":
+                    String textoBuscar = request.getParameter("nombreEvento");
+                    request.setAttribute("cantidadEventosTotal", dEvento.buscarEventoPorNombre(textoBuscar,idActividad).size());
+                    request.setAttribute("listaEventos",dEvento.buscarEventoPorNombre(textoBuscar,idActividad));
+                    if(!textoBuscar.isEmpty()){
+                        request.setAttribute("busqueda",textoBuscar);
+                    }
+                    request.getRequestDispatcher("listaDeEventos.jsp").forward(request,response);
+                    break;
                 case "default":
-                    request.setAttribute("pagActual", pagina);
                     request.setAttribute("listaEventos",dEvento.listarEventos(idActividad,pagina-1));
                     request.setAttribute("cantidadEventosTotal", dEvento.listarEventos(idActividad).size());
                     request.getRequestDispatcher("listaDeEventos.jsp").forward(request,response);
@@ -127,7 +136,8 @@ public class ListaDeEventosServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.setContentType("text/html");
         String action = request.getParameter("action") == null ? "default" : request.getParameter("action");
-
+        String pag = request.getParameter("p") == null ? "1" : request.getParameter("p");
+        int pagina = Integer.parseInt(pag);
         // Daos:
         DaoLugarEvento dLugarEvento = new DaoLugarEvento();
         DaoEvento dEvento = new DaoEvento();
@@ -144,30 +154,7 @@ public class ListaDeEventosServlet extends HttpServlet {
         String rutaImagenPredeterminada = "/css/fibraVShormigon.png";
 
         switch (action) {
-            case "buscarEvento":
-                DaoUsuario dUsuario = new DaoUsuario();
-                DaoActividad dActividad=new DaoActividad();
-                String textoBuscar = request.getParameter("nombreEvento");
-                request.setAttribute("idActividad",idActividad);
-                request.setAttribute("vistaActual","listaDeActividades");
-                request.setAttribute("correosDelegadosGenerales",dUsuario.listarCorreosDelegadosGenerales());
-                request.setAttribute("listaEventos",dEvento.listarEventos(idActividad));
-                request.setAttribute("nombreActividad",dActividad.nombreActividadPorID(idActividad));
-                request.setAttribute("delegadoDeEstaActividadID",dActividad.idDelegadoDeActividadPorActividad(idActividad));
-                request.setAttribute("listaLugares",new DaoLugarEvento().listarLugares());
-                request.setAttribute("cantidadEventosFinalizados",dActividad.cantidadEventosFinalizadosPorActividad(idActividad));
-                request.setAttribute("cantidadEventosOcultos",dActividad.cantidadEventosOcultosPorActividad(idActividad));
-                request.setAttribute("cantidadEventosApoyando",dActividad.cantidadEventosApoyandoPorActividad(idActividad,usuario.getIdUsuario()));
-                request.setAttribute("listaLugaresCantidad",dActividad.lugaresConMayorCantidadDeEventos_cantidad_idLugarEvento(idActividad));
-                request.setAttribute("cantidadEventosHoy",dActividad.cantidadEventosEnNdiasPorActividad(idActividad,0));
-                request.setAttribute("cantidadEventosManana",dActividad.cantidadEventosEnNdiasPorActividad(idActividad,1));
-                request.setAttribute("cantidadEventos2DiasMas", dActividad.cantidadEventosEn2DiasAMasPorActividad(idActividad));
-                request.setAttribute("listaEventos",dEvento.buscarEventoPorNombre(textoBuscar,idActividad));
-                if(!textoBuscar.isEmpty()){
-                    request.setAttribute("busqueda",textoBuscar);
-                }
-                request.getRequestDispatcher("listaDeEventos.jsp").forward(request,response);
-                break;
+
             case "addConfirm":
                 // Parámetros:
                 String addLugar = request.getParameter("addLugar");

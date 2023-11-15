@@ -15803,10 +15803,10 @@ figure > img {
   background-color: #eaeaf5;
   position: absolute;
   top: 12px;
-  right: 0;
+  right: 0;.active .section-pager-item-text
 }
 
-.section-pager .section-pager-item.active .section-pager-item-text, .section-pager .section-pager-item:hover .section-pager-item-text {
+.section-pager .section-pager-item, .section-pager .section-pager-item:hover .section-pager-item-text {
   background-color: #fff;
   color: #00c7d9;
   box-shadow: 3px 5px 20px 0 rgba(94, 92, 154, 0.12);
@@ -16065,8 +16065,15 @@ figure > img {
     right: 0;
   }
   .section-pager-bar {
-    width: 306px;
-  }
+    max-width: 70%;
+    height: 60px;
+    margin: 32px auto 0;
+    border-radius: 12px;
+    background-color: #fff;
+    box-shadow: 0 0 40px 0 rgba(94, 92, 154, 0.06);
+    position: relative;
+    overflow: hidden;
+    display: flex;  }
   .section-banner {
     height: 86px;
     min-height: auto;

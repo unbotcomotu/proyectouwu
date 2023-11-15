@@ -20,8 +20,9 @@
         ArrayList<LugarEvento>listaLugares=(ArrayList<LugarEvento>) request.getAttribute("listaLugares");
         int delegadoDeEstaActividadID=(int)request.getAttribute("delegadoDeEstaActividadID");
 
-        int cantidadTotalEventos = (int)Math.ceil((int)request.getAttribute("cantidadEventosTotal")/8.0);
+        int cantidadTotalEventos = request.getAttribute("cantidadEventosTotal")!=null? (int)Math.ceil((int)request.getAttribute("cantidadEventosTotal")/8.0):0;
         Integer pagActual = request.getAttribute("pagActual") != null ? (Integer) request.getAttribute("pagActual") : 1;
+        //String busqueda=(String) request.getAttribute("evento");
 
 
         Integer eventoOculto = (Integer) request.getAttribute("eventoOculto");
@@ -1740,7 +1741,7 @@
         <!-- SECTION FILTERS BAR ACTIONS -->
         <div class="section-filters-bar-actions">
             <!-- FORM -->
-            <form method="post" class="form" action="<%=request.getContextPath()%>/ListaDeEventosServlet?action=buscarEvento">
+            <form method="get" class="form" action="ListaDeEventosServlet">
                 <!-- FORM ITEM -->
                 <div class="form-item split">
                     <!-- FORM INPUT -->
@@ -1749,10 +1750,9 @@
                         <input type="text" id="items-search" name="nombreEvento" value="<%=request.getAttribute("busqueda") != null ? request.getAttribute("busqueda") : ""%>">
                         <input type="hidden" name="idActividad" value="<%=idActividad%>">
                         <input type="hidden" name="p" value="<%=pagActual%>">
-
-                    </div>
+                        <input type="hidden" name="action" value="buscarEvento">
                     <!-- /FORM INPUT -->
-
+                    </div>
                     <!-- BUTTON -->
                     <button type="submit" class="button primary">
                         <!-- ICON MAGNIFYING GLASS -->
@@ -1830,7 +1830,7 @@
             <div class="sidebar-box">
                 <form method="get" action="<%=request.getContextPath()%>/ListaDeEventosServlet">
                     <input type="hidden" name="idActividad" value="<%=idActividad%>">
-                    <input type="hidden" name="p" value="<%=pagActual%>">
+                   <input type="hidden" name="p" value="<%=pagActual%>">
 
                     <input type="hidden" name="action" value="filtrarEventos">
                     <!-- SIDEBAR BOX TITLE -->
@@ -2070,93 +2070,93 @@
 
         <!-- MARKETPLACE CONTENT -->
         <div class="marketplace-content">
-            <!-- GRID -->
-            <div class="grid grid-3-3-3 centered">
-                <%if(listaEventos!=null){
-                    for(Evento e:listaEventos){
-                String mes="";
-                String fechaAux=e.getFecha().toString().split("-")[1];
-                switch (fechaAux){
-                    case "01":
-                        mes="Enero";
-                        break;
-                    case "02":
-                        mes="Febrero";
-                        break;
-                    case "03":
-                        mes="Marzo";
-                        break;
-                    case "04":
-                        mes="Abril";
-                        break;
-                    case "05":
-                        mes="Mayo";
-                        break;
-                    case "06":
-                        mes="Junio";
-                        break;
-                    case "07":
-                        mes="Julio";
-                        break;
-                    case "08":
-                        mes="Agosto";
-                        break;
-                    case "09":
-                        mes="Septiembre";
-                        break;
-                    case "10":
-                        mes= "Octubre";
-                        break;
-                    case "11":
-                        mes="Noviembre";
-                        break;
-                    case "12":
-                        mes="Diciembre";
-                        break;
-                }%>
-                <!-- PRODUCT PREVIEW -->
-                <%if(delegadoDeEstaActividadID==idUsuario||rolUsuario.equals("Delegado General")){%>
-                <div class="product-preview" style="<%if(e.isEventoFinalizado()){%>opacity: 0.5<%}%>">
-                    <!-- PRODUCT PREVIEW IMAGE -->
-                    <figure class="product-preview-image liquid" style="position: relative">
-                        <a href="<%=request.getContextPath()%>/EventoServlet?idEvento=<%=e.getIdEvento()%>&idUsuario=<%=idUsuario%>">
-                            <img src="ImagenEventoServlet?idEvento=<%=e.getIdEvento()%>" style="position: absolute; z-index: 0" height="100%" width="100%" alt="item-01">
-                        </a>
-                        <%if(delegadoDeEstaActividadID==idUsuario){%>
-                        <a id="mostrarPopupEditarEvento<%=listaEventos.indexOf(e)%>">
-                            <img src="css/ajustesEvento.png" class="mt-2" style="position: absolute;left: 82%; z-index: 100;height: 50px;width: 50px;cursor: pointer" alt="">
-                        </a>
-                        <%}%>
-                    </figure>
-                    <!-- /PRODUCT PREVIEW IMAGE -->
+        <!-- GRID -->
+        <div class="grid grid-3-3-3 centered">
+            <%if(listaEventos!=null){
+                for(Evento e:listaEventos){
+                    String mes="";
+                    String fechaAux=e.getFecha().toString().split("-")[1];
+                    switch (fechaAux){
+                        case "01":
+                            mes="Enero";
+                            break;
+                        case "02":
+                            mes="Febrero";
+                            break;
+                        case "03":
+                            mes="Marzo";
+                            break;
+                        case "04":
+                            mes="Abril";
+                            break;
+                        case "05":
+                            mes="Mayo";
+                            break;
+                        case "06":
+                            mes="Junio";
+                            break;
+                        case "07":
+                            mes="Julio";
+                            break;
+                        case "08":
+                            mes="Agosto";
+                            break;
+                        case "09":
+                            mes="Septiembre";
+                            break;
+                        case "10":
+                            mes= "Octubre";
+                            break;
+                        case "11":
+                            mes="Noviembre";
+                            break;
+                        case "12":
+                            mes="Diciembre";
+                            break;
+                    }%>
+            <!-- PRODUCT PREVIEW -->
+            <%if(delegadoDeEstaActividadID==idUsuario||rolUsuario.equals("Delegado General")){%>
+            <div class="product-preview" style="<%if(e.isEventoFinalizado()){%>opacity: 0.5<%}%>">
+                <!-- PRODUCT PREVIEW IMAGE -->
+                <figure class="product-preview-image liquid" style="position: relative">
+                    <a href="<%=request.getContextPath()%>/EventoServlet?idEvento=<%=e.getIdEvento()%>&idUsuario=<%=idUsuario%>">
+                        <img src="ImagenEventoServlet?idEvento=<%=e.getIdEvento()%>" style="position: absolute; z-index: 0" height="100%" width="100%" alt="item-01">
+                    </a>
+                    <%if(delegadoDeEstaActividadID==idUsuario){%>
+                    <a id="mostrarPopupEditarEvento<%=listaEventos.indexOf(e)%>">
+                        <img src="css/ajustesEvento.png" class="mt-2" style="position: absolute;left: 82%; z-index: 100;height: 50px;width: 50px;cursor: pointer" alt="">
+                    </a>
+                    <%}%>
+                </figure>
+                <!-- /PRODUCT PREVIEW IMAGE -->
 
-                    <!-- PRODUCT PREVIEW INFO -->
-                    <div class="product-preview-info">
-                        <!-- TEXT STICKER -->
-                        <p class="text-sticker" style="right: 180px;">
-                            <%if(e.isEventoOculto()){%>
-                            <span style="color: green;">Oculto</span>
-                            <%}else{%>
-                            <span style="color: brown;">No oculto</span><%}%>
-                        </p>
-                        <p class="text-sticker"><span class="highlighted">Fecha: </span>
-                            <%if(e.isEventoFinalizado()){%>
-                            <span style="color: purple;"><%=Integer.parseInt(e.getFecha().toString().split("-")[2])%> de <%=mes%></span>
-                            <%}else{%>
-                            <%int diasQueFaltanParaElEvento=new DaoEvento().diferenciaDiasEventoActualidad(e.getIdEvento());
-                                if(diasQueFaltanParaElEvento==0){%>
-                            <span style="color: red;">Hoy</span>
-                            <%}else if(diasQueFaltanParaElEvento==1){%>
-                            <span style="color: orangered;">Mañana</span>
-                            <%}else if(diasQueFaltanParaElEvento==2){%>
-                            <span style="color: orange;">En 2 días</span>
-                            <%}else{%>
-                            <span style="color: purple;"><%=Integer.parseInt(e.getFecha().toString().split("-")[2])%> de <%=mes%></span>
-                            <%}}%>
-                        </p>
-                        <!-- /TEXT STICKER -->
-                        <!-- PRODUCT PREVIEW TITLE -->
-                        <%int tamanoLetraTitulo=0;
+                <!-- PRODUCT PREVIEW INFO -->
+                <div class="product-preview-info">
+                    <!-- TEXT STICKER -->
+                    <p class="text-sticker" style="right: 180px;">
+                        <%if(e.isEventoOculto()){%>
+                        <span style="color: green;">Oculto</span>
+                        <%}else{%>
+                        <span style="color: brown;">No oculto</span><%}%>
+                    </p>
+                    <p class="text-sticker"><span class="highlighted">Fecha: </span>
+                        <%if(e.isEventoFinalizado()){%>
+                        <span style="color: purple;"><%=Integer.parseInt(e.getFecha().toString().split("-")[2])%> de <%=mes%></span>
+                        <%}else{%>
+                        <%int diasQueFaltanParaElEvento=new DaoEvento().diferenciaDiasEventoActualidad(e.getIdEvento());
+                            if(diasQueFaltanParaElEvento==0){%>
+                        <span style="color: red;">Hoy</span>
+                        <%}else if(diasQueFaltanParaElEvento==1){%>
+                        <span style="color: orangered;">Mañana</span>
+                        <%}else if(diasQueFaltanParaElEvento==2){%>
+                        <span style="color: orange;">En 2 días</span>
+                        <%}else{%>
+                        <span style="color: purple;"><%=Integer.parseInt(e.getFecha().toString().split("-")[2])%> de <%=mes%></span>
+                        <%}}%>
+                    </p>
+                    <!-- /TEXT STICKER -->
+                    <!-- PRODUCT PREVIEW TITLE -->
+                    <%int tamanoLetraTitulo=0;
                         if(e.getTitulo().length()>36){
                             tamanoLetraTitulo=90;
                         }else if (e.getTitulo().length()>33){
@@ -2166,227 +2166,196 @@
                         }else{
                             tamanoLetraTitulo=110;
                         }%>
-                        <p class="product-preview-title d-flex justify-content-center"><a style="font-size: <%=tamanoLetraTitulo%>%"><%=e.getTitulo()%></a></p>
-                        <!-- /PRODUCT PREVIEW TITLE -->
+                    <p class="product-preview-title d-flex justify-content-center"><a style="font-size: <%=tamanoLetraTitulo%>%"><%=e.getTitulo()%></a></p>
+                    <!-- /PRODUCT PREVIEW TITLE -->
 
-                        <div class="row d-flex justify-content-around">
-                            <div class="col-5">
-                                <!-- PRODUCT PREVIEW CATEGORY -->
-                                <p class="product-preview-category digital"><span class="highlighted">Hora: </span> <%String aux[]=e.getHora().toString().split(":");%><span style="color: blue"><%=Integer.parseInt(aux[0])+":"+aux[1]%></span></p>
+                    <div class="row d-flex justify-content-around">
+                        <div class="col-5">
+                            <!-- PRODUCT PREVIEW CATEGORY -->
+                            <p class="product-preview-category digital"><span class="highlighted">Hora: </span> <%String aux[]=e.getHora().toString().split(":");%><span style="color: blue"><%=Integer.parseInt(aux[0])+":"+aux[1]%></span></p>
 
-                                <!-- /PRODUCT PREVIEW CATEGORY -->
-                            </div>
-                            <div class="col-7">
-                                <!-- PRODUCT PREVIEW CATEGORY -->
-                                <p class="product-preview-category digital"><span class="highlighted">Lugar: </span>
-                                    <%String lugar=new DaoEvento().lugarPorEventoID(e.getIdEvento());
-                                        String lugarAux;
-                                        if(lugar.length()>14) {
-                                            String aux3[] = lugar.split(" ");
-                                            lugarAux = aux3[0].charAt(0)+".";
-                                            for (int i = 1; i < aux3.length; i++) {
-                                                lugarAux += " " + aux3[i];
-                                            }
-                                        }else{
-                                            lugarAux=lugar;
-                                        }%>
-                                    <span style="color: brown"><%=lugarAux%></span>
-                                </p>
-                                <!-- /PRODUCT PREVIEW CATEGORY -->
-                            </div>
+                            <!-- /PRODUCT PREVIEW CATEGORY -->
                         </div>
-                        <!-- PRODUCT PREVIEW TEXT -->
-                        <%String texto="";
-                            if(e.isEventoFinalizado()){
-                                texto=e.getResumen();
-                            }else {
-                                texto = e.getFraseMotivacional() + " " + e.getDescripcionEventoActivo();
-                            }
-                            String textoAux = "";
-                            if(texto.length()>=107) {
-                                char charAux[] = texto.toCharArray();
-
-                                for (int i = 0; i < 107; i++) {
-                                    textoAux += charAux[i];
-                                }textoAux+="...";
-                            }else{
-                                textoAux=texto;
-                            }
-                        %>
-                        <p class="product-preview-text"><%=textoAux%></p>
-                        <!-- /PRODUCT PREVIEW TEXT -->
-                    </div>
-                    <!-- /PRODUCT PREVIEW INFO -->
-                </div>
-                <!-- /PRODUCT PREVIEW -->
-                <%}else if(!e.isEventoOculto()){%>
-                <!-- /PRODUCT PREVIEW -->
-                <div class="product-preview" style="<%if(e.isEventoFinalizado()){%>opacitiy: 0.5<%}%>">
-                    <!-- PRODUCT PREVIEW IMAGE -->
-                    <a href="<%=request.getContextPath()%>/EventoServlet?idEvento=<%=e.getIdEvento()%>&idUsuario=<%=idUsuario%>">
-                        <figure class="product-preview-image liquid">
-                            <img src="ImagenEventoServlet?idEvento=<%=e.getIdEvento()%>" alt="item-01">
-                        </figure>
-                    </a>
-                    <!-- /PRODUCT PREVIEW IMAGE -->
-
-                    <!-- PRODUCT PREVIEW INFO -->
-                    <div class="product-preview-info">
-                        <!-- TEXT STICKER -->
-                        <%if(new DaoAlumnoPorEvento().verificarApoyo(e.getIdEvento(),idUsuario)!=null){%>
-                        <p class="text-sticker" style="right: 180px;"><span style="color: green;">Apoyando</span></p>
-                        <%}else{%>
-                        <p class="text-sticker" style="right: 170px;"><span style="color: brown;">No apoyando</span></p>
-                        <%}%>
-                        <p class="text-sticker"><span class="highlighted">Fecha: </span>
-                            <%if(e.isEventoFinalizado()){%>
-                            <span style="color: purple;"><%=Integer.parseInt(e.getFecha().toString().split("-")[2])%> de <%=mes%></span>
-                            <%}else{%>
-                            <%int diasQueFaltanParaElEvento=new DaoEvento().diferenciaDiasEventoActualidad(e.getIdEvento());
-                                if(diasQueFaltanParaElEvento==0){%>
-                            <span style="color: red;">Hoy</span>
-                            <%}else if(diasQueFaltanParaElEvento==1){%>
-                            <span style="color: orangered;">Mañana</span>
-                            <%}else if(diasQueFaltanParaElEvento==2){%>
-                            <span style="color: orange;">En 2 días</span>
-                            <%}else{%>
-                            <span style="color: purple;"><%=Integer.parseInt(e.getFecha().toString().split("-")[2])%> de <%=mes%></span>
-                            <%}}%>
-                        </p>
-                        <!-- /TEXT STICKER -->
-                        <%int tamanoLetraTitulo=0;
-                            if(e.getTitulo().length()>36){
-                                tamanoLetraTitulo=90;
-                            }else if (e.getTitulo().length()>33){
-                                tamanoLetraTitulo=95;
-                            }else if(e.getTitulo().length()>30){
-                                tamanoLetraTitulo=100;
-                            }else{
-                                tamanoLetraTitulo=110;
-                            }%>
-                        <p class="product-preview-title d-flex justify-content-center"><a style="font-size: <%=tamanoLetraTitulo%>%"><%=e.getTitulo()%></a></p>
-
-                        <div class="row d-flex justify-content-around">
-                            <div class="col-5">
-                                <!-- PRODUCT PREVIEW CATEGORY -->
-                                <p class="product-preview-category digital"><span class="highlighted">Hora: </span> <%String aux[]=e.getHora().toString().split(":");%><span style="color: blue"><%=Integer.parseInt(aux[0])+":"+aux[1]%></span>
-                                </p>
-
-                                <!-- /PRODUCT PREVIEW CATEGORY -->
-                            </div>
-                            <div class="col-7">
-                                <!-- PRODUCT PREVIEW CATEGORY -->
-                                <p class="product-preview-category digital"><span class="highlighted">Lugar: </span>
-                                    <%String lugar=new DaoEvento().lugarPorEventoID(e.getIdEvento());
-                                        String lugarAux;
-                                        if(lugar.length()>14) {
-                                            String aux3[] = lugar.split(" ");
-                                            lugarAux = aux3[0].charAt(0)+".";
-                                            for (int i = 1; i < aux3.length; i++) {
-                                                lugarAux += " " + aux3[i];
-                                            }
-                                        }else
-                                            lugarAux=lugar;%>
-                                    <span style="color: brown"><%=lugarAux%></span></p>
-                                <!-- /PRODUCT PREVIEW CATEGORY -->
-                            </div>
+                        <div class="col-7">
+                            <!-- PRODUCT PREVIEW CATEGORY -->
+                            <p class="product-preview-category digital"><span class="highlighted">Lugar: </span>
+                                <%String lugar=new DaoEvento().lugarPorEventoID(e.getIdEvento());
+                                    String lugarAux;
+                                    if(lugar.length()>14) {
+                                        String aux3[] = lugar.split(" ");
+                                        lugarAux = aux3[0].charAt(0)+".";
+                                        for (int i = 1; i < aux3.length; i++) {
+                                            lugarAux += " " + aux3[i];
+                                        }
+                                    }else{
+                                        lugarAux=lugar;
+                                    }%>
+                                <span style="color: brown"><%=lugarAux%></span>
+                            </p>
+                            <!-- /PRODUCT PREVIEW CATEGORY -->
                         </div>
-                        <!-- PRODUCT PREVIEW TEXT -->
-                        <%String texto="";
-                            if(e.isEventoFinalizado()){
-                                texto=e.getResumen();
-                            }else {
-                                texto = e.getFraseMotivacional() + " " + e.getDescripcionEventoActivo();
-                            }
-                            String textoAux = "";
-                            if(texto.length()>=107) {
-                                char charAux[] = texto.toCharArray();
-
-                                for (int i = 0; i < 107; i++) {
-                                    textoAux += charAux[i];
-                                }textoAux+="...";
-                            }else{
-                                textoAux=texto;
-                            }
-                        %>
-                        <p class="product-preview-text"><%=textoAux%></p>
-                        <!-- /PRODUCT PREVIEW TEXT -->
                     </div>
-                    <!-- /PRODUCT PREVIEW INFO -->
+                    <!-- PRODUCT PREVIEW TEXT -->
+                    <%String texto="";
+                        if(e.isEventoFinalizado()){
+                            texto=e.getResumen();
+                        }else {
+                            texto = e.getFraseMotivacional() + " " + e.getDescripcionEventoActivo();
+                        }
+                        String textoAux = "";
+                        if(texto.length()>=107) {
+                            char charAux[] = texto.toCharArray();
+
+                            for (int i = 0; i < 107; i++) {
+                                textoAux += charAux[i];
+                            }textoAux+="...";
+                        }else{
+                            textoAux=texto;
+                        }
+                    %>
+                    <p class="product-preview-text"><%=textoAux%></p>
+                    <!-- /PRODUCT PREVIEW TEXT -->
                 </div>
-                <!-- PRODUCT PREVIEW -->
-                <%}}}%>
+                <!-- /PRODUCT PREVIEW INFO -->
             </div>
-            <!-- /GRID -->
+            <!-- /PRODUCT PREVIEW -->
+            <%}else if(!e.isEventoOculto()){%>
+            <!-- /PRODUCT PREVIEW -->
+            <div class="product-preview" style="<%if(e.isEventoFinalizado()){%>opacitiy: 0.5<%}%>">
+                <!-- PRODUCT PREVIEW IMAGE -->
+                <a href="<%=request.getContextPath()%>/EventoServlet?idEvento=<%=e.getIdEvento()%>&idUsuario=<%=idUsuario%>">
+                    <figure class="product-preview-image liquid">
+                        <img src="ImagenEventoServlet?idEvento=<%=e.getIdEvento()%>" alt="item-01">
+                    </figure>
+                </a>
+                <!-- /PRODUCT PREVIEW IMAGE -->
 
+                <!-- PRODUCT PREVIEW INFO -->
+                <div class="product-preview-info">
+                    <!-- TEXT STICKER -->
+                    <%if(new DaoAlumnoPorEvento().verificarApoyo(e.getIdEvento(),idUsuario)!=null){%>
+                    <p class="text-sticker" style="right: 180px;"><span style="color: green;">Apoyando</span></p>
+                    <%}else{%>
+                    <p class="text-sticker" style="right: 170px;"><span style="color: brown;">No apoyando</span></p>
+                    <%}%>
+                    <p class="text-sticker"><span class="highlighted">Fecha: </span>
+                        <%if(e.isEventoFinalizado()){%>
+                        <span style="color: purple;"><%=Integer.parseInt(e.getFecha().toString().split("-")[2])%> de <%=mes%></span>
+                        <%}else{%>
+                        <%int diasQueFaltanParaElEvento=new DaoEvento().diferenciaDiasEventoActualidad(e.getIdEvento());
+                            if(diasQueFaltanParaElEvento==0){%>
+                        <span style="color: red;">Hoy</span>
+                        <%}else if(diasQueFaltanParaElEvento==1){%>
+                        <span style="color: orangered;">Mañana</span>
+                        <%}else if(diasQueFaltanParaElEvento==2){%>
+                        <span style="color: orange;">En 2 días</span>
+                        <%}else{%>
+                        <span style="color: purple;"><%=Integer.parseInt(e.getFecha().toString().split("-")[2])%> de <%=mes%></span>
+                        <%}}%>
+                    </p>
+                    <!-- /TEXT STICKER -->
+                    <%int tamanoLetraTitulo=0;
+                        if(e.getTitulo().length()>36){
+                            tamanoLetraTitulo=90;
+                        }else if (e.getTitulo().length()>33){
+                            tamanoLetraTitulo=95;
+                        }else if(e.getTitulo().length()>30){
+                            tamanoLetraTitulo=100;
+                        }else{
+                            tamanoLetraTitulo=110;
+                        }%>
+                    <p class="product-preview-title d-flex justify-content-center"><a style="font-size: <%=tamanoLetraTitulo%>%"><%=e.getTitulo()%></a></p>
+
+                    <div class="row d-flex justify-content-around">
+                        <div class="col-5">
+                            <!-- PRODUCT PREVIEW CATEGORY -->
+                            <p class="product-preview-category digital"><span class="highlighted">Hora: </span> <%String aux[]=e.getHora().toString().split(":");%><span style="color: blue"><%=Integer.parseInt(aux[0])+":"+aux[1]%></span>
+                            </p>
+
+                            <!-- /PRODUCT PREVIEW CATEGORY -->
+                        </div>
+                        <div class="col-7">
+                            <!-- PRODUCT PREVIEW CATEGORY -->
+                            <p class="product-preview-category digital"><span class="highlighted">Lugar: </span>
+                                <%String lugar=new DaoEvento().lugarPorEventoID(e.getIdEvento());
+                                    String lugarAux;
+                                    if(lugar.length()>14) {
+                                        String aux3[] = lugar.split(" ");
+                                        lugarAux = aux3[0].charAt(0)+".";
+                                        for (int i = 1; i < aux3.length; i++) {
+                                            lugarAux += " " + aux3[i];
+                                        }
+                                    }else
+                                        lugarAux=lugar;%>
+                                <span style="color: brown"><%=lugarAux%></span></p>
+                            <!-- /PRODUCT PREVIEW CATEGORY -->
+                        </div>
+                    </div>
+                    <!-- PRODUCT PREVIEW TEXT -->
+                    <%String texto="";
+                        if(e.isEventoFinalizado()){
+                            texto=e.getResumen();
+                        }else {
+                            texto = e.getFraseMotivacional() + " " + e.getDescripcionEventoActivo();
+                        }
+                        String textoAux = "";
+                        if(texto.length()>=107) {
+                            char charAux[] = texto.toCharArray();
+
+                            for (int i = 0; i < 107; i++) {
+                                textoAux += charAux[i];
+                            }textoAux+="...";
+                        }else{
+                            textoAux=texto;
+                        }
+                    %>
+                    <p class="product-preview-text"><%=textoAux%></p>
+                    <!-- /PRODUCT PREVIEW TEXT -->
+                </div>
+                <!-- /PRODUCT PREVIEW INFO -->
+            </div>
+            <!-- PRODUCT PREVIEW -->
+            <%}}}%>
+        </div>
+        <!-- /GRID -->
+
+        <!-- SECTION PAGER BAR WRAP -->
+        <!-- SECTION PAGER BAR -->
             <!-- SECTION PAGER BAR WRAP -->
             <div class="section-pager-bar-wrap align-center">
                 <!-- SECTION PAGER BAR -->
-                <div class="section-pager-bar">
-                    <!-- SECTION PAGER -->
-                    <div class="section-pager">
-                        <!-- SECTION PAGER ITEM -->
-                        <%for(int p=0;p<cantidadTotalEventos; p++){%>
-                        <div class="section-pager-item <%if(pagActual==p+1){%>active<%}%>">
-                            <%if(action.equals("buscarUsuario")){%>
-                            <!-- SECTION PAGER ITEM TEXT -->
-                            <%if(p<9){%>
-                            <a class="section-pager-item-text" href="ListaDeEventosServlet?action=<%=action%>&idActividad=<%=busqueda%>&p=<%=p+1%>">0<%=p+1%></a>
-                            <%}else{%>
-                            <a class="section-pager-item-text" href="ListaEventosServlet?i&action=<%=action%>&idActividad<%=busqueda%>&p=<%=p+1%>"><%=p+1%></a>
-                            <%}%>
-                            <!-- /SECTION PAGER ITEM TEXT -->
-                        </div>
-                        <!-- /SECTION PAGER ITEM -->
-                        <%}%>
-                    </div>
-                        <!-- /SECTION PAGER ITEM -->
+                    <div class="section-pager-bar " >
+                        <!-- SECTION PAGER -->
+                        <div class="section-pager">
+                            <!-- SECTION PAGER ITEM -->
+                            <%for(int p=0;p<cantidadTotalEventos; p++){%>
+                            <div class="section-pager-item <%if(pagActual==p+1){%>active<%}%>">
+                                <!-- SECTION PAGER ITEM TEXT -->
+                                <%if(action.equals("buscarEvento")){%>
+                                    <%if(p<9){%>
+                                        <a class="section-pager-item-text" href="ListaDeEventosServlet?action=<%=action%>&idActividad=<%=idActividad%>&p=<%=p+1%>">0<%=p+1%></a>                            <!-- /SECTION PAGER ITEM TEXT -->
+                                    <%}else{%>
+                                        <a class="section-pager-item-text" href="ListaEventosServlet?idActividad=<%=idActividad%>&p=<%=p+1%>"><%=p+1%></a>
+                                    <%}%>
+                                <%}else{%>
+                                    <%if(p<9){%>
+                                        <a class="section-pager-item-text" href="ListaDeEventosServlet?idActividad=<%=idActividad%>&p=<%=p+1%>">0<%=p+1%></a>                            <!-- /SECTION PAGER ITEM TEXT -->
+                                    <%}else{%>
+                                        <a class="section-pager-item-text" href="ListaEventosServlet?idActividad=<%=idActividad%>&p=<%=p+1%>"><%=p+1%></a>
+                                <%}}%>
 
-                        <!-- SECTION PAGER ITEM -->
-                        <div class="section-pager-item">
-                            <!-- SECTION PAGER ITEM TEXT -->
-                            <p class="section-pager-item-text">03</p>
-                            <!-- /SECTION PAGER ITEM TEXT -->
-                        </div>
-                        <!-- /SECTION PAGER ITEM -->
-
-                        <!-- SECTION PAGER ITEM -->
-                        <div class="section-pager-item">
-                            <!-- SECTION PAGER ITEM TEXT -->
-                            <p class="section-pager-item-text">04</p>
-                            <!-- /SECTION PAGER ITEM TEXT -->
-                        </div>
-                        <!-- /SECTION PAGER ITEM -->
-
-                        <!-- SECTION PAGER ITEM -->
-                        <div class="section-pager-item">
-                            <!-- SECTION PAGER ITEM TEXT -->
-                            <p class="section-pager-item-text">05</p>
-                            <!-- /SECTION PAGER ITEM TEXT -->
-                            <%}else if(action.equals("filtroUsuario")){%>
-                            <%if(p<9){%>
-                            <a class="section-pager-item-text" href="ListaDeUsuariosServlet?&action=<%=action%>&idFiltroUsuario=<%=idFiltroUsuario%>&idOrdenarUsuario=<%=idOrdenarUsuario%>&p=<%=p+1%>">0<%=p+1%></a>
-                            <%}else{%>
-                            <a class="section-pager-item-text" href="ListaDeUsuariosServlet?&action=<%=action%>&idFiltroUsuario=<%=idFiltroUsuario%>&idOrdenarUsuario=<%=idOrdenarUsuario%>&p=<%=p+1%>"><%=p+1%></a>
+                            </div>
                             <%}%>
-                            <%}else{%>
-                            <%if(p<9){%>
-                            <a class="section-pager-item-text" href="ListaDeUsuariosServlet?&p=<%=p+1%>">0<%=p+1%></a>
-                            <%}else{%>
-                            <a class="section-pager-item-text" href="ListaDeUsuariosServlet?&p=<%=p+1%>"><%=p+1%></a>
-                            <%}%>
-                            <%}%>
-                        </div>
-                        <!-- /SECTION PAGER ITEM -->
+                            <!-- /SECTION PAGER ITEM -->
 
-                        <!-- SECTION PAGER ITEM -->
-                        <div class="section-pager-item">
-                            <!-- SECTION PAGER ITEM TEXT -->
-                            <p class="section-pager-item-text">06</p>
-                            <!-- /SECTION PAGER ITEM TEXT -->
+                            <!-- SECTION PAGER ITEM -->
+
+                            <!-- /SECTION PAGER ITEM -->
+
+                            <!-- SECTION PAGER ITEM -->
+
+                            <!-- /SECTION PAGER ITEM -->
                         </div>
-                        <!-- /SECTION PAGER ITEM -->
-                    </div>
                     <!-- /SECTION PAGER -->
 
                     <!-- SECTION PAGER CONTROLS -->

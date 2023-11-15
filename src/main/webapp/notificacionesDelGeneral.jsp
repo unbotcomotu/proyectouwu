@@ -17,6 +17,8 @@
         String rolUsuario=usuarioActual.getRol();
         String nombreCompletoUsuario=usuarioActual.getNombre()+" "+usuarioActual.getApellido();
         ArrayList<Usuario> listaSolicitudes=(ArrayList<Usuario>) request.getAttribute("listaSolicitudes");
+        int cantidadTotalPageSolicitudes =(int)Math.ceil((int)request.getAttribute("cantidadTotalSolicitudes")/8.0);
+
         ArrayList<Reporte> reportList = (ArrayList<Reporte>) request.getAttribute("reportList");
         ArrayList<Donacion> donacionList = (ArrayList<Donacion>) request.getAttribute("donacionList");
         ArrayList<Validacion> recuperacionList = (ArrayList<Validacion>) request.getAttribute("recuperacionList");
@@ -1725,6 +1727,9 @@
 
         <div class="grid grid-4-4-4 centered">
 
+           <%int contador = 0;%>
+
+
             <%for (Usuario usuario_pendiente: listaSolicitudes) {%>
             <!-- USER PREVIEW -->
             <div class="user-preview">
@@ -1840,6 +1845,7 @@
                 <!-- /USER PREVIEW INFO -->
             </div>
 
+            <%contador++;%>
             <!-- /USER PREVIEW -->
             <%}%>
         </div>
@@ -1850,53 +1856,27 @@
             <!-- SECTION PAGER -->
             <div class="section-pager">
                 <!-- SECTION PAGER ITEM -->
+                <%  for(int p=0;p<cantidadTotalPageSolicitudes; p++){%>
 
 
-                <div class="section-pager-item active">
-                    <!-- SECTION PAGER ITEM TEXT -->
-                    <p class="section-pager-item-text">01</p>
-                    <!-- /SECTION PAGER ITEM TEXT -->
-                </div>
+                <%if (p<=9){%>
+
+                    <div class="section-pager-item active">
+                        <!-- SECTION PAGER ITEM TEXT -->
+                        <a class="section-pager-item-text" href="NotificacionesServlet?p=<%=p+1%>">0<%=p+1%></a>
+                        <!-- /SECTION PAGER ITEM TEXT -->
+                    </div>
+
+                <%} else {%>
+
+                        <div class="section-pager-item active">
+                            <!-- SECTION PAGER ITEM TEXT -->
+                            <a class="section-pager-item-text" href="NotificacionesServlet&p=<%=p+1%>"><%=p+1%></a>
+                            <!-- /SECTION PAGER ITEM TEXT -->
+                        </div>
+                <%}%>
                 <!-- /SECTION PAGER ITEM -->
-
-                <!-- SECTION PAGER ITEM -->
-                <div class="section-pager-item">
-                    <!-- SECTION PAGER ITEM TEXT -->
-                    <p class="section-pager-item-text">02</p>
-                    <!-- /SECTION PAGER ITEM TEXT -->
-                </div>
-                <!-- /SECTION PAGER ITEM -->
-
-                <!-- SECTION PAGER ITEM -->
-                <div class="section-pager-item">
-                    <!-- SECTION PAGER ITEM TEXT -->
-                    <p class="section-pager-item-text">03</p>
-                    <!-- /SECTION PAGER ITEM TEXT -->
-                </div>
-                <!-- /SECTION PAGER ITEM -->
-
-                <!-- SECTION PAGER ITEM -->
-                <div class="section-pager-item">
-                    <!-- SECTION PAGER ITEM TEXT -->
-                    <p class="section-pager-item-text">04</p>
-                    <!-- /SECTION PAGER ITEM TEXT -->
-                </div>
-                <!-- /SECTION PAGER ITEM -->
-
-                <!-- SECTION PAGER ITEM -->
-                <div class="section-pager-item">
-                    <!-- SECTION PAGER ITEM TEXT -->
-                    <p class="section-pager-item-text">05</p>
-                    <!-- /SECTION PAGER ITEM TEXT -->
-                </div>
-                <!-- /SECTION PAGER ITEM -->
-
-                <!-- SECTION PAGER ITEM -->
-                <div class="section-pager-item">
-                    <!-- SECTION PAGER ITEM TEXT -->
-                    <p class="section-pager-item-text">06</p>
-                    <!-- /SECTION PAGER ITEM TEXT -->
-                </div>
+                <%}%>
                 <!-- /SECTION PAGER ITEM -->
             </div>
             <!-- /SECTION PAGER -->
@@ -1928,7 +1908,7 @@
         <!-- /SECTION PAGER BAR -->
 
         <!-- SECTION RESULTS TEXT -->
-        <p class="section-results-text">Mostrando 6 de 38 solicitudes</p>
+        <p class="section-results-text">Mostrando <%=contador%> de <%=(int)request.getAttribute("cantidadTotalSolicitudes")%> solicitudes</p>
         <!-- /SECTION RESULTS TEXT -->
     </div>
 
@@ -2239,6 +2219,9 @@
                 <!-- SECTION PAGER -->
                 <div class="section-pager">
                     <!-- SECTION PAGER ITEM -->
+
+                    <% // for(int p=0;p<cantidadTotalPageDonaciones; p++){%>
+
                     <div class="section-pager-item active">
                         <!-- SECTION PAGER ITEM TEXT -->
                         <p class="section-pager-item-text">01</p>
@@ -2246,44 +2229,7 @@
                     </div>
                     <!-- /SECTION PAGER ITEM -->
 
-                    <!-- SECTION PAGER ITEM -->
-                    <div class="section-pager-item">
-                        <!-- SECTION PAGER ITEM TEXT -->
-                        <p class="section-pager-item-text">02</p>
-                        <!-- /SECTION PAGER ITEM TEXT -->
-                    </div>
-                    <!-- /SECTION PAGER ITEM -->
-
-                    <!-- SECTION PAGER ITEM -->
-                    <div class="section-pager-item">
-                        <!-- SECTION PAGER ITEM TEXT -->
-                        <p class="section-pager-item-text">03</p>
-                        <!-- /SECTION PAGER ITEM TEXT -->
-                    </div>
-                    <!-- /SECTION PAGER ITEM -->
-
-                    <!-- SECTION PAGER ITEM -->
-                    <div class="section-pager-item">
-                        <!-- SECTION PAGER ITEM TEXT -->
-                        <p class="section-pager-item-text">04</p>
-                        <!-- /SECTION PAGER ITEM TEXT -->
-                    </div>
-                    <!-- /SECTION PAGER ITEM -->
-
-                    <!-- SECTION PAGER ITEM -->
-                    <div class="section-pager-item">
-                        <!-- SECTION PAGER ITEM TEXT -->
-                        <p class="section-pager-item-text">05</p>
-                        <!-- /SECTION PAGER ITEM TEXT -->
-                    </div>
-                    <!-- /SECTION PAGER ITEM -->
-
-                    <!-- SECTION PAGER ITEM -->
-                    <div class="section-pager-item">
-                        <!-- SECTION PAGER ITEM TEXT -->
-                        <p class="section-pager-item-text">06</p>
-                        <!-- /SECTION PAGER ITEM TEXT -->
-                    </div>
+                    <% // }%>
                     <!-- /SECTION PAGER ITEM -->
                 </div>
                 <!-- /SECTION PAGER -->
@@ -2843,15 +2789,8 @@
         </div>
     </div>
 </footer>
-<div class="popup" id="fondo">
-</div>
-<div class="popup" id="montoPopup"></div>
-<div class="popup-content" id="popupMonto">
-    <label for="nuevoMonto">Nuevo Monto: </label>
-    <input type="text" id="nuevoMonto">
-    <button id="guardarMonto">Guardar</button>
-    <button id="cerrarPopup">Cerrar</button>
-</div>
+
+
 <%for(int i=0;i<donacionList.size();i++){%>
 <div class="overlay" id="overlayPopupImagenDonacion<%=i%>"></div>
 <div class="popup" style="max-width: 30%" id="popupImagenDonacion<%=i%>">

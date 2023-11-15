@@ -32,28 +32,41 @@ public class NotificacionesServlet extends HttpServlet {
                 request.setAttribute("listaNotificacionesCampanita",new DaoNotificacionDelegadoGeneral().listarNotificacionesDelegadoGeneral());
             }
             String action = request.getParameter("action") == null ? "default" : request.getParameter("action");
+            String buscar="";
+            String fecha1="";
+            String fecha2="";
+            String page="";
+            String pageD="";
+            String pageV="";
+            int pagina=0;
+            int paginaD=0;
+            int paginaV=0;
             switch (action){
                 case "default":
                     if (usuario.getRol().equals("Delegado General")){
-
                         String vistaActualNueva = request.getParameter("vistaActualNueva");
                         request.setAttribute("vistaActualNueva",vistaActualNueva);
                         //saca del modelo
-                        String page = request.getParameter("p")==null? "1" : request.getParameter("p");
-                        int pagina = Integer.parseInt(page);
+                        page = request.getParameter("p")==null? "1" : request.getParameter("p");
+                        pagina = Integer.parseInt(page);
+                        pageD = request.getParameter("pd") == null ? "1" : request.getParameter("pd");
+                        paginaD = Integer.parseInt(pageD);
+                        pageV = request.getParameter("pv")==null? "1" : request.getParameter("pv");
+                        paginaV = Integer.parseInt(pageV);
                         ArrayList<Usuario> listaSolicitudes = daoNotificacionDelegadoGeneral.listarSolicitudesRegistroPorPage(pagina-1);
                         ArrayList<Reporte> reportList = daoNotificacionDelegadoGeneral.listarNotificacionesReporte();
-                        ArrayList<Donacion> donacionList = daoNotificacionDelegadoGeneral.listarNotificacionesDonaciones();
-                        ArrayList<Validacion> recuperacionList = daoNotificacionDelegadoGeneral.listarNotificacionesRecuperacion();
+                        ArrayList<Donacion> donacionList = daoNotificacionDelegadoGeneral.listarNotificacionesDonaciones(paginaD-1);
+                        ArrayList<Validacion> recuperacionList = daoNotificacionDelegadoGeneral.listarNotificacionesRecuperacion(paginaV-1);
                         //mandar la lista a la vista
                         request.setAttribute("pagActual", Integer.parseInt(page));
+                        request.setAttribute("pagActualD",Integer.parseInt(pageD));
                         request.setAttribute("listaSolicitudes",listaSolicitudes);
                         request.setAttribute("cantidadTotalSolicitudes", daoNotificacionDelegadoGeneral.listarSolicitudesDeRegistro().size());
                         request.setAttribute("reportList", reportList);
                         request.setAttribute("donacionList",donacionList);
                         request.setAttribute("cantidadTotalDonaciones",daoNotificacionDelegadoGeneral.listarNotificacionesDonaciones().size());
+                        request.setAttribute("cantidadTotalValidaciones",daoNotificacionDelegadoGeneral.listarNotificacionesRecuperacion().size());
                         request.setAttribute("recuperacionList",recuperacionList);
-                        request.setAttribute("cantidadTotalRecuperacion",daoNotificacionDelegadoGeneral.listarNotificacionesRecuperacion().size());
                         request.getRequestDispatcher("notificacionesDelGeneral.jsp").forward(request,response);
 
                     }else if (usuario.getRol().equals("Delegado de Actividad")){
@@ -69,17 +82,20 @@ public class NotificacionesServlet extends HttpServlet {
                 case "buscarUsuario":
                     request.setAttribute("vistaActualNueva","Solicitudes");
                     if (usuario.getRol().equals("Delegado General")){
-                        String page = request.getParameter("p")==null? "1" : request.getParameter("p");
-                        int pagina = Integer.parseInt(page);
+                        page = request.getParameter("p")==null? "1" : request.getParameter("p");
+                        pagina = Integer.parseInt(page);
+                        pageD = request.getParameter("pd") == null ? "1" : request.getParameter("pd");
+                        paginaD = Integer.parseInt(pageD);
                         String busquedaSolicitudes=request.getParameter("busquedaSolicitudes");
                         ArrayList<Usuario> listaSolicitudes = daoNotificacionDelegadoGeneral.listarSolicitudesDeRegistro(busquedaSolicitudes,pagina-1);
                         ArrayList<Reporte> reportList = daoNotificacionDelegadoGeneral.listarNotificacionesReporte();
-                        ArrayList<Donacion> donacionList = daoNotificacionDelegadoGeneral.listarNotificacionesDonaciones();
+                        ArrayList<Donacion> donacionList = daoNotificacionDelegadoGeneral.listarNotificacionesDonaciones(paginaD-1);
                         ArrayList<Validacion> recuperacionList = daoNotificacionDelegadoGeneral.listarNotificacionesRecuperacion();
 
                         request.setAttribute("cantidadTotalSolicitudes", daoNotificacionDelegadoGeneral.listarSolicitudesDeRegistro(busquedaSolicitudes).size());
                         request.setAttribute("action", action);
                         request.setAttribute("pagActual", Integer.parseInt(page));
+                        request.setAttribute("pagActualD",Integer.parseInt(pageD));
                         request.setAttribute("busquedaSolicitudes",busquedaSolicitudes);
                         request.setAttribute("listaSolicitudes",listaSolicitudes);
                         request.setAttribute("reportList", reportList);
@@ -99,35 +115,52 @@ public class NotificacionesServlet extends HttpServlet {
                     break;
                 case "buscarDonaciones":
                     request.setAttribute("vistaActualNueva","Donaciones");
-                    String buscar=request.getParameter("buscar");
-                    String page = request.getParameter("p")==null? "1" : request.getParameter("p");
-                    int pagina = Integer.parseInt(page);
+                    buscar = request.getParameter("buscar");
+                    fecha1 = request.getParameter("fecha1").isEmpty() ? "0001/01/01" : request.getParameter("fecha1");
+                    fecha2 = request.getParameter("fecha2").isEmpty() ? "4000/12/31" : request.getParameter("fecha2");
+                    page = request.getParameter("p")==null? "1" : request.getParameter("p");
+                    pagina = Integer.parseInt(page);
+                    pageD = request.getParameter("pd") == null ? "1" : request.getParameter("pd");
+                    paginaD = Integer.parseInt(pageD);
                     ArrayList<Usuario> listaSolicitudes = daoNotificacionDelegadoGeneral.listarSolicitudesRegistroPorPage(pagina-1);
                     ArrayList<Reporte> reportList = daoNotificacionDelegadoGeneral.listarNotificacionesReporte();
-                    ArrayList<Donacion> donacionList = daoNotificacionDelegadoGeneral.listarNotificacionesDonaciones(buscar);
                     ArrayList<Validacion> recuperacionList = daoNotificacionDelegadoGeneral.listarNotificacionesRecuperacion();
                     request.setAttribute("buscar",buscar);
+                    request.setAttribute("fecha1",fecha1);
+                    request.setAttribute("fecha2",fecha2);
+                    request.setAttribute("pagActual", Integer.parseInt(page));
+                    request.setAttribute("pagActualD",Integer.parseInt(pageD));
                     request.setAttribute("cantidadTotalSolicitudes", daoNotificacionDelegadoGeneral.listarSolicitudesDeRegistro().size());
                     request.setAttribute("action", action);
                     request.setAttribute("listaSolicitudes",listaSolicitudes);
+                    request.setAttribute("cantidadTotalDonaciones",daoNotificacionDelegadoGeneral.listarNotificacionesDonaciones(buscar).size());
                     request.setAttribute("reportList", reportList);
-                    request.setAttribute("donacionList",donacionList);
+                    request.setAttribute("donacionList",daoNotificacionDelegadoGeneral.juntarListas(daoNotificacionDelegadoGeneral.listarNotificacionesDonaciones(buscar,paginaD-1),daoNotificacionDelegadoGeneral.listarNotificacionesDonaciones(fecha1,fecha2,paginaD-1)));
                     request.setAttribute("recuperacionList",recuperacionList);
                     request.getRequestDispatcher("notificacionesDelGeneral.jsp").forward(request,response);
                     break;
                 case "filtrarDonaciones":
                     request.setAttribute("vistaActualNueva","Donaciones");
-                    String fecha1=request.getParameter("fecha1");
-                    String fecha2=request.getParameter("fecha2");
-                    ArrayList<Usuario> listaSolicitudes1 = daoNotificacionDelegadoGeneral.listarSolicitudesDeRegistro();
+                    buscar = request.getParameter("buscar");
+                    fecha1=request.getParameter("fecha1");
+                    fecha2=request.getParameter("fecha2");
+                    page = request.getParameter("p")==null? "1" : request.getParameter("p");
+                    pagina = Integer.parseInt(page);
+                    pageD = request.getParameter("pd") == null ? "1" : request.getParameter("pd");
+                    paginaD = Integer.parseInt(pageD);
+                    ArrayList<Usuario> listaSolicitudes1 = daoNotificacionDelegadoGeneral.listarSolicitudesRegistroPorPage(pagina-1);
                     ArrayList<Reporte> reportList1 = daoNotificacionDelegadoGeneral.listarNotificacionesReporte();
-                    ArrayList<Donacion> donacionList1 = daoNotificacionDelegadoGeneral.listarNotificacionesDonaciones(fecha1,fecha2);
                     ArrayList<Validacion> recuperacionList1 = daoNotificacionDelegadoGeneral.listarNotificacionesRecuperacion();
                     request.setAttribute("fecha1",fecha1);
+                    request.setAttribute("action", action);
+                    request.setAttribute("cantidadTotalSolicitudes", daoNotificacionDelegadoGeneral.listarSolicitudesDeRegistro().size());
                     request.setAttribute("fecha2",fecha2);
+                    request.setAttribute("buscar",buscar);
+                    request.setAttribute("pagActual", Integer.parseInt(page));
+                    request.setAttribute("pagActualD",Integer.parseInt(pageD));
                     request.setAttribute("listaSolicitudes",listaSolicitudes1);
                     request.setAttribute("reportList", reportList1);
-                    request.setAttribute("donacionList",donacionList1);
+                    request.setAttribute("donacionList",daoNotificacionDelegadoGeneral.juntarListas(daoNotificacionDelegadoGeneral.listarNotificacionesDonaciones(buscar,paginaD-1),daoNotificacionDelegadoGeneral.listarNotificacionesDonaciones(fecha1,fecha2,paginaD-1)));
                     request.setAttribute("recuperacionList",recuperacionList1);
                     request.getRequestDispatcher("notificacionesDelGeneral.jsp").forward(request,response);
                     break;

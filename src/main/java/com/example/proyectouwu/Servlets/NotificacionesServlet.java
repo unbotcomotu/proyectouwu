@@ -39,15 +39,21 @@ public class NotificacionesServlet extends HttpServlet {
                         String vistaActualNueva = request.getParameter("vistaActualNueva");
                         request.setAttribute("vistaActualNueva",vistaActualNueva);
                         //saca del modelo
-                        ArrayList<Usuario> listaSolicitudes = daoNotificacionDelegadoGeneral.listarSolicitudesDeRegistro();
+                        String page = request.getParameter("p")==null? "1" : request.getParameter("p");
+
+                        int pagina = Integer.parseInt(page);
+                        ArrayList<Usuario> listaSolicitudes = daoNotificacionDelegadoGeneral.listarSolicitudesRegistroPorPage(pagina-1);
                         ArrayList<Reporte> reportList = daoNotificacionDelegadoGeneral.listarNotificacionesReporte();
                         ArrayList<Donacion> donacionList = daoNotificacionDelegadoGeneral.listarNotificacionesDonaciones();
                         ArrayList<Validacion> recuperacionList = daoNotificacionDelegadoGeneral.listarNotificacionesRecuperacion();
                         //mandar la lista a la vista
                         request.setAttribute("listaSolicitudes",listaSolicitudes);
+                        request.setAttribute("cantidadTotalSolicitudes", daoNotificacionDelegadoGeneral.listarSolicitudesDeRegistro().size());
                         request.setAttribute("reportList", reportList);
                         request.setAttribute("donacionList",donacionList);
+                        request.setAttribute("cantidadTotalDonaciones",daoNotificacionDelegadoGeneral.listarNotificacionesDonaciones().size());
                         request.setAttribute("recuperacionList",recuperacionList);
+                        request.setAttribute("cantidadTotalRecuperacion",daoNotificacionDelegadoGeneral.listarNotificacionesRecuperacion().size());
                         request.getRequestDispatcher("notificacionesDelGeneral.jsp").forward(request,response);
 
                     }else if (usuario.getRol().equals("Delegado de Actividad")){

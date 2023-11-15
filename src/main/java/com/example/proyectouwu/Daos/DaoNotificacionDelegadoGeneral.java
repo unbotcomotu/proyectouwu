@@ -67,7 +67,7 @@ public class DaoNotificacionDelegadoGeneral extends DaoPadre {
 
     public ArrayList<Usuario> listarSolicitudesRegistroPorPage(int pagina){
         ArrayList<Usuario> listaSolicitudesPage = new ArrayList<>();
-        String sql = "select nombre, apellido, correo ,codigoPUCP, condicion,  from usuario where estadoRegistro='Pendiente'  limit 8 offset ?";
+        String sql = "select nombre, apellido, correo ,codigoPUCP, condicion from usuario where estadoRegistro='Pendiente'  limit 8 offset ?";
         try(Connection conn=this.getConnection();
             PreparedStatement pstmt = conn.prepareStatement(sql)){
             pstmt.setInt(1,pagina*8);

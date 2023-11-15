@@ -480,10 +480,11 @@
   }
 }
 
+
 /*--------------------
-    MEDIA QUERIES 
+    MEDIA QUERIES
 --------------------*/
-@media screen and (max-width: 1500px) {
+@media screen and (max-width: 1900px) {
   .section-filters-bar {
     &.v4 {
       .form-item {
@@ -496,6 +497,15 @@
         }
       }
     }
+    .section-banner .section-banner-icon {
+      width: 180px;
+      height: 160px;
+    }
+  }
+
+  .section-banner .section-banner-icon {
+    width: 98px;
+    height: 160px;
   }
 }
 
@@ -587,6 +597,11 @@
         }
       }
     }
+  }
+
+  .section-banner .section-banner-icon {
+    width: 98px;
+    height: 180px;
   }
 
   .section-results-text {
@@ -693,15 +708,15 @@
                 .form-input-decorated {
                   width: 100%;
                 }
-  
+
                 .form-input {
                   width: 100%;
-  
+
                   input {
                     padding-right: 0;
                   }
                 }
-  
+
                 .button {
                   width: 180px;
                   margin: 0 auto 16px;
@@ -791,16 +806,16 @@
     height: 86px;
     min-height: auto;
     padding: 18px 28px 0 108px;
-  
+
     .section-banner-icon {
       width: 92px;
       height: 86px;
     }
-  
+
     .section-banner-title {
       font-size: $fs-24;
     }
-  
+
     .section-banner-text {
       margin-top: 6px;
       font-size: $fs-12;

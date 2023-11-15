@@ -1700,7 +1700,9 @@
     <!-- SECTION BANNER -->
     <div class="section-banner">
         <!-- SECTION BANNER ICON -->
-        <img class="section-banner-icon" src="css/telitoVoley.png" alt="marketplace-icon">
+        <%DaoActividad daoActividad = new DaoActividad();%>
+        <%request.getSession().setAttribute("fotoActividadCabecera"+idActividad,daoActividad.obtenerFotoCabeceraXIdActividad(idActividad));%>
+        <img class="section-banner-icon" src="Imagen?tipoDeFoto=fotoActividadCabecera&id=ActividadCabecera<%=idActividad%>" alt="Foto Cabecera">
         <!-- /SECTION BANNER ICON -->
 
         <!-- SECTION BANNER TITLE -->

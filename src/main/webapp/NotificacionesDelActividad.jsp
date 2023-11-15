@@ -156,7 +156,8 @@
         <!-- USER AVATAR CONTENT -->
         <div class="user-avatar-content">
             <!-- HEXAGON -->
-            <div class="hexagon-image-30-32" data-src="css/fotoMichi.png"></div>
+            <%request.getSession().setAttribute("fotoPersonal0",usuarioActual.getFotoPerfil());%>
+            <div class="hexagon-image-30-32" data-src="Imagen?tipoDeFoto=fotoPerfil&id=Personal0"></div>
             <!-- /HEXAGON -->
         </div>
         <!-- /USER AVATAR CONTENT -->
@@ -273,7 +274,8 @@
             <!-- USER AVATAR CONTENT -->
             <div class="user-avatar-content">
                 <!-- HEXAGON -->
-                <div class="hexagon-image-82-90" data-src="css/fotoMichi.png"></div>
+                <%request.getSession().setAttribute("fotoPersonal1",usuarioActual.getFotoPerfil());%>
+                <div class="hexagon-image-82-90" data-src="Imagen?tipoDeFoto=fotoPerfil&id=Personal1"></div>
                 <!-- /HEXAGON -->
             </div>
             <!-- /USER AVATAR CONTENT -->
@@ -414,7 +416,8 @@
                 <!-- USER AVATAR CONTENT -->
                 <div class="user-avatar-content">
                     <!-- HEXAGON -->
-                    <div class="hexagon-image-30-32" data-src="css/fotoMichi.png"></div>
+                    <%request.getSession().setAttribute("fotoPersonal2",usuarioActual.getFotoPerfil());%>
+                    <div class="hexagon-image-30-32" data-src="Imagen?tipoDeFoto=fotoPerfil&id=Personal2"></div>
                     <!-- /HEXAGON -->
                 </div>
                 <!-- /USER AVATAR CONTENT -->
@@ -457,6 +460,7 @@
             <!-- /NAVIGATION WIDGET INFO TEXT -->
         </div>
         <!-- /NAVIGATION WIDGET INFO -->
+
         <form method="post" action="InicioSesionServlet?action=logOut">
             <button style="border:0;background: none;color: inherit" type="submit"><a><p class="navigation-widget-info-button button small secondary">Cerrar sesión</p></a></button>
         </form>

@@ -8,6 +8,7 @@ public class Validacion {
     private String correo;
     private String tipo;
     private int codigoValidacion;
+    private String codigoValidacion256;
     private Date  fechaHora;
     private boolean  linkEnviado;
     //METODOS OTROS
@@ -54,6 +55,14 @@ public class Validacion {
 
     public void setCodigoValidacion(int codigoValidacion) {
         this.codigoValidacion = codigoValidacion;
+    }
+
+    public String getCodigoValidacion256() {
+        return codigoValidacion256;
+    }
+
+    public void setCodigoValidacion256(String codigoValidacion256) {
+        this.codigoValidacion256 = codigoValidacion256;
     }
 
     public Date getFechaHora() {

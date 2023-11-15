@@ -9,7 +9,7 @@ import java.util.Date;
 
 public class DaoValidacion extends DaoPadre {
     public void agregarCorreoParaEnviarLink(String correo){
-        String sql = "insert into validacion( correo, tipo, codigoValidacion, fechaHora, linkEnviado) values (?,?,?,?,?);";
+        String sql = "insert into validacion( correo, tipo, codigoValidacion, fechaHora, linkEnviado,codigoValidacion256) values (?,?,?,?,?,sha2(?,256));";
         LocalDateTime fechaHoraActual = LocalDateTime.now();
         // Define el formato deseado
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
@@ -18,9 +18,11 @@ public class DaoValidacion extends DaoPadre {
         try (Connection conn=this.getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql,Statement.RETURN_GENERATED_KEYS)) {
             pstmt.setString(1,correo);
             pstmt.setString(2,"enviarLinkACorreo");
-            pstmt.setInt(3,new Random().nextInt(99999));
+            int numero=new Random().nextInt(99999);
+            pstmt.setInt(3,numero);
             pstmt.setString(4,dateStr);
             pstmt.setBoolean(5,false);
+            pstmt.setInt(6,numero);
             pstmt.executeUpdate();
             ResultSet rskeys=pstmt.getGeneratedKeys();
             if(rskeys.next()){
@@ -33,7 +35,7 @@ public class DaoValidacion extends DaoPadre {
 
     public void agregarCorreoParaRecuperarContrasena(String correo){
 
-            String sql = "insert into validacion( correo, tipo, codigoValidacion, fechaHora, linkEnviado, idUsuario) values (?,?,?,?,?,?);";
+            String sql = "insert into validacion( correo, tipo, codigoValidacion, fechaHora, linkEnviado, idUsuario,codigoValidacion256) values (?,?,?,?,?,?,sha2(?,256));";
 
             LocalDateTime fechaHoraActual = LocalDateTime.now();
             // Define el formato deseado
@@ -43,10 +45,12 @@ public class DaoValidacion extends DaoPadre {
             try (Connection conn=this.getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql,Statement.RETURN_GENERATED_KEYS)) {
                 pstmt.setString(1, correo);
                 pstmt.setString(2, "recuperarContrasena");
-                pstmt.setInt(3, new Random().nextInt(99999));
+                int numero=new Random().nextInt(99999);
+                pstmt.setInt(3, numero);
                 pstmt.setString(4, dateStr);
                 pstmt.setBoolean(5, false);
                 pstmt.setInt(6, new DaoUsuario().obtenerIdPorCorreo(correo));
+                pstmt.setInt(7,numero);
                 pstmt.executeUpdate();
                 ResultSet rskeys=pstmt.getGeneratedKeys();
                 if(rskeys.next()){
@@ -102,6 +106,21 @@ public class DaoValidacion extends DaoPadre {
             throw new RuntimeException(e);
         }
         return 0;
+    }
+    public String codigoValidacion256PorID(int idCorreoValidacion){
+        String sql = "select codigoValidacion256  from validacion where idCorreoValidacion = ?";
+        try (Connection conn=this.getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setInt(1, idCorreoValidacion);
+            try(ResultSet rs = pstmt.executeQuery()){
+                if(rs.next()){
+                    return rs.getString(1);
+                }else{
+                    return null;
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public String tipoValidacionPorID(int idCorreoValidacion){
@@ -165,6 +184,22 @@ public class DaoValidacion extends DaoPadre {
         try (Connection conn=this.getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setInt(1,idCorreoValidacion);
             pstmt.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public Blob getFotoPerfilPorIDCorreoValidacion(int idCorreoValidacion){
+        String sql = "select u.fotoPerfil from usuario u inner join validacion v on u.idUsuario = v.idUsuario where v.idCorreoValidacion=?";
+        try(Connection conn=this.getConnection(); PreparedStatement pstmt=conn.prepareStatement(sql)){
+            pstmt.setInt(1,idCorreoValidacion);
+            try(ResultSet rs = pstmt.executeQuery()){
+                if(rs.next()){
+                    return rs.getBlob(1);
+                }else{
+                    return null;
+                }
+            }
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

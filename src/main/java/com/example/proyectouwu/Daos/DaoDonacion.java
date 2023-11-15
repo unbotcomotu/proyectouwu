@@ -335,4 +335,20 @@ public class DaoDonacion extends DaoPadre  {
             throw new RuntimeException(e);
         }
     }
+
+    public Blob getFotoPerfilPorIDDonacion(int idDonacion){
+        String sql = "select u.fotoPerfil from usuario u inner join donacion d on u.idUsuario = d.idUsuario where d.idDonacion=?";
+        try(Connection conn=this.getConnection(); PreparedStatement pstmt=conn.prepareStatement(sql)){
+            pstmt.setInt(1,idDonacion);
+            try(ResultSet rs = pstmt.executeQuery()){
+                if(rs.next()){
+                    return rs.getBlob(1);
+                }else{
+                    return null;
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }

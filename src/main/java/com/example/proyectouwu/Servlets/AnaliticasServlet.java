@@ -69,11 +69,16 @@ public class AnaliticasServlet extends HttpServlet {
         response.setContentType("text/html");
         String action = request.getParameter("action") == null ? "default" : request.getParameter("action");
         DaoNotificacionDelegadoGeneral dN=new DaoNotificacionDelegadoGeneral();
-        switch (action){
-            case "notificacionLeidaCampanita":
-                dN.notificacionLeida(Integer.parseInt(request.getParameter("idNotificacion")));
-                response.sendRedirect("AnaliticasServlet");
-                break;
+        Usuario usuario=(Usuario) request.getSession().getAttribute("usuario");
+        if(usuario==null){
+            response.sendRedirect("InicioSesionServlet");
+        }else {
+            switch (action){
+                case "notificacionLeidaCampanita":
+                    dN.notificacionLeida(Integer.parseInt(request.getParameter("idNotificacion")));
+                    response.sendRedirect("AnaliticasServlet");
+                    break;
+            }
         }
     }
 }

@@ -76,17 +76,22 @@ public class ListaDeUsuariosServlet extends HttpServlet {
         response.setContentType("text/html");
         DaoUsuario dUsuario=new DaoUsuario();
         DaoNotificacionDelegadoGeneral dN=new DaoNotificacionDelegadoGeneral();
-        String action = request.getParameter("action") == null ? "default" : request.getParameter("action");
-        switch(action){
-            case "banear":
-                int idUsuarioABanear =Integer.parseInt(request.getParameter("idUsuarioABanear"));
-                new DaoBan().banearPorId(idUsuarioABanear);
-                response.sendRedirect("ListaDeUsuariosServlet");
-                break;
-            case "notificacionLeidaCampanita":
-                dN.notificacionLeida(Integer.parseInt(request.getParameter("idNotificacion")));
-                response.sendRedirect("ListaDeUsuariosServlet");
-                break;
+        Usuario usuario=(Usuario) request.getSession().getAttribute("usuario");
+        if(usuario==null){
+            response.sendRedirect("InicioSesionServlet");
+        }else {
+            String action = request.getParameter("action") == null ? "default" : request.getParameter("action");
+            switch(action){
+                case "banear":
+                    int idUsuarioABanear =Integer.parseInt(request.getParameter("idUsuarioABanear"));
+                    new DaoBan().banearPorId(idUsuarioABanear);
+                    response.sendRedirect("ListaDeUsuariosServlet");
+                    break;
+                case "notificacionLeidaCampanita":
+                    dN.notificacionLeida(Integer.parseInt(request.getParameter("idNotificacion")));
+                    response.sendRedirect("ListaDeUsuariosServlet");
+                    break;
+            }
         }
     }
 }

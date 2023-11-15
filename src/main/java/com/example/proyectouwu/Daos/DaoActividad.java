@@ -42,7 +42,7 @@ public class DaoActividad extends DaoPadre {
     }
     public ArrayList<Actividad>listarActividades(){
         ArrayList<Actividad>listaActividades=new ArrayList<>();
-        String sql="select idActividad,idDelegadoDeActividad,nombre,fotoMiniatura,cantidadPuntosPrimerLugar,actividadFinalizada,actividadOculta from actividad";
+        String sql="select idActividad,idDelegadoDeActividad,nombre,fotoMiniatura,cantidadPuntosPrimerLugar,actividadFinalizada,actividadOculta,fotoCabecera from actividad";
         try(Connection conn=this.getConnection(); ResultSet rs=conn.createStatement().executeQuery(sql);){
             while (rs.next()){
                 Actividad a=new Actividad();
@@ -53,6 +53,7 @@ public class DaoActividad extends DaoPadre {
                 a.setCantPuntosPrimerLugar(rs.getInt(5));
                 a.setActividadFinalizada(rs.getBoolean(6));
                 a.setActividadOculta(rs.getBoolean(7));
+                a.setFotoCabecera(rs.getBlob(8));
                 listaActividades.add(a);
             }return listaActividades;
         } catch (SQLException e) {
@@ -336,7 +337,7 @@ public class DaoActividad extends DaoPadre {
             secFotoCab = ",fotoCabecera=?";
         }
         if(validarLongitudMin){
-            secFotoMin = ",fotoCabecera=?";
+            secFotoMin = ",fotoMiniatura=?";
         }
 
         String sql="update actividad set idDelegadoDeActividad=?,nombre=?"+secFotoMin+secFotoCab+",cantidadPuntosPrimerLugar=?,actividadOculta=? where idActividad=?";
@@ -364,6 +365,8 @@ public class DaoActividad extends DaoPadre {
                 pstmt.setBoolean(5,oculto);
                 pstmt.setInt(6,idActividad);
             }else{
+                pstmt.setInt(3,puntaje);
+                pstmt.setBoolean(4,oculto);
                 pstmt.setInt(5,idActividad);
             }
             pstmt.executeUpdate();

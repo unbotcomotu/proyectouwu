@@ -26,7 +26,19 @@ public class Imagen extends HttpServlet {
                 response.getOutputStream().write(0);
             }
         }else{
-            String rutaImagenPredeterminada = "/css/sin_foto_De_perfil.png";
+            String tipoDeFoto=request.getParameter("tipoDeFoto");
+            String rutaImagenPredeterminada="";
+            if(tipoDeFoto.equals("fotoPerfil")){
+                rutaImagenPredeterminada = "/css/iconoPerfil.png";
+            }else if(tipoDeFoto.equals("fotoActividadMiniatura")) {
+                rutaImagenPredeterminada = "/css/fotoVoleyActividades.png";
+            }else if(tipoDeFoto.equals("fotoActividadCabecera")){
+                rutaImagenPredeterminada = "/css/telitoVoley.png";
+            }else if(tipoDeFoto.equals("fotoCarrusel")){
+                rutaImagenPredeterminada = "/css/fotoYarleque.png";
+            }else{
+                rutaImagenPredeterminada = "/css/errorImagen.jpg";
+            }
             InputStream input = getServletContext().getResourceAsStream(rutaImagenPredeterminada);
             byte[] foto = new byte[input.available()];
             input.read(foto);

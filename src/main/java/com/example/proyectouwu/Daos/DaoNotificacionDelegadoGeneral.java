@@ -168,7 +168,7 @@ public class DaoNotificacionDelegadoGeneral extends DaoPadre {
 
     public ArrayList<Donacion> listarNotificacionesDonaciones(){
         ArrayList<Donacion> donacionList= new ArrayList<>();
-        String sql = "SELECT idDonacion, idUsuario, medioPago, monto,fechaHora,estadoDonacion FROM donacion order by if(estadoDonacion='Pendiente',0,1),fechaHora desc";
+        String sql = "SELECT idDonacion, idUsuario, medioPago, monto,fechaHora,estadoDonacion,captura FROM donacion order by if(estadoDonacion='Pendiente',0,1),fechaHora desc";
         try (Connection conn=this.getConnection(); ResultSet rs=conn.createStatement().executeQuery(sql)) {
 
             while (rs.next()) {
@@ -179,6 +179,7 @@ public class DaoNotificacionDelegadoGeneral extends DaoPadre {
                 donacion.setMonto(rs.getFloat(4));
                 donacion.setFecha(rs.getDate(5));
                 donacion.setEstadoDonacion(rs.getString(6));
+                donacion.setCaptura(rs.getBlob(7));
                 donacionList.add(donacion);
             }
 
@@ -385,7 +386,7 @@ public class DaoNotificacionDelegadoGeneral extends DaoPadre {
 
         ArrayList<Validacion> validacionList= new ArrayList<>();
 
-        String sql = "select correo,tipo,codigoValidacion,fechaHora,idCorreoValidacion,linkEnviado from validacion order by if(linkEnviado is false,0,1),idCorreoValidacion desc";
+        String sql = "select correo,tipo,codigoValidacion,fechaHora,idCorreoValidacion,linkEnviado,codigoValidacion256 from validacion order by if(linkEnviado is false,0,1),idCorreoValidacion desc";
         try (Connection conn=this.getConnection(); ResultSet rs=conn.createStatement().executeQuery(sql)) {
 
             while (rs.next()) {
@@ -397,6 +398,7 @@ public class DaoNotificacionDelegadoGeneral extends DaoPadre {
                 validacion.setFechaHora(rs.getDate(4));
                 validacion.setIdCorreoValidacion(rs.getInt(5));
                 validacion.setLinkEnviado(rs.getBoolean(6));
+                validacion.setCodigoValidacion256(rs.getString(7));
                 validacionList.add(validacion);
             }
 

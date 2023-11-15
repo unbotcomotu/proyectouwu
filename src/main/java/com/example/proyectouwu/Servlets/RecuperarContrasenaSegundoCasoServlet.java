@@ -18,15 +18,20 @@ public class RecuperarContrasenaSegundoCasoServlet extends HttpServlet {
         switch (action) {
             case "default":
 //                request.getRequestDispatcher("inicioSesion.jsp").forward(request,response);
-                Integer idCorreoValidacion = Integer.parseInt(request.getParameter("idCorreoValidacion"));
-                Integer codigoValidacion = Integer.parseInt(request.getParameter("codigoValidacion"));
-                //Nos aseguramos de que exista dicha persona y que su idCorreoValidacion le corresponda a su codigo de validacion
-                if(idCorreoValidacion == new DaoValidacion().getIdPorcodigoValidacion(codigoValidacion) ){
-                    request.setAttribute("idCorreoValidacion",idCorreoValidacion);
-                    RequestDispatcher rd = request.getRequestDispatcher("recuperarContrasenaPaso2.jsp");
-                    //Se manda a la vista con un parametro id que lo reconocerá más adelante
-                    rd.forward(request,response);
-                }//else { Mandar una vista q muestre error de autenticación}
+                String idCorreoValidacion = request.getParameter("idCorreoValidacion");
+                String codigoValidacion256 = request.getParameter("codigoValidacion256");
+                try{
+                    if(codigoValidacion256.equals(new DaoValidacion().codigoValidacion256PorID(Integer.parseInt(idCorreoValidacion)))){
+                        request.setAttribute("idCorreoValidacion",Integer.parseInt(idCorreoValidacion));
+                        RequestDispatcher rd = request.getRequestDispatcher("recuperarContrasenaPaso2.jsp");
+                        //Se manda a la vista con un parametro id que lo reconocerá más adelante
+                        rd.forward(request,response);
+                    }else{
+                        response.sendRedirect("InicioSesionServlet");
+                    }
+                }catch (NumberFormatException e){
+                    response.sendRedirect("InicioSesionServlet");
+                }
                 break;
         }
     }

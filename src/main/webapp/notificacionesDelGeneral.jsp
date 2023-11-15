@@ -181,7 +181,8 @@
         <!-- USER AVATAR CONTENT -->
         <div class="user-avatar-content">
             <!-- HEXAGON -->
-            <div class="hexagon-image-30-32" data-src="css/fotoMichi.png"></div>
+            <%request.getSession().setAttribute("fotoPersonal0",usuarioActual.getFotoPerfil());%>
+            <div class="hexagon-image-30-32" data-src="Imagen?tipoDeFoto=fotoPerfil&id=Personal0"></div>
             <!-- /HEXAGON -->
         </div>
         <!-- /USER AVATAR CONTENT -->
@@ -298,7 +299,8 @@
             <!-- USER AVATAR CONTENT -->
             <div class="user-avatar-content">
                 <!-- HEXAGON -->
-                <div class="hexagon-image-82-90" data-src="css/fotoMichi.png"></div>
+                <%request.getSession().setAttribute("fotoPersonal1",usuarioActual.getFotoPerfil());%>
+                <div class="hexagon-image-82-90" data-src="Imagen?tipoDeFoto=fotoPerfil&id=Personal1"></div>
                 <!-- /HEXAGON -->
             </div>
             <!-- /USER AVATAR CONTENT -->
@@ -439,7 +441,8 @@
                 <!-- USER AVATAR CONTENT -->
                 <div class="user-avatar-content">
                     <!-- HEXAGON -->
-                    <div class="hexagon-image-30-32" data-src="css/fotoMichi.png"></div>
+                    <%request.getSession().setAttribute("fotoPersonal2",usuarioActual.getFotoPerfil());%>
+                    <div class="hexagon-image-30-32" data-src="Imagen?tipoDeFoto=fotoPerfil&id=Personal2"></div>
                     <!-- /HEXAGON -->
                 </div>
                 <!-- /USER AVATAR CONTENT -->
@@ -483,11 +486,9 @@
         </div>
         <!-- /NAVIGATION WIDGET INFO -->
 
-        <!-- NAVIGATION WIDGET BUTTON -->
         <form method="post" action="InicioSesionServlet?action=logOut">
             <button style="border:0;background: none;color: inherit" type="submit"><a><p class="navigation-widget-info-button button small secondary">Cerrar sesión</p></a></button>
         </form>
-        <!-- /NAVIGATION WIDGET BUTTON -->
     </div>
     <!-- /NAVIGATION WIDGET INFO WRAP -->
 
@@ -904,7 +905,7 @@
                     <!-- DROPDOWN BOX LIST -->
                     <div class="dropdown-box-list" data-simplebar>
                         <%for(NotificacionDelegadoGeneral noti:listaNotificacionesCampanita){%>
-                        <form id="notificacionLeidaCampanita<%=listaNotificacionesCampanita.indexOf(noti)%>" method="post" action="?action=notificacionLeidaCampanita">
+                        <form id="notificacionLeidaCampanita<%=listaNotificacionesCampanita.indexOf(noti)%>" method="post" action="/<%=servletActual%>?action=notificacionLeidaCampanita">
                             <input type="hidden" name="idNotificacion" value="<%=noti.getIdNotificacion()%>">
                             <%if(noti.getReporte().getIdReporte()!=0){
                                 Reporte r=new DaoReporte().reportePorIdReporteNotificacion(noti.getReporte().getIdReporte());%>
@@ -918,8 +919,9 @@
                                         <div class="user-avatar small no-outline">
                                             <!-- USER AVATAR CONTENT -->
                                             <div class="user-avatar-content">
+                                                <%request.getSession().setAttribute("foto0"+listaNotificacionesCampanita.indexOf(noti),new DaoDonacion().getFotoPerfilPorIDDonacion(noti.getDonacion().getIdDonacion()));%>
                                                 <!-- HEXAGON AQUÍ FALTA LA FOTOOOO -->
-                                                <div class="hexagon-image-30-32" data-src="css/iconoPerfil.png"></div>
+                                                <div class="hexagon-image-30-32" data-src="Imagen?tipoDeFoto=fotoPerfil&id=0<%=listaNotificacionesCampanita.indexOf(noti)%>"></div>
                                                 <!-- /HEXAGON -->
                                             </div>
                                             <!-- /USER AVATAR CONTENT -->
@@ -1046,8 +1048,9 @@
                                         <div class="user-avatar small no-outline">
                                             <!-- USER AVATAR CONTENT -->
                                             <div class="user-avatar-content">
+                                                <%request.getSession().setAttribute("foto0"+listaNotificacionesCampanita.indexOf(noti),new DaoReporte().getFotoPerfilPorIDReporte(noti.getReporte().getIdReporte()));%>
                                                 <!-- HEXAGON AQUÍ FALTA LA FOTOOOO -->
-                                                <div class="hexagon-image-30-32" data-src="css/iconoPerfil.png"></div>
+                                                <div class="hexagon-image-30-32" data-src="Imagen?tipoDeFoto=fotoPerfil&id=0<%=listaNotificacionesCampanita.indexOf(noti)%>"></div>
                                                 <!-- /HEXAGON -->
                                             </div>
                                             <!-- /USER AVATAR CONTENT -->
@@ -1303,8 +1306,9 @@
                                         <div class="user-avatar small no-outline">
                                             <!-- USER AVATAR CONTENT -->
                                             <div class="user-avatar-content">
-                                                <!-- HEXAGON AQUÍ ESTA FOTO SE CAMBIAAA -->
-                                                <div class="hexagon-image-30-32" data-src="css/iconoPerfil.png"></div>
+                                                <%request.getSession().setAttribute("foto0"+listaNotificacionesCampanita.indexOf(noti),new DaoValidacion().getFotoPerfilPorIDCorreoValidacion(noti.getValidacion().getIdCorreoValidacion()));%>
+                                                <!-- HEXAGON AQUÍ FALTA LA FOTOOOO -->
+                                                <div class="hexagon-image-30-32" data-src="Imagen?tipoDeFoto=fotoPerfil&id=0<%=listaNotificacionesCampanita.indexOf(noti)%>"></div>
                                                 <!-- /HEXAGON -->
                                             </div>
                                             <!-- /USER AVATAR CONTENT -->
@@ -1431,7 +1435,7 @@
                                         <div class="user-avatar small no-outline">
                                             <!-- USER AVATAR CONTENT -->
                                             <div class="user-avatar-content">
-                                                <!-- HEXAGON AQUÍ ESTA FOTO SE CAMBIAAA -->
+                                                <!-- HEXAGON AQUÍ ESTA FOTO ES ESTÁTICA -->
                                                 <div class="hexagon-image-30-32" data-src="css/iconoPerfil.png"></div>
                                                 <!-- /HEXAGON -->
                                             </div>
@@ -1533,7 +1537,7 @@
                                     <%}%>
                                     <%}else if(diferenciaFechas[5]==0){%>
                                     <!-- USER STATUS TIMESTAMP -->
-                                    <p class="user-status-timestamp">Ahora mismo <a style="color: #20c997;cursor: pointer" onclick="enviarFormulario<%=listaNotificacionesCampanita.indexOf(noti)%>('notificacionLeidaCampanita<%=listaNotificacionesCampanita.indexOf(noti)%>')">Leído</a></p>
+                                    <p class="user-status-timestamp">Ahora mismo <a style="color: #20c997;cursor: pointer" onclick="enviarFormulario('notificacionLeidaCampanita<%=listaNotificacionesCampanita.indexOf(noti)%>')">Leído</a></p>
                                     <!-- /USER STATUS TIMESTAMP -->
                                     <%}%>
                                     <!-- USER STATUS ICON -->
@@ -2562,12 +2566,11 @@
                             <!-- TABLE TITLE -->
                             <%String link = "mips";%>
                             <%if(validacion.getTipo().equals("enviarLinkACorreo")) {
-                                link = "http://localhost:8080/proyectouwu_war_exploded/RegistroServlet?idCorreoValidacion=" + validacion.getIdCorreoValidacion() + "&codigoValidacion=" + validacion.getCodigoValidacion();
-                            }else if(validacion.getTipo().equals("recuperarContrasena")){link = "http://localhost:8080/proyectouwu_war_exploded/RecuperarContrasenaSegundoCasoServlet?idCorreoValidacion="+validacion.getIdCorreoValidacion()+"&codigoValidacion="+validacion.getCodigoValidacion();}%>
+                                link = "http://localhost:8080/proyectouwu_war_exploded/RegistroServlet?idCorreoValidacion=" + validacion.getIdCorreoValidacion() + "&codigoValidacion256=" + validacion.getCodigoValidacion256();
+                            }else if(validacion.getTipo().equals("recuperarContrasena")){link = "http://localhost:8080/proyectouwu_war_exploded/RecuperarContrasenaSegundoCasoServlet?idCorreoValidacion="+validacion.getIdCorreoValidacion()+"&codigoValidacion256="+validacion.getCodigoValidacion256();}%>
                             <p class="table-title"><a href="<%=link%>">Link</a></p>
                             <!-- /TABLE TITLE -->
                         </div>
-
                         <div class="table-column centered padded">
                             <!-- TABLE TITLE -->
                             <%if(validacion.getTipo().equals("enviarLinkACorreo")){%>
@@ -2677,8 +2680,9 @@
         <path d="M11.4142 10L16.7071 4.70711C17.0976 4.31658 17.0976 3.68342 16.7071 3.29289C16.3166 2.90237 15.6834 2.90237 15.2929 3.29289L10 8.58579L4.70711 3.29289C4.31658 2.90237 3.68342 2.90237 3.29289 3.29289C2.90237 3.68342 2.90237 4.31658 3.29289 4.70711L8.58579 10L3.29289 15.2929C2.90237 15.6834 2.90237 16.3166 3.29289 16.7071C3.68342 17.0976 4.31658 17.0976 4.70711 16.7071L10 11.4142L15.2929 16.7071C15.6834 17.0976 16.3166 17.0976 16.7071 16.7071C17.0976 16.3166 17.0976 15.6834 16.7071 15.2929L11.4142 10Z" fill="black"/>
     </svg>
     <div class="row">
+        <%request.getSession().setAttribute("fotoDonacion"+i,donacionList.get(i).getCaptura());%>
         <div class="container-fluid">
-            <img src="css/yape.jpeg" class="img-fluid">
+            <img src="Imagen?tipoDeFoto=fotoDonacion&id=Donacion<%=i%>" class="img-fluid">
         </div>
     </div>
 </div>

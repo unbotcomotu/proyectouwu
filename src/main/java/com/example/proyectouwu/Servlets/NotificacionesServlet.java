@@ -188,90 +188,95 @@ public class NotificacionesServlet extends HttpServlet {
         DaoDonacion daoDonacion = new DaoDonacion();
         DaoNotificacionDelegadoGeneral dN=new DaoNotificacionDelegadoGeneral();
         String action = request.getParameter("action") == null ? "default" : request.getParameter("action");
-        switch (action){
-            case "edit":
-                String donacionId = request.getParameter("idDonacion");
-                String montoDonacion = request.getParameter("montoDonacion");
-                String estadoDonacion = request.getParameter("estadoDonacion");
-                try{
-                    int donacionId_int = Integer.parseInt(donacionId);
-                    float monto = Float.parseFloat(montoDonacion);
-                    DaoNotificacionDelegadoGeneral daoNotificacionDelegadoGeneral = new DaoNotificacionDelegadoGeneral();
-                    ArrayList<Usuario> listaSolicitudes = daoNotificacionDelegadoGeneral.listarSolicitudesDeRegistro();
-                    ArrayList<Reporte> reportList = daoNotificacionDelegadoGeneral.listarNotificacionesReporte();
-                    ArrayList<Donacion> donacionList = daoNotificacionDelegadoGeneral.listarNotificacionesDonaciones();
-                    ArrayList<Validacion> recuperacionList = daoNotificacionDelegadoGeneral.listarNotificacionesRecuperacion();
+        Usuario usuario=(Usuario) request.getSession().getAttribute("usuario");
+        if(usuario==null){
+            response.sendRedirect("InicioSesionServlet");
+        }else {
+            switch (action){
+                case "edit":
+                    String donacionId = request.getParameter("idDonacion");
+                    String montoDonacion = request.getParameter("montoDonacion");
+                    String estadoDonacion = request.getParameter("estadoDonacion");
+                    try{
+                        int donacionId_int = Integer.parseInt(donacionId);
+                        float monto = Float.parseFloat(montoDonacion);
+                        DaoNotificacionDelegadoGeneral daoNotificacionDelegadoGeneral = new DaoNotificacionDelegadoGeneral();
+                        ArrayList<Usuario> listaSolicitudes = daoNotificacionDelegadoGeneral.listarSolicitudesDeRegistro();
+                        ArrayList<Reporte> reportList = daoNotificacionDelegadoGeneral.listarNotificacionesReporte();
+                        ArrayList<Donacion> donacionList = daoNotificacionDelegadoGeneral.listarNotificacionesDonaciones();
+                        ArrayList<Validacion> recuperacionList = daoNotificacionDelegadoGeneral.listarNotificacionesRecuperacion();
 
-                    request.setAttribute("listaSolicitudes",listaSolicitudes);
-                    request.setAttribute("reportList", reportList);
-                    request.setAttribute("donacionList",donacionList);
-                    request.setAttribute("recuperacionList",recuperacionList);
+                        request.setAttribute("listaSolicitudes",listaSolicitudes);
+                        request.setAttribute("reportList", reportList);
+                        request.setAttribute("donacionList",donacionList);
+                        request.setAttribute("recuperacionList",recuperacionList);
 
-                    Donacion donacion = new Donacion();
-                    donacion.setIdDonacion(donacionId_int);
-                    donacion.setMonto(monto);
-                    donacion.setEstadoDonacion(estadoDonacion);
+                        Donacion donacion = new Donacion();
+                        donacion.setIdDonacion(donacionId_int);
+                        donacion.setMonto(monto);
+                        donacion.setEstadoDonacion(estadoDonacion);
 
-                    daoDonacion.editarDonacion(donacion);
-                    response.sendRedirect("NotificacionesServlet?vistaActualNueva=Donaciones");
-                }catch (NumberFormatException e){
-                    request.setAttribute("donacion",daoDonacion.buscarPorId(donacionId));
-                    request.setAttribute("alerta","monto");
-                    request.getRequestDispatcher("donacion_edit.jsp").forward(request,response);
-                }
-                break;
-            case "editDonacion":
-                String id = request.getParameter("id");
-                Donacion donacion = daoDonacion.buscarPorId(id);
-
-                if(donacion != null){
-                    request.setAttribute("donacion",donacion);
-                    request.getRequestDispatcher("/donacion_edit.jsp").forward(request,response);
-                }else{
-                    request.getRequestDispatcher("notificacionesDelGeneral.jsp").forward(request,response);
-                }
-                break;
-            case "deleteDonacion":
-
-                String idd = request.getParameter("id");
-                Donacion donacion1 = daoDonacion.buscarPorId(idd);
-
-                if(donacion1 != null){
-                    try {
-                        daoDonacion.borrar(idd);
-                    } catch (SQLException e) {
-                        System.out.println("Log: excepcion: " + e.getMessage());
+                        daoDonacion.editarDonacion(donacion);
+                        response.sendRedirect("NotificacionesServlet?vistaActualNueva=Donaciones");
+                    }catch (NumberFormatException e){
+                        request.setAttribute("donacion",daoDonacion.buscarPorId(donacionId));
+                        request.setAttribute("alerta","monto");
+                        request.getRequestDispatcher("donacion_edit.jsp").forward(request,response);
                     }
-                }
-                response.sendRedirect("NotificacionesServlet?vistaActualNueva=Donaciones");
+                    break;
+                case "editDonacion":
+                    String id = request.getParameter("id");
+                    Donacion donacion = daoDonacion.buscarPorId(id);
 
-                break;
-            case "enviar":
-                new DaoValidacion().linkEnviado(Integer.parseInt(request.getParameter("idCorreoValidacion")));
-                response.sendRedirect("NotificacionesServlet?vistaActualNueva=Recuperacion");
-                break;
-            case "aceptarRegistro":
-                String idUsuarioARegistrar = request.getParameter("idUsuarioARegistrar");
-                new DaoUsuario().aceptarRegistro(Integer.parseInt(idUsuarioARegistrar));
-                response.sendRedirect( "NotificacionesServlet");
-                break;
-            case "rechazarRegistro":
-                String idUsuarioARegistrar1 = request.getParameter("idUsuarioARegistrar");
-                new DaoUsuario().rechazarRegistro(Integer.parseInt(idUsuarioARegistrar1));
-                response.sendRedirect("NotificacionesServlet");
-                break;
-            case "filtrarFechaDelegadoGeneral":
-                break;
-            case "aceptarSolicitudApoyo":
-                int idAlumnoPorEvento=Integer.parseInt(request.getParameter("idAlumnoPorEvento"));
-                String tipoDeApoyo=request.getParameter("tipoDeApoyo");
-                dN.aceptarSolicitudApoyo(idAlumnoPorEvento,tipoDeApoyo);
-                response.sendRedirect("NotificacionesServlet");
-                break;
-            case "notificacionLeidaCampanita":
-                dN.notificacionLeida(Integer.parseInt(request.getParameter("idNotificacion")));
-                response.sendRedirect("NotificacionesServlet");
-                break;
+                    if(donacion != null){
+                        request.setAttribute("donacion",donacion);
+                        request.getRequestDispatcher("/donacion_edit.jsp").forward(request,response);
+                    }else{
+                        request.getRequestDispatcher("notificacionesDelGeneral.jsp").forward(request,response);
+                    }
+                    break;
+                case "deleteDonacion":
+
+                    String idd = request.getParameter("id");
+                    Donacion donacion1 = daoDonacion.buscarPorId(idd);
+
+                    if(donacion1 != null){
+                        try {
+                            daoDonacion.borrar(idd);
+                        } catch (SQLException e) {
+                            System.out.println("Log: excepcion: " + e.getMessage());
+                        }
+                    }
+                    response.sendRedirect("NotificacionesServlet?vistaActualNueva=Donaciones");
+
+                    break;
+                case "enviar":
+                    new DaoValidacion().linkEnviado(Integer.parseInt(request.getParameter("idCorreoValidacion")));
+                    response.sendRedirect("NotificacionesServlet?vistaActualNueva=Recuperacion");
+                    break;
+                case "aceptarRegistro":
+                    String idUsuarioARegistrar = request.getParameter("idUsuarioARegistrar");
+                    new DaoUsuario().aceptarRegistro(Integer.parseInt(idUsuarioARegistrar));
+                    response.sendRedirect( "NotificacionesServlet");
+                    break;
+                case "rechazarRegistro":
+                    String idUsuarioARegistrar1 = request.getParameter("idUsuarioARegistrar");
+                    new DaoUsuario().rechazarRegistro(Integer.parseInt(idUsuarioARegistrar1));
+                    response.sendRedirect("NotificacionesServlet");
+                    break;
+                case "filtrarFechaDelegadoGeneral":
+                    break;
+                case "aceptarSolicitudApoyo":
+                    int idAlumnoPorEvento=Integer.parseInt(request.getParameter("idAlumnoPorEvento"));
+                    String tipoDeApoyo=request.getParameter("tipoDeApoyo");
+                    dN.aceptarSolicitudApoyo(idAlumnoPorEvento,tipoDeApoyo);
+                    response.sendRedirect("NotificacionesServlet");
+                    break;
+                case "notificacionLeidaCampanita":
+                    dN.notificacionLeida(Integer.parseInt(request.getParameter("idNotificacion")));
+                    response.sendRedirect("NotificacionesServlet");
+                    break;
+            }
         }
     }
 }

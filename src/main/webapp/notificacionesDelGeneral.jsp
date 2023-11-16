@@ -1855,7 +1855,6 @@
                 <!-- /SECTION PAGER ITEM -->
             </div>
             <!-- /SECTION PAGER -->
-
         </div>
         <!-- /SECTION PAGER BAR -->
 

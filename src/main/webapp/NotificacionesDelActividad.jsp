@@ -18,11 +18,14 @@
         int idUsuario=usuarioActual.getIdUsuario();
         String rolUsuario=usuarioActual.getRol();
         String nombreCompletoUsuario=usuarioActual.getNombre()+" "+usuarioActual.getApellido();
+        String action = request.getSession().getAttribute("actionNotificacionesServlet")!= null ? (String) request.getSession().getAttribute("actionNotificacionesServlet") : "";
         ArrayList<AlumnoPorEvento> listaSolicitudesApoyo=(ArrayList<AlumnoPorEvento>) request.getAttribute("listaSolicitudesApoyo");
-        Integer idActividadDelegatura=(Integer)request.getAttribute("idActividadDelegatura");
+        Integer idActividadDelegatura= (Integer) request.getAttribute("idActividadDelegatura");
         String vistaActual=(String) request.getAttribute("vistaActual");
         ArrayList<String>listaCorreosDelegadosGenerales=(ArrayList<String>)request.getAttribute("correosDelegadosGenerales");
         ArrayList<Usuario>listaIDyNombresDelegadosDeActividad=(ArrayList<Usuario>)request.getAttribute("IDyNombreDelegadosDeActividad");
+        int pSolicitudesDeApoyo=Integer.parseInt ((String) request.getSession().getAttribute("pSolicitudesDeApoyo"));
+        int cantidadTotalSolicitudesDeApoyo= (int)  Math.ceil((int)request.getAttribute("cantidadTotalSolicitudesApoyo")/12.0);
         String colorRol;
         if(rolUsuario.equals("Alumno")){
             colorRol="";
@@ -925,7 +928,7 @@
     </div>
 
     <div class="grid grid-4-4-4 centered">
-
+        <%int contador = 0;%>
         <%for (AlumnoPorEvento alumnoPorEvento : listaSolicitudesApoyo ){%>
         <!-- USER PREVIEW -->
         <div class="user-preview">
@@ -1044,6 +1047,7 @@
             <!-- /USER PREVIEW INFO -->
         </div>
         <!-- /USER PREVIEW -->
+        <%contador++;%>
         <%}%>
 
     </div>
@@ -1054,83 +1058,38 @@
         <!-- SECTION PAGER -->
         <div class="section-pager">
             <!-- SECTION PAGER ITEM -->
-            <div class="section-pager-item active">
+            <%  for(int p=0;p<cantidadTotalSolicitudesDeApoyo; p++){%>
+            <div class="section-pager-item <%if(pSolicitudesDeApoyo==p+1){%>active<%}%>">
+                <%if(!action.isEmpty()){%>
+                <%if (p<9){%>
                 <!-- SECTION PAGER ITEM TEXT -->
-                <p class="section-pager-item-text">01</p>
+                <a class="section-pager-item-text" href="NotificacionesServlet?p=<%=p+1%>&busquedaSolicitudes=<%=busquedaSolicitudes%>">0<%=p+1%></a>
                 <!-- /SECTION PAGER ITEM TEXT -->
+                <%} else {%>
+                <!-- SECTION PAGER ITEM TEXT -->
+                <a class="section-pager-item-text" href="NotificacionesServlet?&p=<%=p+1%>&busquedaSolicitudes=<%=busquedaSolicitudes%>"><%=p+1%></a>
+                <!-- /SECTION PAGER ITEM TEXT -->
+                <%}}else{%>
+                <%if (p<9){%>
+                <!-- SECTION PAGER ITEM TEXT -->
+                <a class="section-pager-item-text" href="NotificacionesServlet?p=<%=p+1%>">0<%=p+1%></a>
+                <!-- /SECTION PAGER ITEM TEXT -->
+                <%} else {%>
+                <!-- SECTION PAGER ITEM TEXT -->
+                <a class="section-pager-item-text" href="NotificacionesServlet?&p=<%=p+1%>"><%=p+1%></a>
+                <!-- /SECTION PAGER ITEM TEXT -->
+                <%}}%>
             </div>
             <!-- /SECTION PAGER ITEM -->
-
-            <!-- SECTION PAGER ITEM -->
-            <div class="section-pager-item">
-                <!-- SECTION PAGER ITEM TEXT -->
-                <p class="section-pager-item-text">02</p>
-                <!-- /SECTION PAGER ITEM TEXT -->
-            </div>
-            <!-- /SECTION PAGER ITEM -->
-
-            <!-- SECTION PAGER ITEM -->
-            <div class="section-pager-item">
-                <!-- SECTION PAGER ITEM TEXT -->
-                <p class="section-pager-item-text">03</p>
-                <!-- /SECTION PAGER ITEM TEXT -->
-            </div>
-            <!-- /SECTION PAGER ITEM -->
-
-            <!-- SECTION PAGER ITEM -->
-            <div class="section-pager-item">
-                <!-- SECTION PAGER ITEM TEXT -->
-                <p class="section-pager-item-text">04</p>
-                <!-- /SECTION PAGER ITEM TEXT -->
-            </div>
-            <!-- /SECTION PAGER ITEM -->
-
-            <!-- SECTION PAGER ITEM -->
-            <div class="section-pager-item">
-                <!-- SECTION PAGER ITEM TEXT -->
-                <p class="section-pager-item-text">05</p>
-                <!-- /SECTION PAGER ITEM TEXT -->
-            </div>
-            <!-- /SECTION PAGER ITEM -->
-
-            <!-- SECTION PAGER ITEM -->
-            <div class="section-pager-item">
-                <!-- SECTION PAGER ITEM TEXT -->
-                <p class="section-pager-item-text">06</p>
-                <!-- /SECTION PAGER ITEM TEXT -->
-            </div>
+            <%}%>
             <!-- /SECTION PAGER ITEM -->
         </div>
         <!-- /SECTION PAGER -->
-
-        <!-- SECTION PAGER CONTROLS -->
-        <div class="section-pager-controls">
-            <!-- SLIDER CONTROL -->
-            <div class="slider-control left disabled">
-                <!-- SLIDER CONTROL ICON -->
-                <svg class="slider-control-icon icon-small-arrow">
-                    <use xlink:href="#svg-small-arrow"></use>
-                </svg>
-                <!-- /SLIDER CONTROL ICON -->
-            </div>
-            <!-- /SLIDER CONTROL -->
-
-            <!-- SLIDER CONTROL -->
-            <div class="slider-control right">
-                <!-- SLIDER CONTROL ICON -->
-                <svg class="slider-control-icon icon-small-arrow">
-                    <use xlink:href="#svg-small-arrow"></use>
-                </svg>
-                <!-- /SLIDER CONTROL ICON -->
-            </div>
-            <!-- /SLIDER CONTROL -->
-        </div>
-        <!-- /SECTION PAGER CONTROLS -->
     </div>
     <!-- /SECTION PAGER BAR -->
 
     <!-- SECTION RESULTS TEXT -->
-    <p class="section-results-text">Mostrando 6 de 38 solicitudes</p>
+    <p class="section-results-text">Mostrando <%=contador%> de <%=(Integer) request.getAttribute("cantidadTotalSolicitudesApoyo")%> solicitudes</p>
     <!-- /SECTION RESULTS TEXT -->
 
 

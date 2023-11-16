@@ -362,7 +362,7 @@ public class DaoNotificacionDelegadoGeneral extends DaoPadre {
 
     public ArrayList<Validacion> listarNotificacionesRecuperacion(int pagina){
         ArrayList<Validacion> validacionList= new ArrayList<>();
-        String sql = "select correo,tipo,codigoValidacion,fechaHora,idCorreoValidacion,linkEnviado from validacion order by if(linkEnviado is false,0,1),idCorreoValidacion desc limit 8 offset ?";
+        String sql = "select correo,tipo,codigoValidacion,fechaHora,idCorreoValidacion,linkEnviado,codigoValidacion256 from validacion order by if(linkEnviado is false,0,1),idCorreoValidacion desc limit 8 offset ?";
         try (Connection conn=this.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)){
             pstmt.setInt(1,pagina*8);
@@ -436,13 +436,38 @@ public class DaoNotificacionDelegadoGeneral extends DaoPadre {
         return listaSolicitudesApoyo;
     }
 
+
+    public ArrayList<AlumnoPorEvento> listarSolicitudesDeApoyo(int idDelegadoDeActividad,int pagina){
+
+        ArrayList<AlumnoPorEvento> listaSolicitudesApoyo = new ArrayList<>();
+        String sql = "select ae.idAlumnoPorEvento, ae.idAlumno ,ae.idEvento from alumnoporevento ae inner join evento e on ae.idEvento=e.idEvento inner join actividad a on e.idActividad=a.idActividad where a.idDelegadoDeActividad=? and estadoApoyo = 'Pendiente' order by fechaHoraSolicitud desc limit 12 offset ?";
+
+        try (Connection conn=this.getConnection(); PreparedStatement pstmt=conn.prepareStatement(sql)){
+            pstmt.setInt(1,idDelegadoDeActividad);
+            pstmt.setInt(2,pagina*12);
+            try(ResultSet rs=pstmt.executeQuery()){
+                while (rs.next()){
+                    AlumnoPorEvento alumnoPorEvento=new AlumnoPorEvento();
+                    alumnoPorEvento.setIdAlumnoPorEvento(rs.getInt(1));
+                    alumnoPorEvento.getAlumno().setIdUsuario(rs.getInt(2));
+                    alumnoPorEvento.getEvento().setIdEvento(rs.getInt(3));
+                    listaSolicitudesApoyo.add(alumnoPorEvento);
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        return listaSolicitudesApoyo;
+    }
+
     public ArrayList<AlumnoPorEvento> listarSolicitudesDeApoyo(int idDelegadoDeActividad,String buscar){
 
         ArrayList<AlumnoPorEvento> listaSolicitudesApoyo = new ArrayList<>();
 
         
 
-        String sql = "select ae.idAlumnoPorEvento, ae.idAlumno from alumnoporevento ae inner join usuario u on ae.idAlumno = u.idUsuario inner join evento e on ae.idEvento=e.idEvento inner join actividad a on e.idActividad=a.idActividad where (u.nombre like ? or u.apellido like ?) and  estadoApoyo = 'Pendiente' and a.idDelegadoDeActividad=? order by ae.fechaHoraSolicitud desc";
+        String sql = "select ae.idAlumnoPorEvento, ae.idAlumno,ae.idEvento from alumnoporevento ae inner join usuario u on ae.idAlumno = u.idUsuario inner join evento e on ae.idEvento=e.idEvento inner join actividad a on e.idActividad=a.idActividad where (u.nombre like ? or u.apellido like ?) and  estadoApoyo = 'Pendiente' and a.idDelegadoDeActividad=? order by ae.fechaHoraSolicitud desc";
 
 
         try (Connection conn=this.getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
@@ -454,7 +479,37 @@ public class DaoNotificacionDelegadoGeneral extends DaoPadre {
                     AlumnoPorEvento alumnoPorEvento = new AlumnoPorEvento();
                     alumnoPorEvento.setIdAlumnoPorEvento(rs.getInt(1));
                     alumnoPorEvento.getAlumno().setIdUsuario(rs.getInt(2));
+                    alumnoPorEvento.getEvento().setIdEvento(rs.getInt(3));
+                    listaSolicitudesApoyo.add(alumnoPorEvento);
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
 
+        return listaSolicitudesApoyo;
+    }
+
+    public ArrayList<AlumnoPorEvento> listarSolicitudesDeApoyo(int idDelegadoDeActividad,String buscar,int pagina){
+
+        ArrayList<AlumnoPorEvento> listaSolicitudesApoyo = new ArrayList<>();
+
+
+
+        String sql = "select ae.idAlumnoPorEvento, ae.idAlumno,ae.idEvento from alumnoporevento ae inner join usuario u on ae.idAlumno = u.idUsuario inner join evento e on ae.idEvento=e.idEvento inner join actividad a on e.idActividad=a.idActividad where (u.nombre like ? or u.apellido like ?) and  estadoApoyo = 'Pendiente' and a.idDelegadoDeActividad=? order by ae.fechaHoraSolicitud desc limit 12 offset ?";
+
+
+        try (Connection conn=this.getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setString(1,"%"+buscar+"%");
+            pstmt.setString(2,"%"+buscar+"%");
+            pstmt.setInt(3,idDelegadoDeActividad);
+            pstmt.setInt(4,pagina*12);
+            try(ResultSet rs=pstmt.executeQuery()){
+                while (rs.next()) {
+                    AlumnoPorEvento alumnoPorEvento = new AlumnoPorEvento();
+                    alumnoPorEvento.setIdAlumnoPorEvento(rs.getInt(1));
+                    alumnoPorEvento.getAlumno().setIdUsuario(rs.getInt(2));
+                    alumnoPorEvento.getEvento().setIdEvento(rs.getInt(3));
                     listaSolicitudesApoyo.add(alumnoPorEvento);
                 }
             }

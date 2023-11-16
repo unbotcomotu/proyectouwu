@@ -52,14 +52,11 @@ public class DaoDonacion extends DaoPadre  {
     }
     //Este método se utiliza para el boton de editar donación en la vista de delegado general
     public void editarDonacion(Donacion donacion){ //Editar donacion por Id
-
         String sql = "update donacion set monto = ?,estadoDonacion = ?, fechaHoraValidado = now() where idDonacion = ?";
-
         try(Connection conn=this.getConnection(); PreparedStatement pstmt=conn.prepareStatement(sql)){
             pstmt.setFloat(1,donacion.getMonto());
             pstmt.setString(2, donacion.getEstadoDonacion());
             pstmt.setInt(3,donacion.getIdDonacion());
-
             pstmt.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException(e);

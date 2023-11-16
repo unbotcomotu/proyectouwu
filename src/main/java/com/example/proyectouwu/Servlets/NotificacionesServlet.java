@@ -11,6 +11,7 @@ import jakarta.servlet.annotation.*;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 @WebServlet(name = "NotificacionesServlet", value = "/NotificacionesServlet")
@@ -32,6 +33,10 @@ public class NotificacionesServlet extends HttpServlet {
                 request.setAttribute("listaNotificacionesCampanita",new DaoNotificacionDelegadoGeneral().listarNotificacionesDelegadoGeneral());
             }
             String action = request.getParameter("action") == null ? "default" : request.getParameter("action");
+            String actionSession=(String) request.getSession().getAttribute("actionNotificacionesServlet");
+            if(action.equals("default")&&actionSession!=null){
+                action=actionSession;
+            }
             String buscar="";
             String fecha1="";
             String fecha2="";
@@ -70,10 +75,16 @@ public class NotificacionesServlet extends HttpServlet {
                         request.getRequestDispatcher("notificacionesDelGeneral.jsp").forward(request,response);
 
                     }else if (usuario.getRol().equals("Delegado de Actividad")){
+                        page = request.getParameter("p");
+                        if(page!=null){
+                            request.getSession().removeAttribute("pSolicitudesDeApoyo");
+                            request.getSession().setAttribute("pSolicitudesDeApoyo",page);
+                        }
+                        int pSolicitudesDeApoyo =Integer.parseInt((String) request.getSession().getAttribute("pSolicitudesDeApoyo"));
                         DaoNotificacionDelegadoGeneral daoNotificacionesDeleActividad = new DaoNotificacionDelegadoGeneral();
-                        ArrayList<AlumnoPorEvento> listaSolicitudesApoyo = daoNotificacionesDeleActividad.listarSolicitudesDeApoyo(usuario.getIdUsuario());
-
+                        ArrayList<AlumnoPorEvento> listaSolicitudesApoyo = daoNotificacionesDeleActividad.listarSolicitudesDeApoyo(usuario.getIdUsuario(),pSolicitudesDeApoyo-1);
                         request.setAttribute("listaSolicitudesApoyo",listaSolicitudesApoyo);
+                        request.setAttribute("cantidadTotalSolicitudesApoyo",daoNotificacionesDeleActividad.listarSolicitudesDeApoyo(usuario.getIdUsuario()).size());
                         request.getRequestDispatcher("NotificacionesDelActividad.jsp").forward(request,response);
                     }else{
                         request.getRequestDispatcher("notificacionesDelGeneral.jsp").forward(request,response);
@@ -106,8 +117,22 @@ public class NotificacionesServlet extends HttpServlet {
                     }else if (usuario.getRol().equals("Delegado de Actividad")){
                         String busquedaSolicitudes=request.getParameter("busquedaSolicitudes");
                         DaoNotificacionDelegadoGeneral daoNotificacionesDeleActividad = new DaoNotificacionDelegadoGeneral();
-                        ArrayList<AlumnoPorEvento> listaSolicitudesApoyo = daoNotificacionesDeleActividad.listarSolicitudesDeApoyo(usuario.getIdUsuario(),busquedaSolicitudes);
+                        request.getSession().removeAttribute("actionNotificacionesServlet");
+                        request.getSession().setAttribute("actionNotificacionesServlet","buscarUsuario");
+                        page = request.getParameter("p");
+                        if(page!=null){
+                            request.getSession().removeAttribute("pSolicitudesDeApoyo");
+                            request.getSession().setAttribute("pSolicitudesDeApoyo",page);
+                        }
+                        int pSolicitudesDeApoyo =Integer.parseInt((String) request.getSession().getAttribute("pSolicitudesDeApoyo"));
+                        if(busquedaSolicitudes!=null){
+                            request.getSession().removeAttribute("busquedaSolicitudesApoyo");
+                            request.getSession().setAttribute("busquedaSolicitudesApoyo",busquedaSolicitudes);
+                        }
+                        String busquedaAux=(String) request.getSession().getAttribute("busquedaSolicitudesApoyo");
+                        ArrayList<AlumnoPorEvento> listaSolicitudesApoyo = daoNotificacionesDeleActividad.listarSolicitudesDeApoyo(usuario.getIdUsuario(),busquedaAux,pSolicitudesDeApoyo-1);
                         request.setAttribute("listaSolicitudesApoyo",listaSolicitudesApoyo);
+                        request.setAttribute("cantidadTotalSolicitudesApoyo",daoNotificacionesDeleActividad.listarSolicitudesDeApoyo(usuario.getIdUsuario(),busquedaAux).size());
                         request.getRequestDispatcher("NotificacionesDelActividad.jsp").forward(request,response);
                     }else{
                         response.sendRedirect(request.getContextPath());

@@ -2596,7 +2596,7 @@
                     </div>
                 </div>
                 <%}%>
-            </div>
+            </div> <!-- UWUWUWUWUWUW -->
             <div class="col-sm-5 contenedor2 my-5 d-flex align-items-center">
                 <div class="container-fluid btn btn-file1">
                     <div id="contenedorImagenEditar<%=listaEventos.indexOf(e)%>">

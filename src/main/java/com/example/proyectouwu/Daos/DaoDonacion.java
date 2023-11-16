@@ -123,6 +123,16 @@ public class DaoDonacion extends DaoPadre  {
             throw new RuntimeException(e);
         }
     }
+    public void updateKitRecibe(int idUserEgresado){ //Esto funciona cuando recibioKit es boolean
+        String sql = "update usuario set recibioKit = 1 where idUsuario=?";
+        try(Connection conn=this.getConnection(); PreparedStatement pstmt=conn.prepareStatement(sql)){
+            pstmt.setInt(1,idUserEgresado);
+            pstmt.executeUpdate();
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
     /*public Integer sumarMontoDonadoPorEgresado(){
         int montoEgresado = 0;

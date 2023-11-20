@@ -44,6 +44,7 @@ public class MisDonacionesServlet extends HttpServlet {
                 case "default":
                     request.getRequestDispatcher("donaciones.jsp").forward(request,response);
             }
+            request.getSession().setAttribute("usuario",dUsuario.usuarioSesion(usuario.getIdUsuario()));
         }
     }
 
@@ -56,7 +57,7 @@ public class MisDonacionesServlet extends HttpServlet {
         // Y: Yape; P: Plin
         Part partY = null;
         Part partP = null;
-
+        DaoUsuario dUsuario=new DaoUsuario();
         InputStream inputY = null;
         InputStream inputP = null;
         Usuario usuario=(Usuario) request.getSession().getAttribute("usuario");
@@ -98,6 +99,7 @@ public class MisDonacionesServlet extends HttpServlet {
                 case "default":
                     request.getRequestDispatcher("donaciones.jsp").forward(request,response);
             }
+            request.getSession().setAttribute("usuario",dUsuario.usuarioSesion(usuario.getIdUsuario()));
         }
     }
 }

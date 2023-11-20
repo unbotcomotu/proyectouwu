@@ -61,12 +61,14 @@ public class AnaliticasServlet extends HttpServlet {
                 case "default":
                     request.getRequestDispatcher("analiticas.jsp").forward(request,response);
             }
+            request.getSession().setAttribute("usuario",dUsuario.usuarioSesion(usuario.getIdUsuario()));
         }
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.setContentType("text/html");
+        DaoUsuario dUsuario=new DaoUsuario();
         String action = request.getParameter("action") == null ? "default" : request.getParameter("action");
         DaoNotificacionDelegadoGeneral dN=new DaoNotificacionDelegadoGeneral();
         Usuario usuario=(Usuario) request.getSession().getAttribute("usuario");
@@ -79,6 +81,7 @@ public class AnaliticasServlet extends HttpServlet {
                     response.sendRedirect("AnaliticasServlet");
                     break;
             }
+            request.getSession().setAttribute("usuario",dUsuario.usuarioSesion(usuario.getIdUsuario()));
         }
     }
 }

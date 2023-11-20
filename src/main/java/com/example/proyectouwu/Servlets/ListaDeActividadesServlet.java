@@ -80,6 +80,7 @@ public class ListaDeActividadesServlet extends HttpServlet {
                     }
                     break;
             }
+            request.getSession().setAttribute("usuario",dUsuario.usuarioSesion(usuario.getIdUsuario()));
         }
     }
 
@@ -239,6 +240,7 @@ public class ListaDeActividadesServlet extends HttpServlet {
                     response.sendRedirect("ListaDeActividadesServlet");
                     break;
             }
+            request.getSession().setAttribute("usuario",dUsuario.usuarioSesion(usuario.getIdUsuario()));
         }
     }
 }

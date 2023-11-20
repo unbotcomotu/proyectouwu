@@ -128,6 +128,7 @@ public class ListaDeEventosServlet extends HttpServlet {
                     request.getRequestDispatcher("listaDeEventos.jsp").forward(request,response);
                     break;
             }
+            request.getSession().setAttribute("usuario",dUsuario.usuarioSesion(usuario.getIdUsuario()));
         }
     }
 
@@ -138,6 +139,7 @@ public class ListaDeEventosServlet extends HttpServlet {
         String pag = request.getParameter("p") == null ? "1" : request.getParameter("p");
         int pagina = Integer.parseInt(pag);
         // Daos:
+        DaoUsuario dUsuario=new DaoUsuario();
         DaoLugarEvento dLugarEvento = new DaoLugarEvento();
         DaoEvento dEvento = new DaoEvento();
         DaoNotificacionDelegadoGeneral dN=new DaoNotificacionDelegadoGeneral();
@@ -275,6 +277,7 @@ public class ListaDeEventosServlet extends HttpServlet {
                     response.sendRedirect("ListaDeEventosServlet?idActividad="+idActividad);
                     break;
             }
+            request.getSession().setAttribute("usuario",dUsuario.usuarioSesion(usuario.getIdUsuario()));
         }
     }
 }

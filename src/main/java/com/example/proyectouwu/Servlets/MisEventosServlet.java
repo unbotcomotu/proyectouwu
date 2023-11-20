@@ -33,6 +33,7 @@ public class MisEventosServlet extends HttpServlet {
                 case "default":
                     request.getRequestDispatcher("misEventos.jsp").forward(request,response);
             }
+            request.getSession().setAttribute("usuario",dUsuario.usuarioSesion(usuario.getIdUsuario()));
         }
     }
 

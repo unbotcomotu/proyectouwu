@@ -45,12 +45,14 @@ public class EventoServlet extends HttpServlet {
                 case "default":
                     request.getRequestDispatcher("evento.jsp").forward(request,response);
             }
+            request.getSession().setAttribute("usuario",dUsuario.usuarioSesion(usuario.getIdUsuario()));
         }
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.setContentType("text/html");
+        DaoUsuario dUsuario=new DaoUsuario();
         Usuario usuario=(Usuario) request.getSession().getAttribute("usuario");
         DaoFotoEventoCarrusel dF=new DaoFotoEventoCarrusel();
         if(usuario==null){
@@ -122,6 +124,7 @@ public class EventoServlet extends HttpServlet {
                     response.sendRedirect("EventoServlet?idEvento="+idEvento);
                     break;
             }
+            request.getSession().setAttribute("usuario",dUsuario.usuarioSesion(usuario.getIdUsuario()));
         }
     }
 }

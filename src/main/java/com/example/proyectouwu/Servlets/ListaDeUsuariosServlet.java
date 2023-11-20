@@ -68,6 +68,7 @@ public class ListaDeUsuariosServlet extends HttpServlet {
                     }
                     break;
             }
+            request.getSession().setAttribute("usuario",dUsuario.usuarioSesion(usuario.getIdUsuario()));
         }
     }
 
@@ -92,6 +93,7 @@ public class ListaDeUsuariosServlet extends HttpServlet {
                     response.sendRedirect("ListaDeUsuariosServlet");
                     break;
             }
+            request.getSession().setAttribute("usuario",dUsuario.usuarioSesion(usuario.getIdUsuario()));
         }
     }
 }

@@ -39,13 +39,14 @@ public class MiCuentaServlet extends HttpServlet {
                 case "default":
                     request.getRequestDispatcher("miCuenta.jsp").forward(request,response);
             }
+            request.getSession().setAttribute("usuario",dUsuario.usuarioSesion(usuario.getIdUsuario()));
         }
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.setContentType("text/html");
-        DaoUsuario daoUsuario = new DaoUsuario();
+        DaoUsuario dUsuario = new DaoUsuario();
         DaoNotificacionDelegadoGeneral dN=new DaoNotificacionDelegadoGeneral();
         String action = request.getParameter("action") == null ? "default" : request.getParameter("action");
         Usuario usuario=(Usuario) request.getSession().getAttribute("usuario");
@@ -60,7 +61,7 @@ public class MiCuentaServlet extends HttpServlet {
                 case("editarDescripcion"):
                     String nuevaDescripcion = request.getParameter("nuevaDescripcion");
                     //sentencia sql para actualizar:
-                    daoUsuario.cambioDescripcion(nuevaDescripcion, usuario.getIdUsuario());
+                    dUsuario.cambioDescripcion(nuevaDescripcion, usuario.getIdUsuario());
                     response.sendRedirect("MiCuentaServlet");
                     break;
                 case "editarFoto":
@@ -74,15 +75,13 @@ public class MiCuentaServlet extends HttpServlet {
                     validarLongitud = input.available()>10;
 
                     try {
-                        daoUsuario.cambiarFoto(usuario.getIdUsuario(),input,validarLongitud,"1");
+                        dUsuario.cambiarFoto(usuario.getIdUsuario(),input,validarLongitud,"1");
                     } catch (SQLException e) {
                     }
 
                     input.close();
                     response.sendRedirect("MiCuentaServlet");
                     int idUsuario= usuario.getIdUsuario();
-                    request.getSession().removeAttribute("usuario");
-                    request.getSession().setAttribute("usuario",daoUsuario.usuarioSesion(idUsuario));
                     break;
                 case "editarSeguro":
                     part = request.getPart("cambiarSeguro");
@@ -95,7 +94,7 @@ public class MiCuentaServlet extends HttpServlet {
                     validarLongitud = input.available()>0;
 
                     try {
-                        daoUsuario.cambiarFoto(usuario.getIdUsuario(),input,validarLongitud,"2");
+                        dUsuario.cambiarFoto(usuario.getIdUsuario(),input,validarLongitud,"2");
                     } catch (SQLException e) {
                     }
 
@@ -110,6 +109,7 @@ public class MiCuentaServlet extends HttpServlet {
                     response.sendRedirect("MiCuentaServlet");
                     break;
             }
+            request.getSession().setAttribute("usuario",dUsuario.usuarioSesion(usuario.getIdUsuario()));
         }
     }
 }

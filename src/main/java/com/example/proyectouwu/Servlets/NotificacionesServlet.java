@@ -204,12 +204,14 @@ public class NotificacionesServlet extends HttpServlet {
                     request.getRequestDispatcher("notificacionesDelGeneral.jsp").forward(request,response);
                     break;
             }
+            request.getSession().setAttribute("usuario",dUsuario.usuarioSesion(usuario.getIdUsuario()));
         }
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.setContentType("text/html");
+        DaoUsuario dUsuario=new DaoUsuario();
         DaoDonacion daoDonacion = new DaoDonacion();
         DaoNotificacionDelegadoGeneral dN=new DaoNotificacionDelegadoGeneral();
         String action = request.getParameter("action") == null ? "default" : request.getParameter("action");
@@ -302,6 +304,7 @@ public class NotificacionesServlet extends HttpServlet {
                     response.sendRedirect("NotificacionesServlet");
                     break;
             }
+            request.getSession().setAttribute("usuario",dUsuario.usuarioSesion(usuario.getIdUsuario()));
         }
     }
 }

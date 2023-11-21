@@ -1717,7 +1717,7 @@
         <!-- /SECTION BANNER ICON -->
 
         <!-- SECTION BANNER TITLE -->
-        <p class="section-banner-title"><%=e.getTitulo()%></p>
+        <p class="section-banner-title">Fibra Tóxica VS <%=e.getTitulo()%></p>
         <!-- /SECTION BANNER TITLE -->
 
         <!-- SECTION BANNER TEXT -->

@@ -2176,7 +2176,7 @@
                         }else{
                             tamanoLetraTitulo=110;
                         }%>
-                    <p class="product-preview-title d-flex justify-content-center"><a style="font-size: <%=tamanoLetraTitulo%>%"><%=e.getTitulo()%></a></p>
+                    <p class="product-preview-title d-flex justify-content-center"><a style="font-size: <%=tamanoLetraTitulo%>%">Fibra Tóxica VS <%=e.getTitulo()%></a></p>
                     <!-- /PRODUCT PREVIEW TITLE -->
 
                     <div class="row d-flex justify-content-around">
@@ -2274,7 +2274,7 @@
                         }else{
                             tamanoLetraTitulo=110;
                         }%>
-                    <p class="product-preview-title d-flex justify-content-center"><a style="font-size: <%=tamanoLetraTitulo%>%"><%=e.getTitulo()%></a></p>
+                    <p class="product-preview-title d-flex justify-content-center"><a style="font-size: <%=tamanoLetraTitulo%>%">Fibra Tóxica VS <%=e.getTitulo()%></a></p>
 
                     <div class="row d-flex justify-content-around">
                         <div class="col-5">
@@ -2441,6 +2441,7 @@
                             <option value="Memoria Caché">Memoria Caché</option>
                             <option value="Naranja Mecánica">Naranja Mecánica</option>
                             <option value="PXO Industrial">PXO Industrial</option>
+                            <option value="Todos">Todos</option>
                         </select>
                     </div>
                 </div>
@@ -2576,12 +2577,10 @@
                             <option value="Memoria Caché" <%if(e.getTitulo().equals("Memoria Caché")){%>selected<%}%>>Memoria Caché</option>
                             <option value="Naranja Mecánica" <%if(e.getTitulo().equals("Naranja Mecánica")){%>selected<%}%>>Naranja Mecánica</option>
                             <option value="PXO Industrial" <%if(e.getTitulo().equals("PXO Industrial")){%>selected<%}%>>PXO Industrial</option>
+                            <option value="Todos" <%if(e.getTitulo().equals("Todos")){%>selected<%}%>>Todos</option>
                         </select>
                     </div>
                 </div>
-                <label style="margin-top: 25px;"><b>Nombre del evento:</b></label>
-                <input type="text" id="editarNombreEvento<%=listaEventos.indexOf(e)%>" name="updateTitulo" placeholder="Fibra Tóxica VS *" value="<%=e.getTitulo()%>" required>
-
                 <%if(e.isEventoFinalizado()){%>
                 <label style="margin-top: 25px;" ><b>Resumen:</b></label>
                 <input type="text" id="editarResumenEvento<%=listaEventos.indexOf(e)%>" name="updateResumen" placeholder="Resumen" value="<%=e.getResumen()%>" required>

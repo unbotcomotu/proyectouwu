@@ -9,7 +9,7 @@ import jakarta.servlet.http.HttpSession;
 
 import java.io.IOException;
 
-@WebFilter(filterName = "logOutFilter" , servletNames = {"AnaliticasServlet" , "EventoServlet" , "Imagen", "ImagenActividadServlet" , "ImagenEventoServlet","ImagenUsuarioServlet", "ListaDeActividadesServlet" ,"ListaDeEventosServlet", "ListaDeUsuariosServlet", "MiCuentaServlet" , "MisDonacionesServlet" , "MisEventosServlet" , "NotificacionesServlet",    })
+@WebFilter(filterName = "logOutFilter" , servletNames = {"AnaliticasServlet" , "EventoServlet" , "Imagen", "ImagenActividadServlet" , "ImagenEventoServlet","ImagenUsuarioServlet", "ListaDeActividadesServlet" ,"ListaDeEventosServlet", "ListaDeUsuariosServlet", "MiCuentaServlet" , "MisDonacionesServlet" , "MisEventosServlet" , "NotificacionesServlet"   })
 public class logOutFilter implements Filter {
 
     @Override

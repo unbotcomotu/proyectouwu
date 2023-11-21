@@ -3,6 +3,7 @@
 <%@ page import="com.example.proyectouwu.Beans.Donacion" %>
 <%@ page import="com.example.proyectouwu.Daos.DaoUsuario" %>
 <%@ page import="com.example.proyectouwu.Beans.Usuario" %>
+<%@ page import="com.example.proyectouwu.Beans.AlumnoPorEvento" %>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <!DOCTYPE html>
 <html lang="en">
@@ -19,6 +20,7 @@
     String confirmacion=(String) request.getSession().getAttribute("confirmacion");
     String errorMonto=(String) request.getSession().getAttribute("errorMonto");
     String medioPagoError=(String) request.getSession().getAttribute("medio");
+    ArrayList<AlumnoPorEvento>listaNotificacionesDelegadoDeActividad=(ArrayList<AlumnoPorEvento>) request.getAttribute("listaNotificacionesDelegadoDeActividad");
     if(errorMonto!=null){
         request.getSession().removeAttribute("errorMonto");
         request.getSession().removeAttribute("medio");

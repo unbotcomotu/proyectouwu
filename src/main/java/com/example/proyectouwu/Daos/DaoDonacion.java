@@ -4,11 +4,8 @@ import com.example.proyectouwu.Beans.Donacion;
 import com.example.proyectouwu.Beans.Usuario;
 import com.example.proyectouwu.DTOs.TopDonador;
 
-import java.awt.image.BufferedImage;
 import java.io.InputStream;
 import java.sql.*;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.io.IOException;
 
@@ -117,7 +114,7 @@ public class DaoDonacion extends DaoPadre  {
             pstmt.executeUpdate();
             ResultSet rsKeys=pstmt.getGeneratedKeys();
             if(rsKeys.next()){
-                new DaoNotificacionDelegadoGeneral().crearNotificacionDonacion(rsKeys.getInt(1));
+                new DaoNotificacion().crearNotificacionDonacion(rsKeys.getInt(1));
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);

@@ -288,6 +288,8 @@ figure,
 label,
 input[type="text"],
 input[type="password"],
+input[type="date"],
+input[type="time"],
 textarea,
 select,
 button {
@@ -302,6 +304,8 @@ label {
 }
 
 input[type="text"],
+input[type="date"],
+input[type="time"],
 input[type="password"],
 textarea,
 select,
@@ -314,6 +318,8 @@ button {
 
 input[type="text"],
 input[type="password"],
+input[type="date"],
+input[type="time"],
 textarea,
 select {
   background-color: #fff;
@@ -324,12 +330,16 @@ select {
 
 input[type="text"]:focus,
 input[type="password"]:focus,
+input[type="date"]:focus,
+input[type="time"]:focus,
 textarea:focus,
 select:focus {
   border-color: #615dfa;
 }
 
 input[type="text"],
+input[type="date"],
+input[type="time"],
 input[type="password"] {
   height: 54px;
   padding: 0 18px;

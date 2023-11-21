@@ -2,8 +2,7 @@ package com.example.proyectouwu.Servlets;
 
 import com.example.proyectouwu.Beans.Usuario;
 import com.example.proyectouwu.Daos.DaoActividad;
-import com.example.proyectouwu.Daos.DaoBan;
-import com.example.proyectouwu.Daos.DaoNotificacionDelegadoGeneral;
+import com.example.proyectouwu.Daos.DaoNotificacion;
 import com.example.proyectouwu.Daos.DaoUsuario;
 import jakarta.servlet.*;
 import jakarta.servlet.http.*;
@@ -30,10 +29,11 @@ public class PaginaNoExisteServlet extends HttpServlet {
                     if(usuario.getRol().equals("Alumno")){
                         request.getRequestDispatcher("paginaNoExiste.jsp").forward(request,response);
                     }else if(usuario.getRol().equals("Delegado General")){
-                        request.setAttribute("listaNotificacionesCampanita",new DaoNotificacionDelegadoGeneral().listarNotificacionesDelegadoGeneral());
+                        request.setAttribute("listaNotificacionesCampanita",new DaoNotificacion().listarNotificacionesDelegadoGeneral());
                         request.getRequestDispatcher("paginaNoExiste.jsp").forward(request,response);
                     }else if(usuario.getRol().equals("Delegado de Actividad")){
                         Integer idActividadDelegatura=new DaoActividad().idDelegaturaPorIdDelegadoDeActividad(usuario.getIdUsuario());
+                        request.setAttribute("listaNotificacionesDelegadoDeActividad",new DaoNotificacion().listarNotificacionesDelegadoDeActividad(usuario.getIdUsuario()));
                         request.setAttribute("idActividadDelegatura",idActividadDelegatura);
                         request.getRequestDispatcher("paginaNoExiste.jsp").forward(request,response);
                     }
@@ -47,7 +47,7 @@ public class PaginaNoExisteServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.setContentType("text/html");
         DaoUsuario dUsuario=new DaoUsuario();
-        DaoNotificacionDelegadoGeneral dN=new DaoNotificacionDelegadoGeneral();
+        DaoNotificacion dN=new DaoNotificacion();
         Usuario usuario=(Usuario) request.getSession().getAttribute("usuario");
         if(usuario==null){
             response.sendRedirect("InicioSesionServlet");
@@ -56,6 +56,10 @@ public class PaginaNoExisteServlet extends HttpServlet {
             switch(action){
                 case "notificacionLeidaCampanita":
                     dN.notificacionLeida(Integer.parseInt(request.getParameter("idNotificacion")));
+                    response.sendRedirect(request.getParameter("servletActual"));
+                    break;
+                case "notificacionLeidaCampanitaDelegadoDeActividad":
+                    dN.notificacionLeidaDelegadoDeActividad(Integer.parseInt(request.getParameter("idAlumnoPorEvento")));
                     response.sendRedirect(request.getParameter("servletActual"));
                     break;
             }

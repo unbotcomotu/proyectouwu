@@ -1,11 +1,9 @@
 <%@ page import="java.util.ArrayList" %>
 <%@ page import="com.example.proyectouwu.Beans.Actividad" %>
-<%@ page import="com.example.proyectouwu.Daos.DaoEvento" %>
 <%@ page import="com.example.proyectouwu.Beans.Evento" %>
-<%@ page import="com.example.proyectouwu.Daos.DaoLugarEvento" %>
-<%@ page import="com.example.proyectouwu.Daos.DaoAlumnoPorEvento" %>
-<%@ page import="com.example.proyectouwu.Daos.DaoUsuario" %>
 <%@ page import="com.example.proyectouwu.Beans.Usuario" %>
+<%@ page import="com.example.proyectouwu.Beans.AlumnoPorEvento" %>
+<%@ page import="com.example.proyectouwu.Daos.*" %>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <!DOCTYPE html>
 <html lang="en">
@@ -18,7 +16,9 @@
     ArrayList<String>listaCorreosDelegadosGenerales=(ArrayList<String>)request.getAttribute("correosDelegadosGenerales");
     int diaActual=(int) request.getAttribute("diaActual");
     ArrayList<Evento>listaEventos=(ArrayList<Evento>)request.getAttribute("listaEventos");
+    String servletActual="NotificacionesServlet";
     String colorPorActividad[]={"#23d2e2","#615dfa","blue","pink","#0c5460","#0b2e13","#00e194","#1df377","#4e4ac8","#4f8dff","#2e2e47","#1e7e34","#2ebfef","#8fd19e","#122d5c","#b1dfbb","#491217"};
+    ArrayList<AlumnoPorEvento>listaNotificacionesDelegadoDeActividad=(ArrayList<AlumnoPorEvento>) request.getAttribute("listaNotificacionesDelegadoDeActividad");
     String colorRol;
     if(rolUsuario.equals("Alumno")){
         colorRol="";
@@ -722,7 +722,7 @@
             <!-- ACTION LIST ITEM WRAP -->
             <div class="action-list-item-wrap">
                 <!-- ACTION LIST ITEM -->
-                <div class="action-list-item unread header-dropdown-trigger">
+                <div class="action-list-item  <%if(!listaNotificacionesDelegadoDeActividad.isEmpty()){%> unread <%}%>header-dropdown-trigger">
                     <!-- ACTION LIST ITEM ICON -->
                     <svg class="action-list-item-icon icon-notification">
                         <use xlink:href="#svg-notification"></use>
@@ -743,201 +743,131 @@
 
                     <!-- DROPDOWN BOX LIST -->
                     <div class="dropdown-box-list" data-simplebar>
-                        <!-- DROPDOWN BOX LIST ITEM -->
-                        <div class="dropdown-box-list-item unread">
-                            <!-- USER STATUS -->
-                            <div class="user-status notification">
-                                <!-- USER STATUS AVATAR -->
-                                <a class="user-status-avatar">
-                                    <!-- USER AVATAR -->
-                                    <div class="user-avatar small no-outline">
-                                        <!-- USER AVATAR CONTENT -->
-                                        <div class="user-avatar-content">
-                                            <!-- HEXAGON -->
-                                            <div class="hexagon-image-30-32" data-src="css/fabiana.png"></div>
-                                            <!-- /HEXAGON -->
-                                        </div>
-                                        <!-- /USER AVATAR CONTENT -->
-
-                                        <!-- USER AVATAR PROGRESS -->
-                                        <div class="user-avatar-progress">
-                                            <!-- HEXAGON -->
-                                            <div class="hexagon-progress-40-44"></div>
-                                            <!-- /HEXAGON -->
-                                        </div>
-                                        <!-- /USER AVATAR PROGRESS -->
-
-                                        <!-- USER AVATAR PROGRESS BORDER -->
-                                        <div class="user-avatar-progress-border">
-                                            <!-- HEXAGON -->
-                                            <div class="hexagon-border-40-44"></div>
-                                            <!-- /HEXAGON -->
-                                        </div>
-                                        <!-- /USER AVATAR PROGRESS BORDER -->
-
-                                        <!-- USER AVATAR BADGE -->
-                                        <div class="user-avatar-badge">
-                                            <!-- USER AVATAR BADGE BORDER -->
-                                            <div class="user-avatar-badge-border">
+                        <%for(AlumnoPorEvento noti:listaNotificacionesDelegadoDeActividad){%>
+                        <form id="notificacionLeidaDelegadoDeActividad<%=listaNotificacionesDelegadoDeActividad.indexOf(noti)%>" method="post" action="PaginaNoExisteServlet?action=notificacionLeidaCampanitaDelegadoDeActividad">
+                            <input type="hidden" name="idAlumnoPorEvento" value="<%=noti.getIdAlumnoPorEvento()%>">
+                            <input type="hidden" name="servletActual" value="<%=servletActual%>">
+                            <!-- Reporte -->
+                            <div class="dropdown-box-list-item unread">
+                                <!-- USER STATUS -->
+                                <div class="user-status notification">
+                                    <!-- USER STATUS AVATAR -->
+                                    <a class="user-status-avatar">
+                                        <!-- USER AVATAR -->
+                                        <div class="user-avatar small no-outline">
+                                            <!-- USER AVATAR CONTENT -->
+                                            <div class="user-avatar-content">
+                                                <%request.getSession().setAttribute("fotoActividad"+listaNotificacionesDelegadoDeActividad.indexOf(noti),noti.getAlumno().getFotoPerfil());%>
+                                                <!-- HEXAGON AQUÍ FALTA LA FOTOOOO -->
+                                                <div class="hexagon-image-30-32" data-src="Imagen?tipoDeFoto=fotoPerfil&id=Actividad<%=listaNotificacionesDelegadoDeActividad.indexOf(noti)%>"></div>
+                                                <!-- /HEXAGON -->
                                             </div>
-                                            <!-- /USER AVATAR BADGE BORDER -->
+                                            <!-- /USER AVATAR CONTENT -->
 
-                                        </div>
-                                        <!-- /USER AVATAR BADGE -->
-                                    </div>
-                                    <!-- /USER AVATAR -->
-                                </a>
-                                <!-- /USER STATUS AVATAR -->
-
-                                <!-- USER STATUS TITLE -->
-                                <p class="user-status-title"><a class="bold">Fabiana Rojas</a> desea apoyar el evento <a class="highlighted">Fibra Tóxica VS Huascaminas</a> dentro de la actividad <a style="color: blueviolet;">Voley</a>.</p>
-                                <!-- /USER STATUS TITLE -->
-
-                                <!-- USER STATUS TIMESTAMP -->
-                                <p class="user-status-timestamp">Hace 24 minutos</p>
-                                <!-- /USER STATUS TIMESTAMP -->
-
-                                <!-- USER STATUS ICON -->
-                                <div class="user-status-icon">
-                                    <!-- ICON COMMENT -->
-                                    <img src="css/voleyIcono.png" width="30px" alt="">
-                                    <!-- /ICON COMMENT -->
-                                </div>
-                                <!-- /USER STATUS ICON -->
-                            </div>
-                            <!-- /USER STATUS -->
-                        </div>
-                        <!-- /DROPDOWN BOX LIST ITEM -->
-                        <!-- DROPDOWN BOX LIST ITEM -->
-                        <div class="dropdown-box-list-item unread">
-                            <!-- USER STATUS -->
-                            <div class="user-status notification">
-                                <!-- USER STATUS AVATAR -->
-                                <a class="user-status-avatar">
-                                    <!-- USER AVATAR -->
-                                    <div class="user-avatar small no-outline">
-                                        <!-- USER AVATAR CONTENT -->
-                                        <div class="user-avatar-content">
-                                            <!-- HEXAGON -->
-                                            <div class="hexagon-image-30-32" data-src="css/edisonFlores.png"></div>
-                                            <!-- /HEXAGON -->
-                                        </div>
-                                        <!-- /USER AVATAR CONTENT -->
-
-                                        <!-- USER AVATAR PROGRESS -->
-                                        <div class="user-avatar-progress">
-                                            <!-- HEXAGON -->
-                                            <div class="hexagon-progress-40-44"></div>
-                                            <!-- /HEXAGON -->
-                                        </div>
-                                        <!-- /USER AVATAR PROGRESS -->
-
-                                        <!-- USER AVATAR PROGRESS BORDER -->
-                                        <div class="user-avatar-progress-border">
-                                            <!-- HEXAGON -->
-                                            <div class="hexagon-border-40-44"></div>
-                                            <!-- /HEXAGON -->
-                                        </div>
-                                        <!-- /USER AVATAR PROGRESS BORDER -->
-
-                                        <!-- USER AVATAR BADGE -->
-                                        <div class="user-avatar-badge">
-                                            <!-- USER AVATAR BADGE BORDER -->
-                                            <div class="user-avatar-badge-border">
+                                            <!-- USER AVATAR PROGRESS -->
+                                            <div class="user-avatar-progress">
+                                                <!-- HEXAGON -->
+                                                <div class="hexagon-progress-40-44"></div>
+                                                <!-- /HEXAGON -->
                                             </div>
-                                            <!-- /USER AVATAR BADGE BORDER -->
+                                            <!-- /USER AVATAR PROGRESS -->
 
-                                        </div>
-                                        <!-- /USER AVATAR BADGE -->
-                                    </div>
-                                    <!-- /USER AVATAR -->
-                                </a>
-                                <!-- /USER STATUS AVATAR -->
-
-                                <!-- USER STATUS TITLE -->
-                                <p class="user-status-title"><a class="bold">Edison Flores</a> desea apoyar el evento <a class="highlighted">Fibra Tóxica VS PXO Industrial</a> dentro de la actividad <a style="color: blueviolet;">Futsal</a>.</p>
-                                <!-- /USER STATUS TITLE -->
-
-                                <!-- USER STATUS TIMESTAMP -->
-                                <p class="user-status-timestamp">Hace 1 hora</p>
-                                <!-- /USER STATUS TIMESTAMP -->
-
-                                <!-- USER STATUS ICON -->
-                                <div class="user-status-icon">
-                                    <!-- ICON COMMENT -->
-                                    <img src="css/futsalIcono.png" width="30px" alt="">
-                                    <!-- /ICON COMMENT -->
-                                </div>
-                                <!-- /USER STATUS ICON -->
-                            </div>
-                            <!-- /USER STATUS -->
-                        </div>
-                        <!-- /DROPDOWN BOX LIST ITEM -->
-                        <!-- DROPDOWN BOX LIST ITEM -->
-                        <div class="dropdown-box-list-item unread">
-                            <!-- USER STATUS -->
-                            <div class="user-status notification">
-                                <!-- USER STATUS AVATAR -->
-                                <a class="user-status-avatar">
-                                    <!-- USER AVATAR -->
-                                    <div class="user-avatar small no-outline">
-                                        <!-- USER AVATAR CONTENT -->
-                                        <div class="user-avatar-content">
-                                            <!-- HEXAGON -->
-                                            <div class="hexagon-image-30-32" data-src="css/raulRomero.png"></div>
-                                            <!-- /HEXAGON -->
-                                        </div>
-                                        <!-- /USER AVATAR CONTENT -->
-
-                                        <!-- USER AVATAR PROGRESS -->
-                                        <div class="user-avatar-progress">
-                                            <!-- HEXAGON -->
-                                            <div class="hexagon-progress-40-44"></div>
-                                            <!-- /HEXAGON -->
-                                        </div>
-                                        <!-- /USER AVATAR PROGRESS -->
-
-                                        <!-- USER AVATAR PROGRESS BORDER -->
-                                        <div class="user-avatar-progress-border">
-                                            <!-- HEXAGON -->
-                                            <div class="hexagon-border-40-44"></div>
-                                            <!-- /HEXAGON -->
-                                        </div>
-                                        <!-- /USER AVATAR PROGRESS BORDER -->
-
-                                        <!-- USER AVATAR BADGE -->
-                                        <div class="user-avatar-badge">
-                                            <!-- USER AVATAR BADGE BORDER -->
-                                            <div class="user-avatar-badge-border">
+                                            <!-- USER AVATAR PROGRESS BORDER -->
+                                            <div class="user-avatar-progress-border">
+                                                <!-- HEXAGON -->
+                                                <div class="hexagon-border-40-44"></div>
+                                                <!-- /HEXAGON -->
                                             </div>
-                                            <!-- /USER AVATAR BADGE BORDER -->
+                                            <!-- /USER AVATAR PROGRESS BORDER -->
 
+                                            <!-- USER AVATAR BADGE -->
+                                            <div class="user-avatar-badge">
+                                                <!-- USER AVATAR BADGE BORDER -->
+                                                <div class="user-avatar-badge-border">
+                                                </div>
+                                                <!-- /USER AVATAR BADGE BORDER -->
+
+                                            </div>
+                                            <!-- /USER AVATAR BADGE -->
                                         </div>
-                                        <!-- /USER AVATAR BADGE -->
-                                    </div>
-                                    <!-- /USER AVATAR -->
-                                </a>
-                                <!-- /USER STATUS AVATAR -->
+                                        <!-- /USER AVATAR -->
+                                    </a>
+                                    <!-- /USER STATUS AVATAR -->
 
-                                <!-- USER STATUS TITLE -->
-                                <p class="user-status-title"><a class="bold">Raul Romero</a> desea apoyar el evento <a class="highlighted">Fibra Tóxica VS Hormigón Armado</a> dentro del evento <a style="color: blueviolet;">Six Pract</a>.</p>
-                                <!-- /USER STATUS TITLE -->
-
-                                <!-- USER STATUS TIMESTAMP -->
-                                <p class="user-status-timestamp">Hace 2 horas</p>
-                                <!-- /USER STATUS TIMESTAMP -->
-
-                                <!-- USER STATUS ICON -->
-                                <div class="user-status-icon">
-                                    <!-- ICON COMMENT -->
-                                    <img src="css/sixPractIcono.png" width="30px" alt="">
-                                    <!-- /ICON COMMENT -->
+                                    <!-- USER STATUS TITLE -->
+                                    <p class="user-status-title"><a class="bold"><%=noti.getAlumno().getNombre()%> <%=noti.getAlumno().getApellido()%></a> desea apoyar el evento <a class="highlighted">Fibra Tóxica VS <%=noti.getEvento().getTitulo()%></a></p>
+                                    <!-- /USER STATUS TITLE -->
+                                    <%Integer diferenciaFechas[]=new DaoNotificacion().obtenerDiferenciaEntre2FechasNotificacionesDelegadoDeActividad(noti.getIdAlumnoPorEvento());
+                                        if(diferenciaFechas[0]>0){
+                                            if(diferenciaFechas[0]==1){%>
+                                    <!-- USER STATUS TIMESTAMP -->
+                                    <p class="user-status-timestamp">Hace 1 año <a style="color: #20c997;cursor: pointer" onclick="enviarFormulario('notificacionLeidaDelegadoDeActividad<%=listaNotificacionesDelegadoDeActividad.indexOf(noti)%>')">Leído</a></p>
+                                    <!-- /USER STATUS TIMESTAMP -->
+                                    <%}else{%>
+                                    <!-- USER STATUS TIMESTAMP -->
+                                    <p class="user-status-timestamp">Hace <%=diferenciaFechas[0]%> años <a style="color: #20c997;cursor: pointer" onclick="enviarFormulario('notificacionLeidaDelegadoDeActividad<%=listaNotificacionesDelegadoDeActividad.indexOf(noti)%>')">Leído</a></p>
+                                    <!-- /USER STATUS TIMESTAMP -->
+                                    <%}%>
+                                    <%}else if(diferenciaFechas[1]>0){
+                                        if(diferenciaFechas[1]==1){%>
+                                    <!-- USER STATUS TIMESTAMP -->
+                                    <p class="user-status-timestamp">Hace 1 mes <a style="color: #20c997;cursor: pointer" onclick="enviarFormulario('notificacionLeidaDelegadoDeActividad<%=listaNotificacionesDelegadoDeActividad.indexOf(noti)%>')">Leído</a></p>
+                                    <!-- /USER STATUS TIMESTAMP -->
+                                    <%}else{%>
+                                    <!-- USER STATUS TIMESTAMP -->
+                                    <p class="user-status-timestamp">Hace <%=diferenciaFechas[1]%> meses <a style="color: #20c997;cursor: pointer" onclick="enviarFormulario('notificacionLeidaDelegadoDeActividad<%=listaNotificacionesDelegadoDeActividad.indexOf(noti)%>')">Leído</a></p>
+                                    <!-- /USER STATUS TIMESTAMP -->
+                                    <%}%>
+                                    <%}else if(diferenciaFechas[2]>0){
+                                        if(diferenciaFechas[2]==1){%>
+                                    <!-- USER STATUS TIMESTAMP -->
+                                    <p class="user-status-timestamp">Hace 1 día <a style="color: #20c997;cursor: pointer" onclick="enviarFormulario('notificacionLeidaDelegadoDeActividad<%=listaNotificacionesDelegadoDeActividad.indexOf(noti)%>')">Leído</a></p>
+                                    <!-- /USER STATUS TIMESTAMP -->
+                                    <%}else{%>
+                                    <!-- USER STATUS TIMESTAMP -->
+                                    <p class="user-status-timestamp">Hace <%=diferenciaFechas[2]%> días <a style="color: #20c997;cursor: pointer" onclick="enviarFormulario('notificacionLeidaDelegadoDeActividad<%=listaNotificacionesDelegadoDeActividad.indexOf(noti)%>')">Leído</a></p>
+                                    <!-- /USER STATUS TIMESTAMP -->
+                                    <%}%>
+                                    <%}else if(diferenciaFechas[3]>0){
+                                        if(diferenciaFechas[3]==1){%>
+                                    <!-- USER STATUS TIMESTAMP -->
+                                    <p class="user-status-timestamp">Hace 1 hora <a style="color: #20c997;cursor: pointer" onclick="enviarFormulario('notificacionLeidaDelegadoDeActividad<%=listaNotificacionesDelegadoDeActividad.indexOf(noti)%>')">Leído</a></p>
+                                    <!-- /USER STATUS TIMESTAMP -->
+                                    <%}else{%>
+                                    <!-- USER STATUS TIMESTAMP -->
+                                    <p class="user-status-timestamp">Hace <%=diferenciaFechas[3]%> horas <a style="color: #20c997;cursor: pointer" onclick="enviarFormulario('notificacionLeidaDelegadoDeActividad<%=listaNotificacionesDelegadoDeActividad.indexOf(noti)%>')">Leído</a></p>
+                                    <!-- /USER STATUS TIMESTAMP -->
+                                    <%}%>
+                                    <%}else if(diferenciaFechas[4]>0){
+                                        if(diferenciaFechas[4]==1){%>
+                                    <!-- USER STATUS TIMESTAMP -->
+                                    <p class="user-status-timestamp">Hace 1 minuto <a style="color: #20c997;cursor: pointer" onclick="enviarFormulario('notificacionLeidaDelegadoDeActividad<%=listaNotificacionesDelegadoDeActividad.indexOf(noti)%>')">Leído</a></p>
+                                    <!-- /USER STATUS TIMESTAMP -->
+                                    <%}else{%>
+                                    <!-- USER STATUS TIMESTAMP -->
+                                    <p class="user-status-timestamp">Hace <%=diferenciaFechas[4]%> minutos <a style="color: #20c997;cursor: pointer" onclick="enviarFormulario('notificacionLeidaDelegadoDeActividad<%=listaNotificacionesDelegadoDeActividad.indexOf(noti)%>')">Leído</a></p>
+                                    <!-- /USER STATUS TIMESTAMP -->
+                                    <%}%>
+                                    <%}else if(diferenciaFechas[5]>0){
+                                        if(diferenciaFechas[5]==1){%>
+                                    <!-- USER STATUS TIMESTAMP -->
+                                    <p class="user-status-timestamp">Hace 1 segundo <a style="color: #20c997;cursor: pointer" onclick="enviarFormulario('notificacionLeidaDelegadoDeActividad<%=listaNotificacionesDelegadoDeActividad.indexOf(noti)%>')">Leído</a></p>
+                                    <!-- /USER STATUS TIMESTAMP -->
+                                    <%}else{%>
+                                    <!-- USER STATUS TIMESTAMP -->
+                                    <p class="user-status-timestamp">Hace <%=diferenciaFechas[5]%> segundos <a style="color: #20c997;cursor: pointer" onclick="enviarFormulario('notificacionLeidaDelegadoDeActividad<%=listaNotificacionesDelegadoDeActividad.indexOf(noti)%>')">Leído</a></p>
+                                    <!-- /USER STATUS TIMESTAMP -->
+                                    <%}%>
+                                    <%}else if(diferenciaFechas[5]==0){%>
+                                    <!-- USER STATUS TIMESTAMP -->
+                                    <p class="user-status-timestamp">Ahora mismo <a style="color: #20c997;cursor: pointer" onclick="enviarFormulario('notificacionLeidaDelegadoDeActividad<%=listaNotificacionesDelegadoDeActividad.indexOf(noti)%>')">Leído</a></p>
+                                    <!-- /USER STATUS TIMESTAMP -->
+                                    <%}%>
                                 </div>
-                                <!-- /USER STATUS ICON -->
+                                <!-- /USER STATUS -->
                             </div>
-                            <!-- /USER STATUS -->
-                        </div>
-                        <!-- /DROPDOWN BOX LIST ITEM -->
+                        </form>
+                        <%}%>
                     </div>
                     <!-- /DROPDOWN BOX LIST -->
                     <!--ARRIBA ESTÁN LAS NOTIFICACIONES-->

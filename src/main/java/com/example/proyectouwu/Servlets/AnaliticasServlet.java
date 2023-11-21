@@ -7,7 +7,6 @@ import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 
 @WebServlet(name = "AnaliticasServlet", value = "/AnaliticasServlet")
 public class AnaliticasServlet extends HttpServlet {
@@ -20,7 +19,7 @@ public class AnaliticasServlet extends HttpServlet {
         DaoDonacion dDonacion=new DaoDonacion();
         DaoBan dBan=new DaoBan();
         DaoReporte dReporte=new DaoReporte();
-        DaoNotificacionDelegadoGeneral dN=new DaoNotificacionDelegadoGeneral();
+        DaoNotificacion dN=new DaoNotificacion();
         Usuario usuario=(Usuario) request.getSession().getAttribute("usuario");
         if(usuario==null){
             response.sendRedirect("InicioSesionServlet");
@@ -51,7 +50,7 @@ public class AnaliticasServlet extends HttpServlet {
             request.setAttribute("topDonadorTotal",dDonacion.hallarTopDonador());
             request.setAttribute("topDonadorUltimaSemana",dDonacion.hallarTopDonadorUltimaSemana());
             if(usuario.getRol().equals("Delegado General")){
-                request.setAttribute("listaNotificacionesCampanita",new DaoNotificacionDelegadoGeneral().listarNotificacionesDelegadoGeneral());
+                request.setAttribute("listaNotificacionesCampanita",new DaoNotificacion().listarNotificacionesDelegadoGeneral());
             }
             request.setAttribute("topApoyoUltimaSemana",dAE.topApoyoUltimaSemana());
             request.setAttribute("topApoyoTotal",dAE.topApoyoTotal());

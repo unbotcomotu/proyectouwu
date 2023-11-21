@@ -1,7 +1,7 @@
 package com.example.proyectouwu.Servlets;
 
 import com.example.proyectouwu.Beans.Usuario;
-import com.example.proyectouwu.Daos.DaoNotificacionDelegadoGeneral;
+import com.example.proyectouwu.Daos.DaoNotificacion;
 import com.example.proyectouwu.Daos.DaoUsuario;
 import com.example.proyectouwu.Daos.DaoActividad;
 import jakarta.servlet.*;
@@ -11,7 +11,6 @@ import jakarta.servlet.annotation.*;
 import java.sql.SQLException;
 import java.io.InputStream;
 import java.io.IOException;
-import java.io.PrintWriter;
 
 @WebServlet(name = "ListaDeActividadesServlet", value = "/ListaDeActividadesServlet")
 @MultipartConfig(maxFileSize = 10000000)
@@ -39,10 +38,11 @@ public class ListaDeActividadesServlet extends HttpServlet {
                     if(usuario.getRol().equals("Alumno")){
                         request.getRequestDispatcher("listaDeActividades.jsp").forward(request,response);
                     }else if(usuario.getRol().equals("Delegado General")){
-                        request.setAttribute("listaNotificacionesCampanita",new DaoNotificacionDelegadoGeneral().listarNotificacionesDelegadoGeneral());
+                        request.setAttribute("listaNotificacionesCampanita",new DaoNotificacion().listarNotificacionesDelegadoGeneral());
                         request.getRequestDispatcher("listaDeActividades.jsp").forward(request,response);
                     }else if(usuario.getRol().equals("Delegado de Actividad")){
                         Integer idActividadDelegatura=new DaoActividad().idDelegaturaPorIdDelegadoDeActividad(usuario.getIdUsuario());
+                        request.setAttribute("listaNotificacionesDelegadoDeActividad",new DaoNotificacion().listarNotificacionesDelegadoDeActividad(usuario.getIdUsuario()));
                         request.setAttribute("idActividadDelegatura",idActividadDelegatura);
                         request.getRequestDispatcher("listaDeActividades.jsp").forward(request,response);
                     }
@@ -54,10 +54,11 @@ public class ListaDeActividadesServlet extends HttpServlet {
                     if(usuario.getRol().equals("Alumno")){
                         request.getRequestDispatcher("listaDeActividades.jsp").forward(request,response);
                     }else if(usuario.getRol().equals("Delegado General")){
-                        request.setAttribute("listaNotificacionesCampanita",new DaoNotificacionDelegadoGeneral().listarNotificacionesDelegadoGeneral());
+                        request.setAttribute("listaNotificacionesCampanita",new DaoNotificacion().listarNotificacionesDelegadoGeneral());
                         request.getRequestDispatcher("listaDeActividades.jsp").forward(request,response);
                     }else if(usuario.getRol().equals("Delegado de Actividad")){
                         Integer idActividadDelegatura=new DaoActividad().idDelegaturaPorIdDelegadoDeActividad(usuario.getIdUsuario());
+                        request.setAttribute("listaNotificacionesDelegadoDeActividad",new DaoNotificacion().listarNotificacionesDelegadoDeActividad(usuario.getIdUsuario()));
                         request.setAttribute("idActividadDelegatura",idActividadDelegatura);
                         request.getRequestDispatcher("listaDeActividades.jsp").forward(request,response);
                     }
@@ -71,10 +72,11 @@ public class ListaDeActividadesServlet extends HttpServlet {
                     if(usuario.getRol().equals("Alumno")){
                         request.getRequestDispatcher("listaDeActividades.jsp").forward(request,response);
                     }else if(usuario.getRol().equals("Delegado General")){
-                        request.setAttribute("listaNotificacionesCampanita",new DaoNotificacionDelegadoGeneral().listarNotificacionesDelegadoGeneral());
+                        request.setAttribute("listaNotificacionesCampanita",new DaoNotificacion().listarNotificacionesDelegadoGeneral());
                         request.getRequestDispatcher("listaDeActividades.jsp").forward(request,response);
                     }else if(usuario.getRol().equals("Delegado de Actividad")){
                         Integer idActividadDelegatura=new DaoActividad().idDelegaturaPorIdDelegadoDeActividad(usuario.getIdUsuario());
+                        request.setAttribute("listaNotificacionesDelegadoDeActividad",new DaoNotificacion().listarNotificacionesDelegadoDeActividad(usuario.getIdUsuario()));
                         request.setAttribute("idActividadDelegatura",idActividadDelegatura);
                         request.getRequestDispatcher("listaDeActividades.jsp").forward(request,response);
                     }
@@ -93,7 +95,7 @@ public class ListaDeActividadesServlet extends HttpServlet {
         if(usuario==null){
             response.sendRedirect("InicioSesionServlet");
         }else {
-            DaoNotificacionDelegadoGeneral dN = new DaoNotificacionDelegadoGeneral();
+            DaoNotificacion dN = new DaoNotificacion();
             String action = request.getParameter("action") == null ? "default" : request.getParameter("action");
 
             // Parámetros auxiliares para imagenes cabecera y miniatura

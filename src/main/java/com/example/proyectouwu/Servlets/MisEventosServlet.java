@@ -3,6 +3,7 @@ package com.example.proyectouwu.Servlets;
 import com.example.proyectouwu.Beans.Usuario;
 import com.example.proyectouwu.Daos.DaoAlumnoPorEvento;
 import com.example.proyectouwu.Daos.DaoEvento;
+import com.example.proyectouwu.Daos.DaoNotificacion;
 import com.example.proyectouwu.Daos.DaoUsuario;
 import jakarta.servlet.*;
 import jakarta.servlet.http.*;
@@ -19,7 +20,6 @@ public class MisEventosServlet extends HttpServlet {
         response.setContentType("text/html");
         DaoUsuario dUsuario=new DaoUsuario();
         DaoAlumnoPorEvento dAlPorEvento=new DaoAlumnoPorEvento();
-        DaoEvento dEvent = new DaoEvento();
         Usuario usuario=(Usuario) request.getSession().getAttribute("usuario");
         if(usuario==null){
             response.sendRedirect("InicioSesionServlet");
@@ -28,6 +28,9 @@ public class MisEventosServlet extends HttpServlet {
             request.setAttribute("correosDelegadosGenerales",dUsuario.listarCorreosDelegadosGenerales());
             request.setAttribute("diaActual",Integer.parseInt(ZonedDateTime.now().toString().split("T")[0].split("-")[2]));
             request.setAttribute("listaEventos",dAlPorEvento.listarEventosPorUsuario(usuario.getIdUsuario()));
+            if(usuario.getRol().equals("Delegado de Actividad")){
+                request.setAttribute("listaNotificacionesDelegadoDeActividad",new DaoNotificacion().listarNotificacionesDelegadoDeActividad(usuario.getIdUsuario()));
+            }
             String action = request.getParameter("action") == null ? "default" : request.getParameter("action");
             switch (action){
                 case "default":

@@ -1,16 +1,14 @@
 package com.example.proyectouwu.Servlets;
 
 import com.example.proyectouwu.Beans.Usuario;
-import com.example.proyectouwu.Daos.DaoActividad;
 import com.example.proyectouwu.Daos.DaoBan;
-import com.example.proyectouwu.Daos.DaoNotificacionDelegadoGeneral;
+import com.example.proyectouwu.Daos.DaoNotificacion;
 import com.example.proyectouwu.Daos.DaoUsuario;
 import jakarta.servlet.*;
 import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
 
 import java.io.IOException;
-import java.util.ArrayList;
 
 @WebServlet(name = "ListaDeUsuariosServlet", value = "/ListaDeUsuariosServlet")
 public class ListaDeUsuariosServlet extends HttpServlet {
@@ -24,7 +22,7 @@ public class ListaDeUsuariosServlet extends HttpServlet {
         }else{
             request.setAttribute("vistaActual","listaDeUsuarios");
             request.setAttribute("correosDelegadosGenerales",dUsuario.listarCorreosDelegadosGenerales());
-            request.setAttribute("listaNotificacionesCampanita",new DaoNotificacionDelegadoGeneral().listarNotificacionesDelegadoGeneral());
+            request.setAttribute("listaNotificacionesCampanita",new DaoNotificacion().listarNotificacionesDelegadoGeneral());
             String action = request.getParameter("action") == null ? "listarUsuarios" : request.getParameter("action");
             String pagina = request.getParameter("p") == null ? "1" : request.getParameter("p");
             String filtro = request.getParameter("idFiltroUsuario") != null ? request.getParameter("idFiltroUsuario") : "";
@@ -76,7 +74,7 @@ public class ListaDeUsuariosServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.setContentType("text/html");
         DaoUsuario dUsuario=new DaoUsuario();
-        DaoNotificacionDelegadoGeneral dN=new DaoNotificacionDelegadoGeneral();
+        DaoNotificacion dN=new DaoNotificacion();
         Usuario usuario=(Usuario) request.getSession().getAttribute("usuario");
         if(usuario==null){
             response.sendRedirect("InicioSesionServlet");

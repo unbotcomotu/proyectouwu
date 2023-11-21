@@ -11,11 +11,9 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Calendar;
-import java.time.Period;
-import java.time.LocalDate;
 import java.util.HashSet;
 
-public class DaoNotificacionDelegadoGeneral extends DaoPadre {
+public class DaoNotificacion extends DaoPadre {
 
     public ArrayList<Usuario>listarSolicitudesDeRegistro(){
 
@@ -666,6 +664,29 @@ public class DaoNotificacionDelegadoGeneral extends DaoPadre {
         }
     }
 
+    public Integer[] obtenerDiferenciaEntre2FechasNotificacionesDelegadoDeActividad(int idAlumnoPorEvento){
+        Integer[] diferencia=new Integer[6];
+        String sql ="select timestampdiff(year,fechaHoraSolicitud,now()),timestampdiff(month,fechaHoraSolicitud,now()),timestampdiff(day,fechaHoraSolicitud,now()),timestampdiff(hour,fechaHoraSolicitud,now()),timestampdiff(minute,fechaHoraSolicitud,now()),timestampdiff(second,fechaHoraSolicitud,now()) from alumnoporevento where idAlumnoPorEvento=?";
+        try (Connection conn=this.getConnection(); PreparedStatement pstmt= conn.prepareStatement(sql)) {
+            pstmt.setInt(1,idAlumnoPorEvento);
+            try(ResultSet rs=pstmt.executeQuery()){
+                if (rs.next()) {
+                    diferencia[0]=rs.getInt(1);
+                    diferencia[1]= rs.getInt(2)%12;
+                    diferencia[2]=rs.getInt(3)%30;
+                    diferencia[3]=rs.getInt(4)%24;
+                    diferencia[4]=rs.getInt(5)%60;
+                    diferencia[5]= rs.getInt(6)%60;
+                    return diferencia;
+                }else{
+                    return null;
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     public void notificacionLeida(int idNotificacion){
         String sql="update notificacionDelegadoGeneral set estado='Leido' where idNotificacion=?";
         try(Connection conn=this.getConnection(); PreparedStatement pstmt= conn.prepareStatement(sql)){
@@ -687,4 +708,38 @@ public class DaoNotificacionDelegadoGeneral extends DaoPadre {
         return "";
     }
 
+    public ArrayList<AlumnoPorEvento>listarNotificacionesDelegadoDeActividad(int idDelegadoDeActividad){
+        ArrayList<AlumnoPorEvento>listaNotificaciones= new ArrayList<>();
+        String sql="select ae.idAlumnoPorEvento,ae.idAlumno,ae.idEvento,ae.fechaHoraSolicitud,u.nombre,u.apellido,u.fotoPerfil,e.titulo from AlumnoPorEvento ae inner join usuario u on ae.idAlumno=u.idUsuario inner join evento e on ae.idEvento=e.idEvento inner join actividad a on e.idActividad = a.idActividad where ae.notificacionLeida=false and a.idDelegadoDeActividad=?";
+        try (Connection conn=this.getConnection();PreparedStatement pstmt= conn.prepareStatement(sql)) {
+            pstmt.setInt(1,idDelegadoDeActividad);
+            try(ResultSet rs=pstmt.executeQuery()){
+                while (rs.next()) {
+                    AlumnoPorEvento ae=new AlumnoPorEvento();
+                    ae.setIdAlumnoPorEvento(rs.getInt(1));
+                    ae.getAlumno().setIdUsuario(rs.getInt(2));
+                    ae.getEvento().setIdEvento(rs.getInt(3));
+                    ae.setFechaSolicitud(rs.getDate(4));
+                    ae.getAlumno().setNombre(rs.getString(5));
+                    ae.getAlumno().setApellido(rs.getString(6));
+                    ae.getAlumno().setFotoPerfil(rs.getBlob(7));
+                    ae.getEvento().setTitulo(rs.getString(8));
+                    listaNotificaciones.add(ae);
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return listaNotificaciones;
+    }
+
+    public void notificacionLeidaDelegadoDeActividad(int idAlumnoPorEvento){
+        String sql="update alumnoporevento set notificacionLeida=true where idAlumnoPorEvento=?";
+        try(Connection conn=this.getConnection(); PreparedStatement pstmt= conn.prepareStatement(sql)){
+            pstmt.setInt(1,idAlumnoPorEvento);
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }

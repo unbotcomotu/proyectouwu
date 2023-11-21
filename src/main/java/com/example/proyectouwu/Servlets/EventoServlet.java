@@ -5,11 +5,9 @@ import com.example.proyectouwu.Daos.*;
 import jakarta.servlet.*;
 import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
-import com.example.proyectouwu.Beans.Evento;
+
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.PrintWriter;
-import java.sql.SQLException;
 import java.util.ArrayList;
 
 @WebServlet(name = "EventoServlet", value = "/EventoServlet")
@@ -40,7 +38,9 @@ public class EventoServlet extends HttpServlet {
                 request.setAttribute("cantidadApoyos",dEvento.cantidadApoyosBarraEquipoPorEvento(idEvento));
                 request.setAttribute("solicitudesApoyoPendientes",dEvento.solicitudesSinAtenderPorEvento(idEvento));
                 if(rolUsuario.equals("Delegado General")){
-                    request.setAttribute("listaNotificacionesCampanita",new DaoNotificacionDelegadoGeneral().listarNotificacionesDelegadoGeneral());
+                    request.setAttribute("listaNotificacionesCampanita",new DaoNotificacion().listarNotificacionesDelegadoGeneral());
+                } else if (rolUsuario.equals("Delegado de Actividad")) {
+                    request.setAttribute("listaNotificacionesDelegadoDeActividad",new DaoNotificacion().listarNotificacionesDelegadoDeActividad(usuario.getIdUsuario()));
                 }
                 String action = request.getParameter("action") == null ? "default" : request.getParameter("action");
                 switch (action){
@@ -64,7 +64,7 @@ public class EventoServlet extends HttpServlet {
             response.sendRedirect("InicioSesionServlet");
         }else {
             int idEvento = Integer.parseInt(request.getParameter("idEvento"));
-            DaoNotificacionDelegadoGeneral dN=new DaoNotificacionDelegadoGeneral();
+            DaoNotificacion dN=new DaoNotificacion();
             String action = request.getParameter("action") == null ? "default" : request.getParameter("action");
             switch (action){
                 case "default":

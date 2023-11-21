@@ -93,7 +93,7 @@ public class DaoAlumnoPorEvento extends DaoPadre {
     }
 
     public void usuarioApoyaEvento(int idUsuario,int idEvento){
-        String sql = "insert into alumnoporevento (  idAlumno, idEvento , estadoApoyo, fechaHoraSolicitud) values (?, ?, ? , now())";
+        String sql = "insert into alumnoporevento (  idAlumno, idEvento , estadoApoyo, fechaHoraSolicitud,notificacionLeida) values (?, ?, ? , now(),false)";
         try (Connection conn=this.getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
             //pstmt.setInt(1,idUser);
             pstmt.setInt(1,idUsuario); //nuevos usuarios se registran como alumnos

@@ -4,6 +4,7 @@ import com.example.proyectouwu.Beans.Donacion;
 import com.example.proyectouwu.Beans.Usuario;
 import com.example.proyectouwu.Daos.DaoActividad;
 import com.example.proyectouwu.Daos.DaoDonacion;
+import com.example.proyectouwu.Daos.DaoNotificacion;
 import com.example.proyectouwu.Daos.DaoUsuario;
 import jakarta.servlet.*;
 import jakarta.servlet.http.*;
@@ -39,6 +40,9 @@ public class MisDonacionesServlet extends HttpServlet {
             String action = request.getParameter("action") == null ? "default" : request.getParameter("action");
             if(request.getParameter("confirmacion")!=null){
                 request.setAttribute("confirmacion","1");
+            }
+            if(usuario.getRol().equals("Delegado de Actividad")){
+                request.setAttribute("listaNotificacionesDelegadoDeActividad",new DaoNotificacion().listarNotificacionesDelegadoDeActividad(usuario.getIdUsuario()));
             }
             switch (action){
                 case "default":

@@ -2,10 +2,9 @@ package com.example.proyectouwu.Daos;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import com.example.proyectouwu.Beans.Validacion;
-import java.time.format.DateTimeFormatter;
+
 import java.sql.*;
 import java.util.Random;
-import java.util.Date;
 
 public class DaoValidacion extends DaoPadre {
     public void agregarCorreoParaEnviarLink(String correo){
@@ -26,7 +25,7 @@ public class DaoValidacion extends DaoPadre {
             pstmt.executeUpdate();
             ResultSet rskeys=pstmt.getGeneratedKeys();
             if(rskeys.next()){
-                new DaoNotificacionDelegadoGeneral().crearNotificacionValidacion(rskeys.getInt(1));
+                new DaoNotificacion().crearNotificacionValidacion(rskeys.getInt(1));
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -54,7 +53,7 @@ public class DaoValidacion extends DaoPadre {
                 pstmt.executeUpdate();
                 ResultSet rskeys=pstmt.getGeneratedKeys();
                 if(rskeys.next()){
-                    new DaoNotificacionDelegadoGeneral().crearNotificacionValidacion(rskeys.getInt(1));
+                    new DaoNotificacion().crearNotificacionValidacion(rskeys.getInt(1));
                 }
             } catch (SQLException e) {
                 throw new RuntimeException(e);

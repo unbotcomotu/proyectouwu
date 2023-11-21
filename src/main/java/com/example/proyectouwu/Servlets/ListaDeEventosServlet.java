@@ -1,6 +1,5 @@
 package com.example.proyectouwu.Servlets;
 
-import com.example.proyectouwu.Beans.Evento;
 import com.example.proyectouwu.Beans.Usuario;
 import com.example.proyectouwu.Daos.*;
 import jakarta.servlet.*;
@@ -9,13 +8,10 @@ import jakarta.servlet.annotation.*;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.PrintWriter;
 import java.sql.Date;
-import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Time;
 import java.util.ArrayList;
-import java.util.HashSet;
 
 @WebServlet(name = "ListaDeEventosServlet", value = "/ListaDeEventosServlet")
 @MultipartConfig(maxFileSize = 10000000)
@@ -51,7 +47,9 @@ public class ListaDeEventosServlet extends HttpServlet {
                 request.setAttribute("cantidadEventosManana",dActividad.cantidadEventosEnNdiasPorActividad(idActividad,1));
                 request.setAttribute("cantidadEventos2DiasMas", dActividad.cantidadEventosEn2DiasAMasPorActividad(idActividad));
                 if(usuario.getRol().equals("Delegado General")){
-                    request.setAttribute("listaNotificacionesCampanita",new DaoNotificacionDelegadoGeneral().listarNotificacionesDelegadoGeneral());
+                    request.setAttribute("listaNotificacionesCampanita",new DaoNotificacion().listarNotificacionesDelegadoGeneral());
+                }else if(usuario.getRol().equals("Delegado de Actividad")){
+                    request.setAttribute("listaNotificacionesDelegadoDeActividad",new DaoNotificacion().listarNotificacionesDelegadoDeActividad(usuario.getIdUsuario()));
                 }
                 String action = request.getParameter("action") == null ? "default" : request.getParameter("action");
                 switch (action){
@@ -143,7 +141,7 @@ public class ListaDeEventosServlet extends HttpServlet {
         DaoUsuario dUsuario=new DaoUsuario();
         DaoLugarEvento dLugarEvento = new DaoLugarEvento();
         DaoEvento dEvento = new DaoEvento();
-        DaoNotificacionDelegadoGeneral dN=new DaoNotificacionDelegadoGeneral();
+        DaoNotificacion dN=new DaoNotificacion();
         Usuario usuario = (Usuario) request.getSession().getAttribute("usuario");
         if(usuario==null){
             response.sendRedirect("InicioSesionServlet");
@@ -162,11 +160,20 @@ public class ListaDeEventosServlet extends HttpServlet {
 
                 case "addConfirm":
                     // Parámetros:
+                    boolean validacionCrear=true;
                     String addLugar = request.getParameter("addLugar");
                     String addTitulo = request.getParameter("addTitulo");
                     String addHoraStr = request.getParameter("addHora");
                     String addDescripcionEventoActivo = request.getParameter("addDescripcionEventoActivo");
+                    if(addDescripcionEventoActivo.length()>1000){
+                        request.getSession().setAttribute("descripcionLarga","1");
+                        validacionCrear=false;
+                    }
                     String addFraseMotivacional = request.getParameter("addFraseMotivacional");
+                    if(addFraseMotivacional.length()>45){
+                        request.getSession().setAttribute("fraseLarga","1");
+                        validacionCrear=false;
+                    }
                     String addEventoOcultoStr = request.getParameter("addEventoOculto");
                     String addFechaStrAux = request.getParameter("addFecha");
                     Boolean addEventoOculto = false;
@@ -196,16 +203,18 @@ public class ListaDeEventosServlet extends HttpServlet {
                     if(!validarLongitud){
                         input = getServletContext().getResourceAsStream(rutaImagenPredeterminada);
                     }
-                    try {
-                        dEvento.crearEvento(idActividad, addLugarId, addTitulo, addFecha, addHora, addDescripcionEventoActivo, addFraseMotivacional, input, addEventoOculto,getServletContext());
-                    } catch (SQLException e) {
-                        throw new RuntimeException(e);
+                    if(validacionCrear){
+                        try {
+                            dEvento.crearEvento(idActividad, addLugarId, addTitulo, addFecha, addHora, addDescripcionEventoActivo, addFraseMotivacional, input, addEventoOculto,getServletContext());
+                        } catch (SQLException e) {
+                            throw new RuntimeException(e);
+                        }
                     }
                     input.close();
                     response.sendRedirect("ListaDeEventosServlet?idActividad="+idActividad);
                     break;
                 case "updateConfirm":
-
+                    boolean validacionEditar=true;
                     // Parámetros
                     idEvento = Integer.parseInt(request.getParameter("idEvento"));
                     String estadoEvento = request.getParameter("estadoEvento");
@@ -215,8 +224,20 @@ public class ListaDeEventosServlet extends HttpServlet {
                     String updateFechaStr = request.getParameter("updateFecha");
                     String updateHoraStr = request.getParameter("updateHora");
                     String updateDescripcionEventoActivo = request.getParameter("updateDescripcionEventoActivo");
+                    if(updateDescripcionEventoActivo.length()>1000){
+                        request.getSession().setAttribute("descripcionLarga","1");
+                        validacionEditar=false;
+                    }
                     String updateFraseMotivacional = request.getParameter("updateFraseMotivacional");
+                    if(updateFraseMotivacional.length()>45){
+                        request.getSession().setAttribute("fraseLarga","1");
+                        validacionEditar=false;
+                    }
                     String updateResumen = request.getParameter("updateResumen");
+                    if(updateResumen.length()>1000){
+                        request.getSession().setAttribute("resumenLargo","1");
+                        validacionEditar=false;
+                    }
                     String updateResultado = request.getParameter("updateResultado");
                     String updateEventoOcultoStr1 = request.getParameter("updateEventoOculto");
                     String updateEventoOcultoStr2 = request.getParameter("updateEventoOcultoAlt");
@@ -227,7 +248,11 @@ public class ListaDeEventosServlet extends HttpServlet {
                         if(!(updateEventoOcultoStr2 == null)){
                             updateEventoOcultoAlt = true;
                         }
-                        dEvento.editarEvento(idEvento,updateTitulo,updateResumen,updateResultado,updateEventoOcultoAlt);
+                        if(validacionEditar){
+                            dEvento.editarEvento(idEvento,updateTitulo,updateResumen,updateResultado,updateEventoOcultoAlt);
+                        }else {
+                            request.getSession().setAttribute("eventoElegido",idEvento);
+                        }
                     }else {
 
                         Boolean updateEventoOculto = false;
@@ -253,11 +278,14 @@ public class ListaDeEventosServlet extends HttpServlet {
                         }
 
                         validarLongitud = input.available() > 10;
-
-                        try {
-                            dEvento.editarEvento(idEvento, updateLugarId, updateTitulo, updateFecha, updateHora, updateDescripcionEventoActivo, updateFraseMotivacional, input, updateEventoOculto, validarLongitud);
-                        } catch (SQLException e) {
-                            throw new RuntimeException(e);
+                        if(validacionEditar){
+                            try {
+                                dEvento.editarEvento(idEvento, updateLugarId, updateTitulo, updateFecha, updateHora, updateDescripcionEventoActivo, updateFraseMotivacional, input, updateEventoOculto, validarLongitud);
+                            } catch (SQLException e) {
+                                throw new RuntimeException(e);
+                            }
+                        }else {
+                            request.getSession().setAttribute("eventoElegido",idEvento);
                         }
                         input.close();
                     }

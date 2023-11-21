@@ -1,17 +1,12 @@
 package com.example.proyectouwu.Daos;
 
-import com.example.proyectouwu.Beans.Actividad;
 import com.example.proyectouwu.Beans.Ban;
-import com.example.proyectouwu.Beans.Evento;
 import com.example.proyectouwu.Beans.Usuario;
-import com.mysql.cj.jdbc.exceptions.MysqlDataTruncation;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.Random;
-import java.util.logging.StreamHandler;
 
 public class DaoUsuario extends DaoPadre {
     public String rolUsuarioPorId(int idUsuario){
@@ -522,7 +517,7 @@ public class DaoUsuario extends DaoPadre {
             pstmt.executeUpdate();
             ResultSet rskeys=pstmt.getGeneratedKeys();
             if(rskeys.next()){
-                new DaoNotificacionDelegadoGeneral().crearNotificacionSolicitudDeRegistro(rskeys.getInt(1));
+                new DaoNotificacion().crearNotificacionSolicitudDeRegistro(rskeys.getInt(1));
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);

@@ -446,7 +446,7 @@ public class DaoUsuario extends DaoPadre {
         }
     }
 
-    public Usuario getUsuarioPorId(int Id){
+    public Usuario getUsuarioPorId(Integer Id){
         DaoUsuario  daoUsuario = new DaoUsuario();
         ArrayList<Usuario> listaUsuario = daoUsuario.listarUsuarios();
         for (Usuario usuario : listaUsuario){

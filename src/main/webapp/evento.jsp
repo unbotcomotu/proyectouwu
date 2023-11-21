@@ -23,6 +23,7 @@
         ArrayList<NotificacionDelegadoGeneral>listaNotificacionesCampanita=(ArrayList<NotificacionDelegadoGeneral>) request.getAttribute("listaNotificacionesCampanita");
         ArrayList<AlumnoPorEvento>listaNotificacionesDelegadoDeActividad=(ArrayList<AlumnoPorEvento>) request.getAttribute("listaNotificacionesDelegadoDeActividad");
         String colorRol;
+
         if(rolUsuario.equals("Alumno")){
             colorRol="";
         }else if(rolUsuario.equals("Delegado de Actividad")){
@@ -30,6 +31,8 @@
         }else{
             colorRol="orange";
         }
+
+        ArrayList<MensajeChat>listaDeMensajes=(ArrayList<MensajeChat>) request.getAttribute("listaDeMensajes");
     %>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -1629,8 +1632,116 @@
 </header>
 <!-- /HEADER -->
 
-<!-- CONTENT GRID -->
+<!-- CHAT WIDGET -->
+<aside id="chat-widget-messages" class="chat-widget closed sidebar right">
+    <!-- CHAT WIDGET MESSAGES -->
+    <div class="chat-widget-messages" data-simplebar>
+        <!-- CHAT WIDGET CONVERSATION -->
+        <div class="chat-widget-conversation" data-simplebar>
+            <%for(MensajeChat m:listaDeMensajes){%>
+            <!-- CHAT WIDGET SPEAKER -->
+            <div class="chat-widget-speaker left">
+                <!-- CHAT WIDGET SPEAKER AVATAR -->
+                <div class="chat-widget-speaker-avatar">
+                    <!-- USER AVATAR -->
+                    <div class="user-avatar tiny no-border">
+                        <!-- USER AVATAR CONTENT -->
+                        <div class="user-avatar-content">
+                            <!-- HEXAGON -->
+                            <%request.getSession().setAttribute("fotoMensaje"+listaDeMensajes.indexOf(m),m.getUsuario().getFotoPerfil());%>
+                            <div class="hexagon-image-24-26" data-src="Imagen?tipoDeFoto=fotoPerfil&id=Mensaje<%=listaDeMensajes.indexOf(m)%>"></div>
+                            <!-- /HEXAGON -->
+                        </div>
+                        <!-- /USER AVATAR CONTENT -->
+                    </div>
+                    <!-- /USER AVATAR -->
+                </div>
+                <!-- /CHAT WIDGET SPEAKER AVATAR -->
+                <!-- CHAT WIDGET SPEAKER MESSAGE -->
+                <p class="chat-widget-speaker-timestamp"><%=m.getUsuario().getNombre()%> <%=m.getUsuario().getApellido()%></p>
+                <p class="chat-widget-speaker-message"><%=m.getMensaje()%></p>
+                <!-- /CHAT WIDGET SPEAKER MESSAGE -->
 
+                <!-- CHAT WIDGET SPEAKER TIMESTAMP -->
+                <p class="chat-widget-speaker-timestamp" style="font-size: 60%; margin-left: 100px;">Yesterday at 8:36PM</p>
+                <!-- /CHAT WIDGET SPEAKER TIMESTAMP -->
+            </div>
+            <!-- /CHAT WIDGET SPEAKER -->
+            <br>
+            <!-- CHAT WIDGET SPEAKER -->
+            <div class="chat-widget-speaker right">
+                <!-- CHAT WIDGET SPEAKER MESSAGE -->
+                <p class="chat-widget-speaker-message">Pero es noche profesor :(</p>
+                <!-- /CHAT WIDGET SPEAKER MESSAGE -->
+
+                <!-- CHAT WIDGET SPEAKER MESSAGE -->
+                <p class="chat-widget-speaker-message">Quizás estaría mejor hacerlo mañana temprano</p>
+                <!-- /CHAT WIDGET SPEAKER MESSAGE -->
+
+                <!-- CHAT WIDGET SPEAKER TIMESTAMP -->
+                <p class="chat-widget-speaker-timestamp" style="font-size: 60%;">Yesterday at 9:00PM</p>
+                <!-- /CHAT WIDGET SPEAKER TIMESTAMP -->
+            </div>
+            <!-- /CHAT WIDGET SPEAKER -->
+            <br>
+            <%}%>
+        </div>
+        <!-- /CHAT WIDGET CONVERSATION -->
+
+        <!-- /CHAT WIDGET HEADER -->
+    </div>
+    <!-- CHAT WIDGET HEADER -->
+
+
+
+    <!-- CHAT WIDGET FORM -->
+    <form class="chat-widget-form">
+        <!-- INTERACTIVE INPUT -->
+        <div class="interactive-input small">
+            <input type="text" id="chat-widget-message-text" name="chat_widget_message_text" placeholder="Escribe un mensaje...">
+            <!-- INTERACTIVE INPUT ICON WRAP -->
+            <div class="interactive-input-icon-wrap">
+                <!-- INTERACTIVE INPUT ICON -->
+                <svg class="interactive-input-icon icon-send-message">
+                    <use xlink:href="#svg-send-message"></use>
+                </svg>
+                <!-- /INTERACTIVE INPUT ICON -->
+            </div>
+            <!-- /INTERACTIVE INPUT ICON WRAP -->
+
+            <!-- INTERACTIVE INPUT ACTION -->
+            <div class="interactive-input-action">
+                <!-- INTERACTIVE INPUT ACTION ICON -->
+                <svg class="interactive-input-action-icon icon-cross-thin">
+                    <use xlink:href="#svg-cross-thin"></use>
+                </svg>
+                <!-- /INTERACTIVE INPUT ACTION ICON -->
+            </div>
+            <!-- /INTERACTIVE INPUT ACTION -->
+        </div>
+        <!-- /INTERACTIVE INPUT -->
+    </form>
+    <!-- /CHAT WIDGET FORM -->
+
+
+
+    <!-- CHAT WIDGET BUTTON -->
+    <div class="chat-widget-button">
+        <!-- CHAT WIDGET BUTTON ICON -->
+        <div class="chat-widget-button-icon">
+            <img src="css/chatWhiteIcon.png" width="28px" alt="">
+        </div>
+        <!-- /CHAT WIDGET BUTTON ICON -->
+
+        <!-- CHAT WIDGET BUTTON TEXT -->
+        <p class="chat-widget-button-text" style="font-size: 140%;">Foro del evento</p>
+        <!-- /CHAT WIDGET BUTTON TEXT -->
+    </div>
+    <!-- /CHAT WIDGET BUTTON -->
+</aside>
+<!-- /CHAT WIDGET -->
+
+<!-- CONTENT GRID -->
 <div class="content-grid">
 
     <div class="section-banner">

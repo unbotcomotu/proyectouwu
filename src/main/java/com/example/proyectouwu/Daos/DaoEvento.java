@@ -746,4 +746,25 @@ public class DaoEvento extends DaoPadre {
             throw new RuntimeException(e);
         }
     }
+
+    public Integer[] obtenerDiferenciaEntre2FechasMensaje(int idMensajeChat){
+        Integer[] diferencia=new Integer[4];
+        String sql ="select timestampdiff(day,fechaHora,now()),timestampdiff(hour,fechaHora,now()),timestampdiff(minute,fechaHora,now()),timestampdiff(second,fechaHora,now()) from mensajechat where idMensajeChat=?";
+        try (Connection conn=this.getConnection(); PreparedStatement pstmt= conn.prepareStatement(sql)) {
+            pstmt.setInt(1,idMensajeChat);
+            try(ResultSet rs=pstmt.executeQuery()){
+                if (rs.next()) {
+                    diferencia[0]=rs.getInt(3)%30;
+                    diferencia[1]=rs.getInt(4)%24;
+                    diferencia[2]=rs.getInt(5)%60;
+                    diferencia[3]= rs.getInt(6)%60;
+                    return diferencia;
+                }else{
+                    return null;
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }

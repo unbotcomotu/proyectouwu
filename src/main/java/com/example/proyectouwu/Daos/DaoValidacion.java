@@ -60,6 +60,38 @@ public class DaoValidacion extends DaoPadre {
             }
 
     }
+
+
+    public void agregarCorreoParaElKit(String correo){
+
+        String sql = "insert into validacion( correo, tipo, fechaHora, linkEnviado, idUsuario) values (?,?,?,?,?);";
+
+        LocalDateTime fechaHoraActual = LocalDateTime.now();
+        // Define el formato deseado
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        // Convierte la fecha y hora actual en un String formateado
+        String dateStr = fechaHoraActual.format(formatter);
+        try (Connection conn=this.getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql,Statement.RETURN_GENERATED_KEYS)) {
+            pstmt.setString(1, correo);
+            pstmt.setString(2, "NecesitaUnKit");
+
+            pstmt.setString(3, dateStr);
+            pstmt.setBoolean(4, false);
+            pstmt.setInt(5, new DaoUsuario().obtenerIdPorCorreo(correo));
+
+            pstmt.executeUpdate();
+            ResultSet rskeys=pstmt.getGeneratedKeys();
+            if(rskeys.next()){
+                new DaoNotificacion().crearNotificacionValidacion(rskeys.getInt(1));
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+    }
+
+
+
     public String buscarCorreoPorIdCorreoValidacion(String idCorreoValidacion ){
         String sql = "select correo from validacion where idCorreoValidacion = ?";
         try (Connection conn=this.getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql)) {

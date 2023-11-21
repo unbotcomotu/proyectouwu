@@ -1,6 +1,7 @@
 package com.example.proyectouwu.Filters;
 
 import com.example.proyectouwu.Beans.Usuario;
+import com.example.proyectouwu.Daos.DaoUsuario;
 import jakarta.servlet.*;
 import jakarta.servlet.annotation.*;
 import jakarta.servlet.http.HttpServletRequest;
@@ -24,10 +25,10 @@ public class logOutFilter implements Filter {
         if (user == null) {
             resp.sendRedirect("InicioSesionServlet");
         } else {
+            //req.getSession().setAttribute("usuario", new DaoUsuario().getUsuarioPorId(user.getIdUsuario()));
             resp.setHeader("Cache-Control", "no-cache, no-store , must-revalidate");
             resp.setHeader("Pragma", "no-cache");
             resp.setDateHeader("Expires",0);
-
             chain.doFilter(req, resp);
         }
 

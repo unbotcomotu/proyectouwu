@@ -67,12 +67,12 @@ public class DaoBan extends DaoPadre {
         }
     }
 
-    public void  banearPorId(int idUsuarioABanear){
+    public void  banearPorId(int idUsuarioABanear,String motivoBan){
         String sql = "insert into ban ( idUsuario, motivoBan, fechaHora) values (?, ?,Now())";
         try (Connection conn=this.getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
             //pstmt.setInt(1,idUser);
             pstmt.setInt(1,idUsuarioABanear); //nuevos usuarios se registran como alumnos
-            pstmt.setString(2,"No se que poner"); //Luego tenemos que modificar esto
+            pstmt.setString(2,motivoBan); //Luego tenemos que modificar esto
             pstmt.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException(e);

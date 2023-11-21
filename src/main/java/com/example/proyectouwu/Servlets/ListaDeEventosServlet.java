@@ -34,99 +34,100 @@ public class ListaDeEventosServlet extends HttpServlet {
         if(usuario==null){
             response.sendRedirect("InicioSesionServlet");
         }else {
-            int idActividad=Integer.parseInt(request.getParameter("idActividad"));
-            request.setAttribute("idActividad",idActividad);
-            request.setAttribute("vistaActual","listaDeActividades");
-            request.setAttribute("correosDelegadosGenerales",dUsuario.listarCorreosDelegadosGenerales());
-
-            request.setAttribute("nombreActividad",dActividad.nombreActividadPorID(idActividad));
-            request.setAttribute("delegadoDeEstaActividadID",dActividad.idDelegadoDeActividadPorActividad(idActividad));
-            request.setAttribute("listaLugares",new DaoLugarEvento().listarLugares());
-            request.setAttribute("cantidadEventosFinalizados",dActividad.cantidadEventosFinalizadosPorActividad(idActividad));
-            request.setAttribute("cantidadEventosOcultos",dActividad.cantidadEventosOcultosPorActividad(idActividad));
-            request.setAttribute("cantidadEventosApoyando",dActividad.cantidadEventosApoyandoPorActividad(idActividad,usuario.getIdUsuario()));
-            request.setAttribute("listaLugaresCantidad",dActividad.lugaresConMayorCantidadDeEventos_cantidad_idLugarEvento(idActividad));
-            request.setAttribute("cantidadEventosHoy",dActividad.cantidadEventosEnNdiasPorActividad(idActividad,0));
-            request.setAttribute("cantidadEventosManana",dActividad.cantidadEventosEnNdiasPorActividad(idActividad,1));
-            request.setAttribute("cantidadEventos2DiasMas", dActividad.cantidadEventosEn2DiasAMasPorActividad(idActividad));
-
-
-
-            if(usuario.getRol().equals("Delegado General")){
-                request.setAttribute("listaNotificacionesCampanita",new DaoNotificacionDelegadoGeneral().listarNotificacionesDelegadoGeneral());
-            }
-            String action = request.getParameter("action") == null ? "default" : request.getParameter("action");
-            switch (action){
-                case "buscarEvento":
-                    String textoBuscar = request.getParameter("nombreEvento");
-                    request.setAttribute("cantidadEventosTotal", dEvento.buscarEventoPorNombre(textoBuscar,idActividad).size());
-                    request.setAttribute("listaEventos",dEvento.buscarEventoPorNombre(textoBuscar,idActividad));
-                    if(!textoBuscar.isEmpty()){
-                        request.setAttribute("busqueda",textoBuscar);
-                    }
-                    request.getRequestDispatcher("listaDeEventos.jsp").forward(request,response);
-                    break;
-                case "default":
-                    request.setAttribute("listaEventos",dEvento.listarEventos(idActividad,pagina-1));
-                    request.setAttribute("cantidadEventosTotal", dEvento.listarEventos(idActividad).size());
-                    request.getRequestDispatcher("listaDeEventos.jsp").forward(request,response);
-                    break;
-                case "filtrarEventos":
-                    ArrayList<String> parametrosEstado = new ArrayList<>();
-                    ArrayList<Integer> parametrosLugar = new ArrayList<>();
-                    ArrayList<String> parametrosFecha = new ArrayList<>();
-
-                    if(request.getParameter("eventoFinalizado") != null){
-                        parametrosEstado.add("Finalizado");
-                        request.setAttribute("eventoFinalizado",1);
-                    }
-                    if(!usuario.getRol().equals("Delegado General")){
-                        if(request.getParameter("eventoApoyando") != null){
-                            parametrosEstado.add("Apoyando");
-                            request.setAttribute("eventoApoyando",1);
+            String idActividadAux=request.getParameter("idActividad");
+            if(dActividad.existeActividad(idActividadAux)){
+                int idActividad=Integer.parseInt(idActividadAux);
+                request.setAttribute("idActividad",idActividad);
+                request.setAttribute("vistaActual","listaDeActividades");
+                request.setAttribute("correosDelegadosGenerales",dUsuario.listarCorreosDelegadosGenerales());
+                request.setAttribute("nombreActividad",dActividad.nombreActividadPorID(idActividad));
+                request.setAttribute("delegadoDeEstaActividadID",dActividad.idDelegadoDeActividadPorActividad(idActividad));
+                request.setAttribute("listaLugares",new DaoLugarEvento().listarLugares());
+                request.setAttribute("cantidadEventosFinalizados",dActividad.cantidadEventosFinalizadosPorActividad(idActividad));
+                request.setAttribute("cantidadEventosOcultos",dActividad.cantidadEventosOcultosPorActividad(idActividad));
+                request.setAttribute("cantidadEventosApoyando",dActividad.cantidadEventosApoyandoPorActividad(idActividad,usuario.getIdUsuario()));
+                request.setAttribute("listaLugaresCantidad",dActividad.lugaresConMayorCantidadDeEventos_cantidad_idLugarEvento(idActividad));
+                request.setAttribute("cantidadEventosHoy",dActividad.cantidadEventosEnNdiasPorActividad(idActividad,0));
+                request.setAttribute("cantidadEventosManana",dActividad.cantidadEventosEnNdiasPorActividad(idActividad,1));
+                request.setAttribute("cantidadEventos2DiasMas", dActividad.cantidadEventosEn2DiasAMasPorActividad(idActividad));
+                if(usuario.getRol().equals("Delegado General")){
+                    request.setAttribute("listaNotificacionesCampanita",new DaoNotificacionDelegadoGeneral().listarNotificacionesDelegadoGeneral());
+                }
+                String action = request.getParameter("action") == null ? "default" : request.getParameter("action");
+                switch (action){
+                    case "buscarEvento":
+                        String textoBuscar = request.getParameter("nombreEvento");
+                        request.setAttribute("cantidadEventosTotal", dEvento.buscarEventoPorNombre(textoBuscar,idActividad).size());
+                        request.setAttribute("listaEventos",dEvento.buscarEventoPorNombre(textoBuscar,idActividad));
+                        if(!textoBuscar.isEmpty()){
+                            request.setAttribute("busqueda",textoBuscar);
                         }
-                    }
-                    if(dActividad.idDelegadoDeActividadPorActividad(idActividad) == usuario.getIdUsuario() || usuario.getRol().equals("Delegado General")){
-                        if(request.getParameter("eventoOculto") != null){
-                            parametrosEstado.add("Oculto");
-                            request.setAttribute("eventoOculto",1);
+                        request.getRequestDispatcher("listaDeEventos.jsp").forward(request,response);
+                        break;
+                    case "default":
+                        request.setAttribute("listaEventos",dEvento.listarEventos(idActividad,pagina-1));
+                        request.setAttribute("cantidadEventosTotal", dEvento.listarEventos(idActividad).size());
+                        request.getRequestDispatcher("listaDeEventos.jsp").forward(request,response);
+                        break;
+                    case "filtrarEventos":
+                        ArrayList<String> parametrosEstado = new ArrayList<>();
+                        ArrayList<Integer> parametrosLugar = new ArrayList<>();
+                        ArrayList<String> parametrosFecha = new ArrayList<>();
+
+                        if(request.getParameter("eventoFinalizado") != null){
+                            parametrosEstado.add("Finalizado");
+                            request.setAttribute("eventoFinalizado",1);
                         }
-                    }
-                    String cantidad = request.getParameter("cantidadLugares");
-                    if(cantidad != null) {
-                        int cantidadLugares = Integer.parseInt(request.getParameter("cantidadLugares"));
-                        for (int j = 0; j < cantidadLugares; j++) {
-                            String lugarAux=request.getParameter("lugar" + j);
-                            if(lugarAux!=null){
-                                Integer lugar=Integer.parseInt(lugarAux);
-                                parametrosLugar.add(lugar);
-                                request.setAttribute("lugar" + j,lugar);
+                        if(!usuario.getRol().equals("Delegado General")){
+                            if(request.getParameter("eventoApoyando") != null){
+                                parametrosEstado.add("Apoyando");
+                                request.setAttribute("eventoApoyando",1);
                             }
                         }
-                    }
-                    if(request.getParameter("eventosHoy") != null){
-                        parametrosFecha.add("Hoy");
-                        request.setAttribute("eventosHoy",1);
-                    }
-                    if(request.getParameter("eventosManana") != null){
-                        parametrosFecha.add("Manana");
-                        request.setAttribute("eventosManana",1);
-                    }
-                    if(request.getParameter("eventosMasDias") != null){
-                        parametrosFecha.add("MasDias");
-                        request.setAttribute("eventosMasDias",1);
-                    }
-                    request.setAttribute("listaEventos",dEvento.filtrarEventos(parametrosEstado,parametrosLugar,parametrosFecha,request.getParameter("horaInicio"),request.getParameter("horaFin"),idActividad,usuario.getIdUsuario()));
-                    request.setAttribute("horaInicio",request.getParameter("horaInicio"));
-                    request.setAttribute("horaFin",request.getParameter("horaFin"));
-                    request.getRequestDispatcher("listaDeEventos.jsp").forward(request,response);
-                    break;
-                case "filtroOrdenarEvento":
-                    request.setAttribute("idOrdenarEventos",Integer.parseInt(request.getParameter("idOrdenarEventos")));
-                    request.setAttribute("idSentidoEventos",Integer.parseInt(request.getParameter("idSentidoEventos")));
-                    request.setAttribute("listaEventos",dEvento.ordenarEvento(request.getParameter("idOrdenarEventos"),request.getParameter("idSentidoEventos"),idActividad));
-                    request.getRequestDispatcher("listaDeEventos.jsp").forward(request,response);
-                    break;
+                        if(dActividad.idDelegadoDeActividadPorActividad(idActividad) == usuario.getIdUsuario() || usuario.getRol().equals("Delegado General")){
+                            if(request.getParameter("eventoOculto") != null){
+                                parametrosEstado.add("Oculto");
+                                request.setAttribute("eventoOculto",1);
+                            }
+                        }
+                        String cantidad = request.getParameter("cantidadLugares");
+                        if(cantidad != null) {
+                            int cantidadLugares = Integer.parseInt(request.getParameter("cantidadLugares"));
+                            for (int j = 0; j < cantidadLugares; j++) {
+                                String lugarAux=request.getParameter("lugar" + j);
+                                if(lugarAux!=null){
+                                    Integer lugar=Integer.parseInt(lugarAux);
+                                    parametrosLugar.add(lugar);
+                                    request.setAttribute("lugar" + j,lugar);
+                                }
+                            }
+                        }
+                        if(request.getParameter("eventosHoy") != null){
+                            parametrosFecha.add("Hoy");
+                            request.setAttribute("eventosHoy",1);
+                        }
+                        if(request.getParameter("eventosManana") != null){
+                            parametrosFecha.add("Manana");
+                            request.setAttribute("eventosManana",1);
+                        }
+                        if(request.getParameter("eventosMasDias") != null){
+                            parametrosFecha.add("MasDias");
+                            request.setAttribute("eventosMasDias",1);
+                        }
+                        request.setAttribute("listaEventos",dEvento.filtrarEventos(parametrosEstado,parametrosLugar,parametrosFecha,request.getParameter("horaInicio"),request.getParameter("horaFin"),idActividad,usuario.getIdUsuario()));
+                        request.setAttribute("horaInicio",request.getParameter("horaInicio"));
+                        request.setAttribute("horaFin",request.getParameter("horaFin"));
+                        request.getRequestDispatcher("listaDeEventos.jsp").forward(request,response);
+                        break;
+                    case "filtroOrdenarEvento":
+                        request.setAttribute("idOrdenarEventos",Integer.parseInt(request.getParameter("idOrdenarEventos")));
+                        request.setAttribute("idSentidoEventos",Integer.parseInt(request.getParameter("idSentidoEventos")));
+                        request.setAttribute("listaEventos",dEvento.ordenarEvento(request.getParameter("idOrdenarEventos"),request.getParameter("idSentidoEventos"),idActividad));
+                        request.getRequestDispatcher("listaDeEventos.jsp").forward(request,response);
+                        break;
+                }
+            }else {
+                response.sendRedirect("PaginaNoExisteServlet");
             }
             request.getSession().setAttribute("usuario",dUsuario.usuarioSesion(usuario.getIdUsuario()));
         }
@@ -270,10 +271,6 @@ public class ListaDeEventosServlet extends HttpServlet {
                     int finEventoId = dEvento.idEventoPorNombre(finEventoNombre);
 
                     dEvento.finalizarEvento(finEventoId,finResumen,resultado);
-                    response.sendRedirect("ListaDeEventosServlet?idActividad="+idActividad);
-                    break;
-                case "notificacionLeidaCampanita":
-                    dN.notificacionLeida(Integer.parseInt(request.getParameter("idNotificacion")));
                     response.sendRedirect("ListaDeEventosServlet?idActividad="+idActividad);
                     break;
             }

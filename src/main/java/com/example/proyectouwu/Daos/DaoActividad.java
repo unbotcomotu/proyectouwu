@@ -375,16 +375,17 @@ public class DaoActividad extends DaoPadre {
             throw new RuntimeException(e);
         }
 
-        sql="update usuario set rol='Delegado de Actividad' where idUsuario=?";
+        sql="update usuario set rol='Alumno' where idUsuario=?";
         try(Connection conn=this.getConnection(); PreparedStatement pstmt= conn.prepareStatement(sql)){
-            pstmt.setInt(1,idDelegadoDeActividad);
+            pstmt.setInt(1,idDelegadoActividadAnterior);
             pstmt.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-        sql="update usuario set rol='Alumno' where idUsuario=?";
+
+        sql="update usuario set rol='Delegado de Actividad' where idUsuario=?";
         try(Connection conn=this.getConnection(); PreparedStatement pstmt= conn.prepareStatement(sql)){
-            pstmt.setInt(1,idDelegadoActividadAnterior);
+            pstmt.setInt(1,idDelegadoDeActividad);
             pstmt.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -477,6 +478,21 @@ public class DaoActividad extends DaoPadre {
                     return rs.getBlob(1);
                 }else
                     return null;
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public boolean existeActividad(String idActividad){
+        String sql="select idActividad from actividad where idActividad=?";
+        try(Connection conn=this.getConnection(); PreparedStatement pstmt= conn.prepareStatement(sql)){
+            pstmt.setString(1,idActividad);
+            try(ResultSet rs=pstmt.executeQuery()){
+                if(rs.next()){
+                    return true;
+                }else
+                    return false;
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);

@@ -17,6 +17,10 @@
     Integer idActividadElegida=(Integer) request.getSession().getAttribute("idActividadElegida");
     String puntajeNoNumerico=(String) request.getSession().getAttribute("puntajeNoNumerico");
     String actividadRepetida=(String) request.getSession().getAttribute("actividadRepetida");
+    String nombreLargo=(String) request.getSession().getAttribute("nombreLargo");
+    if(nombreLargo!=null){
+        request.getSession().removeAttribute("nombreLargo");
+    }
     String colorRol;
     String servletActual="ListaDeActividadesServlet";
     ArrayList<NotificacionDelegadoGeneral>listaNotificacionesCampanita=(ArrayList<NotificacionDelegadoGeneral>) request.getAttribute("listaNotificacionesCampanita");
@@ -936,8 +940,9 @@
                     <!-- DROPDOWN BOX LIST -->
                     <div class="dropdown-box-list" data-simplebar>
                         <%for(NotificacionDelegadoGeneral noti:listaNotificacionesCampanita){%>
-                        <form id="notificacionLeidaCampanita<%=listaNotificacionesCampanita.indexOf(noti)%>" method="post" action="/<%=servletActual%>?action=notificacionLeidaCampanita">
+                        <form id="notificacionLeidaCampanita<%=listaNotificacionesCampanita.indexOf(noti)%>" method="post" action="PaginaNoExisteServlet?action=notificacionLeidaCampanita">
                             <input type="hidden" name="idNotificacion" value="<%=noti.getIdNotificacion()%>">
+                            <input type="hidden" name="servletActual" value="<%=servletActual%>">
                             <%if(noti.getReporte().getIdReporte()!=0){
                                 Reporte r=new DaoReporte().reportePorIdReporteNotificacion(noti.getReporte().getIdReporte());%>
                             <!-- Reporte -->
@@ -1927,8 +1932,8 @@
     <%}%>
 </div>
 <%}else if(rolUsuario.equals("Delegado General")){%>
-<div class="overlay" <%if((puntajeNoNumerico!=null||actividadRepetida!=null) && idActividadElegida==null){%>style="display: block"<%}%> id="overlayCrear"></div>
-<div class="popup contenedorCrear" style="width: 700px; <%if((puntajeNoNumerico!=null||actividadRepetida!=null) && idActividadElegida==null){%> display: block <%}%>" id="popupCrear">
+<div class="overlay" <%if((nombreLargo!=null||puntajeNoNumerico!=null||actividadRepetida!=null) && idActividadElegida==null){%>style="display: block"<%}%> id="overlayCrear"></div>
+<div class="popup contenedorCrear" style="width: 700px; <%if((nombreLargo!=null||puntajeNoNumerico!=null||actividadRepetida!=null) && idActividadElegida==null){%> display: block <%}%>" id="popupCrear">
     <svg class="cerrarPopup" id="cerrarPopupCrear" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path d="M11.4142 10L16.7071 4.70711C17.0976 4.31658 17.0976 3.68342 16.7071 3.29289C16.3166 2.90237 15.6834 2.90237 15.2929 3.29289L10 8.58579L4.70711 3.29289C4.31658 2.90237 3.68342 2.90237 3.29289 3.29289C2.90237 3.68342 2.90237 4.31658 3.29289 4.70711L8.58579 10L3.29289 15.2929C2.90237 15.6834 2.90237 16.3166 3.29289 16.7071C3.68342 17.0976 4.31658 17.0976 4.70711 16.7071L10 11.4142L15.2929 16.7071C15.6834 17.0976 16.3166 17.0976 16.7071 16.7071C17.0976 16.3166 17.0976 15.6834 16.7071 15.2929L11.4142 10Z" fill="black"/>
     </svg>
@@ -1938,7 +1943,7 @@
             <div class="row">
                 <div class="col-sm-7">
                     <br>
-                    <label for="nombreCrearActividad" style="margin-top: 25px;"><b>Nombre de la actividad:</b></label>
+                    <label for="nombreCrearActividad" style="margin-top: 25px;"><b>Nombre de la actividad: <%if(nombreLargo!=null){%><a style="color: red">Ingrese un nombre más corto</a><%}%></b></label>
                     <input type="text" name="nombreCrearActividad" id="nombreCrearActividad" placeholder="Actividad" required>
 
                     <label for="idDelegadoActividadCrear" style="margin-top: 25px;"><b>Seleccionar delegado de actividad:</b></label>
@@ -1997,8 +2002,8 @@
 
 <%if(listaActividades!=null){
     for(int i=0;i<listaActividades.size();i++){%>
-<div class="overlay" <%if((puntajeNoNumerico!=null||actividadRepetida!=null) && idActividadElegida!=null && idActividadElegida==listaActividades.get(i).getIdActividad()){%>style="display: block"<%}%>  id="overlayEditarActividad<%=i%>"></div>
-<div class="popup contenedorCrear"  style="width: 700px; <%if((puntajeNoNumerico!=null||actividadRepetida!=null) && idActividadElegida!=null && idActividadElegida==listaActividades.get(i).getIdActividad()){%> display: block<%}%>" id="popupEditarActividad<%=i%>">
+<div class="overlay" <%if((nombreLargo!=null||puntajeNoNumerico!=null||actividadRepetida!=null) && idActividadElegida!=null && idActividadElegida==listaActividades.get(i).getIdActividad()){%>style="display: block"<%}%>  id="overlayEditarActividad<%=i%>"></div>
+<div class="popup contenedorCrear"  style="width: 700px; <%if((nombreLargo!=null||puntajeNoNumerico!=null||actividadRepetida!=null) && idActividadElegida!=null && idActividadElegida==listaActividades.get(i).getIdActividad()){%> display: block<%}%>" id="popupEditarActividad<%=i%>">
     <svg class="cerrarPopup" id="cerrarPopupEditarActividad<%=i%>" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path d="M11.4142 10L16.7071 4.70711C17.0976 4.31658 17.0976 3.68342 16.7071 3.29289C16.3166 2.90237 15.6834 2.90237 15.2929 3.29289L10 8.58579L4.70711 3.29289C4.31658 2.90237 3.68342 2.90237 3.29289 3.29289C2.90237 3.68342 2.90237 4.31658 3.29289 4.70711L8.58579 10L3.29289 15.2929C2.90237 15.6834 2.90237 16.3166 3.29289 16.7071C3.68342 17.0976 4.31658 17.0976 4.70711 16.7071L10 11.4142L15.2929 16.7071C15.6834 17.0976 16.3166 17.0976 16.7071 16.7071C17.0976 16.3166 17.0976 15.6834 16.7071 15.2929L11.4142 10Z" fill="black"/>
     </svg>
@@ -2010,7 +2015,7 @@
             <div class="row">
                 <div class="col-sm-7">
                     <br>
-                    <label style="margin-top: 25px;"><b>Nombre de la actividad:</b></label>
+                    <label style="margin-top: 25px;"><b>Nombre de la actividad: <%if(nombreLargo!=null){%> <a style="color: red;">Ingrese un nombre más corto</a><%}%></b></label>
                     <input type="text" name="nombreEditarActividad" id="nombreEditarActividad<%=i%>" value="<%=listaActividades.get(i).getNombre()%>" placeholder="Actividad" required>
 
                     <label for="idDelegadoActividadEditar<%=i%>" style="margin-top: 25px;"><b>Seleccionar delegado de actividad:</b></label>

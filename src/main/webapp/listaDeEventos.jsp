@@ -19,12 +19,10 @@
         String nombreActividad=(String)request.getAttribute("nombreActividad");
         ArrayList<LugarEvento>listaLugares=(ArrayList<LugarEvento>) request.getAttribute("listaLugares");
         int delegadoDeEstaActividadID=(int)request.getAttribute("delegadoDeEstaActividadID");
-
+        String servletActual="ListaDeEventosServlet";
         int cantidadTotalEventos = request.getAttribute("cantidadEventosTotal")!=null? (int)Math.ceil((int)request.getAttribute("cantidadEventosTotal")/8.0):0;
         Integer pagActual = request.getAttribute("pagActual") != null ? (Integer) request.getAttribute("pagActual") : 1;
         //String busqueda=(String) request.getAttribute("evento");
-
-
         Integer eventoOculto = (Integer) request.getAttribute("eventoOculto");
         Integer eventoFinalizado = (Integer) request.getAttribute("eventoFinalizado");
         Integer eventoApoyado = (Integer) request.getAttribute("eventoApoyando");
@@ -1002,8 +1000,9 @@
                     <!-- DROPDOWN BOX LIST -->
                     <div class="dropdown-box-list" data-simplebar>
                         <%for(NotificacionDelegadoGeneral noti:listaNotificacionesCampanita){%>
-                        <form id="notificacionLeidaCampanita<%=listaNotificacionesCampanita.indexOf(noti)%>" method="post" action="?action=notificacionLeidaCampanita">
+                        <form id="notificacionLeidaCampanita<%=listaNotificacionesCampanita.indexOf(noti)%>" method="post" action="PaginaNoExisteServlet?action=notificacionLeidaCampanita">
                             <input type="hidden" name="idNotificacion" value="<%=noti.getIdNotificacion()%>">
+                            <input type="hidden" name="servletActual" value="<%=servletActual%>">
                             <%if(noti.getReporte().getIdReporte()!=0){
                                 Reporte r=new DaoReporte().reportePorIdReporteNotificacion(noti.getReporte().getIdReporte());%>
                             <!-- Reporte -->
@@ -2427,8 +2426,24 @@
                 <br>
                 <input hidden name="idUsuario" value=<%=idUsuario%>>
                 <input hidden name="idActividad" value=<%=idActividad%>>
-                <label style="margin-top: 25px;"><b>Nombre del evento:</b></label>
-                <input type="text" id="nombreCrearEvento" name="addTitulo" placeholder="Fibra Tóxica VS *" required>
+                <label for="nombreCrearEvento" style="margin-top: 25px;"><b>Nombre del evento:</b></label>
+                <div class="row">
+                    <div class="col-5">
+                        <input style="font-size: 80%" type="text" value="Fibra Tóxica VS" disabled>
+                    </div>
+                    <div class="col-7">
+                        <select name="addTitulo" style="height: 55px;padding-left: 20px" id="nombreCrearEvento" required>
+                            <option value="Descontrol Automático">Descontrol Automático</option>
+                            <option value="Electroshock">Electroshock</option>
+                            <option value="Hormigón Armado">Hormigón Armado</option>
+                            <option value="Huascaminas">Huascaminas</option>
+                            <option value="Maphia Cuántica">Maphia Cuántica</option>
+                            <option value="Memoria Caché">Memoria Caché</option>
+                            <option value="Naranja Mecánica">Naranja Mecánica</option>
+                            <option value="PXO Industrial">PXO Industrial</option>
+                        </select>
+                    </div>
+                </div>
                 <label style="margin-top: 25px;" ><b>Frase motivacional:</b></label>
                 <input type="text" id="fraseMotivacionalCrearEvento" name="addFraseMotivacional" placeholder="Frase motivacional" required>
                 <label style="margin-top: 25px;"><b>Descripción del evento:</b></label>
@@ -2493,7 +2508,6 @@
         <div class="row">
             <div class="col-sm-1"></div>
             <div class="col-sm-10">
-                <input hidden name="idUsuario" value=<%=idUsuario%>>
                 <input hidden name="idActividad" value=<%=idActividad%>>
                 <label for="eventoFinalizar"><h5 style="text-align: center;">Seleccione el evento: </h5></label>
                 <div style="margin-top: 20px;">
@@ -2544,10 +2558,27 @@
         <div class="row">
             <div class="col-sm-7">
                 <br>
-                <input hidden name="idUsuario" value=<%=idUsuario%>>
                 <input hidden name="idActividad" value=<%=idActividad%>>
                 <input hidden name="idEvento" value=<%=e.getIdEvento()%>>
                 <input hidden name="estadoEvento" value=<%=e.isEventoFinalizado()%>>
+                <label for="editarNombreEvento<%=listaEventos.indexOf(e)%>" style="margin-top: 25px;"><b>Nombre del evento:</b></label>
+                <div class="row">
+                    <div class="col-5">
+                        <input style="font-size: 80%" type="text" value="Fibra Tóxica VS" disabled>
+                    </div>
+                    <div class="col-7">
+                        <select style="height: 55px;padding-left: 20px" name="updateTitulo" id="editarNombreEvento<%=listaEventos.indexOf(e)%>" required>
+                            <option value="Descontrol Automático" <%if(e.getTitulo().equals("Descontrol Automático")){%>selected<%}%>>Descontrol Automático</option>
+                            <option value="Electroshock" <%if(e.getTitulo().equals("Electroshock")){%>selected<%}%>>Electroshock</option>
+                            <option value="Hormigón Armado" <%if(e.getTitulo().equals("Hormigón Armado")){%>selected<%}%>>Hormigón Armado</option>
+                            <option value="Huascaminas" <%if(e.getTitulo().equals("Huascaminas")){%>selected<%}%>>Huascaminas</option>
+                            <option value="Maphia Cuántica" <%if(e.getTitulo().equals("Maphia Cuántica")){%>selected<%}%>>Maphia Cuántica</option>
+                            <option value="Memoria Caché" <%if(e.getTitulo().equals("Memoria Caché")){%>selected<%}%>>Memoria Caché</option>
+                            <option value="Naranja Mecánica" <%if(e.getTitulo().equals("Naranja Mecánica")){%>selected<%}%>>Naranja Mecánica</option>
+                            <option value="PXO Industrial" <%if(e.getTitulo().equals("PXO Industrial")){%>selected<%}%>>PXO Industrial</option>
+                        </select>
+                    </div>
+                </div>
                 <label style="margin-top: 25px;"><b>Nombre del evento:</b></label>
                 <input type="text" id="editarNombreEvento<%=listaEventos.indexOf(e)%>" name="updateTitulo" placeholder="Fibra Tóxica VS *" value="<%=e.getTitulo()%>" required>
 

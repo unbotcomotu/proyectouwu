@@ -104,10 +104,6 @@ public class MiCuentaServlet extends HttpServlet {
                 case("default"):
                     //auxilio
                     break;
-                case "notificacionLeidaCampanita":
-                    dN.notificacionLeida(Integer.parseInt(request.getParameter("idNotificacion")));
-                    response.sendRedirect("MiCuentaServlet");
-                    break;
             }
             request.getSession().setAttribute("usuario",dUsuario.usuarioSesion(usuario.getIdUsuario()));
         }

@@ -60,6 +60,8 @@ public class MisDonacionesServlet extends HttpServlet {
         DaoUsuario dUsuario=new DaoUsuario();
         InputStream inputY = null;
         InputStream inputP = null;
+        float monto=0;
+        boolean validacionMonto=true;
         Usuario usuario=(Usuario) request.getSession().getAttribute("usuario");
         if(usuario==null){
             response.sendRedirect("InicioSesionServlet");
@@ -67,33 +69,46 @@ public class MisDonacionesServlet extends HttpServlet {
             switch (action){
                 case "registDon":
                     String medioPago = request.getParameter("medio");
-                    float monto = Float.parseFloat(request.getParameter("monto"));
-                    partY = request.getPart("addFotoYape");
-                    partP = request.getPart("addFotoPlin");
-                    if(partY!=null){
-                        inputY = partY.getInputStream();
-                        System.out.println(inputY.available());
-                        if(inputY.available()>10){
-                            try {
-                                daoDonacion.agregarDonacionUsuario(usuario.getIdUsuario(),medioPago,monto,inputY);
-                                inputY.close();
-                            } catch (SQLException e) {
-                                throw new RuntimeException(e);
+                    String montoAux=request.getParameter("monto");
+                    try{
+                        monto = Float.parseFloat(montoAux);
+                        if(monto<0){
+                            validacionMonto=false;
+                        }
+                    }catch (NumberFormatException e){
+                        validacionMonto=false;
+                    }
+                    if(validacionMonto){
+                        partY = request.getPart("addFotoYape");
+                        partP = request.getPart("addFotoPlin");
+                        if(partY!=null){
+                            inputY = partY.getInputStream();
+                            System.out.println(inputY.available());
+                            if(inputY.available()>10){
+                                try {
+                                    daoDonacion.agregarDonacionUsuario(usuario.getIdUsuario(),medioPago,monto,inputY);
+                                    inputY.close();
+                                } catch (SQLException e) {
+                                    throw new RuntimeException(e);
+                                }
                             }
                         }
-                    }
-                    if(partP!=null){
-                        inputP = partP.getInputStream();
-                        if(inputP.available()>10){
-                            try {
-                                daoDonacion.agregarDonacionUsuario(usuario.getIdUsuario(),medioPago,monto,inputP);
-                                inputP.close();
-                            } catch (SQLException e) {
-                                throw new RuntimeException(e);
+                        if(partP!=null){
+                            inputP = partP.getInputStream();
+                            if(inputP.available()>10){
+                                try {
+                                    daoDonacion.agregarDonacionUsuario(usuario.getIdUsuario(),medioPago,monto,inputP);
+                                    inputP.close();
+                                } catch (SQLException e) {
+                                    throw new RuntimeException(e);
+                                }
                             }
                         }
+                        request.getSession().setAttribute("confirmacion","1");
+                    }else {
+                        request.getSession().setAttribute("errorMonto","1");
+                        request.getSession().setAttribute("medio",medioPago);
                     }
-                    request.getSession().setAttribute("confirmacion","1");
                     response.sendRedirect("MisDonacionesServlet");
                     break;
                 case "default":

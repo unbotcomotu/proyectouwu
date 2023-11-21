@@ -17,6 +17,12 @@
     float totalDonaciones=(float)request.getAttribute("totalDonaciones");
     String colorRol;
     String confirmacion=(String) request.getSession().getAttribute("confirmacion");
+    String errorMonto=(String) request.getSession().getAttribute("errorMonto");
+    String medioPagoError=(String) request.getSession().getAttribute("medio");
+    if(errorMonto!=null){
+        request.getSession().removeAttribute("errorMonto");
+        request.getSession().removeAttribute("medio");
+    }
     if(rolUsuario.equals("Alumno")){
         colorRol="";
     }else if(rolUsuario.equals("Delegado de Actividad")){
@@ -1138,15 +1144,15 @@
 
 
 <!-- /CONTENT GRID -->
-<div class="overlay" id="overlayPlin" style="display: none;"></div>
-<div class="popup contenedorCrear" style="max-width: 700px; display: none;" id="popupPlin">
+<div class="overlay" id="overlayPlin" style="<%if(errorMonto!=null&&medioPagoError.equals("Plin")){%>display: block<%}%>"></div>
+<div class="popup contenedorCrear" style="max-width: 700px; <%if(errorMonto!=null&&medioPagoError.equals("Plin")){%>display: block<%}%>" id="popupPlin">
     <svg class="cerrar-btn-crear" id="cerrarPopupPlin" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path d="M11.4142 10L16.7071 4.70711C17.0976 4.31658 17.0976 3.68342 16.7071 3.29289C16.3166 2.90237 15.6834 2.90237 15.2929 3.29289L10 8.58579L4.70711 3.29289C4.31658 2.90237 3.68342 2.90237 3.29289 3.29289C2.90237 3.68342 2.90237 4.31658 3.29289 4.70711L8.58579 10L3.29289 15.2929C2.90237 15.6834 2.90237 16.3166 3.29289 16.7071C3.68342 17.0976 4.31658 17.0976 4.70711 16.7071L10 11.4142L15.2929 16.7071C15.6834 17.0976 16.3166 17.0976 16.7071 16.7071C17.0976 16.3166 17.0976 15.6834 16.7071 15.2929L11.4142 10Z" fill="black"></path>
     </svg>
     <div class="container-fluid">
         <div class="row"><div class="col"><h5 style="text-align: center;">Donaciones</h5></div></div>
         <div class="contenedor2" style="top : 20px">
-            <label style="margin-top: 25px;" for="montoPlin1"><b>Monto a donar:</b></label>
+            <label style="margin-top: 25px;" for="montoPlin1"><b>Monto a donar: <%if(errorMonto!=null&&medioPagoError.equals("Plin")){%> <a style="color: red;">Ingrese un monto válido</a><%}%></b></label>
             <input type="number" id="montoPlin1" onkeydown="evitarNegativo(event)" onpaste="return false;" onDrop="return false;" autocomplete="off">
             <form method="post" action="<%=request.getContextPath()%>/MisDonacionesServlet?action=registDon" enctype='multipart/form-data'>
                 <div id="contenedorImagenPlin" class="container-fluid btn btn-file1">
@@ -1170,15 +1176,15 @@
 </div>
 
 
-<div class="overlay" id="overlayYape" style="display: none;"></div>
-<div class="popup contenedorCrear" style="display: none;max-width: 700px" id="popupYape">
+<div class="overlay" id="overlayYape" style="<%if(errorMonto!=null&&medioPagoError.equals("Yape")){%>display: block<%}%>"></div>
+<div class="popup contenedorCrear" style="<%if(errorMonto!=null&&medioPagoError.equals("Yape")){%>display: block<%}%>;max-width: 700px" id="popupYape">
     <svg class="cerrar-btn-crear" id="cerrarPopupYape" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path d="M11.4142 10L16.7071 4.70711C17.0976 4.31658 17.0976 3.68342 16.7071 3.29289C16.3166 2.90237 15.6834 2.90237 15.2929 3.29289L10 8.58579L4.70711 3.29289C4.31658 2.90237 3.68342 2.90237 3.29289 3.29289C2.90237 3.68342 2.90237 4.31658 3.29289 4.70711L8.58579 10L3.29289 15.2929C2.90237 15.6834 2.90237 16.3166 3.29289 16.7071C3.68342 17.0976 4.31658 17.0976 4.70711 16.7071L10 11.4142L15.2929 16.7071C15.6834 17.0976 16.3166 17.0976 16.7071 16.7071C17.0976 16.3166 17.0976 15.6834 16.7071 15.2929L11.4142 10Z" fill="black"></path>
     </svg>
     <div class="container-fluid">
         <div class="row"><div class="col"><h5 style="text-align: center;">Donaciones</h5></div></div>
         <div class="contenedor2" style="top: 20px">
-            <label style="margin-top: 25px;" for="montoYape1"><b>Monto a donar:</b></label>
+            <label style="margin-top: 25px;" for="montoYape1"><b>Monto a donar: <%if(errorMonto!=null&&medioPagoError.equals("Yape")){%> <a style="color: red;">Ingrese un monto válido</a><%}%></b></label>
             <input type="number" id="montoYape1" onkeydown="evitarNegativo(event)" onpaste="return false;" onDrop="return false;" autocomplete="off">
             <form method="post" action="<%=request.getContextPath()%>/MisDonacionesServlet?action=registDon" enctype='multipart/form-data'>
                 <div id="contenedorSubirArchivo1" class="container-fluid btn btn-file1">

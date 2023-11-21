@@ -37,7 +37,7 @@
         Integer cantidadTotalReportados=(Integer)request.getAttribute("cantidadTotalReportados");
         float[]donacionesUltimaSemanaEgresados=(float[])request.getAttribute("donacionesUltimaSemanaEgresados");
         float[]donacionesUltimaSemanaEstudiantes=(float[]) request.getAttribute("donacionesUltimaSemanaEstudiantes");
-        String[] fechas={"Lunes 25-09","Martes 26-09","Miércoles 27-09","Jueves 28-09","Viernes 29-09","Sábado 30-09","Domingo 01-10","Lunes 02-10","Martes 03-10","Miércoles 04-10","Jueves 05-10","Viernes 06-10","Sábado 07-10","Domingo 08-10","Lunes 09-10","Martes 10-10","Miércoles 11-10","Jueves 12-10","Viernes 13-10","Sábado 14-10","Domingo 15-10","Lunes 16-10","Martes 17-10","Miércoles 18-10","Jueves 19-10","Viernes 29-10","Sábado 21-10","Domingo 22-10","Lunes 23-10","Martes 24-10","Miércoles 25-10","Jueves 26-10","Viernes 27-10","Sábado 28-10","Domingo 29-10","Lunes 30-10","Martes 31-10","Miércoles 01-11","Jueves 02-11","Viernes 03-11","Sábado 04-11","Domingo 05-11","Lunes 06-11","Martes 07-11","Miércoles 08-11","Jueves 09-11","Viernes 10-11","Sábado 11-11","Domingo 12-11","Lunes 13-11","Martes 14-11","Miércoles 15-11","Jueves 16-11","Viernes 17-11","Sábado 18-11","Domingo 19-11","Lunes 20-11","Martes 21-11","Miércoles 22-11","Jueves 23-11","Viernes 24-11","Sábado 25-11","Domingo 26-11","Lunes 27-11","Martes 28-11","Miércoles 29-11","Jueves 30-11","Viernes 01-12","Sábado 02-12"};
+        String[] fechas={"Lunes 25-09","Martes 26-09","Miércoles 27-09","Jueves 28-09","Viernes 29-09","Sábado 30-09","Domingo 01-10","Lunes 02-10","Martes 03-10","Miércoles 04-10","Jueves 05-10","Viernes 06-10","Sábado 07-10","Domingo 08-10","Lunes 09-10","Martes 10-10","Miércoles 11-10","Jueves 12-10","Viernes 13-10","Sábado 14-10","Domingo 15-10","Lunes 16-10","Martes 17-10","Miércoles 18-10","Jueves 19-10","Viernes 29-10","Sábado 21-10","Domingo 22-10","Lunes 23-10","Martes 24-10","Miércoles 25-10","Jueves 26-10","Viernes 27-10","Sábado 28-10","Domingo 29-10","Lunes 30-10","Martes 31-10","Miércoles 01-11","Jueves 02-11","Viernes 03-11","Sábado 04-11","Domingo 05-11","Lunes 06-11","Martes 07-11","Miércoles 08-11","Jueves 09-11","Viernes 10-11","Sábado 11-11","Domingo 12-11","Lunes 13-11","Martes 14-11","Miércoles 15-11","Jueves 16-11","Viernes 17-11","Sábado 18-11","Domingo 19-11","Lunes 20-11","Martes 21-11","Miércoles 22-11","Jueves 23-11","Viernes 24-11","Sábado 25-11","Domingo 26-11","Lunes 27-11","Martes 28-11","Miércoles 29-11","Jueves 30-11","Viernes 01-12","Sábado 02-12","Domingo 03-12","Lunes 04-12","Martes 05-12","Miércoles 06-12","Jueves 07-12","Viernes 08-12","Sábado 09-12","Domingo 10-12","Lunes 11-12","Martes 12-12","Miércoles 13-12","Jueves 14-12","Viernes 15-12","Sábado 16-12","Domingo 17-12","Lunes 18-12","Martes 19-12","Miércoles 20-12","Jueves 21-12","Viernes 22-12","Sábado 23-12"};
         String[] diasSemana=new String[7];
         String[] aux=ZonedDateTime.now().toString().split("T")[0].split("-");
         String diaMesActual=aux[2]+"-"+aux[1];
@@ -53,10 +53,10 @@
         Integer totalEgresadosRegistrados=(Integer) request.getAttribute("totalEgresadosRegistrados");
         float totalDonacionesEstudiantes=(float) request.getAttribute("totalDonacionesEstudiantes");
         float totalDonacionesEgresados=(float) request.getAttribute("totalDonacionesEgresados");
-        TopApoyo topApoyoUltimaSemana= request.getAttribute("topApoyoUltimaSemana") != null ? (TopApoyo) request.getAttribute("topApoyoUltimaSemana") : new TopApoyo();
-        TopApoyo topApoyoTotal= request.getAttribute("topApoyoTotal") != null ? (TopApoyo) request.getAttribute("topApoyoTotal") : new TopApoyo();
-        TopDonador topDonadorTotal = request.getAttribute("topDonadorTotal") != null ? (TopDonador) request.getAttribute("topDonadorTotal") : new TopDonador();
-        TopDonador topDonadorUltimaSemana = request.getAttribute("topDonadorUltimaSemana") != null ? (TopDonador) request.getAttribute("topDonadorUltimaSemana") : new TopDonador();
+        TopApoyo topApoyoUltimaSemana=(TopApoyo) request.getAttribute("topApoyoUltimaSemana");
+        TopApoyo topApoyoTotal=(TopApoyo) request.getAttribute("topApoyoTotal");
+        TopDonador topDonadorTotal =(TopDonador) request.getAttribute("topDonadorTotal");
+        TopDonador topDonadorUltimaSemana =(TopDonador) request.getAttribute("topDonadorUltimaSemana");
         for(int i=0;i<fechas.length;i++){
             if(diaMesActual.equals(fechas[i].split(" ")[1])){
                 for(int j=0;j<7;j++){
@@ -916,8 +916,9 @@
                     <!-- DROPDOWN BOX LIST -->
                     <div class="dropdown-box-list" data-simplebar>
                         <%for(NotificacionDelegadoGeneral noti:listaNotificacionesCampanita){%>
-                        <form id="notificacionLeidaCampanita<%=listaNotificacionesCampanita.indexOf(noti)%>" method="post" action="/<%=servletActual%>?action=notificacionLeidaCampanita">
+                        <form id="notificacionLeidaCampanita<%=listaNotificacionesCampanita.indexOf(noti)%>" method="post" action="PaginaNoExisteServlet?action=notificacionLeidaCampanita">
                             <input type="hidden" name="idNotificacion" value="<%=noti.getIdNotificacion()%>">
+                            <input type="hidden" name="servletActual" value="<%=servletActual%>">
                             <%if(noti.getReporte().getIdReporte()!=0){
                                 Reporte r=new DaoReporte().reportePorIdReporteNotificacion(noti.getReporte().getIdReporte());%>
                             <!-- Reporte -->
@@ -1656,9 +1657,10 @@
                     <!-- /STATS BOX VALUE -->
                     <!-- STATS BOX DIFF -->
                     <div class="stats-box-diff">
-                        <!-- STATS BOX DIFF ICON -->
+                        <%if(donacionesHoy!=donacionesAyer){%>
                         <%float porcentajeHoyRespectoAyerDonaciones=(donacionesHoy-donacionesAyer)*100/donacionesAyer;
                             if(porcentajeHoyRespectoAyerDonaciones<0){%>
+                        <!-- STATS BOX DIFF ICON -->
                         <div class="stats-box-diff-icon negative">
                             <!-- ICON MINUS SMALL -->
                             <svg class="icon-minus-small">
@@ -1680,8 +1682,19 @@
                             <!-- /ICON PLUS SMALL -->
                         </div>
                         <!-- /STATS BOX DIFF ICON -->
+                        <%if(donacionesAyer!=0){%>
                         <!-- STATS BOX DIFF VALUE -->
                         <p class="stats-box-diff-value"><%=porcentajeHoyRespectoAyerDonaciones%>%</p>
+                        <!-- /STATS BOX DIFF VALUE -->
+                        <%}else{%>
+                        <!-- STATS BOX DIFF VALUE -->
+                        <p class="stats-box-diff-value">Ayer no hubieron donaciones</p>
+                        <!-- /STATS BOX DIFF VALUE -->
+                        <%}}}else{%>
+                        <div class="stats-box-diff-icon positive"></div>
+                        <!-- /STATS BOX DIFF ICON -->
+                        <!-- STATS BOX DIFF VALUE -->
+                        <p class="stats-box-diff-value">Sin cambios</p>
                         <!-- /STATS BOX DIFF VALUE -->
                         <%}%>
                     </div>
@@ -1709,6 +1722,7 @@
 
                     <!-- STATS BOX DIFF -->
                     <div class="stats-box-diff">
+                        <%if(reportesHoy!=null){%>
                         <%float porcentajeHoyRespectoAyerReportes= (float) ((reportesHoy - reportesAyer) * 100) /reportesAyer;
                             if(porcentajeHoyRespectoAyerReportes<0){%>
                         <div class="stats-box-diff-icon negative">
@@ -1732,8 +1746,19 @@
                             <!-- /ICON PLUS SMALL -->
                         </div>
                         <!-- /STATS BOX DIFF ICON -->
+                        <%if(reportesAyer!=0){%>
                         <!-- STATS BOX DIFF VALUE -->
                         <p class="stats-box-diff-value"><%=porcentajeHoyRespectoAyerReportes%>%</p>
+                        <!-- /STATS BOX DIFF VALUE -->
+                        <%}else{%>
+                        <!-- STATS BOX DIFF VALUE -->
+                        <p class="stats-box-diff-value">Ayer no hubieron reportes</p>
+                        <!-- /STATS BOX DIFF VALUE -->
+                        <%}}}else{%>
+                        <div class="stats-box-diff-icon positive"></div>
+                        <!-- /STATS BOX DIFF ICON -->
+                        <!-- STATS BOX DIFF VALUE -->
+                        <p class="stats-box-diff-value">Sin cambios</p>
                         <!-- /STATS BOX DIFF VALUE -->
                         <%}%>
                     </div>
@@ -1761,6 +1786,7 @@
 
                     <!-- STATS BOX DIFF -->
                     <div class="stats-box-diff">
+                        <%if(baneosHoy!=baneosAyer){%>
                         <%float porcentajeHoyRespectoAyerBaneos= (float) ((baneosHoy - baneosAyer) * 100) /baneosAyer;
                             if(porcentajeHoyRespectoAyerBaneos<0){%>
                         <div class="stats-box-diff-icon negative">
@@ -1784,8 +1810,20 @@
                             <!-- /ICON PLUS SMALL -->
                         </div>
                         <!-- /STATS BOX DIFF ICON -->
+                        <%if(porcentajeHoyRespectoAyerBaneos!=0){%>
                         <!-- STATS BOX DIFF VALUE -->
                         <p class="stats-box-diff-value"><%=porcentajeHoyRespectoAyerBaneos%>%</p>
+                        <!-- /STATS BOX DIFF VALUE -->
+                        <%}else{%>
+                        <!-- STATS BOX DIFF VALUE -->
+                        <p class="stats-box-diff-value">Ayer no hubieron baneos</p>
+                        <!-- /STATS BOX DIFF VALUE -->
+                        <%}}}else{%>
+                        <!-- STATS BOX DIFF ICON -->
+                        <div class="stats-box-diff-icon positive"></div>
+                        <!-- /STATS BOX DIFF ICON -->
+                        <!-- STATS BOX DIFF VALUE -->
+                        <p class="stats-box-diff-value">Sin cambios</p>
                         <!-- /STATS BOX DIFF VALUE -->
                         <%}%>
                     </div>
@@ -1813,6 +1851,7 @@
 
                     <!-- STATS BOX DIFF -->
                     <div class="stats-box-diff">
+                        <%if(solicitudesApoyoAyer!=null){%>
                         <%float porcentajeHoyRespectoAyerSolicitudesApoyo= (float) ((solicitudesApoyoHoy - solicitudesApoyoAyer) * 100) /solicitudesApoyoAyer;
                             if(porcentajeHoyRespectoAyerSolicitudesApoyo<0){%>
                         <div class="stats-box-diff-icon negative">
@@ -1836,8 +1875,20 @@
                             <!-- /ICON PLUS SMALL -->
                         </div>
                         <!-- /STATS BOX DIFF ICON -->
+                        <%if(solicitudesApoyoAyer!=0){%>
                         <!-- STATS BOX DIFF VALUE -->
                         <p class="stats-box-diff-value"><%=porcentajeHoyRespectoAyerSolicitudesApoyo%>%</p>
+                        <!-- /STATS BOX DIFF VALUE -->
+                        <%}else{%>
+                        <!-- STATS BOX DIFF VALUE -->
+                        <p class="stats-box-diff-value">Ayer no hubieron solicitudes</p>
+                        <!-- /STATS BOX DIFF VALUE -->
+                        <%}}}else{%>
+                        <!-- STATS BOX DIFF ICON -->
+                        <div class="stats-box-diff-icon positive"></div>
+                        <!-- /STATS BOX DIFF ICON -->
+                        <!-- STATS BOX DIFF VALUE -->
+                        <p class="stats-box-diff-value">Sin cambios</p>
                         <!-- /STATS BOX DIFF VALUE -->
                         <%}%>
                     </div>
@@ -2033,6 +2084,8 @@
 
         <!-- GRID -->
         <div class="grid grid-3-3-3-3 centered">
+
+            <%if(topDonadorUltimaSemana!=null){%>
             <!-- FEATURED STAT BOX -->
             <div class="featured-stat-box reactioner">
                 <!-- FEATURED STAT BOX COVER -->
@@ -2105,7 +2158,82 @@
                 <!-- /FEATURED STAT BOX INFO -->
             </div>
             <!-- /FEATURED STAT BOX -->
+            <%}else{%>
+            <!-- FEATURED STAT BOX -->
+            <div class="featured-stat-box reactioner">
+                <!-- FEATURED STAT BOX COVER -->
+                <div class="featured-stat-box-cover">
+                    <!-- FEATURED STAT BOX COVER TITLE -->
+                    <p class="featured-stat-box-cover-title">Top Donador</p>
+                    <!-- /FEATURED STAT BOX COVER TITLE -->
 
+                    <!-- FEATURED STAT BOX COVER TEXT -->
+                    <p class="featured-stat-box-cover-text">en la última semana</p>
+                    <!-- /FEATURED STAT BOX COVER TEXT -->
+                </div>
+                <!-- /FEATURED STAT BOX COVER -->
+
+                <!-- FEATURED STAT BOX INFO -->
+                <div class="featured-stat-box-info">
+                    <!-- USER AVATAR -->
+                    <div class="user-avatar small">
+                        <!-- USER AVATAR BORDER -->
+                        <div class="user-avatar-border">
+                            <!-- HEXAGON -->
+                            <div class="hexagon-50-56"></div>
+                            <!-- /HEXAGON -->
+                        </div>
+                        <!-- /USER AVATAR BORDER -->
+
+                        <!-- USER AVATAR CONTENT -->
+                        <div class="user-avatar-content">
+                            <!-- HEXAGON -->
+                            <div class="hexagon-image-30-32" data-src="css/usuarioNoExiste.png"></div>
+                            <!-- /HEXAGON -->
+                        </div>
+                        <!-- /USER AVATAR CONTENT -->
+
+                        <!-- USER AVATAR PROGRESS -->
+                        <div class="user-avatar-progress">
+                            <!-- HEXAGON -->
+                            <div class="hexagon-progress-40-44"></div>
+                            <!-- /HEXAGON -->
+                        </div>
+                        <!-- /USER AVATAR PROGRESS -->
+
+                        <!-- USER AVATAR PROGRESS BORDER -->
+                        <div class="user-avatar-progress-border">
+                            <!-- HEXAGON -->
+                            <div class="hexagon-border-40-44"></div>
+                            <!-- /HEXAGON -->
+                        </div>
+                        <!-- /USER AVATAR PROGRESS BORDER -->
+
+                        <!-- USER AVATAR BADGE -->
+
+                        <!-- /USER AVATAR BADGE -->
+                    </div>
+                    <!-- /USER AVATAR -->
+
+                    <!-- FEATURED STAT BOX TITLE -->
+                    <p class="featured-stat-box-title">0</p>
+                    <!-- /FEATURED STAT BOX TITLE -->
+
+                    <!-- FEATURED STAT BOX SUBTITLE -->
+                    <p class="featured-stat-box-subtitle">Nuevos soles</p>
+                    <!-- /FEATURED STAT BOX SUBTITLE -->
+
+                    <!-- FEATURED STAT BOX TEXT -->
+                    <p class="featured-stat-box-text">Nadie realizó una donación :(</p>
+                    <!-- /FEATURED STAT BOX TEXT -->
+                </div>
+                <!-- /FEATURED STAT BOX INFO -->
+            </div>
+            <!-- /FEATURED STAT BOX -->
+            <%}%>
+
+
+            <%if(topDonadorTotal!=null){%>
             <!-- FEATURED STAT BOX -->
             <div class="featured-stat-box reactioner">
                 <!-- FEATURED STAT BOX COVER -->
@@ -2174,7 +2302,78 @@
                 <!-- /FEATURED STAT BOX INFO -->
             </div>
             <!-- /FEATURED STAT BOX -->
+            <%}else{%>
+            <!-- FEATURED STAT BOX -->
+            <div class="featured-stat-box reactioner">
+                <!-- FEATURED STAT BOX COVER -->
+                <div class="featured-stat-box-cover">
+                    <!-- FEATURED STAT BOX COVER TITLE -->
+                    <p class="featured-stat-box-cover-title">Top Donador</p>
+                    <!-- /FEATURED STAT BOX COVER TITLE -->
 
+                    <!-- FEATURED STAT BOX COVER TEXT -->
+                    <p class="featured-stat-box-cover-text">de todos los tiempos</p>
+                    <!-- /FEATURED STAT BOX COVER TEXT -->
+                </div>
+                <!-- /FEATURED STAT BOX COVER -->
+
+                <!-- FEATURED STAT BOX INFO -->
+                <div class="featured-stat-box-info">
+                    <!-- USER AVATAR -->
+                    <div class="user-avatar small">
+                        <!-- USER AVATAR BORDER -->
+                        <div class="user-avatar-border">
+                            <!-- HEXAGON -->
+                            <div class="hexagon-50-56"></div>
+                            <!-- /HEXAGON -->
+                        </div>
+                        <!-- /USER AVATAR BORDER -->
+
+                        <!-- USER AVATAR CONTENT -->
+                        <div class="user-avatar-content">
+                            <!-- HEXAGON -->
+                            <div class="hexagon-image-30-32" data-src="css/usuarioNoExiste.png"></div>
+                            <!-- /HEXAGON -->
+                        </div>
+                        <!-- /USER AVATAR CONTENT -->
+
+                        <!-- USER AVATAR PROGRESS -->
+                        <div class="user-avatar-progress">
+                            <!-- HEXAGON -->
+                            <div class="hexagon-progress-40-44"></div>
+                            <!-- /HEXAGON -->
+                        </div>
+                        <!-- /USER AVATAR PROGRESS -->
+
+                        <!-- USER AVATAR PROGRESS BORDER -->
+                        <div class="user-avatar-progress-border">
+                            <!-- HEXAGON -->
+                            <div class="hexagon-border-40-44"></div>
+                            <!-- /HEXAGON -->
+                        </div>
+                        <!-- /USER AVATAR PROGRESS BORDER -->
+                    </div>
+                    <!-- /USER AVATAR -->
+
+                    <!-- FEATURED STAT BOX TITLE -->
+                    <p class="featured-stat-box-title">0</p>
+                    <!-- /FEATURED STAT BOX TITLE -->
+
+                    <!-- FEATURED STAT BOX SUBTITLE -->
+                    <p class="featured-stat-box-subtitle">Nuevos soles</p>
+                    <!-- /FEATURED STAT BOX SUBTITLE -->
+
+                    <!-- FEATURED STAT BOX TEXT -->
+                    <p class="featured-stat-box-text">Aún nadie realizó una donación :(</p>
+                    <!-- /FEATURED STAT BOX TEXT -->
+                </div>
+                <!-- /FEATURED STAT BOX INFO -->
+            </div>
+            <!-- /FEATURED STAT BOX -->
+            <%}%>
+
+
+            <%if(topApoyoUltimaSemana!=null){%>
             <!-- FEATURED STAT BOX -->
             <div class="featured-stat-box commenter">
                 <!-- FEATURED STAT BOX COVER -->
@@ -2244,7 +2443,78 @@
                 <!-- /FEATURED STAT BOX INFO -->
             </div>
             <!-- /FEATURED STAT BOX -->
+            <%}else{%>
+            <!-- FEATURED STAT BOX -->
+            <div class="featured-stat-box commenter">
+                <!-- FEATURED STAT BOX COVER -->
+                <div class="featured-stat-box-cover">
+                    <!-- FEATURED STAT BOX COVER TITLE -->
+                    <p class="featured-stat-box-cover-title">Top Apoyo</p>
+                    <!-- /FEATURED STAT BOX COVER TITLE -->
 
+                    <!-- FEATURED STAT BOX COVER TEXT -->
+                    <p class="featured-stat-box-cover-text">en la última semana</p>
+                    <!-- /FEATURED STAT BOX COVER TEXT -->
+                </div>
+                <!-- /FEATURED STAT BOX COVER -->
+
+                <!-- FEATURED STAT BOX INFO -->
+                <div class="featured-stat-box-info">
+                    <!-- USER AVATAR -->
+                    <div class="user-avatar small">
+                        <!-- USER AVATAR BORDER -->
+                        <div class="user-avatar-border">
+                            <!-- HEXAGON -->
+                            <div class="hexagon-50-56"></div>
+                            <!-- /HEXAGON -->
+                        </div>
+                        <!-- /USER AVATAR BORDER -->
+
+                        <!-- USER AVATAR CONTENT -->
+                        <div class="user-avatar-content">
+                            <!-- HEXAGON AQUÍ SE PONE LA FOTO DEL TOP APOYO ÚLTIMA SEMANA-->
+                            <div class="hexagon-image-30-32" data-src="css/usuarioNoExiste.png"></div>
+                            <!-- /HEXAGON -->
+                        </div>
+                        <!-- /USER AVATAR CONTENT -->
+
+                        <!-- USER AVATAR PROGRESS -->
+                        <div class="user-avatar-progress">
+                            <!-- HEXAGON -->
+                            <div class="hexagon-progress-40-44"></div>
+                            <!-- /HEXAGON -->
+                        </div>
+                        <!-- /USER AVATAR PROGRESS -->
+
+                        <!-- USER AVATAR PROGRESS BORDER -->
+                        <div class="user-avatar-progress-border">
+                            <!-- HEXAGON -->
+                            <div class="hexagon-border-40-44"></div>
+                            <!-- /HEXAGON -->
+                        </div>
+                        <!-- /USER AVATAR PROGRESS BORDER -->
+
+                    </div>
+                    <!-- /USER AVATAR -->
+
+                    <!-- FEATURED STAT BOX TITLE -->
+                    <p class="featured-stat-box-title">0</p>
+                    <!-- /FEATURED STAT BOX TITLE -->
+
+                    <!-- FEATURED STAT BOX SUBTITLE -->
+                    <p class="featured-stat-box-subtitle">Eventos</p>
+                    <!-- /FEATURED STAT BOX SUBTITLE -->
+
+                    <!-- FEATURED STAT BOX TEXT -->
+                    <p class="featured-stat-box-text">No existe apoyo en la última semana :(</p>
+                    <!-- /FEATURED STAT BOX TEXT -->
+                </div>
+                <!-- /FEATURED STAT BOX INFO -->
+            </div>
+            <!-- /FEATURED STAT BOX -->
+            <%}%>
+
+            <%if(topApoyoTotal!=null){%>
             <!-- FEATURED STAT BOX -->
             <div class="featured-stat-box commenter">
                 <!-- FEATURED STAT BOX COVER -->
@@ -2315,6 +2585,78 @@
                 <!-- /FEATURED STAT BOX INFO -->
             </div>
             <!-- /FEATURED STAT BOX -->
+            <%}else{%>
+            <!-- FEATURED STAT BOX -->
+            <div class="featured-stat-box commenter">
+                <!-- FEATURED STAT BOX COVER -->
+                <div class="featured-stat-box-cover">
+                    <!-- FEATURED STAT BOX COVER TITLE -->
+                    <p class="featured-stat-box-cover-title">Top Apoyo</p>
+                    <!-- /FEATURED STAT BOX COVER TITLE -->
+
+                    <!-- FEATURED STAT BOX COVER TEXT -->
+                    <p class="featured-stat-box-cover-text">de todos los tiempos</p>
+                    <!-- /FEATURED STAT BOX COVER TEXT -->
+                </div>
+                <!-- /FEATURED STAT BOX COVER -->
+
+                <!-- FEATURED STAT BOX INFO -->
+                <div class="featured-stat-box-info">
+                    <!-- USER AVATAR -->
+                    <div class="user-avatar small">
+                        <!-- USER AVATAR BORDER -->
+                        <div class="user-avatar-border">
+                            <!-- HEXAGON -->
+                            <div class="hexagon-50-56"></div>
+                            <!-- /HEXAGON -->
+                        </div>
+                        <!-- /USER AVATAR BORDER -->
+
+                        <!-- USER AVATAR CONTENT -->
+                        <div class="user-avatar-content">
+                            <!-- HEXAGON AQUÍ SE PONE LA FOTO DEL TOP APOYO TOTAL-->
+                            <div class="hexagon-image-30-32" data-src="css/usuarioNoExiste.png"></div>
+                            <!-- /HEXAGON -->
+                        </div>
+                        <!-- /USER AVATAR CONTENT -->
+
+                        <!-- USER AVATAR PROGRESS -->
+                        <div class="user-avatar-progress">
+                            <!-- HEXAGON -->
+                            <div class="hexagon-progress-40-44"></div>
+                            <!-- /HEXAGON -->
+                        </div>
+                        <!-- /USER AVATAR PROGRESS -->
+
+                        <!-- USER AVATAR PROGRESS BORDER -->
+                        <div class="user-avatar-progress-border">
+                            <!-- HEXAGON -->
+                            <div class="hexagon-border-40-44"></div>
+                            <!-- /HEXAGON -->
+                        </div>
+                        <!-- /USER AVATAR PROGRESS BORDER -->
+
+
+                    </div>
+                    <!-- /USER AVATAR -->
+
+                    <!-- FEATURED STAT BOX TITLE -->
+                    <p class="featured-stat-box-title">0</p>
+                    <!-- /FEATURED STAT BOX TITLE -->
+
+                    <!-- FEATURED STAT BOX SUBTITLE -->
+                    <p class="featured-stat-box-subtitle">Eventos</p>
+                    <!-- /FEATURED STAT BOX SUBTITLE -->
+
+                    <!-- FEATURED STAT BOX TEXT -->
+                    <p class="featured-stat-box-text">Nadie apoyó algún evento :(</p>
+                    <!-- /FEATURED STAT BOX TEXT -->
+                </div>
+                <!-- /FEATURED STAT BOX INFO -->
+            </div>
+            <!-- /FEATURED STAT BOX -->
+            <%}%>
+
         </div>
         <!-- /GRID -->
 

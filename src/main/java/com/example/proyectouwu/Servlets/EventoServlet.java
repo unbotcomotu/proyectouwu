@@ -24,26 +24,31 @@ public class EventoServlet extends HttpServlet {
         if(usuario==null){
             response.sendRedirect("InicioSesionServlet");
         }else {
-            int idEvento=Integer.parseInt(request.getParameter("idEvento"));
-            String rolUsuario=dUsuario.rolUsuarioPorId(usuario.getIdUsuario());
-            request.setAttribute("rolUsuario",rolUsuario);
-            request.setAttribute("nombreCompletoUsuario",dUsuario.nombreCompletoUsuarioPorId(usuario.getIdUsuario()));
-            request.setAttribute("vistaActual","listaDeActividades");
-            request.setAttribute("correosDelegadosGenerales",dUsuario.listarCorreosDelegadosGenerales());
-            request.setAttribute("evento",dEvento.eventoPorIDsinMiniatura(idEvento));
-            request.setAttribute("actividad",dEvento.actividadDeEventoPorID(idEvento));
-            request.setAttribute("estadoApoyoAlumnoEvento",new DaoAlumnoPorEvento().verificarApoyo(idEvento,usuario.getIdUsuario()));
-            request.setAttribute("lugar",dEvento.lugarPorEventoID(idEvento));
-            request.setAttribute("delegadoDeEstaActividadID",dEvento.idDelegadoDeActividadPorEvento(idEvento));
-            request.setAttribute("cantidadApoyos",dEvento.cantidadApoyosBarraEquipoPorEvento(idEvento));
-            request.setAttribute("solicitudesApoyoPendientes",dEvento.solicitudesSinAtenderPorEvento(idEvento));
-            if(rolUsuario.equals("Delegado General")){
-                request.setAttribute("listaNotificacionesCampanita",new DaoNotificacionDelegadoGeneral().listarNotificacionesDelegadoGeneral());
-            }
-            String action = request.getParameter("action") == null ? "default" : request.getParameter("action");
-            switch (action){
-                case "default":
-                    request.getRequestDispatcher("evento.jsp").forward(request,response);
+            String idEventoAux=request.getParameter("idEvento");
+            if(dEvento.existeEvento(idEventoAux)){
+                int idEvento=Integer.parseInt(request.getParameter("idEvento"));
+                String rolUsuario=dUsuario.rolUsuarioPorId(usuario.getIdUsuario());
+                request.setAttribute("rolUsuario",rolUsuario);
+                request.setAttribute("nombreCompletoUsuario",dUsuario.nombreCompletoUsuarioPorId(usuario.getIdUsuario()));
+                request.setAttribute("vistaActual","listaDeActividades");
+                request.setAttribute("correosDelegadosGenerales",dUsuario.listarCorreosDelegadosGenerales());
+                request.setAttribute("evento",dEvento.eventoPorIDsinMiniatura(idEvento));
+                request.setAttribute("actividad",dEvento.actividadDeEventoPorID(idEvento));
+                request.setAttribute("estadoApoyoAlumnoEvento",new DaoAlumnoPorEvento().verificarApoyo(idEvento,usuario.getIdUsuario()));
+                request.setAttribute("lugar",dEvento.lugarPorEventoID(idEvento));
+                request.setAttribute("delegadoDeEstaActividadID",dEvento.idDelegadoDeActividadPorEvento(idEvento));
+                request.setAttribute("cantidadApoyos",dEvento.cantidadApoyosBarraEquipoPorEvento(idEvento));
+                request.setAttribute("solicitudesApoyoPendientes",dEvento.solicitudesSinAtenderPorEvento(idEvento));
+                if(rolUsuario.equals("Delegado General")){
+                    request.setAttribute("listaNotificacionesCampanita",new DaoNotificacionDelegadoGeneral().listarNotificacionesDelegadoGeneral());
+                }
+                String action = request.getParameter("action") == null ? "default" : request.getParameter("action");
+                switch (action){
+                    case "default":
+                        request.getRequestDispatcher("evento.jsp").forward(request,response);
+                }
+            }else{
+                response.sendRedirect("PaginaNoExisteServlet");
             }
             request.getSession().setAttribute("usuario",dUsuario.usuarioSesion(usuario.getIdUsuario()));
         }
@@ -68,10 +73,6 @@ public class EventoServlet extends HttpServlet {
                     new DaoAlumnoPorEvento().usuarioApoyaEvento(usuario.getIdUsuario(),idEvento);
                     //<a href="/proyectouwu_war_exploded/EventoServlet?idEvento=6&amp;idUsuario=17">
                     //http://localhost:8080/proyectouwu_war_exploded/EventoServlet?idEvento=6&idUsuario=17
-                    response.sendRedirect(request.getContextPath()+"/EventoServlet?idEvento="+idEvento);
-                    break;
-                case "notificacionLeidaCampanita":
-                    dN.notificacionLeida(Integer.parseInt(request.getParameter("idNotificacion")));
                     response.sendRedirect(request.getContextPath()+"/EventoServlet?idEvento="+idEvento);
                     break;
                 case "editarCarrusel":

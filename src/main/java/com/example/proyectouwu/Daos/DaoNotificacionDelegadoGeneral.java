@@ -2,6 +2,8 @@ package com.example.proyectouwu.Daos;
 
 import com.example.proyectouwu.Beans.*;
 
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.sql.*;
 import java.util.ArrayList;
 
@@ -672,6 +674,17 @@ public class DaoNotificacionDelegadoGeneral extends DaoPadre {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public String obtenerDireccionIP(){
+        try {
+            InetAddress direccionIP = InetAddress.getLocalHost();
+            return direccionIP.getHostAddress();
+
+        } catch (UnknownHostException e) {
+            e.printStackTrace();
+        }
+        return "";
     }
 
 }

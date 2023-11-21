@@ -348,7 +348,7 @@ public class DaoEvento extends DaoPadre {
             pstmt.setInt(1, idEvento);
             try (ResultSet rs = pstmt.executeQuery()) {
                 rs.next();
-                if(rs.getBoolean(1)==true){
+                if(rs.getBoolean(1)){
                     return true;
                 }else{
                     return false;
@@ -729,6 +729,18 @@ public class DaoEvento extends DaoPadre {
                     return rs.getBlob(1);
                 }else
                     return null;
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public boolean existeEvento(String idEvento){
+        String sql="select idEvento from evento where idEvento=?";
+        try(Connection conn=this.getConnection(); PreparedStatement pstmt= conn.prepareStatement(sql)){
+            pstmt.setString(1,idEvento);
+            try(ResultSet rs=pstmt.executeQuery()){
+                return rs.next();
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);

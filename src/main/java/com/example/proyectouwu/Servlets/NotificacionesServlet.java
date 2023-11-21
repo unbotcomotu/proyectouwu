@@ -46,6 +46,7 @@ public class NotificacionesServlet extends HttpServlet {
             int pagina=0;
             int paginaD=0;
             int paginaV=0;
+            request.setAttribute("ip",daoNotificacionDelegadoGeneral.obtenerDireccionIP());
             switch (action){
                 case "default":
                     if (usuario.getRol().equals("Delegado General")){
@@ -297,10 +298,6 @@ public class NotificacionesServlet extends HttpServlet {
                     int idAlumnoPorEvento=Integer.parseInt(request.getParameter("idAlumnoPorEvento"));
                     String tipoDeApoyo=request.getParameter("tipoDeApoyo");
                     dN.aceptarSolicitudApoyo(idAlumnoPorEvento,tipoDeApoyo);
-                    response.sendRedirect("NotificacionesServlet");
-                    break;
-                case "notificacionLeidaCampanita":
-                    dN.notificacionLeida(Integer.parseInt(request.getParameter("idNotificacion")));
                     response.sendRedirect("NotificacionesServlet");
                     break;
             }

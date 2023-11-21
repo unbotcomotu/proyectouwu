@@ -315,11 +315,14 @@ public class DaoDonacion extends DaoPadre  {
                 usuario.setFotoPerfil(rs.getBlob(3));
                 topDonador.setUsuario(usuario);
                 topDonador.setMontoTotal(rs.getFloat(4));
+                return topDonador;
+            }else {
+                return null;
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-        return topDonador;
+
     }
 
     public TopDonador hallarTopDonadorUltimaSemana(){

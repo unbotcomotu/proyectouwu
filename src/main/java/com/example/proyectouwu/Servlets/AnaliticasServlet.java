@@ -67,21 +67,6 @@ public class AnaliticasServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        response.setContentType("text/html");
-        DaoUsuario dUsuario=new DaoUsuario();
-        String action = request.getParameter("action") == null ? "default" : request.getParameter("action");
-        DaoNotificacionDelegadoGeneral dN=new DaoNotificacionDelegadoGeneral();
-        Usuario usuario=(Usuario) request.getSession().getAttribute("usuario");
-        if(usuario==null){
-            response.sendRedirect("InicioSesionServlet");
-        }else {
-            switch (action){
-                case "notificacionLeidaCampanita":
-                    dN.notificacionLeida(Integer.parseInt(request.getParameter("idNotificacion")));
-                    response.sendRedirect("AnaliticasServlet");
-                    break;
-            }
-            request.getSession().setAttribute("usuario",dUsuario.usuarioSesion(usuario.getIdUsuario()));
-        }
+
     }
 }

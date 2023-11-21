@@ -46,6 +46,7 @@
         String fecha1=(String) request.getAttribute("fecha1");
         String fecha2=(String) request.getAttribute("fecha2");
         String buscarReportes=(String) request.getAttribute("buscarReportes");
+        String ip=(String) request.getAttribute("ip");
     %>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -871,6 +872,7 @@
             <!-- /ACTION ITEM -->
 
             <!-- DROPDOWN NAVIGATION -->
+
         </div>
         <!-- /ACTION ITEM WRAP -->
     </div>
@@ -905,8 +907,9 @@
                     <!-- DROPDOWN BOX LIST -->
                     <div class="dropdown-box-list" data-simplebar>
                         <%for(NotificacionDelegadoGeneral noti:listaNotificacionesCampanita){%>
-                        <form id="notificacionLeidaCampanita<%=listaNotificacionesCampanita.indexOf(noti)%>" method="post" action="/<%=servletActual%>?action=notificacionLeidaCampanita">
+                        <form id="notificacionLeidaCampanita<%=listaNotificacionesCampanita.indexOf(noti)%>" method="post" action="PaginaNoExisteServlet?action=notificacionLeidaCampanita">
                             <input type="hidden" name="idNotificacion" value="<%=noti.getIdNotificacion()%>">
+                            <input type="hidden" name="servletActual" value="<%=servletActual%>">
                             <%if(noti.getReporte().getIdReporte()!=0){
                                 Reporte r=new DaoReporte().reportePorIdReporteNotificacion(noti.getReporte().getIdReporte());%>
                             <!-- Reporte -->
@@ -919,7 +922,7 @@
                                         <div class="user-avatar small no-outline">
                                             <!-- USER AVATAR CONTENT -->
                                             <div class="user-avatar-content">
-                                                <%request.getSession().setAttribute("foto0"+listaNotificacionesCampanita.indexOf(noti),new DaoDonacion().getFotoPerfilPorIDDonacion(noti.getDonacion().getIdDonacion()));%>
+                                                <%request.getSession().setAttribute("foto0"+listaNotificacionesCampanita.indexOf(noti),new DaoReporte().getFotoPerfilPorIDReporte(noti.getReporte().getIdReporte()));%>
                                                 <!-- HEXAGON AQUÍ FALTA LA FOTOOOO -->
                                                 <div class="hexagon-image-30-32" data-src="Imagen?tipoDeFoto=fotoPerfil&id=0<%=listaNotificacionesCampanita.indexOf(noti)%>"></div>
                                                 <!-- /HEXAGON -->
@@ -1048,7 +1051,7 @@
                                         <div class="user-avatar small no-outline">
                                             <!-- USER AVATAR CONTENT -->
                                             <div class="user-avatar-content">
-                                                <%request.getSession().setAttribute("foto0"+listaNotificacionesCampanita.indexOf(noti),new DaoReporte().getFotoPerfilPorIDReporte(noti.getReporte().getIdReporte()));%>
+                                                <%request.getSession().setAttribute("foto0"+listaNotificacionesCampanita.indexOf(noti),new DaoDonacion().getFotoPerfilPorIDDonacion(noti.getDonacion().getIdDonacion()));%>
                                                 <!-- HEXAGON AQUÍ FALTA LA FOTOOOO -->
                                                 <div class="hexagon-image-30-32" data-src="Imagen?tipoDeFoto=fotoPerfil&id=0<%=listaNotificacionesCampanita.indexOf(noti)%>"></div>
                                                 <!-- /HEXAGON -->
@@ -1306,9 +1309,8 @@
                                         <div class="user-avatar small no-outline">
                                             <!-- USER AVATAR CONTENT -->
                                             <div class="user-avatar-content">
-                                                <%request.getSession().setAttribute("foto0"+listaNotificacionesCampanita.indexOf(noti),new DaoValidacion().getFotoPerfilPorIDCorreoValidacion(noti.getValidacion().getIdCorreoValidacion()));%>
-                                                <!-- HEXAGON AQUÍ FALTA LA FOTOOOO -->
-                                                <div class="hexagon-image-30-32" data-src="Imagen?tipoDeFoto=fotoPerfil&id=0<%=listaNotificacionesCampanita.indexOf(noti)%>"></div>
+                                                <!-- HEXAGON AQUÍ ESTA FOTO ES ESTÁTICA -->
+                                                <div class="hexagon-image-30-32" data-src="css/iconoPerfil.png"></div>
                                                 <!-- /HEXAGON -->
                                             </div>
                                             <!-- /USER AVATAR CONTENT -->
@@ -1435,8 +1437,9 @@
                                         <div class="user-avatar small no-outline">
                                             <!-- USER AVATAR CONTENT -->
                                             <div class="user-avatar-content">
-                                                <!-- HEXAGON AQUÍ ESTA FOTO ES ESTÁTICA -->
-                                                <div class="hexagon-image-30-32" data-src="css/iconoPerfil.png"></div>
+                                                <%request.getSession().setAttribute("foto0"+listaNotificacionesCampanita.indexOf(noti),new DaoValidacion().getFotoPerfilPorIDCorreoValidacion(noti.getValidacion().getIdCorreoValidacion()));%>
+                                                <!-- HEXAGON AQUÍ FALTA LA FOTOOOO -->
+                                                <div class="hexagon-image-30-32" data-src="Imagen?tipoDeFoto=fotoPerfil&id=0<%=listaNotificacionesCampanita.indexOf(noti)%>"></div>
                                                 <!-- /HEXAGON -->
                                             </div>
                                             <!-- /USER AVATAR CONTENT -->
@@ -1643,12 +1646,12 @@
                     <!-- /FORM INPUT -->
                     <!-- FORM SELECT -->
                     <div class="form-select">
-                        <label for="friends-filter-category_1">Filter By</label>
-                        <select id="friends-filter-category_1">
-                            <option>Solicitudes de Registro</option>
-                            <option>Donaciones</option>
-                            <option>Reportes</option>
-                            <option>Solicitudes de Validación</option>
+                        <label for="cambiarVistaSolicitudesDeRegistro">Cambiar de vista</label>
+                        <select id="cambiarVistaSolicitudesDeRegistro">
+                            <option value="0">Solicitudes de Registro</option>
+                            <option value="1">Donaciones</option>
+                            <option value="2">Reportes</option>
+                            <option value="3">Solicitudes de Validación</option>
                         </select>
                         <!--FORM SELECT ICON -->
                         <svg class="form-select-icon icon-small-arrow">
@@ -1797,15 +1800,15 @@
                             <div class="row" >
 
                                 <div class="col-sm-6">
-                                    <form method="post" action="<%=request.getContextPath()%>/NotificacionesServlet?action=aceptarRegistro">
+                                    <form method="post" id="formAceptar<%=listaSolicitudes.indexOf(usuario_pendiente)%>" action="<%=request.getContextPath()%>/NotificacionesServlet?action=aceptarRegistro">
                                         <input type="hidden" name="idUsuarioARegistrar" value="<%=usuario_pendiente.getIdUsuario()%>">
-                                        <a><button style="background-image: linear-gradient(to right,dodgerblue,blueviolet);" type="submit" class="button-accept">Aceptar</button></a>
+                                        <a><button onclick="enviarCorreoAceptar('<%=usuario_pendiente.getCorreo()%>','formAceptar<%=listaSolicitudes.indexOf(usuario_pendiente)%>')" style="background-image: linear-gradient(to right,dodgerblue,blueviolet);" type="button" class="button-accept">Aceptar</button></a>
                                     </form>
                                 </div>
                                 <div class="col-sm-6">
-                                    <form method="post" action="<%=request.getContextPath()%>/NotificacionesServlet?action=rechazarRegistro">
+                                    <form method="post" id="formRechazar<%=listaSolicitudes.indexOf(usuario_pendiente)%>" action="<%=request.getContextPath()%>/NotificacionesServlet?action=rechazarRegistro">
                                         <input type="hidden" name="idUsuarioARegistrar" value="<%=usuario_pendiente.getIdUsuario()%>">
-                                        <a><button style="background-image: linear-gradient(to right,brown,red);" type="submit" class="button-accept">Rechazar</button></a>
+                                        <a><button onclick="enviarCorreoRechazar(('<%=usuario_pendiente.getCorreo()%>','formRechazar<%=listaSolicitudes.indexOf(usuario_pendiente)%>'))" style="background-image: linear-gradient(to right,brown,red);" type="button" class="button-accept">Rechazar</button></a>
                                     </form>
                                 </div>
                             </div>
@@ -1892,12 +1895,12 @@
 
                     <!-- FORM SELECT -->
                     <div class="form-select">
-                        <label for="friends-filter-category_2">Filter By</label>
-                        <select id="friends-filter-category_2">
-                            <option >Solicitudes de Registro</option>
-                            <option >Donaciones</option>
-                            <option >Reportes</option>
-                            <option>Solicitudes de Validación</option>
+                        <label for="cambiarVistaDonaciones">Cambiar de vista</label>
+                        <select id="cambiarVistaDonaciones">
+                            <option value="0">Solicitudes de Registro</option>
+                            <option value="1">Donaciones</option>
+                            <option value="2">Reportes</option>
+                            <option value="3">Solicitudes de Validación</option>
                         </select>
                         <!-- FORM SELECT ICON -->
                         <svg class="form-select-icon icon-small-arrow">
@@ -2229,12 +2232,12 @@
 
                     <!-- FORM SELECT -->
                     <div class="form-select">
-                        <label for="friends-filter-category_3">Filter By</label>
-                        <select id="friends-filter-category_3">
-                            <option >Solicitudes de Registro</option>
-                            <option >Donaciones</option>
-                            <option >Reportes</option>
-                            <option>Solicitudes de Validación</option>
+                        <label for="cambiarVistaReportes">Cambiar de vista</label>
+                        <select id="cambiarVistaReportes">
+                            <option value="0">Solicitudes de Registro</option>
+                            <option value="1">Donaciones</option>
+                            <option value="2">Reportes</option>
+                            <option value="3">Solicitudes de Validación</option>
                         </select>
                         <!-- FORM SELECT ICON -->
                         <svg class="form-select-icon icon-small-arrow">
@@ -2389,7 +2392,7 @@
                 <!-- FORM -->
                 <form class="form">
                     <!-- FORM INPUT -->
-                    <div class="form-input small with-button" style="opacity: 0">
+                    <div class="form-input small with-button" style="opacity: 0;height: 1px!important;">
                         <label for="friends-search_4">Buscar usuarios</label>
                         <input type="text" id="friends-search_4" name="friends_search" disabled>
                         <!-- BUTTON -->
@@ -2406,12 +2409,12 @@
 
                     <!-- FORM SELECT -->
                     <div class="form-select">
-                        <label for="friends-filter-category_4">Filter By</label>
-                        <select id="friends-filter-category_4">
-                            <option >Solicitudes de Registro</option>
-                            <option >Donaciones</option>
-                            <option >Reportes</option>
-                            <option>Solicitudes de Validación</option>
+                        <label for="cambiarVistaSolicitudesDeValidacion">Cambiar de vista</label>
+                        <select id="cambiarVistaSolicitudesDeValidacion">
+                            <option value="0">Solicitudes de Registro</option>
+                            <option value="1">Donaciones</option>
+                            <option value="2">Reportes</option>
+                            <option value="3">Solicitudes de Validación</option>
                         </select>
                         <!-- FORM SELECT ICON -->
                         <svg class="form-select-icon icon-small-arrow">
@@ -2436,7 +2439,7 @@
                     <!-- FILTER TAB -->
                     <div class="filter-tab">
                         <!-- FILTER TAB TEXT -->
-                        <p  class="filter-tab-text clickeable"  id = "opcionDonaciones_3">Donaciones</p>
+                        <p  class="filter-tab-text clickeable" id="opcionDonaciones_3">Donaciones</p>
                         <!-- /FILTER TAB TEXT -->
                     </div>
                     <!-- /FILTER TAB -->
@@ -2444,13 +2447,13 @@
                     <!-- FILTER TAB -->
                     <div class="filter-tab">
                         <!-- FILTER TAB TEXT -->
-                        <p class="filter-tab-text clickeable" id="opcionReportes_3"  >Reportes </p>
+                        <p class="filter-tab-text clickeable" id="opcionReportes_3">Reportes </p>
                         <!-- /FILTER TAB TEXT -->
                     </div>
                     <!-- /FILTER TAB -->
                     <div class="filter-tab active">
                         <!-- FILTER TAB TEXT -->
-                        <p class="filter-tab-text clickeable" id="opcionRecuperacion_3"  > Solicitudes de Validación</p>
+                        <p class="filter-tab-text clickeable" id="opcionRecuperacion_3"> Solicitudes de Validación</p>
                         <!-- /FILTER TAB TEXT -->
                     </div>
                 </div>
@@ -2565,19 +2568,19 @@
                             <!-- TABLE TITLE -->
                             <%String link = "mips";%>
                             <%if(validacion.getTipo().equals("enviarLinkACorreo")) {
-                                link = "http://localhost:8080/proyectouwu_war_exploded/RegistroServlet?idCorreoValidacion=" + validacion.getIdCorreoValidacion() + "&codigoValidacion256=" + validacion.getCodigoValidacion256();
-                            }else if(validacion.getTipo().equals("recuperarContrasena")){link = "http://localhost:8080/proyectouwu_war_exploded/RecuperarContrasenaSegundoCasoServlet?idCorreoValidacion="+validacion.getIdCorreoValidacion()+"&codigoValidacion256="+validacion.getCodigoValidacion256();}%>
+                                link = ip+":8080/proyectouwu_war_exploded/RegistroServlet?idCorreoValidacion=" + validacion.getIdCorreoValidacion() + "&codigoValidacion256=" + validacion.getCodigoValidacion256();
+                            }else if(validacion.getTipo().equals("recuperarContrasena")){link = ip+"/proyectouwu_war_exploded/RecuperarContrasenaSegundoCasoServlet?idCorreoValidacion="+validacion.getIdCorreoValidacion()+"&codigoValidacion256="+validacion.getCodigoValidacion256();}%>
                             <p class="table-title"><a href="<%=link%>">Link</a></p>
                             <!-- /TABLE TITLE -->
                         </div>
                         <div class="table-column centered padded">
                             <!-- TABLE TITLE -->
                             <%if(validacion.getTipo().equals("enviarLinkACorreo")){%>
-                            <a href="mailto:<%=validacion.getCorreo()%>?subject=Solicitud de verificación de correo electrónico - Siempre Fibra&body=¡Continúa con tu registro! Haz clic en el siguiente link y completa tus datos: <%=link%>">
+                            <a href="mailto:<%=validacion.getCorreo()%>?subject=Solicitud de verificación de correo electrónico - Siempre Fibra&body=¡Continúa con tu registro! Haz clic en el siguiente link y completa tus datos: <%=link%>\n\n\nSiempre Fibra?">
                                 <button class="button-accept">Enviar</button>
                             </a>
                             <%}else{%>
-                            <a href="mailto:<%=validacion.getCorreo()%>?subject=Solicitud de recuperación de contraseña - Siempre Fibra&body=¡Continúa con el proceso de recuperación de contraseña! Haz clic en el siguiente link e ingrese su nueva contraseña: <%=link%>">
+                            <a href="mailto:<%=validacion.getCorreo()%>?subject=Solicitud de recuperación de contraseña - Siempre Fibra&body=¡Continúa con el proceso de recuperación de contraseña! Haz clic en el siguiente link e ingrese su nueva contraseña: <%=link%>\n\n\nSiempre Fibra">
                                 <button class="button-accept">Enviar</button>
                             </a>
                             <%}%>
@@ -2771,7 +2774,49 @@
             }
         });
     }
-
+    function cambiarVista(idSelect){
+        let select=document.getElementById(idSelect);
+        let solicitudes=document.getElementById('cambiarVistaSolicitudesDeRegistro');
+        let reportes=document.getElementById('cambiarVistaReportes');
+        let donaciones=document.getElementById('cambiarVistaDonaciones');
+        let recuperacion=document.getElementById('cambiarVistaSolicitudesDeValidacion');
+        select.addEventListener("change",function (){
+           switch (select.value){
+               case '0':
+                   mostrarContenido("Solicitudes");
+                   solicitudes.value='0';
+                   reportes.value='0';
+                   donaciones.value='0';
+                   recuperacion.value='0';
+                   break;
+               case '1':
+                   mostrarContenido("Donaciones");
+                   solicitudes.value='1';
+                   reportes.value='1';
+                   donaciones.value='1';
+                   recuperacion.value='1';
+                   break;
+               case '2':
+                   mostrarContenido("Reportes");
+                   solicitudes.value='2';
+                   reportes.value='2';
+                   donaciones.value='2';
+                   recuperacion.value='2';
+                   break;
+               case '3':
+                   mostrarContenido("Recuperacion");
+                   solicitudes.value='3';
+                   reportes.value='3';
+                   donaciones.value='3';
+                   recuperacion.value='3';
+                   break;
+           }
+        });
+    }
+    cambiarVista('cambiarVistaSolicitudesDeRegistro');
+    cambiarVista('cambiarVistaReportes');
+    cambiarVista('cambiarVistaDonaciones');
+    cambiarVista('cambiarVistaSolicitudesDeValidacion');
     // Agregar eventos de clic para cada opción
     document.getElementById("opcionSolicitudes").addEventListener("click", function() {
         mostrarContenido("Solicitudes");
@@ -2939,6 +2984,24 @@
         montoPopup.style.display = 'none';
         document.getElementById('popupMonto').style.display = 'none';
     });
+    function enviarCorreoAceptar(correo,idForm){
+        var destinatario = correo;
+        var asunto = '¡Su cuenta ha sido aprobada! - Siempre Fibra';
+        var contenido = "Sus datos han sido correctamente validados dentro de la plataforma. Ahora ya puede iniciar sesión y formar parte vital del equipo en Semana de Ingeniería.\n\nIngrese a su cuenta en <%=ip%>:8080/proyectouwu_war_exploded/ y sé parte de la experiencia SDI.\n\n\nSiempre Fibra";
+        var mailtoLink = 'mailto:' + destinatario + '?subject=' + encodeURIComponent(asunto) + '&body=' + encodeURIComponent(contenido);
+        window.location.href = mailtoLink;
+        let form=document.getElementById(idForm);
+        form.submit();
+    }
+    function enviarCorreoRechazar(correo,idForm){
+        var destinatario = correo;
+        var asunto = 'Su cuenta no consiguió ser aprobada - Siempre Fibra';
+        var contenido = 'Después de dar revisión a sus datos dentro del registro en la plataforma se observó que: .Puedes contactarse con algún delegado general en caso de que consideres de que es un error:<%for(String correo:listaCorreosDelegadosGenerales){%>\nDelegado general N°<%=listaCorreosDelegadosGenerales.indexOf(correo)+1%>: <%=correo%><%}%>\nPara registrarse nuevamente puede ingresar a <%=ip%>:8080/proyectouwu_war_exploded/\n\n\nSiempre Fibra';
+        var mailtoLink = 'mailto:' + destinatario + '?subject=' + encodeURIComponent(asunto) + '&body=' + encodeURIComponent(contenido);
+        window.location.href = mailtoLink;
+        let form=document.getElementById(idForm);
+        form.submit();
+    }
 </script>
 
 </body>

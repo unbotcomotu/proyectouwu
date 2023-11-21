@@ -112,131 +112,131 @@ public class ListaDeActividadesServlet extends HttpServlet {
                     response.sendRedirect("ListaDeActividadesServlet");
                     break;
                 case "crearActividad":
+                    boolean validacionCrear=true;
                     String nombreCrearActividad=request.getParameter("nombreCrearActividad");
+                    if(nombreCrearActividad.length()>45) {
+                        request.getSession().setAttribute("nombreLargo", "1");
+                        validacionCrear=false;
+                    }
                     if(dActividad.verificarActividadRepetida(nombreCrearActividad,0)){
                         request.getSession().setAttribute("actividadRepetida","1");
-                        response.sendRedirect("ListaDeActividadesServlet");
-                    }else {
-                        Integer idDelegadoActividadCrear=Integer.parseInt(request.getParameter("idDelegadoActividadCrear"));
-                        String puntajeAux=request.getParameter("puntajeCrearActividad");
+                        validacionCrear=false;
+                    }
+                    Integer idDelegadoActividadCrear=Integer.parseInt(request.getParameter("idDelegadoActividadCrear"));
+                    String puntajeCrearActividad=request.getParameter("puntajeCrearActividad");
+                    try{
+                        Integer puntajeAux=Integer.parseInt(puntajeCrearActividad);
+                    }catch (NumberFormatException e){
+                        request.getSession().setAttribute("puntajeNoNumerico","1");
+                        validacionCrear=false;
+                    }
+
+                    boolean ocultoCrearActividad;
+                    if(request.getParameter("ocultoCrearActividad")!=null){
+                        ocultoCrearActividad=true;
+                    }else{
+                        ocultoCrearActividad=false;
+                    }
+                    //fotoCabecera=inputCab;
+                    partCab = request.getPart("addfotoCabecera");
+                    // Obtenemos el flujo de bytes
+                    if(partCab != null){
+                        inputCab = partCab.getInputStream();
+                    }else{
+                        inputCab = getServletContext().getResourceAsStream(rutaImagenPredeterminada);
+                    }
+                    validarLongitudCab = inputCab.available()>10;
+                    if(!validarLongitudCab){
+                        inputCab = getServletContext().getResourceAsStream(rutaImagenPredeterminada);
+                    }
+
+                    // fotoMiniatura==inputMin;
+                    partMin = request.getPart("addfotoMiniatura");
+
+                    // Obtenemos el flujo de bytes
+                    if(partMin != null){
+                        inputMin = partMin.getInputStream();
+                    }else{
+                        inputMin = getServletContext().getResourceAsStream(rutaImagenPredeterminada);
+                    }
+                    validarLongitudMin = inputMin.available()>10;
+                    if(!validarLongitudMin){
+                        inputMin = getServletContext().getResourceAsStream(rutaImagenPredeterminada);
+                    }
+                    if(validacionCrear){
                         try{
-                            Integer puntajeCrearActividad=Integer.parseInt(puntajeAux);
-                            boolean ocultoCrearActividad;
-                            if(request.getParameter("ocultoCrearActividad")!=null){
-                                ocultoCrearActividad=true;
-                            }else{
-                                ocultoCrearActividad=false;
-                            }
-                            //fotoCabecera=inputCab;
-                            partCab = request.getPart("addfotoCabecera");
-
-                            // Obtenemos el flujo de bytes
-                            if(partCab != null){
-                                inputCab = partCab.getInputStream();
-                            }else{
-                                inputCab = getServletContext().getResourceAsStream(rutaImagenPredeterminada);
-                            }
-
-                            validarLongitudCab = inputCab.available()>10;
-
-                            if(!validarLongitudCab){
-                                inputCab = getServletContext().getResourceAsStream(rutaImagenPredeterminada);
-                            }
-
-                            // fotoMiniatura==inputMin;
-                            partMin = request.getPart("addfotoMiniatura");
-
-                            // Obtenemos el flujo de bytes
-                            if(partMin != null){
-                                inputMin = partMin.getInputStream();
-                            }else{
-                                inputMin = getServletContext().getResourceAsStream(rutaImagenPredeterminada);
-                            }
-
-                            validarLongitudMin = inputMin.available()>10;
-
-                            if(!validarLongitudMin){
-                                inputMin = getServletContext().getResourceAsStream(rutaImagenPredeterminada);
-                            }
-
-                            try{
-                                dActividad.crearActividad(nombreCrearActividad,idDelegadoActividadCrear,puntajeCrearActividad,ocultoCrearActividad,inputCab,inputMin);
-                            }catch (SQLException e) {
-                                throw new RuntimeException(e);
-                            }
-
-
-                            inputMin.close();
-                            inputCab.close();
-                            response.sendRedirect("ListaDeActividadesServlet");
-                        }catch (NumberFormatException e){
-                            request.getSession().setAttribute("puntajeNoNumerico","1");
-                            response.sendRedirect("ListaDeActividadesServlet");
+                            dActividad.crearActividad(nombreCrearActividad,idDelegadoActividadCrear,Integer.parseInt(puntajeCrearActividad),ocultoCrearActividad,inputCab,inputMin);
+                        }catch (SQLException e) {
+                            throw new RuntimeException(e);
                         }
                     }
+                    inputMin.close();
+                    inputCab.close();
+                    response.sendRedirect("ListaDeActividadesServlet");
                     break;
+
                 case "editarActividad":
+                    boolean validacionEditar=true;
                     Integer idDelegadoActividadAnterior=Integer.parseInt(request.getParameter("idDelegadoActividadAnterior"));
                     Integer idActividadEditar=Integer.parseInt(request.getParameter("idActividadEditar"));
                     String nombreEditarActividad=request.getParameter("nombreEditarActividad");
+                    if(nombreEditarActividad.length()>45){
+                        request.getSession().setAttribute("nombreLargo","1");
+                        validacionEditar=false;
+                    }
                     if(dActividad.verificarActividadRepetida(nombreEditarActividad,idActividadEditar)){
                         request.getSession().setAttribute("actividadRepetida","1");
-                        request.getSession().setAttribute("idActividadElegida",idActividadEditar);
-                        response.sendRedirect("ListaDeActividadesServlet");
-                    }else {
-                        Integer idDelegadoActividadEditar=Integer.parseInt(request.getParameter("idDelegadoActividadEditar"));
-                        String puntajeAux2=request.getParameter("puntajeEditarActividad");
-                        try{
-                            Integer puntajeEditarActividad=Integer.parseInt(puntajeAux2);
-                            boolean ocultoEditarActividad;
-                            if(request.getParameter("ocultoEditarActividad")!=null){
-                                ocultoEditarActividad=true;
-                            }else{
-                                ocultoEditarActividad=false;
-                            }
-                            //fotoCabeceraEditar==inputCab;
-                            partCab = request.getPart("updateFotoCabecera");
-
-                            // Obtenemos el flujo de bytes
-                            if (partCab != null) {
-                                inputCab = partCab.getInputStream();
-                            }
-
-                            validarLongitudCab = inputCab.available() > 10;
-
-
-                            //fotoMiniaturaEditar==inputMin;
-                            partMin = request.getPart("updateFotoMiniatura");
-
-                            // Obtenemos el flujo de bytes
-                            if (partMin != null) {
-                                inputMin = partMin.getInputStream();
-                            }
-
-                            validarLongitudMin = inputMin.available() > 10;
-
-                            try {
-                                dActividad.editarActividad(idActividadEditar,nombreEditarActividad,idDelegadoActividadEditar,puntajeEditarActividad,ocultoEditarActividad,inputCab,inputMin,idDelegadoActividadAnterior,validarLongitudCab,validarLongitudMin);
-                            } catch (SQLException e) {
-                                throw new RuntimeException(e);
-                            }
-
-                            if (inputMin != null) {
-                                inputMin.close();
-                            }
-                            if (inputCab != null) {
-                                inputCab.close();
-                            }
-                            response.sendRedirect("ListaDeActividadesServlet");
-                        }catch (NumberFormatException e){
-                            request.getSession().setAttribute("puntajeNoNumerico","1");
-                            request.getSession().setAttribute("idActividadElegida",idActividadEditar);
-                            response.sendRedirect("ListaDeActividadesServlet");
-                        }
+                        validacionEditar=false;
                     }
-                    break;
-                case "notificacionLeidaCampanita":
-                    dN.notificacionLeida(Integer.parseInt(request.getParameter("idNotificacion")));
+                    Integer idDelegadoActividadEditar=Integer.parseInt(request.getParameter("idDelegadoActividadEditar"));
+                    String puntajeEditarActividad=request.getParameter("puntajeEditarActividad");
+                    try{
+                        Integer puntajeAux2=Integer.parseInt(puntajeEditarActividad);
+                    }catch (NumberFormatException e){
+                        request.getSession().setAttribute("puntajeNoNumerico","1");
+                        validacionEditar=false;
+                    }
+                    boolean ocultoEditarActividad;
+                    if(request.getParameter("ocultoEditarActividad")!=null){
+                        ocultoEditarActividad=true;
+                    }else{
+                        ocultoEditarActividad=false;
+                    }
+                    //fotoCabeceraEditar==inputCab;
+                    partCab = request.getPart("updateFotoCabecera");
+
+                    // Obtenemos el flujo de bytes
+                    if (partCab != null) {
+                        inputCab = partCab.getInputStream();
+                    }
+
+                    validarLongitudCab = inputCab.available() > 10;
+
+
+                    //fotoMiniaturaEditar==inputMin;
+                    partMin = request.getPart("updateFotoMiniatura");
+
+                    // Obtenemos el flujo de bytes
+                    if (partMin != null) {
+                        inputMin = partMin.getInputStream();
+                    }
+
+                    validarLongitudMin = inputMin.available() > 10;
+                    if(validacionEditar){
+                        try {
+                            dActividad.editarActividad(idActividadEditar,nombreEditarActividad,idDelegadoActividadEditar,Integer.parseInt(puntajeEditarActividad),ocultoEditarActividad,inputCab,inputMin,idDelegadoActividadAnterior,validarLongitudCab,validarLongitudMin);
+                        } catch (SQLException e) {
+                            throw new RuntimeException(e);
+                        }
+                    }else{
+                        request.getSession().setAttribute("idActividadElegida",idActividadEditar);
+                    }
+                    if (inputMin != null) {
+                        inputMin.close();
+                    }
+                    if (inputCab != null) {
+                        inputCab.close();
+                    }
                     response.sendRedirect("ListaDeActividadesServlet");
                     break;
             }

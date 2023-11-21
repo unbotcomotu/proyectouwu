@@ -85,11 +85,8 @@ public class ListaDeUsuariosServlet extends HttpServlet {
             switch(action){
                 case "banear":
                     int idUsuarioABanear =Integer.parseInt(request.getParameter("idUsuarioABanear"));
-                    new DaoBan().banearPorId(idUsuarioABanear);
-                    response.sendRedirect("ListaDeUsuariosServlet");
-                    break;
-                case "notificacionLeidaCampanita":
-                    dN.notificacionLeida(Integer.parseInt(request.getParameter("idNotificacion")));
+                    String motivoBan=request.getParameter("motivoBan");
+                    new DaoBan().banearPorId(idUsuarioABanear,motivoBan);
                     response.sendRedirect("ListaDeUsuariosServlet");
                     break;
             }

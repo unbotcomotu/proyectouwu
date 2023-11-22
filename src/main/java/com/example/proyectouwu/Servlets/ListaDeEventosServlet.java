@@ -99,7 +99,10 @@ public class ListaDeEventosServlet extends HttpServlet {
                         }
 
                         if(!usuario.getRol().equals("Delegado General")){
-                            if(request.getParameter("eventoApoyando") != null || request.getSession().getAttribute("eventoApoyando") != null){
+                            if(request.getParameter("eventoApoyando") != null){
+                                parametrosEstado1.add("Apoyando");
+                                request.getSession().setAttribute("eventoApoyando",1);
+                            }else if(request.getSession().getAttribute("eventoApoyando") != null && request.getParameter("vieneDelJspDeListaDeEventos")==null){
                                 parametrosEstado1.add("Apoyando");
                                 request.getSession().setAttribute("eventoApoyando",1);
                             }else{
@@ -107,7 +110,10 @@ public class ListaDeEventosServlet extends HttpServlet {
                             }
                         }
                         if(dActividad.idDelegadoDeActividadPorActividad(idActividad) == usuario.getIdUsuario() || usuario.getRol().equals("Delegado General")){
-                            if(request.getParameter("eventoOculto") != null || request.getSession().getAttribute("eventoOculto") != null){
+                            if(request.getParameter("eventoOculto") != null){
+                                parametrosEstado1.add("Oculto");
+                                request.getSession().setAttribute("eventoOculto",1);
+                            }else if(request.getSession().getAttribute("eventoOculto") != null && request.getParameter("vieneDelJspDeListaDeEventos")==null){
                                 parametrosEstado1.add("Oculto");
                                 request.getSession().setAttribute("eventoOculto",1);
                             }else{
@@ -125,29 +131,41 @@ public class ListaDeEventosServlet extends HttpServlet {
                                     Integer lugar1=Integer.parseInt(lugarAux1);
                                     parametrosLugar1.add(lugar1);
                                     request.getSession().setAttribute("lugar" + j,lugar1);
-                                }else if(request.getSession().getAttribute("lugar"+j)!=null){
+                                }else if(request.getSession().getAttribute("lugar"+j)!=null && request.getParameter("vieneDelJspDeListaDeEventos")==null){
                                     lugarAux1= (String) request.getSession().getAttribute("lugar" + j);
                                     Integer lugar1=Integer.parseInt(lugarAux1);
                                     parametrosLugar1.add(lugar1);
+                                    request.getSession().setAttribute("lugar" + j,lugar1);
                                 }else{
                                     request.getSession().removeAttribute("lugar"+j);
                                 }
                             }
                         }
 
-                        if(request.getParameter("eventosHoy") != null || request.getSession().getAttribute("eventosHoy") != null){
+                        if(request.getParameter("eventosHoy") != null){
+                            parametrosFecha1.add("Hoy");
+                            request.getSession().setAttribute("eventosHoy",1);
+                        }else if(request.getSession().getAttribute("eventosHoy") != null && request.getParameter("vieneDelJspDeListaDeEventos")==null){
                             parametrosFecha1.add("Hoy");
                             request.getSession().setAttribute("eventosHoy",1);
                         }else{
                             request.getSession().removeAttribute("eventosHoy");
                         }
-                        if(request.getParameter("eventosManana") != null || request.getSession().getAttribute("eventosManana") != null){
+
+                        if(request.getParameter("eventosManana") != null){
+                            parametrosFecha1.add("Manana");
+                            request.getSession().setAttribute("eventosManana",1);
+                        }else if(request.getSession().getAttribute("eventosManana") != null && request.getParameter("vieneDelJspDeListaDeEventos")==null){
                             parametrosFecha1.add("Manana");
                             request.getSession().setAttribute("eventosManana",1);
                         }else{
                             request.getSession().removeAttribute("eventosManana");
                         }
-                        if(request.getParameter("eventosMasDias") != null || request.getSession().getAttribute("eventosMasDias") != null){
+
+                        if(request.getParameter("eventosMasDias") != null){
+                            parametrosFecha1.add("MasDias");
+                            request.getSession().setAttribute("eventosMasDias",1);
+                        }else if(request.getSession().getAttribute("eventosMasDias") != null && request.getParameter("vieneDelJspDeListaDeEventos")==null){
                             parametrosFecha1.add("MasDias");
                             request.getSession().setAttribute("eventosMasDias",1);
                         }else{

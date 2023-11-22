@@ -7,7 +7,7 @@
 <html lang="en">
 <head>
     <%Usuario usuarioActual=(Usuario) request.getSession().getAttribute("usuario");
-        String action = request.getParameter("action") != null ? request.getParameter("action") : "";
+        String action = request.getSession().getAttribute("action") != null ? (String) request.getSession().getAttribute("action") : "";
 
         int idUsuario=usuarioActual.getIdUsuario();
         String rolUsuario=usuarioActual.getRol();
@@ -21,7 +21,7 @@
         int delegadoDeEstaActividadID=(int)request.getAttribute("delegadoDeEstaActividadID");
         String servletActual="ListaDeEventosServlet";
         int cantidadTotalEventos = request.getAttribute("cantidadEventosTotal")!=null? (int)Math.ceil((int)request.getAttribute("cantidadEventosTotal")/8.0):0;
-        Integer pagActual = request.getAttribute("pagActual") != null ? (Integer) request.getAttribute("pagActual") : 1;
+        Integer pagActual = request.getSession().getAttribute("pagActual") != null ? (Integer) request.getSession().getAttribute("pagActual") : 1;
         //String busqueda=(String) request.getAttribute("evento");
         Integer eventoOculto = (Integer) request.getAttribute("eventoOculto");
         Integer eventoFinalizado = (Integer) request.getAttribute("eventoFinalizado");
@@ -55,6 +55,13 @@
         if(eventoElegido!=null){
             request.getSession().removeAttribute("eventoElegido");
         }
+        ArrayList<Integer[]>listaLugaresCantidad=(ArrayList<Integer[]>) request.getAttribute("listaLugaresCantidad");
+        ArrayList<Integer> listaLugaresFiltro = new ArrayList<>();
+        for(int i=0;i<listaLugaresCantidad.size();i++){
+            listaLugaresFiltro.add((Integer) request.getAttribute("lugar"+i));
+        }
+        int cantidadLugares = 0;
+        String parametrosURL = "";
     %>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -1685,638 +1692,642 @@
         </div>
     </div>
     <!-- /SECTION HEADER -->
-
+    <form method="get" class="form" action="ListaDeEventosServlet">
     <!-- SECTION FILTERS BAR -->
-    <div class="section-filters-bar v4">
-        <!-- SECTION FILTERS BAR ACTIONS -->
-        <div class="section-filters-bar-actions">
-            <!-- FORM -->
-            <form method="get" class="form" action="ListaDeEventosServlet">
-                <!-- FORM ITEM -->
-                <div class="form-item split">
-                    <!-- FORM INPUT -->
-                    <div class="form-input small">
-                        <label for="items-search">Buscar evento</label>
-                        <input type="text" id="items-search" name="nombreEvento" value="<%=request.getAttribute("busqueda") != null ? request.getAttribute("busqueda") : ""%>">
-                        <input type="hidden" name="idActividad" value="<%=idActividad%>">
-                        <input type="hidden" name="p" value="<%=pagActual%>">
-                        <input type="hidden" name="action" value="buscarEvento">
-                    <!-- /FORM INPUT -->
+        <div class="section-filters-bar v4">
+            <!-- SECTION FILTERS BAR ACTIONS -->
+
+            <div class="section-filters-bar-actions">
+                <!-- FORM -->
+
+                    <!-- FORM ITEM -->
+                    <div class="form-item split">
+                        <!-- FORM INPUT -->
+                        <div class="form-input small">
+                            <label for="items-search">Buscar evento</label>
+                            <!-- Se mandan todos los atributos -->
+                            <input type="text" id="items-search" name="nombreEvento" value="<%=request.getAttribute("busqueda") != null ? request.getAttribute("busqueda") : ""%>">
+                            <input type="hidden" name="idActividad" value="<%=idActividad%>">
+                            <input type="hidden" name="p" value="<%=pagActual%>">
+                            <input type="hidden" name="action" value="buscarEvento">
+                            <!-- Parametros para la URL -->
+                            <%parametrosURL +="&nombreEvento="+(request.getAttribute("busqueda") != null ? request.getAttribute("busqueda") : "");%>
+                            <%parametrosURL +="&idOrdenarEventos="+(request.getAttribute("idOrdenarEventos")!=null?request.getAttribute("idOrdenarEventos"):0);%>
+                            <%parametrosURL +="&idSentidoEventos="+(request.getAttribute("idSentidoEventos")!=null?request.getAttribute("idSentidoEventos"):0);%>
+                            <%if(eventoFinalizado != null && eventoFinalizado==1){
+                                parametrosURL +="&eventoFinalizado=1";}%>
+                            <%parametrosURL +="&cantidadLugares="+cantidadLugares;%>
+                            <%if(eventoHoy != null){
+                                parametrosURL +="&eventosHoy=1";}%>
+                            <%if(eventoManana != null){
+                                parametrosURL +="&eventosManana=1";}%>
+                            <%if(eventoMasDias != null){
+                                parametrosURL +="&eventosMasDias=1";}%>
+                            <%parametrosURL +="&horaInicio="+(request.getAttribute("horaInicio") != null ? request.getAttribute("horaInicio") : "");%>
+                            <%parametrosURL +="&horaFin="+(request.getAttribute("horaFin") != null ? request.getAttribute("horaFin") : "");%>
+                        <!-- /FORM INPUT -->
+                        </div>
+                        <!-- BUTTON -->
+                        <button type="submit" class="button primary">
+                            <!-- ICON MAGNIFYING GLASS -->
+                            <svg class="icon-magnifying-glass">
+                                <use xlink:href="#svg-magnifying-glass"></use>
+                            </svg>
+                            <!-- /ICON MAGNIFYING GLASS -->
+                        </button>
+                        <!-- /BUTTON -->
                     </div>
-                    <!-- BUTTON -->
-                    <button type="submit" class="button primary">
-                        <!-- ICON MAGNIFYING GLASS -->
-                        <svg class="icon-magnifying-glass">
-                            <use xlink:href="#svg-magnifying-glass"></use>
-                        </svg>
-                        <!-- /ICON MAGNIFYING GLASS -->
-                    </button>
-                    <!-- /BUTTON -->
-                </div>
-                <!-- /FORM ITEM -->
-            </form>
-            <!-- /FORM -->
-        </div>
-        <!-- /SECTION FILTERS BAR ACTIONS -->
+                    <!-- /FORM ITEM -->
 
-        <!-- SECTION FILTERS BAR ACTIONS -->
-        <div class="section-filters-bar-actions">
-            <!-- FORM -->
-            <form method="get" action="<%=request.getContextPath()%>/ListaDeEventosServlet" class="form">
-                <input type="hidden" name="action" value="filtroOrdenarEvento">
-                <input type="hidden" name="idActividad" value="<%=idActividad%>">
-                <input type="hidden" name="p" value="<%=pagActual%>">
-
-                <!-- FORM ITEM -->
-                <div class="form-item split medium">
-                    <%Integer idOrdenarEventos=(Integer) request.getAttribute("idOrdenarEventos");%>
-                    <!-- FORM SELECT -->
-                    <div class="form-select small">
-                        <label for="items-filter-category">Ordenar por</label>
-                        <select id="items-filter-category" name="idOrdenarEventos">
-                            <option value="0" <%if(idOrdenarEventos!=null && idOrdenarEventos==0){%>selected<%}%>>Más reciente</option>
-                            <option value="1" <%if(idOrdenarEventos!=null && idOrdenarEventos==1){%>selected<%}%>>Orden alfabético</option>
-                        </select>
-                        <!-- FORM SELECT ICON -->
-                        <svg class="form-select-icon icon-small-arrow">
-                            <use xlink:href="#svg-small-arrow"></use>
-                        </svg>
-                        <!-- /FORM SELECT ICON -->
-                    </div>
-                    <!-- /FORM SELECT -->
-                    <%Integer idSentidoEventos=(Integer) request.getAttribute("idSentidoEventos");%>
-                    <!-- FORM SELECT -->
-                    <div class="form-select small">
-                        <label for="items-filter-order">Sentido</label>
-                        <select id="items-filter-order" name="idSentidoEventos">
-                            <option value="0" <%if(idSentidoEventos!=null){if(idSentidoEventos==0){%>selected<%}}%>>Ascendente</option>
-                            <option value="1" <%if(idSentidoEventos!=null){if(idSentidoEventos==1){%>selected<%}}%>>Descendente</option>
-                        </select>
-                        <!-- FORM SELECT ICON -->
-                        <svg class="form-select-icon icon-small-arrow">
-                            <use xlink:href="#svg-small-arrow"></use>
-                        </svg>
-                        <!-- /FORM SELECT ICON -->
-                    </div>
-                    <!-- /FORM SELECT -->
-
-                    <!-- BUTTON -->
-                    <button type="submit" class="button secondary">Aplicar filtros</button>
-                    <!-- /BUTTON -->
-                </div>
-                <!-- /FORM ITEM -->
-            </form>
-            <!-- /FORM -->
-        </div>
-        <!-- /SECTION FILTERS BAR ACTIONS -->
-    </div>
-    <!-- /SECTION FILTERS BAR -->
-
-    <!-- GRID -->
-    <div class="grid grid-3-9 small-space">
-        <!-- MARKETPLACE SIDEBAR -->
-        <div class="marketplace-sidebar">
-            <!-- SIDEBAR BOX -->
-            <div class="sidebar-box">
-                <form method="get" action="<%=request.getContextPath()%>/ListaDeEventosServlet">
-                    <input type="hidden" name="idActividad" value="<%=idActividad%>">
-                   <input type="hidden" name="p" value="<%=pagActual%>">
-
-                    <input type="hidden" name="action" value="filtrarEventos">
-                    <!-- SIDEBAR BOX TITLE -->
-                    <p class="sidebar-box-title">Estado</p>
-                    <!-- SIDEBAR BOX TITLE -->
-                    <div class="sidebar-box-items">
-                        <!-- CHECKBOX LINE -->
-                        <div class="checkbox-line">
-                            <!-- CHECKBOX WRAP -->
-                            <div class="checkbox-wrap">
-                                <input type="checkbox" id="category-logos-and-badges" name="eventoFinalizado" value="1" <%if(eventoFinalizado != null && eventoFinalizado==1){%>checked<%}%>>
-                                <!-- CHECKBOX BOX -->
-                                <div class="checkbox-box">
-                                    <!-- ICON CROSS -->
-                                    <svg class="icon-cross">
-                                        <use xlink:href="#svg-cross"></use>
-                                    </svg>
-                                    <!-- /ICON CROSS -->
-                                </div>
-                                <!-- /CHECKBOX BOX -->
-                                <label for="category-logos-and-badges">Finalizado</label>
-                            </div>
-                            <!-- /CHECKBOX WRAP -->
-                            <!-- CHECKBOX LINE TEXT -->
-                            <%Integer cantidadEventosFinalizados=(Integer) request.getAttribute("cantidadEventosFinalizados");%>
-                            <p class="checkbox-line-text"><%=cantidadEventosFinalizados%></p>
-                            <!-- /CHECKBOX LINE TEXT -->
-                        </div>
-                        <!-- /CHECKBOX LINE -->
-                        <%if(!rolUsuario.equals("Delegado General") && delegadoDeEstaActividadID!=idUsuario){%>
-                        <!-- CHECKBOX LINE -->
-                        <div class="checkbox-line">
-                            <!-- CHECKBOX WRAP -->
-                            <div class="checkbox-wrap">
-                                <input type="checkbox" id="category-sketch" name="eventoApoyando" value="1" <%if(eventoApoyado != null && eventoApoyado==1){%>checked<%}%>>
-                                <!-- CHECKBOX BOX -->
-                                <div class="checkbox-box">
-                                    <!-- ICON CROSS -->
-                                    <svg class="icon-cross">
-                                        <use xlink:href="#svg-cross"></use>
-                                    </svg>
-                                    <!-- /ICON CROSS -->
-                                </div>
-                                <!-- /CHECKBOX BOX -->
-                                <label for="category-sketch">Apoyando</label>
-                            </div>
-                            <!-- /CHECKBOX WRAP -->
-
-                            <!-- CHECKBOX LINE TEXT -->
-                            <%Integer cantidadEventosApoyando=(Integer) request.getAttribute("cantidadEventosApoyando");%>
-                            <p class="checkbox-line-text"><%=cantidadEventosApoyando%></p>
-                            <!-- /CHECKBOX LINE TEXT -->
-                        </div>
-                        <!-- /CHECKBOX LINE -->
-                        <!-- /SIDEBAR BOX TITLE -->
-                        <%}if(delegadoDeEstaActividadID==idUsuario||rolUsuario.equals("Delegado General")){%>
-                        <!-- CHECKBOX LINE -->
-                        <div class="checkbox-line">
-                            <!-- CHECKBOX WRAP -->
-                            <div class="checkbox-wrap">
-                                <input type="checkbox" id="ola" name="eventoOculto" value="1" <%if(eventoOculto != null && eventoOculto==1){%>checked<%}%>>
-                                <!-- CHECKBOX BOX -->
-                                <div class="checkbox-box">
-                                    <!-- ICON CROSS -->
-                                    <svg class="icon-cross">
-                                        <use xlink:href="#svg-cross"></use>
-                                    </svg>
-                                    <!-- /ICON CROSS -->
-                                </div>
-                                <!-- /CHECKBOX BOX -->
-                                <label for="ola">Oculto</label>
-                            </div>
-                            <!-- /CHECKBOX WRAP -->
-                            <%Integer cantidadEventosOcultos=(Integer) request.getAttribute("cantidadEventosOcultos");%>
-                            <!-- CHECKBOX LINE TEXT -->
-                            <p class="checkbox-line-text"><%=cantidadEventosOcultos%></p>
-                            <!-- /CHECKBOX LINE TEXT -->
-                        </div>
-                        <!-- /CHECKBOX LINE -->
-                        <%}%>
-                    </div>
-                        <!-- SIDEBAR BOX TITLE -->
-                        <p class="sidebar-box-title">Ubicación</p>
-                        <!-- /SIDEBAR BOX TITLE -->
-                    <!-- SIDEBAR BOX ITEMS -->
-                    <div class="sidebar-box-items">
-                        <!-- CHECKBOX LINE -->
-                        <%ArrayList<Integer[]>listaLugaresCantidad=(ArrayList<Integer[]>) request.getAttribute("listaLugaresCantidad");
-                        ArrayList<Integer> listaLugaresFiltro = new ArrayList<>();
-                        for(int i=0;i<listaLugaresCantidad.size();i++){
-                            listaLugaresFiltro.add((Integer) request.getAttribute("lugar"+i));
-                        }
-                        int cantidadLugares = 0;
-                        for(Integer[] par:listaLugaresCantidad){%>
-                        <div class="checkbox-line">
-                            <!-- CHECKBOX WRAP -->
-                            <div class="checkbox-wrap">
-                                <input type="checkbox" id="category-<%=listaLugaresCantidad.indexOf(par)%>" name="lugar<%=listaLugaresCantidad.indexOf(par)%>" value="<%=par[0]%>" <%if(listaLugaresFiltro.get(cantidadLugares) != null){%>checked<%}%>>
-                                <!-- CHECKBOX BOX -->
-                                <div class="checkbox-box">
-                                    <!-- ICON CROSS -->
-                                    <svg class="icon-cross">
-                                        <use xlink:href="#svg-cross"></use>
-                                    </svg>
-                                    <!-- /ICON CROSS -->
-                                </div>
-                                <!-- /CHECKBOX BOX -->
-                                <label for="category-<%=listaLugaresCantidad.indexOf(par)%>"><%=new DaoLugarEvento().lugarPorID(par[0])%></label>
-                            </div>
-                            <!-- /CHECKBOX WRAP -->
-
-                            <!-- CHECKBOX LINE TEXT -->
-                            <p class="checkbox-line-text"><%=par[1]%></p>
-                            <!-- /CHECKBOX LINE TEXT -->
-                        </div>
-                        <!-- /CHECKBOX LINE -->
-                        <%cantidadLugares++;}%>
-                        <input type="hidden" name="cantidadLugares" value="<%=cantidadLugares%>">
-                    </div>
-                    <!-- /SIDEBAR BOX ITEMS -->
-
-                    <!-- SIDEBAR BOX TITLE -->
-                    <p class="sidebar-box-title">Fecha</p>
-                    <!-- /SIDEBAR BOX TITLE -->
-
-                    <!-- SIDEBAR BOX ITEMS -->
-                    <div class="sidebar-box-items">
-                        <!-- CHECKBOX LINE -->
-                        <div class="checkbox-line">
-                            <!-- CHECKBOX WRAP -->
-                            <div class="checkbox-wrap">
-                                <input type="checkbox" id="category-photoshop" name="eventosHoy" value="1" <%if(eventoHoy != null){%>checked<%}%>>
-                                <!-- CHECKBOX BOX -->
-                                <div class="checkbox-box">
-                                    <!-- ICON CROSS -->
-                                    <svg class="icon-cross">
-                                        <use xlink:href="#svg-cross"></use>
-                                    </svg>
-                                    <!-- /ICON CROSS -->
-                                </div>
-                                <!-- /CHECKBOX BOX -->
-                                <label for="category-photoshop">Hoy</label>
-                            </div>
-                            <!-- /CHECKBOX WRAP -->
-
-                            <!-- CHECKBOX LINE TEXT -->
-                            <%Integer cantidadEventosHoy=(Integer) request.getAttribute("cantidadEventosHoy");%>
-                            <p class="checkbox-line-text"><%=cantidadEventosHoy%></p>
-                            <!-- /CHECKBOX LINE TEXT -->
-                        </div>
-                        <!-- /CHECKBOX LINE -->
-
-                        <!-- CHECKBOX LINE -->
-                        <div class="checkbox-line">
-                            <!-- CHECKBOX WRAP -->
-                            <div class="checkbox-wrap">
-                                <input type="checkbox" id="category-illustrator" name="eventosManana" value="1" <%if(eventoManana != null){%>checked<%}%>>
-                                <!-- CHECKBOX BOX -->
-                                <div class="checkbox-box">
-                                    <!-- ICON CROSS -->
-                                    <svg class="icon-cross">
-                                        <use xlink:href="#svg-cross"></use>
-                                    </svg>
-                                    <!-- /ICON CROSS -->
-                                </div>
-                                <!-- /CHECKBOX BOX -->
-                                <label for="category-illustrator">Mañana</label>
-                            </div>
-                            <!-- /CHECKBOX WRAP -->
-                            <%Integer cantidadEventosManana=(Integer) request.getAttribute("cantidadEventosManana");%>
-                            <!-- CHECKBOX LINE TEXT -->
-                            <p class="checkbox-line-text"><%=cantidadEventosManana%></p>
-                            <!-- /CHECKBOX LINE TEXT -->
-                        </div>
-                        <!-- /CHECKBOX LINE -->
-
-                        <!-- CHECKBOX LINE -->
-                        <div class="checkbox-line">
-                            <!-- CHECKBOX WRAP -->
-                            <div class="checkbox-wrap">
-                                <input type="checkbox" id="category-html-css" name="eventosMasDias" value="1" <%if(eventoMasDias != null){%>checked<%}%>>
-                                <!-- CHECKBOX BOX -->
-                                <div class="checkbox-box">
-                                    <!-- ICON CROSS -->
-                                    <svg class="icon-cross">
-                                        <use xlink:href="#svg-cross"></use>
-                                    </svg>
-                                    <!-- /ICON CROSS -->
-                                </div>
-                                <!-- /CHECKBOX BOX -->
-                                <label for="category-html-css">En 2 a más días</label>
-                            </div>
-                            <!-- /CHECKBOX WRAP -->
-                            <%Integer cantidadEventos2DiasMas=(Integer) request.getAttribute("cantidadEventos2DiasMas");%>
-                            <!-- CHECKBOX LINE TEXT -->
-                            <p class="checkbox-line-text"><%=cantidadEventos2DiasMas%></p>
-                            <!-- /CHECKBOX LINE TEXT -->
-                        </div>
-                        <!-- /CHECKBOX LINE -->
-                    </div>
-                    <!-- /SIDEBAR BOX ITEMS -->
-
-                    <!-- SIDEBAR BOX TITLE -->
-                    <p class="sidebar-box-title">Rango de horas</p>
-                    <!-- /SIDEBAR BOX TITLE -->
-
-                    <!-- SIDEBAR BOX ITEMS -->
-                    <div class="sidebar-box-items small-space">
-                        <!-- FORM ITEM -->
-                        <div class="form-item split">
-                            <!-- FORM INPUT -->
-                            <div class="form-input small active always-active">
-                                <label for="price-from">Desde</label>
-                                <input type="text" id="price-from" name="horaInicio" value="<%=request.getAttribute("horaInicio") != null ? request.getAttribute("horaInicio") : ""%>">
-                            </div>
-                            <!-- /FORM INPUT -->
-
-                            <!-- FORM INPUT -->
-                            <div class="form-input small active always-active">
-                                <label for="price-to">Hasta</label>
-                                <input type="text" id="price-to" name="horaFin" value="<%=request.getAttribute("horaFin") != null ? request.getAttribute("horaFin") : ""%>">
-                            </div>
-                            <!-- /FORM INPUT -->
-                        </div>
-                        <!-- /FORM ITEM -->
-                    </div>
-                    <!-- /SIDEBAR BOX ITEMS -->
-
-                    <!-- BUTTON -->
-                    <button type="submit" class="button small primary">Aplicar filtros de categoría</button>
-                    <!-- /BUTTON -->
-                </form>
+                <!-- /FORM -->
             </div>
-            <!-- /SIDEBAR BOX -->
-        </div>
-        <!-- /MARKETPLACE SIDEBAR -->
+            <!-- /SECTION FILTERS BAR ACTIONS -->
 
-        <!-- MARKETPLACE CONTENT -->
-        <div class="marketplace-content">
+            <!-- SECTION FILTERS BAR ACTIONS -->
+            <div class="section-filters-bar-actions">
+                <!-- FORM -->
+                    <!-- FORM ITEM -->
+                    <div class="form-item split medium">
+                        <%Integer idOrdenarEventos=(Integer) request.getAttribute("idOrdenarEventos");%>
+                        <!-- FORM SELECT -->
+                        <div class="form-select small">
+                            <label for="items-filter-category">Ordenar por</label>
+                            <select id="items-filter-category" name="idOrdenarEventos">
+                                <option value="0" <%if(idOrdenarEventos!=null && idOrdenarEventos==0){%>selected<%}%>>Más reciente</option>
+                                <option value="1" <%if(idOrdenarEventos!=null && idOrdenarEventos==1){%>selected<%}%>>Orden alfabético</option>
+                            </select>
+                            <!-- FORM SELECT ICON -->
+                            <svg class="form-select-icon icon-small-arrow">
+                                <use xlink:href="#svg-small-arrow"></use>
+                            </svg>
+                            <!-- /FORM SELECT ICON -->
+                        </div>
+                        <!-- /FORM SELECT -->
+                        <%Integer idSentidoEventos=(Integer) request.getAttribute("idSentidoEventos");%>
+                        <!-- FORM SELECT -->
+                        <div class="form-select small">
+                            <label for="items-filter-order">Sentido</label>
+                            <select id="items-filter-order" name="idSentidoEventos">
+                                <option value="0" <%if(idSentidoEventos!=null){if(idSentidoEventos==0){%>selected<%}}%>>Ascendente</option>
+                                <option value="1" <%if(idSentidoEventos!=null){if(idSentidoEventos==1){%>selected<%}}%>>Descendente</option>
+                            </select>
+                            <!-- FORM SELECT ICON -->
+                            <svg class="form-select-icon icon-small-arrow">
+                                <use xlink:href="#svg-small-arrow"></use>
+                            </svg>
+                            <!-- /FORM SELECT ICON -->
+                        </div>
+                        <!-- /FORM SELECT -->
+
+                        <!-- BUTTON -->
+                        <button type="submit" class="button secondary">Aplicar filtros</button>
+                        <!-- /BUTTON -->
+                    </div>
+                    <!-- /FORM ITEM -->
+                <!-- /FORM -->
+            </div>
+            <!-- /SECTION FILTERS BAR ACTIONS -->
+        </div>
+        <!-- /SECTION FILTERS BAR -->
+
         <!-- GRID -->
-        <div class="grid grid-3-3-3 centered">
-            <%if(listaEventos!=null){
-                for(Evento e:listaEventos){
-                    String mes="";
-                    String fechaAux=e.getFecha().toString().split("-")[1];
-                    switch (fechaAux){
-                        case "01":
-                            mes="Enero";
-                            break;
-                        case "02":
-                            mes="Febrero";
-                            break;
-                        case "03":
-                            mes="Marzo";
-                            break;
-                        case "04":
-                            mes="Abril";
-                            break;
-                        case "05":
-                            mes="Mayo";
-                            break;
-                        case "06":
-                            mes="Junio";
-                            break;
-                        case "07":
-                            mes="Julio";
-                            break;
-                        case "08":
-                            mes="Agosto";
-                            break;
-                        case "09":
-                            mes="Septiembre";
-                            break;
-                        case "10":
-                            mes= "Octubre";
-                            break;
-                        case "11":
-                            mes="Noviembre";
-                            break;
-                        case "12":
-                            mes="Diciembre";
-                            break;
-                    }%>
-            <!-- PRODUCT PREVIEW -->
-            <%if(delegadoDeEstaActividadID==idUsuario||rolUsuario.equals("Delegado General")){%>
-            <div class="product-preview" style="<%if(e.isEventoFinalizado()){%>opacity: 0.5<%}%>">
-                <!-- PRODUCT PREVIEW IMAGE -->
-                <figure class="product-preview-image liquid" style="position: relative">
-                    <a href="<%=request.getContextPath()%>/EventoServlet?idEvento=<%=e.getIdEvento()%>">
-                        <img src="ImagenEventoServlet?idEvento=<%=e.getIdEvento()%>" style="position: absolute; z-index: 0" height="100%" width="100%" alt="item-01">
-                    </a>
-                    <%if(delegadoDeEstaActividadID==idUsuario){%>
-                    <a id="mostrarPopupEditarEvento<%=listaEventos.indexOf(e)%>">
-                        <img src="css/ajustesEvento.png" class="mt-2" style="position: absolute;left: 82%; z-index: 100;height: 50px;width: 50px;cursor: pointer" alt="">
-                    </a>
-                    <%}%>
-                </figure>
-                <!-- /PRODUCT PREVIEW IMAGE -->
+        <div class="grid grid-3-9 small-space">
+            <!-- MARKETPLACE SIDEBAR -->
+            <div class="marketplace-sidebar">
+                <!-- SIDEBAR BOX -->
+                <div class="sidebar-box">
+                        <!-- SIDEBAR BOX TITLE -->
+                        <p class="sidebar-box-title">Estado</p>
+                        <!-- SIDEBAR BOX TITLE -->
+                        <div class="sidebar-box-items">
+                            <!-- CHECKBOX LINE -->
+                            <div class="checkbox-line">
+                                <!-- CHECKBOX WRAP -->
+                                <div class="checkbox-wrap">
+                                    <input type="checkbox" id="category-logos-and-badges" name="eventoFinalizado" value="1" <%if(eventoFinalizado != null && eventoFinalizado==1){%>checked<%}%>>
+                                    <!-- CHECKBOX BOX -->
+                                    <div class="checkbox-box">
+                                        <!-- ICON CROSS -->
+                                        <svg class="icon-cross">
+                                            <use xlink:href="#svg-cross"></use>
+                                        </svg>
+                                        <!-- /ICON CROSS -->
+                                    </div>
+                                    <!-- /CHECKBOX BOX -->
+                                    <label for="category-logos-and-badges">Finalizado</label>
+                                </div>
+                                <!-- /CHECKBOX WRAP -->
+                                <!-- CHECKBOX LINE TEXT -->
+                                <%Integer cantidadEventosFinalizados=(Integer) request.getAttribute("cantidadEventosFinalizados");%>
+                                <p class="checkbox-line-text"><%=cantidadEventosFinalizados%></p>
+                                <!-- /CHECKBOX LINE TEXT -->
+                            </div>
+                            <!-- /CHECKBOX LINE -->
+                            <%if(!rolUsuario.equals("Delegado General") && delegadoDeEstaActividadID!=idUsuario){%>
+                            <!-- CHECKBOX LINE -->
+                            <div class="checkbox-line">
+                                <!-- CHECKBOX WRAP -->
+                                <div class="checkbox-wrap">
+                                    <input type="checkbox" id="category-sketch" name="eventoApoyando" value="1" <%if(eventoApoyado != null && eventoApoyado==1){%>checked<%}%>>
+                                    <!-- CHECKBOX BOX -->
+                                    <div class="checkbox-box">
+                                        <!-- ICON CROSS -->
+                                        <svg class="icon-cross">
+                                            <use xlink:href="#svg-cross"></use>
+                                        </svg>
+                                        <!-- /ICON CROSS -->
+                                    </div>
+                                    <!-- /CHECKBOX BOX -->
+                                    <label for="category-sketch">Apoyando</label>
+                                </div>
+                                <!-- /CHECKBOX WRAP -->
 
-                <!-- PRODUCT PREVIEW INFO -->
-                <div class="product-preview-info">
-                    <!-- TEXT STICKER -->
-                    <p class="text-sticker" style="right: 180px;">
-                        <%if(e.isEventoOculto()){%>
-                        <span style="color: green;">Oculto</span>
-                        <%}else{%>
-                        <span style="color: brown;">No oculto</span><%}%>
-                    </p>
-                    <p class="text-sticker"><span class="highlighted">Fecha: </span>
-                        <%if(e.isEventoFinalizado()){%>
-                        <span style="color: purple;"><%=Integer.parseInt(e.getFecha().toString().split("-")[2])%> de <%=mes%></span>
-                        <%}else{%>
-                        <%int diasQueFaltanParaElEvento=new DaoEvento().diferenciaDiasEventoActualidad(e.getIdEvento());
-                            if(diasQueFaltanParaElEvento==0){%>
-                        <span style="color: red;">Hoy</span>
-                        <%}else if(diasQueFaltanParaElEvento==1){%>
-                        <span style="color: orangered;">Mañana</span>
-                        <%}else if(diasQueFaltanParaElEvento==2){%>
-                        <span style="color: orange;">En 2 días</span>
-                        <%}else{%>
-                        <span style="color: purple;"><%=Integer.parseInt(e.getFecha().toString().split("-")[2])%> de <%=mes%></span>
-                        <%}}%>
-                    </p>
-                    <!-- /TEXT STICKER -->
-                    <!-- PRODUCT PREVIEW TITLE -->
-                    <%int tamanoLetraTitulo=0;
-                        if(e.getTitulo().length()>36){
-                            tamanoLetraTitulo=90;
-                        }else if (e.getTitulo().length()>33){
-                            tamanoLetraTitulo=95;
-                        }else if(e.getTitulo().length()>30){
-                            tamanoLetraTitulo=100;
-                        }else{
-                            tamanoLetraTitulo=110;
-                        }%>
-                    <p class="product-preview-title d-flex justify-content-center"><a style="font-size: <%=tamanoLetraTitulo%>%">Fibra Tóxica VS <%=e.getTitulo()%></a></p>
-                    <!-- /PRODUCT PREVIEW TITLE -->
-
-                    <div class="row d-flex justify-content-around">
-                        <div class="col-5">
-                            <!-- PRODUCT PREVIEW CATEGORY -->
-                            <p class="product-preview-category digital"><span class="highlighted">Hora: </span> <%String aux[]=e.getHora().toString().split(":");%><span style="color: blue"><%=Integer.parseInt(aux[0])+":"+aux[1]%></span></p>
-
-                            <!-- /PRODUCT PREVIEW CATEGORY -->
+                                <!-- CHECKBOX LINE TEXT -->
+                                <%Integer cantidadEventosApoyando=(Integer) request.getAttribute("cantidadEventosApoyando");%>
+                                <p class="checkbox-line-text"><%=cantidadEventosApoyando%></p>
+                                <!-- /CHECKBOX LINE TEXT -->
+                            </div>
+                            <!-- /CHECKBOX LINE -->
+                            <!-- /SIDEBAR BOX TITLE -->
+                            <%}if(delegadoDeEstaActividadID==idUsuario||rolUsuario.equals("Delegado General")){%>
+                            <!-- CHECKBOX LINE -->
+                            <div class="checkbox-line">
+                                <!-- CHECKBOX WRAP -->
+                                <div class="checkbox-wrap">
+                                    <input type="checkbox" id="ola" name="eventoOculto" value="1" <%if(eventoOculto != null && eventoOculto==1){%>checked<%}%>>
+                                    <!-- CHECKBOX BOX -->
+                                    <div class="checkbox-box">
+                                        <!-- ICON CROSS -->
+                                        <svg class="icon-cross">
+                                            <use xlink:href="#svg-cross"></use>
+                                        </svg>
+                                        <!-- /ICON CROSS -->
+                                    </div>
+                                    <!-- /CHECKBOX BOX -->
+                                    <label for="ola">Oculto</label>
+                                </div>
+                                <!-- /CHECKBOX WRAP -->
+                                <%Integer cantidadEventosOcultos=(Integer) request.getAttribute("cantidadEventosOcultos");%>
+                                <!-- CHECKBOX LINE TEXT -->
+                                <p class="checkbox-line-text"><%=cantidadEventosOcultos%></p>
+                                <!-- /CHECKBOX LINE TEXT -->
+                            </div>
+                            <!-- /CHECKBOX LINE -->
+                            <%}%>
                         </div>
-                        <div class="col-7">
-                            <!-- PRODUCT PREVIEW CATEGORY -->
-                            <p class="product-preview-category digital"><span class="highlighted">Lugar: </span>
-                                <%String lugar=new DaoEvento().lugarPorEventoID(e.getIdEvento());
-                                    String lugarAux;
-                                    if(lugar.length()>14) {
-                                        String aux3[] = lugar.split(" ");
-                                        lugarAux = aux3[0].charAt(0)+".";
-                                        for (int i = 1; i < aux3.length; i++) {
-                                            lugarAux += " " + aux3[i];
-                                        }
-                                    }else{
-                                        lugarAux=lugar;
-                                    }%>
-                                <span style="color: brown"><%=lugarAux%></span>
-                            </p>
-                            <!-- /PRODUCT PREVIEW CATEGORY -->
-                        </div>
-                    </div>
-                    <!-- PRODUCT PREVIEW TEXT -->
-                    <%String texto="";
-                        if(e.isEventoFinalizado()){
-                            texto=e.getResumen();
-                        }else {
-                            texto = e.getFraseMotivacional() + " " + e.getDescripcionEventoActivo();
-                        }
-                        String textoAux = "";
-                        if(texto.length()>=107) {
-                            char charAux[] = texto.toCharArray();
+                            <!-- SIDEBAR BOX TITLE -->
+                            <p class="sidebar-box-title">Ubicación</p>
+                            <!-- /SIDEBAR BOX TITLE -->
+                        <!-- SIDEBAR BOX ITEMS -->
+                        <div class="sidebar-box-items">
+                            <!-- CHECKBOX LINE -->
+                            <%cantidadLugares = 0;
+                            for(Integer[] par:listaLugaresCantidad){%>
+                            <div class="checkbox-line">
+                                <!-- CHECKBOX WRAP -->
+                                <div class="checkbox-wrap">
+                                    <input type="checkbox" id="category-<%=listaLugaresCantidad.indexOf(par)%>" name="lugar<%=listaLugaresCantidad.indexOf(par)%>" value="<%=par[0]%>" <%if(listaLugaresFiltro.get(cantidadLugares) != null){%>checked<%}%>>
+                                    <!-- CHECKBOX BOX -->
+                                    <div class="checkbox-box">
+                                        <!-- ICON CROSS -->
+                                        <svg class="icon-cross">
+                                            <use xlink:href="#svg-cross"></use>
+                                        </svg>
+                                        <!-- /ICON CROSS -->
+                                    </div>
+                                    <!-- /CHECKBOX BOX -->
+                                    <label for="category-<%=listaLugaresCantidad.indexOf(par)%>"><%=new DaoLugarEvento().lugarPorID(par[0])%></label>
+                                </div>
+                                <!-- /CHECKBOX WRAP -->
 
-                            for (int i = 0; i < 107; i++) {
-                                textoAux += charAux[i];
-                            }textoAux+="...";
-                        }else{
-                            textoAux=texto;
-                        }
-                    %>
-                    <p class="product-preview-text"><%=textoAux%></p>
-                    <!-- /PRODUCT PREVIEW TEXT -->
+                                <!-- CHECKBOX LINE TEXT -->
+                                <p class="checkbox-line-text"><%=par[1]%></p>
+                                <!-- /CHECKBOX LINE TEXT -->
+                            </div>
+                            <!-- /CHECKBOX LINE -->
+                            <%
+                                    parametrosURL +="&lugar"+listaLugaresCantidad.indexOf(par)+"="+par[0];
+                            cantidadLugares++;}%>
+                            <input type="hidden" name="cantidadLugares" value="<%=cantidadLugares%>">
+                        </div>
+                        <!-- /SIDEBAR BOX ITEMS -->
+
+                        <!-- SIDEBAR BOX TITLE -->
+                        <p class="sidebar-box-title">Fecha</p>
+                        <!-- /SIDEBAR BOX TITLE -->
+
+                        <!-- SIDEBAR BOX ITEMS -->
+                        <div class="sidebar-box-items">
+                            <!-- CHECKBOX LINE -->
+                            <div class="checkbox-line">
+                                <!-- CHECKBOX WRAP -->
+                                <div class="checkbox-wrap">
+                                    <input type="checkbox" id="category-photoshop" name="eventosHoy" value="1" <%if(eventoHoy != null){%>checked<%}%>>
+                                    <!-- CHECKBOX BOX -->
+                                    <div class="checkbox-box">
+                                        <!-- ICON CROSS -->
+                                        <svg class="icon-cross">
+                                            <use xlink:href="#svg-cross"></use>
+                                        </svg>
+                                        <!-- /ICON CROSS -->
+                                    </div>
+                                    <!-- /CHECKBOX BOX -->
+                                    <label for="category-photoshop">Hoy</label>
+                                </div>
+                                <!-- /CHECKBOX WRAP -->
+
+                                <!-- CHECKBOX LINE TEXT -->
+                                <%Integer cantidadEventosHoy=(Integer) request.getAttribute("cantidadEventosHoy");%>
+                                <p class="checkbox-line-text"><%=cantidadEventosHoy%></p>
+                                <!-- /CHECKBOX LINE TEXT -->
+                            </div>
+                            <!-- /CHECKBOX LINE -->
+
+                            <!-- CHECKBOX LINE -->
+                            <div class="checkbox-line">
+                                <!-- CHECKBOX WRAP -->
+                                <div class="checkbox-wrap">
+                                    <input type="checkbox" id="category-illustrator" name="eventosManana" value="1" <%if(eventoManana != null){%>checked<%}%>>
+                                    <!-- CHECKBOX BOX -->
+                                    <div class="checkbox-box">
+                                        <!-- ICON CROSS -->
+                                        <svg class="icon-cross">
+                                            <use xlink:href="#svg-cross"></use>
+                                        </svg>
+                                        <!-- /ICON CROSS -->
+                                    </div>
+                                    <!-- /CHECKBOX BOX -->
+                                    <label for="category-illustrator">Mañana</label>
+                                </div>
+                                <!-- /CHECKBOX WRAP -->
+                                <%Integer cantidadEventosManana=(Integer) request.getAttribute("cantidadEventosManana");%>
+                                <!-- CHECKBOX LINE TEXT -->
+                                <p class="checkbox-line-text"><%=cantidadEventosManana%></p>
+                                <!-- /CHECKBOX LINE TEXT -->
+                            </div>
+                            <!-- /CHECKBOX LINE -->
+
+                            <!-- CHECKBOX LINE -->
+                            <div class="checkbox-line">
+                                <!-- CHECKBOX WRAP -->
+                                <div class="checkbox-wrap">
+                                    <input type="checkbox" id="category-html-css" name="eventosMasDias" value="1" <%if(eventoMasDias != null){%>checked<%}%>>
+                                    <!-- CHECKBOX BOX -->
+                                    <div class="checkbox-box">
+                                        <!-- ICON CROSS -->
+                                        <svg class="icon-cross">
+                                            <use xlink:href="#svg-cross"></use>
+                                        </svg>
+                                        <!-- /ICON CROSS -->
+                                    </div>
+                                    <!-- /CHECKBOX BOX -->
+                                    <label for="category-html-css">En 2 a más días</label>
+                                </div>
+                                <!-- /CHECKBOX WRAP -->
+                                <%Integer cantidadEventos2DiasMas=(Integer) request.getAttribute("cantidadEventos2DiasMas");%>
+                                <!-- CHECKBOX LINE TEXT -->
+                                <p class="checkbox-line-text"><%=cantidadEventos2DiasMas%></p>
+                                <!-- /CHECKBOX LINE TEXT -->
+                            </div>
+                            <!-- /CHECKBOX LINE -->
+                        </div>
+                        <!-- /SIDEBAR BOX ITEMS -->
+
+                        <!-- SIDEBAR BOX TITLE -->
+                        <p class="sidebar-box-title">Rango de horas</p>
+                        <!-- /SIDEBAR BOX TITLE -->
+
+                        <!-- SIDEBAR BOX ITEMS -->
+                        <div class="sidebar-box-items small-space">
+                            <!-- FORM ITEM -->
+                            <div class="form-item split">
+                                <!-- FORM INPUT -->
+                                <div class="form-input small active always-active">
+                                    <label for="price-from">Desde</label>
+                                    <input type="text" id="price-from" name="horaInicio" value="<%=request.getAttribute("horaInicio") != null ? request.getAttribute("horaInicio") : ""%>">
+                                </div>
+                                <!-- /FORM INPUT -->
+
+                                <!-- FORM INPUT -->
+                                <div class="form-input small active always-active">
+                                    <label for="price-to">Hasta</label>
+                                    <input type="text" id="price-to" name="horaFin" value="<%=request.getAttribute("horaFin") != null ? request.getAttribute("horaFin") : ""%>">
+                                </div>
+                                <!-- /FORM INPUT -->
+                            </div>
+                            <!-- /FORM ITEM -->
+                        </div>
+                        <!-- /SIDEBAR BOX ITEMS -->
+
+                        <!-- BUTTON -->
+                        <button type="submit" class="button small primary">Aplicar filtros de categoría</button>
+                        <!-- /BUTTON -->
+
                 </div>
-                <!-- /PRODUCT PREVIEW INFO -->
+                <!-- /SIDEBAR BOX -->
             </div>
-            <!-- /PRODUCT PREVIEW -->
-            <%}else if(!e.isEventoOculto()){%>
-            <!-- /PRODUCT PREVIEW -->
-            <div class="product-preview" style="<%if(e.isEventoFinalizado()){%>opacitiy: 0.5<%}%>">
-                <!-- PRODUCT PREVIEW IMAGE -->
-                <a href="<%=request.getContextPath()%>/EventoServlet?idEvento=<%=e.getIdEvento()%>">
-                    <figure class="product-preview-image liquid">
-                        <img src="ImagenEventoServlet?idEvento=<%=e.getIdEvento()%>" alt="item-01">
+            <!-- /MARKETPLACE SIDEBAR -->
+
+            <!-- MARKETPLACE CONTENT -->
+            <div class="marketplace-content">
+            <!-- GRID -->
+            <div class="grid grid-3-3-3 centered">
+                <%if(listaEventos!=null){
+                    for(Evento e:listaEventos){
+                        String mes="";
+                        String fechaAux=e.getFecha().toString().split("-")[1];
+                        switch (fechaAux){
+                            case "01":
+                                mes="Enero";
+                                break;
+                            case "02":
+                                mes="Febrero";
+                                break;
+                            case "03":
+                                mes="Marzo";
+                                break;
+                            case "04":
+                                mes="Abril";
+                                break;
+                            case "05":
+                                mes="Mayo";
+                                break;
+                            case "06":
+                                mes="Junio";
+                                break;
+                            case "07":
+                                mes="Julio";
+                                break;
+                            case "08":
+                                mes="Agosto";
+                                break;
+                            case "09":
+                                mes="Septiembre";
+                                break;
+                            case "10":
+                                mes= "Octubre";
+                                break;
+                            case "11":
+                                mes="Noviembre";
+                                break;
+                            case "12":
+                                mes="Diciembre";
+                                break;
+                        }%>
+                <!-- PRODUCT PREVIEW -->
+                <%if(delegadoDeEstaActividadID==idUsuario||rolUsuario.equals("Delegado General")){%>
+                <div class="product-preview" style="<%if(e.isEventoFinalizado()){%>opacity: 0.5<%}%>">
+                    <!-- PRODUCT PREVIEW IMAGE -->
+                    <figure class="product-preview-image liquid" style="position: relative">
+                        <a href="<%=request.getContextPath()%>/EventoServlet?idEvento=<%=e.getIdEvento()%>">
+                            <img src="ImagenEventoServlet?idEvento=<%=e.getIdEvento()%>" style="position: absolute; z-index: 0" height="100%" width="100%" alt="item-01">
+                        </a>
+                        <%if(delegadoDeEstaActividadID==idUsuario){%>
+                        <a id="mostrarPopupEditarEvento<%=listaEventos.indexOf(e)%>">
+                            <img src="css/ajustesEvento.png" class="mt-2" style="position: absolute;left: 82%; z-index: 100;height: 50px;width: 50px;cursor: pointer" alt="">
+                        </a>
+                        <%}%>
                     </figure>
-                </a>
-                <!-- /PRODUCT PREVIEW IMAGE -->
+                    <!-- /PRODUCT PREVIEW IMAGE -->
 
-                <!-- PRODUCT PREVIEW INFO -->
-                <div class="product-preview-info">
-                    <!-- TEXT STICKER -->
-                    <%if(new DaoAlumnoPorEvento().verificarApoyo(e.getIdEvento(),idUsuario)!=null){%>
-                    <p class="text-sticker" style="right: 180px;"><span style="color: green;">Apoyando</span></p>
-                    <%}else{%>
-                    <p class="text-sticker" style="right: 170px;"><span style="color: brown;">No apoyando</span></p>
-                    <%}%>
-                    <p class="text-sticker"><span class="highlighted">Fecha: </span>
-                        <%if(e.isEventoFinalizado()){%>
-                        <span style="color: purple;"><%=Integer.parseInt(e.getFecha().toString().split("-")[2])%> de <%=mes%></span>
-                        <%}else{%>
-                        <%int diasQueFaltanParaElEvento=new DaoEvento().diferenciaDiasEventoActualidad(e.getIdEvento());
-                            if(diasQueFaltanParaElEvento==0){%>
-                        <span style="color: red;">Hoy</span>
-                        <%}else if(diasQueFaltanParaElEvento==1){%>
-                        <span style="color: orangered;">Mañana</span>
-                        <%}else if(diasQueFaltanParaElEvento==2){%>
-                        <span style="color: orange;">En 2 días</span>
-                        <%}else{%>
-                        <span style="color: purple;"><%=Integer.parseInt(e.getFecha().toString().split("-")[2])%> de <%=mes%></span>
-                        <%}}%>
-                    </p>
-                    <!-- /TEXT STICKER -->
-                    <%int tamanoLetraTitulo=0;
-                        if(e.getTitulo().length()>36){
-                            tamanoLetraTitulo=90;
-                        }else if (e.getTitulo().length()>33){
-                            tamanoLetraTitulo=95;
-                        }else if(e.getTitulo().length()>30){
-                            tamanoLetraTitulo=100;
-                        }else{
-                            tamanoLetraTitulo=110;
-                        }%>
-                    <p class="product-preview-title d-flex justify-content-center"><a style="font-size: <%=tamanoLetraTitulo%>%">Fibra Tóxica VS <%=e.getTitulo()%></a></p>
+                    <!-- PRODUCT PREVIEW INFO -->
+                    <div class="product-preview-info">
+                        <!-- TEXT STICKER -->
+                        <p class="text-sticker" style="right: 180px;">
+                            <%if(e.isEventoOculto()){%>
+                            <span style="color: green;">Oculto</span>
+                            <%}else{%>
+                            <span style="color: brown;">No oculto</span><%}%>
+                        </p>
+                        <p class="text-sticker"><span class="highlighted">Fecha: </span>
+                            <%if(e.isEventoFinalizado()){%>
+                            <span style="color: purple;"><%=Integer.parseInt(e.getFecha().toString().split("-")[2])%> de <%=mes%></span>
+                            <%}else{%>
+                            <%int diasQueFaltanParaElEvento=new DaoEvento().diferenciaDiasEventoActualidad(e.getIdEvento());
+                                if(diasQueFaltanParaElEvento==0){%>
+                            <span style="color: red;">Hoy</span>
+                            <%}else if(diasQueFaltanParaElEvento==1){%>
+                            <span style="color: orangered;">Mañana</span>
+                            <%}else if(diasQueFaltanParaElEvento==2){%>
+                            <span style="color: orange;">En 2 días</span>
+                            <%}else{%>
+                            <span style="color: purple;"><%=Integer.parseInt(e.getFecha().toString().split("-")[2])%> de <%=mes%></span>
+                            <%}}%>
+                        </p>
+                        <!-- /TEXT STICKER -->
+                        <!-- PRODUCT PREVIEW TITLE -->
+                        <%int tamanoLetraTitulo=0;
+                            if(e.getTitulo().length()>36){
+                                tamanoLetraTitulo=90;
+                            }else if (e.getTitulo().length()>33){
+                                tamanoLetraTitulo=95;
+                            }else if(e.getTitulo().length()>30){
+                                tamanoLetraTitulo=100;
+                            }else{
+                                tamanoLetraTitulo=110;
+                            }%>
+                        <p class="product-preview-title d-flex justify-content-center"><a style="font-size: <%=tamanoLetraTitulo%>%">Fibra Tóxica VS <%=e.getTitulo()%></a></p>
+                        <!-- /PRODUCT PREVIEW TITLE -->
 
-                    <div class="row d-flex justify-content-around">
-                        <div class="col-5">
-                            <!-- PRODUCT PREVIEW CATEGORY -->
-                            <p class="product-preview-category digital"><span class="highlighted">Hora: </span> <%String aux[]=e.getHora().toString().split(":");%><span style="color: blue"><%=Integer.parseInt(aux[0])+":"+aux[1]%></span>
-                            </p>
+                        <div class="row d-flex justify-content-around">
+                            <div class="col-5">
+                                <!-- PRODUCT PREVIEW CATEGORY -->
+                                <p class="product-preview-category digital"><span class="highlighted">Hora: </span> <%String aux[]=e.getHora().toString().split(":");%><span style="color: blue"><%=Integer.parseInt(aux[0])+":"+aux[1]%></span></p>
 
-                            <!-- /PRODUCT PREVIEW CATEGORY -->
+                                <!-- /PRODUCT PREVIEW CATEGORY -->
+                            </div>
+                            <div class="col-7">
+                                <!-- PRODUCT PREVIEW CATEGORY -->
+                                <p class="product-preview-category digital"><span class="highlighted">Lugar: </span>
+                                    <%String lugar=new DaoEvento().lugarPorEventoID(e.getIdEvento());
+                                        String lugarAux;
+                                        if(lugar.length()>14) {
+                                            String aux3[] = lugar.split(" ");
+                                            lugarAux = aux3[0].charAt(0)+".";
+                                            for (int i = 1; i < aux3.length; i++) {
+                                                lugarAux += " " + aux3[i];
+                                            }
+                                        }else{
+                                            lugarAux=lugar;
+                                        }%>
+                                    <span style="color: brown"><%=lugarAux%></span>
+                                </p>
+                                <!-- /PRODUCT PREVIEW CATEGORY -->
+                            </div>
                         </div>
-                        <div class="col-7">
-                            <!-- PRODUCT PREVIEW CATEGORY -->
-                            <p class="product-preview-category digital"><span class="highlighted">Lugar: </span>
-                                <%String lugar=new DaoEvento().lugarPorEventoID(e.getIdEvento());
-                                    String lugarAux;
-                                    if(lugar.length()>14) {
-                                        String aux3[] = lugar.split(" ");
-                                        lugarAux = aux3[0].charAt(0)+".";
-                                        for (int i = 1; i < aux3.length; i++) {
-                                            lugarAux += " " + aux3[i];
-                                        }
-                                    }else
-                                        lugarAux=lugar;%>
-                                <span style="color: brown"><%=lugarAux%></span></p>
-                            <!-- /PRODUCT PREVIEW CATEGORY -->
-                        </div>
+                        <!-- PRODUCT PREVIEW TEXT -->
+                        <%String texto="";
+                            if(e.isEventoFinalizado()){
+                                texto=e.getResumen();
+                            }else {
+                                texto = e.getFraseMotivacional() + " " + e.getDescripcionEventoActivo();
+                            }
+                            String textoAux = "";
+                            if(texto.length()>=107) {
+                                char charAux[] = texto.toCharArray();
+
+                                for (int i = 0; i < 107; i++) {
+                                    textoAux += charAux[i];
+                                }textoAux+="...";
+                            }else{
+                                textoAux=texto;
+                            }
+                        %>
+                        <p class="product-preview-text"><%=textoAux%></p>
+                        <!-- /PRODUCT PREVIEW TEXT -->
                     </div>
-                    <!-- PRODUCT PREVIEW TEXT -->
-                    <%String texto="";
-                        if(e.isEventoFinalizado()){
-                            texto=e.getResumen();
-                        }else {
-                            texto = e.getFraseMotivacional() + " " + e.getDescripcionEventoActivo();
-                        }
-                        String textoAux = "";
-                        if(texto.length()>=107) {
-                            char charAux[] = texto.toCharArray();
-
-                            for (int i = 0; i < 107; i++) {
-                                textoAux += charAux[i];
-                            }textoAux+="...";
-                        }else{
-                            textoAux=texto;
-                        }
-                    %>
-                    <p class="product-preview-text"><%=textoAux%></p>
-                    <!-- /PRODUCT PREVIEW TEXT -->
+                    <!-- /PRODUCT PREVIEW INFO -->
                 </div>
-                <!-- /PRODUCT PREVIEW INFO -->
+                <!-- /PRODUCT PREVIEW -->
+                <%}else if(!e.isEventoOculto()){%>
+                <!-- /PRODUCT PREVIEW -->
+                <div class="product-preview" style="<%if(e.isEventoFinalizado()){%>opacitiy: 0.5<%}%>">
+                    <!-- PRODUCT PREVIEW IMAGE -->
+                    <a href="<%=request.getContextPath()%>/EventoServlet?idEvento=<%=e.getIdEvento()%>">
+                        <figure class="product-preview-image liquid">
+                            <img src="ImagenEventoServlet?idEvento=<%=e.getIdEvento()%>" alt="item-01">
+                        </figure>
+                    </a>
+                    <!-- /PRODUCT PREVIEW IMAGE -->
+
+                    <!-- PRODUCT PREVIEW INFO -->
+                    <div class="product-preview-info">
+                        <!-- TEXT STICKER -->
+                        <%if(new DaoAlumnoPorEvento().verificarApoyo(e.getIdEvento(),idUsuario)!=null){%>
+                        <p class="text-sticker" style="right: 180px;"><span style="color: green;">Apoyando</span></p>
+                        <%}else{%>
+                        <p class="text-sticker" style="right: 170px;"><span style="color: brown;">No apoyando</span></p>
+                        <%}%>
+                        <p class="text-sticker"><span class="highlighted">Fecha: </span>
+                            <%if(e.isEventoFinalizado()){%>
+                            <span style="color: purple;"><%=Integer.parseInt(e.getFecha().toString().split("-")[2])%> de <%=mes%></span>
+                            <%}else{%>
+                            <%int diasQueFaltanParaElEvento=new DaoEvento().diferenciaDiasEventoActualidad(e.getIdEvento());
+                                if(diasQueFaltanParaElEvento==0){%>
+                            <span style="color: red;">Hoy</span>
+                            <%}else if(diasQueFaltanParaElEvento==1){%>
+                            <span style="color: orangered;">Mañana</span>
+                            <%}else if(diasQueFaltanParaElEvento==2){%>
+                            <span style="color: orange;">En 2 días</span>
+                            <%}else{%>
+                            <span style="color: purple;"><%=Integer.parseInt(e.getFecha().toString().split("-")[2])%> de <%=mes%></span>
+                            <%}}%>
+                        </p>
+                        <!-- /TEXT STICKER -->
+                        <%int tamanoLetraTitulo=0;
+                            if(e.getTitulo().length()>36){
+                                tamanoLetraTitulo=90;
+                            }else if (e.getTitulo().length()>33){
+                                tamanoLetraTitulo=95;
+                            }else if(e.getTitulo().length()>30){
+                                tamanoLetraTitulo=100;
+                            }else{
+                                tamanoLetraTitulo=110;
+                            }%>
+                        <p class="product-preview-title d-flex justify-content-center"><a style="font-size: <%=tamanoLetraTitulo%>%">Fibra Tóxica VS <%=e.getTitulo()%></a></p>
+
+                        <div class="row d-flex justify-content-around">
+                            <div class="col-5">
+                                <!-- PRODUCT PREVIEW CATEGORY -->
+                                <p class="product-preview-category digital"><span class="highlighted">Hora: </span> <%String aux[]=e.getHora().toString().split(":");%><span style="color: blue"><%=Integer.parseInt(aux[0])+":"+aux[1]%></span>
+                                </p>
+
+                                <!-- /PRODUCT PREVIEW CATEGORY -->
+                            </div>
+                            <div class="col-7">
+                                <!-- PRODUCT PREVIEW CATEGORY -->
+                                <p class="product-preview-category digital"><span class="highlighted">Lugar: </span>
+                                    <%String lugar=new DaoEvento().lugarPorEventoID(e.getIdEvento());
+                                        String lugarAux;
+                                        if(lugar.length()>14) {
+                                            String aux3[] = lugar.split(" ");
+                                            lugarAux = aux3[0].charAt(0)+".";
+                                            for (int i = 1; i < aux3.length; i++) {
+                                                lugarAux += " " + aux3[i];
+                                            }
+                                        }else
+                                            lugarAux=lugar;%>
+                                    <span style="color: brown"><%=lugarAux%></span></p>
+                                <!-- /PRODUCT PREVIEW CATEGORY -->
+                            </div>
+                        </div>
+                        <!-- PRODUCT PREVIEW TEXT -->
+                        <%String texto="";
+                            if(e.isEventoFinalizado()){
+                                texto=e.getResumen();
+                            }else {
+                                texto = e.getFraseMotivacional() + " " + e.getDescripcionEventoActivo();
+                            }
+                            String textoAux = "";
+                            if(texto.length()>=107) {
+                                char charAux[] = texto.toCharArray();
+
+                                for (int i = 0; i < 107; i++) {
+                                    textoAux += charAux[i];
+                                }textoAux+="...";
+                            }else{
+                                textoAux=texto;
+                            }
+                        %>
+                        <p class="product-preview-text"><%=textoAux%></p>
+                        <!-- /PRODUCT PREVIEW TEXT -->
+                    </div>
+                    <!-- /PRODUCT PREVIEW INFO -->
+                </div>
+                <!-- PRODUCT PREVIEW -->
+                <%}}}%>
             </div>
-            <!-- PRODUCT PREVIEW -->
-            <%}}}%>
+            <!-- /GRID -->
+
+            <!-- SECTION PAGER BAR WRAP -->
+            <!-- SECTION PAGER BAR -->
+                <!-- SECTION PAGER BAR WRAP -->
+                <div class="section-pager-bar-wrap align-center">
+                    <!-- SECTION PAGER BAR -->
+                        <div class="section-pager-bar " >
+                            <!-- SECTION PAGER -->
+                            <div class="section-pager">
+                                <!-- SECTION PAGER ITEM -->
+                                <%for(int p=0;p<cantidadTotalEventos; p++){%>
+                                <div class="section-pager-item <%if(pagActual==p+1){%>active<%}%>">
+                                    <!-- SECTION PAGER ITEM TEXT -->
+                                    <%if(!action.isEmpty()){%>
+                                        <%if(p<9){%>
+                                            <a class="section-pager-item-text" href="ListaDeEventosServlet?action=<%=action%>&idActividad=<%=idActividad%>&p=<%=p+1%><%=parametrosURL%>">0<%=p+1%></a>                            <!-- /SECTION PAGER ITEM TEXT -->
+                                        <%}else{%>
+                                            <a class="section-pager-item-text" href="ListaDeEventosServlet?action=<%=action%>&idActividad=<%=idActividad%>&p=<%=p+1%><%=parametrosURL%>"><%=p+1%></a>
+                                        <%}%>
+                                    <%}else{%>
+                                        <%if(p<9){%>
+                                            <a class="section-pager-item-text" href="ListaDeEventosServlet?idActividad=<%=idActividad%>&p=<%=p+1%>">0<%=p+1%></a>                            <!-- /SECTION PAGER ITEM TEXT -->
+                                        <%}else{%>
+                                            <a class="section-pager-item-text" href="ListaDeEventosServlet?idActividad=<%=idActividad%>&p=<%=p+1%>"><%=p+1%></a>
+                                    <%}}%>
+
+                                </div>
+                                <%}%>
+                                <!-- /SECTION PAGER ITEM -->
+
+                                <!-- SECTION PAGER ITEM -->
+
+                                <!-- /SECTION PAGER ITEM -->
+
+                                <!-- SECTION PAGER ITEM -->
+
+                                <!-- /SECTION PAGER ITEM -->
+                            </div>
+                        <!-- /SECTION PAGER -->
+
+                    </div>
+                    <!-- /SECTION PAGER BAR -->
+                </div>
+                <!-- /SECTION PAGER BAR WRAP -->
+            </div>
+            <!-- /MARKETPLACE CONTENT -->
+
         </div>
         <!-- /GRID -->
-
-        <!-- SECTION PAGER BAR WRAP -->
-        <!-- SECTION PAGER BAR -->
-            <!-- SECTION PAGER BAR WRAP -->
-            <div class="section-pager-bar-wrap align-center">
-                <!-- SECTION PAGER BAR -->
-                    <div class="section-pager-bar " >
-                        <!-- SECTION PAGER -->
-                        <div class="section-pager">
-                            <!-- SECTION PAGER ITEM -->
-                            <%for(int p=0;p<cantidadTotalEventos; p++){%>
-                            <div class="section-pager-item <%if(pagActual==p+1){%>active<%}%>">
-                                <!-- SECTION PAGER ITEM TEXT -->
-                                <%if(action.equals("buscarEvento")){%>
-                                    <%if(p<9){%>
-                                        <a class="section-pager-item-text" href="ListaDeEventosServlet?action=<%=action%>&idActividad=<%=idActividad%>&p=<%=p+1%>">0<%=p+1%></a>                            <!-- /SECTION PAGER ITEM TEXT -->
-                                    <%}else{%>
-                                        <a class="section-pager-item-text" href="ListaEventosServlet?idActividad=<%=idActividad%>&p=<%=p+1%>"><%=p+1%></a>
-                                    <%}%>
-                                <%}else{%>
-                                    <%if(p<9){%>
-                                        <a class="section-pager-item-text" href="ListaDeEventosServlet?idActividad=<%=idActividad%>&p=<%=p+1%>">0<%=p+1%></a>                            <!-- /SECTION PAGER ITEM TEXT -->
-                                    <%}else{%>
-                                        <a class="section-pager-item-text" href="ListaEventosServlet?idActividad=<%=idActividad%>&p=<%=p+1%>"><%=p+1%></a>
-                                <%}}%>
-
-                            </div>
-                            <%}%>
-                            <!-- /SECTION PAGER ITEM -->
-
-                            <!-- SECTION PAGER ITEM -->
-
-                            <!-- /SECTION PAGER ITEM -->
-
-                            <!-- SECTION PAGER ITEM -->
-
-                            <!-- /SECTION PAGER ITEM -->
-                        </div>
-                    <!-- /SECTION PAGER -->
-
-                </div>
-                <!-- /SECTION PAGER BAR -->
-            </div>
-            <!-- /SECTION PAGER BAR WRAP -->
-        </div>
-        <!-- /MARKETPLACE CONTENT -->
-
-    </div>
-    <!-- /GRID -->
+    </form>
 </div>
 <!-- /CONTENT GRID -->
 <footer style="font-size: 80%;">
@@ -2544,7 +2555,7 @@
                 <div class="row" style="margin-top: 25px;">
                     <div class="col-6">
                         <label for="editarHoraEvento<%=listaEventos.indexOf(e)%>"><b>Hora:</b></label>
-                        <input style="height: 55px;padding-left: 20px;font-size: 0.875rem;line-height: 1.7142857143em;font-weight: 500;" type="time" id="editarHoraEvento<%=listaEventos.indexOf(e)%>" name="updateHora" value="<%=Integer.parseInt(e.getHora().toString().split(":")[0])+":"+e.getHora().toString().split(":")[1]%>" maxlength="1000" required>
+                        <input style="height: 55px;padding-left: 20px;font-size: 0.875rem;line-height: 1.7142857143em;font-weight: 500;" type="time" id="editarHoraEvento<%=listaEventos.indexOf(e)%>" name="updateHora" value="<%=e.getHora().toString().split(":")[0]+":"+e.getHora().toString().split(":")[1]%>" maxlength="1000" required>
                     </div>
                     <div class="col-6">
                         <label for="editarLugarEvento<%=listaEventos.indexOf(e)%>"><b>Lugar:</b></label>

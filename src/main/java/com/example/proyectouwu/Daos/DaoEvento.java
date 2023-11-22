@@ -418,6 +418,37 @@ public class DaoEvento extends DaoPadre {
         }
     }
 
+    public ArrayList<Evento> buscarEventoPorNombre(String name,int idActividad, int pagina){
+        ArrayList<Evento> lista = new ArrayList<>();
+        String sql = "select e.idEvento,e.idLugarEvento,e.titulo,e.fecha,e.hora,e.descripcionEventoActivo,e.fraseMotivacional,e.fotoMiniatura,e.eventoFinalizado,e.eventoOculto,e.resumen,e.resultadoEvento from Evento e inner join Actividad a on e.idActividad=a.idActividad where a.idActividad=? and lower(titulo) like lower(?) limit 8 offset ?";
+        try(Connection conn=this.getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql)){
+            pstmt.setInt(1,idActividad);
+            pstmt.setString(2,"%"+name+"%");
+            pstmt.setInt(3,pagina*8);
+            try(ResultSet rs=pstmt.executeQuery()){
+                while(rs.next()){
+                    Evento e = new Evento();
+                    e.setIdEvento(rs.getInt(1));
+                    e.getLugarEvento().setIdLugarEvento(rs.getInt(2));
+                    e.setTitulo(rs.getString(3));
+                    e.setFecha(rs.getDate(4));
+                    e.setHora(rs.getTime(5));
+                    e.setDescripcionEventoActivo(rs.getString(6));
+                    e.setFraseMotivacional(rs.getString(7));
+                    e.setFotoMiniatura(rs.getBlob(8));
+                    e.setEventoFinalizado(rs.getBoolean(9));
+                    e.setEventoOculto(rs.getBoolean(10));
+                    e.setResumen(rs.getString(11));
+                    e.setResultadoEvento(rs.getString(12));
+                    lista.add(e);
+                }
+            }
+            return lista;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     public ArrayList<Evento> filtrarEventos(ArrayList<String> parametrosEstado, ArrayList<Integer> parametrosLugar, ArrayList<String> parametrosFecha, String horaInicio, String horaFin, int idActividad, int idUsuario){
         HashSet<Integer> idsEvento = new HashSet<>();
         String sqlEvento = "select idEvento from evento where idActividad = ?";
@@ -669,6 +700,385 @@ public class DaoEvento extends DaoPadre {
         }
         return lista;
     }
+
+    public ArrayList<Evento> filtrarEventos(ArrayList<String> parametrosEstado, ArrayList<Integer> parametrosLugar, ArrayList<String> parametrosFecha, String horaInicio, String horaFin, int idActividad, int idUsuario, int pagina){
+        //Se saca todos los ids de los eventos de la actividad
+        HashSet<Integer> idsEvento = new HashSet<>();
+        String sqlEvento = "select idEvento from evento where idActividad = ?";
+        try(Connection conn=this.getConnection(); PreparedStatement pstmt = conn.prepareStatement(sqlEvento)){
+            pstmt.setInt(1,idActividad);
+            try(ResultSet rs = pstmt.executeQuery()){
+                while(rs.next()){
+                    idsEvento.add(rs.getInt(1));
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        //Se crean los HashSet que contendrán los ids de cada tipo de filtro de categoría
+        HashSet<Integer> idsOculto = new HashSet<Integer>();
+        HashSet<Integer> idsFinalizado = new HashSet<Integer>();
+        HashSet<Integer> idsApoyando = new HashSet<Integer>();
+        HashSet<Integer> idsLugar = new HashSet<Integer>();
+        HashSet<Integer> idsHoy = new HashSet<Integer>();
+        HashSet<Integer> idsManana = new HashSet<Integer>();
+        HashSet<Integer> idsMasDias = new HashSet<Integer>();
+        HashSet<Integer> idsHora = new HashSet<Integer>();
+
+        //Se sacan los ids de la categoría Oculto
+        if(parametrosEstado.contains("Oculto")){
+            String sql = "select idEvento from evento where eventoOculto=true and idActividad = ?";
+            try(Connection conn=this.getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql)){
+                pstmt.setInt(1,idActividad);
+                try(ResultSet rs = pstmt.executeQuery()){
+                    while(rs.next()){
+                        idsOculto.add(rs.getInt(1));
+                    }
+                }
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+        }else {
+            String sql = "select idEvento from evento where idActividad = ?";
+            try(Connection conn=this.getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql)){
+                pstmt.setInt(1,idActividad);
+                try(ResultSet rs = pstmt.executeQuery()){
+                    while(rs.next()){
+                        idsOculto.add(rs.getInt(1));
+                    }
+                }
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
+        //Se sacan los ids de la categoría Finalizado
+        if(parametrosEstado.contains("Finalizado")){
+            String sql = "select idEvento from evento where eventoFinalizado=true and idActividad = ?";
+            try(Connection conn=this.getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql)){
+                pstmt.setInt(1,idActividad);
+                try(ResultSet rs = pstmt.executeQuery()){
+                    while(rs.next()){
+                        idsFinalizado.add(rs.getInt(1));
+                    }
+                }
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+        }else {
+            String sql = "select idEvento from evento where idActividad = ?";
+            try(Connection conn=this.getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql)){
+                pstmt.setInt(1,idActividad);
+                try(ResultSet rs = pstmt.executeQuery()){
+                    while(rs.next()){
+                        idsFinalizado.add(rs.getInt(1));
+                    }
+                }
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
+        //Se sacan los ids de la categoría Apoyando
+        if(parametrosEstado.contains("Apoyando")){
+            String sql = "select e.idEvento from evento e inner join alumnoporevento ape on e.idEvento = ape.idEvento inner join usuario u on u.idUsuario = ape.idAlumno where ape.estadoApoyo != 'Pendiente' and e.idActividad = ? and u.idUsuario = ?";
+            try(Connection conn=this.getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql)){
+                pstmt.setInt(1,idActividad);
+                pstmt.setInt(2,idUsuario);
+                try(ResultSet rs = pstmt.executeQuery()){
+                    while(rs.next()){
+                        idsApoyando.add(rs.getInt(1));
+                    }
+                }
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+        }else{
+            String sql = "select idEvento from evento where idActividad = ?";
+            try(Connection conn=this.getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql)){
+                pstmt.setInt(1,idActividad);
+                try(ResultSet rs = pstmt.executeQuery()){
+                    while(rs.next()){
+                        idsApoyando.add(rs.getInt(1));
+                    }
+                }
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
+        //Se intersecan los HashSet, de tal manera que se obtiene un solo Hashset con los ids que los tres tienen en común
+        //De esta manera se obtienen los ids de la categoría Estado (Oculto, Apoyando y Finalizado)
+        idsEvento.retainAll(idsOculto);
+        idsEvento.retainAll(idsApoyando);
+        idsEvento.retainAll(idsFinalizado);
+
+        //Se sacan los ids de la categoría Lugar
+        for(Integer minaya : parametrosLugar){
+            String sql = "select idEvento from evento where idActividad = ? and idLugarEvento = ?";
+            try(Connection conn=this.getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql)){
+                pstmt.setInt(1,idActividad);
+                pstmt.setInt(2,minaya);
+                try(ResultSet rs = pstmt.executeQuery()){
+                    while(rs.next()){
+                        System.out.println(rs.getInt(1));
+                        idsLugar.add(rs.getInt(1));
+                    }
+                }
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
+        //En caso no se haya marcado ninguna opción en la categoría Lugar, no se intersecan los ids con los de Estado
+        if(!parametrosLugar.isEmpty()){
+            idsEvento.retainAll(idsLugar);
+        }
+
+        //Se sacan los ids de la categoría Fecha: Hoy
+        if(parametrosFecha.contains("Hoy")){
+            String sql = "select idEvento from evento where datediff(date(now()),fecha)=0 and idActividad=?";
+            try(Connection conn=this.getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql)){
+                pstmt.setInt(1,idActividad);
+                try(ResultSet rs = pstmt.executeQuery()){
+                    while(rs.next()){
+                        idsHoy.add(rs.getInt(1));
+                    }
+                }
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+        }else {
+            String sql = "select idEvento from evento where idActividad=?";
+            try(Connection conn=this.getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql)){
+                pstmt.setInt(1,idActividad);
+                try(ResultSet rs = pstmt.executeQuery()){
+                    while(rs.next()){
+                        idsHoy.add(rs.getInt(1));
+                    }
+                }
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
+        //Se sacan los ids de la categoría Fecha: Mañana
+        if(parametrosFecha.contains("Manana")){
+            String sql = "select idEvento from evento where datediff(fecha,date(now()))=1 and idActividad=?";
+            try(Connection conn=this.getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql)){
+                pstmt.setInt(1,idActividad);
+                try(ResultSet rs = pstmt.executeQuery()){
+                    while(rs.next()){
+                        idsManana.add(rs.getInt(1));
+                    }
+                }
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+        }else{
+            String sql = "select idEvento from evento where idActividad=?";
+            try(Connection conn=this.getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql)){
+                pstmt.setInt(1,idActividad);
+                try(ResultSet rs = pstmt.executeQuery()){
+                    while(rs.next()){
+                        idsManana.add(rs.getInt(1));
+                    }
+                }
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
+        //Se sacan los ids de la categoría Fecha: 2 o más días
+        if(parametrosFecha.contains("MasDias")){
+            String sql = "select idEvento from evento where datediff(fecha,date(now()))>1 and idActividad=?";
+            try(Connection conn=this.getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql)){
+                pstmt.setInt(1,idActividad);
+                try(ResultSet rs = pstmt.executeQuery()){
+                    while(rs.next()){
+                        idsMasDias.add(rs.getInt(1));
+                    }
+                }
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+        }else{
+            String sql = "select idEvento from evento where idActividad=?";
+            try(Connection conn=this.getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql)){
+                pstmt.setInt(1,idActividad);
+                try(ResultSet rs = pstmt.executeQuery()){
+                    while(rs.next()){
+                        idsMasDias.add(rs.getInt(1));
+                    }
+                }
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
+        //Se intersecan los HashSet, de tal manera que se obtiene un solo Hashset con los ids que todas las categorías tienen en común
+        idsEvento.retainAll(idsHoy);
+        idsEvento.retainAll(idsManana);
+        idsEvento.retainAll(idsMasDias);
+
+        //Se sacan los ids de la categoría Hora inicio y Hora fin solo en caso se haya ingresado un valor en el campo
+        if(horaInicio != "") {
+            String sql = "select idEvento from evento where idActividad = ? and hora between ? and ?";
+            try (Connection conn=this.getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
+                pstmt.setInt(1, idActividad);
+                pstmt.setString(2, horaInicio + ":00");
+                pstmt.setString(3, horaFin + ":00");
+                try (ResultSet rs = pstmt.executeQuery()) {
+                    while (rs.next()) {
+                        idsHora.add(rs.getInt(1));
+                    }
+                }
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+            //Se intersecan los ids con los de las anteriores categorías
+            idsEvento.retainAll(idsHora);
+        }
+
+        //Se obtiene la lista total de Eventos filtrados
+        ArrayList<Evento> lista = new ArrayList<>();
+        for(Integer stuardotqm : idsEvento){
+            String sql = "select idEvento,idLugarEvento,titulo,fecha,hora,descripcionEventoActivo,fraseMotivacional,fotoMiniatura,eventoFinalizado,eventoOculto,resumen,resultadoEvento from evento where idEvento=? limit 8 offset ?";
+            try (Connection conn=this.getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
+                pstmt.setInt(1,stuardotqm);
+                pstmt.setInt(2,pagina*8);
+                try (ResultSet rs = pstmt.executeQuery()) {
+                    if(rs.next()) {
+                        Evento e = new Evento();
+                        e.setIdEvento(rs.getInt(1));
+                        e.getLugarEvento().setIdLugarEvento(rs.getInt(2));
+                        e.setTitulo(rs.getString(3));
+                        e.setFecha(rs.getDate(4));
+                        e.setHora(rs.getTime(5));
+                        e.setDescripcionEventoActivo(rs.getString(6));
+                        e.setFraseMotivacional(rs.getString(7));
+                        e.setFotoMiniatura(rs.getBlob(8));
+                        e.setEventoFinalizado(rs.getBoolean(9));
+                        e.setEventoOculto(rs.getBoolean(10));
+                        e.setResumen(rs.getString(11));
+                        e.setResultadoEvento(rs.getString(12));
+                        lista.add(e);
+                    }
+                }
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+        }
+        return lista;
+    }
+
+    public ArrayList<Evento> juntarListas(ArrayList<Evento> lista1, ArrayList<Evento> lista2){
+        ArrayList<Evento> lista = new ArrayList<>();
+
+        //Se crean los HashSet que contendrán los ids de los Eventos de cada lista
+        HashSet<Integer> ids1 = new HashSet<Integer>();
+        HashSet<Integer> ids2 = new HashSet<Integer>();
+
+        //Se obtienen los ids de los Eventos de la primera lista
+        for(Evento e1: lista1){
+            ids1.add(e1.getIdEvento());
+        }
+
+        //Se obtienen los ids de los Eventos de la segunda lista
+        for(Evento e2: lista2){
+            ids2.add(e2.getIdEvento());
+        }
+
+        //Se intersecan los HashSet de tal manera que se obtienen los ids en común de ambas listas
+        ids1.retainAll(ids2);
+
+        //Se crea la nueva lista con los ids en común
+        for(int id : ids1){
+            lista.add(obtenerEventoPorId(id));
+        }
+        return lista;
+    }
+
+    public Evento obtenerEventoPorId(int idEvento){
+        Evento evento = new Evento();
+        String sql = "select idEvento,idLugarEvento,titulo,fecha,hora,descripcionEventoActivo,fraseMotivacional,fotoMiniatura,eventoFinalizado,eventoOculto,resumen,resultadoEvento from evento where idEvento=?";
+        try(Connection conn = getConnection();
+            PreparedStatement pstmt = conn.prepareStatement(sql)){
+            pstmt.setInt(1,idEvento);
+            try(ResultSet rs = pstmt.executeQuery()){
+                if(rs.next()){
+                    evento.setIdEvento(rs.getInt(1));
+                    evento.getLugarEvento().setIdLugarEvento(rs.getInt(2));
+                    evento.setTitulo(rs.getString(3));
+                    evento.setFecha(rs.getDate(4));
+                    evento.setHora(rs.getTime(5));
+                    evento.setDescripcionEventoActivo(rs.getString(6));
+                    evento.setFraseMotivacional(rs.getString(7));
+                    evento.setFotoMiniatura(rs.getBlob(8));
+                    evento.setEventoFinalizado(rs.getBoolean(9));
+                    evento.setEventoOculto(rs.getBoolean(10));
+                    evento.setResumen(rs.getString(11));
+                    evento.setResultadoEvento(rs.getString(12));
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return evento;
+    }
+
+    public ArrayList<Evento> ordenarListaEventos(ArrayList<Evento> listaEventos, String orden, String sentido, int pagina, int idActividad){
+        ArrayList<Evento> lista = new ArrayList<>();
+
+        //Se crea una lista ordenada con todos los Eventos
+        ArrayList<Evento> listaOrdenada = new ArrayList<>();
+        String sql = "select e.idEvento,e.idLugarEvento,e.titulo,e.fecha,e.hora,e.descripcionEventoActivo,e.fraseMotivacional,e.fotoMiniatura,e.eventoFinalizado,e.eventoOculto,e.resumen,e.resultadoEvento from Evento e inner join Actividad a on e.idActividad=a.idActividad where a.idActividad=? order by";
+        if(orden.equals("0")){
+            sql+=" CONCAT(fecha,' ',hora)";
+        }else{
+            sql+=" titulo";
+        }
+        if(sentido.equals("1")){
+            sql+=" desc";
+        }
+        sql += " limit 8 offset ?";
+        try (Connection conn=this.getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setInt(1,idActividad);
+            pstmt.setInt(2,pagina*8);
+            try (ResultSet rs = pstmt.executeQuery()) {
+                while(rs.next()) {
+                    Evento e = new Evento();
+                    e.setIdEvento(rs.getInt(1));
+                    e.getLugarEvento().setIdLugarEvento(rs.getInt(2));
+                    e.setTitulo(rs.getString(3));
+                    e.setFecha(rs.getDate(4));
+                    e.setHora(rs.getTime(5));
+                    e.setDescripcionEventoActivo(rs.getString(6));
+                    e.setFraseMotivacional(rs.getString(7));
+                    e.setFotoMiniatura(rs.getBlob(8));
+                    e.setEventoFinalizado(rs.getBoolean(9));
+                    e.setEventoOculto(rs.getBoolean(10));
+                    e.setResumen(rs.getString(11));
+                    e.setResultadoEvento(rs.getString(12));
+                    listaOrdenada.add(e);
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        //Doble barrido para ordenar la lista
+        for(Evento evento: listaOrdenada){
+            for(Evento evento1: listaEventos){
+                if(evento1.getIdEvento()==evento.getIdEvento()){
+                    lista.add(evento1);
+                }
+            }
+        }
+        return lista;
+    }
+
     public ArrayList<Evento> ordenarEvento(String orden, String sentido,int idActividad){
         ArrayList<Evento> lista = new ArrayList<>();
         String sql = "select e.idEvento,e.idLugarEvento,e.titulo,e.fecha,e.hora,e.descripcionEventoActivo,e.fraseMotivacional,e.fotoMiniatura,e.eventoFinalizado,e.eventoOculto,e.resumen,e.resultadoEvento from Evento e inner join Actividad a on e.idActividad=a.idActividad where a.idActividad=? order by";

@@ -1712,6 +1712,7 @@
                             <input type="hidden" name="idActividad" value="<%=idActividad%>">
                             <input type="hidden" name="p" value="<%=pagActual%>">
                             <input type="hidden" name="action" value="superFiltro">
+                            <input type="hidden" name="vieneDelJspDeListaDeEventos" value="1">
                             <!-- Parametros para la URL -->
                             <%parametrosURL +="&nombreEvento="+(request.getSession().getAttribute("nombreEvento") != null ? request.getSession().getAttribute("nombreEvento") : "");%>
                             <%parametrosURL +="&idOrdenarEventos="+(request.getSession().getAttribute("idOrdenarEventos")!=null?request.getSession().getAttribute("idOrdenarEventos"):0);%>

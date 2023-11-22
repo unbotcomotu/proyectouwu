@@ -90,7 +90,7 @@ public class ListaDeEventosServlet extends HttpServlet {
                         if(request.getParameter("eventoFinalizado") != null){
                             parametrosEstado1.add("Finalizado");
                             request.getSession().setAttribute("eventoFinalizado",1);
-                        }else if(request.getSession().getAttribute("eventoFinalizado") != null){
+                        }else if(request.getSession().getAttribute("eventoFinalizado") != null && request.getParameter("vieneDelJspDeListaDeEventos")==null){
                             parametrosEstado1.add("Finalizado");
                             request.getSession().setAttribute("eventoFinalizado",1);
                         }else{

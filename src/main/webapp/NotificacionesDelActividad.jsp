@@ -1067,7 +1067,12 @@
     </div>
 </footer>
 <!-- /GRID -->
-
+<script>
+    function enviarFormulario(idForm) {
+        var formulario = document.getElementById(idForm);
+        formulario.submit();
+    }
+</script>
 <!-- app -->
 <script src="js/utils/app.js"></script>
 <!-- page loader -->

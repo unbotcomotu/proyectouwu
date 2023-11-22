@@ -37,6 +37,7 @@ public class EventoServlet extends HttpServlet {
                 request.setAttribute("delegadoDeEstaActividadID",dEvento.idDelegadoDeActividadPorEvento(idEvento));
                 request.setAttribute("cantidadApoyos",dEvento.cantidadApoyosBarraEquipoPorEvento(idEvento));
                 request.setAttribute("solicitudesApoyoPendientes",dEvento.solicitudesSinAtenderPorEvento(idEvento));
+                request.setAttribute("listaDeMensajes",dEvento.listarMensajes(idEvento));
                 if(rolUsuario.equals("Delegado General")){
                     request.setAttribute("listaNotificacionesCampanita",new DaoNotificacion().listarNotificacionesDelegadoGeneral());
                 } else if (rolUsuario.equals("Delegado de Actividad")) {
@@ -60,15 +61,18 @@ public class EventoServlet extends HttpServlet {
         DaoUsuario dUsuario=new DaoUsuario();
         Usuario usuario=(Usuario) request.getSession().getAttribute("usuario");
         DaoFotoEventoCarrusel dF=new DaoFotoEventoCarrusel();
+        DaoEvento dE=new DaoEvento();
         if(usuario==null){
             response.sendRedirect("InicioSesionServlet");
         }else {
             int idEvento = Integer.parseInt(request.getParameter("idEvento"));
             DaoNotificacion dN=new DaoNotificacion();
+            DaoReporte dR=new DaoReporte();
             String action = request.getParameter("action") == null ? "default" : request.getParameter("action");
             switch (action){
                 case "default":
                     //request.getRequestDispatcher("evento.jsp").forward(request,response);
+                    break;
                 case "apoyoEvento":
                     new DaoAlumnoPorEvento().usuarioApoyaEvento(usuario.getIdUsuario(),idEvento);
                     //<a href="/proyectouwu_war_exploded/EventoServlet?idEvento=6&amp;idUsuario=17">
@@ -121,6 +125,31 @@ public class EventoServlet extends HttpServlet {
                         InputStream inputFoto3 = getServletContext().getResourceAsStream("/css/imagenBorrada.png");
                         dF.actualizarImagenCarrusel(listaIDs.get(2),inputFoto3);
                         inputFoto3.close();
+                    }
+                    response.sendRedirect("EventoServlet?idEvento="+idEvento);
+                    break;
+                case "enviarMensaje":
+                    String mensaje=request.getParameter("mensaje");
+                    boolean validacion=true;
+                    if(mensaje.length()>1000){
+                        request.getSession().setAttribute("mensajeLargo","1");
+                        validacion=false;
+                    }
+                    if(validacion){
+                        dE.enviarMensaje(usuario.getIdUsuario(),idEvento,mensaje);
+                    }
+                    response.sendRedirect("EventoServlet?idEvento="+idEvento);
+                    break;
+                case "reportar":
+                    String motivo=request.getParameter("motivoReporte");
+                    boolean validacionReportar=true;
+                    if(motivo.length()>1000){
+                        request.getSession().setAttribute("reporteLargo","1");
+                        validacionReportar=false;
+                    }
+                    int idUsuarioAReportar=Integer.parseInt(request.getParameter("idUsuarioReportado"));
+                    if(validacionReportar){
+                        dR.reportarUsuario(idUsuarioAReportar,usuario.getIdUsuario(),motivo);
                     }
                     response.sendRedirect("EventoServlet?idEvento="+idEvento);
                     break;

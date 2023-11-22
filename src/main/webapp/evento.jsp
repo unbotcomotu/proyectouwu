@@ -23,7 +23,10 @@
         ArrayList<NotificacionDelegadoGeneral>listaNotificacionesCampanita=(ArrayList<NotificacionDelegadoGeneral>) request.getAttribute("listaNotificacionesCampanita");
         ArrayList<AlumnoPorEvento>listaNotificacionesDelegadoDeActividad=(ArrayList<AlumnoPorEvento>) request.getAttribute("listaNotificacionesDelegadoDeActividad");
         String colorRol;
-
+        String reporteLargo=(String) request.getSession().getAttribute("reporteLargo");
+        if(reporteLargo!=null){
+            request.getSession().removeAttribute("reporteLargo");
+        }
         if(rolUsuario.equals("Alumno")){
             colorRol="";
         }else if(rolUsuario.equals("Delegado de Actividad")){
@@ -33,6 +36,11 @@
         }
 
         ArrayList<MensajeChat>listaDeMensajes=(ArrayList<MensajeChat>) request.getAttribute("listaDeMensajes");
+        String mensajeLargo=(String) request.getSession().getAttribute("mensajeLargo");
+        if(mensajeLargo!=null){
+            request.getSession().removeAttribute("mensajeLargo");
+        }
+        String mensaje=(String) request.getAttribute("mensaje");
     %>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -1000,7 +1008,7 @@
                                     <!-- /USER STATUS AVATAR -->
 
                                     <!-- USER STATUS TITLE -->
-                                    <p class="user-status-title"><a class="bold"><%=r.getUsuarioReportado().getNombre()%> <%=r.getUsuarioReportado().getApellido()%></a> ha sido <a class="highlighted">reportado</a> por el delegado de actividad <a class="bold"><%=r.getUsuarioQueReporta().getNombre()%> <%=r.getUsuarioQueReporta().getApellido()%></a></p>
+                                    <p class="user-status-title"><a class="bold"><%=r.getUsuarioReportado().getNombre()%> <%=r.getUsuarioReportado().getApellido()%></a> ha sido <a class="highlighted">reportado</a> por el delegado de actividad <a class="bold" style="color: #491217;"><%=r.getUsuarioQueReporta().getNombre()%> <%=r.getUsuarioQueReporta().getApellido()%></a></p>
                                     <!-- /USER STATUS TITLE -->
                                     <%Integer diferenciaFechas[]=new DaoNotificacion().obtenerDiferenciaEntre2FechasNotificaciones(noti.getIdNotificacion());
                                         if(diferenciaFechas[0]>0){
@@ -1633,12 +1641,13 @@
 <!-- /HEADER -->
 
 <!-- CHAT WIDGET -->
-<aside id="chat-widget-messages" class="chat-widget closed sidebar right">
+<aside id="chat-widget-messages" class="chat-widget <%if(mensajeLargo==null){%>closed<%}%> sidebar right">
     <!-- CHAT WIDGET MESSAGES -->
     <div class="chat-widget-messages" data-simplebar>
         <!-- CHAT WIDGET CONVERSATION -->
-        <div class="chat-widget-conversation" data-simplebar>
-            <%for(MensajeChat m:listaDeMensajes){%>
+        <div class="chat-widget-conversation" id="chat" data-simplebar>
+            <%for(int i=0;i<listaDeMensajes.size();i++){
+            if(listaDeMensajes.get(i).getUsuario().getIdUsuario()!=usuarioActual.getIdUsuario()){%>
             <!-- CHAT WIDGET SPEAKER -->
             <div class="chat-widget-speaker left">
                 <!-- CHAT WIDGET SPEAKER AVATAR -->
@@ -1648,8 +1657,8 @@
                         <!-- USER AVATAR CONTENT -->
                         <div class="user-avatar-content">
                             <!-- HEXAGON -->
-                            <%request.getSession().setAttribute("fotoMensaje"+listaDeMensajes.indexOf(m),m.getUsuario().getFotoPerfil());%>
-                            <div class="hexagon-image-24-26" data-src="Imagen?tipoDeFoto=fotoPerfil&id=Mensaje<%=listaDeMensajes.indexOf(m)%>"></div>
+                            <%request.getSession().setAttribute("fotoMensaje"+i,listaDeMensajes.get(i).getUsuario().getFotoPerfil());%>
+                            <div class="hexagon-image-24-26" data-src="Imagen?tipoDeFoto=fotoPerfil&id=Mensaje<%=i%>"></div>
                             <!-- /HEXAGON -->
                         </div>
                         <!-- /USER AVATAR CONTENT -->
@@ -1657,37 +1666,115 @@
                     <!-- /USER AVATAR -->
                 </div>
                 <!-- /CHAT WIDGET SPEAKER AVATAR -->
+                <%String rolUsuarioMensaje=new DaoUsuario().rolUsuarioPorId(listaDeMensajes.get(i).getUsuario().getIdUsuario());
+                    String tipoDeApoyo=new DaoAlumnoPorEvento().verificarApoyo(e.getIdEvento(),listaDeMensajes.get(i).getUsuario().getIdUsuario());%>
                 <!-- CHAT WIDGET SPEAKER MESSAGE -->
-                <p class="chat-widget-speaker-timestamp"><%=m.getUsuario().getNombre()%> <%=m.getUsuario().getApellido()%></p>
-                <p class="chat-widget-speaker-message"><%=m.getMensaje()%></p>
+                <p class="chat-widget-speaker-timestamp"><%=listaDeMensajes.get(i).getUsuario().getNombre()%> <%=listaDeMensajes.get(i).getUsuario().getApellido()%> - <%if(new DaoEvento().verificarDelegadoDeActividadPorIdEvento(listaDeMensajes.get(i).getUsuario().getIdUsuario(),e.getIdEvento())){%><a style="color: green">D. Actividad</a><%}else if(rolUsuarioMensaje.equals("Delegado General")){%><a style="color: orange;">D. General</a><%}else if(tipoDeApoyo!=null&&tipoDeApoyo.equals("Pendiente")){%><a style="color: steelblue;">Apoyo</a><%}else{%><a>Alumno</a><%}%></p>
+                <p class="chat-widget-speaker-message"><%=listaDeMensajes.get(i).getMensaje()%></p>
+                <%while(true){
+                    if(i+1<listaDeMensajes.size()&&listaDeMensajes.get(i).getUsuario().getIdUsuario()==listaDeMensajes.get(i+1).getUsuario().getIdUsuario()){
+                        i++;%>
+                <p class="chat-widget-speaker-message"><%=listaDeMensajes.get(i).getMensaje()%></p>
+                <%}else{
+                    break;
+                }}%>
                 <!-- /CHAT WIDGET SPEAKER MESSAGE -->
-
-                <!-- CHAT WIDGET SPEAKER TIMESTAMP -->
-                <p class="chat-widget-speaker-timestamp" style="font-size: 60%; margin-left: 100px;">Yesterday at 8:36PM</p>
-                <!-- /CHAT WIDGET SPEAKER TIMESTAMP -->
+                <%Integer diferenciaFechasChat[]=new DaoEvento().obtenerDiferenciaEntre2FechasMensaje(listaDeMensajes.get(i).getIdMensajeChat());
+                    if(diferenciaFechasChat[0]>1){%>
+                <p class="chat-widget-speaker-timestamp" style="font-size: 60%;"><%=listaDeMensajes.get(i).getFecha()%> a las <%=listaDeMensajes.get(i).getHora()%></p>
+                <%}else if(diferenciaFechasChat[0]==1){%>
+                <p class="chat-widget-speaker-timestamp" style="font-size: 60%;">Ayer a las <%=listaDeMensajes.get(i).getHora()%> <%if(rolUsuario.equals("Delegado de Actividad")&&!rolUsuarioMensaje.equals("Delegado General")){%><a id="mostrarPopupReportar<%=i%>" class="chat-widget-speaker-timestamp" style="color: red;cursor: pointer">Reportar</a><%}%></p>
+                <%}else if(diferenciaFechasChat[1]>0){
+                    if(diferenciaFechasChat[1]==1){%>
+                <!-- USER STATUS TIMESTAMP -->
+                <p class="chat-widget-speaker-timestamp" style="font-size: 60%;">Hace 1 hora <%if(rolUsuario.equals("Delegado de Actividad")&&!rolUsuarioMensaje.equals("Delegado General")){%><a id="mostrarPopupReportar<%=i%>" class="chat-widget-speaker-timestamp" style="color: red;cursor: pointer">Reportar</a><%}%></p>
+                <!-- /USER STATUS TIMESTAMP -->
+                <%}else{%>
+                <!-- USER STATUS TIMESTAMP -->
+                <p class="chat-widget-speaker-timestamp" style="font-size: 60%;">Hace <%=diferenciaFechasChat[1]%> horas <%if(rolUsuario.equals("Delegado de Actividad")&&!rolUsuarioMensaje.equals("Delegado General")){%><a id="mostrarPopupReportar<%=i%>" class="chat-widget-speaker-timestamp" style="color: red;cursor: pointer">Reportar</a><%}%></p>
+                <!-- /USER STATUS TIMESTAMP -->
+                <%}%>
+                <%}else if(diferenciaFechasChat[2]>0){
+                    if(diferenciaFechasChat[2]==1){%>
+                <!-- USER STATUS TIMESTAMP -->
+                <p class="chat-widget-speaker-timestamp" style="font-size: 60%;">Hace 1 minuto <%if(rolUsuario.equals("Delegado de Actividad")&&!rolUsuarioMensaje.equals("Delegado General")){%><a id="mostrarPopupReportar<%=i%>" class="chat-widget-speaker-timestamp" style="color: red;cursor: pointer">Reportar</a><%}%></p>
+                <!-- /USER STATUS TIMESTAMP -->
+                <%}else{%>
+                <!-- USER STATUS TIMESTAMP -->
+                <p class="chat-widget-speaker-timestamp" style="font-size: 60%;">Hace <%=diferenciaFechasChat[2]%> minutos <%if(rolUsuario.equals("Delegado de Actividad")&&!rolUsuarioMensaje.equals("Delegado General")){%><a id="mostrarPopupReportar<%=i%>" class="chat-widget-speaker-timestamp" style="color: red;cursor: pointer">Reportar</a><%}%></p>
+                <!-- /USER STATUS TIMESTAMP -->
+                <%}%>
+                <%}else if(diferenciaFechasChat[3]>=0){
+                    if(diferenciaFechasChat[3]==0){%>
+                <!-- USER STATUS TIMESTAMP -->
+                <p class="chat-widget-speaker-timestamp" style="font-size: 60%;">Ahora mismo <%if(rolUsuario.equals("Delegado de Actividad")&&!rolUsuarioMensaje.equals("Delegado General")){%><a id="mostrarPopupReportar<%=i%>" class="chat-widget-speaker-timestamp" style="color: red;cursor: pointer">Reportar</a><%}%></p>
+                <!-- /USER STATUS TIMESTAMP -->
+                <%}else{%>
+                <!-- USER STATUS TIMESTAMP -->
+                <p class="chat-widget-speaker-timestamp" style="font-size: 60%;">Hace <%=diferenciaFechasChat[3]%> segundos <%if(rolUsuario.equals("Delegado de Actividad")&&!rolUsuarioMensaje.equals("Delegado General")){%><a id="mostrarPopupReportar<%=i%>" class="chat-widget-speaker-timestamp" style="color: red;cursor: pointer">Reportar</a><%}%></p>
+                <!-- /USER STATUS TIMESTAMP -->
+                <%}}%>
             </div>
             <!-- /CHAT WIDGET SPEAKER -->
-            <br>
+            <%}else{%>
             <!-- CHAT WIDGET SPEAKER -->
             <div class="chat-widget-speaker right">
                 <!-- CHAT WIDGET SPEAKER MESSAGE -->
-                <p class="chat-widget-speaker-message">Pero es noche profesor :(</p>
+                <p class="chat-widget-speaker-message"><%=listaDeMensajes.get(i).getMensaje()%></p>
+                <%while(true){
+                    if(i+1<listaDeMensajes.size()&&listaDeMensajes.get(i).getUsuario().getIdUsuario()==listaDeMensajes.get(i+1).getUsuario().getIdUsuario()){
+                        i++;%>
+                <p class="chat-widget-speaker-message"><%=listaDeMensajes.get(i).getMensaje()%></p>
+                <%}else{
+                    break;
+                }}%>
                 <!-- /CHAT WIDGET SPEAKER MESSAGE -->
-
-                <!-- CHAT WIDGET SPEAKER MESSAGE -->
-                <p class="chat-widget-speaker-message">Quizás estaría mejor hacerlo mañana temprano</p>
-                <!-- /CHAT WIDGET SPEAKER MESSAGE -->
-
-                <!-- CHAT WIDGET SPEAKER TIMESTAMP -->
-                <p class="chat-widget-speaker-timestamp" style="font-size: 60%;">Yesterday at 9:00PM</p>
-                <!-- /CHAT WIDGET SPEAKER TIMESTAMP -->
+                <%Integer diferenciaFechasChat[]=new DaoEvento().obtenerDiferenciaEntre2FechasMensaje(listaDeMensajes.get(i).getIdMensajeChat());
+                    if(diferenciaFechasChat[0]>1){%>
+                <p class="chat-widget-speaker-timestamp" style="font-size: 60%;"><%=listaDeMensajes.get(i).getFecha()%> a las <%=listaDeMensajes.get(i).getHora()%></p>
+                <%}else if(diferenciaFechasChat[0]==1){%>
+                <p class="chat-widget-speaker-timestamp" style="font-size: 60%;">Ayer a las <%=listaDeMensajes.get(i).getHora()%></p>
+                <%}else if(diferenciaFechasChat[1]>0){
+                    if(diferenciaFechasChat[1]==1){%>
+                <!-- USER STATUS TIMESTAMP -->
+                <p class="chat-widget-speaker-timestamp" style="font-size: 60%;">Hace 1 hora</p>
+                <!-- /USER STATUS TIMESTAMP -->
+                <%}else{%>
+                <!-- USER STATUS TIMESTAMP -->
+                <p class="chat-widget-speaker-timestamp" style="font-size: 60%;">Hace <%=diferenciaFechasChat[1]%> horas</p>
+                <!-- /USER STATUS TIMESTAMP -->
+                <%}%>
+                <%}else if(diferenciaFechasChat[2]>0){
+                    if(diferenciaFechasChat[2]==1){%>
+                <!-- USER STATUS TIMESTAMP -->
+                <p class="chat-widget-speaker-timestamp" style="font-size: 60%;">Hace 1 minuto</p>
+                <!-- /USER STATUS TIMESTAMP -->
+                <%}else{%>
+                <!-- USER STATUS TIMESTAMP -->
+                <p class="chat-widget-speaker-timestamp" style="font-size: 60%;">Hace <%=diferenciaFechasChat[2]%> minutos</p>
+                <!-- /USER STATUS TIMESTAMP -->
+                <%}%>
+                <%}else if(diferenciaFechasChat[3]>=0){
+                    if(diferenciaFechasChat[3]==1){%>
+                <!-- USER STATUS TIMESTAMP -->
+                <p class="chat-widget-speaker-timestamp" style="font-size: 60%;">Hace 1 segundo</p>
+                <!-- /USER STATUS TIMESTAMP -->
+                <%}else if(diferenciaFechasChat[3]>1){%>
+                <!-- USER STATUS TIMESTAMP -->
+                <p class="chat-widget-speaker-timestamp" style="font-size: 60%;">Ahora mismo</p>
+                <!-- /USER STATUS TIMESTAMP -->
+                <%}else{%>
+                <!-- USER STATUS TIMESTAMP -->
+                <p class="chat-widget-speaker-timestamp" style="font-size: 60%;">Hace <%=diferenciaFechasChat[3]%> segundos</p>
+                <!-- /USER STATUS TIMESTAMP -->
+                <%}}%>
             </div>
             <!-- /CHAT WIDGET SPEAKER -->
+            <%}%>
             <br>
             <%}%>
         </div>
         <!-- /CHAT WIDGET CONVERSATION -->
-
         <!-- /CHAT WIDGET HEADER -->
     </div>
     <!-- CHAT WIDGET HEADER -->
@@ -1695,20 +1782,20 @@
 
 
     <!-- CHAT WIDGET FORM -->
-    <form class="chat-widget-form">
+    <form method="post" action="?action=enviarMensaje" class="chat-widget-form">
         <!-- INTERACTIVE INPUT -->
         <div class="interactive-input small">
-            <input type="text" id="chat-widget-message-text" name="chat_widget_message_text" placeholder="Escribe un mensaje...">
+            <input type="text" name="mensaje" placeholder="Escribe un mensaje..." <%if(mensaje!=null){%>value="<%=mensaje%>"<%}%>>
+            <input type="hidden" name="idEvento" value="<%=e.getIdEvento()%>">
             <!-- INTERACTIVE INPUT ICON WRAP -->
-            <div class="interactive-input-icon-wrap">
+            <button type="submit" style="background: none;border:0;color: inherit" class="interactive-input-icon-wrap">
                 <!-- INTERACTIVE INPUT ICON -->
                 <svg class="interactive-input-icon icon-send-message">
                     <use xlink:href="#svg-send-message"></use>
                 </svg>
                 <!-- /INTERACTIVE INPUT ICON -->
-            </div>
+            </button>
             <!-- /INTERACTIVE INPUT ICON WRAP -->
-
             <!-- INTERACTIVE INPUT ACTION -->
             <div class="interactive-input-action">
                 <!-- INTERACTIVE INPUT ACTION ICON -->
@@ -1720,6 +1807,7 @@
             <!-- /INTERACTIVE INPUT ACTION -->
         </div>
         <!-- /INTERACTIVE INPUT -->
+        <%if(mensajeLargo!=null){%><a style="color: red;">Escriba un mensaje más corto</a><%}%>
     </form>
     <!-- /CHAT WIDGET FORM -->
 
@@ -2336,12 +2424,61 @@
     </form>
 </div>
 <%}%>
+<%for(int i=0;i<listaDeMensajes.size();i++){
+    while(true){
+        if(i+1<listaDeMensajes.size()&&listaDeMensajes.get(i).getUsuario().getIdUsuario()==listaDeMensajes.get(i+1).getUsuario().getIdUsuario()){
+            i++;
+        }else{
+            break;
+        }
+    }
+    String rolUsuarioMensaje=new DaoUsuario().rolUsuarioPorId(listaDeMensajes.get(i).getUsuario().getIdUsuario());
+    if(rolUsuario.equals("Delegado de Actividad")&&!rolUsuarioMensaje.equals("Delegado General")&&listaDeMensajes.get(i).getUsuario().getIdUsuario()!=usuarioActual.getIdUsuario()){%>
+<div class="overlay" <%if(reporteLargo!=null){%>style="display: block"<%}%> id="overlayReportar<%=i%>"></div>
+<div class="popup" style="width: 50%;<%if(reporteLargo!=null){%>display: block<%}%>" id="popupReportar<%=i%>">
+    <svg class="cerrar-btn" id="cerrarPopupReportar<%=i%>" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M11.4142 10L16.7071 4.70711C17.0976 4.31658 17.0976 3.68342 16.7071 3.29289C16.3166 2.90237 15.6834 2.90237 15.2929 3.29289L10 8.58579L4.70711 3.29289C4.31658 2.90237 3.68342 2.90237 3.29289 3.29289C2.90237 3.68342 2.90237 4.31658 3.29289 4.70711L8.58579 10L3.29289 15.2929C2.90237 15.6834 2.90237 16.3166 3.29289 16.7071C3.68342 17.0976 4.31658 17.0976 4.70711 16.7071L10 11.4142L15.2929 16.7071C15.6834 17.0976 16.3166 17.0976 16.7071 16.7071C17.0976 16.3166 17.0976 15.6834 16.7071 15.2929L11.4142 10Z" fill="black"/>
+    </svg>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-1"></div>
+            <div class="col-sm-10">
+                <h5 style="text-align: center;">Escribe el motivo de reporte al usuario: <%if(reporteLargo!=null){%><a style="color: red;">Ingrese un motivo más corto</a><%}%></h5>
+            </div>
+            <div class="col-sm-1"></div>
+        </div>
+    </div>
+    <br>
+    <form method="post" action="?action=reportar">
+        <div class="row">
+            <div class="col-sm-1">
+            </div>
+            <div class="col-sm-10">
+                <textarea name="motivoReporte" cols="15" rows="6"></textarea>
+            </div>
+            <div class="col-sm-1">
+            </div>
+        </div>
+        <div style="margin-top: 3%" class="container-fluid">
+            <div class="row">
+                <div class="col-sm-6" style="margin-top: 5px;">
+                    <input type="hidden" name="idEvento" value="<%=e.getIdEvento()%>">
+                    <input type="hidden" name="idUsuarioReportado" value="<%=listaDeMensajes.get(i).getUsuario().getIdUsuario()%>">
+                    <a> <button type="submit" class="button secondary" id="cerrarPopupReportar1<%=i%>">Reportar</button></a>
+                </div>
+                <div class="col-sm-6" style="margin-top: 5px;">
+                    <button type="button" class="button secondary" id="cerrarPopupReportar2<%=i%>" style="background-color: grey;">Cancelar</button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<%}}%>
 <script>
     function activarSeleccion(idInput) {
         // Simular un clic en el input de tipo "file"
         document.getElementById(idInput).click();
     }
-
     function borrarImagen(IDsBorrar,idImagenBorrada,idParametroExtra){
         var imagenBorrada = document.getElementById(idImagenBorrada);
         imagenBorrada.style.display='block';
@@ -2353,6 +2490,20 @@
             aux.disabled=true;
         }
     }
+
+    function scrollHaciaAbajo() {
+        let contenedor = document.querySelector('simplebar-wrapper');
+        contenedor.scrollTop = contenedor.scrollHeight;
+        contenedor = document.querySelector('simplebar-mask');
+        contenedor.scrollTop = contenedor.scrollHeight;
+        contenedor = document.querySelector('simplebar-offset');
+        contenedor.scrollTop = contenedor.scrollHeight;
+        contenedor = document.querySelector('simplebar-content-wrapper');
+        contenedor.scrollTop = contenedor.scrollHeight;
+        contenedor = document.querySelector('simplebar-content');
+        contenedor.scrollTop = contenedor.scrollHeight;
+    }
+    window.onload = scrollHaciaAbajo;
 
     function mostrarImagen(idImagen, idImagenContainer, idInputArchivo) {
         var imagenContainer = document.getElementById(idImagenContainer);
@@ -2376,7 +2527,10 @@
         document.getElementById(id).style.pointerEvents = "none";
         document.getElementById(id).style.opacity = "0.5";
     }
-
+    function enviarFormulario(idForm) {
+        var formulario = document.getElementById(idForm);
+        formulario.submit();
+    }
     function popupFunc(popupId,abrirId,cerrarClass,overlayId){
         const showPopup=document.getElementById(abrirId);
         const overlay=document.getElementById(overlayId);
@@ -2417,7 +2571,18 @@
     <%}if(delegadoDeEstaActividadID==idUsuario){%>
     popupFunc('popupImagenes','mostrarPopupImagenes',['cerrarPopupImagenes','cerrarPopupImagenes1','cerrarPopupImagenes2'],'overlayEditarImagenes');
     <%}%>
-
+    <%for(int i=0;i<listaDeMensajes.size();i++){
+     while(true){
+            if(i+1<listaDeMensajes.size()&&listaDeMensajes.get(i).getUsuario().getIdUsuario()==listaDeMensajes.get(i+1).getUsuario().getIdUsuario()){
+                i++;
+            }else{
+                break;
+            }
+        }
+    String rolUsuarioMensaje=new DaoUsuario().rolUsuarioPorId(listaDeMensajes.get(i).getUsuario().getIdUsuario());
+    if(rolUsuario.equals("Delegado de Actividad")&&!rolUsuarioMensaje.equals("Delegado General")&&listaDeMensajes.get(i).getUsuario().getIdUsuario()!=usuarioActual.getIdUsuario()){%>
+    popupFunc('popupReportar<%=i%>','mostrarPopupReportar<%=i%>',['cerrarPopupReportar<%=i%>','cerrarPopupReportar1<%=i%>','cerrarPopupReportar2<%=i%>'],'overlayReportar<%=i%>');
+    <%}}%>
 </script>
 <!-- app -->
 <script src="js/utils/app.js"></script>

@@ -2,6 +2,7 @@ package com.example.proyectouwu.Daos;
 
 import com.example.proyectouwu.Beans.Donacion;
 import com.example.proyectouwu.Beans.Evento;
+import com.example.proyectouwu.Beans.MensajeChat;
 import jakarta.servlet.ServletContext;
 import jakarta.servlet.ServletOutputStream;
 
@@ -1166,21 +1167,70 @@ public class DaoEvento extends DaoPadre {
         }
     }
 
+    public ArrayList<MensajeChat>listarMensajes(int idEvento){
+        ArrayList<MensajeChat>lista=new ArrayList<>();
+        String sql ="select u.idUsuario,u.nombre,u.apellido,u.rol,u.fotoPerfil,m.mensaje,date(m.fechaHora),time(m.fechaHora),m.idMensajeChat from mensajechat m inner join evento e on m.idEvento = e.idEvento inner join usuario u on m.idUsuario = u.idUsuario where e.idEvento=?";
+        try (Connection conn=this.getConnection(); PreparedStatement pstmt= conn.prepareStatement(sql)) {
+            pstmt.setInt(1,idEvento);
+            try(ResultSet rs=pstmt.executeQuery()){
+                while (rs.next()) {
+                    MensajeChat m=new MensajeChat();
+                    m.getUsuario().setIdUsuario(rs.getInt(1));
+                    m.getUsuario().setNombre(rs.getString(2));
+                    m.getUsuario().setApellido(rs.getString(3));
+                    m.getUsuario().setRol(rs.getString(4));
+                    m.getUsuario().setFotoPerfil(rs.getBlob(5));
+                    m.setMensaje(rs.getString(6));
+                    m.setFecha(rs.getDate(7));
+                    m.setHora(rs.getTime(8));
+                    m.setIdMensajeChat(rs.getInt(9));
+                    lista.add(m);
+                }return lista;
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
     public Integer[] obtenerDiferenciaEntre2FechasMensaje(int idMensajeChat){
         Integer[] diferencia=new Integer[4];
         String sql ="select timestampdiff(day,fechaHora,now()),timestampdiff(hour,fechaHora,now()),timestampdiff(minute,fechaHora,now()),timestampdiff(second,fechaHora,now()) from mensajechat where idMensajeChat=?";
-        try (Connection conn=this.getConnection(); PreparedStatement pstmt= conn.prepareStatement(sql)) {
+        try (Connection conn=this.getConnection(); PreparedStatement pstmt= conn.prepareStatement(sql)){
             pstmt.setInt(1,idMensajeChat);
             try(ResultSet rs=pstmt.executeQuery()){
                 if (rs.next()) {
-                    diferencia[0]=rs.getInt(3)%30;
-                    diferencia[1]=rs.getInt(4)%24;
-                    diferencia[2]=rs.getInt(5)%60;
-                    diferencia[3]= rs.getInt(6)%60;
+                    diferencia[0]=rs.getInt(1)%30;
+                    diferencia[1]=rs.getInt(2)%24;
+                    diferencia[2]=rs.getInt(3)%60;
+                    diferencia[3]=rs.getInt(4)%60;
                     return diferencia;
                 }else{
                     return null;
                 }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void enviarMensaje(int idUsuario,int idEvento,String mensaje){
+        String sql = "insert into mensajechat(idUsuario,idEvento,mensaje,fechaHora) values (?,?,?,now())";
+        try (Connection conn=this.getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql)){
+            pstmt.setInt(1, idUsuario);
+            pstmt.setInt(2, idEvento);
+            pstmt.setString(3,mensaje);
+            pstmt.executeUpdate();
+        }catch (SQLException ee){
+            throw new RuntimeException(ee);
+        }
+    }
+
+    public boolean verificarDelegadoDeActividadPorIdEvento(int idUsuario,int idEvento){
+        String sql ="select a.idActividad from actividad a inner join evento e on a.idActividad = e.idActividad inner join usuario u on a.idDelegadoDeActividad = u.idUsuario where e.idEvento=? and a.idDelegadoDeActividad=?";
+        try (Connection conn=this.getConnection(); PreparedStatement pstmt= conn.prepareStatement(sql)) {
+            pstmt.setInt(1,idEvento);
+            pstmt.setInt(2,idUsuario);
+            try(ResultSet rs=pstmt.executeQuery()){
+                return rs.next();
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);

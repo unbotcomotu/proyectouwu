@@ -40,8 +40,8 @@ public class DaoReporte extends DaoPadre {
                     r.getUsuarioQueReporta().setIdUsuario(rs.getInt(5));
                     r.getUsuarioQueReporta().setNombre(rs.getString(6));
                     r.getUsuarioQueReporta().setApellido(rs.getString(7));
-                    r.setFecha(rs.getDate(7));
-                    r.setHora(rs.getTime(8));
+                    r.setFecha(rs.getDate(8));
+                    r.setHora(rs.getTime(9));
                     return r;
                 }else{
                     return null;
@@ -75,6 +75,21 @@ public class DaoReporte extends DaoPadre {
                 }else{
                     return null;
                 }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+    public void reportarUsuario(int idUsuarioReportado,int idUsuarioQueReporta,String motivo){
+        String sql="insert into reporte (idUsuarioReportado, idUsuarioQueReporta, motivoReporte, fechaHora) values (?,?,?,now())";
+        try(Connection conn=this.getConnection(); PreparedStatement pstmt=conn.prepareStatement(sql,Statement.RETURN_GENERATED_KEYS)){
+            pstmt.setInt(1,idUsuarioReportado);
+            pstmt.setInt(2,idUsuarioQueReporta);
+            pstmt.setString(3,motivo);
+            pstmt.executeUpdate();
+            ResultSet rsKeys=pstmt.getGeneratedKeys();
+            if(rsKeys.next()){
+                new DaoNotificacion().crearNotificacionReporte(rsKeys.getInt(1));
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);

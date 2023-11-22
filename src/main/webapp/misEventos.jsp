@@ -1308,6 +1308,10 @@
 </div>
 <%}%>
 <script>
+    function enviarFormulario(idForm) {
+        var formulario = document.getElementById(idForm);
+        formulario.submit();
+    }
     function popupFunc(popupId,abrirId,cerrarId,overlayId){
         const showPopup=document.getElementById(abrirId);
         const overlay=document.getElementById(overlayId);

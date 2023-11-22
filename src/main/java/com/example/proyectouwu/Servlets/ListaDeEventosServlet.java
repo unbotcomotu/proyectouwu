@@ -68,6 +68,7 @@ public class ListaDeEventosServlet extends HttpServlet {
                     action = "default";
                 }
                 request.getSession().setAttribute("action",action);
+
                 switch (action){
                     case "superFiltro":
                         //Parámetros de búsqueda

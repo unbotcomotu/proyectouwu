@@ -1042,10 +1042,10 @@ public class DaoEvento extends DaoPadre {
         if(sentido.equals("1")){
             sql+=" desc";
         }
-        sql += " limit 8 offset ?";
+        //sql += " limit 8 offset ?";
         try (Connection conn=this.getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setInt(1,idActividad);
-            pstmt.setInt(2,pagina*8);
+            //pstmt.setInt(2,pagina*8);
             try (ResultSet rs = pstmt.executeQuery()) {
                 while(rs.next()) {
                     Evento e = new Evento();
@@ -1076,7 +1076,16 @@ public class DaoEvento extends DaoPadre {
                 }
             }
         }
-        return lista;
+
+        ArrayList<Evento> listaFinal = new ArrayList<>();
+        int limSup = (pagina*8) + 8;
+        if((pagina*8)+8>lista.size()){
+            limSup=lista.size();
+        }
+        for(int i=pagina*8;i<limSup;i++){
+            listaFinal.add(lista.get(i));
+        }
+        return listaFinal;
     }
 
     public ArrayList<Evento> ordenarEvento(String orden, String sentido,int idActividad){

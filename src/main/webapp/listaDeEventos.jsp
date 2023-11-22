@@ -8,7 +8,6 @@
 <head>
     <%Usuario usuarioActual=(Usuario) request.getSession().getAttribute("usuario");
         String action = request.getSession().getAttribute("action") != null ? (String) request.getSession().getAttribute("action") : "";
-
         int idUsuario=usuarioActual.getIdUsuario();
         String rolUsuario=usuarioActual.getRol();
         String nombreCompletoUsuario=usuarioActual.getNombre()+" "+usuarioActual.getApellido();
@@ -23,12 +22,14 @@
         int cantidadTotalEventos = request.getAttribute("cantidadEventosTotal")!=null? (int)Math.ceil((int)request.getAttribute("cantidadEventosTotal")/8.0):0;
         Integer pagActual = request.getSession().getAttribute("pagActual") != null ? (Integer) request.getSession().getAttribute("pagActual") : 1;
         //String busqueda=(String) request.getAttribute("evento");
-        Integer eventoOculto = (Integer) request.getAttribute("eventoOculto");
-        Integer eventoFinalizado = (Integer) request.getAttribute("eventoFinalizado");
-        Integer eventoApoyado = (Integer) request.getAttribute("eventoApoyando");
-        Integer eventoHoy = (Integer) request.getAttribute("eventosHoy");
-        Integer eventoManana = (Integer) request.getAttribute("eventosManana");
-        Integer eventoMasDias = (Integer) request.getAttribute("eventosMasDias");
+
+        Integer eventoOculto = (Integer) request.getSession().getAttribute("eventoOculto");
+        Integer eventoFinalizado = (Integer) request.getSession().getAttribute("eventoFinalizado");
+        Integer eventoApoyado = (Integer) request.getSession().getAttribute("eventoApoyando");
+        Integer eventoHoy = (Integer) request.getSession().getAttribute("eventosHoy");
+        Integer eventoManana = (Integer) request.getSession().getAttribute("eventosManana");
+        Integer eventoMasDias = (Integer) request.getSession().getAttribute("eventosMasDias");
+
         ArrayList<NotificacionDelegadoGeneral>listaNotificacionesCampanita=(ArrayList<NotificacionDelegadoGeneral>) request.getAttribute("listaNotificacionesCampanita");
         ArrayList<AlumnoPorEvento>listaNotificacionesDelegadoDeActividad=(ArrayList<AlumnoPorEvento>) request.getAttribute("listaNotificacionesDelegadoDeActividad");
         String colorRol;
@@ -55,10 +56,11 @@
         if(eventoElegido!=null){
             request.getSession().removeAttribute("eventoElegido");
         }
-        ArrayList<Integer[]>listaLugaresCantidad=(ArrayList<Integer[]>) request.getAttribute("listaLugaresCantidad");
+
+        ArrayList<Integer[]>listaLugaresCantidad=(ArrayList<Integer[]>) request.getSession().getAttribute("listaLugaresCantidad");
         ArrayList<Integer> listaLugaresFiltro = new ArrayList<>();
         for(int i=0;i<listaLugaresCantidad.size();i++){
-            listaLugaresFiltro.add((Integer) request.getAttribute("lugar"+i));
+            listaLugaresFiltro.add((Integer) request.getSession().getAttribute("lugar"+i));
         }
         int cantidadLugares = 0;
         String parametrosURL = "";
@@ -1706,14 +1708,14 @@
                         <div class="form-input small">
                             <label for="items-search">Buscar evento</label>
                             <!-- Se mandan todos los atributos -->
-                            <input type="text" id="items-search" name="nombreEvento" value="<%=request.getAttribute("busqueda") != null ? request.getAttribute("busqueda") : ""%>">
+                            <input type="text" id="items-search" name="nombreEvento" value="<%=request.getSession().getAttribute("nombreEvento") != null ? request.getSession().getAttribute("nombreEvento") : ""%>">
                             <input type="hidden" name="idActividad" value="<%=idActividad%>">
                             <input type="hidden" name="p" value="<%=pagActual%>">
-                            <input type="hidden" name="action" value="buscarEvento">
+                            <input type="hidden" name="action" value="superFiltro">
                             <!-- Parametros para la URL -->
-                            <%parametrosURL +="&nombreEvento="+(request.getAttribute("busqueda") != null ? request.getAttribute("busqueda") : "");%>
-                            <%parametrosURL +="&idOrdenarEventos="+(request.getAttribute("idOrdenarEventos")!=null?request.getAttribute("idOrdenarEventos"):0);%>
-                            <%parametrosURL +="&idSentidoEventos="+(request.getAttribute("idSentidoEventos")!=null?request.getAttribute("idSentidoEventos"):0);%>
+                            <%parametrosURL +="&nombreEvento="+(request.getSession().getAttribute("nombreEvento") != null ? request.getSession().getAttribute("nombreEvento") : "");%>
+                            <%parametrosURL +="&idOrdenarEventos="+(request.getSession().getAttribute("idOrdenarEventos")!=null?request.getSession().getAttribute("idOrdenarEventos"):0);%>
+                            <%parametrosURL +="&idSentidoEventos="+(request.getSession().getAttribute("idSentidoEventos")!=null?request.getSession().getAttribute("idSentidoEventos"):0);%>
                             <%if(eventoFinalizado != null && eventoFinalizado==1){
                                 parametrosURL +="&eventoFinalizado=1";}%>
                             <%parametrosURL +="&cantidadLugares="+cantidadLugares;%>
@@ -1723,8 +1725,8 @@
                                 parametrosURL +="&eventosManana=1";}%>
                             <%if(eventoMasDias != null){
                                 parametrosURL +="&eventosMasDias=1";}%>
-                            <%parametrosURL +="&horaInicio="+(request.getAttribute("horaInicio") != null ? request.getAttribute("horaInicio") : "");%>
-                            <%parametrosURL +="&horaFin="+(request.getAttribute("horaFin") != null ? request.getAttribute("horaFin") : "");%>
+                            <%parametrosURL +="&horaInicio="+(request.getSession().getAttribute("horaInicio") != null ? request.getSession().getAttribute("horaInicio") : "");%>
+                            <%parametrosURL +="&horaFin="+(request.getSession().getAttribute("horaFin") != null ? request.getSession().getAttribute("horaFin") : "");%>
                         <!-- /FORM INPUT -->
                         </div>
                         <!-- BUTTON -->
@@ -1748,7 +1750,7 @@
                 <!-- FORM -->
                     <!-- FORM ITEM -->
                     <div class="form-item split medium">
-                        <%Integer idOrdenarEventos=(Integer) request.getAttribute("idOrdenarEventos");%>
+                        <%Integer idOrdenarEventos=(Integer) request.getSession().getAttribute("idOrdenarEventos");%>
                         <!-- FORM SELECT -->
                         <div class="form-select small">
                             <label for="items-filter-category">Ordenar por</label>
@@ -1763,7 +1765,7 @@
                             <!-- /FORM SELECT ICON -->
                         </div>
                         <!-- /FORM SELECT -->
-                        <%Integer idSentidoEventos=(Integer) request.getAttribute("idSentidoEventos");%>
+                        <%Integer idSentidoEventos=(Integer) request.getSession().getAttribute("idSentidoEventos");%>
                         <!-- FORM SELECT -->
                         <div class="form-select small">
                             <label for="items-filter-order">Sentido</label>
@@ -2004,14 +2006,14 @@
                                 <!-- FORM INPUT -->
                                 <div class="form-input small active always-active">
                                     <label for="price-from">Desde</label>
-                                    <input type="text" id="price-from" name="horaInicio" value="<%=request.getAttribute("horaInicio") != null ? request.getAttribute("horaInicio") : ""%>">
+                                    <input type="text" id="price-from" name="horaInicio" value="<%=request.getSession().getAttribute("horaInicio") != null ? request.getSession().getAttribute("horaInicio") : ""%>">
                                 </div>
                                 <!-- /FORM INPUT -->
 
                                 <!-- FORM INPUT -->
                                 <div class="form-input small active always-active">
                                     <label for="price-to">Hasta</label>
-                                    <input type="text" id="price-to" name="horaFin" value="<%=request.getAttribute("horaFin") != null ? request.getAttribute("horaFin") : ""%>">
+                                    <input type="text" id="price-to" name="horaFin" value="<%=request.getSession().getAttribute("horaFin") != null ? request.getSession().getAttribute("horaFin") : ""%>">
                                 </div>
                                 <!-- /FORM INPUT -->
                             </div>
@@ -2291,19 +2293,11 @@
                                 <%for(int p=0;p<cantidadTotalEventos; p++){%>
                                 <div class="section-pager-item <%if(pagActual==p+1){%>active<%}%>">
                                     <!-- SECTION PAGER ITEM TEXT -->
-                                    <%if(!action.isEmpty()){%>
                                         <%if(p<9){%>
                                             <a class="section-pager-item-text" href="ListaDeEventosServlet?action=<%=action%>&idActividad=<%=idActividad%>&p=<%=p+1%><%=parametrosURL%>">0<%=p+1%></a>                            <!-- /SECTION PAGER ITEM TEXT -->
                                         <%}else{%>
                                             <a class="section-pager-item-text" href="ListaDeEventosServlet?action=<%=action%>&idActividad=<%=idActividad%>&p=<%=p+1%><%=parametrosURL%>"><%=p+1%></a>
                                         <%}%>
-                                    <%}else{%>
-                                        <%if(p<9){%>
-                                            <a class="section-pager-item-text" href="ListaDeEventosServlet?idActividad=<%=idActividad%>&p=<%=p+1%>">0<%=p+1%></a>                            <!-- /SECTION PAGER ITEM TEXT -->
-                                        <%}else{%>
-                                            <a class="section-pager-item-text" href="ListaDeEventosServlet?idActividad=<%=idActividad%>&p=<%=p+1%>"><%=p+1%></a>
-                                    <%}}%>
-
                                 </div>
                                 <%}%>
                                 <!-- /SECTION PAGER ITEM -->

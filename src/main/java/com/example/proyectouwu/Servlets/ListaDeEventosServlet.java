@@ -26,8 +26,14 @@ public class ListaDeEventosServlet extends HttpServlet {
         DaoEvento dEvento=new DaoEvento();
         DaoActividad dActividad=new DaoActividad();
         Usuario usuario=(Usuario) request.getSession().getAttribute("usuario");
-        int pag = request.getSession().getAttribute("p") == null ? 1 : (int) request.getSession().getAttribute("p");
-        int pagina = pag;
+        int pagina;
+        if(request.getParameter("p")!=null){
+            pagina = Integer.parseInt(request.getParameter("p"));
+        }else if(request.getSession().getAttribute("p") != null){
+            pagina = (int) request.getSession().getAttribute("p");
+        }else{
+            pagina = 1;
+        }
         request.getSession().setAttribute("p",pagina);
         if(usuario==null){
             response.sendRedirect("InicioSesionServlet");
@@ -44,7 +50,7 @@ public class ListaDeEventosServlet extends HttpServlet {
                 request.setAttribute("cantidadEventosFinalizados",dActividad.cantidadEventosFinalizadosPorActividad(idActividad));
                 request.setAttribute("cantidadEventosOcultos",dActividad.cantidadEventosOcultosPorActividad(idActividad));
                 request.setAttribute("cantidadEventosApoyando",dActividad.cantidadEventosApoyandoPorActividad(idActividad,usuario.getIdUsuario()));
-                request.setAttribute("listaLugaresCantidad",dActividad.lugaresConMayorCantidadDeEventos_cantidad_idLugarEvento(idActividad));
+                request.getSession().setAttribute("listaLugaresCantidad",dActividad.lugaresConMayorCantidadDeEventos_cantidad_idLugarEvento(idActividad));
                 request.setAttribute("cantidadEventosHoy",dActividad.cantidadEventosEnNdiasPorActividad(idActividad,0));
                 request.setAttribute("cantidadEventosManana",dActividad.cantidadEventosEnNdiasPorActividad(idActividad,1));
                 request.setAttribute("cantidadEventos2DiasMas", dActividad.cantidadEventosEn2DiasAMasPorActividad(idActividad));
@@ -61,15 +67,20 @@ public class ListaDeEventosServlet extends HttpServlet {
                 }else{
                     action = "default";
                 }
-
                 request.getSession().setAttribute("action",action);
                 switch (action){
-                    case "buscarEvento":
+                    case "superFiltro":
                         //Parámetros de búsqueda
-                        String textoBuscar1 = request.getParameter("nombreEvento")==null?"":request.getParameter("nombreEvento");
-                        if(!textoBuscar1.isEmpty()){
-                            request.setAttribute("busqueda",textoBuscar1);
+                        String textoBuscar1;
+                        if(request.getParameter("nombreEvento")!=null){
+                            textoBuscar1=request.getParameter("nombreEvento");
+                        }else if(request.getSession().getAttribute("nombreEvento")!=null){
+                            textoBuscar1= (String) request.getSession().getAttribute("nombreEvento");
+                        }else{
+                            textoBuscar1="";
                         }
+
+                        request.getSession().setAttribute("nombreEvento",textoBuscar1);
 
                         //Parámetros de filtro
                         ArrayList<String> parametrosEstado1 = new ArrayList<>();
@@ -78,62 +89,124 @@ public class ListaDeEventosServlet extends HttpServlet {
 
                         if(request.getParameter("eventoFinalizado") != null){
                             parametrosEstado1.add("Finalizado");
-                            request.setAttribute("eventoFinalizado",1);
+                            request.getSession().setAttribute("eventoFinalizado",1);
+                        }else if(request.getSession().getAttribute("eventoFinalizado") != null){
+                            parametrosEstado1.add("Finalizado");
+                            request.getSession().setAttribute("eventoFinalizado",1);
+                        }else{
+                            request.getSession().removeAttribute("eventoFinalizado");
                         }
+
                         if(!usuario.getRol().equals("Delegado General")){
-                            if(request.getParameter("eventoApoyando") != null){
+                            if(request.getParameter("eventoApoyando") != null || request.getSession().getAttribute("eventoApoyando") != null){
                                 parametrosEstado1.add("Apoyando");
-                                request.setAttribute("eventoApoyando",1);
+                                request.getSession().setAttribute("eventoApoyando",1);
+                            }else{
+                                request.getSession().removeAttribute("eventoApoyando");
                             }
                         }
                         if(dActividad.idDelegadoDeActividadPorActividad(idActividad) == usuario.getIdUsuario() || usuario.getRol().equals("Delegado General")){
-                            if(request.getParameter("eventoOculto") != null){
+                            if(request.getParameter("eventoOculto") != null || request.getSession().getAttribute("eventoOculto") != null){
                                 parametrosEstado1.add("Oculto");
-                                request.setAttribute("eventoOculto",1);
+                                request.getSession().setAttribute("eventoOculto",1);
+                            }else{
+                                request.getSession().removeAttribute("eventoOculto");
                             }
                         }
                         String cantidad1 = request.getParameter("cantidadLugares");
                         if(cantidad1 != null) {
                             int cantidadLugares1 = Integer.parseInt(request.getParameter("cantidadLugares"));
                             for (int j = 0; j < cantidadLugares1; j++) {
-                                String lugarAux1=request.getParameter("lugar" + j);
-                                if(lugarAux1!=null){
+                                String lugarAux1;
+
+                                if(request.getParameter("lugar" + j)!=null){
+                                    lugarAux1=request.getParameter("lugar" + j);
                                     Integer lugar1=Integer.parseInt(lugarAux1);
                                     parametrosLugar1.add(lugar1);
-                                    request.setAttribute("lugar" + j,lugar1);
+                                    request.getSession().setAttribute("lugar" + j,lugar1);
+                                }else if(request.getSession().getAttribute("lugar"+j)!=null){
+                                    lugarAux1= (String) request.getSession().getAttribute("lugar" + j);
+                                    Integer lugar1=Integer.parseInt(lugarAux1);
+                                    parametrosLugar1.add(lugar1);
+                                }else{
+                                    request.getSession().removeAttribute("lugar"+j);
                                 }
                             }
                         }
-                        if(request.getParameter("eventosHoy") != null){
+
+                        if(request.getParameter("eventosHoy") != null || request.getSession().getAttribute("eventosHoy") != null){
                             parametrosFecha1.add("Hoy");
-                            request.setAttribute("eventosHoy",1);
+                            request.getSession().setAttribute("eventosHoy",1);
+                        }else{
+                            request.getSession().removeAttribute("eventosHoy");
                         }
-                        if(request.getParameter("eventosManana") != null){
+                        if(request.getParameter("eventosManana") != null || request.getSession().getAttribute("eventosManana") != null){
                             parametrosFecha1.add("Manana");
-                            request.setAttribute("eventosManana",1);
+                            request.getSession().setAttribute("eventosManana",1);
+                        }else{
+                            request.getSession().removeAttribute("eventosManana");
                         }
-                        if(request.getParameter("eventosMasDias") != null){
+                        if(request.getParameter("eventosMasDias") != null || request.getSession().getAttribute("eventosMasDias") != null){
                             parametrosFecha1.add("MasDias");
-                            request.setAttribute("eventosMasDias",1);
+                            request.getSession().setAttribute("eventosMasDias",1);
+                        }else{
+                            request.getSession().removeAttribute("eventosMasDias");
                         }
-                        request.setAttribute("horaInicio",request.getParameter("horaInicio"));
-                        request.setAttribute("horaFin",request.getParameter("horaFin"));
+
+                        String horaInicio;
+                        if(request.getParameter("horaInicio")!=null){
+                            horaInicio=request.getParameter("horaInicio");
+                        }else if(request.getSession().getAttribute("horaInicio")!=null){
+                            horaInicio= (String) request.getSession().getAttribute("horaInicio");
+                        }else{
+                            horaInicio="";
+                        }
+
+                        String horaFin;
+                        if(request.getParameter("horaFin")!=null){
+                            horaFin=request.getParameter("horaFin");
+                        }else if(request.getSession().getAttribute("horaFin")!=null){
+                            horaFin= (String) request.getSession().getAttribute("horaFin");
+                        }else{
+                            horaFin="";
+                        }
+
+                        request.getSession().setAttribute("horaInicio",horaInicio);
+                        request.getSession().setAttribute("horaFin",horaFin);
 
                         //Parámetros de ordenamiento
-                        request.setAttribute("idOrdenarEventos",Integer.parseInt(request.getParameter("idOrdenarEventos")==null?"0":request.getParameter("idOrdenarEventos")));
-                        request.setAttribute("idSentidoEventos",Integer.parseInt(request.getParameter("idSentidoEventos")==null?"0":request.getParameter("idSentidoEventos")));
+                        String orden;
+                        if(request.getParameter("idOrdenarEventos")!=null){
+                            orden=request.getParameter("idOrdenarEventos");
+                        }else if(request.getSession().getAttribute("idOrdenarEventos")!=null){
+                            orden= ((Integer)request.getSession().getAttribute("idOrdenarEventos")).toString();
+                        }else{
+                            orden="0";
+                        }
+
+                        String sentido;
+                        if(request.getParameter("idSentidoEventos")!=null){
+                            sentido=request.getParameter("idSentidoEventos");
+                        }else if(request.getSession().getAttribute("idSentidoEventos")!=null){
+                            sentido= ((Integer)request.getSession().getAttribute("idSentidoEventos")).toString();
+                        }else{
+                            sentido="0";
+                        }
+
+                        request.getSession().setAttribute("idOrdenarEventos",Integer.parseInt(orden));
+                        request.getSession().setAttribute("idSentidoEventos",Integer.parseInt(sentido));
 
                         //Lista de Eventos de búsqueda sin paginación
                         ArrayList<Evento> listaBusqueda1 = dEvento.buscarEventoPorNombre(textoBuscar1,idActividad);
 
                         //Lista de Eventos de filtros sin paginación
-                        ArrayList<Evento> listaFiltro1 = dEvento.filtrarEventos(parametrosEstado1,parametrosLugar1,parametrosFecha1,request.getParameter("horaInicio"),request.getParameter("horaFin"),idActividad,usuario.getIdUsuario());
+                        ArrayList<Evento> listaFiltro1 = dEvento.filtrarEventos(parametrosEstado1,parametrosLugar1,parametrosFecha1,horaInicio,horaFin,idActividad,usuario.getIdUsuario());
 
                         //Se intersecan los resultados de ambas listas (aun sin ordenamiento)
                         ArrayList<Evento> listaEventosSinOrdenar1 = dEvento.juntarListas(listaBusqueda1,listaFiltro1);
 
                         //Lista de Eventos ordenada
-                        ArrayList<Evento> listaEventosOrdenada1 = dEvento.ordenarListaEventos(listaEventosSinOrdenar1,request.getParameter("idOrdenarEventos"),request.getParameter("idSentidoEventos"),pagina-1,idActividad);
+                        ArrayList<Evento> listaEventosOrdenada1 = dEvento.ordenarListaEventos(listaEventosSinOrdenar1,orden,sentido,pagina-1,idActividad);
 
                         request.setAttribute("cantidadEventosTotal", listaEventosSinOrdenar1.size());
                         request.setAttribute("listaEventos",listaEventosOrdenada1);

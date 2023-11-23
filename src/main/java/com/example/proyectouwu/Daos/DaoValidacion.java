@@ -235,4 +235,16 @@ public class DaoValidacion extends DaoPadre {
             throw new RuntimeException(e);
         }
     }
+
+    public boolean verificarYaRecibioNotificacionKit(int idUsuario){
+        String sql = "select idCorreoValidacion from validacion where idUsuario=? and tipo='NecesitaUnKit'";
+        try(Connection conn=this.getConnection(); PreparedStatement pstmt=conn.prepareStatement(sql)){
+            pstmt.setInt(1,idUsuario);
+            try(ResultSet rs = pstmt.executeQuery()){
+                return rs.next();
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }

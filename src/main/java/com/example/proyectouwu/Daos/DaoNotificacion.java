@@ -122,7 +122,7 @@ public class DaoNotificacion extends DaoPadre {
 
         
 
-        String sql = "SELECT idUsuarioReportado, idUsuarioQueReporta, motivoReporte,fechaHora FROM reporte order by fechaHora desc";
+        String sql = "SELECT r.idUsuarioReportado, r.idUsuarioQueReporta, r.motivoReporte,r.fechaHora,u.fotoPerfil FROM reporte r inner join usuario u on r.idUsuarioQueReporta = u.idUsuario order by r.fechaHora desc";
         try (Connection conn=this.getConnection(); ResultSet rs=conn.createStatement().executeQuery(sql)){
 
             while (rs.next()) {
@@ -131,6 +131,7 @@ public class DaoNotificacion extends DaoPadre {
                 report.getUsuarioQueReporta().setIdUsuario(rs.getInt(2));
                 report.setMotivoReporte(rs.getString(3));
                 report.setFecha(rs.getDate(4));
+                report.getUsuarioReportado().setFotoPerfil(rs.getBlob(5));
                 reportList.add(report);
             }
 

@@ -2297,8 +2297,9 @@
                                 <div class="user-avatar small no-outline">
                                     <!-- USER AVATAR CONTENT -->
                                     <div class="user-avatar-content">
-                                        <!-- HEXAGON -->
-                                        <div class="hexagon-image-30-32" data-src="css\fotoAlex.png"></div>
+                                        <%request.getSession().setAttribute("fotoListaReporte"+reportList.indexOf(reporteNuevo),reporteNuevo.getUsuarioReportado().getFotoPerfil());%>
+                                        <!-- HEXAGON AQUÍ FALTA LA FOTOOOO -->
+                                        <div class="hexagon-image-30-32" data-src="Imagen?tipoDeFoto=fotoPerfil&id=ListaReporte<%=reportList.indexOf(reporteNuevo)%>"></div>
                                         <!-- /HEXAGON -->
                                     </div>
                                     <!-- /USER AVATAR CONTENT -->
@@ -2547,9 +2548,15 @@
                         <!-- /TABLE COLUMN -->
 
                         <div class="table-column centered padded">
+                            <%if(validacion.getTipo().equals("NecesitaUnKit")){%>
+                            <!-- TABLE TITLE -->
+                            <p class="table-title">-</p>
+                            <!-- /TABLE TITLE -->
+                            <%}else{%>
                             <!-- TABLE TITLE -->
                             <p class="table-title"><%=validacion.getCodigoValidacion()%></p>
                             <!-- /TABLE TITLE -->
+                            <%}%>
                         </div>
 
                         <!-- /TABLE COLUMN -->
@@ -2580,6 +2587,7 @@
                             <%} else {%>
                             <a href="mailto:<%=validacion.getCorreo()%>?subject=Coordinación para el recibo de kit - Siempre Fibra&body=¡Gracias por tu colaboración! Ahora mereces tu premio: <%=link%>\n\n\nSiempre Fibra">
                                 <button class="button-accept">Enviar</button>
+                            </a>
                             <%}%>
                             <!-- /TABLE TITLE -->
                         </div>

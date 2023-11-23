@@ -25,7 +25,7 @@ public class MisDonacionesServlet extends HttpServlet {
         DaoUsuario dUsuario=new DaoUsuario();
         DaoDonacion dDonacion=new DaoDonacion();
         Usuario usuario=(Usuario) request.getSession().getAttribute("usuario");
-
+        DaoValidacion dV=new DaoValidacion();
 
         if(usuario==null){
             response.sendRedirect("InicioSesionServlet");
@@ -36,11 +36,8 @@ public class MisDonacionesServlet extends HttpServlet {
             request.setAttribute("totalDonaciones",dDonacion.totalDonaciones(usuario.getIdUsuario()));
 
 
-            if (dDonacion.totalDonaciones(usuario.getIdUsuario()) > 100){
-
-                DaoValidacion daoValidacion = new DaoValidacion();
-                daoValidacion.agregarCorreoParaElKit(dUsuario.correoUsuarioPorId(usuario.getIdUsuario()));
-
+            if (dDonacion.totalDonaciones(usuario.getIdUsuario()) > 100&& !dV.verificarYaRecibioNotificacionKit(usuario.getIdUsuario())){
+                dV.agregarCorreoParaElKit(dUsuario.correoUsuarioPorId(usuario.getIdUsuario()));
             }
 
 

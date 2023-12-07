@@ -5,6 +5,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <%String idFiltroActividades= (String) request.getAttribute("idFiltroActividades");%>
+    <%String idOrdenarActividades=(String)request.getAttribute("idOrdenarActividades");%>
+
     <%Usuario usuarioActual=(Usuario) request.getSession().getAttribute("usuario");
     int idUsuario=usuarioActual.getIdUsuario();
     String rolUsuario=usuarioActual.getRol();
@@ -1646,20 +1649,20 @@
                 <input type="hidden" name="action" value="filtroActividad">
                 <!-- FORM ITEM -->
                 <div class="form-item split medium">
-                    <%Integer idFiltroActividades=(Integer) request.getAttribute("idFiltroActividades");%>
+
                     <!-- FORM SELECT -->
                     <div class="form-select small">
                         <label for="items-filter-category">Ordenar por</label>
                         <select id="items-filter-category" name="idFiltroActividades">
-                            <option value="0" <%if(idFiltroActividades!=null && idFiltroActividades==0){%>selected<%}%>>Orden alfabético</option>
-                            <option value="1" <%if(idFiltroActividades!=null && idFiltroActividades==1){%>selected<%}%>>Cantidad de eventos</option>
-                            <option value="2" <%if(idFiltroActividades!=null && idFiltroActividades==2){%>selected<%}%>>Cantidad de puntos por primer lugar</option>
-                            <option value="3" <%if(idFiltroActividades!=null && idFiltroActividades==3){%>selected<%}%>>Finalizados primero</option>
+                            <option value="0" <%if(idFiltroActividades!=null && idFiltroActividades.equals("0")){%>selected<%}%>>Orden alfabético</option>
+                            <option value="1" <%if(idFiltroActividades!=null && idFiltroActividades.equals("1")){%>selected<%}%>>Cantidad de eventos</option>
+                            <option value="2" <%if(idFiltroActividades!=null && idFiltroActividades.equals("2")){%>selected<%}%>>Cantidad de puntos por primer lugar</option>
+                            <option value="3" <%if(idFiltroActividades!=null && idFiltroActividades.equals("3")){%>selected<%}%>>Finalizados primero</option>
                             <%if(rolUsuario.equals("Delegado General")){%>
-                            <option value="4" <%if(idFiltroActividades!=null && idFiltroActividades==4){%>selected<%}%>>Ocultos primero</option>
+                            <option value="4" <%if(idFiltroActividades!=null && idFiltroActividades.equals("4")){%>selected<%}%>>Ocultos primero</option>
                             <%}%>
                             <%if(rolUsuario.equals("Delegado de Actividad")){%>
-                            <option value="5" <%if(idFiltroActividades!=null && idFiltroActividades==5){%>selected<%}%>>Mi delegatura primero</option>
+                            <option value="5" <%if(idFiltroActividades!=null && idFiltroActividades.equals("5")){%>selected<%}%>>Mi delegatura primero</option>
                             <%}%>
                         </select>
                         <!-- FORM SELECT ICON -->
@@ -1669,13 +1672,12 @@
                         <!-- /FORM SELECT ICON -->
                     </div>
                     <!-- /FORM SELECT -->
-                    <%Integer idOrdenarActividades=(Integer)request.getAttribute("idOrdenarActividades");%>
                     <!-- FORM SELECT -->
                     <div class="form-select small">
                         <label for="items-filter-order">Sentido</label>
                         <select id="items-filter-order" name="idOrdenarActividades">
-                            <option value="0" <%if(idOrdenarActividades!=null){if(idOrdenarActividades==0){%>selected<%}}%>>De mayor a menor</option>
-                            <option value="1" <%if(idOrdenarActividades!=null){if(idOrdenarActividades==1){%>selected<%}}%>>De menor a mayor</option>
+                            <option value="0" <%if(idOrdenarActividades!=null){if(idOrdenarActividades.equals("0")){%>selected<%}}%>>De mayor a menor</option>
+                            <option value="1" <%if(idOrdenarActividades!=null){if(idOrdenarActividades.equals("1")){%>selected<%}}%>>De menor a mayor</option>
                         </select>
                         <!-- FORM SELECT ICON -->
                         <svg class="form-select-icon icon-small-arrow">

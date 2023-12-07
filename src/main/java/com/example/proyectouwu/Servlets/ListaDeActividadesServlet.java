@@ -64,8 +64,9 @@ public class ListaDeActividadesServlet extends HttpServlet {
                     }
                     break;
                 case "filtroActividad":
-                    int idFiltroActividades=Integer.parseInt(request.getParameter("idFiltroActividades"));
-                    int idOrdenarActividades=Integer.parseInt(request.getParameter("idOrdenarActividades"));
+
+                    String idFiltroActividades=request.getParameter("idFiltroActividades");
+                    String idOrdenarActividades=request.getParameter("idOrdenarActividades");
                     request.setAttribute("listaActividades",new DaoActividad().listarActividades(idFiltroActividades,idOrdenarActividades,usuario.getIdUsuario()));
                     request.setAttribute("idFiltroActividades",idFiltroActividades);
                     request.setAttribute("idOrdenarActividades",idOrdenarActividades);

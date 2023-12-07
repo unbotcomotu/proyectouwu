@@ -84,41 +84,41 @@ public class DaoActividad extends DaoPadre {
             throw new RuntimeException(e);
         }
     }
-    public ArrayList<Actividad>listarActividades(int idFiltroActividades,int idOrdenarActividades,int idUsuario){
+    public ArrayList<Actividad>listarActividades(String idFiltroActividades,String idOrdenarActividades,int idUsuario){
         ArrayList<Actividad>listaActividades=new ArrayList<>();
         String sql="";
-        if(idFiltroActividades==0){
-            if(idOrdenarActividades==0){
+        if(idFiltroActividades.equals("0")){
+            if(idOrdenarActividades.equals("0")){
                 sql="select idActividad,idDelegadoDeActividad,nombre,fotoMiniatura,cantidadPuntosPrimerLugar,actividadFinalizada,actividadOculta from actividad order by nombre desc";
             }else{
                 sql="select idActividad,idDelegadoDeActividad,nombre,fotoMiniatura,cantidadPuntosPrimerLugar,actividadFinalizada,actividadOculta from actividad order by nombre asc";
             }
-        }else if(idFiltroActividades==1){
-            if(idOrdenarActividades==0){
+        }else if(idFiltroActividades.equals("1")){
+            if(idOrdenarActividades.equals("0")){
                 sql="select a.idActividad,a.idDelegadoDeActividad,a.nombre,a.fotoMiniatura,a.cantidadPuntosPrimerLugar,a.actividadFinalizada,a.actividadOculta from actividad a inner join evento e on a.idActividad=e.idActividad group by e.idActividad order by count(e.idEvento) desc";
             }else{
                 sql="select a.idActividad,a.idDelegadoDeActividad,a.nombre,a.fotoMiniatura,a.cantidadPuntosPrimerLugar,a.actividadFinalizada,a.actividadOculta from actividad a inner join evento e on a.idActividad=e.idActividad group by e.idActividad order by count(e.idEvento) asc";
             }
-        }else if(idFiltroActividades==2){
-            if(idOrdenarActividades==0){
+        }else if(idFiltroActividades.equals("2")){
+            if(idOrdenarActividades.equals("0")){
                 sql="select idActividad,idDelegadoDeActividad,nombre,fotoMiniatura,cantidadPuntosPrimerLugar,actividadFinalizada,actividadOculta from actividad order by cantidadPuntosPrimerLugar desc";
             }else{
                 sql="select idActividad,idDelegadoDeActividad,nombre,fotoMiniatura,cantidadPuntosPrimerLugar,actividadFinalizada,actividadOculta from actividad order by cantidadPuntosPrimerLugar asc";
             }
-        }else if(idFiltroActividades==3){
-            if(idOrdenarActividades==0){
+        }else if(idFiltroActividades.equals("3")){
+            if(idOrdenarActividades.equals("0")){
                 sql="select idActividad,idDelegadoDeActividad,nombre,fotoMiniatura,cantidadPuntosPrimerLugar,actividadFinalizada,actividadOculta from actividad order by if(actividadFinalizada is true, 0, 1)";
             }else{
                 sql="select idActividad,idDelegadoDeActividad,nombre,fotoMiniatura,cantidadPuntosPrimerLugar,actividadFinalizada,actividadOculta from actividad order by if(actividadFinalizada is true, 1, 0)";
             }
-        }else if(idFiltroActividades==4){
-            if(idOrdenarActividades==0){
+        }else if(idFiltroActividades.equals("4")){
+            if(idOrdenarActividades.equals("0")){
                 sql="select idActividad,idDelegadoDeActividad,nombre,fotoMiniatura,cantidadPuntosPrimerLugar,actividadFinalizada,actividadOculta from actividad order by if(actividadOculta is true, 0, 1)";
             }else{
                 sql="select idActividad,idDelegadoDeActividad,nombre,fotoMiniatura,cantidadPuntosPrimerLugar,actividadFinalizada,actividadOculta from actividad order by if(actividadOculta is true, 1, 0)";
             }
         }else{
-            if(idOrdenarActividades==0){
+            if(idOrdenarActividades.equals("0")){
                 sql="select idActividad,idDelegadoDeActividad,nombre,fotoMiniatura,cantidadPuntosPrimerLugar,actividadFinalizada,actividadOculta from actividad order by if(idDelegadoDeActividad="+idUsuario+",0,1)";
             }else{
                 sql="select idActividad,idDelegadoDeActividad,nombre,fotoMiniatura,cantidadPuntosPrimerLugar,actividadFinalizada,actividadOculta from actividad order by if(idDelegadoDeActividad="+idUsuario+",1,0)";

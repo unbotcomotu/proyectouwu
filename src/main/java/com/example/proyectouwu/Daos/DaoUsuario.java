@@ -714,7 +714,7 @@ public class DaoUsuario extends DaoPadre {
     }
 
     public Usuario usuarioSesion(int idUsuario){
-        String sql = "select idUsuario,rol,nombre,apellido,fotoPerfil from usuario where idUsuario = ?";
+        String sql = "select idUsuario,rol,nombre,apellido,fotoPerfil,estadoRegistro from usuario where idUsuario = ?";
         try(Connection conn=this.getConnection(); PreparedStatement pstmt=conn.prepareStatement(sql)){
             pstmt.setInt(1,idUsuario);
             try(ResultSet rs = pstmt.executeQuery()){
@@ -725,6 +725,7 @@ public class DaoUsuario extends DaoPadre {
                     u.setNombre(rs.getString(3));
                     u.setApellido(rs.getString(4));
                     u.setFotoPerfil(rs.getBlob(5));
+                    u.setEstadoRegistro(rs.getString(6));
                     return u;
                 }else{
                     return null;

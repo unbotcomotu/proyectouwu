@@ -2472,7 +2472,7 @@
                     <!-- /TABLE HEADER COLUMN -->
 
                     <!-- TABLE HEADER COLUMN -->
-                    <div class="table-header-column padded-left">
+                    <div class="table-header-column">
                         <!-- TABLE HEADER TITLE -->
                         <p class="table-header-title">Correo</p>
                         <!-- /TABLE HEADER TITLE -->
@@ -2499,15 +2499,13 @@
                     </div>
                     <!-- /TABLE HEADER COLUMN -->
 
-                    <div class="table-header-column centered padded" style="display: none">
+                    <div class="table-header-column centered padded text-center" style="display: none">
                         <!-- TABLE HEADER TITLE -->
                         <p class="table-header-title">link</p>
                         <!-- /TABLE HEADER TITLE -->
                     </div>
 
                     <!-- /TABLE HEADER COLUMN -->
-
-
 
                     <!-- /TABLE HEADER COLUMN -->
                 </div>
@@ -2533,7 +2531,7 @@
                         <!-- /TABLE COLUMN -->
 
                         <!-- TABLE COLUMN -->
-                        <div class="table-column centered padded text-center">
+                        <div class="table-column centered padded">
                             <!-- TABLE TITLE -->
                             <p class="table-title"> <%=validacion.getCorreo()%> </p>
                             <!-- /TABLE TITLE -->

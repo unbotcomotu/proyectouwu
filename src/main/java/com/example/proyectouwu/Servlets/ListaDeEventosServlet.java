@@ -196,24 +196,43 @@ public class ListaDeEventosServlet extends HttpServlet {
                         //Parámetros de ordenamiento
                         String orden;
                         if(request.getParameter("idOrdenarEventos")!=null){
-                            orden=request.getParameter("idOrdenarEventos");
+
+                            if(request.getParameter("idOrdenarEventos").equals("1") || request.getParameter("idOrdenarEventos").equals("0")){
+                                orden=request.getParameter("idOrdenarEventos");
+
+                            }else{
+                                orden="0";
+                            }
+
                         }else if(request.getSession().getAttribute("idOrdenarEventos")!=null){
-                            orden= ((Integer)request.getSession().getAttribute("idOrdenarEventos")).toString();
+                            orden= (String)request.getSession().getAttribute("idOrdenarEventos");
+
+
                         }else{
                             orden="0";
                         }
 
                         String sentido;
                         if(request.getParameter("idSentidoEventos")!=null){
-                            sentido=request.getParameter("idSentidoEventos");
+                            if(request.getParameter("idSentidoEventos").equals("1") || request.getParameter("idSentidoEventos").equals("0")){
+                                sentido=request.getParameter("idSentidoEventos");
+
+                            }else{
+                                sentido="0";
+
+                            }
+
                         }else if(request.getSession().getAttribute("idSentidoEventos")!=null){
-                            sentido= ((Integer)request.getSession().getAttribute("idSentidoEventos")).toString();
+
+                            sentido= (String)request.getSession().getAttribute("idSentidoEventos");
+
+
                         }else{
                             sentido="0";
                         }
-
-                        request.getSession().setAttribute("idOrdenarEventos",Integer.parseInt(orden));
-                        request.getSession().setAttribute("idSentidoEventos",Integer.parseInt(sentido));
+//ayuda, aqui hice cosas
+                        request.getSession().setAttribute("idOrdenarEventos",orden);
+                        request.getSession().setAttribute("idSentidoEventos",sentido);
 
                         //Lista de Eventos de búsqueda sin paginación
                         ArrayList<Evento> listaBusqueda1 = dEvento.buscarEventoPorNombre(textoBuscar1,idActividad);

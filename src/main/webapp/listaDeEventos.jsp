@@ -1751,13 +1751,13 @@
                 <!-- FORM -->
                     <!-- FORM ITEM -->
                     <div class="form-item split medium">
-                        <%Integer idOrdenarEventos=(Integer) request.getSession().getAttribute("idOrdenarEventos");%>
+                        <%String idOrdenarEventos=(String) request.getSession().getAttribute("idOrdenarEventos");%>
                         <!-- FORM SELECT -->
                         <div class="form-select small">
                             <label for="items-filter-category">Ordenar por</label>
                             <select id="items-filter-category" name="idOrdenarEventos">
-                                <option value="0" <%if(idOrdenarEventos!=null && idOrdenarEventos==0){%>selected<%}%>>Más reciente</option>
-                                <option value="1" <%if(idOrdenarEventos!=null && idOrdenarEventos==1){%>selected<%}%>>Orden alfabético</option>
+                                <option value="0" <%if(idOrdenarEventos!=null && idOrdenarEventos.equals("0")){%>selected<%}%>>Más reciente</option>
+                                <option value="1" <%if(idOrdenarEventos!=null && idOrdenarEventos.equals("1")){%>selected<%}%>>Orden alfabético</option>
                             </select>
                             <!-- FORM SELECT ICON -->
                             <svg class="form-select-icon icon-small-arrow">
@@ -1766,13 +1766,13 @@
                             <!-- /FORM SELECT ICON -->
                         </div>
                         <!-- /FORM SELECT -->
-                        <%Integer idSentidoEventos=(Integer) request.getSession().getAttribute("idSentidoEventos");%>
+                        <%String idSentidoEventos=(String) request.getSession().getAttribute("idSentidoEventos");%>
                         <!-- FORM SELECT -->
                         <div class="form-select small">
                             <label for="items-filter-order">Sentido</label>
                             <select id="items-filter-order" name="idSentidoEventos">
-                                <option value="0" <%if(idSentidoEventos!=null){if(idSentidoEventos==0){%>selected<%}}%>>Ascendente</option>
-                                <option value="1" <%if(idSentidoEventos!=null){if(idSentidoEventos==1){%>selected<%}}%>>Descendente</option>
+                                <option value="0" <%if(idSentidoEventos!=null){if(idSentidoEventos.equals("0")){%>selected<%}}%>>Ascendente</option>
+                                <option value="1" <%if(idSentidoEventos!=null){if(idSentidoEventos.equals("1")){%>selected<%}}%>>Descendente</option>
                             </select>
                             <!-- FORM SELECT ICON -->
                             <svg class="form-select-icon icon-small-arrow">

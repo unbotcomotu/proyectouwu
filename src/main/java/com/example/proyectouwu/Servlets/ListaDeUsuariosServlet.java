@@ -34,10 +34,10 @@ public class ListaDeUsuariosServlet extends HttpServlet {
                         request.setAttribute("pagActual", Integer.parseInt(pagina));
                         request.getRequestDispatcher("listaUsuarios.jsp").forward(request, response);
                     }else{
-                        int idOrdenarUsuario=Integer.parseInt(request.getParameter("idOrdenarUsuario"));
-                        request.setAttribute("listaUsuarios", dUsuario.listarUsuariosFiltro(Integer.parseInt(filtro),idOrdenarUsuario,Integer.parseInt(pagina)-1));
+                        String idOrdenarUsuario= request.getParameter("idOrdenarUsuario");
+                        request.setAttribute("listaUsuarios", dUsuario.listarUsuariosFiltro(filtro,idOrdenarUsuario,Integer.parseInt(pagina)-1));
                         request.setAttribute("cantidadUsuariosTotal", dUsuario.listarUsuarios().size());
-                        request.setAttribute("idFiltroUsuario",Integer.parseInt(filtro));
+                        request.setAttribute("idFiltroUsuario",filtro);//cambio aqui
                         request.setAttribute("idOrdenarUsuario",idOrdenarUsuario);
                         request.setAttribute("pagActual", Integer.parseInt(pagina));
                         request.getRequestDispatcher("listaUsuarios.jsp").forward(request, response);
@@ -54,10 +54,10 @@ public class ListaDeUsuariosServlet extends HttpServlet {
                         request.getRequestDispatcher("listaUsuarios.jsp").forward(request, response);
                     }else{
                         String usuario2 = request.getParameter("usuario");
-                        int idOrdenarUsuario=Integer.parseInt(request.getParameter("idOrdenarUsuario"));
-                        request.setAttribute("listaUsuarios", dUsuario.listarUsuarioXnombre(usuario2, Integer.parseInt(pagina) - 1,Integer.parseInt(filtro),idOrdenarUsuario));
+                        String idOrdenarUsuario=request.getParameter("idOrdenarUsuario");
+                        request.setAttribute("listaUsuarios", dUsuario.listarUsuarioXnombre(usuario2, Integer.parseInt(pagina) - 1,filtro,idOrdenarUsuario));
                         request.setAttribute("cantidadUsuariosTotal", new DaoUsuario().listarUsuarioXnombre(usuario2).size());
-                        request.setAttribute("idFiltroUsuario",Integer.parseInt(filtro));
+                        request.setAttribute("idFiltroUsuario",filtro);//cambio aqui
                         request.setAttribute("idOrdenarUsuario",idOrdenarUsuario);
                         request.setAttribute("action", action);
                         request.setAttribute("usuario", usuario2);

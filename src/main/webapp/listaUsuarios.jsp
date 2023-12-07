@@ -4,7 +4,9 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-  <%Usuario usuarioActual=(Usuario) request.getSession().getAttribute("usuario");
+    <%String idFiltroUsuario=(String) request.getAttribute("idFiltroUsuario");%>
+    <%String idOrdenarUsuario=(String) request.getAttribute("idOrdenarUsuario");%>
+    <%Usuario usuarioActual=(Usuario) request.getSession().getAttribute("usuario");
   int cantidadTotalUsuarios = (int)Math.ceil((int)request.getAttribute("cantidadUsuariosTotal")/8.0);
   String action = request.getParameter("action") != null ? request.getParameter("action") : "";
   int idUsuario=usuarioActual.getIdUsuario();
@@ -1647,7 +1649,7 @@
         <div class="section-filters-bar-actions">
             <!-- FORM -->
             <form method="get" action="ListaDeUsuariosServlet" class="form">
-                <input type="hidden" name="action" value="<%=action%>">
+                <input type="hidden" name="action" value="buscarUsuario">
                 <%if(busqueda != null){%>
                 <%request.setAttribute("listaActual",listaUsuarios);%>
                 <input type="hidden" name="usuario" value="<%=busqueda%>">
@@ -1655,16 +1657,15 @@
                 <input type="hidden" name="p" value="<%=pagActual%>">
                 <!-- FORM ITEM -->
                 <div class="form-item split medium">
-                    <%Integer idFiltroUsuario=(Integer) request.getAttribute("idFiltroUsuario");%>
 
                     <!-- FORM SELECT -->
                     <div class="form-select small">
                         <label for="items-filter-category">Filtrar por</label>
                         <select id="items-filter-category" name="idFiltroUsuario">
-                            <option value="0"<%if(idFiltroUsuario!=null && idFiltroUsuario==0){%>selected<%}%>>Orden alfabético</option>
-                            <option value="1"<%if(idFiltroUsuario!=null && idFiltroUsuario==1){%>selected<%}%>>Código PUCP</option>
-                            <option value="2"<%if(idFiltroUsuario!=null && idFiltroUsuario==2){%>selected<%}%>>Estudiantes primero</option>
-                            <option value="3"<%if(idFiltroUsuario!=null && idFiltroUsuario==3){%>selected<%}%>>Baneados primero</option>
+                            <option value="0"<%if(idFiltroUsuario!=null && idFiltroUsuario.equals("0")){%>selected<%}%>>Orden alfabético</option>
+                            <option value="1"<%if(idFiltroUsuario!=null && idFiltroUsuario.equals("1")){%>selected<%}%>>Código PUCP</option>
+                            <option value="2"<%if(idFiltroUsuario!=null && idFiltroUsuario.equals("2")){%>selected<%}%>>Estudiantes primero</option>
+                            <option value="3"<%if(idFiltroUsuario!=null && idFiltroUsuario.equals("3")){%>selected<%}%>>Baneados primero</option>
                         </select>
                         <!-- FORM SELECT ICON -->
                         <svg class="form-select-icon icon-small-arrow">
@@ -1673,14 +1674,13 @@
                         <!-- /FORM SELECT ICON -->
                     </div>
                     <!-- /FORM SELECT -->
-                    <%Integer idOrdenarUsuario=(Integer)request.getAttribute("idOrdenarUsuario");%>
 
                     <!-- FORM SELECT -->
                     <div class="form-select small">
                         <label for="items-filter-order">Ordenar por</label>
                         <select id="items-filter-order" name="idOrdenarUsuario">
-                            <option value="0"<%if(idOrdenarUsuario!=null){if(idOrdenarUsuario==0){%>selected<%}}%>>Primero -> Último</option>
-                            <option value="1"<%if(idOrdenarUsuario!=null){if(idOrdenarUsuario==1){%>selected<%}}%>>Último -> Primero</option>
+                            <option value="0"<%if(idOrdenarUsuario!=null){if(idOrdenarUsuario.equals("0")){%>selected<%}}%>>Primero -> Último</option>
+                            <option value="1"<%if(idOrdenarUsuario!=null){if(idOrdenarUsuario.equals("1")){%>selected<%}}%>>Último -> Primero</option>
                         </select>
                         <!-- FORM SELECT ICON -->
                         <svg class="form-select-icon icon-small-arrow">

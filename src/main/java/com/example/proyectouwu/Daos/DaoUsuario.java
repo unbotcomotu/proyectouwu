@@ -204,35 +204,42 @@ public class DaoUsuario extends DaoPadre {
         }
     }
 
-    public ArrayList<Usuario>listarUsuarioXnombre(String nombre, int pagina, int idFiltroUsuarios, int idOrdenarUsuarios){
+    public ArrayList<Usuario>listarUsuarioXnombre(String nombre, int pagina, String idFiltroUsuarios, String idOrdenarUsuarios){
         ArrayList<Usuario>listaUsuarios=new ArrayList<>();
         String sql="";
-        if(idFiltroUsuarios==0){
-            if(idOrdenarUsuarios==1){
+        if(idFiltroUsuarios.equals("0")){
+            if(idOrdenarUsuarios.equals("1")){
                 sql = "select idUsuario, nombre, apellido, rol, codigoPUCP, condicion, fotoPerfil, descripcionPerfil from usuario where estadoRegistro='Registrado' AND rol!='Delegado General' and concat(nombre,' ',apellido) like ? order by nombre desc limit 8 offset ?";
             }else{
                 sql = "select idUsuario, nombre, apellido, rol, codigoPUCP, condicion, fotoPerfil, descripcionPerfil from usuario where estadoRegistro='Registrado' AND rol!='Delegado General' and concat(nombre,' ',apellido) like ? order by nombre asc limit 8 offset ?";
             }
-        }else if(idFiltroUsuarios==1){
-            if(idOrdenarUsuarios==1){
+        }else if(idFiltroUsuarios.equals("1")){
+            if(idOrdenarUsuarios.equals("1")){
                 sql = "select idUsuario, nombre, apellido, rol, codigoPUCP, condicion, fotoPerfil, descripcionPerfil from usuario where estadoRegistro='Registrado' AND rol!='Delegado General' and concat(nombre,' ',apellido) like ? order by codigoPUCP desc limit 8 offset ?";
             }else{
                 sql = "select idUsuario, nombre, apellido, rol, codigoPUCP, condicion, fotoPerfil, descripcionPerfil from usuario where estadoRegistro='Registrado' AND rol!='Delegado General' and concat(nombre,' ',apellido) like ? order by codigoPUCP asc limit 8 offset ?";
             }
-        }else if(idFiltroUsuarios==2){
-            if(idOrdenarUsuarios==1){
+        }else if(idFiltroUsuarios.equals("2")){
+            if(idOrdenarUsuarios.equals("1")){
                 sql = "select idUsuario, nombre, apellido, rol, codigoPUCP, condicion, fotoPerfil, descripcionPerfil from usuario where estadoRegistro='Registrado' AND rol!='Delegado General' and concat(nombre,' ',apellido) like ? order by if(condicion='Estudiante',1,0) limit 8 offset ?";
             }else{
                 sql = "select idUsuario, nombre, apellido, rol, codigoPUCP, condicion, fotoPerfil, descripcionPerfil from usuario where estadoRegistro='Registrado' AND rol!='Delegado General' and concat(nombre,' ',apellido) like ? order by if(condicion='Estudiante',0,1) limit 8 offset ?";
             }
-        }else if(idFiltroUsuarios==3) {
-            if (idOrdenarUsuarios == 1) {
+        }else if(idFiltroUsuarios.equals("3")) {
+            if (idOrdenarUsuarios.equals("1")) {
                 sql = "select u.idUsuario, u.nombre, u.apellido, u.rol, u.codigoPUCP, u.condicion, u.fotoPerfil, u.descripcionPerfil from usuario u left join ban b on u.idUsuario=b.idUsuario where estadoRegistro='Registrado' AND rol!='Delegado General' and concat(u.nombre,' ',u.apellido) like ? order by if(b.idBan is not null,1,0) limit 8 offset ?";
             } else {
-                sql = "select u.idUsuario, u.nombre, u.apellido, u.rol, u.codigoPUCP, u.condicion, u.fotoPerfil, u.descripcionPerfil from usuario u left join ban b on u.idUsuario=b.idUsuario where estadoRegistro='Registrado' AND rol!='Delegado General' and concat(u.nombre,' ',u.apellido) like ? order by if(b.idBan is not null,0,1) limit 8 offset ?";           }
+                sql = "select u.idUsuario, u.nombre, u.apellido, u.rol, u.codigoPUCP, u.condicion, u.fotoPerfil, u.descripcionPerfil from usuario u left join ban b on u.idUsuario=b.idUsuario where estadoRegistro='Registrado' AND rol!='Delegado General' and concat(u.nombre,' ',u.apellido) like ? order by if(b.idBan is not null,0,1) limit 8 offset ?";}
+        }else{
+            sql = "select idUsuario, nombre, apellido, rol, codigoPUCP, condicion, fotoPerfil, descripcionPerfil from usuario where estadoRegistro='Registrado' AND rol!='Delegado General' and concat(nombre,' ',apellido) like ? limit 8 offset ?";
         }
         try(Connection conn=this.getConnection(); PreparedStatement pstmt=conn.prepareStatement(sql)){
-            pstmt.setString(1,"%"+nombre+"%");
+
+            if (nombre==null){
+                pstmt.setString(1,"%%");
+            }else{
+                pstmt.setString(1,"%"+nombre+"%");
+            }
             pstmt.setInt(2,pagina*8);
             try (ResultSet rs=pstmt.executeQuery()){
                 while (rs.next()){
@@ -246,7 +253,8 @@ public class DaoUsuario extends DaoPadre {
                     u.setFotoPerfil(rs.getBlob(7));
                     u.setDescripcionPerfil(rs.getString(8));
                     listaUsuarios.add(u);
-                }return listaUsuarios;
+                }
+                return listaUsuarios;
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -277,29 +285,29 @@ public class DaoUsuario extends DaoPadre {
         }
     }
 
-    public ArrayList<Usuario>listarUsuariosFiltro(int idFiltroUsuarios,int idOrdenarUsuarios, int pagina){
+    public ArrayList<Usuario>listarUsuariosFiltro(String idFiltroUsuarios,String idOrdenarUsuarios, int pagina){
         ArrayList<Usuario>listaUsuarios=new ArrayList<>();
         String sql="";
-        if(idFiltroUsuarios==0){
-            if(idOrdenarUsuarios==1){
+        if(idFiltroUsuarios.equals("0")){
+            if(idOrdenarUsuarios.equals("1")){
                 sql = "select idUsuario, nombre, apellido, rol, codigoPUCP, condicion, fotoPerfil, descripcionPerfil from usuario where estadoRegistro='Registrado' AND rol!='Delegado General' order by nombre desc limit 8 offset ?";
             }else{
                 sql = "select idUsuario, nombre, apellido, rol, codigoPUCP, condicion, fotoPerfil, descripcionPerfil from usuario where estadoRegistro='Registrado' AND rol!='Delegado General' order by nombre asc limit 8 offset ?";
             }
-        }else if(idFiltroUsuarios==1){
-            if(idOrdenarUsuarios==1){
+        }else if(idFiltroUsuarios.equals("1")){
+            if(idOrdenarUsuarios.equals("1")){
                 sql = "select idUsuario, nombre, apellido, rol, codigoPUCP, condicion, fotoPerfil, descripcionPerfil from usuario where estadoRegistro='Registrado' AND rol!='Delegado General' order by codigoPUCP desc limit 8 offset ?";
             }else{
                 sql = "select idUsuario, nombre, apellido, rol, codigoPUCP, condicion, fotoPerfil, descripcionPerfil from usuario where estadoRegistro='Registrado' AND rol!='Delegado General' order by codigoPUCP asc limit 8 offset ?";
             }
-        }else if(idFiltroUsuarios==2){
-            if(idOrdenarUsuarios==1){
+        }else if(idFiltroUsuarios.equals("2")){
+            if(idOrdenarUsuarios.equals("1")){
                 sql = "select idUsuario, nombre, apellido, rol, codigoPUCP, condicion, fotoPerfil, descripcionPerfil from usuario where estadoRegistro='Registrado' AND rol!='Delegado General' order by if(condicion='Estudiante',1,0) limit 8 offset ?";
             }else{
                 sql = "select idUsuario, nombre, apellido, rol, codigoPUCP, condicion, fotoPerfil, descripcionPerfil from usuario where estadoRegistro='Registrado' AND rol!='Delegado General' order by if(condicion='Estudiante',0,1) limit 8 offset ?";
             }
-        }else if(idFiltroUsuarios==3) {
-            if (idOrdenarUsuarios == 1) {
+        }else if(idFiltroUsuarios.equals("3")) {
+            if (idOrdenarUsuarios.equals("1")) {
                 sql = "select u.idUsuario, u.nombre, u.apellido, u.rol, u.codigoPUCP, u.condicion, u.fotoPerfil, u.descripcionPerfil from usuario u left join ban b on u.idUsuario=b.idUsuario where estadoRegistro='Registrado' AND rol!='Delegado General' order by if(b.idBan is not null,1,0) limit 8 offset ?";
             } else {
                 sql = "select u.idUsuario, u.nombre, u.apellido, u.rol, u.codigoPUCP, u.condicion, u.fotoPerfil, u.descripcionPerfil from usuario u left join ban b on u.idUsuario=b.idUsuario where estadoRegistro='Registrado' AND rol!='Delegado General' order by if(b.idBan is not null,0,1) limit 8 offset ?";           }

@@ -24,7 +24,18 @@ public class ListaDeUsuariosServlet extends HttpServlet {
             request.setAttribute("correosDelegadosGenerales",dUsuario.listarCorreosDelegadosGenerales());
             request.setAttribute("listaNotificacionesCampanita",new DaoNotificacion().listarNotificacionesDelegadoGeneral());
             String action = request.getParameter("action") == null ? "listarUsuarios" : request.getParameter("action");
-            String pagina = request.getParameter("p") == null ? "1" : request.getParameter("p");
+            String pagina;
+            String paginaPrevia = request.getParameter("p") == null ? "1" : request.getParameter("p");
+
+            if (paginaPrevia != null && paginaPrevia.matches("\\d+")) {
+                // Si es un número, asigna ese valor a la variable 'pagina'
+                pagina = paginaPrevia;
+            } else {
+                // Si no es un número, asigna el valor predeterminado '1' a 'pagina'
+                pagina = "1";
+            }
+
+
             String filtro = request.getParameter("idFiltroUsuario") != null ? request.getParameter("idFiltroUsuario") : "";
             switch (action) {
                 case "listarUsuarios":

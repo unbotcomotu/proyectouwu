@@ -27,10 +27,28 @@ public class ListaDeEventosServlet extends HttpServlet {
         DaoActividad dActividad=new DaoActividad();
         Usuario usuario=(Usuario) request.getSession().getAttribute("usuario");
         int pagina;
+        String paginaSession = (String) request.getSession().getAttribute("p");// hay un pequeño error por acá por el Session para paginación
+        String paginaPrevia = request.getParameter("p"); // te odio Julio
         if(request.getParameter("p")!=null){
-            pagina = Integer.parseInt(request.getParameter("p"));
+            if (paginaPrevia != null && paginaPrevia.matches("\\d+")) {
+                // Si es un número, asigna ese valor a la variable 'pagina'
+                pagina = Integer.parseInt(paginaPrevia);
+            } else {
+                // Si no es un número, asigna el valor predeterminado '1' a 'pagina'
+                pagina = 1;
+            }
+
+            //pagina = Integer.parseInt(request.getParameter("p"));
         }else if(request.getSession().getAttribute("p") != null){
-            pagina = (int) request.getSession().getAttribute("p");
+
+            if (paginaSession != null && paginaSession.matches("\\d+")) {
+                // Si es un número, asigna ese valor a la variable 'pagina'
+                pagina = (int) request.getSession().getAttribute("p");
+            } else {
+                // Si no es un número, asigna el valor predeterminado '1' a 'pagina'
+                pagina = 1;
+            }
+
         }else{
             pagina = 1;
         }

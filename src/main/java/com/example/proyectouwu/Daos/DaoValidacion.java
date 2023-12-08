@@ -92,7 +92,7 @@ public class DaoValidacion extends DaoPadre {
 
 
 
-    public String buscarCorreoPorIdCorreoValidacion(String idCorreoValidacion ){
+    public String buscarCorreoPorIdCorreoValidacion(String idCorreoValidacion){
         String sql = "select correo from validacion where idCorreoValidacion = ?";
         try (Connection conn=this.getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setString(1, idCorreoValidacion);

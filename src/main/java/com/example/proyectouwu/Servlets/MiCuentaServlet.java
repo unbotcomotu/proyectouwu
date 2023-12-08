@@ -57,9 +57,15 @@ public class MiCuentaServlet extends HttpServlet {
 
             switch(action){
                 case("editarDescripcion"):
+                    boolean descripcionValida = true;
                     String nuevaDescripcion = request.getParameter("nuevaDescripcion");
-                    //sentencia sql para actualizar:
-                    dUsuario.cambioDescripcion(nuevaDescripcion, usuario.getIdUsuario());
+                    if(nuevaDescripcion==null || nuevaDescripcion.length()>1000 || nuevaDescripcion.isEmpty()){
+                        descripcionValida=false;
+                    }
+                    if(descripcionValida){
+                        //sentencia sql para actualizar:
+                        dUsuario.cambioDescripcion(nuevaDescripcion, usuario.getIdUsuario());
+                    }
                     response.sendRedirect("MiCuentaServlet");
                     break;
                 case "editarFoto":

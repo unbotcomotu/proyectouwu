@@ -13,6 +13,8 @@ import jakarta.servlet.annotation.*;
 import java.io.IOException;
 import java.time.ZonedDateTime;
 import java.util.Date;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @WebServlet(name = "RegistroServlet", value = "/RegistroServlet")
 public class RegistroServlet extends HttpServlet {
@@ -26,8 +28,8 @@ public class RegistroServlet extends HttpServlet {
                 //Alex auxilio
                 //int codigoValidacion = Integer.parseInt(request.getParameter("codigoValidacion"));
                 Validacion validacion= new Validacion();
-                String idCorreoValidacion = request.getParameter("idCorreoValidacion");
-                String codigoValidacion256=request.getParameter("codigoValidacion256");
+                String idCorreoValidacion = request.getParameter("idCorreoValidacion") == null ? "ola" : request.getParameter("idCorreoValidacion");
+                String codigoValidacion256 = request.getParameter("codigoValidacion256") == null ? "ola" : request.getParameter("codigoValidacion256");
                 try{
                     validacion.setIdCorreoValidacion(Integer.parseInt(idCorreoValidacion));
                     if(codigoValidacion256.equals(new DaoValidacion().codigoValidacion256PorID(Integer.parseInt(idCorreoValidacion)))){
@@ -56,11 +58,71 @@ public class RegistroServlet extends HttpServlet {
                 //No hay nada aquí pero porsiacaso
                 break;
             case "registro":
-                String idCorreoValidacion = request.getParameter("idCorreoValidacion");
+                boolean registroValido = true;
+                String idCorreoValidacion = request.getParameter("idCorreoValidacion")==null?"0":request.getParameter("idCorreoValidacion");
                 String correo = new DaoValidacion().buscarCorreoPorIdCorreoValidacion(idCorreoValidacion);
-                new DaoUsuario().registroDeAlumno(request.getParameter("nombres"),request.getParameter("apellidos"),correo,request.getParameter("password"), request.getParameter("codigoPucp"),request.getParameter("opciones"));
-                //Por el momento al terminar lo hacemos saltar a la vista de inicioSesion
-                request.setAttribute("popup","5");
+                if(correo == null){
+                    registroValido = false;
+                }
+                String opcion = "";
+                if(request.getParameter("nombres").isEmpty() || request.getParameter("apellidos").isEmpty() || request.getParameter("password").isEmpty() || request.getParameter("password2").isEmpty() || request.getParameter("codigoPucp").isEmpty()){
+                    registroValido = false;
+                }
+
+                if(request.getParameter("nombres").length()>45 || request.getParameter("apellidos").length()>45 || request.getParameter("codigoPucp").length()!=8){
+                    registroValido = false;
+                }
+
+                try{
+                    int codigoPucp = Integer.parseInt(request.getParameter("codigoPucp"));
+                }catch (NumberFormatException e){
+                    registroValido = false;
+                }
+
+                if(!request.getParameter("password").equals(request.getParameter("password2"))){
+                    registroValido = false;
+                }else{
+                    if(request.getParameter("password").length() < 8){
+                        registroValido = false;
+                    }else{
+                        String regexLetra = ".*[a-zA-Z]+.*";
+                        String regexNumero = ".*\\d+.*";
+                        Pattern patronLetra = Pattern.compile(regexLetra);
+                        Pattern patronNumero = Pattern.compile(regexNumero);
+                        Matcher matcherLetra = patronLetra.matcher(request.getParameter("password"));
+                        Matcher matcherNumero = patronNumero.matcher(request.getParameter("password"));
+                        boolean contieneLetra = matcherLetra.matches();
+                        boolean contieneNumero = matcherNumero.matches();
+                        if(!(contieneLetra && contieneNumero)) {
+                            registroValido = false;
+                        }
+                    }
+                }
+                if(request.getParameter("opciones1") != null && request.getParameter("opciones2") != null){
+                    registroValido = false;
+                }else{
+                    if(request.getParameter("opciones1") != null){
+                        if(!request.getParameter("opciones1").equals("Estudiante")){
+                            registroValido = false;
+                        }else{
+                            opcion=request.getParameter("opciones1");
+                        }
+                    }else if(request.getParameter("opciones2") != null){
+                        if(!request.getParameter("opciones2").equals("Egresado")){
+                            registroValido = false;
+                        }else{
+                            opcion=request.getParameter("opciones2");
+                        }
+                    }else{
+                        registroValido = false;
+                    }
+                }
+
+                if(registroValido){
+                    new DaoUsuario().registroDeAlumno(request.getParameter("nombres"),request.getParameter("apellidos"),correo,request.getParameter("password"), request.getParameter("codigoPucp"),opcion);
+                    //Por el momento al terminar lo hacemos saltar a la vista de inicioSesion
+                    request.setAttribute("popup","5");
+                }
                 request.getRequestDispatcher("inicioSesion.jsp").forward(request,response);
                 break;
         }

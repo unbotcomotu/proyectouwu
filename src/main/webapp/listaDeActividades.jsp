@@ -1688,8 +1688,8 @@
                     <div class="form-select small">
                         <label for="items-filter-order">Sentido</label>
                         <select id="items-filter-order" name="idOrdenarActividades">
-                            <option value="0" <%if(idOrdenarActividades!=null){if(idOrdenarActividades.equals("0")){%>selected<%}}%>>De mayor a menor</option>
-                            <option value="1" <%if(idOrdenarActividades!=null){if(idOrdenarActividades.equals("1")){%>selected<%}}%>>De menor a mayor</option>
+                            <option value="1" <%if(idOrdenarActividades!=null){if(idOrdenarActividades.equals("1")){%>selected<%}}%>>Primero -> Último</option>
+                            <option value="0" <%if(idOrdenarActividades!=null){if(idOrdenarActividades.equals("0")){%>selected<%}}%>>Último -> Primero</option>
                         </select>
                         <!-- FORM SELECT ICON -->
                         <svg class="form-select-icon icon-small-arrow">
@@ -1741,14 +1741,22 @@
                 }%>
         <!-- PRODUCT CATEGORY BOX -->
         <%request.getSession().setAttribute("fotoActividadMiniatura"+listaActividades.indexOf(a),a.getFotoMiniatura());%>
-        <a class="product-category-box category-all" href="ListaDeEventosServlet?idActividad=<%=a.getIdActividad()%>" style="padding: 0 0 0 0 !important;background: linear-gradient(to right, <%=color1%>, <%=color2%>) <%if(a.isActividadFinalizada()){%><%=";opacity: 50%;"%><%}%>">
+        <a class="product-category-box category-all" href="ListaDeEventosServlet?idActividad=<%=a.getIdActividad()%>" style="padding: 0 0 0 0 !important;background: linear-gradient(to right, <%=color1%>, <%=color2%>) <%if(a.isActividadFinalizada()||a.isActividadOculta()){%><%=";opacity: 50%;"%><%}%>">
             <div style="height: 100%;background: url('Imagen?tipoDeFoto=fotoActividadMiniatura&id=ActividadMiniatura<%=listaActividades.indexOf(a)%>') no-repeat;background-size: 40% 85%; background-position: right;padding: 26px 0 0 28px;">
                 <!-- PRODUCT CATEGORY BOX TITLE -->
                 <p class="product-category-box-title"><%=a.getNombre()%></p>
                 <!-- /PRODUCT CATEGORY BOX TITLE -->
-                <%if(a.isActividadFinalizada()){%>
+                <%if(a.isActividadOculta()&&a.isActividadFinalizada()){%>
+                <!-- PRODUCT CATEGORY BOX TEXT -->
+                <p class="product-category-box-text">FINALIZADO & OCULTO</p>
+                <!-- /PRODUCT CATEGORY BOX TEXT -->
+                <%}else if(a.isActividadFinalizada()){%>
                 <!-- PRODUCT CATEGORY BOX TEXT -->
                 <p class="product-category-box-text">FINALIZADO</p>
+                <!-- /PRODUCT CATEGORY BOX TEXT -->
+                <%}else if(a.isActividadOculta()){%>
+                <!-- PRODUCT CATEGORY BOX TEXT -->
+                <p class="product-category-box-text">OCULTO</p>
                 <!-- /PRODUCT CATEGORY BOX TEXT -->
                 <%}else{%>
                 <!-- PRODUCT CATEGORY BOX TEXT -->

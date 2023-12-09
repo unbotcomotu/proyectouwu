@@ -14,12 +14,15 @@
     String nombreCompletoUsuario=usuarioActual.getNombre()+" "+usuarioActual.getApellido();
     String vistaActual=(String) request.getAttribute("vistaActual");
     ArrayList<String>listaCorreosDelegadosGenerales=(ArrayList<String>)request.getAttribute("correosDelegadosGenerales");
-    int diaActual=(int) request.getAttribute("diaActual");
+    String diaActual=(String) request.getAttribute("diaActual");
+    String mesActual=(String) request.getAttribute("mesActual");
     ArrayList<Evento>listaEventos=(ArrayList<Evento>)request.getAttribute("listaEventos");
     String servletActual="NotificacionesServlet";
     String colorPorActividad[]={"#23d2e2","#615dfa","blue","pink","#0c5460","#0b2e13","#00e194","#1df377","#4e4ac8","#4f8dff","#2e2e47","#1e7e34","#2ebfef","#8fd19e","#122d5c","#b1dfbb","#491217"};
     ArrayList<AlumnoPorEvento>listaNotificacionesDelegadoDeActividad=(ArrayList<AlumnoPorEvento>) request.getAttribute("listaNotificacionesDelegadoDeActividad");
     String colorRol;
+    String mes="";
+    String fechaAux="";
     if(rolUsuario.equals("Alumno")){
         colorRol="";
     }else if(rolUsuario.equals("Delegado de Actividad")){
@@ -951,10 +954,22 @@
             <div class="calendar-widget-header-actions d-flex justify-content-around" style="width: 100%;">
                 <!-- CALENDAR WIDGET TITLE -->
                 <div class="col-auto">
-                    <p class="calendar-widget-title">Octubre 2023</p>
+                    <select id="calendarioMes" style="padding: 10px" class="calendar-widget-title">
+                        <option value="1" <%if(mesActual.equals("1")){%>selected<%}%>>Enero de 2023</option>
+                        <option value="2" <%if(mesActual.equals("2")){%>selected<%}%>>Febrero de 2023</option>
+                        <option value="3" <%if(mesActual.equals("3")){%>selected<%}%>>Marzo de 2023</option>
+                        <option value="4" <%if(mesActual.equals("4")){%>selected<%}%>>Abril de 2023</option>
+                        <option value="5" <%if(mesActual.equals("5")){%>selected<%}%>>Mayo de 2023</option>
+                        <option value="6" <%if(mesActual.equals("6")){%>selected<%}%>>Junio de 2023</option>
+                        <option value="7" <%if(mesActual.equals("7")){%>selected<%}%>>Julio de 2023</option>
+                        <option value="8" <%if(mesActual.equals("8")){%>selected<%}%>>Agosto de 2023</option>
+                        <option value="9" <%if(mesActual.equals("9")){%>selected<%}%>>Septiembre de 2023</option>
+                        <option value="10" <%if(mesActual.equals("10")){%>selected<%}%>>Octubre de 2023</option>
+                        <option value="11" <%if(mesActual.equals("11")){%>selected<%}%>>Noviembre de 2023</option>
+                        <option value="12" <%if(mesActual.equals("12")){%>selected<%}%>>Diciembre de 2023</option>
+                    </select>
                 </div>
                 <div class="col-auto" >
-
                     <p class="calendar-widget-title" style="font-size: 75%;">Actividades:
                         <%ArrayList<Integer>IDsActividadesContadas=new ArrayList<Integer>();
                             aux:for(Evento e:listaEventos){
@@ -1006,29 +1021,92 @@
                 <!-- /CALENDAR WEEK DAY -->
             </div>
             <!-- /CALENDAR WEEK -->
-
+            <%for(Integer mesAux=0;mesAux<12;mesAux++){
+                int primeraFechaCalendario=0;
+                int cantidadDiasAnteriorMesRestantes=0;
+                int cantidadDiasMesActual=0;
+                int maxFilas=0;
+            if(mesAux+1==1){
+                primeraFechaCalendario=1;
+                cantidadDiasAnteriorMesRestantes=0;
+                cantidadDiasMesActual=31;
+                maxFilas=5;
+            }else if(mesAux+1==2){
+                primeraFechaCalendario=29;
+                cantidadDiasAnteriorMesRestantes=3;
+                cantidadDiasMesActual=28;
+                maxFilas=5;
+            }else if(mesAux+1==3){
+                primeraFechaCalendario=26;
+                cantidadDiasAnteriorMesRestantes=3;
+                cantidadDiasMesActual=31;
+                maxFilas=5;
+            }else if(mesAux+1==4){
+                primeraFechaCalendario=26;
+                cantidadDiasAnteriorMesRestantes=6;
+                cantidadDiasMesActual=30;
+                maxFilas=6;
+            }else if(mesAux+1==5){
+                primeraFechaCalendario=30;
+                cantidadDiasAnteriorMesRestantes=1;
+                cantidadDiasMesActual=31;
+                maxFilas=5;
+            }else if(mesAux+1==6){
+                primeraFechaCalendario=28;
+                cantidadDiasAnteriorMesRestantes=4;
+                cantidadDiasMesActual=30;
+                maxFilas=5;
+            }else if(mesAux+1==7){
+                primeraFechaCalendario=25;
+                cantidadDiasAnteriorMesRestantes=6;
+                cantidadDiasMesActual=31;
+                maxFilas=6;
+            }else if(mesAux+1==8){
+                primeraFechaCalendario=30;
+                cantidadDiasAnteriorMesRestantes=2;
+                cantidadDiasMesActual=31;
+                maxFilas=5;
+            }else if(mesAux+1==9){
+                primeraFechaCalendario=27;
+                cantidadDiasAnteriorMesRestantes=5;
+                cantidadDiasMesActual=30;
+            }else if(mesAux+1==10){
+                primeraFechaCalendario=1;
+                cantidadDiasAnteriorMesRestantes=0;
+                cantidadDiasMesActual=31;
+                maxFilas=5;
+            }else if(mesAux+1==11){
+                primeraFechaCalendario=29;
+                cantidadDiasAnteriorMesRestantes=3;
+                cantidadDiasMesActual=30;
+                maxFilas=5;
+            }else{
+                primeraFechaCalendario=26;
+                cantidadDiasAnteriorMesRestantes=5;
+                cantidadDiasMesActual=31;
+                maxFilas=6;
+            }
+            %>
             <!-- CALENDAR DAYS -->
-            <div class="calendar-days">
-                <%for(int j=0;j<5;j++){%>
+            <div id="mes<%=mesAux+1%>" style="display: none" class="calendar-days">
+                <%for(int j=0;j<maxFilas;j++){%>
                 <!-- CALENDAR DAY ROW -->
                 <div class="calendar-day-row">
                     <%for(int i=1;i<=7;i++){
-                        int dia=7*j+i;
+                        Integer dia=7*j+i-cantidadDiasAnteriorMesRestantes;
                     %>
-                    <div class="calendar-day
-                    <%if(dia>31){
-                        dia-=31;
-                        %> inactive<%}%>">
-                        <%if(diaActual==dia){%>
+                    <div class="calendar-day<%if(dia>cantidadDiasMesActual||dia<=0){%> inactive<%}%>">
+                    <%if(dia<=0){%>
+                        <%if(Integer.parseInt(diaActual)==dia&&Integer.parseInt(mesActual)==mesAux){%>
                         <p class="calendar-day-number" style="color: red"><%=dia%> (Hoy)</p>
                         <%}else{%>
-                        <p class="calendar-day-number"><%=dia%></p>
+                        <p class="calendar-day-number"><%=dia+primeraFechaCalendario+cantidadDiasAnteriorMesRestantes-1%></p>
                         <%}%>
-                        <!-- /CALENDAR DAY NUMBER -->
                         <%boolean aux=true;
                             String titulo;
                             for(Evento e:listaEventos){
-                                if(Integer.parseInt(e.getFecha().toString().split("-")[2])==dia){
+                                String fechaEventoAux[]=e.getFecha().toString().split("-");
+                                if(Integer.parseInt(fechaEventoAux[2])==dia&&Integer.parseInt(fechaEventoAux[1])==mesAux){
                                     if(aux){%>
                         <div class="calendar-day-events">
                             <%aux=false;
@@ -1039,18 +1117,64 @@
                                 }
                             %>
                             <p class="calendar-day-event popup-event-information-trigger" style="background-color: <%=colorPorActividad[e.getActividad().getIdActividad()]%> <%if(e.isEventoFinalizado()){%>;opacity: 0.5<%}%>" id="mostrarPopupEvento<%=listaEventos.indexOf(e)%>"><span class="calendar-day-event-text">⚔️<%=titulo%></span></p>
-                        <!-- /CALENDAR DAY -->
-                        <%}}if(!aux){%>
+                            <%}}if(!aux){%>
                         </div>
-                            <%aux=true;
-                            }%>
+                        <%}%>
+                    <%}else if(dia>cantidadDiasMesActual){%>
+                        <%if(Integer.parseInt(diaActual)==dia&&Integer.parseInt(mesActual)==(mesAux+2)){%>
+                        <p class="calendar-day-number" style="color: red"><%=dia%> (Hoy)</p>
+                        <%}else{%>
+                        <p class="calendar-day-number"><%=dia-cantidadDiasMesActual%></p>
+                        <%}%>
+                        <%boolean aux=true;
+                            String titulo;
+                            for(Evento e:listaEventos){
+                                String fechaEventoAux[]=e.getFecha().toString().split("-");
+                                if(fechaEventoAux[2].equals(dia.toString())&&Integer.parseInt(fechaEventoAux[1])==(mesAux+2)){
+                                    if(aux){%>
+                        <div class="calendar-day-events">
+                            <%aux=false;
+                            }String tituloAux[]=e.getTitulo().split(" ");
+                                titulo="";
+                                for(int k=3;k<tituloAux.length;k++){
+                                    titulo+=tituloAux[k]+" ";
+                                }
+                            %>
+                            <p class="calendar-day-event popup-event-information-trigger" style="background-color: <%=colorPorActividad[e.getActividad().getIdActividad()]%> <%if(e.isEventoFinalizado()){%>;opacity: 0.5<%}%>" id="mostrarPopupEvento<%=listaEventos.indexOf(e)%>"><span class="calendar-day-event-text">⚔️<%=titulo%></span></p>
+                            <%}}if(!aux){%>
+                        </div>
+                        <%}%>
+                    <%}else{%>
+                        <%if(Integer.parseInt(diaActual)==dia&&Integer.parseInt(mesActual)==(mesAux+1)){%>
+                        <p class="calendar-day-number" style="color: red"><%=dia%> (Hoy)</p>
+                        <%}else{%>
+                        <p class="calendar-day-number"><%=dia%></p>
+                        <%}%>
+                        <%boolean aux=true;
+                            String titulo;
+                            for(Evento e:listaEventos){
+                                String fechaEventoAux[]=e.getFecha().toString().split("-");
+                                if(fechaEventoAux[2].equals(dia.toString())&&Integer.parseInt(fechaEventoAux[1])==(mesAux+1)){
+                                    if(aux){%>
+                        <div class="calendar-day-events">
+                            <%aux=false;
+                            }String tituloAux[]=e.getTitulo().split(" ");
+                                titulo="";
+                                for(int k=3;k<tituloAux.length;k++){
+                                    titulo+=tituloAux[k]+" ";
+                                }
+                            %>
+                            <p class="calendar-day-event popup-event-information-trigger" style="background-color: <%=colorPorActividad[e.getActividad().getIdActividad()]%> <%if(e.isEventoFinalizado()){%>;opacity: 0.5<%}%>" id="mostrarPopupEvento<%=listaEventos.indexOf(e)%>"><span class="calendar-day-event-text">⚔️<%=titulo%></span></p>
+                            <%}}if(!aux){%>
+                        </div>
+                            <%}}%>
                     </div>
                     <%}%>
                 </div>
                 <%}%>
             </div>
+            <%}%>
         </div>
-            <!-- /CALENDAR DAYS -->
     </div>
         <!-- /CALENDAR -->
 </div>
@@ -1092,7 +1216,46 @@
         </div>
     </div>
 </footer>
-<%for(Evento e:listaEventos){%>
+<%for(Evento e:listaEventos){
+    mes="";
+    fechaAux=e.getFecha().toString().split("-")[1];
+        switch (fechaAux){
+        case "01":
+            mes="Enero";
+            break;
+        case "02":
+            mes="Febrero";
+            break;
+        case "03":
+            mes="Marzo";
+            break;
+        case "04":
+            mes="Abril";
+            break;
+        case "05":
+            mes="Mayo";
+            break;
+        case "06":
+            mes="Junio";
+            break;
+        case "07":
+            mes="Julio";
+            break;
+        case "08":
+            mes="Agosto";
+            break;
+        case "09":
+            mes="Septiembre";
+            break;
+        case "10":
+            mes= "Octubre";
+            break;
+        case "11":
+            mes="Noviembre";
+            break;
+        case "12":
+            mes="Diciembre";
+            break;}%>
 <div class="overlay" id="overlayEvento<%=listaEventos.indexOf(e)%>"></div>
 <div class="popup" id="popupEvento<%=listaEventos.indexOf(e)%>">
     <svg class="cerrarPopup" id="cerrarPopupEvento<%=listaEventos.indexOf(e)%>" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -1131,7 +1294,7 @@
                     <!-- DECORATED FEATURE INFO -->
                     <div class="decorated-feature-info">
                         <%if(e.isEventoFinalizado()){%>
-                        <p class="decorated-feature-title" style="color: purple;"><%=Integer.parseInt(e.getFecha().toString().split("-")[2])%> de Octubre</p>
+                        <p class="decorated-feature-title" style="color: purple;"><%=Integer.parseInt(e.getFecha().toString().split("-")[2])%> de <%=mes%></p>
                         <%}else{%>
                         <%int diasQueFaltanParaElEvento=new DaoEvento().diferenciaDiasEventoActualidad(e.getIdEvento());
                         if(diasQueFaltanParaElEvento==0){%>
@@ -1141,7 +1304,7 @@
                         <%}else if(diasQueFaltanParaElEvento==2){%>
                         <p class="decorated-feature-title" style="color: orange;">En 2 días</p>
                         <%}else{%>
-                        <p class="decorated-feature-title" style="color: purple;"><%=Integer.parseInt(e.getFecha().toString().split("-")[2])%> de Octubre</p>
+                        <p class="decorated-feature-title" style="color: purple;"><%=Integer.parseInt(e.getFecha().toString().split("-")[2])%> de <%=mes%></p>
                         <%}}%>
                         <!-- DECORATED FEATURE TEXT -->
                         <%String aux[]=e.getHora().toString().split(":");%>
@@ -1344,6 +1507,24 @@
             }
         });
     }
+    function cambiarCalendarioMes(idSelect){
+        let mesEscogido=document.getElementById(idSelect);
+        mesEscogido.addEventListener("change",function (){
+            console.log("ola")
+            <%for(int i=1;i<=12;i++){%>
+            document.getElementById('mes<%=i%>').style.display="none";
+            <%}%>
+           switch (mesEscogido.value){
+               <%for(int i=1;i<=12;i++){%>
+               case "<%=i%>":
+                   document.getElementById('mes<%=i%>').style.display="block";
+                   break;
+               <%}%>
+           }
+        });
+    }
+    document.getElementById('mes<%=mesActual%>').style.display="block";
+    cambiarCalendarioMes('calendarioMes');
     <%for(int i=0;i<listaEventos.size();i++){%>
     popupFunc('popupEvento<%=i%>','mostrarPopupEvento<%=i%>','cerrarPopupEvento<%=i%>','overlayEvento<%=i%>');
     <%}%>

@@ -26,7 +26,9 @@ public class MisEventosServlet extends HttpServlet {
         }else{
             request.setAttribute("vistaActual","misEventos");
             request.setAttribute("correosDelegadosGenerales",dUsuario.listarCorreosDelegadosGenerales());
-            request.setAttribute("diaActual",Integer.parseInt(ZonedDateTime.now().toString().split("T")[0].split("-")[2]));
+            String fechaActual[]=ZonedDateTime.now().toString().split("T")[0].split("-");
+            request.setAttribute("diaActual",fechaActual[2]);
+            request.setAttribute("mesActual",fechaActual[1]);
             request.setAttribute("listaEventos",dAlPorEvento.listarEventosPorUsuario(usuario.getIdUsuario()));
             if(usuario.getRol().equals("Delegado de Actividad")){
                 request.setAttribute("listaNotificacionesDelegadoDeActividad",new DaoNotificacion().listarNotificacionesDelegadoDeActividad(usuario.getIdUsuario()));

@@ -1691,13 +1691,7 @@
                 <%if(delegadoDeEstaActividadID==idUsuario){%>
                 <div class="section-filters-bar-actions col-sm-auto d-flex justify-content-end recuadro recuadroFila" style="width: 150px;">
                     <!-- BUTTON -->
-                    <button class="button secondary popup-event-creation-trigger botones" style="width: 100%;" id="mostrarPopupCrear">Crear evento</button>
-                    <!-- /BUTTON -->
-                </div>
-                <!-- /SECTION HEADER INFO -->
-                <div class="section-filters-bar-actions col-sm-auto d-flex justify-content-end recuadro recuadroFila" style="width: 150px;">
-                    <!-- BUTTON -->
-                    <button class="button secondary popup-event-creation-trigger botones" id="mostrarPopupFinalizar" style="width: 100%;">Finalizar Evento</button>
+                    <button onclick="popupFunc('popupCrear',['cerrarPopupCrear','cerrarPopupCrear1','cerrarPopupCrear2'],'overlayCrear')" class="button secondary popup-event-creation-trigger botones" style="width: 100%;">Crear evento</button>
                     <!-- /BUTTON -->
                 </div>
                 <%}%>
@@ -2097,8 +2091,11 @@
                             <img src="ImagenEventoServlet?idEvento=<%=e.getIdEvento()%>" style="position: absolute; z-index: 0" height="100%" width="100%" alt="item-01">
                         </a>
                         <%if(delegadoDeEstaActividadID==idUsuario){%>
-                        <a id="mostrarPopupEditarEvento<%=listaEventos.indexOf(e)%>">
-                            <img src="css/ajustesEvento.png" class="mt-2" style="position: absolute;left: 82%; z-index: 100;height: 50px;width: 50px;cursor: pointer" alt="">
+                        <a onclick="popupFunc('popupEditarEvento<%=listaEventos.indexOf(e)%>',['cerrarPopupEditarEvento<%=listaEventos.indexOf(e)%>','cerrarPopupEditar1Evento<%=listaEventos.indexOf(e)%>','cerrarPopupEditar2Evento<%=listaEventos.indexOf(e)%>'],'overlayEditarEvento<%=listaEventos.indexOf(e)%>')">
+                            <img src="css/ajustesEvento.png" class="mt-2" style="position: absolute;right: 2%; z-index: 100;height: 50px;width: 50px;cursor: pointer" alt="">
+                        </a>
+                        <a onclick="popupFunc('popupFinalizarEvento<%=listaEventos.indexOf(e)%>',['cerrarPopupFinalizarEvento<%=listaEventos.indexOf(e)%>','cerrarPopupFinalizar1Evento<%=listaEventos.indexOf(e)%>','cerrarPopupFinalizar2Evento<%=listaEventos.indexOf(e)%>'],'overlayFinalizarEvento<%=listaEventos.indexOf(e)%>')">
+                            <img src="css/iconoFinalizar.png" class="mt-2" style="position: absolute;left: 3%; z-index: 100;height: 50px;width: 47px;cursor: pointer" alt="">
                         </a>
                         <%}%>
                     </figure>
@@ -2109,9 +2106,9 @@
                         <!-- TEXT STICKER -->
                         <p class="text-sticker" style="right: 180px;">
                             <%if(e.isEventoOculto()){%>
-                            <span style="color: green;">Oculto</span>
+                            <span style="color: brown;">Oculto</span>
                             <%}else{%>
-                            <span style="color: brown;">No oculto</span><%}%>
+                            <span style="color: green;">No oculto</span><%}%>
                         </p>
                         <p class="text-sticker"><span class="highlighted">Fecha: </span>
                             <%if(e.isEventoFinalizado()){%>
@@ -2460,55 +2457,65 @@
 </form>
 </div>
 </div>
-<div class="overlay" id="overlayFinalizar">
-<div class="popup" style="width: 500px;" id="popupFinalizar">
-    <svg class="cerrarPopup" id="cerrarPopupFinalizar" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+<%if(!listaEventos.isEmpty()){
+    for(Evento e:listaEventos){%>
+<div class="overlay" id="overlayFinalizarEvento<%=listaEventos.indexOf(e)%>">
+<div class="popup" style="width: 500px;" id="popupFinalizarEvento<%=listaEventos.indexOf(e)%>">
+    <svg class="cerrarPopup" id="cerrarPopupFinalizarEvento<%=listaEventos.indexOf(e)%>" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path d="M11.4142 10L16.7071 4.70711C17.0976 4.31658 17.0976 3.68342 16.7071 3.29289C16.3166 2.90237 15.6834 2.90237 15.2929 3.29289L10 8.58579L4.70711 3.29289C4.31658 2.90237 3.68342 2.90237 3.29289 3.29289C2.90237 3.68342 2.90237 4.31658 3.29289 4.70711L8.58579 10L3.29289 15.2929C2.90237 15.6834 2.90237 16.3166 3.29289 16.7071C3.68342 17.0976 4.31658 17.0976 4.70711 16.7071L10 11.4142L15.2929 16.7071C15.6834 17.0976 16.3166 17.0976 16.7071 16.7071C17.0976 16.3166 17.0976 15.6834 16.7071 15.2929L11.4142 10Z" fill="black"/>
     </svg>
-    <form  method="post" action="<%=request.getContextPath()%>/ListaDeEventosServlet?action=finConfirm" >
+    <%if(e.isEventoFinalizado()){%>
+    <div id="cerrarPopupFinalizar1Evento<%=listaEventos.indexOf(e)%>"></div>
+    <div id="cerrarPopupFinalizar2Evento<%=listaEventos.indexOf(e)%>"></div>
     <div class="container-fluid">
+        <div class="text-center" style="margin-bottom: 10px">
+            <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" fill="currentColor" class="bi bi-exclamation-circle-fill" viewBox="0 0 16 16">
+                <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8 4a.905.905 0 0 0-.9.995l.35 3.507a.552.552 0 0 0 1.1 0l.35-3.507A.905.905 0 0 0 8 4zm.002 6a1 1 0 1 0 0 2 1 1 0 0 0 0-2z"/>
+            </svg>
+        </div>
         <div class="row">
             <div class="col-sm-1"></div>
             <div class="col-sm-10">
-                <input hidden name="idActividad" value=<%=idActividad%>>
-                <label for="eventoFinalizar"><h5 style="text-align: center;">Seleccione el evento: </h5></label>
-                <div style="margin-top: 20px;">
-                    <input type="text" name="finEventoNombre" multiple id="eventoFinalizar" list="eventos" placeholder="Título" required>
-                    <datalist id="eventos">
-                        <%for(Evento e:listaEventos){
-                        if(!e.isEventoFinalizado()){%>
-                        <option value="<%=e.getTitulo()%>"><%=e.getTitulo()%></option>
-                        <%}}%>
-                    </datalist>
-                </div>
-                <label style="margin-top: 25px;"><b>Resumen:</b></label>
-                <input type="text" name="finResumen" placeholder="Resumen" required>
-                <label for="resultado2" style="margin-top: 25px;"><b>Resultado:</b></label>
-                <select style="padding: 12.5px" name="resultado" id="resultado2" required>
-                    <option value="Victoria">Victoria</option>
-                    <option value="Derrota">Derrota</option>
-                </select>
+                <h5 style="text-align: center;">El evento ya se encuentra finalizado</h5>
             </div>
             <div class="col-sm-1"></div>
         </div>
-
     </div>
-    <br>
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-sm-6" style="margin-top: 5px;">
-                <button class="button secondary" style="opacity: 50%;" id="cerrarPopupFinalizar1" disabled="true">Finalizar</button>
-            </div>
-            <div class="col-sm-6" style="margin-top: 5px;">
-                <button type="button" class="button secondary" id="cerrarPopupFinalizar2" style="background-color: grey;">Cancelar</button>
+    <%}else{%>
+    <form method="post" action="<%=request.getContextPath()%>/ListaDeEventosServlet?action=finConfirm" >
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-sm-1"></div>
+                <div class="col-sm-10">
+                    <input type="hidden" name="idActividad" value=<%=idActividad%>>
+                    <input type="hidden" name="idEvento" value="<%=e.getIdEvento()%>">
+                    <a class="text-center"><h5>Finalizar el evento <span style="color: steelblue;">Fibra Tóxica VS </span><span style="color: #0b2e13;"><%=e.getTitulo()%></span></h5></a>
+                    <label for="resumenEvento<%=listaEventos.indexOf(e)%>" style="margin-top: 25px;"><b>Resumen:</b></label>
+                    <textarea id="resumenEvento<%=listaEventos.indexOf(e)%>" name="finResumen" placeholder="Resumen" required></textarea>
+                    <label for="resultado2Evento<%=listaEventos.indexOf(e)%>" style="margin-top: 25px;"><b>Resultado:</b></label>
+                    <select style="padding: 12.5px" name="resultado" id="resultado2Evento<%=listaEventos.indexOf(e)%>" required>
+                        <option value="Victoria">Victoria</option>
+                        <option value="Derrota">Derrota</option>
+                    </select>
+                </div>
+                <div class="col-sm-1"></div>
             </div>
         </div>
-    </div>
+        <br>
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-sm-6" style="margin-top: 5px;">
+                    <button class="button secondary" type="submit" style="opacity: 50%;" id="cerrarPopupFinalizar1Evento<%=listaEventos.indexOf(e)%>" disabled="true">Finalizar</button>
+                </div>
+                <div class="col-sm-6" style="margin-top: 5px;">
+                    <button type="button" class="button secondary" id="cerrarPopupFinalizar2Evento<%=listaEventos.indexOf(e)%>" style="background-color: grey;">Cancelar</button>
+                </div>
+            </div>
+        </div>
     </form>
+    <%}%>
 </div>
 </div>
-<%if(!listaEventos.isEmpty()){
-    for(Evento e:listaEventos){%>
 <div class="overlay" <%if((resumenLargo!=null||descripcionLarga!=null||fraseLarga!=null||extensionInvalida!=null||escalaInvalida!=null)&&eventoElegido!=null&&eventoElegido==e.getIdEvento()){%>style="display: block;"<%}%> id="overlayEditarEvento<%=listaEventos.indexOf(e)%>">
 <div class="popup contenedorCrear" style="width: 700px;<%if((resumenLargo!=null||descripcionLarga!=null||fraseLarga!=null||extensionInvalida!=null||escalaInvalida!=null)&&eventoElegido!=null&&eventoElegido==e.getIdEvento()){%>display: block;<%}%>" id="popupEditarEvento<%=listaEventos.indexOf(e)%>">
     <svg class="cerrarPopup" id="cerrarPopupEditarEvento<%=listaEventos.indexOf(e)%>" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -2655,8 +2662,7 @@
         var formulario = document.getElementById(idForm);
         formulario.submit();
     }
-    function popupFunc(popupId,abrirId,cerrarClass,overlayId){
-        const showPopup=document.getElementById(abrirId);
+    function popupFunc(popupId,cerrarClass,overlayId){
         const overlay=document.getElementById(overlayId);
         const popup=document.getElementById(popupId);
         const mostrarPopup = () => {
@@ -2665,7 +2671,7 @@
             // Desactivar el scroll
             document.body.style.overflow = 'hidden';
         };
-        showPopup.addEventListener('click', mostrarPopup);
+        mostrarPopup();
         const cerrarPopup = () => {
             overlay.style.display = 'none';
             popup.style.display = 'none';
@@ -2705,43 +2711,21 @@
         }
     }
     <%if(delegadoDeEstaActividadID==idUsuario){%>
-    popupFunc('popupCrear','mostrarPopupCrear',['cerrarPopupCrear','cerrarPopupCrear1','cerrarPopupCrear2'],'overlayCrear');
-    popupFunc('popupFinalizar','mostrarPopupFinalizar',['cerrarPopupFinalizar','cerrarPopupFinalizar1','cerrarPopupFinalizar2'],'overlayFinalizar');
+    var elementos=['nombreCrearEvento','fraseMotivacionalCrearEvento','descripcionCrearEvento','horaCrearEvento','lugarCrearEvento','fechaCrearEvento','inputCrear'];
+    verificarInput(elementos,'cerrarPopupCrear1');
     <%if(listaEventos!=null){
     for(int i=0;i<listaEventos.size();i++){%>
-    popupFunc('popupEditarEvento<%=i%>','mostrarPopupEditarEvento<%=i%>',['cerrarPopupEditarEvento<%=i%>','cerrarPopupEditar1Evento<%=i%>','cerrarPopupEditar2Evento<%=i%>'],'overlayEditarEvento<%=i%>');
     <%if(listaEventos.get(i).isEventoFinalizado()){%>
     var elementos<%=i%>=['editarNombreEvento<%=i%>','editarResumenEvento<%=i%>'];
     verificarInput(elementos<%=i%>,'cerrarPopupEditar1Evento<%=i%>');
     <%}else{%>
     var elementos<%=i%>=['editarNombreEvento<%=i%>','editarFraseMotivacionalEvento<%=i%>','editarDescripcionEvento<%=i%>','editarHoraEvento<%=i%>','editarLugarEvento<%=i%>','editarFechaEvento<%=i%>'];
     verificarInput(elementos<%=i%>,'cerrarPopupEditar1Evento<%=i%>');
-    <%}}}%>
-    // Obtener elementos del DOM
-    const textElement = document.getElementById('eventoFinalizar');
-    const buttonElement = document.getElementById('cerrarPopupFinalizar1');
-    const opciones=document.getElementById('eventos').getElementsByTagName('option');
-    // Agregar un evento de escucha al campo de texto y la lista de opciones
-    textElement.addEventListener('input', validarCampo);
-
-    function validarCampo() {
-        const textoIngresado = textElement.value.trim();
-        // Verificar si la opción seleccionada está en el texto ingresado
-
-        for(let i=0; i<opciones.length; i++){
-            if (textoIngresado==opciones[i].value) {
-                buttonElement.removeAttribute('disabled'); // Activar el botón
-                buttonElement.style.opacity="100%";
-                break;
-            } else {
-                buttonElement.setAttribute('disabled', 'true'); // Desactivar el botón
-                buttonElement.style.opacity="50%";
-            }
-        }
-    }
     <%}%>
-    var elementos=['nombreCrearEvento','fraseMotivacionalCrearEvento','descripcionCrearEvento','horaCrearEvento','lugarCrearEvento','fechaCrearEvento'];
-    verificarInput(elementos,'cerrarPopupCrear1');
+    <%if(!listaEventos.get(i).isEventoFinalizado()){%>
+    var elementosFinalizar<%=i%>=['resultado2Evento<%=i%>','resumenEvento<%=i%>'];
+    verificarInput(elementosFinalizar<%=i%>,'cerrarPopupFinalizar1Evento<%=i%>');
+    <%}}}}%>
 </script>
 <!-- app -->
 <script src="js/utils/app.js"></script>

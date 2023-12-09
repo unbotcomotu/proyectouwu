@@ -6,6 +6,7 @@ import jakarta.servlet.*;
 import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
 
+import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
 import java.sql.Blob;
@@ -36,6 +37,8 @@ public class Imagen extends HttpServlet {
                 rutaImagenPredeterminada = "/css/telitoVoley.png";
             }else if(tipoDeFoto.equals("fotoCarrusel")){
                 rutaImagenPredeterminada = "/css/fotoYarleque.png";
+            }else if(tipoDeFoto.equals("fotoSeguro")){
+                rutaImagenPredeterminada = "/css/sinImagen.jpg";
             }else{
                 rutaImagenPredeterminada = "/css/errorImagen.jpg";
             }
@@ -50,5 +53,19 @@ public class Imagen extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
+    }
+
+    public boolean isImageFile(String fileName) {
+        String[] extensiones = {"jpg", "jpeg", "png", "gif"};
+        for (String extension : extensiones) {
+            if (fileName.toLowerCase().endsWith("." + extension)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean betweenScales(BufferedImage imagen, double escala1, double escala2){
+        return (imagen.getWidth()*1.0/imagen.getHeight()>escala1&&imagen.getWidth()*1.0/imagen.getHeight()<escala2);
     }
 }

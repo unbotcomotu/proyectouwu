@@ -7,6 +7,8 @@ import jakarta.servlet.*;
 import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
 
+import javax.imageio.ImageIO;
+import java.awt.*;
 import java.io.IOException;
 import java.io.InputStream;
 import java.sql.SQLException;
@@ -52,13 +54,13 @@ public class MiCuentaServlet extends HttpServlet {
             response.sendRedirect("InicioSesionServlet");
         }else {
             Part part = null;
-            InputStream input = null;
-            boolean validarLongitud;
-
+            Imagen io=new Imagen();
             switch(action){
                 case("editarDescripcion"):
                     boolean descripcionValida = true;
                     String nuevaDescripcion = request.getParameter("nuevaDescripcion");
+                    //sentencia sql para actualizar:
+                    dUsuario.cambioDescripcion(nuevaDescripcion, usuario.getIdUsuario());
                     if(nuevaDescripcion==null || nuevaDescripcion.length()>1000 || nuevaDescripcion.isEmpty()){
                         descripcionValida=false;
                     }
@@ -70,46 +72,42 @@ public class MiCuentaServlet extends HttpServlet {
                     break;
                 case "editarFoto":
                     part = request.getPart("cambiarFoto");
-
-                    // Obtenemos el flujo de bytes uwu
-                    if(part != null){
-                        input = part.getInputStream();
+                    if(part!=null){
+                        InputStream inputPerfil=part.getInputStream();
+                        String nombre= part.getSubmittedFileName();
+                        if(inputPerfil.available()<10){
+                        }else if(!io.isImageFile(nombre)){
+                            request.getSession().setAttribute("extensionInvalidaPerfil","1");
+                        }else if(!io.betweenScales(ImageIO.read(part.getInputStream()),0.5,2)) {
+                            request.getSession().setAttribute("escalaInvalidaPerfil", "1");
+                        }else {
+                            dUsuario.cambiarFoto(usuario.getIdUsuario(),inputPerfil,true,"1");
+                        }
+                        inputPerfil.close();
                     }
-
-                    validarLongitud = input.available()>10;
-
-                    try {
-                        dUsuario.cambiarFoto(usuario.getIdUsuario(),input,validarLongitud,"1");
-                    } catch (SQLException e) {
-                    }
-
-                    input.close();
-                    response.sendRedirect("MiCuentaServlet");
-                    int idUsuario= usuario.getIdUsuario();
                     break;
                 case "editarSeguro":
                     part = request.getPart("cambiarSeguro");
-
-                    // Obtenemos el flujo de bytes owo
-                    if(part != null){
-                        input = part.getInputStream();
+                    if(part!=null){
+                        InputStream inputSeguro=part.getInputStream();
+                        String nombre= part.getSubmittedFileName();
+                        if(inputSeguro.available()<10){
+                        }else if(!io.isImageFile(nombre)){
+                            request.getSession().setAttribute("extensionInvalidaSeguro","1");
+                        }else if(!io.betweenScales(ImageIO.read(part.getInputStream()),0.25,4)) {
+                            request.getSession().setAttribute("escalaInvalidaSeguro", "1");
+                        }else {
+                            dUsuario.cambiarFoto(usuario.getIdUsuario(),inputSeguro,true,"2");
+                        }
+                        inputSeguro.close();
                     }
-
-                    validarLongitud = input.available()>0;
-
-                    try {
-                        dUsuario.cambiarFoto(usuario.getIdUsuario(),input,validarLongitud,"2");
-                    } catch (SQLException e) {
-                    }
-
-                    input.close();
-                    response.sendRedirect( "MiCuentaServlet");
-
+                    break;
                 case("default"):
                     //auxilio
                     break;
             }
             request.getSession().setAttribute("usuario",dUsuario.usuarioSesion(usuario.getIdUsuario()));
+            response.sendRedirect("MiCuentaServlet");
         }
     }
 }

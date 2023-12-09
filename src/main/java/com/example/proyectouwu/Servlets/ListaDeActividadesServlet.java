@@ -8,6 +8,8 @@ import jakarta.servlet.*;
 import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
 import java.sql.SQLException;
 import java.io.InputStream;
 import java.io.IOException;
@@ -102,10 +104,13 @@ public class ListaDeActividadesServlet extends HttpServlet {
             // Parámetros auxiliares para imagenes cabecera y miniatura
             Part partMin = null;
             Part partCab = null;
+            String nombreMin;
+            String nombreCab;
             InputStream inputMin = null;
             InputStream inputCab = null;
             boolean validarLongitudMin;
             boolean validarLongitudCab;
+            Imagen io=new Imagen();
             String rutaImagenPredeterminada = "/css/fibraVShormigon.png";
 
             switch (action){
@@ -129,7 +134,7 @@ public class ListaDeActividadesServlet extends HttpServlet {
                     String puntajeCrearActividad=request.getParameter("puntajeCrearActividad");
                     try{
                         Integer puntajeAux=Integer.parseInt(puntajeCrearActividad);
-                    }catch (NumberFormatException e){
+                    }catch (NumberFormatException e)    {
                         request.getSession().setAttribute("puntajeNoNumerico","1");
                         validacionCrear=false;
                     }
@@ -145,6 +150,14 @@ public class ListaDeActividadesServlet extends HttpServlet {
                     // Obtenemos el flujo de bytes
                     if(partCab != null){
                         inputCab = partCab.getInputStream();
+                        nombreCab= partCab.getSubmittedFileName();
+                        if(!io.isImageFile(nombreCab)){
+                            request.getSession().setAttribute("extensionInvalidaCab","1");
+                            validacionCrear=false;
+                        }else if(!io.betweenScales(ImageIO.read(partCab.getInputStream()),0.5,1)) {
+                            request.getSession().setAttribute("escalaInvalidaCab", "1");
+                            validacionCrear = false;
+                        }
                     }else{
                         inputCab = getServletContext().getResourceAsStream(rutaImagenPredeterminada);
                     }
@@ -153,12 +166,21 @@ public class ListaDeActividadesServlet extends HttpServlet {
                         inputCab = getServletContext().getResourceAsStream(rutaImagenPredeterminada);
                     }
 
+
                     // fotoMiniatura==inputMin;
                     partMin = request.getPart("addfotoMiniatura");
 
                     // Obtenemos el flujo de bytes
                     if(partMin != null){
                         inputMin = partMin.getInputStream();
+                        nombreMin= partMin.getSubmittedFileName();
+                        if(!io.isImageFile(nombreMin)){
+                            request.getSession().setAttribute("extensionInvalidaMin","1");
+                            validacionCrear=false;
+                        }else if(!io.betweenScales(ImageIO.read(partMin.getInputStream()),0.666,1.333)) {
+                            request.getSession().setAttribute("escalaInvalidaMin", "1");
+                            validacionCrear = false;
+                        }
                     }else{
                         inputMin = getServletContext().getResourceAsStream(rutaImagenPredeterminada);
                     }
@@ -211,6 +233,14 @@ public class ListaDeActividadesServlet extends HttpServlet {
                     // Obtenemos el flujo de bytes
                     if (partCab != null) {
                         inputCab = partCab.getInputStream();
+                        nombreCab=partCab.getSubmittedFileName();
+                        if(!io.isImageFile(nombreCab)){
+                            request.getSession().setAttribute("extensionInvalidaCab","1");
+                            validacionEditar=false;
+                        }else if(!io.betweenScales(ImageIO.read(partCab.getInputStream()),0.5,1)) {
+                            request.getSession().setAttribute("escalaInvalidaCab", "1");
+                            validacionEditar = false;
+                        }
                     }
 
                     validarLongitudCab = inputCab.available() > 10;
@@ -222,6 +252,14 @@ public class ListaDeActividadesServlet extends HttpServlet {
                     // Obtenemos el flujo de bytes
                     if (partMin != null) {
                         inputMin = partMin.getInputStream();
+                        nombreMin= partMin.getSubmittedFileName();
+                        if(!io.isImageFile(nombreMin)){
+                            request.getSession().setAttribute("extensionInvalidaMin","1");
+                            validacionEditar=false;
+                        }else if(!io.betweenScales(ImageIO.read(partMin.getInputStream()),0.666,1.333)) {
+                            request.getSession().setAttribute("escalaInvalidaMin", "1");
+                            validacionEditar = false;
+                        }
                     }
 
                     validarLongitudMin = inputMin.available() > 10;

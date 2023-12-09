@@ -16,6 +16,22 @@
         String servletActual="MiCuentaServlet";
         ArrayList<NotificacionDelegadoGeneral>listaNotificacionesCampanita=(ArrayList<NotificacionDelegadoGeneral>) request.getAttribute("listaNotificacionesCampanita");
         ArrayList<AlumnoPorEvento>listaNotificacionesDelegadoDeActividad=(ArrayList<AlumnoPorEvento>) request.getAttribute("listaNotificacionesDelegadoDeActividad");
+        String extensionInvalidaPerfil=(String) request.getSession().getAttribute("extensionInvalidaPerfil");
+        if(extensionInvalidaPerfil!=null){
+            request.getSession().removeAttribute("extensionInvalidaPerfil");
+        }
+        String escalaInvalidaPerfil=(String) request.getSession().getAttribute("escalaInvalidaPerfil");
+        if(escalaInvalidaPerfil!=null){
+            request.getSession().removeAttribute("escalaInvalidaPerfil");
+        }
+        String extensionInvalidaSeguro=(String) request.getSession().getAttribute("extensionInvalidaSeguro");
+        if(extensionInvalidaSeguro!=null){
+            request.getSession().removeAttribute("extensionInvalidaSeguro");
+        }
+        String escalaInvalidaSeguro=(String) request.getSession().getAttribute("escalaInvalidaSeguro");
+        if(escalaInvalidaSeguro!=null){
+            request.getSession().removeAttribute("escalaInvalidaSeguro");
+        }
         if(rolUsuario.equals("Alumno")){
             colorRol="";
         }else if(rolUsuario.equals("Delegado de Actividad")){
@@ -1715,7 +1731,7 @@
 
     <div class="container-fluid my-4" style="border-radius: 12px; background-color: #fff; box-shadow: 0 0 40px 0 rgba(94, 92, 154, 0.06);">
         <div class="row d-flex justify-content-center">
-            <div class="col-sm-4 d-flex align-items-center justify-content-center py-4 columnas" style="font-family: 'Rajdhani',sans-serif; font-size: 110%;"><p style="text-align: left;"><b><%=new DaoUsuario().obtenerDescripcionPorId(idUsuario)%></b></p></div>
+            <div class="col-sm-12 d-flex align-items-center justify-content-center py-4 columnas" style="font-family: 'Rajdhani',sans-serif; font-size: 110%;"><p style="text-align: center;word-wrap: break-word;width: 100%"><b><%=new DaoUsuario().obtenerDescripcionPorId(idUsuario)%></b></p></div>
         </div>
     </div>
 
@@ -1769,7 +1785,7 @@
                 <div class="col-sm-12">
                     <br>
                     <label for="descripcionPerfil" style="margin-top: 25px;"><b>Descripción:</b></label>
-                    <input type="text" id="descripcionPerfil" placeholder="Descripcion" name= "nuevaDescripcion" required value="<%=new DaoUsuario().obtenerDescripcionPorId(idUsuario)%>">
+                    <textarea type="text" id="descripcionPerfil" placeholder="Descripcion" name= "nuevaDescripcion" cols="10" rows="5" required><%=new DaoUsuario().obtenerDescripcionPorId(idUsuario)%></textarea>
                 </div>
             </div>
 
@@ -1790,65 +1806,66 @@
     </form>
 </div>
 
-<div class="overlay" id="overlayFoto"></div>
-<div class="popup" style="width: 700px;" id="popupFoto">
+<div class="overlay" <%if(extensionInvalidaPerfil!=null||escalaInvalidaPerfil!=null){%>style="display: block;"<%}%> id="overlayFoto"></div>
+<div class="popup" style="width: 700px;<%if(extensionInvalidaPerfil!=null||escalaInvalidaPerfil!=null){%>display: block<%}%>" id="popupFoto">
     <svg class="cerrarPopup" id="cerrarPopupFoto" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path d="M11.4142 10L16.7071 4.70711C17.0976 4.31658 17.0976 3.68342 16.7071 3.29289C16.3166 2.90237 15.6834 2.90237 15.2929 3.29289L10 8.58579L4.70711 3.29289C4.31658 2.90237 3.68342 2.90237 3.29289 3.29289C2.90237 3.68342 2.90237 4.31658 3.29289 4.70711L8.58579 10L3.29289 15.2929C2.90237 15.6834 2.90237 16.3166 3.29289 16.7071C3.68342 17.0976 4.31658 17.0976 4.70711 16.7071L10 11.4142L15.2929 16.7071C15.6834 17.0976 16.3166 17.0976 16.7071 16.7071C17.0976 16.3166 17.0976 15.6834 16.7071 15.2929L11.4142 10Z" fill="black"/>
     </svg>
     <form  method="post" action="<%=request.getContextPath()%>/MiCuentaServlet?action=editarFoto" enctype="multipart/form-data" >
-    <div class="container-fluid">
-
+        <div class="container-fluid">
             <div class="row"><div class="col"><h5 style="text-align: center;">Editar Foto:</h5></div></div>
             <div class="row">
                 <div class="mb-3">
                 </div>
                 <div class="col-sm-12">
                     <br>
-                    <input type="file" accept="image/png, .jpeg, .jpg" name = "cambiarFoto" onchange="previewImage(event,'preview')">
+                    <%request.getSession().setAttribute("fotoPerfil",usuarioActual.getFotoPerfil());%>
+                    <div class="container-fluid btn btn-file1">
+                        <div id="contenedorFoto">
+                            <img id="fotoActual" class="img-fluid" src="Imagen?tipoDeFoto=fotoPerfil&id=Perfil" style="max-height: 600px" alt="">
+                        </div>
+                        <%if(extensionInvalidaPerfil!=null){%><a style="color: red;">Ingrese un formato e imagen correctos</a><%}else if(escalaInvalidaPerfil!=null){%><a style="color: red;">Ingrese una escala apropiada</a><%}%>
+                        <input type="file" id="inputPerfil" style="background-color: white; margin-top: 25px;" accept="image/png, .jpeg, .jpg" name="cambiarFoto" onchange="mostrarImagen('fotoActual','contenedorFoto','inputPerfil')">
+                    </div>
                 </div>
-
             </div>
-
-            <div class="mt-2 text-center">
-                <img class="" id="preview" alt="" style="max-width: 80%; max-height: 400px;">
-            </div>
-    </div>
-    <br>
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-sm-6" style="margin-top: 5px;">
-                <button type="submit" class="button secondary" id="botonEditar2">Subir</button>
-            </div>
-            <div class="col-sm-6" style="margin-top: 5px;">
-                <button type="button" class="button secondary" id="botonCerrar2" style="background-color: grey;" >Cancelar</button>
-            </div>
-
         </div>
-    </div>
+        <br>
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-sm-6" style="margin-top: 5px;">
+                    <button type="submit" class="button secondary" id="botonEditar2">Subir</button>
+                </div>
+                <div class="col-sm-6" style="margin-top: 5px;">
+                    <button type="button" class="button secondary" id="botonCerrar2" style="background-color: grey;" >Cancelar</button>
+                </div>
+            </div>
+        </div>
     </form>
 </div>
 
-<div class="overlay" id="overlaySeguro"></div>
-<div class="popup" style="width: 700px;" id="popupSeguro">
+<div class="overlay" <%if(extensionInvalidaSeguro!=null||escalaInvalidaSeguro!=null){%>style="display: block;"<%}%> id="overlaySeguro"></div>
+<div class="popup" style="width: 700px;<%if(extensionInvalidaSeguro!=null||escalaInvalidaSeguro!=null){%>display: block<%}%>" id="popupSeguro">
     <svg class="cerrarPopup" id="cerrarPopupSeguro" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path d="M11.4142 10L16.7071 4.70711C17.0976 4.31658 17.0976 3.68342 16.7071 3.29289C16.3166 2.90237 15.6834 2.90237 15.2929 3.29289L10 8.58579L4.70711 3.29289C4.31658 2.90237 3.68342 2.90237 3.29289 3.29289C2.90237 3.68342 2.90237 4.31658 3.29289 4.70711L8.58579 10L3.29289 15.2929C2.90237 15.6834 2.90237 16.3166 3.29289 16.7071C3.68342 17.0976 4.31658 17.0976 4.70711 16.7071L10 11.4142L15.2929 16.7071C15.6834 17.0976 16.3166 17.0976 16.7071 16.7071C17.0976 16.3166 17.0976 15.6834 16.7071 15.2929L11.4142 10Z" fill="black"/>
     </svg>
     <form  method="post" action="<%=request.getContextPath()%>/MiCuentaServlet?action=editarSeguro" enctype="multipart/form-data" >
         <div class="container-fluid">
-
             <div class="row"><div class="col"><h5 style="text-align: center;">Editar Seguro:</h5></div></div>
             <div class="row">
                 <div class="mb-3">
                 </div>
                 <div class="col-sm-12">
                     <br>
-                    <input type="file" accept="image/png, .jpeg, .jpg" name = "cambiarSeguro" onchange="previewImage(event,'preview2')">
+                    <%request.getSession().setAttribute("fotoSeguro",usuarioActual.getFotoSeguro());%>
+                    <div class="container-fluid btn btn-file1">
+                        <div id="contenedorSeguro">
+                            <img id="fotoSeguro" class="img-fluid" src="Imagen?tipoDeFoto=fotoSeguro&id=Seguro" style="max-height: 600px" alt="">
+                        </div>
+                        <%if(extensionInvalidaSeguro!=null){%><a style="color: red;">Ingrese un formato e imagen correctos</a><%}else if(escalaInvalidaSeguro!=null){%><a style="color: red;">Ingrese una escala apropiada</a><%}%>
+                        <input type="file" id="inputSeguro" style="background-color: white; margin-top: 25px;" accept="image/png, .jpeg, .jpg" name="cambiarSeguro" onchange="mostrarImagen('fotoSeguro','contenedorSeguro','inputSeguro')">
+                    </div>
                 </div>
-
-            </div>
-
-            <div class="mt-2 text-center">
-                <img class="" id="preview2" alt="" style="max-width: 80%; max-height: 400px;">
             </div>
         </div>
         <br>
@@ -1860,28 +1877,28 @@
                 <div class="col-sm-6" style="margin-top: 5px;">
                     <button type="button" class="button secondary" id="botonCerrar3" style="background-color: grey;" >Cancelar</button>
                 </div>
-
             </div>
         </div>
     </form>
 </div>
 
-<!-- Función para mostrar la imagen antes de enviarla -->
-<script type="text/javascript">
-    function previewImage(event,idS) {
-        var input = event.target;
-        var image = document.getElementById(idS);
-        if (input.files && input.files[0]) {
+<script>
+    function mostrarImagen(idImagen, idImagenContainer, idInputArchivo) {
+        var imagenContainer = document.getElementById(idImagenContainer);
+        var imagen = document.getElementById(idImagen);
+        var inputArchivo = document.getElementById(idInputArchivo);
+
+        if (inputArchivo.files && inputArchivo.files[0]) {
             var reader = new FileReader();
-            reader.onload = function(e) {
-                image.src = e.target.result;
-            }
-            reader.readAsDataURL(input.files[0]);
+            reader.onload = function (e) {
+                imagen.src = e.target.result;
+            };
+            reader.readAsDataURL(inputArchivo.files[0]);
+            imagenContainer.style.display = 'block';
+        } else {
+            imagenContainer.style.display = 'none';
         }
     }
-</script>
-
-<script>
     function enviarFormulario(idForm) {
         var formulario = document.getElementById(idForm);
         formulario.submit();

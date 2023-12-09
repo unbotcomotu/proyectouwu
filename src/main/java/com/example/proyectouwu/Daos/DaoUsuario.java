@@ -593,7 +593,7 @@ public class DaoUsuario extends DaoPadre {
         }
         return listIdEgresados;
     }
-    public void cambiarFoto(int idUser, InputStream foto, boolean validacion, String tipo) throws SQLException,IOException{
+    public void cambiarFoto(int idUser, InputStream foto, boolean validacion, String tipo){
         tipo = tipo.equals("1")?"fotoPerfil":"fotoSeguro";
 
         String sql = "update usuario set "+tipo+" = ? where idUsuario = ?";
@@ -604,10 +604,10 @@ public class DaoUsuario extends DaoPadre {
                 pstmt.setBinaryStream(1,foto,foto.available());
             }
             pstmt.setInt(2,idUser);
-
             pstmt.executeUpdate();
+        } catch (SQLException | IOException e) {
+            throw new RuntimeException(e);
         }
-
     }
 
     public int obtenerIdPorCorreo (String correo){
@@ -722,7 +722,7 @@ public class DaoUsuario extends DaoPadre {
     }
 
     public Usuario usuarioSesion(int idUsuario){
-        String sql = "select idUsuario,rol,nombre,apellido,fotoPerfil,estadoRegistro from usuario where idUsuario = ?";
+        String sql = "select idUsuario,rol,nombre,apellido,fotoPerfil,fotoSeguro,estadoRegistro from usuario where idUsuario = ?";
         try(Connection conn=this.getConnection(); PreparedStatement pstmt=conn.prepareStatement(sql)){
             pstmt.setInt(1,idUsuario);
             try(ResultSet rs = pstmt.executeQuery()){
@@ -733,7 +733,8 @@ public class DaoUsuario extends DaoPadre {
                     u.setNombre(rs.getString(3));
                     u.setApellido(rs.getString(4));
                     u.setFotoPerfil(rs.getBlob(5));
-                    u.setEstadoRegistro(rs.getString(6));
+                    u.setFotoSeguro(rs.getBlob(6));
+                    u.setEstadoRegistro(rs.getString(7));
                     return u;
                 }else{
                     return null;

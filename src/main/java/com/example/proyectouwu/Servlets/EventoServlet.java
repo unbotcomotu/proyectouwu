@@ -6,6 +6,7 @@ import jakarta.servlet.*;
 import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
 
+import javax.imageio.ImageIO;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -68,6 +69,7 @@ public class EventoServlet extends HttpServlet {
             int idEvento = Integer.parseInt(request.getParameter("idEvento"));
             DaoNotificacion dN=new DaoNotificacion();
             DaoReporte dR=new DaoReporte();
+            Imagen io=new Imagen();
             String action = request.getParameter("action") == null ? "default" : request.getParameter("action");
             switch (action){
                 case "default":
@@ -81,50 +83,30 @@ public class EventoServlet extends HttpServlet {
                     break;
                 case "editarCarrusel":
                     ArrayList<Integer> listaIDs= dF.idsFotosCarrusel(idEvento);
-                    String borrar1=request.getParameter("borrar1");
-                    String borrar2=request.getParameter("borrar2");
-                    String borrar3=request.getParameter("borrar3");
-                    Part partFoto1=request.getPart("foto1");
-                    Part partFoto2=request.getPart("foto2");
-                    Part partFoto3=request.getPart("foto3");
-                    if(borrar1.equals("0")){
-                        if(partFoto1!=null){
-                            InputStream inputFoto1=partFoto1.getInputStream();
-                            if(inputFoto1.available()>10){
-                                dF.actualizarImagenCarrusel(listaIDs.get(0),inputFoto1);
+                    //asumiendo solo 3 imágenes por carrusel
+                    for(int i=0;i<3;i++){
+                        String borrar=request.getParameter("borrar"+(i+1));
+                        Part partFoto=request.getPart("foto"+(i+1));
+                        if(borrar.equals("0")){
+                            if(partFoto!=null){
+                                InputStream inputFoto=partFoto.getInputStream();
+                                String nombre= partFoto.getSubmittedFileName();
+                                if(inputFoto.available()<10){
+
+                                }else if(!io.isImageFile(nombre)){
+                                    request.getSession().setAttribute("extensionInvalida"+(i+1),"1");
+                                }else if(!io.betweenScales(ImageIO.read(inputFoto),1.2,1.9)) {
+                                    request.getSession().setAttribute("escalaInvalida"+(i+1), "1");
+                                }else {
+                                    dF.actualizarImagenCarrusel(listaIDs.get(i),partFoto.getInputStream());
+                                }
+                                inputFoto.close();
                             }
-                            inputFoto1.close();
+                        }else {
+                            InputStream inputFoto = getServletContext().getResourceAsStream("/css/imagenBorrada.png");
+                            dF.actualizarImagenCarrusel(listaIDs.get(i),inputFoto);
+                            inputFoto.close();
                         }
-                    }else {
-                        InputStream inputFoto1 = getServletContext().getResourceAsStream("/css/imagenBorrada.png");
-                        dF.actualizarImagenCarrusel(listaIDs.get(0),inputFoto1);
-                        inputFoto1.close();
-                    }
-                    if(borrar2.equals("0")){
-                        if(partFoto2!=null){
-                            InputStream inputFoto2=partFoto2.getInputStream();
-                            if(inputFoto2.available()>10){
-                                dF.actualizarImagenCarrusel(listaIDs.get(1),inputFoto2);
-                            }
-                            inputFoto2.close();
-                        }
-                    }else {
-                        InputStream inputFoto2 = getServletContext().getResourceAsStream("/css/imagenBorrada.png");
-                        dF.actualizarImagenCarrusel(listaIDs.get(1),inputFoto2);
-                        inputFoto2.close();
-                    }
-                    if(borrar3.equals("0")){
-                        if(partFoto3!=null){
-                            InputStream inputFoto3=partFoto3.getInputStream();
-                            if(inputFoto3.available()>10){
-                                dF.actualizarImagenCarrusel(listaIDs.get(2),inputFoto3);
-                            }
-                            inputFoto3.close();
-                        }
-                    }else {
-                        InputStream inputFoto3 = getServletContext().getResourceAsStream("/css/imagenBorrada.png");
-                        dF.actualizarImagenCarrusel(listaIDs.get(2),inputFoto3);
-                        inputFoto3.close();
                     }
                     response.sendRedirect("EventoServlet?idEvento="+idEvento);
                     break;

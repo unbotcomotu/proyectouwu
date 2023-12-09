@@ -102,7 +102,7 @@ public class DaoDonacion extends DaoPadre  {
 
     }
     //Este método permite agregar el monto y foto que ha donado una persona
-    public void agregarDonacionUsuario(int idUser,String medioPagado, float monto, InputStream captura)throws SQLException, IOException{
+    public void agregarDonacionUsuario(int idUser,String medioPagado, float monto, InputStream captura){
 
         String sql = " insert into donacion(idUsuario, medioPago, monto,fechaHora,captura,estadoDonacion) values (?, ?, ?,now(), ?,?)";
         try(Connection conn=this.getConnection(); PreparedStatement pstmt=conn.prepareStatement(sql,Statement.RETURN_GENERATED_KEYS)){
@@ -116,7 +116,7 @@ public class DaoDonacion extends DaoPadre  {
             if(rsKeys.next()){
                 new DaoNotificacion().crearNotificacionDonacion(rsKeys.getInt(1));
             }
-        } catch (SQLException e) {
+        } catch (SQLException | IOException e) {
             throw new RuntimeException(e);
         }
     }

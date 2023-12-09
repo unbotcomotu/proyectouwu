@@ -7,6 +7,7 @@ import jakarta.servlet.*;
 import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
 
+import javax.imageio.ImageIO;
 import java.io.IOException;
 import java.io.InputStream;
 import java.sql.Date;
@@ -315,9 +316,10 @@ public class ListaDeEventosServlet extends HttpServlet {
             Part part = null;
             InputStream input = null;
             InputStream inputAlt = null;
+            String nombreImagen = "";
             boolean validarLongitud;
+            Imagen io=new Imagen();
             String rutaImagenPredeterminada = "/css/fibraVShormigon.png";
-
             switch (action) {
 
                 case "addConfirm":
@@ -356,6 +358,14 @@ public class ListaDeEventosServlet extends HttpServlet {
                     // Obtenemos el flujo de bytes
                     if(part != null){
                         input = part.getInputStream();
+                        nombreImagen=part.getSubmittedFileName();
+                        if(!io.isImageFile(nombreImagen)){
+                            request.getSession().setAttribute("extensionInvalida","1");
+                            validacionCrear=false;
+                        }else if(!io.betweenScales(ImageIO.read(part.getInputStream()),1.2,1.8)) {
+                            request.getSession().setAttribute("escalaInvalida", "1");
+                            validacionCrear = false;
+                        }
                     }else{
                         input = getServletContext().getResourceAsStream(rutaImagenPredeterminada);
                     }
@@ -437,6 +447,14 @@ public class ListaDeEventosServlet extends HttpServlet {
                         // Obtenemos el flujo de bytes
                         if (part != null) {
                             input = part.getInputStream();
+                            nombreImagen=part.getSubmittedFileName();
+                            if(!io.isImageFile(nombreImagen)){
+                                request.getSession().setAttribute("extensionInvalida","1");
+                                validacionEditar=false;
+                            }else if(!io.betweenScales(ImageIO.read(part.getInputStream()),1.2,1.8)) {
+                                request.getSession().setAttribute("escalaInvalida", "1");
+                                validacionEditar = false;
+                            }
                         }
 
                         validarLongitud = input.available() > 10;

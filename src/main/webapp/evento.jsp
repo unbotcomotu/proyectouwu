@@ -40,6 +40,19 @@
         if(mensajeLargo!=null){
             request.getSession().removeAttribute("mensajeLargo");
         }
+        ArrayList<String>extensionInvalida=new ArrayList<>();
+        ArrayList<String>escalaInvalida=new ArrayList<>();
+        //asumiendo 3 imágenes por carrusel
+        for(int i=0;i<3;i++){
+            extensionInvalida.add((String) request.getSession().getAttribute("extensionInvalida"+(i+1)));
+            if(extensionInvalida.get(i)!=null){
+                request.getSession().removeAttribute("extensionInvalida"+(i+1));
+            }
+            escalaInvalida.add((String) request.getSession().getAttribute("escalaInvalida"+(i+1)));
+            if(escalaInvalida.get(i)!=null){
+                request.getSession().removeAttribute("escalaInvalida"+(i+1));
+            }
+        }
         String mensaje=(String) request.getAttribute("mensaje");
     %>
     <meta charset="utf-8">
@@ -1831,21 +1844,20 @@
 
 <!-- CONTENT GRID -->
 <div class="content-grid">
-
-    <div class="section-banner">
+    <div class="section-banner" style="padding: 0 0 0 0 !important;">
         <!-- SECTION BANNER ICON -->
         <%DaoActividad daoActividad = new DaoActividad(); Actividad actividad = daoActividad.listarActividades(actividadEvento).get(0);%>
         <%request.getSession().setAttribute("fotoActividadCabecera"+actividad.getIdActividad(),actividad.getFotoCabecera());%>
-        <img class="section-banner-icon" src="Imagen?tipoDeFoto=fotoActividadCabecera&id=ActividadCabecera<%=actividad.getIdActividad()%>" alt="Foto Cabecera">
-        <!-- /SECTION BANNER ICON -->
 
-        <!-- SECTION BANNER TITLE -->
-        <p class="section-banner-title">Fibra Tóxica VS <%=e.getTitulo()%></p>
-        <!-- /SECTION BANNER TITLE -->
+        <div class="section-banner" style="background: url('Imagen?tipoDeFoto=fotoActividadCabecera&id=ActividadCabecera<%=actividad.getIdActividad()%>') no-repeat left !important;background-size: 15% 100% !important;height: 100% !important;">
+            <!-- SECTION BANNER TITLE -->
+            <p class="section-banner-title">Fibra Tóxica VS <%=e.getTitulo()%></p>
+            <!-- /SECTION BANNER TITLE -->
+            <!-- SECTION BANNER TEXT -->
+            <p class="section-banner-text "><%=actividadEvento%></p>
+            <!-- /SECTION BANNER TEXT -->
+        </div>
 
-        <!-- SECTION BANNER TEXT -->
-        <p class="section-banner-text "><%=actividadEvento%></p>
-        <!-- /SECTION BANNER TEXT -->
     </div>
     <!-- GRID -->
     <div class="grid grid-3-9">
@@ -1862,7 +1874,23 @@
                     <!-- STREAMER BOX STATUS -->
                     <p class="mt-4">Eres el delegado de actividad en la que se encuentra este evento. No olvides de atender las solicitudes de los usuarios que deseen apoyar. Estas se encuentran en la ventana de notificaciones.</p>
                     <!-- /STREAMER BOX STATUS -->
-
+                    <%if(e.isEventoFinalizado()){%>
+                    <!-- USER STATS -->
+                    <div class="user-stats">
+                        <!-- USER STAT -->
+                        <div class="user-stat">
+                            <!-- USER STAT TITLE -->
+                            <img src="css/solicitudesPendientes.png" width="50%">
+                            <!-- /USER STAT TITLE -->
+                            <p class="user-stat-text" style="font-size: 100%;"><%=cantidadApoyos.get(0)+cantidadApoyos.get(1)%></p>
+                            <!-- USER STAT TEXT -->
+                            <p class="user-stat-text" style="font-size: 100%;">Total de apoyos</p>
+                            <!-- /USER STAT TEXT -->
+                        </div>
+                        <!-- /USER STAT -->
+                    </div>
+                    <!-- /USER STATS -->
+                    <%}else{%>
                     <!-- USER STATS -->
                     <div class="user-stats">
                         <!-- USER STAT -->
@@ -1878,7 +1906,7 @@
                         <!-- /USER STAT -->
                     </div>
                     <!-- /USER STATS -->
-
+                    <%}%>
                 </div>
                 <%}else if(estadoApoyo==null){%>
                 <!-- STREAMER BOX INFO -->
@@ -2195,18 +2223,12 @@
                 <%ArrayList<Blob>carrusel=e.getCarruselFotos();%>
                 <div class="carousel">
                     <div class="carousel-inner">
-                        <div class="carousel-item active">
-                            <%request.getSession().setAttribute("fotoCarrusel0",carrusel.get(0));%>
-                            <img class="img-fluid" src="Imagen?tipoDeFoto=fotoCarrusel&id=Carrusel0" alt="Imagen 1" style="max-width: 1092px; max-height: 560px">
+                        <%for(int i=0;i<carrusel.size();i++){%>
+                        <div class="carousel-item <%if(i==0){%>active<%}%>">
+                            <%request.getSession().setAttribute("fotoCarrusel"+i,carrusel.get(i));%>
+                            <img class="img-fluid" src="Imagen?tipoDeFoto=fotoCarrusel&id=Carrusel<%=i%>" alt="Imagen <%=i+1%>" style="max-width: 1092px; max-height: 560px">
                         </div>
-                        <div class="carousel-item">
-                            <%request.getSession().setAttribute("fotoCarrusel1",carrusel.get(1));%>
-                            <img class="img-fluid" src="Imagen?tipoDeFoto=fotoCarrusel&id=Carrusel1" alt="Imagen 2" style="max-width: 1092px; max-height: 560px">
-                        </div>
-                        <div class="carousel-item">
-                            <%request.getSession().setAttribute("fotoCarrusel2",carrusel.get(2));%>
-                            <img class="img-fluid" src="Imagen?tipoDeFoto=fotoCarrusel&id=Carrusel2" alt="Imagen 3" style="max-width: 1092px; max-height: 560px">
-                        </div>
+                        <%}%>
                     </div>
                     <a class="carousel-control-prev" role="button" data-slide="prev">
                         <span class="carousel-control-prev-icon" aria-hidden="true"></span>
@@ -2217,6 +2239,11 @@
                         <span class="sr-only">Siguiente</span>
                     </a>
                 </div>
+                <%if(delegadoDeEstaActividadID==idUsuario){%>
+                <div style="position: relative;bottom: 75px;height: 0;width: 0">
+                    <img src="css/ajustesEvento.png" id="mostrarPopupImagenes" style="cursor: pointer;" width="75px" alt="">
+                </div>
+                <%}%>
                 <script>
                     document.addEventListener("DOMContentLoaded", function () {
                         const carouselItems = document.querySelectorAll(".carousel-item");
@@ -2246,17 +2273,27 @@
                 <%if(e.isEventoFinalizado()){%>
                 <!-- STREAM BOX INFO -->
                 <div class="stream-box-info">
-
+                    <%if(e.getResultadoEvento().equals("Victoria")){%>
                     <!-- STREAM BOX TITLE -->
-                    <p class="stream-box-title" >"<%=e.getResultadoEvento()%>"</p>
+                    <p class="stream-box-title" style="color: green;font-size: 300%">Victoria</p>
                     <!-- /STREAM BOX TITLE -->
                     <!-- STREAM BOX CATEGORY -->
                     <p class="stream-box-category mt-3"><%=e.getResumen()%></p>
                     <!-- /STREAM BOX CATEGORY -->
-
                     <!-- STREAM BOX VIEWS -->
-                    <p class="stream-box-views">¡No falten!</p>
+                    <p class="stream-box-views">¡La fibra adelante!</p>
                     <!-- /STREAM BOX VIEWS -->
+                    <%}else if(e.getResultadoEvento().equals("Derrota")){%>
+                    <!-- STREAM BOX TITLE -->
+                    <p class="stream-box-title" style="color: red;font-size: 300%">Derrota</p>
+                    <!-- /STREAM BOX TITLE -->
+                    <!-- STREAM BOX CATEGORY -->
+                    <p class="stream-box-category mt-3"><%=e.getResumen()%></p>
+                    <!-- /STREAM BOX CATEGORY -->
+                    <!-- STREAM BOX VIEWS -->
+                    <p class="stream-box-views">¡En las buenas y en las malas con la Fibra!</p>
+                    <!-- /STREAM BOX VIEWS -->
+                    <%}%>
                 </div>
                 <!-- /STREAM BOX INFO -->
                 <%}else{%>
@@ -2314,11 +2351,6 @@
                     </div>
                 </div>
             </div>
-            <%if(delegadoDeEstaActividadID==idUsuario){%>
-            <div style="position: relative; text-align: end; bottom:375px; right: 10px;">
-                <img src="css/ajustesEvento.png" id="mostrarPopupImagenes" style="cursor: pointer;" width="10%" alt="">
-            </div>
-            <%}%>
             <!-- /WIDGET BOX CONTENT -->
         </div>
         <!-- /WIDGET BOX -->
@@ -2369,48 +2401,33 @@
         <p style="font-size: 1.125rem;font-family: 'Titillium Web' !important; font-weight: 500 !important; text-align: center;">Se ha enviado al Delegado de Actividad una solicitud para apoyar.</p>
     </div>
 </div>
-<%}if(delegadoDeEstaActividadID==idUsuario){%>
-<div class="overlay" id="overlayEditarImagenes"></div>
-<div class="popup" style="max-width: 100%;width: 80%!important" id="popupImagenes">
+<%}if(delegadoDeEstaActividadID==idUsuario){
+boolean extensionInvalidaAux=false;
+for(String ex:extensionInvalida){if(ex!=null){extensionInvalidaAux=true;}}
+boolean escalaInvalidaAux=false;
+for(String es:escalaInvalida){if(es!=null){escalaInvalidaAux=true;}}%>
+<div class="overlay" id="overlayEditarImagenes" <%if(extensionInvalidaAux||escalaInvalidaAux){%>style="display: block!important;"<%}%>></div>
+<div class="popup" style="max-width: 100%;width: 80%!important;<%if(extensionInvalidaAux||escalaInvalidaAux){%>display: block!important<%}%>" id="popupImagenes">
+    <form method="post" action="EventoServlet?action=editarCarrusel" enctype='multipart/form-data'>
     <svg class="cerrarPopup" id="cerrarPopupImagenes" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path d="M11.4142 10L16.7071 4.70711C17.0976 4.31658 17.0976 3.68342 16.7071 3.29289C16.3166 2.90237 15.6834 2.90237 15.2929 3.29289L10 8.58579L4.70711 3.29289C4.31658 2.90237 3.68342 2.90237 3.29289 3.29289C2.90237 3.68342 2.90237 4.31658 3.29289 4.70711L8.58579 10L3.29289 15.2929C2.90237 15.6834 2.90237 16.3166 3.29289 16.7071C3.68342 17.0976 4.31658 17.0976 4.70711 16.7071L10 11.4142L15.2929 16.7071C15.6834 17.0976 16.3166 17.0976 16.7071 16.7071C17.0976 16.3166 17.0976 15.6834 16.7071 15.2929L11.4142 10Z" fill="black"/>
     </svg>
-    <form method="post" action="EventoServlet?action=editarCarrusel" enctype='multipart/form-data'>
         <input type="hidden" name="idEvento" value="<%=e.getIdEvento()%>">
         <div class="row d-flex align-items-center justify-content-center">
-            <div id="containerImagen1" class="col-sm-4">
-                <div onclick="activarSeleccion('inputImagen1')" id="auxBorrar1" class="bloque-izquierda btn-file1 d-flex align-items-center justify-content-center" style="position: absolute;">
+            <%for(int i=0;i<carrusel.size();i++){%>
+            <div onclick="activarSeleccion('inputImagen<%=i+1%>')" id="containerImagen<%=i+1%>" class="col-sm-4 text-center">
+                <div id="auxBorrar<%=i+1%>" class="bloque-izquierda btn-file1 d-flex align-items-center justify-content-center" style="position: absolute;">
                     <a style="font-size: 200%; cursor: pointer;">Cambiar</a>
-                    <input id="inputImagen1" type="file" onchange="mostrarImagen('imagen1','containerImagen1','inputImagen1')" name="foto1" style="display: none;" accept="image/png, .jpeg, .jpg"></input>
+                    <input id="inputImagen<%=i+1%>" type="file" onchange="mostrarImagen('imagen<%=i+1%>','containerImagen<%=i+1%>','inputImagen<%=i+1%>')" name="foto<%=i+1%>" style="display: none;" accept="image/png, .jpeg, .jpg">
                 </div>
-                <%request.getSession().setAttribute("fotoCarrusel3",carrusel.get(0));%>
-                <input id="borrar1" type="hidden" name="borrar1" value="0">
-                <a onclick="borrarImagen(['imagen1','inputImagen1','borrarImagen1','auxBorrar1'],'imagenBorrar1','borrar1')" class="bloque-derecha d-flex align-items-center justify-content-center" id="borrarImagen1" style="font-size: 200%; cursor: pointer;">Borrar</a>
-                <img id="imagenBorrar1" src="/css/imagenBorrada.png" style="display: none;" alt="">
-                <img src="Imagen?tipoDeFoto=fotoCarrusel&id=Carrusel3" id="imagen1" width="100%" height="auto">
+                <%request.getSession().setAttribute("fotoCarrusel"+(i+3),carrusel.get(i));%>
+                <input id="borrar<%=i+1%>" type="hidden" name="borrar<%=i+1%>" value="0">
+                <a onclick="borrarImagen(['imagen<%=i+1%>','inputImagen<%=i+1%>','borrarImagen<%=i+1%>','auxBorrar<%=i+1%>'],'imagenBorrar<%=i+1%>','borrar<%=i+1%>')" class="bloque-derecha d-flex align-items-center justify-content-center" id="borrarImagen<%=i+1%>" style="font-size: 200%; cursor: pointer;">Borrar</a>
+                <img id="imagenBorrar<%=i+1%>" src="/css/imagenBorrada.png" style="display: none;max-height: 600px" alt="">
+                <img src="Imagen?tipoDeFoto=fotoCarrusel&id=Carrusel<%=i+3%>" style="max-height: 600px" id="imagen<%=i+1%>" width="100%" height="auto">
+                <%if(extensionInvalida.get(i)!=null){%><a class="text-center" style="color: red">Ingrese un formato e imagen correctos</a><%}else if(escalaInvalida.get(i)!=null){%><a class="text-center" style="color: red;">Ingrese una escala apropiada</a><%}%>
             </div>
-            <div onclick="activarSeleccion('inputImagen2')" id="containerImagen2" class="col-sm-4">
-                <div  id="auxBorrar2" class="bloque-izquierda btn-file1 d-flex align-items-center justify-content-center" style="position: absolute;">
-                    <a style="font-size: 200%; cursor: pointer;">Cambiar</a>
-                    <input id="inputImagen2" type="file" onchange="mostrarImagen('imagen2','containerImagen2','inputImagen2')" name="foto2" style="display: none;" accept="image/png, .jpeg, .jpg"></input>
-                </div>
-                <%request.getSession().setAttribute("fotoCarrusel4",carrusel.get(1));%>
-                <input id="borrar2" type="hidden" name="borrar2" value="0">
-                <a onclick="borrarImagen(['imagen2','inputImagen2','borrarImagen2','auxBorrar2'],'imagenBorrar2','borrar2')" class="bloque-derecha d-flex align-items-center justify-content-center" style="font-size: 200%; cursor: pointer;">Borrar</a>
-                <img id="imagenBorrar2" src="/css/imagenBorrada.png" style="display: none;" alt="">
-                <img id="imagen2" src="Imagen?tipoDeFoto=fotoCarrusel&id=Carrusel4" width="100%" height="auto">
-            </div>
-            <div onclick="activarSeleccion('inputImagen3')" id="containerImagen3" class="col-sm-4">
-                <div id="auxBorrar3" class="bloque-izquierda btn-file1 d-flex align-items-center justify-content-center" style="position: absolute;">
-                    <a style="font-size: 200%; cursor: pointer;">Cambiar</a>
-                    <input id="inputImagen3" type="file" onchange="mostrarImagen('imagen3','containerImagen3','inputImagen3')" name="foto3" style="display: none;" accept="image/png, .jpeg, .jpg"></input>
-                </div>
-                <%request.getSession().setAttribute("fotoCarrusel5",carrusel.get(2));%>
-                <input id="borrar3" type="hidden" name="borrar3" value="0">
-                <a onclick="borrarImagen(['imagen3','inputImagen3','borrarImagen3','auxBorrar3'],'imagenBorrar3','borrar3')" class="bloque-derecha d-flex align-items-center justify-content-center" style="font-size: 200%; cursor: pointer;">Borrar</a>
-                <img id="imagenBorrar3" src="/css/imagenBorrada.png" alt="">
-                <img id="imagen3" src="Imagen?tipoDeFoto=fotoCarrusel&id=Carrusel5" width="100%" height="auto">
-            </div>
+            <%}%>
         </div>
 
     <div class="row d-flex justify-content-center" style="margin-top: 10px;">
@@ -2418,7 +2435,7 @@
             <button type="submit" class="button secondary" id="cerrarPopupImagenes1">Confirmar cambios</button>
         </div>
         <div class="col-sm-6" style="margin-top: 5px;">
-            <button class="button secondary" id="cerrarPopupImagenes2" style="background-color: grey;">Cancelar</button>
+            <button type="button" class="button secondary" id="cerrarPopupImagenes2" style="background-color: grey;">Cancelar</button>
         </div>
     </div>
     </form>

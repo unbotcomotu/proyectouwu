@@ -21,8 +21,20 @@
     String puntajeNoNumerico=(String) request.getSession().getAttribute("puntajeNoNumerico");
     String actividadRepetida=(String) request.getSession().getAttribute("actividadRepetida");
     String nombreLargo=(String) request.getSession().getAttribute("nombreLargo");
+    String extensionInvalidaCab=(String) request.getSession().getAttribute("extensionInvalidaCab");
+    String escalaInvalidaCab=(String) request.getSession().getAttribute("escalaInvalidaCab");
+    String extensionInvalidaMin=(String) request.getSession().getAttribute("extensionInvalidaMin");
+    String escalaInvalidaMin=(String) request.getSession().getAttribute("escalaInvalidaMin");
     if(nombreLargo!=null){
         request.getSession().removeAttribute("nombreLargo");
+    }if(extensionInvalidaCab!=null){
+        request.getSession().removeAttribute("extensionInvalidaCab");
+    }if(escalaInvalidaCab!=null){
+            request.getSession().removeAttribute("escalaInvalidaCab");
+    }if(extensionInvalidaMin!=null){
+        request.getSession().removeAttribute("extensionInvalidaMin");
+    }if(escalaInvalidaMin!=null){
+        request.getSession().removeAttribute("escalaInvalidaMin");
     }
     String colorRol;
     String servletActual="ListaDeActividadesServlet";
@@ -372,6 +384,7 @@
 
     <hr>
     <!-- MENU -->
+    <ul>
     <!-- MENU ITEM -->
     <li class="menu-item">
         <!-- MENU ITEM LINK -->
@@ -463,7 +476,6 @@
         formulario.submit();
     }
 </script>
-</form>
 
 <!-- NAVIGATION WIDGET -->
 <nav id="navigation-widget-mobile" class="navigation-widget navigation-widget-mobile sidebar left hidden" data-simplebar>
@@ -1729,54 +1741,56 @@
                 }%>
         <!-- PRODUCT CATEGORY BOX -->
         <%request.getSession().setAttribute("fotoActividadMiniatura"+listaActividades.indexOf(a),a.getFotoMiniatura());%>
-        <a class="product-category-box category-all" href="ListaDeEventosServlet?idActividad=<%=a.getIdActividad()%>" style="background: url('Imagen?tipoDeFoto=fotoActividadMiniatura&id=ActividadMiniatura<%=listaActividades.indexOf(a)%>') no-repeat right top, linear-gradient(to right, <%=color1%>, <%=color2%>) <%if(a.isActividadFinalizada()){%><%=";opacity: 50%;"%><%}%>;background-size: 100% 100%; background-position: center">
-            <!-- PRODUCT CATEGORY BOX TITLE -->
-            <p class="product-category-box-title"><%=a.getNombre()%></p>
-            <!-- /PRODUCT CATEGORY BOX TITLE -->
-            <%if(a.isActividadFinalizada()){%>
-            <!-- PRODUCT CATEGORY BOX TEXT -->
-            <p class="product-category-box-text">FINALIZADO</p>
-            <!-- /PRODUCT CATEGORY BOX TEXT -->
-            <%}else{%>
-            <!-- PRODUCT CATEGORY BOX TEXT -->
-            <p class="product-category-box-text"><%=a.getCantPuntosPrimerLugar()%> puntos (1er lugar)</p>
-            <!-- /PRODUCT CATEGORY BOX TEXT -->
-            <%}%>
-            <!-- PRODUCT CATEGORY BOX TAG -->
-            <%String cantEventos=new DaoActividad().cantidadEventosPorActividad(a.getIdActividad());%>
-            <%if(cantEventos!=null){
-                if(cantEventos.equals("1")){%>
-            <p class="product-category-box-tag" style="color: <%=color1%>;">1 evento</p>
-            <!-- /PRODUCT CATEGORY BOX TAG -->
-            <%}else{%>
-            <p class="product-category-box-tag" style="color: <%=color1%>;"><%=cantEventos%> eventos</p>
-            <%}}if(rolUsuario.equals("Delegado General")){%>
-            <p class="product-category-box-tag"><button id="mostrarPopupEditarActividad<%=listaActividades.indexOf(a)%>" style="color: <%=color1%>;font-size: 100%;z-index: 1000">EDITAR</button></p>
-            <script>
-                document.addEventListener("DOMContentLoaded", function() {
-                    var botonDentroDelEnlace = document.getElementById("mostrarPopupEditarActividad<%=listaActividades.indexOf(a)%>");
-                    botonDentroDelEnlace.addEventListener("click", function(e) {
-                        e.preventDefault();
+        <a class="product-category-box category-all" href="ListaDeEventosServlet?idActividad=<%=a.getIdActividad()%>" style="padding: 0 0 0 0 !important;background: linear-gradient(to right, <%=color1%>, <%=color2%>) <%if(a.isActividadFinalizada()){%><%=";opacity: 50%;"%><%}%>">
+            <div style="height: 100%;background: url('Imagen?tipoDeFoto=fotoActividadMiniatura&id=ActividadMiniatura<%=listaActividades.indexOf(a)%>') no-repeat;background-size: 40% 85%; background-position: right;padding: 26px 0 0 28px;">
+                <!-- PRODUCT CATEGORY BOX TITLE -->
+                <p class="product-category-box-title"><%=a.getNombre()%></p>
+                <!-- /PRODUCT CATEGORY BOX TITLE -->
+                <%if(a.isActividadFinalizada()){%>
+                <!-- PRODUCT CATEGORY BOX TEXT -->
+                <p class="product-category-box-text">FINALIZADO</p>
+                <!-- /PRODUCT CATEGORY BOX TEXT -->
+                <%}else{%>
+                <!-- PRODUCT CATEGORY BOX TEXT -->
+                <p class="product-category-box-text"><%=a.getCantPuntosPrimerLugar()%> puntos (1er lugar)</p>
+                <!-- /PRODUCT CATEGORY BOX TEXT -->
+                <%}%>
+                <!-- PRODUCT CATEGORY BOX TAG -->
+                <%String cantEventos=new DaoActividad().cantidadEventosPorActividad(a.getIdActividad());%>
+                <%if(cantEventos!=null){
+                    if(cantEventos.equals("1")){%>
+                <p class="product-category-box-tag" style="color: <%=color1%>;">1 evento</p>
+                <!-- /PRODUCT CATEGORY BOX TAG -->
+                <%}else{%>
+                <p class="product-category-box-tag" style="color: <%=color1%>;"><%=cantEventos%> eventos</p>
+                <%}}if(rolUsuario.equals("Delegado General")){%>
+                <p class="product-category-box-tag"><button id="mostrarPopupEditarActividad<%=listaActividades.indexOf(a)%>" style="color: <%=color1%>;font-size: 100%;z-index: 1000">EDITAR</button></p>
+                <script>
+                    document.addEventListener("DOMContentLoaded", function() {
+                        var botonDentroDelEnlace = document.getElementById("mostrarPopupEditarActividad<%=listaActividades.indexOf(a)%>");
+                        botonDentroDelEnlace.addEventListener("click", function(e) {
+                            e.preventDefault();
+                        });
                     });
-                });
-            </script>
-            <%}if(idActividadDelegatura != null){
-                if(idActividadDelegatura==a.getIdActividad()){
-            if(a.isActividadFinalizada()){%>
-            <p class="product-category-box-tag" style="color: <%=color1%>">FINALIZADO</p>
-            <%}else{%>
-            <!-- PRODUCT CATEGORY BOX TAG -->
-            <p class="product-category-box-tag"><button id="mostrarPopupFinalizar" style="color: <%=color1%>;font-size: 100%;z-index: 1000">FINALIZAR</button></p>
-            <script>
-                document.addEventListener("DOMContentLoaded", function() {
-                    var botonDentroDelEnlace = document.getElementById("mostrarPopupFinalizar");
-                    botonDentroDelEnlace.addEventListener("click", function(e) {
-                        e.preventDefault();
+                </script>
+                <%}if(idActividadDelegatura != null){
+                    if(idActividadDelegatura==a.getIdActividad()){
+                        if(a.isActividadFinalizada()){%>
+                <p class="product-category-box-tag" style="color: <%=color1%>">FINALIZADO</p>
+                <%}else{%>
+                <!-- PRODUCT CATEGORY BOX TAG -->
+                <p class="product-category-box-tag"><button id="mostrarPopupFinalizar" style="color: <%=color1%>;font-size: 100%;z-index: 1000">FINALIZAR</button></p>
+                <script>
+                    document.addEventListener("DOMContentLoaded", function() {
+                        var botonDentroDelEnlace = document.getElementById("mostrarPopupFinalizar");
+                        botonDentroDelEnlace.addEventListener("click", function(e) {
+                            e.preventDefault();
+                        });
                     });
-                });
-            </script>
-            <!-- /PRODUCT CATEGORY BOX TAG -->
-            <%}}}%>
+                </script>
+                <!-- /PRODUCT CATEGORY BOX TAG -->
+                <%}}}%>
+            </div>
         </a>
         <!-- /PRODUCT CATEGORY BOX -->
         <%aux++;}}%>
@@ -1865,8 +1879,8 @@
     <%}%>
 </div>
 <%}else if(rolUsuario.equals("Delegado General")){%>
-<div class="overlay" <%if((nombreLargo!=null||puntajeNoNumerico!=null||actividadRepetida!=null) && idActividadElegida==null){%>style="display: block"<%}%> id="overlayCrear"></div>
-<div class="popup contenedorCrear" style="width: 700px; <%if((nombreLargo!=null||puntajeNoNumerico!=null||actividadRepetida!=null) && idActividadElegida==null){%> display: block <%}%>" id="popupCrear">
+<div class="overlay" <%if((nombreLargo!=null||puntajeNoNumerico!=null||actividadRepetida!=null||extensionInvalidaCab!=null||escalaInvalidaCab!=null||extensionInvalidaMin!=null||escalaInvalidaMin!=null) && idActividadElegida==null){%>style="display: block"<%}%> id="overlayCrear"></div>
+<div class="popup contenedorCrear" style="width: 700px; <%if((nombreLargo!=null||puntajeNoNumerico!=null||actividadRepetida!=null||extensionInvalidaCab!=null||escalaInvalidaCab!=null||extensionInvalidaMin!=null||escalaInvalidaMin!=null) && idActividadElegida==null){%> display: block <%}%>" id="popupCrear">
     <svg class="cerrarPopup" id="cerrarPopupCrear" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path d="M11.4142 10L16.7071 4.70711C17.0976 4.31658 17.0976 3.68342 16.7071 3.29289C16.3166 2.90237 15.6834 2.90237 15.2929 3.29289L10 8.58579L4.70711 3.29289C4.31658 2.90237 3.68342 2.90237 3.29289 3.29289C2.90237 3.68342 2.90237 4.31658 3.29289 4.70711L8.58579 10L3.29289 15.2929C2.90237 15.6834 2.90237 16.3166 3.29289 16.7071C3.68342 17.0976 4.31658 17.0976 4.70711 16.7071L10 11.4142L15.2929 16.7071C15.6834 17.0976 16.3166 17.0976 16.7071 16.7071C17.0976 16.3166 17.0976 15.6834 16.7071 15.2929L11.4142 10Z" fill="black"/>
     </svg>
@@ -1903,18 +1917,20 @@
                 <div class="col-sm-5 contenedor2" style="top: 30px">
                     <div class="container-fluid btn btn-file1">
                         <div id="contenedorImagenCabeceraCrear">
-                            <img id="imagenActualCabeceraCrear" class="img-fluid" src="css/subirArchivo.jpg" alt="">
+                            <img id="imagenActualCabeceraCrear" class="img-fluid" src="css/subirArchivo.jpg" style="max-height: 600px" alt="">
                         </div>
                         <p style="margin-top: 10px"><b>Agregar foto de cabecera</b></p>
-                        <input type="file" id="inputCabeceraCrear" name="addfotoCabecera" style="background-color: white; margin-top: 25px;" accept="image/png, .jpeg, .jpg" onchange="mostrarImagen('imagenActualCabeceraCrear','contenedorImagenCabeceraCrear','inputCabeceraCrear')"></input>
+                        <%if(extensionInvalidaCab!=null){%><label for="inputCabeceraCrear"><a style="color: red;">Ingrese un formato e imagen correctos</a></label><%}else if(escalaInvalidaCab!=null){%><label for="inputCabeceraCrear"><a style="color: red;">Ingrese una escala apropiada</a></label><%}%>
+                        <input type="file" id="inputCabeceraCrear" name="addfotoCabecera" style="background-color: white; margin-top: 25px;" accept="image/png, .jpeg, .jpg" onchange="mostrarImagen('imagenActualCabeceraCrear','contenedorImagenCabeceraCrear','inputCabeceraCrear')">
                     </div>
                     <br>
                     <div class="container-fluid btn btn-file1">
                         <div id="contenedorImagenCrear">
-                            <img id="imagenActualCrear" class="img-fluid" src="css/subirArchivo.jpg" alt="">
+                            <img id="imagenActualCrear" class="img-fluid" src="css/subirArchivo.jpg" style="max-height: 600px" alt="">
                         </div>
                         <p style="margin-top: 10px"><b>Agregar foto miniatura</b></p>
-                        <input type="file" id="inputCrear" name="addfotoMiniatura" style="background-color: white; margin-top: 25px;" accept="image/png, .jpeg, .jpg" onchange="mostrarImagen('imagenActualCrear','contenedorImagenCrear','inputCrear')"></input>
+                        <%if(extensionInvalidaMin!=null){%><label for="inputCrear"><a style="color: red;">Ingrese un formato e imagen correctos</a></label><%}else if(escalaInvalidaMin!=null){%><label for="inputCabeceraCrear"><a style="color: red;">Ingrese una escala apropiada</a></label><%}%>
+                        <input type="file" id="inputCrear" name="addfotoMiniatura" style="background-color: white; margin-top: 25px;" accept="image/png, .jpeg, .jpg" onchange="mostrarImagen('imagenActualCrear','contenedorImagenCrear','inputCrear')">
                     </div>
                 </div>
             </div>
@@ -1935,8 +1951,8 @@
 
 <%if(listaActividades!=null){
     for(int i=0;i<listaActividades.size();i++){%>
-<div class="overlay" <%if((nombreLargo!=null||puntajeNoNumerico!=null||actividadRepetida!=null) && idActividadElegida!=null && idActividadElegida==listaActividades.get(i).getIdActividad()){%>style="display: block"<%}%>  id="overlayEditarActividad<%=i%>"></div>
-<div class="popup contenedorCrear"  style="width: 700px; <%if((nombreLargo!=null||puntajeNoNumerico!=null||actividadRepetida!=null) && idActividadElegida!=null && idActividadElegida==listaActividades.get(i).getIdActividad()){%> display: block<%}%>" id="popupEditarActividad<%=i%>">
+<div class="overlay" <%if((nombreLargo!=null||puntajeNoNumerico!=null||actividadRepetida!=null||extensionInvalidaCab!=null||escalaInvalidaCab!=null||extensionInvalidaMin!=null||escalaInvalidaMin!=null) && idActividadElegida!=null && idActividadElegida==listaActividades.get(i).getIdActividad()){%>style="display: block"<%}%>  id="overlayEditarActividad<%=i%>"></div>
+<div class="popup contenedorCrear"  style="width: 700px; <%if((nombreLargo!=null||puntajeNoNumerico!=null||actividadRepetida!=null||extensionInvalidaCab!=null||escalaInvalidaCab!=null||extensionInvalidaMin!=null||escalaInvalidaMin!=null) && idActividadElegida!=null && idActividadElegida==listaActividades.get(i).getIdActividad()){%> display: block<%}%>" id="popupEditarActividad<%=i%>">
     <svg class="cerrarPopup" id="cerrarPopupEditarActividad<%=i%>" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path d="M11.4142 10L16.7071 4.70711C17.0976 4.31658 17.0976 3.68342 16.7071 3.29289C16.3166 2.90237 15.6834 2.90237 15.2929 3.29289L10 8.58579L4.70711 3.29289C4.31658 2.90237 3.68342 2.90237 3.29289 3.29289C2.90237 3.68342 2.90237 4.31658 3.29289 4.70711L8.58579 10L3.29289 15.2929C2.90237 15.6834 2.90237 16.3166 3.29289 16.7071C3.68342 17.0976 4.31658 17.0976 4.70711 16.7071L10 11.4142L15.2929 16.7071C15.6834 17.0976 16.3166 17.0976 16.7071 16.7071C17.0976 16.3166 17.0976 15.6834 16.7071 15.2929L11.4142 10Z" fill="black"/>
     </svg>
@@ -1948,7 +1964,7 @@
             <div class="row">
                 <div class="col-sm-7">
                     <br>
-                    <label style="margin-top: 25px;"><b>Nombre de la actividad: <%if(nombreLargo!=null){%> <a style="color: red;">Ingrese un nombre más corto</a><%}%></b></label>
+                    <label style="margin-top: 25px;"><b>Nombre de la actividad: <%if(nombreLargo!=null&& idActividadElegida!=null && idActividadElegida==listaActividades.get(i).getIdActividad()){%> <a style="color: red;">Ingrese un nombre más corto</a><%}%></b></label>
                     <input type="text" name="nombreEditarActividad" id="nombreEditarActividad<%=i%>" value="<%=listaActividades.get(i).getNombre()%>" placeholder="Actividad" required>
 
                     <label for="idDelegadoActividadEditar<%=i%>" style="margin-top: 25px;"><b>Seleccionar delegado de actividad:</b></label>
@@ -1965,7 +1981,7 @@
                     request.getSession().removeAttribute("idActividadElegida");
                         request.getSession().removeAttribute("puntajeNoNumerico");%>
                     <a style="color: red">Debe de ingresar un valor numérico</a>
-                    <%}else if(actividadRepetida!=null){
+                    <%}else if(actividadRepetida!=null&& idActividadElegida!=null && idActividadElegida==listaActividades.get(i).getIdActividad()){
                         request.getSession().removeAttribute("idActividadElegida");
                         request.getSession().removeAttribute("actividadRepetida");%>
                             <a style="color: red">La actividad ya existe. Emplee otro nombre.</a>
@@ -1976,32 +1992,24 @@
                     </div>
                 </div>
                 <div class="col-sm-5 contenedor2" style="top: 30px">
-                    <!div class="container-fluid btn btn-file1">
-                        <!!img class="img-fluid" src="css/telitoVoley.png" width="80%" alt="">
-                        <!p><!b>Editar foto de cabecera<!/b><!/p>
-                        <!input type="file" style="background-color: white; margin-top: 25px;" accept="image/png, .jpeg, .jpg"></input>
-                    <!/div>
                     <div class="container-fluid btn btn-file1">
                         <div id="contenedorImagenEditar<%=i%>">
                             <%request.getSession().setAttribute("fotoActividadCabecera"+i,listaActividades.get(i).getFotoCabecera());%>
-                            <img id="imagenActualEditar<%=i%>" class="img-fluid" src="Imagen?tipoDeFoto=fotoActividadCabecera&id=ActividadCabecera<%=i%>" alt="">
+                            <img id="imagenActualEditar<%=i%>" class="img-fluid" src="Imagen?tipoDeFoto=fotoActividadCabecera&id=ActividadCabecera<%=i%>" style="max-height: 600px" alt="">
                         </div>
                         <p style="margin-top: 10px"><b>Editar foto cabecera</b></p>
-                        <input type="file" id="inputEditar<%=i%>" style="background-color: white; margin-top: 25px;" accept="image/png, .jpeg, .jpg" name="updateFotoCabecera" onchange="mostrarImagen('imagenActualEditar<%=i%>','contenedorImagenEditar<%=i%>','inputEditar<%=i%>')"></input>
+                        <%if(extensionInvalidaCab!=null&& idActividadElegida!=null && idActividadElegida==listaActividades.get(i).getIdActividad()){%><label for="inputEditar<%=i%>"><a style="color: red;">Ingrese un formato e imagen correctos</a></label><%}else if(escalaInvalidaCab!=null&& idActividadElegida!=null && idActividadElegida==listaActividades.get(i).getIdActividad()){%><label for="inputCabeceraCrear"><a style="color: red;">Ingrese una escala apropiada</a></label><%}%>
+                        <input type="file" id="inputEditar<%=i%>" style="background-color: white; margin-top: 25px;" accept="image/png, .jpeg, .jpg" name="updateFotoCabecera" onchange="mostrarImagen('imagenActualEditar<%=i%>','contenedorImagenEditar<%=i%>','inputEditar<%=i%>')">
                     </div>
                     <br>
-                    <!div class="container-fluid btn btn-file1">
-                        <!img class="img-fluid" src="css/fotoVoleyActividades.png" width="80%" alt="">
-                        <!p><!b>Editar foto de miniatura<!/b><!/p>
-                        <!input type="file" style="background-color: white; margin-top: 25px;" accept="image/png, .jpeg, .jpg"></input>
-                    <!/div>
                     <div class="container-fluid btn btn-file1">
                         <div id="contenedorImagenMinEditar<%=i%>">
                             <%request.getSession().setAttribute("fotoActividadMiniatura"+i,listaActividades.get(i).getFotoMiniatura());%>
-                            <img id="imagenActualMinEditar<%=i%>" class="img-fluid" src="Imagen?tipoDeFoto=fotoActividadMiniatura&id=ActividadMiniatura<%=i%>" alt="">
+                            <img id="imagenActualMinEditar<%=i%>" class="img-fluid" src="Imagen?tipoDeFoto=fotoActividadMiniatura&id=ActividadMiniatura<%=i%>" style="max-height: 600px" alt="">
                         </div>
                         <p style="margin-top: 10px"><b>Editar foto miniatura</b></p>
-                        <input type="file" id="inputMinEditar<%=i%>" style="background-color: white; margin-top: 25px;" accept="image/png, .jpeg, .jpg" name="updateFotoMiniatura" onchange="mostrarImagen('imagenActualMinEditar<%=i%>','contenedorImagenMinEditar<%=i%>','inputMinEditar<%=i%>')"></input>
+                        <%if(extensionInvalidaMin!=null&& idActividadElegida!=null && idActividadElegida==listaActividades.get(i).getIdActividad()){%><label for="inputMinEditar<%=i%>"><a style="color: red;">Ingrese un formato e imagen correctos</a></label><%}else if(escalaInvalidaMin!=null&& idActividadElegida!=null && idActividadElegida==listaActividades.get(i).getIdActividad()){%><label for="inputCabeceraCrear"><a style="color: red;">Ingrese una escala apropiada</a></label><%}%>
+                        <input type="file" id="inputMinEditar<%=i%>" style="background-color: white; margin-top: 25px;" accept="image/png, .jpeg, .jpg" name="updateFotoMiniatura" onchange="mostrarImagen('imagenActualMinEditar<%=i%>','contenedorImagenMinEditar<%=i%>','inputMinEditar<%=i%>')">
                     </div>
                 </div>
             </div>

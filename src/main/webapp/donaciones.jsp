@@ -27,6 +27,14 @@
         request.getSession().removeAttribute("errorMonto");
         request.getSession().removeAttribute("medio");
     }
+    String extensionInvalidaY=(String) request.getSession().getAttribute("extensionInvalidaY");
+    if(extensionInvalidaY!=null){
+        request.getSession().removeAttribute("extensionInvalidaY");
+    }
+    String extensionInvalidaP=(String) request.getSession().getAttribute("extensionInvalidaP");
+    if(extensionInvalidaP!=null){
+        request.getSession().removeAttribute("extensionInvalidaP");
+    }
     if(rolUsuario.equals("Alumno")){
         colorRol="";
     }else if(rolUsuario.equals("Delegado de Actividad")){
@@ -1078,8 +1086,8 @@
 
 
 <!-- /CONTENT GRID -->
-<div class="overlay" id="overlayPlin" style="<%if(errorMonto!=null&&medioPagoError.equals("Plin")){%>display: block<%}%>"></div>
-<div class="popup contenedorCrear" style="max-width: 700px; <%if(errorMonto!=null&&medioPagoError.equals("Plin")){%>display: block<%}%>" id="popupPlin">
+<div class="overlay" id="overlayPlin" style="<%if((errorMonto!=null&&medioPagoError.equals("Plin"))||extensionInvalidaP!=null){%>display: block<%}%>"></div>
+<div class="popup contenedorCrear" style="max-width: 700px; <%if((errorMonto!=null&&medioPagoError.equals("Plin"))||extensionInvalidaP!=null){%>display: block<%}%>" id="popupPlin">
     <svg class="cerrar-btn-crear" id="cerrarPopupPlin" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path d="M11.4142 10L16.7071 4.70711C17.0976 4.31658 17.0976 3.68342 16.7071 3.29289C16.3166 2.90237 15.6834 2.90237 15.2929 3.29289L10 8.58579L4.70711 3.29289C4.31658 2.90237 3.68342 2.90237 3.29289 3.29289C2.90237 3.68342 2.90237 4.31658 3.29289 4.70711L8.58579 10L3.29289 15.2929C2.90237 15.6834 2.90237 16.3166 3.29289 16.7071C3.68342 17.0976 4.31658 17.0976 4.70711 16.7071L10 11.4142L15.2929 16.7071C15.6834 17.0976 16.3166 17.0976 16.7071 16.7071C17.0976 16.3166 17.0976 15.6834 16.7071 15.2929L11.4142 10Z" fill="black"></path>
     </svg>
@@ -1090,8 +1098,9 @@
             <input type="number" id="montoPlin1" onkeydown="evitarNegativo(event)" onpaste="return false;" onDrop="return false;" autocomplete="off">
             <form method="post" action="<%=request.getContextPath()%>/MisDonacionesServlet?action=registDon" enctype='multipart/form-data'>
                 <div id="contenedorImagenPlin" class="container-fluid btn btn-file1">
-                    <img id="imagenActualPlin" class="img-fluid" src="css/subirArchivo.jpg" style="opacity: 50%;" alt="">
+                    <img id="imagenActualPlin" class="img-fluid" src="css/subirArchivo.jpg" style="opacity: 50%;max-height: 600px" alt="">
                     <p style="margin-top: 10px"><b>Foto del monto donado</b></p>
+                    <%if(extensionInvalidaP!=null){%><a style="color: red;">Ingrese un formato e imagen correctos</a><%}%>
                     <input type="file" id="inputPlin" name="addFotoPlin" style="background-color: white; margin-top: 25px;" accept="image/png, .jpeg, .jpg" onchange="mostrarImagen('imagenActualPlin','contenedorImagenPlin','inputPlin')"></input>
                 </div>
                 <div class="row">
@@ -1110,8 +1119,8 @@
 </div>
 
 
-<div class="overlay" id="overlayYape" style="<%if(errorMonto!=null&&medioPagoError.equals("Yape")){%>display: block<%}%>"></div>
-<div class="popup contenedorCrear" style="<%if(errorMonto!=null&&medioPagoError.equals("Yape")){%>display: block<%}%>;max-width: 700px" id="popupYape">
+<div class="overlay" id="overlayYape" style="<%if((errorMonto!=null&&medioPagoError.equals("Yape"))||extensionInvalidaY!=null){%>display: block<%}%>"></div>
+<div class="popup contenedorCrear" style="<%if((errorMonto!=null&&medioPagoError.equals("Yape"))||extensionInvalidaY!=null){%>display: block<%}%>;max-width: 700px" id="popupYape">
     <svg class="cerrar-btn-crear" id="cerrarPopupYape" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path d="M11.4142 10L16.7071 4.70711C17.0976 4.31658 17.0976 3.68342 16.7071 3.29289C16.3166 2.90237 15.6834 2.90237 15.2929 3.29289L10 8.58579L4.70711 3.29289C4.31658 2.90237 3.68342 2.90237 3.29289 3.29289C2.90237 3.68342 2.90237 4.31658 3.29289 4.70711L8.58579 10L3.29289 15.2929C2.90237 15.6834 2.90237 16.3166 3.29289 16.7071C3.68342 17.0976 4.31658 17.0976 4.70711 16.7071L10 11.4142L15.2929 16.7071C15.6834 17.0976 16.3166 17.0976 16.7071 16.7071C17.0976 16.3166 17.0976 15.6834 16.7071 15.2929L11.4142 10Z" fill="black"></path>
     </svg>
@@ -1122,8 +1131,9 @@
             <input type="number" id="montoYape1" onkeydown="evitarNegativo(event)" onpaste="return false;" onDrop="return false;" autocomplete="off">
             <form method="post" action="<%=request.getContextPath()%>/MisDonacionesServlet?action=registDon" enctype='multipart/form-data'>
                 <div id="contenedorSubirArchivo1" class="container-fluid btn btn-file1">
-                    <img id="subirArchivo1" class="img-fluid" src="css/subirArchivo.jpg" style="opacity: 50%" alt="">
+                    <img id="subirArchivo1" class="img-fluid" src="css/subirArchivo.jpg" style="opacity: 50%;max-height: 600px" alt="">
                     <p><b>Foto del monto donado</b></p>
+                    <%if(extensionInvalidaY!=null){%><a style="color: red;">Ingrese un formato e imagen correctos</a><%}%>
                     <input id = "inputsubirArchivo1" name="addFotoYape" type="file" onchange="mostrarImagen('subirArchivo1','contenedorSubirArchivo1','inputsubirArchivo1')" style="background-color: white; margin-top: 25px;" accept="image/png, .jpeg, .jpg">
                 </div>
                 <div class="row">

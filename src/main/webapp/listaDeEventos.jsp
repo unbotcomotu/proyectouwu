@@ -52,9 +52,17 @@
         if(resumenLargo!=null){
             request.getSession().removeAttribute("resumenLargo");
         }
-        String eventoElegido=(String) request.getSession().getAttribute("eventoElegido");
+        Integer eventoElegido=(Integer) request.getSession().getAttribute("eventoElegido");
         if(eventoElegido!=null){
             request.getSession().removeAttribute("eventoElegido");
+        }
+        String extensionInvalida=(String) request.getSession().getAttribute("extensionInvalida");
+        if(extensionInvalida!=null){
+            request.getSession().removeAttribute("extensionInvalida");
+        }
+        String escalaInvalida=(String) request.getSession().getAttribute("escalaInvalida");
+        if(escalaInvalida!=null){
+            request.getSession().removeAttribute("escalaInvalida");
         }
 
         ArrayList<Integer[]>listaLugaresCantidad=(ArrayList<Integer[]>) request.getSession().getAttribute("listaLugaresCantidad");
@@ -1646,20 +1654,21 @@
 <div class="content-grid">
 
     <!-- SECTION BANNER -->
-    <div class="section-banner">
+    <div class="section-banner" style="padding: 0 0 0 0 !important;">
         <!-- SECTION BANNER ICON -->
         <%DaoActividad daoActividad = new DaoActividad();%>
         <%request.getSession().setAttribute("fotoActividadCabecera"+idActividad,daoActividad.obtenerFotoCabeceraXIdActividad(idActividad));%>
-        <img class="section-banner-icon" src="Imagen?tipoDeFoto=fotoActividadCabecera&id=ActividadCabecera<%=idActividad%>" alt="Foto Cabecera">
-        <!-- /SECTION BANNER ICON -->
 
-        <!-- SECTION BANNER TITLE -->
-        <p class="section-banner-title"><%=nombreActividad%></p>
-        <!-- /SECTION BANNER TITLE -->
-        <p class="section-banner-text"><b>Delegado de Actividad: <%=new DaoUsuario().nombreCompletoUsuarioPorId(delegadoDeEstaActividadID)%></b></p>
-        <!-- SECTION BANNER TEXT -->
-        <p class="section-banner-text">Encuentra todos los eventos dentro de <%=nombreActividad%></p>
-        <!-- /SECTION BANNER TEXT -->
+        <div class="section-banner" style="background: url('Imagen?tipoDeFoto=fotoActividadCabecera&id=ActividadCabecera<%=idActividad%>') no-repeat left !important;background-size: 15% 100% !important;height: 100% !important;">
+            <!-- SECTION BANNER TITLE -->
+            <p class="section-banner-title"><%=nombreActividad%></p>
+            <!-- /SECTION BANNER TITLE -->
+            <p class="section-banner-text"><b>Delegado de Actividad: <%=new DaoUsuario().nombreCompletoUsuarioPorId(delegadoDeEstaActividadID)%></b></p>
+            <!-- SECTION BANNER TEXT -->
+            <p class="section-banner-text">Encuentra todos los eventos dentro de <%=nombreActividad%></p>
+            <!-- /SECTION BANNER TEXT -->
+        </div>
+
     </div>
     <!-- /SECTION BANNER -->
 
@@ -2359,8 +2368,8 @@
     </div>
 </footer>
 <%if(delegadoDeEstaActividadID==idUsuario){%>
-<div class="overlay" <%if((descripcionLarga!=null||fraseLarga!=null)&&eventoElegido==null){%>style="display: block;"<%}%> id="overlayCrear">
-<div class="popup contenedorCrear" style="width: 700px;<%if((descripcionLarga!=null||fraseLarga!=null)&&eventoElegido==null){%>display: block;<%}%>" id="popupCrear">
+<div class="overlay" <%if((descripcionLarga!=null||fraseLarga!=null||extensionInvalida!=null||escalaInvalida!=null)&&eventoElegido==null){%>style="display: block;"<%}%> id="overlayCrear">
+<div class="popup contenedorCrear" style="width: 700px;<%if((descripcionLarga!=null||fraseLarga!=null)&&eventoElegido==null||extensionInvalida!=null||escalaInvalida!=null){%>display: block;<%}%>" id="popupCrear">
     <svg class="cerrarPopup" id="cerrarPopupCrear" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path d="M11.4142 10L16.7071 4.70711C17.0976 4.31658 17.0976 3.68342 16.7071 3.29289C16.3166 2.90237 15.6834 2.90237 15.2929 3.29289L10 8.58579L4.70711 3.29289C4.31658 2.90237 3.68342 2.90237 3.29289 3.29289C2.90237 3.68342 2.90237 4.31658 3.29289 4.70711L8.58579 10L3.29289 15.2929C2.90237 15.6834 2.90237 16.3166 3.29289 16.7071C3.68342 17.0976 4.31658 17.0976 4.70711 16.7071L10 11.4142L15.2929 16.7071C15.6834 17.0976 16.3166 17.0976 16.7071 16.7071C17.0976 16.3166 17.0976 15.6834 16.7071 15.2929L11.4142 10Z" fill="black"/>
     </svg>
@@ -2423,9 +2432,10 @@
             <div class="col-sm-5 contenedor2 my-5 d-flex align-items-center">
                 <div class="container-fluid btn btn-file1">
                     <div id="contenedorImagenCrear">
-                        <img id="imagenActualCrear" class="img-fluid" src="css/subirArchivo.jpg" style="opacity: 50%;" alt="">
+                        <img id="imagenActualCrear" class="img-fluid" src="css/subirArchivo.jpg" style="opacity: 50%;max-height: 600px" alt="">
                     </div>
                     <p style="margin-top: 10px"><b>Agregar foto miniatura</b></p>
+                    <%if(extensionInvalida!=null){%><label for="inputCrear"><a style="color: red;">Ingrese un formato e imagen correctos</a></label><%}else if(escalaInvalida!=null){%><label for="inputCrear"><a style="color: red;">Ingrese una escala apropiada</a></label><%}%>
                     <input type="file" id="inputCrear" name="addfotoMiniatura" style="background-color: white; margin-top: 25px;" accept="image/png, .jpeg, .jpg" onchange="mostrarImagen('imagenActualCrear','contenedorImagenCrear','inputCrear')"></input>
                 </div>
             </div>
@@ -2494,8 +2504,8 @@
 </div>
 <%if(!listaEventos.isEmpty()){
     for(Evento e:listaEventos){%>
-<div class="overlay" <%if((resumenLargo!=null||descripcionLarga!=null||fraseLarga!=null)&&eventoElegido!=null&&Integer.parseInt(eventoElegido)==e.getIdEvento()){%>style="display: block;"<%}%> id="overlayEditarEvento<%=listaEventos.indexOf(e)%>">
-<div class="popup contenedorCrear" style="width: 700px;<%if((resumenLargo!=null||descripcionLarga!=null||fraseLarga!=null)&&eventoElegido!=null&&Integer.parseInt(eventoElegido)==e.getIdEvento()){%>display: block;<%}%>" id="popupEditarEvento<%=listaEventos.indexOf(e)%>">
+<div class="overlay" <%if((resumenLargo!=null||descripcionLarga!=null||fraseLarga!=null||extensionInvalida!=null||escalaInvalida!=null)&&eventoElegido!=null&&eventoElegido==e.getIdEvento()){%>style="display: block;"<%}%> id="overlayEditarEvento<%=listaEventos.indexOf(e)%>">
+<div class="popup contenedorCrear" style="width: 700px;<%if((resumenLargo!=null||descripcionLarga!=null||fraseLarga!=null||extensionInvalida!=null||escalaInvalida!=null)&&eventoElegido!=null&&eventoElegido==e.getIdEvento()){%>display: block;<%}%>" id="popupEditarEvento<%=listaEventos.indexOf(e)%>">
     <svg class="cerrarPopup" id="cerrarPopupEditarEvento<%=listaEventos.indexOf(e)%>" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path d="M11.4142 10L16.7071 4.70711C17.0976 4.31658 17.0976 3.68342 16.7071 3.29289C16.3166 2.90237 15.6834 2.90237 15.2929 3.29289L10 8.58579L4.70711 3.29289C4.31658 2.90237 3.68342 2.90237 3.29289 3.29289C2.90237 3.68342 2.90237 4.31658 3.29289 4.70711L8.58579 10L3.29289 15.2929C2.90237 15.6834 2.90237 16.3166 3.29289 16.7071C3.68342 17.0976 4.31658 17.0976 4.70711 16.7071L10 11.4142L15.2929 16.7071C15.6834 17.0976 16.3166 17.0976 16.7071 16.7071C17.0976 16.3166 17.0976 15.6834 16.7071 15.2929L11.4142 10Z" fill="black"/>
     </svg>
@@ -2528,7 +2538,7 @@
                     </div>
                 </div>
                 <%if(e.isEventoFinalizado()){%>
-                <label style="margin-top: 25px;" ><b>Resumen: <%if(resumenLargo!=null){%><a style="color: red;">Ingrese un resumen más corto</a><%}%></b></label>
+                <label style="margin-top: 25px;" ><b>Resumen: <%if(resumenLargo!=null&&eventoElegido!=null&&eventoElegido==e.getIdEvento()){%><a style="color: red;">Ingrese un resumen más corto</a><%}%></b></label>
                 <input type="text" id="editarResumenEvento<%=listaEventos.indexOf(e)%>" name="updateResumen" placeholder="Resumen" value="<%=e.getResumen()%>" required>
                 <label for="resultado" style="margin-top: 25px;" ><b>Resultado:</b></label>
                 <select style="padding: 12.5px" name="updateResultado" id="resultado" required>
@@ -2543,9 +2553,9 @@
                 <p style="width: 100%; margin-top: 25px;"><b>Ocultar evento:</b></p>
                 <input type="checkbox" name="updateEventoOcultoAlt" style="width: 30%; position: relative; top: 15px; left: 120px;" <%if(e.isEventoOculto()){%>checked<%}%>>
                 <%}else{%>
-                <label style="margin-top: 25px;" ><b>Frase motivacional: <%if(fraseLarga!=null){%><a style="color: red;">Ingrese una frase más corta</a><%}%></b></label>
+                <label style="margin-top: 25px;" ><b>Frase motivacional: <%if(fraseLarga!=null&&eventoElegido!=null&&eventoElegido==e.getIdEvento()){%><a style="color: red;">Ingrese una frase más corta</a><%}%></b></label>
                 <input type="text" id="editarFraseMotivacionalEvento<%=listaEventos.indexOf(e)%>" name="updateFraseMotivacional" placeholder="Frase motivacional" value="<%=e.getFraseMotivacional()%>" required>
-                <label style="margin-top: 25px;"><b>Descripción del evento: <%if(descripcionLarga!=null){%><a style="color: red;">Ingrese una descripción más corta</a><%}%></b></label>
+                <label style="margin-top: 25px;"><b>Descripción del evento: <%if(descripcionLarga!=null&&eventoElegido!=null&&eventoElegido==e.getIdEvento()){%><a style="color: red;">Ingrese una descripción más corta</a><%}%></b></label>
                 <textarea type="text" id="editarDescripcionEvento<%=listaEventos.indexOf(e)%>" name="updateDescripcionEventoActivo" placeholder="Descripción" ><%=e.getDescripcionEventoActivo()%></textarea>
                 <div class="row" style="margin-top: 25px;">
                     <div class="col-6">
@@ -2576,10 +2586,11 @@
             <div class="col-sm-5 contenedor2 my-5 d-flex align-items-center">
                 <div class="container-fluid btn btn-file1">
                     <div id="contenedorImagenEditar<%=listaEventos.indexOf(e)%>">
-                    <img id="imagenActualEditar<%=listaEventos.indexOf(e)%>" class="img-fluid" src="ImagenEventoServlet?idEvento=<%=e.getIdEvento()%>" alt="">
+                        <img id="imagenActualEditar<%=listaEventos.indexOf(e)%>" style="max-height: 600px" class="img-fluid" src="ImagenEventoServlet?idEvento=<%=e.getIdEvento()%>" alt="">
                     </div>
                     <p style="margin-top: 10px"><b>Editar foto miniatura</b></p>
-                    <input type="file" id="inputEditar<%=listaEventos.indexOf(e)%>" style="background-color: white; margin-top: 25px;" accept="image/png, .jpeg, .jpg" name="updateFotoMiniatura" onchange="mostrarImagen('imagenActualEditar<%=listaEventos.indexOf(e)%>','contenedorImagenEditar<%=listaEventos.indexOf(e)%>','inputEditar<%=listaEventos.indexOf(e)%>')"></input>
+                    <%if(extensionInvalida!=null&&eventoElegido!=null&&eventoElegido==e.getIdEvento()){%><label for="inputEditar<%=listaEventos.indexOf(e)%>"><a style="color: red;">Ingrese un formato e imagen correctos</a></label><%}else if(escalaInvalida!=null&&eventoElegido!=null&&eventoElegido==e.getIdEvento()){%><label for="inputEditar<%=listaEventos.indexOf(e)%>"><a style="color: red;">Ingrese una escala apropiada</a></label><%}%>
+                    <input type="file" id="inputEditar<%=listaEventos.indexOf(e)%>" style="background-color: white; margin-top: 25px;" accept="image/png, .jpeg, .jpg" name="updateFotoMiniatura" onchange="mostrarImagen('imagenActualEditar<%=listaEventos.indexOf(e)%>','contenedorImagenEditar<%=listaEventos.indexOf(e)%>','inputEditar<%=listaEventos.indexOf(e)%>')">
                 </div>
             </div>
         </div>

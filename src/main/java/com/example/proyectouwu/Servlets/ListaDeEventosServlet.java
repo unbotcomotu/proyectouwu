@@ -27,7 +27,7 @@ public class ListaDeEventosServlet extends HttpServlet {
         DaoActividad dActividad=new DaoActividad();
         Usuario usuario=(Usuario) request.getSession().getAttribute("usuario");
         int pagina;
-        Integer paginaSessionint = (Integer) request.getSession().getAttribute("p");// hay un pequeño error por acá por el Session para paginación
+        Integer paginaSessionint = (Integer) request.getSession().getAttribute("p");
         String paginaSession;
         if (paginaSessionint != null) {
             paginaSession = paginaSessionint.toString();

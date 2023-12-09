@@ -55,18 +55,41 @@ public class NotificacionesServlet extends HttpServlet {
                         request.setAttribute("vistaActualNueva",vistaActualNueva);
                         //saca del modelo
                         page = request.getParameter("p")==null? "1" : request.getParameter("p");
-                        pagina = Integer.parseInt(page);
+
+                        if (page.matches("\\d+")){
+                            pagina = Integer.parseInt(page);
+
+                        }else{
+                            pagina = 1;
+                        }
+
+
                         pageD = request.getParameter("pd") == null ? "1" : request.getParameter("pd");
-                        paginaD = Integer.parseInt(pageD);
+
+                        if (pageD.matches("\\d+")){
+                            paginaD = Integer.parseInt(pageD);
+
+                        }else{
+                            paginaD = 1;
+                        }
+
+
                         pageV = request.getParameter("pv")==null? "1" : request.getParameter("pv");
-                        paginaV = Integer.parseInt(pageV);
+
+                        if (pageV.matches("\\d+")){
+                            paginaV = Integer.parseInt(pageV);
+
+                        }else{
+                            paginaV = 1;
+                        }
+
                         ArrayList<Usuario> listaSolicitudes = daoNotificacion.listarSolicitudesRegistroPorPage(pagina-1);
                         ArrayList<Reporte> reportList = daoNotificacion.listarNotificacionesReporte();
                         ArrayList<Donacion> donacionList = daoNotificacion.listarNotificacionesDonaciones(paginaD-1);
                         ArrayList<Validacion> recuperacionList = daoNotificacion.listarNotificacionesRecuperacion(paginaV-1);
                         //mandar la lista a la vista
-                        request.setAttribute("pagActual", Integer.parseInt(page));
-                        request.setAttribute("pagActualD",Integer.parseInt(pageD));
+                        request.setAttribute("pagActual", pagina);
+                        request.setAttribute("pagActualD",paginaD);
                         request.setAttribute("listaSolicitudes",listaSolicitudes);
                         request.setAttribute("cantidadTotalSolicitudes", daoNotificacion.listarSolicitudesDeRegistro().size());
                         request.setAttribute("reportList", reportList);
@@ -96,9 +119,24 @@ public class NotificacionesServlet extends HttpServlet {
                     request.setAttribute("vistaActualNueva","Solicitudes");
                     if (usuario.getRol().equals("Delegado General")){
                         page = request.getParameter("p")==null? "1" : request.getParameter("p");
-                        pagina = Integer.parseInt(page);
+
+                        if (page.matches("\\d+")){
+                            pagina = Integer.parseInt(page);
+
+                        }else{
+                            pagina = 1;
+                        }
+
                         pageD = request.getParameter("pd") == null ? "1" : request.getParameter("pd");
-                        paginaD = Integer.parseInt(pageD);
+
+                        if (pageD.matches("\\d+")){
+                            paginaD = Integer.parseInt(pageD);
+
+                        }else{
+                            paginaD = 1;
+                        }
+
+
                         String busquedaSolicitudes=request.getParameter("busquedaSolicitudes");
                         ArrayList<Usuario> listaSolicitudes = daoNotificacion.listarSolicitudesDeRegistro(busquedaSolicitudes,pagina-1);
                         ArrayList<Reporte> reportList = daoNotificacion.listarNotificacionesReporte();
@@ -107,8 +145,8 @@ public class NotificacionesServlet extends HttpServlet {
 
                         request.setAttribute("cantidadTotalSolicitudes", daoNotificacion.listarSolicitudesDeRegistro(busquedaSolicitudes).size());
                         request.setAttribute("action", action);
-                        request.setAttribute("pagActual", Integer.parseInt(page));
-                        request.setAttribute("pagActualD",Integer.parseInt(pageD));
+                        request.setAttribute("pagActual", pagina);
+                        request.setAttribute("pagActualD",paginaD);
                         request.setAttribute("busquedaSolicitudes",busquedaSolicitudes);
                         request.setAttribute("listaSolicitudes",listaSolicitudes);
                         request.setAttribute("reportList", reportList);
@@ -145,18 +183,37 @@ public class NotificacionesServlet extends HttpServlet {
                     buscar = request.getParameter("buscar");
                     fecha1 = request.getParameter("fecha1").isEmpty() ? "0001/01/01" : request.getParameter("fecha1");
                     fecha2 = request.getParameter("fecha2").isEmpty() ? "4000/12/31" : request.getParameter("fecha2");
+
                     page = request.getParameter("p")==null? "1" : request.getParameter("p");
-                    pagina = Integer.parseInt(page);
+
+                    if (page.matches("\\d+")){
+                        pagina = Integer.parseInt(page);
+
+                    }else{
+                        pagina = 1;
+                    }
+
+
+
                     pageD = request.getParameter("pd") == null ? "1" : request.getParameter("pd");
-                    paginaD = Integer.parseInt(pageD);
+                    if (pageD.matches("\\d+")){
+                        paginaD = Integer.parseInt(pageD);
+
+                    }else{
+                        paginaD = 1;
+                    }
+
+
+
+
                     ArrayList<Usuario> listaSolicitudes = daoNotificacion.listarSolicitudesRegistroPorPage(pagina-1);
                     ArrayList<Reporte> reportList = daoNotificacion.listarNotificacionesReporte();
                     ArrayList<Validacion> recuperacionList = daoNotificacion.listarNotificacionesRecuperacion();
                     request.setAttribute("buscar",buscar);
                     request.setAttribute("fecha1",fecha1);
                     request.setAttribute("fecha2",fecha2);
-                    request.setAttribute("pagActual", Integer.parseInt(page));
-                    request.setAttribute("pagActualD",Integer.parseInt(pageD));
+                    request.setAttribute("pagActual", pagina);
+                    request.setAttribute("pagActualD",paginaD);
                     request.setAttribute("cantidadTotalSolicitudes", daoNotificacion.listarSolicitudesDeRegistro().size());
                     request.setAttribute("action", action);
                     request.setAttribute("listaSolicitudes",listaSolicitudes);
@@ -171,10 +228,26 @@ public class NotificacionesServlet extends HttpServlet {
                     buscar = request.getParameter("buscar");
                     fecha1=request.getParameter("fecha1");
                     fecha2=request.getParameter("fecha2");
+
                     page = request.getParameter("p")==null? "1" : request.getParameter("p");
-                    pagina = Integer.parseInt(page);
+
+                    if (page.matches("\\d+")){
+                        pagina = Integer.parseInt(page);
+
+                    }else{
+                        pagina = 1;
+                    }
+
+
                     pageD = request.getParameter("pd") == null ? "1" : request.getParameter("pd");
-                    paginaD = Integer.parseInt(pageD);
+                    if (pageD.matches("\\d+")){
+                        paginaD = Integer.parseInt(pageD);
+
+                    }else{
+                        paginaD = 1;
+                    }
+
+
                     ArrayList<Usuario> listaSolicitudes1 = daoNotificacion.listarSolicitudesRegistroPorPage(pagina-1);
                     ArrayList<Reporte> reportList1 = daoNotificacion.listarNotificacionesReporte();
                     ArrayList<Validacion> recuperacionList1 = daoNotificacion.listarNotificacionesRecuperacion();
@@ -183,8 +256,8 @@ public class NotificacionesServlet extends HttpServlet {
                     request.setAttribute("cantidadTotalSolicitudes", daoNotificacion.listarSolicitudesDeRegistro().size());
                     request.setAttribute("fecha2",fecha2);
                     request.setAttribute("buscar",buscar);
-                    request.setAttribute("pagActual", Integer.parseInt(page));
-                    request.setAttribute("pagActualD",Integer.parseInt(pageD));
+                    request.setAttribute("pagActual", pagina);
+                    request.setAttribute("pagActualD",paginaD);
                     request.setAttribute("listaSolicitudes",listaSolicitudes1);
                     request.setAttribute("reportList", reportList1);
                     request.setAttribute("donacionList", daoNotificacion.juntarListas(daoNotificacion.listarNotificacionesDonaciones(buscar,paginaD-1), daoNotificacion.listarNotificacionesDonaciones(fecha1,fecha2,paginaD-1)));

@@ -55,15 +55,23 @@ public class PaginaNoExisteServlet extends HttpServlet {
             String action = request.getParameter("action") == null ? "default" : request.getParameter("action");
             switch(action){
                 case "notificacionLeidaCampanita":
-                    dN.notificacionLeida(Integer.parseInt(request.getParameter("idNotificacion")));
-                    response.sendRedirect(request.getParameter("servletActual"));
+                    dN.notificacionLeida(request.getParameter("idNotificacion"));
                     break;
                 case "notificacionLeidaCampanitaDelegadoDeActividad":
-                    dN.notificacionLeidaDelegadoDeActividad(Integer.parseInt(request.getParameter("idAlumnoPorEvento")));
-                    response.sendRedirect(request.getParameter("servletActual"));
+                    dN.notificacionLeidaDelegadoDeActividad(request.getParameter("idAlumnoPorEvento"));
                     break;
             }
             request.getSession().setAttribute("usuario",dUsuario.usuarioSesion(usuario.getIdUsuario()));
+            String servletActual=request.getParameter("servletActual");
+            if(servletActual==null){
+                response.sendRedirect(request.getContextPath());
+            }else if(servletActual.equals("ListaDeEventosServlet")){
+                response.sendRedirect(servletActual+"?idActividad="+request.getParameter("idActividad"));
+            }else if(servletActual.equals("EventoServlet")){
+                response.sendRedirect(servletActual+"?idEvento="+request.getParameter("idEvento"));
+            }else {
+                response.sendRedirect(servletActual);
+            }
         }
 
     }

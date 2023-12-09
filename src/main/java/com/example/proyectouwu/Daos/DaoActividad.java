@@ -307,7 +307,7 @@ public class DaoActividad extends DaoPadre {
         }
     }
 
-    public void crearActividad(String nombre, int idDelegadoDeActividad, int puntaje, boolean oculto, InputStream fotoCabecera, InputStream fotoMiniatura)throws SQLException, IOException {
+    public void crearActividad(String nombre, int idDelegadoDeActividad, int puntaje, boolean oculto, InputStream fotoCabecera, InputStream fotoMiniatura){
         String sql="insert into actividad (idDelegadoDeActividad,nombre,fotoMiniatura,fotoCabecera,cantidadPuntosPrimerLugar,actividadFinalizada,actividadOculta) values(?,?,?,?,?,false,?)";
         try(Connection conn=this.getConnection(); PreparedStatement pstmt= conn.prepareStatement(sql)){
             pstmt.setInt(1,idDelegadoDeActividad);
@@ -317,7 +317,7 @@ public class DaoActividad extends DaoPadre {
             pstmt.setInt(5,puntaje);
             pstmt.setBoolean(6,oculto);
             pstmt.executeUpdate();
-        } catch (SQLException e) {
+        } catch (SQLException | IOException e) {
             throw new RuntimeException(e);
         }
         sql="update usuario set rol='Delegado de Actividad' where idUsuario=?";
@@ -329,7 +329,7 @@ public class DaoActividad extends DaoPadre {
         }
     }
     /////
-    public void editarActividad(int idActividad,String nombre,int idDelegadoDeActividad,int puntaje,boolean oculto,InputStream fotoCabecera,InputStream fotoMiniatura,int idDelegadoActividadAnterior, boolean validarLongitudCab, boolean validarLongitudMin) throws SQLException, IOException {
+    public void editarActividad(int idActividad,String nombre,int idDelegadoDeActividad,int puntaje,boolean oculto,InputStream fotoCabecera,InputStream fotoMiniatura,int idDelegadoActividadAnterior, boolean validarLongitudCab, boolean validarLongitudMin){
 
         //validar la longitud minima 10
         String secFotoCab = "";
@@ -371,7 +371,7 @@ public class DaoActividad extends DaoPadre {
                 pstmt.setInt(5,idActividad);
             }
             pstmt.executeUpdate();
-        }catch (SQLException e) {
+        }catch (SQLException | IOException e) {
             throw new RuntimeException(e);
         }
 

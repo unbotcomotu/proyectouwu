@@ -108,8 +108,8 @@ public class ListaDeActividadesServlet extends HttpServlet {
             String nombreCab;
             InputStream inputMin = null;
             InputStream inputCab = null;
-            boolean validarLongitudMin;
-            boolean validarLongitudCab;
+            boolean validarLongitudMin=false;
+            boolean validarLongitudCab=false;
             Imagen io=new Imagen();
             String rutaImagenPredeterminada = "/css/fibraVShormigon.png";
 
@@ -189,11 +189,7 @@ public class ListaDeActividadesServlet extends HttpServlet {
                         inputMin = getServletContext().getResourceAsStream(rutaImagenPredeterminada);
                     }
                     if(validacionCrear){
-                        try{
-                            dActividad.crearActividad(nombreCrearActividad,idDelegadoActividadCrear,Integer.parseInt(puntajeCrearActividad),ocultoCrearActividad,inputCab,inputMin);
-                        }catch (SQLException e) {
-                            throw new RuntimeException(e);
-                        }
+                        dActividad.crearActividad(nombreCrearActividad,idDelegadoActividadCrear,Integer.parseInt(puntajeCrearActividad),ocultoCrearActividad,inputCab,inputMin);
                     }
                     inputMin.close();
                     inputCab.close();
@@ -233,17 +229,17 @@ public class ListaDeActividadesServlet extends HttpServlet {
                     // Obtenemos el flujo de bytes
                     if (partCab != null) {
                         inputCab = partCab.getInputStream();
+                        validarLongitudCab = inputCab.available() > 10;
                         nombreCab=partCab.getSubmittedFileName();
-                        if(!io.isImageFile(nombreCab)){
+                        if(!validarLongitudCab){
+                        }else if(!io.isImageFile(nombreCab)){
                             request.getSession().setAttribute("extensionInvalidaCab","1");
                             validacionEditar=false;
-                        }else if(!io.betweenScales(ImageIO.read(partCab.getInputStream()),0.5,1)) {
+                        }else if(!io.betweenScales(ImageIO.read(partCab.getInputStream()),0.5,2)) {
                             request.getSession().setAttribute("escalaInvalidaCab", "1");
                             validacionEditar = false;
                         }
                     }
-
-                    validarLongitudCab = inputCab.available() > 10;
 
 
                     //fotoMiniaturaEditar==inputMin;
@@ -252,23 +248,20 @@ public class ListaDeActividadesServlet extends HttpServlet {
                     // Obtenemos el flujo de bytes
                     if (partMin != null) {
                         inputMin = partMin.getInputStream();
+                        validarLongitudMin = inputMin.available() > 10;
                         nombreMin= partMin.getSubmittedFileName();
-                        if(!io.isImageFile(nombreMin)){
+                        if(!validarLongitudMin){
+                        }else if(!io.isImageFile(nombreMin)){
                             request.getSession().setAttribute("extensionInvalidaMin","1");
                             validacionEditar=false;
-                        }else if(!io.betweenScales(ImageIO.read(partMin.getInputStream()),0.666,1.333)) {
+                        }else if(!io.betweenScales(ImageIO.read(partMin.getInputStream()),0.666,1.5)) {
                             request.getSession().setAttribute("escalaInvalidaMin", "1");
                             validacionEditar = false;
                         }
                     }
 
-                    validarLongitudMin = inputMin.available() > 10;
                     if(validacionEditar){
-                        try {
-                            dActividad.editarActividad(idActividadEditar,nombreEditarActividad,idDelegadoActividadEditar,Integer.parseInt(puntajeEditarActividad),ocultoEditarActividad,inputCab,inputMin,idDelegadoActividadAnterior,validarLongitudCab,validarLongitudMin);
-                        } catch (SQLException e) {
-                            throw new RuntimeException(e);
-                        }
+                        dActividad.editarActividad(idActividadEditar,nombreEditarActividad,idDelegadoActividadEditar,Integer.parseInt(puntajeEditarActividad),ocultoEditarActividad,inputCab,inputMin,idDelegadoActividadAnterior,validarLongitudCab,validarLongitudMin);
                     }else{
                         request.getSession().setAttribute("idActividadElegida",idActividadEditar);
                     }

@@ -56,62 +56,54 @@
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <style>
-        /* Estilos para resaltar las opciones clickeables */
-        .clickeable {
-            cursor: pointer;
-            color: blue;
-            text-decoration: underline;
-        }
-
-        /* Estilo para ocultar elementos por defecto */
-        .oculto {
-            display: none;
-        }
-    </style>
-
-    <style>
         @media screen and (max-width: 680px) {
             .auxResponsiveUwu{
                 display: none;
             }
         }
-    </style>
-
-
-
-    <style>
-        /* Estilos para el pop-up */
-        .popup {
+        .overlay {
             display: none;
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.7);
-
-            /*align-items: center;
-            justify-content: center;*/
+            background-color: rgba(0, 0, 0, 0.7);
+            z-index: 10000;
         }
-        .popup-content {
-            background-color: white;
-            /*max-width: 80%;*/
+
+        /* Estilo para el contenido del popup */
+        .popup {
             padding: 20px;
-            top: 50%;
-            left: 50%;
-            border-radius: 5px;
-            transform: translate(-50%, -50%);
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-            /*text-align: center; /* Centra horizontalmente el contenido */
             display: none;
             position: fixed;
+            top: 50%;
+            left: 50%;
+            border-radius: 12px;
+            transform: translate(-50%, -50%);
+            z-index: 10001;
+            width: 100%;
+            max-width: 650px;
+            background-color: #fff;
         }
-        .popup-content img {
-            max-width: 50%;
-            height: auto;
-            display: block; /* Elimina cualquier espacio en blanco debajo de la imagen */
-            margin: 0 auto;
 
+        /* Estilo para el botón de cerrar */
+        .cerrarPopup {
+            display: flex;
+            -ms-flex-pack: center;
+            justify-content: center;
+            -ms-flex-align: center;
+            align-items: center;
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            background-color: #45437f;
+            cursor: pointer;
+            position: absolute;
+            top: -20px;
+            right: -20px;
+            z-index: 2;
+            transition: background-color .2s ease-in-out;
         }
     </style>
 
@@ -884,8 +876,9 @@
 
                         <!-- USER AVATAR CONTENT -->
                         <div class="user-avatar-content">
+                            <%request.getSession().setAttribute("fotoPerfil"+listaSolicitudesApoyo.indexOf(alumnoPorEvento),alumnoPorEvento.getAlumno().getFotoPerfil());%>
                             <!-- HEXAGON -->
-                            <div class="hexagon-image-82-90" data-src="css/fotoAlex.png"></div>
+                            <div class="hexagon-image-82-90" data-src="Imagen?tipoDeFoto=fotoPerfil&id=Perfil<%=listaSolicitudesApoyo.indexOf(alumnoPorEvento)%>"></div>
                             <!-- /HEXAGON -->
                         </div>
                         <!-- /USER AVATAR CONTENT -->
@@ -916,11 +909,14 @@
                     <!-- USER SHORT DESCRIPTION TEXT -->
                     <p class="user-short-description-text" style="text-transform: lowercase;"> <%= usuarioOWO.correoUsuarioPorId(alumnoPorEvento.getAlumno().getIdUsuario())%>  </p>
                     <!-- /USER SHORT DESCRIPTION TEXT -->
+                    <div style="display: flex;justify-content: center;margin-top: 20px">
+                        <button onclick="popupFunc('popupSeguro<%=listaSolicitudesApoyo.indexOf(alumnoPorEvento)%>',['cerrarPopupSeguro<%=listaSolicitudesApoyo.indexOf(alumnoPorEvento)%>'],'overlaySeguro<%=listaSolicitudesApoyo.indexOf(alumnoPorEvento)%>')" style="width: 40px;background: none;border:0;color: inherit"><img src="css/iconoSeguro.png" style="width: 100%;" alt=""></button>
+                    </div>
                 </div>
                 <!-- /USER SHORT DESCRIPTION -->
 
                 <!-- USER PREVIEW STATS SLIDES -->
-                <div id="user-preview-stats-slides-01_1" class="user-preview-stats-slides">
+                <div id="user-preview-stats-slides-01_1" class="user-preview-stats-slides" style="margin-top: 10px !important;">
                     <!-- USER PREVIEW STATS SLIDE -->
                     <div class="user-preview-stats-slide">
 
@@ -928,15 +924,15 @@
 
                             <div class="row">
 
-                                <div class="col-sm-6 px-5" style="text-align: center;">
+                                <div class="col-sm-6 px-5 mt-3" style="text-align: center;">
 
-                                    <p style="font-family: 'Rajdhani', sans-serif; text-transform: uppercase; font-weight: 700; font-size: 0.75rem;" ><%= new DaoEvento().nombreEventoPorID(alumnoPorEvento.getEvento().getIdEvento())%> </p>
+                                    <p style="font-family: 'Rajdhani', sans-serif; text-transform: uppercase; font-weight: 700; font-size: 0.75rem;width: 100%;" >Rival: <%= new DaoEvento().nombreEventoPorID(alumnoPorEvento.getEvento().getIdEvento())%> </p>
 
                                 </div>
 
-                                <div class="col-sm-6 px-5" style="text-align: center;">
+                                <div class="col-sm-6 px-5 mt-3" style="text-align: center;">
 
-                                    <p style="font-family: 'Rajdhani', sans-serif; text-transform: uppercase; font-weight: 700; font-size: 0.875rem;" >Condición: <%= usuarioOWO.condicionUsuarioPorId(alumnoPorEvento.getAlumno().getIdUsuario())%> </p>
+                                    <p style="font-family: 'Rajdhani', sans-serif; text-transform: uppercase; font-weight: 700; font-size: 0.875rem;width: 100%" >Condición: <%= usuarioOWO.condicionUsuarioPorId(alumnoPorEvento.getAlumno().getIdUsuario())%> </p>
 
                                 </div>
                             </div>
@@ -1067,10 +1063,60 @@
     </div>
 </footer>
 <!-- /GRID -->
+<%for(int i=0;i<listaSolicitudesApoyo.size();i++){%>
+<div class="overlay" id="overlaySeguro<%=i%>"></div>
+<div class="popup" style="max-width: 30%" id="popupSeguro<%=i%>">
+    <svg class="cerrarPopup" id="cerrarPopupSeguro<%=i%>" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M11.4142 10L16.7071 4.70711C17.0976 4.31658 17.0976 3.68342 16.7071 3.29289C16.3166 2.90237 15.6834 2.90237 15.2929 3.29289L10 8.58579L4.70711 3.29289C4.31658 2.90237 3.68342 2.90237 3.29289 3.29289C2.90237 3.68342 2.90237 4.31658 3.29289 4.70711L8.58579 10L3.29289 15.2929C2.90237 15.6834 2.90237 16.3166 3.29289 16.7071C3.68342 17.0976 4.31658 17.0976 4.70711 16.7071L10 11.4142L15.2929 16.7071C15.6834 17.0976 16.3166 17.0976 16.7071 16.7071C17.0976 16.3166 17.0976 15.6834 16.7071 15.2929L11.4142 10Z" fill="black"/>
+    </svg>
+    <div class="row"><div class="col"><h5 style="text-align: center;">Foto subida del seguro</h5></div></div>
+    <div class="row" style="margin-top: 20px">
+        <%request.getSession().setAttribute("fotoSeguro"+i,listaSolicitudesApoyo.get(i).getAlumno().getFotoSeguro());%>
+        <div class="container-fluid">
+            <img src="Imagen?tipoDeFoto=fotoSeguro&id=Seguro<%=i%>" class="img-fluid">
+        </div>
+    </div>
+</div>
+<%}%>
+
 <script>
     function enviarFormulario(idForm) {
         var formulario = document.getElementById(idForm);
         formulario.submit();
+    }
+    function popupFunc(popupId,cerrarClass,overlayId){
+        const overlay=document.getElementById(overlayId);
+        const popup=document.getElementById(popupId);
+        const mostrarPopup = () => {
+            overlay.style.display = 'block';
+            popup.style.display = 'block';
+            // Desactivar el scroll
+            document.body.style.overflow = 'hidden';
+        };
+        mostrarPopup();
+        const cerrarPopup = () => {
+            overlay.style.display = 'none';
+            popup.style.display = 'none';
+            document.body.style.overflow = 'auto';
+            if(popupId=='popupApoyar'){
+                blockButton('mostrarPopupApoyar');
+            }
+        };
+        for(let i=0;i<cerrarClass.length;i++){
+            document.getElementById(cerrarClass[i]).addEventListener('click', cerrarPopup);
+        }
+
+        overlay.addEventListener('click', (e) => {
+            if (e.target === overlay) {
+                cerrarPopup();
+            }
+        });
+
+        document.addEventListener('keydown', (event) => {
+            if (event.key === 'Escape') {
+                cerrarPopup();
+            }
+        });
     }
 </script>
 <!-- app -->

@@ -120,6 +120,7 @@ public class EventoServlet extends HttpServlet {
                     if(validacion){
                         dE.enviarMensaje(usuario.getIdUsuario(),idEvento,mensaje);
                     }
+                    request.getSession().setAttribute("abrirChat","1");
                     response.sendRedirect("EventoServlet?idEvento="+idEvento);
                     break;
                 case "reportar":

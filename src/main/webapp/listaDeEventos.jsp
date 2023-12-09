@@ -781,6 +781,7 @@
                         <%for(AlumnoPorEvento noti:listaNotificacionesDelegadoDeActividad){%>
                         <form id="notificacionLeidaDelegadoDeActividad<%=listaNotificacionesDelegadoDeActividad.indexOf(noti)%>" method="post" action="PaginaNoExisteServlet?action=notificacionLeidaCampanitaDelegadoDeActividad">
                             <input type="hidden" name="idAlumnoPorEvento" value="<%=noti.getIdAlumnoPorEvento()%>">
+                            <input type="hidden" name="idActividad" value="<%=idActividad%>">
                             <input type="hidden" name="servletActual" value="<%=servletActual%>">
                             <!-- Reporte -->
                             <div class="dropdown-box-list-item unread">
@@ -966,6 +967,7 @@
                         <%for(NotificacionDelegadoGeneral noti:listaNotificacionesCampanita){%>
                         <form id="notificacionLeidaCampanita<%=listaNotificacionesCampanita.indexOf(noti)%>" method="post" action="PaginaNoExisteServlet?action=notificacionLeidaCampanita">
                             <input type="hidden" name="idNotificacion" value="<%=noti.getIdNotificacion()%>">
+                            <input type="hidden" name="idActividad" value="<%=idActividad%>">
                             <input type="hidden" name="servletActual" value="<%=servletActual%>">
                                 <%if(noti.getReporte().getIdReporte()!=0){
                                 Reporte r=new DaoReporte().reportePorIdReporteNotificacion(noti.getReporte().getIdReporte());%>
@@ -2129,11 +2131,11 @@
                         <!-- /TEXT STICKER -->
                         <!-- PRODUCT PREVIEW TITLE -->
                         <%int tamanoLetraTitulo=0;
-                            if(e.getTitulo().length()>36){
+                            if(e.getTitulo().length()>20){
                                 tamanoLetraTitulo=90;
-                            }else if (e.getTitulo().length()>33){
+                            }else if (e.getTitulo().length()>17){
                                 tamanoLetraTitulo=95;
-                            }else if(e.getTitulo().length()>30){
+                            }else if(e.getTitulo().length()>14){
                                 tamanoLetraTitulo=100;
                             }else{
                                 tamanoLetraTitulo=110;
@@ -2193,7 +2195,7 @@
                 <!-- /PRODUCT PREVIEW -->
                 <%}else if(!e.isEventoOculto()){%>
                 <!-- /PRODUCT PREVIEW -->
-                <div class="product-preview" style="<%if(e.isEventoFinalizado()){%>opacitiy: 0.5<%}%>">
+                <div class="product-preview" style="<%if(e.isEventoFinalizado()){%>opacity: 0.5<%}%>">
                     <!-- PRODUCT PREVIEW IMAGE -->
                     <a href="<%=request.getContextPath()%>/EventoServlet?idEvento=<%=e.getIdEvento()%>">
                         <figure class="product-preview-image liquid">
@@ -2204,9 +2206,12 @@
 
                     <!-- PRODUCT PREVIEW INFO -->
                     <div class="product-preview-info">
+                        <%String tipoDeApoyo=new DaoAlumnoPorEvento().verificarApoyo(e.getIdEvento(),idUsuario);%>
                         <!-- TEXT STICKER -->
-                        <%if(new DaoAlumnoPorEvento().verificarApoyo(e.getIdEvento(),idUsuario)!=null){%>
+                        <%if(tipoDeApoyo!=null&&!tipoDeApoyo.equals("Pendiente")){%>
                         <p class="text-sticker" style="right: 180px;"><span style="color: green;">Apoyando</span></p>
+                        <%}else if(tipoDeApoyo!=null&&tipoDeApoyo.equals("Pendiente")){%>
+                        <p class="text-sticker" style="right: 180px;"><span style="color: steelblue;">Pendiente</span></p>
                         <%}else{%>
                         <p class="text-sticker" style="right: 170px;"><span style="color: brown;">No apoyando</span></p>
                         <%}%>
@@ -2227,11 +2232,11 @@
                         </p>
                         <!-- /TEXT STICKER -->
                         <%int tamanoLetraTitulo=0;
-                            if(e.getTitulo().length()>36){
+                            if(e.getTitulo().length()>20){
                                 tamanoLetraTitulo=90;
-                            }else if (e.getTitulo().length()>33){
+                            }else if (e.getTitulo().length()>17){
                                 tamanoLetraTitulo=95;
-                            }else if(e.getTitulo().length()>30){
+                            }else if(e.getTitulo().length()>14){
                                 tamanoLetraTitulo=100;
                             }else{
                                 tamanoLetraTitulo=110;

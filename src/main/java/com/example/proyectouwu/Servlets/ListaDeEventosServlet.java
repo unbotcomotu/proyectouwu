@@ -317,7 +317,7 @@ public class ListaDeEventosServlet extends HttpServlet {
             InputStream input = null;
             InputStream inputAlt = null;
             String nombreImagen = "";
-            boolean validarLongitud;
+            boolean validarLongitud=true;
             Imagen io=new Imagen();
             String rutaImagenPredeterminada = "/css/fibraVShormigon.png";
             switch (action) {
@@ -448,7 +448,9 @@ public class ListaDeEventosServlet extends HttpServlet {
                         if (part != null) {
                             input = part.getInputStream();
                             nombreImagen=part.getSubmittedFileName();
-                            if(!io.isImageFile(nombreImagen)){
+                            if(input.available()<10){
+                                validarLongitud=false;
+                            }else if(!io.isImageFile(nombreImagen)){
                                 request.getSession().setAttribute("extensionInvalida","1");
                                 validacionEditar=false;
                             }else if(!io.betweenScales(ImageIO.read(part.getInputStream()),1.2,1.8)) {
@@ -456,8 +458,6 @@ public class ListaDeEventosServlet extends HttpServlet {
                                 validacionEditar = false;
                             }
                         }
-
-                        validarLongitud = input.available() > 10;
                         if(validacionEditar){
                             try {
                                 dEvento.editarEvento(idEvento, updateLugarId, updateTitulo, updateFecha, updateHora, updateDescripcionEventoActivo, updateFraseMotivacional, input, updateEventoOculto, validarLongitud);

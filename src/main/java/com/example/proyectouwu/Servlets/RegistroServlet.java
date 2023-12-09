@@ -28,8 +28,8 @@ public class RegistroServlet extends HttpServlet {
                 //Alex auxilio
                 //int codigoValidacion = Integer.parseInt(request.getParameter("codigoValidacion"));
                 Validacion validacion= new Validacion();
-                String idCorreoValidacion = request.getParameter("idCorreoValidacion") == null ? "ola" : request.getParameter("idCorreoValidacion");
-                String codigoValidacion256 = request.getParameter("codigoValidacion256") == null ? "ola" : request.getParameter("codigoValidacion256");
+                String idCorreoValidacion = request.getParameter("idCorreoValidacion") == null ? "simplebar.js" : request.getParameter("idCorreoValidacion");
+                String codigoValidacion256 = request.getParameter("codigoValidacion256") == null ? "simplebar.js" : request.getParameter("codigoValidacion256");
                 try{
                     validacion.setIdCorreoValidacion(Integer.parseInt(idCorreoValidacion));
                     if(codigoValidacion256.equals(new DaoValidacion().codigoValidacion256PorID(Integer.parseInt(idCorreoValidacion)))){

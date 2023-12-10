@@ -305,45 +305,59 @@ public class NotificacionesServlet extends HttpServlet {
                     String donacionId = request.getParameter("idDonacion");
                     String montoDonacion = request.getParameter("montoDonacion");
                     String estadoDonacion = request.getParameter("estadoDonacion");
-                    if (montoDonacion == null || montoDonacion.trim().isEmpty()) {
-                        // Manejar el caso en que el montoDonacion es nulo o está vacío
-                        request.setAttribute("alerta", "monto");
-                        request.getRequestDispatcher("notificacionesDelGeneral.jsp").forward(request, response);
-                        return; // Salir del método para evitar continuar con el flujo normal
-                    }
 
-                    try{
+                    if (donacionId!=null && estadoDonacion!=null){
+
+                        if (donacionId.matches("\\d+") && (estadoDonacion.equals("Validado")|| estadoDonacion.equals("Pendiente"))&& daoDonacion.existeDonacion(donacionId)){
+                            if (montoDonacion == null || montoDonacion.trim().isEmpty()) {
+                                // Manejar el caso en que el montoDonacion es nulo o está vacío
+                                request.setAttribute("alerta", "monto");
+                                request.getRequestDispatcher("notificacionesDelGeneral.jsp").forward(request, response);
+                                return; // Salir del método para evitar continuar con el flujo normal
+                            }
+
+                            try{
 
 
-                        int donacionId_int = Integer.parseInt(donacionId);
-                        float monto = Float.parseFloat(montoDonacion);
+                                int donacionId_int = Integer.parseInt(donacionId);
+                                float monto = Float.parseFloat(montoDonacion);
 
-                        DaoNotificacion daoNotificacion = new DaoNotificacion();
-                        ArrayList<Usuario> listaSolicitudes = daoNotificacion.listarSolicitudesDeRegistro();
-                        ArrayList<Reporte> reportList = daoNotificacion.listarNotificacionesReporte();
-                        ArrayList<Donacion> donacionList = daoNotificacion.listarNotificacionesDonaciones();
-                        ArrayList<Validacion> recuperacionList = daoNotificacion.listarNotificacionesRecuperacion();
+                                DaoNotificacion daoNotificacion = new DaoNotificacion();
+                                ArrayList<Usuario> listaSolicitudes = daoNotificacion.listarSolicitudesDeRegistro();
+                                ArrayList<Reporte> reportList = daoNotificacion.listarNotificacionesReporte();
+                                ArrayList<Donacion> donacionList = daoNotificacion.listarNotificacionesDonaciones();
+                                ArrayList<Validacion> recuperacionList = daoNotificacion.listarNotificacionesRecuperacion();
 
-                        request.setAttribute("listaSolicitudes",listaSolicitudes);
-                        request.setAttribute("reportList", reportList);
-                        request.setAttribute("donacionList",donacionList);
-                        request.setAttribute("alerta","monto");
-                        request.setAttribute("recuperacionList",recuperacionList);
+                                request.setAttribute("listaSolicitudes",listaSolicitudes);
+                                request.setAttribute("reportList", reportList);
+                                request.setAttribute("donacionList",donacionList);
+                                request.setAttribute("alerta","monto");
+                                request.setAttribute("recuperacionList",recuperacionList);
 
-                        Donacion donacion = new Donacion();
-                        donacion.setIdDonacion(donacionId_int);
-                        donacion.setMonto(monto);
-                        donacion.setEstadoDonacion(estadoDonacion);
+                                Donacion donacion = new Donacion();
+                                donacion.setIdDonacion(donacionId_int);
+                                donacion.setMonto(monto);
+                                donacion.setEstadoDonacion(estadoDonacion);
 
-                        daoDonacion.editarDonacion(donacion);
+                                daoDonacion.editarDonacion(donacion);
 
+                                response.sendRedirect("NotificacionesServlet?vistaActualNueva=Donaciones");
+
+                            }catch (NumberFormatException e){
+                                request.setAttribute("alerta","monto");
+                                request.getRequestDispatcher("notificacionesDelGeneral.jsp").forward(request,response);
+                                response.sendRedirect("NotificacionesServlet?vistaActualNueva=Donaciones");
+                            }
+                        }else{
+                            response.sendRedirect("NotificacionesServlet?vistaActualNueva=Donaciones");
+                        }
+
+                    }else{
                         response.sendRedirect("NotificacionesServlet?vistaActualNueva=Donaciones");
 
-                    }catch (NumberFormatException e){
-                        request.setAttribute("alerta","monto");
-                        request.getRequestDispatcher("notificacionesDelGeneral.jsp").forward(request,response);
-                        response.sendRedirect("NotificacionesServlet?vistaActualNueva=Donaciones");
                     }
+
+
                     break;
                 case "editDonacion":
                     String id = request.getParameter("id");
@@ -359,16 +373,29 @@ public class NotificacionesServlet extends HttpServlet {
                 case "deleteDonacion":
 
                     String idd = request.getParameter("id");
-                    Donacion donacion1 = daoDonacion.buscarPorId(idd);
 
-                    if(donacion1 != null){
-                        try {
-                            daoDonacion.borrar(idd);
-                        } catch (SQLException e) {
-                            System.out.println("Log: excepcion: " + e.getMessage());
+                    if (idd!=null){
+
+                        if (idd.matches("\\d+") && daoDonacion.existeDonacion(idd)){
+                            Donacion donacion1 = daoDonacion.buscarPorId(idd);
+
+                            if(donacion1 != null){
+                                try {
+                                    daoDonacion.borrar(idd);
+                                } catch (SQLException e) {
+                                    System.out.println("Log: excepcion: " + e.getMessage());
+                                }
+                            }
+                            response.sendRedirect("NotificacionesServlet?vistaActualNueva=Donaciones");
+                        }else{
+                            response.sendRedirect("NotificacionesServlet?vistaActualNueva=Donaciones");
+
                         }
+
+                    }else{
+                        response.sendRedirect("NotificacionesServlet?vistaActualNueva=Donaciones");
+
                     }
-                    response.sendRedirect("NotificacionesServlet?vistaActualNueva=Donaciones");
 
                     break;
                 case "enviar":

@@ -358,4 +358,20 @@ public class DaoDonacion extends DaoPadre  {
             throw new RuntimeException(e);
         }
     }
+
+    public boolean existeDonacion(String idDonacion){
+        String sql="select idDonacion from donacion where idDonacion=?";
+        try(Connection conn=this.getConnection(); PreparedStatement pstmt= conn.prepareStatement(sql)){
+            pstmt.setString(1,idDonacion);
+            try(ResultSet rs=pstmt.executeQuery()){
+                if(rs.next()){
+                    return true;
+                }else
+                    return false;
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
 }

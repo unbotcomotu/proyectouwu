@@ -2142,10 +2142,8 @@
                             <p class="table-title"> <%=donacion.getEstadoDonacion()%> </p>
                             <!-- /TABLE TITLE -->
                         </div>
-
                         <div class="table-column centered padded">
-
-                                <button class="button secondary" id="mostrarPopupEditarDonacion<%=donacionList.indexOf(donacion)%>" ><a>Editar</a></button>
+                                <button class="button-accept" id="mostrarPopupEditarDonacion<%=donacionList.indexOf(donacion)%>" ><a>Editar</a></button>
                             <!-- TABLE TITLE -->
                             <form method="post" action="<%=request.getContextPath()%>/NotificacionesServlet?action=deleteDonacion">
                                 <input type="hidden" name="id" value="<%=donacion.getIdDonacion()%>">
@@ -2155,9 +2153,7 @@
                         <!-- /TABLE COLUMN -->
                     </div>
                     <!-- /TABLE ROW -->
-
                     <%contadorD++;}%>
-
                 </div>
                 <!-- /TABLE BODY -->
             </div>

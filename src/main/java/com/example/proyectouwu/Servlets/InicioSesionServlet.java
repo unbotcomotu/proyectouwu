@@ -102,7 +102,7 @@ public class InicioSesionServlet extends HttpServlet {
                 break;
             case "logOut":
                 request.getSession().invalidate();
-                response.sendRedirect("InicioSesionServlet");
+                response.sendRedirect(request.getContextPath() + "");
                 break;
         }
     }

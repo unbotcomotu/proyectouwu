@@ -7,7 +7,10 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%String popup=(String) request.getSession().getAttribute("popup");%>
+<%String popup=(String) request.getSession().getAttribute("popup");
+if(popup!=null){
+    request.getSession().removeAttribute("popup");
+}%>
 <html>
 <head>
     <meta charset="utf-8">
@@ -15,6 +18,38 @@
     <link rel="stylesheet" href="css/style_aux.css" type="text/css">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
     <title>Inicio de sesión - Siempre Fibra</title>
+    <style>
+        .overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            z-index: 10000;
+        }
+
+        /* Estilo para el contenido del popup */
+        .popup {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            border-radius: 12px;
+            transform: translate(-50%, -50%);
+            background-color: white;
+            padding: 20px;
+            z-index: 10001;
+        }
+        /* Estilo para el botón de cerrar */
+        .cerrarPopup {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            cursor: pointer;
+        }
+    </style>
 </head>
 
 <body class="overflow-x-hidden" style="font-size: 150%; font-family: 'Titillium Web',sans-serif;">
@@ -139,12 +174,10 @@
         </p>
     </div>
 </div>
-<%request.getSession().removeAttribute("popup");%>
 <%}%>
 <script>
 
-    function popupFunc(popupId,abrirId,cerrarId){
-        const showPopup=document.getElementById(abrirId);
+    function popupFunc(popupId,cerrarId){
         const overlay=document.getElementById('overlay');
         const popup=document.getElementById(popupId);
         const closePopup=document.getElementById(cerrarId);
@@ -155,7 +188,7 @@
             // Desactivar el scroll
             document.body.style.overflow = 'hidden';
         };
-        showPopup.addEventListener('click', mostrarPopup);
+        mostrarPopup();
         const cerrarPopup = () => {
             overlay.style.display = 'none';
             popup.style.display = 'none';
@@ -177,7 +210,7 @@
             }
         });
     }
-    popupFunc('popup','abrirPopup','cerrarPopup');
+    popupFunc('popup','cerrarPopup');
 
 
 

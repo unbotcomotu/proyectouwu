@@ -18,26 +18,27 @@ public class RecuperarContrasenaPrimerPasoServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
        response.setContentType("text/html");
-
        String action = request.getParameter("action") == null ? "default" : request.getParameter("action");
        switch (action){
+          default:
           case "default":
              break;
           case "correoRecuperarContrasena":
              String correo2 = request.getParameter("correoPucp");
-             //Debemos guardarlo en algun lado para mandar el correo - cumplido
-              //Solo se envia correo si es que este existe en la base de datos de usuarios - cumplido
-              //Se debe ajustar la velocidad del salto del popUp para que el usuario tenga tiempo de ver el aviso - no cumplido
-             DaoValidacion daoValidacion = new DaoValidacion();
-             if(new DaoUsuario().obtenerIdPorCorreo(correo2) != 0) {
-                  daoValidacion.agregarCorreoParaRecuperarContrasena(correo2);
-                  request.getSession().setAttribute("popup","2");
-                  response.sendRedirect("InicioSesionServlet");
-             }else{
-                 request.getSession().setAttribute("correoNoExiste","1");
-                 response.sendRedirect("RecuperarContrasenaPrimerPasoServlet");
+             if(correo2!=null){
+                 DaoValidacion daoValidacion = new DaoValidacion();
+                 if(new DaoUsuario().obtenerIdPorCorreo(correo2) != 0) {
+                     daoValidacion.agregarCorreoParaRecuperarContrasena(correo2);
+                     request.getSession().setAttribute("popup","2");
+                     response.sendRedirect("InicioSesionServlet");
+                 }else{
+                     request.getSession().setAttribute("correoNoExiste","1");
+                     response.sendRedirect("RecuperarContrasenaPrimerPasoServlet");
+                 }
+             }else {
+                 response.sendRedirect(request.getContextPath());
              }
-             break;
+              break;
        }
     }
 }

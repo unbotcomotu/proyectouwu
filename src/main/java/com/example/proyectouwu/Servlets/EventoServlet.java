@@ -75,6 +75,7 @@ public class EventoServlet extends HttpServlet {
                     Imagen io=new Imagen();
                     String action = request.getParameter("action") == null ? "default" : request.getParameter("action");
                     switch (action){
+                        default:
                         case "default":
                             response.sendRedirect("PaginaNoExisteServlet");
                             break;

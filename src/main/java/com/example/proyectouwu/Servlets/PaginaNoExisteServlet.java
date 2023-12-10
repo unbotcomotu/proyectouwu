@@ -25,17 +25,22 @@ public class PaginaNoExisteServlet extends HttpServlet {
             request.setAttribute("IDyNombreDelegadosDeActividad",dUsuario.listarIDyNombreDelegadosDeActividad());
             String action = request.getParameter("action") == null ? "default" : request.getParameter("action");
             switch (action) {
+                default:
                 case "default":
-                    if(usuario.getRol().equals("Alumno")){
-                        request.getRequestDispatcher("paginaNoExiste.jsp").forward(request,response);
-                    }else if(usuario.getRol().equals("Delegado General")){
-                        request.setAttribute("listaNotificacionesCampanita",new DaoNotificacion().listarNotificacionesDelegadoGeneral());
-                        request.getRequestDispatcher("paginaNoExiste.jsp").forward(request,response);
-                    }else if(usuario.getRol().equals("Delegado de Actividad")){
-                        Integer idActividadDelegatura=new DaoActividad().idDelegaturaPorIdDelegadoDeActividad(usuario.getIdUsuario());
-                        request.setAttribute("listaNotificacionesDelegadoDeActividad",new DaoNotificacion().listarNotificacionesDelegadoDeActividad(usuario.getIdUsuario()));
-                        request.setAttribute("idActividadDelegatura",idActividadDelegatura);
-                        request.getRequestDispatcher("paginaNoExiste.jsp").forward(request,response);
+                    switch (usuario.getRol()) {
+                        case "Alumno":
+                            request.getRequestDispatcher("paginaNoExiste.jsp").forward(request, response);
+                            break;
+                        case "Delegado General":
+                            request.setAttribute("listaNotificacionesCampanita", new DaoNotificacion().listarNotificacionesDelegadoGeneral());
+                            request.getRequestDispatcher("paginaNoExiste.jsp").forward(request, response);
+                            break;
+                        case "Delegado de Actividad":
+                            Integer idActividadDelegatura = new DaoActividad().idDelegaturaPorIdDelegadoDeActividad(usuario.getIdUsuario());
+                            request.setAttribute("listaNotificacionesDelegadoDeActividad", new DaoNotificacion().listarNotificacionesDelegadoDeActividad(usuario.getIdUsuario()));
+                            request.setAttribute("idActividadDelegatura", idActividadDelegatura);
+                            request.getRequestDispatcher("paginaNoExiste.jsp").forward(request, response);
+                            break;
                     }
                     break;
             }
@@ -55,10 +60,16 @@ public class PaginaNoExisteServlet extends HttpServlet {
             String action = request.getParameter("action") == null ? "default" : request.getParameter("action");
             switch(action){
                 case "notificacionLeidaCampanita":
-                    dN.notificacionLeida(request.getParameter("idNotificacion"));
+                    String idNotificacion=request.getParameter("idNotificacion");
+                    if(idNotificacion!=null){
+                        dN.notificacionLeida(idNotificacion);
+                    }
                     break;
                 case "notificacionLeidaCampanitaDelegadoDeActividad":
-                    dN.notificacionLeidaDelegadoDeActividad(request.getParameter("idAlumnoPorEvento"));
+                    String idAlumnoPorEvento=request.getParameter("idAlumnoPorEvento");
+                    if(idAlumnoPorEvento!=null){
+                        dN.notificacionLeidaDelegadoDeActividad(idAlumnoPorEvento);
+                    }
                     break;
             }
             request.getSession().setAttribute("usuario",dUsuario.usuarioSesion(usuario.getIdUsuario()));

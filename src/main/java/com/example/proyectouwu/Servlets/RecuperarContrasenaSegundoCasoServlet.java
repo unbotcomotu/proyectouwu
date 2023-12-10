@@ -16,6 +16,7 @@ public class RecuperarContrasenaSegundoCasoServlet extends HttpServlet {
         response.setContentType("text/html");
         String action = request.getParameter("action") == null ? "default" : request.getParameter("action");
         switch (action) {
+            default:
             case "default":
 //                request.getRequestDispatcher("inicioSesion.jsp").forward(request,response);
                 String idCorreoValidacion = request.getParameter("idCorreoValidacion");
@@ -41,16 +42,17 @@ public class RecuperarContrasenaSegundoCasoServlet extends HttpServlet {
         response.setContentType("text/html");
         String action = request.getParameter("action") == null ? "default" : request.getParameter("action");
         switch (action){
+            default:
             case "default":
                 break;
             case "correoRecuperarContrasenaSegundoPaso":
                 String idCorreoValidacion = request.getParameter("idCorreoValidacion");
                 String password = request.getParameter("password");
-                //Actualizar contrasena
-                new DaoUsuario().actualizarContrasena(Integer.parseInt(idCorreoValidacion),password);
-                response.sendRedirect(request.getContextPath());
-                //else{ salga un mensaje de error en la vista} - no cumplido
+                if(idCorreoValidacion!=null&&password!=null){
+                    new DaoUsuario().actualizarContrasena(Integer.parseInt(idCorreoValidacion),password);
+                }
                 break;
-        }
+
+        }response.sendRedirect(request.getContextPath());
     }
 }

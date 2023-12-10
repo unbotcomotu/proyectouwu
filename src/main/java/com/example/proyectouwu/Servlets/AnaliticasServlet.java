@@ -60,6 +60,7 @@ public class AnaliticasServlet extends HttpServlet {
                 request.setAttribute("listaNotificacionesCampanita", dN.listarNotificacionesDelegadoGeneral());
                 String action = request.getParameter("action") == null ? "default" : request.getParameter("action");
                 switch (action) {
+                    default:
                     case "default":
                         request.getRequestDispatcher("analiticas.jsp").forward(request, response);
                 }
@@ -70,6 +71,6 @@ public class AnaliticasServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
+        response.sendRedirect("AnaliticasServlet");
     }
 }

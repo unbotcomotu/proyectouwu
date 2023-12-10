@@ -1070,6 +1070,7 @@
                 primeraFechaCalendario=27;
                 cantidadDiasAnteriorMesRestantes=5;
                 cantidadDiasMesActual=30;
+                maxFilas=5;
             }else if(mesAux+1==10){
                 primeraFechaCalendario=1;
                 cantidadDiasAnteriorMesRestantes=0;
@@ -1431,7 +1432,7 @@
                 }
             %>
             <!-- POST COMMENT TEXT -->
-            <p class="post-comment-text"><a class="post-comment-text-author"><%=m.getUsuario().getNombre()%> <%=m.getUsuario().getApellido()%></a><%=mensajeAux%></p>
+            <p class="post-comment-text"><a class="post-comment-text-author"><%if(m.getUsuario().getIdUsuario()==usuarioActual.getIdUsuario()){%>Tú<%}else{%><%=m.getUsuario().getNombre()%> <%=m.getUsuario().getApellido()%><%}%></a><%=mensajeAux%></p>
             <p style="margin-top: 6px;color: #adafca;font-size: 0.75rem;font-weight: 500"></p>
             <%if(diferenciaTiempoUltimoMensaje[0]>1){%>
             <p style="margin-top: 6px;color: #adafca;font-size: 0.75rem;font-weight: 500"><%=m.getFecha()%> a las <%=m.getHora()%></p>

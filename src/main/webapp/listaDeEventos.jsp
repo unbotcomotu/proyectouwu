@@ -252,6 +252,13 @@
             .auxResponsiveUwu{
                 display: none;
             }
+            .auxResponsive{
+                max-height: 150px!important;
+            }
+            .contenedor2{
+                margin-top: 0!important;
+                margin-bottom: 5px!important;
+            }
         }
         @media screen and (max-width: 777px) {
             .recuadroTexto {
@@ -2370,7 +2377,7 @@
     </div>
 </footer>
 <%if(delegadoDeEstaActividadID==idUsuario){%>
-<div class="overlay" <%if((descripcionLarga!=null||fraseLarga!=null||extensionInvalida!=null||escalaInvalida!=null)&&eventoElegido==null){%>style="display: block;"<%}%> id="overlayCrear">
+<div class="overlay" <%if((descripcionLarga!=null||fraseLarga!=null||extensionInvalida!=null||escalaInvalida!=null)&&eventoElegido==null){%>style="display: block;"<%}%> id="overlayCrear"></div>
 <div class="popup contenedorCrear" style="width: 700px;<%if((descripcionLarga!=null||fraseLarga!=null)&&eventoElegido==null||extensionInvalida!=null||escalaInvalida!=null){%>display: block;<%}%>" id="popupCrear">
     <svg class="cerrarPopup" id="cerrarPopupCrear" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path d="M11.4142 10L16.7071 4.70711C17.0976 4.31658 17.0976 3.68342 16.7071 3.29289C16.3166 2.90237 15.6834 2.90237 15.2929 3.29289L10 8.58579L4.70711 3.29289C4.31658 2.90237 3.68342 2.90237 3.29289 3.29289C2.90237 3.68342 2.90237 4.31658 3.29289 4.70711L8.58579 10L3.29289 15.2929C2.90237 15.6834 2.90237 16.3166 3.29289 16.7071C3.68342 17.0976 4.31658 17.0976 4.70711 16.7071L10 11.4142L15.2929 16.7071C15.6834 17.0976 16.3166 17.0976 16.7071 16.7071C17.0976 16.3166 17.0976 15.6834 16.7071 15.2929L11.4142 10Z" fill="black"/>
@@ -2433,8 +2440,8 @@
             </div>
             <div class="col-sm-5 contenedor2 my-5 d-flex align-items-center">
                 <div class="container-fluid btn btn-file1">
-                    <div id="contenedorImagenCrear">
-                        <img id="imagenActualCrear" class="img-fluid" src="css/subirArchivo.jpg" style="opacity: 50%;max-height: 600px" alt="">
+                    <div id="contenedorImagenCrear" class="auxResponsive">
+                        <img id="imagenActualCrear" class="img-fluid auxResponsive" src="css/subirArchivo.jpg" style="opacity: 50%;max-height: 600px" alt="">
                     </div>
                     <p style="margin-top: 10px"><b>Agregar foto miniatura</b></p>
                     <%if(extensionInvalida!=null){%><label for="inputCrear"><a style="color: red;">Ingrese un formato e imagen correctos</a></label><%}else if(escalaInvalida!=null){%><label for="inputCrear"><a style="color: red;">Ingrese una escala apropiada</a></label><%}%>
@@ -2456,10 +2463,9 @@
     </div>
 </form>
 </div>
-</div>
 <%if(!listaEventos.isEmpty()){
     for(Evento e:listaEventos){%>
-<div class="overlay" id="overlayFinalizarEvento<%=listaEventos.indexOf(e)%>">
+<div class="overlay" id="overlayFinalizarEvento<%=listaEventos.indexOf(e)%>"></div>
 <div class="popup" style="width: 500px;" id="popupFinalizarEvento<%=listaEventos.indexOf(e)%>">
     <svg class="cerrarPopup" id="cerrarPopupFinalizarEvento<%=listaEventos.indexOf(e)%>" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path d="M11.4142 10L16.7071 4.70711C17.0976 4.31658 17.0976 3.68342 16.7071 3.29289C16.3166 2.90237 15.6834 2.90237 15.2929 3.29289L10 8.58579L4.70711 3.29289C4.31658 2.90237 3.68342 2.90237 3.29289 3.29289C2.90237 3.68342 2.90237 4.31658 3.29289 4.70711L8.58579 10L3.29289 15.2929C2.90237 15.6834 2.90237 16.3166 3.29289 16.7071C3.68342 17.0976 4.31658 17.0976 4.70711 16.7071L10 11.4142L15.2929 16.7071C15.6834 17.0976 16.3166 17.0976 16.7071 16.7071C17.0976 16.3166 17.0976 15.6834 16.7071 15.2929L11.4142 10Z" fill="black"/>
@@ -2515,8 +2521,8 @@
     </form>
     <%}%>
 </div>
-</div>
-<div class="overlay" <%if((resumenLargo!=null||descripcionLarga!=null||fraseLarga!=null||extensionInvalida!=null||escalaInvalida!=null)&&eventoElegido!=null&&eventoElegido==e.getIdEvento()){%>style="display: block;"<%}%> id="overlayEditarEvento<%=listaEventos.indexOf(e)%>">
+
+<div class="overlay" <%if((resumenLargo!=null||descripcionLarga!=null||fraseLarga!=null||extensionInvalida!=null||escalaInvalida!=null)&&eventoElegido!=null&&eventoElegido==e.getIdEvento()){%>style="display: block;"<%}%> id="overlayEditarEvento<%=listaEventos.indexOf(e)%>"></div>
 <div class="popup contenedorCrear" style="width: 700px;<%if((resumenLargo!=null||descripcionLarga!=null||fraseLarga!=null||extensionInvalida!=null||escalaInvalida!=null)&&eventoElegido!=null&&eventoElegido==e.getIdEvento()){%>display: block;<%}%>" id="popupEditarEvento<%=listaEventos.indexOf(e)%>">
     <svg class="cerrarPopup" id="cerrarPopupEditarEvento<%=listaEventos.indexOf(e)%>" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path d="M11.4142 10L16.7071 4.70711C17.0976 4.31658 17.0976 3.68342 16.7071 3.29289C16.3166 2.90237 15.6834 2.90237 15.2929 3.29289L10 8.58579L4.70711 3.29289C4.31658 2.90237 3.68342 2.90237 3.29289 3.29289C2.90237 3.68342 2.90237 4.31658 3.29289 4.70711L8.58579 10L3.29289 15.2929C2.90237 15.6834 2.90237 16.3166 3.29289 16.7071C3.68342 17.0976 4.31658 17.0976 4.70711 16.7071L10 11.4142L15.2929 16.7071C15.6834 17.0976 16.3166 17.0976 16.7071 16.7071C17.0976 16.3166 17.0976 15.6834 16.7071 15.2929L11.4142 10Z" fill="black"/>
@@ -2598,7 +2604,7 @@
             <div class="col-sm-5 contenedor2 my-5 d-flex align-items-center">
                 <div class="container-fluid btn btn-file1">
                     <div id="contenedorImagenEditar<%=listaEventos.indexOf(e)%>">
-                        <img id="imagenActualEditar<%=listaEventos.indexOf(e)%>" style="max-height: 600px" class="img-fluid" src="ImagenEventoServlet?idEvento=<%=e.getIdEvento()%>" alt="">
+                        <img id="imagenActualEditar<%=listaEventos.indexOf(e)%>" style="max-height: 600px" class="img-fluid auxResponsive" src="ImagenEventoServlet?idEvento=<%=e.getIdEvento()%>" alt="">
                     </div>
                     <p style="margin-top: 10px"><b>Editar foto miniatura</b></p>
                     <%if(extensionInvalida!=null&&eventoElegido!=null&&eventoElegido==e.getIdEvento()){%><label for="inputEditar<%=listaEventos.indexOf(e)%>"><a style="color: red;">Ingrese un formato e imagen correctos</a></label><%}else if(escalaInvalida!=null&&eventoElegido!=null&&eventoElegido==e.getIdEvento()){%><label for="inputEditar<%=listaEventos.indexOf(e)%>"><a style="color: red;">Ingrese una escala apropiada</a></label><%}%>
@@ -2619,7 +2625,6 @@
         </div>
     </div>
     </form>
-</div>
 </div>
 <%}}}%>
 

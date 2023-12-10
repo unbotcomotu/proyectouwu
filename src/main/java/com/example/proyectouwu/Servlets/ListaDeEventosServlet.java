@@ -51,7 +51,7 @@ public class ListaDeEventosServlet extends HttpServlet {
             //pagina = Integer.parseInt(request.getParameter("p"));
         }else if(request.getSession().getAttribute("p") != null){
 
-            if (paginaSession != null && paginaSession.matches("\\d+")) {
+            if (paginaSession.matches("\\d+")) {
                 // Si es un número, asigna ese valor a la variable 'pagina'
                 pagina = (int) request.getSession().getAttribute("p");
             } else {
@@ -322,13 +322,10 @@ public class ListaDeEventosServlet extends HttpServlet {
         response.setContentType("text/html");
         String action = request.getParameter("action") == null ? "default" : request.getParameter("action");
         String pag = request.getParameter("p") == null ? "1" : request.getParameter("p");
-        int pagina = Integer.parseInt(pag);
-        // Daos:
         DaoUsuario dUsuario=new DaoUsuario();
         DaoActividad daoActividad = new DaoActividad();
         DaoLugarEvento dLugarEvento = new DaoLugarEvento();
         DaoEvento dEvento = new DaoEvento();
-        DaoNotificacion dN=new DaoNotificacion();
         Usuario usuario = (Usuario) request.getSession().getAttribute("usuario");
         if(usuario==null){
             response.sendRedirect("InicioSesionServlet");
@@ -345,7 +342,6 @@ public class ListaDeEventosServlet extends HttpServlet {
                     // Parámetros auxiliares
                     Part part = null;
                     InputStream input = null;
-                    InputStream inputAlt = null;
                     String nombreImagen = "";
                     boolean validarLongitud=true;
                     Imagen io=new Imagen();
@@ -389,10 +385,7 @@ public class ListaDeEventosServlet extends HttpServlet {
                             }
                             String addEventoOcultoStr = request.getParameter("addEventoOculto");
                             String addFechaStrAux = request.getParameter("addFecha");
-                            Boolean addEventoOculto = false;
-                            if (!(addEventoOcultoStr == null)) {
-                                addEventoOculto = true;
-                            }
+                            boolean addEventoOculto = (addEventoOcultoStr != null);
                             Date addFecha=null;
                             Time addHora=null;
                             try {
@@ -487,10 +480,7 @@ public class ListaDeEventosServlet extends HttpServlet {
                                         if(!(updateResultado.equals("Victoria") || updateResultado.equals("Derrota"))){
                                             validacionEditar=false;
                                         }
-                                        Boolean updateEventoOcultoAlt = false;
-                                        if(!(updateEventoOcultoStr2 == null)){
-                                            updateEventoOcultoAlt = true;
-                                        }
+                                        boolean updateEventoOcultoAlt = (updateEventoOcultoStr2 != null);
                                         if(validacionEditar){
                                             dEvento.editarEvento(idEvento,updateTitulo,updateResumen,updateResultado,updateEventoOcultoAlt);
                                         }else {
@@ -498,10 +488,7 @@ public class ListaDeEventosServlet extends HttpServlet {
                                         }
                                     }else {
 
-                                        Boolean updateEventoOculto = false;
-                                        if (!(updateEventoOcultoStr1 == null)) {
-                                            updateEventoOculto = true;
-                                        }
+                                        boolean updateEventoOculto = (updateEventoOcultoStr1 != null);
                                         // Verificar lugar:
 
                                         int updateLugarId = dLugarEvento.idLugarPorNombre(updateLugar);
@@ -535,6 +522,7 @@ public class ListaDeEventosServlet extends HttpServlet {
                                                 request.getSession().setAttribute("escalaInvalida", "1");
                                                 validacionEditar = false;
                                             }
+                                            input.close();
                                         }
                                         if(validacionEditar){
                                             try {
@@ -545,7 +533,6 @@ public class ListaDeEventosServlet extends HttpServlet {
                                         }else {
                                             request.getSession().setAttribute("eventoElegido",idEvento);
                                         }
-                                        input.close();
                                     }
                                     response.sendRedirect("ListaDeEventosServlet?idActividad="+idActividad);
                                 }else{

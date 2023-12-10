@@ -60,7 +60,7 @@ public class Imagen extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
+        response.sendRedirect("Imagen");
     }
 
     public boolean isImageFile(String fileName) {

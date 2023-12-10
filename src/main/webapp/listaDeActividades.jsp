@@ -25,7 +25,13 @@
     String escalaInvalidaCab=(String) request.getSession().getAttribute("escalaInvalidaCab");
     String extensionInvalidaMin=(String) request.getSession().getAttribute("extensionInvalidaMin");
     String escalaInvalidaMin=(String) request.getSession().getAttribute("escalaInvalidaMin");
-    if(nombreLargo!=null){
+    if(idActividadElegida!=null){
+        request.getSession().removeAttribute("idActividadElegida");
+    }if(puntajeNoNumerico!=null){
+        request.getSession().removeAttribute("puntajeNoNumerico");
+    }if(actividadRepetida!=null){
+        request.getSession().removeAttribute("actividadRepetida");
+    }if(nombreLargo!=null){
         request.getSession().removeAttribute("nombreLargo");
     }if(extensionInvalidaCab!=null){
         request.getSession().removeAttribute("extensionInvalidaCab");
@@ -173,6 +179,12 @@
         @media screen and (max-width: 680px) {
             .auxResponsiveUwu{
                 display: none;
+            }
+            .auxResponsive{
+                max-height: 150px!important;
+            }
+            .popup{
+                max-width: 500px!important;
             }
         }
         @media screen and (max-width: 777px) {
@@ -1841,7 +1853,7 @@
 </footer>
 <%if(rolUsuario.equals("Delegado de Actividad")){%>
 <div class="overlay" id="overlayFinalizar"></div>
-<div class="popup" style="width: 600px;" id="popupFinalizar">
+<div class="popup" style="width: 600px" id="popupFinalizar">
     <svg class="cerrarPopup" id="cerrarPopupFinalizar" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path d="M11.4142 10L16.7071 4.70711C17.0976 4.31658 17.0976 3.68342 16.7071 3.29289C16.3166 2.90237 15.6834 2.90237 15.2929 3.29289L10 8.58579L4.70711 3.29289C4.31658 2.90237 3.68342 2.90237 3.29289 3.29289C2.90237 3.68342 2.90237 4.31658 3.29289 4.70711L8.58579 10L3.29289 15.2929C2.90237 15.6834 2.90237 16.3166 3.29289 16.7071C3.68342 17.0976 4.31658 17.0976 4.70711 16.7071L10 11.4142L15.2929 16.7071C15.6834 17.0976 16.3166 17.0976 16.7071 16.7071C17.0976 16.3166 17.0976 15.6834 16.7071 15.2929L11.4142 10Z" fill="black"/>
     </svg>
@@ -1910,11 +1922,9 @@
 
                     <label style="margin-top: 25px;" for="puntajeCrearActividad"><b>Puntaje para el 1er lugar:</b></label>
                     <input type="text" name="puntajeCrearActividad" id="puntajeCrearActividad" placeholder="###" required>
-                    <%if(puntajeNoNumerico!=null && idActividadElegida==null){
-                        request.getSession().removeAttribute("puntajeNoNumerico");%>
+                    <%if(puntajeNoNumerico!=null){%>
                     <a style="color: red">Debe de ingresar un valor numérico</a>
-                    <%}else if(actividadRepetida!=null){
-                        request.getSession().removeAttribute("actividadRepetida");%>
+                    <%}else if(actividadRepetida!=null){%>
                     <a style="color: red">La actividad ya existe. Emplee otro nombre.</a>
                     <%}%>
                     <div style="display: flex; justify-content: left; margin-top: 25px;">
@@ -1925,7 +1935,7 @@
                 <div class="col-sm-5 contenedor2" style="top: 30px">
                     <div class="container-fluid btn btn-file1">
                         <div id="contenedorImagenCabeceraCrear">
-                            <img id="imagenActualCabeceraCrear" class="img-fluid" src="css/subirArchivo.jpg" style="max-height: 500px" alt="">
+                            <img id="imagenActualCabeceraCrear" class="img-fluid auxResponsive" src="css/subirArchivo.jpg" style="max-height: 500px" alt="">
                         </div>
                         <p style="margin-top: 10px"><b>Agregar foto de cabecera</b></p>
                         <%if(extensionInvalidaCab!=null){%><label for="inputCabeceraCrear"><a style="color: red;">Ingrese un formato e imagen correctos</a></label><%}else if(escalaInvalidaCab!=null){%><label for="inputCabeceraCrear"><a style="color: red;">Ingrese una escala apropiada</a></label><%}%>
@@ -1934,7 +1944,7 @@
                     <br>
                     <div class="container-fluid btn btn-file1">
                         <div id="contenedorImagenCrear">
-                            <img id="imagenActualCrear" class="img-fluid" src="css/subirArchivo.jpg" style="max-height: 500px" alt="">
+                            <img id="imagenActualCrear" class="img-fluid auxResponsive" src="css/subirArchivo.jpg" style="max-height: 500px" alt="">
                         </div>
                         <p style="margin-top: 10px"><b>Agregar foto miniatura</b></p>
                         <%if(extensionInvalidaMin!=null){%><label for="inputCrear"><a style="color: red;">Ingrese un formato e imagen correctos</a></label><%}else if(escalaInvalidaMin!=null){%><label for="inputCabeceraCrear"><a style="color: red;">Ingrese una escala apropiada</a></label><%}%>
@@ -1985,13 +1995,9 @@
 
                     <label style="margin-top: 25px;"><b>Puntaje para el 1er lugar:</b></label>
                     <input type="text" name="puntajeEditarActividad" id="puntajeEditarActividad<%=i%>" value="<%=listaActividades.get(i).getCantPuntosPrimerLugar()%>" placeholder="###" required>
-                    <%if(puntajeNoNumerico!=null && idActividadElegida!=null && idActividadElegida==listaActividades.get(i).getIdActividad()){
-                    request.getSession().removeAttribute("idActividadElegida");
-                        request.getSession().removeAttribute("puntajeNoNumerico");%>
+                    <%if(puntajeNoNumerico!=null && idActividadElegida!=null && idActividadElegida==listaActividades.get(i).getIdActividad()){%>
                     <a style="color: red">Debe de ingresar un valor numérico</a>
-                    <%}else if(actividadRepetida!=null&& idActividadElegida!=null && idActividadElegida==listaActividades.get(i).getIdActividad()){
-                        request.getSession().removeAttribute("idActividadElegida");
-                        request.getSession().removeAttribute("actividadRepetida");%>
+                    <%}else if(actividadRepetida!=null&& idActividadElegida!=null && idActividadElegida==listaActividades.get(i).getIdActividad()){%>
                             <a style="color: red">La actividad ya existe. Emplee otro nombre.</a>
                     <%}%>
                     <div style="display: flex; justify-content: left; margin-top: 25px;">
@@ -2003,7 +2009,7 @@
                     <div class="container-fluid btn btn-file1">
                         <div id="contenedorImagenEditar<%=i%>">
                             <%request.getSession().setAttribute("fotoActividadCabecera"+i,listaActividades.get(i).getFotoCabecera());%>
-                            <img id="imagenActualEditar<%=i%>" class="img-fluid" src="Imagen?tipoDeFoto=fotoActividadCabecera&id=ActividadCabecera<%=i%>" style="max-height: 600px" alt="">
+                            <img id="imagenActualEditar<%=i%>" class="img-fluid auxResponsive" src="Imagen?tipoDeFoto=fotoActividadCabecera&id=ActividadCabecera<%=i%>" style="max-height: 600px" alt="">
                         </div>
                         <p style="margin-top: 10px"><b>Editar foto cabecera</b></p>
                         <%if(extensionInvalidaCab!=null&& idActividadElegida!=null && idActividadElegida==listaActividades.get(i).getIdActividad()){%><label for="inputEditar<%=i%>"><a style="color: red;">Ingrese un formato e imagen correctos</a></label><%}else if(escalaInvalidaCab!=null&& idActividadElegida!=null && idActividadElegida==listaActividades.get(i).getIdActividad()){%><label for="inputCabeceraCrear"><a style="color: red;">Ingrese una escala apropiada</a></label><%}%>
@@ -2012,8 +2018,8 @@
                     <br>
                     <div class="container-fluid btn btn-file1">
                         <div id="contenedorImagenMinEditar<%=i%>">
-                            <%request.getSession().setAttribute("fotoActividadMiniatura"+i,listaActividades.get(i).getFotoMiniatura());%>
-                            <img id="imagenActualMinEditar<%=i%>" class="img-fluid" src="Imagen?tipoDeFoto=fotoActividadMiniatura&id=ActividadMiniatura<%=i%>" style="max-height: 600px" alt="">
+                            <%request.getSession().setAttribute("fotoActividadMiniaturaEditar"+i,listaActividades.get(i).getFotoMiniatura());%>
+                            <img id="imagenActualMinEditar<%=i%>" class="img-fluid auxResponsive" src="Imagen?tipoDeFoto=fotoActividadMiniatura&id=ActividadMiniaturaEditar<%=i%>" style="max-height: 600px" alt="">
                         </div>
                         <p style="margin-top: 10px"><b>Editar foto miniatura</b></p>
                         <%if(extensionInvalidaMin!=null&& idActividadElegida!=null && idActividadElegida==listaActividades.get(i).getIdActividad()){%><label for="inputMinEditar<%=i%>"><a style="color: red;">Ingrese un formato e imagen correctos</a></label><%}else if(escalaInvalidaMin!=null&& idActividadElegida!=null && idActividadElegida==listaActividades.get(i).getIdActividad()){%><label for="inputCabeceraCrear"><a style="color: red;">Ingrese una escala apropiada</a></label><%}%>

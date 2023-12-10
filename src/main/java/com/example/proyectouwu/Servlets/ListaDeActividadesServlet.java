@@ -9,8 +9,6 @@ import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
 
 import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
-import java.sql.SQLException;
 import java.io.InputStream;
 import java.io.IOException;
 
@@ -30,70 +28,85 @@ public class ListaDeActividadesServlet extends HttpServlet {
             request.setAttribute("IDyNombreDelegadosDeActividad",dUsuario.listarIDyNombreDelegadosDeActividad());
             String action = request.getParameter("action") == null ? "default" : request.getParameter("action");
             switch (action){
+                default:
                 case "default":
                     request.setAttribute("listaActividades",new DaoActividad().listarActividades());
-                    String idActividadAux=request.getParameter("idActividadElegida");
-                    if(idActividadAux!=null){
-                        request.setAttribute("idActividadElegida",Integer.parseInt(idActividadAux));
-                    }
-                    request.setAttribute("puntajeNoNumerico",request.getParameter("puntajeNoNumerico"));
-                    if(usuario.getRol().equals("Alumno")){
-                        request.getRequestDispatcher("listaDeActividades.jsp").forward(request,response);
-                    }else if(usuario.getRol().equals("Delegado General")){
-                        request.setAttribute("listaNotificacionesCampanita",new DaoNotificacion().listarNotificacionesDelegadoGeneral());
-                        request.getRequestDispatcher("listaDeActividades.jsp").forward(request,response);
-                    }else if(usuario.getRol().equals("Delegado de Actividad")){
-                        Integer idActividadDelegatura=new DaoActividad().idDelegaturaPorIdDelegadoDeActividad(usuario.getIdUsuario());
-                        request.setAttribute("listaNotificacionesDelegadoDeActividad",new DaoNotificacion().listarNotificacionesDelegadoDeActividad(usuario.getIdUsuario()));
-                        request.setAttribute("idActividadDelegatura",idActividadDelegatura);
-                        request.getRequestDispatcher("listaDeActividades.jsp").forward(request,response);
+                    switch (usuario.getRol()) {
+                        case "Alumno":
+                            request.getRequestDispatcher("listaDeActividades.jsp").forward(request, response);
+                            break;
+                        case "Delegado General":
+                            request.setAttribute("listaNotificacionesCampanita", new DaoNotificacion().listarNotificacionesDelegadoGeneral());
+                            request.getRequestDispatcher("listaDeActividades.jsp").forward(request, response);
+                            break;
+                        case "Delegado de Actividad":
+                            Integer idActividadDelegatura = new DaoActividad().idDelegaturaPorIdDelegadoDeActividad(usuario.getIdUsuario());
+                            request.setAttribute("listaNotificacionesDelegadoDeActividad", new DaoNotificacion().listarNotificacionesDelegadoDeActividad(usuario.getIdUsuario()));
+                            request.setAttribute("idActividadDelegatura", idActividadDelegatura);
+                            request.getRequestDispatcher("listaDeActividades.jsp").forward(request, response);
+                            break;
                     }
                     break;
                 case "buscarActividad":
                     String actividad=request.getParameter("actividad");
-                    request.setAttribute("listaActividades",new DaoActividad().listarActividades(actividad));
-                    request.setAttribute("actividad",actividad);
-                    if(usuario.getRol().equals("Alumno")){
-                        request.getRequestDispatcher("listaDeActividades.jsp").forward(request,response);
-                    }else if(usuario.getRol().equals("Delegado General")){
-                        request.setAttribute("listaNotificacionesCampanita",new DaoNotificacion().listarNotificacionesDelegadoGeneral());
-                        request.getRequestDispatcher("listaDeActividades.jsp").forward(request,response);
-                    }else if(usuario.getRol().equals("Delegado de Actividad")){
-                        Integer idActividadDelegatura=new DaoActividad().idDelegaturaPorIdDelegadoDeActividad(usuario.getIdUsuario());
-                        request.setAttribute("listaNotificacionesDelegadoDeActividad",new DaoNotificacion().listarNotificacionesDelegadoDeActividad(usuario.getIdUsuario()));
-                        request.setAttribute("idActividadDelegatura",idActividadDelegatura);
-                        request.getRequestDispatcher("listaDeActividades.jsp").forward(request,response);
+                    if(actividad!=null){
+                        request.setAttribute("listaActividades",new DaoActividad().listarActividades(actividad));
+                        request.setAttribute("actividad",actividad);
+                        switch (usuario.getRol()) {
+                            case "Alumno":
+                                request.getRequestDispatcher("listaDeActividades.jsp").forward(request, response);
+                                break;
+                            case "Delegado General":
+                                request.setAttribute("listaNotificacionesCampanita", new DaoNotificacion().listarNotificacionesDelegadoGeneral());
+                                request.getRequestDispatcher("listaDeActividades.jsp").forward(request, response);
+                                break;
+                            case "Delegado de Actividad":
+                                Integer idActividadDelegatura = new DaoActividad().idDelegaturaPorIdDelegadoDeActividad(usuario.getIdUsuario());
+                                request.setAttribute("listaNotificacionesDelegadoDeActividad", new DaoNotificacion().listarNotificacionesDelegadoDeActividad(usuario.getIdUsuario()));
+                                request.setAttribute("idActividadDelegatura", idActividadDelegatura);
+                                request.getRequestDispatcher("listaDeActividades.jsp").forward(request, response);
+                                break;
+                        }
+                    }else {
+                        response.sendRedirect("ListaDeActividadesServlet");
                     }
                     break;
                 case "filtroActividad":
                     String idFiltroActividades=request.getParameter("idFiltroActividades");
                     String idOrdenarActividades=request.getParameter("idOrdenarActividades");
-                    if(!(idOrdenarActividades.equals("0") || idOrdenarActividades.equals("1"))){
-                        idOrdenarActividades="0";
-                    }
-                    if(usuario.getRol().equals("Alumno")){
-                        if(!(idFiltroActividades.equals("0") || idFiltroActividades.equals("1") || idFiltroActividades.equals("2") || idFiltroActividades.equals("3"))){
-                            idFiltroActividades="0";
+                    if(idOrdenarActividades!=null&&idFiltroActividades!=null){
+                        if(!(idOrdenarActividades.equals("0") || idOrdenarActividades.equals("1"))){
+                            idOrdenarActividades="0";
                         }
-                    }else{
-                        if(!(idFiltroActividades.equals("0") || idFiltroActividades.equals("1") || idFiltroActividades.equals("2") || idFiltroActividades.equals("3") || idFiltroActividades.equals("4"))){
-                            idFiltroActividades="0";
+                        if(usuario.getRol().equals("Alumno")){
+                            if(!(idFiltroActividades.equals("0") || idFiltroActividades.equals("1") || idFiltroActividades.equals("2") || idFiltroActividades.equals("3"))){
+                                idFiltroActividades="0";
+                            }
+                        }else{
+                            if(!(idFiltroActividades.equals("0") || idFiltroActividades.equals("1") || idFiltroActividades.equals("2") || idFiltroActividades.equals("3") || idFiltroActividades.equals("4"))){
+                                idFiltroActividades="0";
+                            }
                         }
-                    }
-
-                    request.setAttribute("listaActividades",new DaoActividad().listarActividades(idFiltroActividades,idOrdenarActividades,usuario.getIdUsuario()));
-                    request.setAttribute("idFiltroActividades",idFiltroActividades);
-                    request.setAttribute("idOrdenarActividades",idOrdenarActividades);
-                    if(usuario.getRol().equals("Alumno")){
-                        request.getRequestDispatcher("listaDeActividades.jsp").forward(request,response);
-                    }else if(usuario.getRol().equals("Delegado General")){
-                        request.setAttribute("listaNotificacionesCampanita",new DaoNotificacion().listarNotificacionesDelegadoGeneral());
-                        request.getRequestDispatcher("listaDeActividades.jsp").forward(request,response);
-                    }else if(usuario.getRol().equals("Delegado de Actividad")){
-                        Integer idActividadDelegatura=new DaoActividad().idDelegaturaPorIdDelegadoDeActividad(usuario.getIdUsuario());
-                        request.setAttribute("listaNotificacionesDelegadoDeActividad",new DaoNotificacion().listarNotificacionesDelegadoDeActividad(usuario.getIdUsuario()));
-                        request.setAttribute("idActividadDelegatura",idActividadDelegatura);
-                        request.getRequestDispatcher("listaDeActividades.jsp").forward(request,response);
+                        request.setAttribute("listaActividades",new DaoActividad().listarActividades(idFiltroActividades,idOrdenarActividades,usuario.getIdUsuario()));
+                        request.setAttribute("idFiltroActividades",idFiltroActividades);
+                        request.setAttribute("idOrdenarActividades",idOrdenarActividades);
+                        switch (usuario.getRol()) {
+                            case "Alumno":
+                                request.getRequestDispatcher("listaDeActividades.jsp").forward(request, response);
+                                break;
+                            case "Delegado General":
+                                request.setAttribute("listaNotificacionesCampanita", new DaoNotificacion().listarNotificacionesDelegadoGeneral());
+                                request.getRequestDispatcher("listaDeActividades.jsp").forward(request, response);
+                                break;
+                            case "Delegado de Actividad":
+                                Integer idActividadDelegatura = new DaoActividad().idDelegaturaPorIdDelegadoDeActividad(usuario.getIdUsuario());
+                                request.setAttribute("listaNotificacionesDelegadoDeActividad", new DaoNotificacion().listarNotificacionesDelegadoDeActividad(usuario.getIdUsuario()));
+                                request.setAttribute("idActividadDelegatura", idActividadDelegatura);
+                                request.getRequestDispatcher("listaDeActividades.jsp").forward(request, response);
+                                break;
+                        }
+                    }else {
+                        response.sendRedirect("ListaDeActividadesServlet");
                     }
                     break;
             }
@@ -110,7 +123,6 @@ public class ListaDeActividadesServlet extends HttpServlet {
         if(usuario==null){
             response.sendRedirect("InicioSesionServlet");
         }else {
-            DaoNotificacion dN = new DaoNotificacion();
             String action = request.getParameter("action") == null ? "default" : request.getParameter("action");
 
             // Parámetros auxiliares para imagenes cabecera y miniatura
@@ -126,6 +138,10 @@ public class ListaDeActividadesServlet extends HttpServlet {
             String rutaImagenPredeterminada = "/css/fibraVShormigon.png";
 
             switch (action){
+                case "default":
+                default:
+                    response.sendRedirect("ListaDeActividadesServlet");
+                    break;
                 case "finalizarActividad":
 
                     String idActividadFinalizarStr = request.getParameter("idActividadFinalizar");
@@ -133,7 +149,7 @@ public class ListaDeActividadesServlet extends HttpServlet {
                     if (idActividadFinalizarStr!=null&&idActividadFinalizarStr.matches("\\d+")){
 
                         if (dActividad.existeActividad(idActividadFinalizarStr)){
-                            Integer idActividadFinalizar=Integer.parseInt(request.getParameter("idActividadFinalizar"));
+                            int idActividadFinalizar=Integer.parseInt(request.getParameter("idActividadFinalizar"));
                             dActividad.finalizarActividad(idActividadFinalizar);
                             response.sendRedirect("ListaDeActividadesServlet");
                         }else{
@@ -143,8 +159,6 @@ public class ListaDeActividadesServlet extends HttpServlet {
                     }else{
                         response.sendRedirect("ListaDeActividadesServlet");
                     }
-
-
                     break;
                 case "crearActividad":
                     boolean validacionCrear=true;
@@ -177,11 +191,7 @@ public class ListaDeActividadesServlet extends HttpServlet {
                         }
                     }
                     boolean ocultoCrearActividad;
-                    if(request.getParameter("ocultoCrearActividad")!=null){
-                        ocultoCrearActividad=true;
-                    }else{
-                        ocultoCrearActividad=false;
-                    }
+                    ocultoCrearActividad= request.getParameter("ocultoCrearActividad") != null;
                     //fotoCabecera=inputCab;
                     partCab = request.getPart("addfotoCabecera");
                     // Obtenemos el flujo de bytes
@@ -264,70 +274,69 @@ public class ListaDeActividadesServlet extends HttpServlet {
                                             if(idDelegadoActividadEditarStr!=null){
                                                 if (idDelegadoActividadEditarStr.matches("\\d+") && dUsuario.existeUsuario(idDelegadoActividadEditarStr)){
                                                     Integer idDelegadoActividadEditar=Integer.parseInt(request.getParameter("idDelegadoActividadEditar"));
-
-                                                    String puntajeEditarActividad=request.getParameter("puntajeEditarActividad");
-                                                    if(puntajeEditarActividad!=null){
-                                                        try{
-                                                            Integer puntajeAux2=Integer.parseInt(puntajeEditarActividad);
-                                                        }catch (NumberFormatException e){
-                                                            request.getSession().setAttribute("puntajeNoNumerico","1");
-                                                            validacionEditar=false;
-                                                        }
-                                                        boolean ocultoEditarActividad;
-                                                        if(request.getParameter("ocultoEditarActividad")!=null){
-                                                            ocultoEditarActividad=true;
-                                                        }else{
-                                                            ocultoEditarActividad=false;
-                                                        }
-                                                        //fotoCabeceraEditar==inputCab;
-                                                        partCab = request.getPart("updateFotoCabecera");
-
-                                                        // Obtenemos el flujo de bytes
-                                                        if (partCab != null) {
-                                                            inputCab = partCab.getInputStream();
-                                                            validarLongitudCab = inputCab.available() > 10;
-                                                            nombreCab=partCab.getSubmittedFileName();
-                                                            if(!validarLongitudCab){
-                                                            }else if(!io.isImageFile(nombreCab)){
-                                                                request.getSession().setAttribute("extensionInvalidaCab","1");
+                                                    if(!dUsuario.usuarioEsDelegadoDeActividad(idDelegadoActividadEditar)||idDelegadoActividadEditar==idDelegadoActividadAnterior){
+                                                        String puntajeEditarActividad=request.getParameter("puntajeEditarActividad");
+                                                        if(puntajeEditarActividad!=null){
+                                                            try{
+                                                                Integer puntajeAux2=Integer.parseInt(puntajeEditarActividad);
+                                                            }catch (NumberFormatException e){
+                                                                request.getSession().setAttribute("puntajeNoNumerico","1");
                                                                 validacionEditar=false;
-                                                            }else if(!io.betweenScales(ImageIO.read(partCab.getInputStream()),0.5,2)) {
-                                                                request.getSession().setAttribute("escalaInvalidaCab", "1");
-                                                                validacionEditar = false;
                                                             }
-                                                        }
+                                                            boolean ocultoEditarActividad;
+                                                            ocultoEditarActividad= request.getParameter("ocultoEditarActividad") != null;
+                                                            //fotoCabeceraEditar==inputCab;
+                                                            partCab = request.getPart("updateFotoCabecera");
 
-
-                                                        //fotoMiniaturaEditar==inputMin;
-                                                        partMin = request.getPart("updateFotoMiniatura");
-
-                                                        // Obtenemos el flujo de bytes
-                                                        if (partMin != null) {
-                                                            inputMin = partMin.getInputStream();
-                                                            validarLongitudMin = inputMin.available() > 10;
-                                                            nombreMin= partMin.getSubmittedFileName();
-                                                            if(!validarLongitudMin){
-                                                            }else if(!io.isImageFile(nombreMin)){
-                                                                request.getSession().setAttribute("extensionInvalidaMin","1");
-                                                                validacionEditar=false;
-                                                            }else if(!io.betweenScales(ImageIO.read(partMin.getInputStream()),0.666,1.5)) {
-                                                                request.getSession().setAttribute("escalaInvalidaMin", "1");
-                                                                validacionEditar = false;
+                                                            // Obtenemos el flujo de bytes
+                                                            if (partCab != null) {
+                                                                inputCab = partCab.getInputStream();
+                                                                validarLongitudCab = inputCab.available() > 10;
+                                                                nombreCab=partCab.getSubmittedFileName();
+                                                                if(!validarLongitudCab){
+                                                                }else if(!io.isImageFile(nombreCab)){
+                                                                    request.getSession().setAttribute("extensionInvalidaCab","1");
+                                                                    validacionEditar=false;
+                                                                }else if(!io.betweenScales(ImageIO.read(partCab.getInputStream()),0.5,2)) {
+                                                                    request.getSession().setAttribute("escalaInvalidaCab", "1");
+                                                                    validacionEditar = false;
+                                                                }
                                                             }
-                                                        }
 
-                                                        if(validacionEditar){
-                                                            dActividad.editarActividad(idActividadEditar,nombreEditarActividad,idDelegadoActividadEditar,Integer.parseInt(puntajeEditarActividad),ocultoEditarActividad,inputCab,inputMin,idDelegadoActividadAnterior,validarLongitudCab,validarLongitudMin);
-                                                        }else{
-                                                            request.getSession().setAttribute("idActividadElegida",idActividadEditar);
+
+                                                            //fotoMiniaturaEditar==inputMin;
+                                                            partMin = request.getPart("updateFotoMiniatura");
+
+                                                            // Obtenemos el flujo de bytes
+                                                            if (partMin != null) {
+                                                                inputMin = partMin.getInputStream();
+                                                                validarLongitudMin = inputMin.available() > 10;
+                                                                nombreMin= partMin.getSubmittedFileName();
+                                                                if(!validarLongitudMin){
+                                                                }else if(!io.isImageFile(nombreMin)){
+                                                                    request.getSession().setAttribute("extensionInvalidaMin","1");
+                                                                    validacionEditar=false;
+                                                                }else if(!io.betweenScales(ImageIO.read(partMin.getInputStream()),0.666,1.5)) {
+                                                                    request.getSession().setAttribute("escalaInvalidaMin", "1");
+                                                                    validacionEditar = false;
+                                                                }
+                                                            }
+
+                                                            if(validacionEditar){
+                                                                dActividad.editarActividad(idActividadEditar,nombreEditarActividad,idDelegadoActividadEditar,Integer.parseInt(puntajeEditarActividad),ocultoEditarActividad,inputCab,inputMin,idDelegadoActividadAnterior,validarLongitudCab,validarLongitudMin);
+                                                            }else{
+                                                                request.getSession().setAttribute("idActividadElegida",idActividadEditar);
+                                                            }
+                                                            if (inputMin != null) {
+                                                                inputMin.close();
+                                                            }
+                                                            if (inputCab != null) {
+                                                                inputCab.close();
+                                                            }
+                                                            response.sendRedirect("ListaDeActividadesServlet");
+                                                        }else {
+                                                            response.sendRedirect("ListaDeActividadesServlet");
                                                         }
-                                                        if (inputMin != null) {
-                                                            inputMin.close();
-                                                        }
-                                                        if (inputCab != null) {
-                                                            inputCab.close();
-                                                        }
-                                                        response.sendRedirect("ListaDeActividadesServlet");
                                                     }else {
                                                         response.sendRedirect("ListaDeActividadesServlet");
                                                     }

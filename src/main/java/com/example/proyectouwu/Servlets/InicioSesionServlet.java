@@ -6,10 +6,7 @@ import com.example.proyectouwu.Daos.*;
 import jakarta.servlet.*;
 import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
-
-import javax.swing.*;
 import java.io.IOException;
-import java.util.ArrayList;
 
 @WebServlet(name = "InicioSesionServlet", value = "/InicioSesionServlet")
 public class InicioSesionServlet extends HttpServlet {
@@ -102,7 +99,7 @@ public class InicioSesionServlet extends HttpServlet {
                 break;
             case "logOut":
                 request.getSession().invalidate();
-                response.sendRedirect(request.getContextPath() + "");
+                response.sendRedirect(request.getContextPath());
                 break;
         }
     }

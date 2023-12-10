@@ -6,7 +6,10 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%String correoNoExiste=(String) request.getSession().getAttribute("correoNoExiste");%>
+<%String correoNoExiste=(String) request.getSession().getAttribute("correoNoExiste");
+if(correoNoExiste!=null){
+    request.getSession().removeAttribute("correoNoExiste");
+}%>
 <html> <!-- lang="en"  , no se poque estaba eso dentro del html-->
 <head>
     <meta charset="utf-8">
@@ -113,7 +116,7 @@
     <button id="continuarButton" class=  "w-100 btn btn-primary btn-lg texto mb-3 py-3" type="submit" style ="background-color: rgb(97,93,250)" disabled><a id="abrirPopup">Continuar</a></button>
 </form>
 
-    <button class="py-3" ><a href="<%=request.getContextPath()%>/InicioSesionServlet">Atrás</a></button>
+    <a href="<%=request.getContextPath()%>/InicioSesionServlet"><button class="py-3" >Atrás</button></a>
 
 
     <!---"w-100 btn btn-primary btn-lg texto"-->
@@ -145,7 +148,7 @@
     </script>
 </div>
 <footer class="my-5 pt-5 text-muted text-center text-small">
-    <p class="mb-1">&copy; 2023 PUCP</p>
+    <p class="mb-1">&copy; 2023 Fibra Tóxica</p>
     <!--<ul class="list-inline">
       <li class="list-inline-item"><a href="#">Privacy</a></li>
       <li class="list-inline-item"><a href="#">Terms</a></li>
@@ -165,7 +168,6 @@
         <p style="font-size: 1.125rem;font-family: 'Titillium Web' !important; font-weight: 500 !important; text-align: center;">El correo ingresado no está registrado. Ingrese un correo correcto.</p>
     </div>
 </div>
-<%request.getSession().removeAttribute("correoNoExiste");%>
 <%}%>
 <script>
 

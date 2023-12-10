@@ -396,12 +396,23 @@ public class ListaDeEventosServlet extends HttpServlet {
                             boolean addEventoOculto = (addEventoOcultoStr != null);
                             Date addFecha=null;
                             Time addHora=null;
+                            java.util.Date fechaActualUtil = new java.util.Date();
+
+
                             try {
                                 addFecha = Date.valueOf(addFechaStrAux);
                                 addHora = Time.valueOf(addHoraStr + ":00");
                             }catch (IllegalArgumentException e){
                                 validacionCrear=false;
                             }
+
+                            if (addFecha.before(fechaActualUtil)){
+
+                                request.getSession().setAttribute("fechaInvalida","1");
+
+                                validacionCrear=false;
+                            }
+
                             // Verificar lugar:
                             int addLugarId = dLugarEvento.idLugarPorNombre(addLugar);
                             // En caso no exista el lugar, F

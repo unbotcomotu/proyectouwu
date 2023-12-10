@@ -65,6 +65,12 @@
             request.getSession().removeAttribute("escalaInvalida");
         }
 
+        String fechaInvalida = (String) request.getSession().getAttribute("fechaInvalida");
+
+        if(fechaInvalida!=null){
+            request.getSession().removeAttribute("fechaInvalida");
+        }
+
         ArrayList<Integer[]>listaLugaresCantidad=(ArrayList<Integer[]>) request.getSession().getAttribute("listaLugaresCantidad");
         ArrayList<Integer> listaLugaresFiltro = new ArrayList<>();
         for(int i=0;i<listaLugaresCantidad.size();i++){
@@ -2368,8 +2374,8 @@
     </div>
 </footer>
 <%if(delegadoDeEstaActividadID==idUsuario){%>
-<div class="overlay" <%if((descripcionLarga!=null||fraseLarga!=null||extensionInvalida!=null||escalaInvalida!=null)&&eventoElegido==null){%>style="display: block;"<%}%> id="overlayCrear"></div>
-<div class="popup contenedorCrear" style="width: 700px;<%if((descripcionLarga!=null||fraseLarga!=null)&&eventoElegido==null||extensionInvalida!=null||escalaInvalida!=null){%>display: block;<%}%>" id="popupCrear">
+<div class="overlay" <%if((descripcionLarga!=null||fraseLarga!=null||extensionInvalida!=null||escalaInvalida!=null || fechaInvalida!=null)&&eventoElegido==null){%>style="display: block;"<%}%> id="overlayCrear"></div>
+<div class="popup contenedorCrear" style="width: 700px;<%if((descripcionLarga!=null||fraseLarga!=null)&&eventoElegido==null||extensionInvalida!=null||escalaInvalida!=null || fechaInvalida!=null){%>display: block;<%}%>" id="popupCrear">
     <svg class="cerrarPopup" id="cerrarPopupCrear" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path d="M11.4142 10L16.7071 4.70711C17.0976 4.31658 17.0976 3.68342 16.7071 3.29289C16.3166 2.90237 15.6834 2.90237 15.2929 3.29289L10 8.58579L4.70711 3.29289C4.31658 2.90237 3.68342 2.90237 3.29289 3.29289C2.90237 3.68342 2.90237 4.31658 3.29289 4.70711L8.58579 10L3.29289 15.2929C2.90237 15.6834 2.90237 16.3166 3.29289 16.7071C3.68342 17.0976 4.31658 17.0976 4.70711 16.7071L10 11.4142L15.2929 16.7071C15.6834 17.0976 16.3166 17.0976 16.7071 16.7071C17.0976 16.3166 17.0976 15.6834 16.7071 15.2929L11.4142 10Z" fill="black"/>
     </svg>
@@ -2423,6 +2429,9 @@
                         <label for="fechaCrearEvento"><b>Fecha (día):</b></label>
                         <input style="height: 55px;padding-left: 20px" type="date" id="fechaCrearEvento" name="addFecha" multiple required>
                     </div>
+                    <%if (fechaInvalida!=null){%>
+                    <label for="inputCrear"><a style="color: red;">Ingrese una fecha válida</a></label>
+                    <%}%>
                     <div class="col-6">
                         <p style="width: 100%;"><b>Ocultar evento:</b></p>
                         <input type="checkbox" name="addEventoOculto" style="width: 30%; position: relative; top: 15px; left: 60px;">

@@ -93,9 +93,13 @@ public class ListaDeUsuariosServlet extends HttpServlet {
             String action = request.getParameter("action") == null ? "default" : request.getParameter("action");
             switch(action){
                 case "banear":
-                    int idUsuarioABanear =Integer.parseInt(request.getParameter("idUsuarioABanear"));
-                    String motivoBan=request.getParameter("motivoBan");
-                    new DaoBan().banearPorId(idUsuarioABanear,motivoBan);
+                    String idUsuarioABanear=request.getParameter("idUsuarioABanear");
+                    if(idUsuarioABanear!=null){
+                        String motivoBan=request.getParameter("motivoBan");
+                        if(motivoBan!=null&&!motivoBan.isEmpty()){
+                            new DaoBan().banearPorId(idUsuarioABanear,motivoBan);
+                        }
+                    }
                     response.sendRedirect("ListaDeUsuariosServlet");
                     break;
             }

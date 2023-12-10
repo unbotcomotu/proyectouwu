@@ -307,10 +307,10 @@ public class DaoActividad extends DaoPadre {
         }
     }
 
-    public void crearActividad(String nombre, int idDelegadoDeActividad, int puntaje, boolean oculto, InputStream fotoCabecera, InputStream fotoMiniatura){
+    public void crearActividad(String nombre, String idDelegadoDeActividad, int puntaje, boolean oculto, InputStream fotoCabecera, InputStream fotoMiniatura){
         String sql="insert into actividad (idDelegadoDeActividad,nombre,fotoMiniatura,fotoCabecera,cantidadPuntosPrimerLugar,actividadFinalizada,actividadOculta) values(?,?,?,?,?,false,?)";
         try(Connection conn=this.getConnection(); PreparedStatement pstmt= conn.prepareStatement(sql)){
-            pstmt.setInt(1,idDelegadoDeActividad);
+            pstmt.setString(1,idDelegadoDeActividad);
             pstmt.setString(2,nombre);
             pstmt.setBinaryStream(3, fotoMiniatura,(int)fotoMiniatura.available());
             pstmt.setBinaryStream(4, fotoCabecera,(int)fotoCabecera.available());
@@ -322,7 +322,7 @@ public class DaoActividad extends DaoPadre {
         }
         sql="update usuario set rol='Delegado de Actividad' where idUsuario=?";
         try(Connection conn=this.getConnection(); PreparedStatement pstmt= conn.prepareStatement(sql)){
-            pstmt.setInt(1,idDelegadoDeActividad);
+            pstmt.setString(1,idDelegadoDeActividad);
             pstmt.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException(e);

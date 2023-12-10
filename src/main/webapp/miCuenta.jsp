@@ -1785,7 +1785,7 @@
                 <div class="col-sm-12">
                     <br>
                     <label for="descripcionPerfil" style="margin-top: 25px;"><b>Descripción:</b></label>
-                    <textarea type="text" id="descripcionPerfil" placeholder="Descripcion" name= "nuevaDescripcion" cols="10" rows="5" required><%=new DaoUsuario().obtenerDescripcionPorId(idUsuario)%></textarea>
+                    <textarea type="text" id="descripcionPerfil" placeholder="Descripcion" name= "nuevaDescripcion" cols="10" rows="5" maxlength="1000" required><%=new DaoUsuario().obtenerDescripcionPorId(idUsuario)%></textarea>
                 </div>
             </div>
 

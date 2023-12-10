@@ -90,6 +90,7 @@ public class NotificacionesServlet extends HttpServlet {
                         //mandar la lista a la vista
                         request.setAttribute("pagActual", pagina);
                         request.setAttribute("pagActualD",paginaD);
+                        request.setAttribute("pagActualV",paginaV);
                         request.setAttribute("listaSolicitudes",listaSolicitudes);
                         request.setAttribute("cantidadTotalSolicitudes", daoNotificacion.listarSolicitudesDeRegistro().size());
                         request.setAttribute("reportList", reportList);
@@ -147,6 +148,7 @@ public class NotificacionesServlet extends HttpServlet {
                         request.setAttribute("action", action);
                         request.setAttribute("pagActual", pagina);
                         request.setAttribute("pagActualD",paginaD);
+                        request.setAttribute("pagActualV",paginaV);
                         request.setAttribute("busquedaSolicitudes",busquedaSolicitudes);
                         request.setAttribute("listaSolicitudes",listaSolicitudes);
                         request.setAttribute("reportList", reportList);

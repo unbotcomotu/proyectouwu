@@ -1,10 +1,7 @@
 package com.example.proyectouwu.Servlets;
 
 import com.example.proyectouwu.Beans.Usuario;
-import com.example.proyectouwu.Daos.DaoAlumnoPorEvento;
-import com.example.proyectouwu.Daos.DaoEvento;
-import com.example.proyectouwu.Daos.DaoNotificacion;
-import com.example.proyectouwu.Daos.DaoUsuario;
+import com.example.proyectouwu.Daos.*;
 import jakarta.servlet.*;
 import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;

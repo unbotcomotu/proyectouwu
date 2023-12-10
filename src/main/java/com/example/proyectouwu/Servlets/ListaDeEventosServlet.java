@@ -62,7 +62,7 @@ public class ListaDeEventosServlet extends HttpServlet {
         }else{
             pagina = 1;
         }
-        request.getSession().setAttribute("p",pagina);
+        request.getSession().setAttribute("pagActual",pagina);
         if(usuario==null){
             response.sendRedirect("InicioSesionServlet");
         }else {

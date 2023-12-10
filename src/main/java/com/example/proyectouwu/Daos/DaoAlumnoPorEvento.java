@@ -25,7 +25,7 @@ public class DaoAlumnoPorEvento extends DaoPadre {
     }
     public ArrayList<Evento> listarEventosPorUsuario(int idUsuario){
         ArrayList<Evento>listaEventos=new ArrayList<>();
-        String sql="select e.idEvento,e.idActividad,e.idLugarEvento,e.titulo,e.fecha,e.hora,e.descripcionEventoActivo,e.fraseMotivacional,e.eventoFinalizado,e.eventoOculto,e.resumen,e.resultadoEvento from AlumnoPorEvento ae inner join Evento e on ae.idEvento=e.idEvento where idAlumno=?";
+        String sql="select e.idEvento,e.idActividad,e.idLugarEvento,e.titulo,e.fecha,e.hora,e.descripcionEventoActivo,e.fraseMotivacional,e.eventoFinalizado,e.eventoOculto,e.resumen,e.resultadoEvento,e.fotoMiniatura from AlumnoPorEvento ae inner join Evento e on ae.idEvento=e.idEvento where idAlumno=?";
         try(Connection conn=this.getConnection(); PreparedStatement pstmt= conn.prepareStatement(sql)){
             pstmt.setInt(1,idUsuario);
             try(ResultSet rs=pstmt.executeQuery()){
@@ -43,6 +43,7 @@ public class DaoAlumnoPorEvento extends DaoPadre {
                     e.setEventoOculto(rs.getBoolean(10));
                     e.setResumen(rs.getString(11));
                     e.setResultadoEvento(rs.getString(12));
+                    e.setFotoMiniatura(rs.getBlob(13));
                     listaEventos.add(e);
                 }return listaEventos;
             }

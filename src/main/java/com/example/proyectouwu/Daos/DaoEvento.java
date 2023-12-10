@@ -1236,4 +1236,6 @@ public class DaoEvento extends DaoPadre {
             throw new RuntimeException(e);
         }
     }
+
+    
 }

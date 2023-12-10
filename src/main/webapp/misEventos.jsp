@@ -1,9 +1,9 @@
 <%@ page import="java.util.ArrayList" %>
-<%@ page import="com.example.proyectouwu.Beans.Actividad" %>
 <%@ page import="com.example.proyectouwu.Beans.Evento" %>
 <%@ page import="com.example.proyectouwu.Beans.Usuario" %>
 <%@ page import="com.example.proyectouwu.Beans.AlumnoPorEvento" %>
 <%@ page import="com.example.proyectouwu.Daos.*" %>
+<%@ page import="com.example.proyectouwu.Beans.MensajeChat" %>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <!DOCTYPE html>
 <html lang="en">
@@ -1103,20 +1103,14 @@
                         <p class="calendar-day-number"><%=dia+primeraFechaCalendario+cantidadDiasAnteriorMesRestantes-1%></p>
                         <%}%>
                         <%boolean aux=true;
-                            String titulo;
                             for(Evento e:listaEventos){
                                 String fechaEventoAux[]=e.getFecha().toString().split("-");
                                 if(Integer.parseInt(fechaEventoAux[2])==dia&&Integer.parseInt(fechaEventoAux[1])==mesAux){
                                     if(aux){%>
                         <div class="calendar-day-events">
                             <%aux=false;
-                            }String tituloAux[]=e.getTitulo().split(" ");
-                                titulo="";
-                                for(int k=3;k<tituloAux.length;k++){
-                                    titulo+=tituloAux[k]+" ";
-                                }
-                            %>
-                            <p class="calendar-day-event popup-event-information-trigger" style="background-color: <%=colorPorActividad[e.getActividad().getIdActividad()]%> <%if(e.isEventoFinalizado()){%>;opacity: 0.5<%}%>" id="mostrarPopupEvento<%=listaEventos.indexOf(e)%>"><span class="calendar-day-event-text">⚔️<%=titulo%></span></p>
+                            }%>
+                            <p class="calendar-day-event popup-event-information-trigger" style="background-color: <%=colorPorActividad[e.getActividad().getIdActividad()]%> <%if(e.isEventoFinalizado()){%>;opacity: 0.5<%}%>" id="mostrarPopupEvento<%=listaEventos.indexOf(e)%>"><span class="calendar-day-event-text">⚔️<%=e.getTitulo()%></span></p>
                             <%}}if(!aux){%>
                         </div>
                         <%}%>
@@ -1127,20 +1121,14 @@
                         <p class="calendar-day-number"><%=dia-cantidadDiasMesActual%></p>
                         <%}%>
                         <%boolean aux=true;
-                            String titulo;
                             for(Evento e:listaEventos){
                                 String fechaEventoAux[]=e.getFecha().toString().split("-");
                                 if(fechaEventoAux[2].equals(dia.toString())&&Integer.parseInt(fechaEventoAux[1])==(mesAux+2)){
                                     if(aux){%>
                         <div class="calendar-day-events">
                             <%aux=false;
-                            }String tituloAux[]=e.getTitulo().split(" ");
-                                titulo="";
-                                for(int k=3;k<tituloAux.length;k++){
-                                    titulo+=tituloAux[k]+" ";
-                                }
-                            %>
-                            <p class="calendar-day-event popup-event-information-trigger" style="background-color: <%=colorPorActividad[e.getActividad().getIdActividad()]%> <%if(e.isEventoFinalizado()){%>;opacity: 0.5<%}%>" id="mostrarPopupEvento<%=listaEventos.indexOf(e)%>"><span class="calendar-day-event-text">⚔️<%=titulo%></span></p>
+                            }%>
+                            <p class="calendar-day-event popup-event-information-trigger" style="background-color: <%=colorPorActividad[e.getActividad().getIdActividad()]%> <%if(e.isEventoFinalizado()){%>;opacity: 0.5<%}%>" id="mostrarPopupEvento<%=listaEventos.indexOf(e)%>"><span class="calendar-day-event-text">⚔️<%=e.getTitulo()%></span></p>
                             <%}}if(!aux){%>
                         </div>
                         <%}%>
@@ -1151,20 +1139,14 @@
                         <p class="calendar-day-number"><%=dia%></p>
                         <%}%>
                         <%boolean aux=true;
-                            String titulo;
                             for(Evento e:listaEventos){
                                 String fechaEventoAux[]=e.getFecha().toString().split("-");
-                                if(fechaEventoAux[2].equals(dia.toString())&&Integer.parseInt(fechaEventoAux[1])==(mesAux+1)){
+                                if(Integer.parseInt(fechaEventoAux[2])==dia&&Integer.parseInt(fechaEventoAux[1])==(mesAux+1)){
                                     if(aux){%>
                         <div class="calendar-day-events">
                             <%aux=false;
-                            }String tituloAux[]=e.getTitulo().split(" ");
-                                titulo="";
-                                for(int k=3;k<tituloAux.length;k++){
-                                    titulo+=tituloAux[k]+" ";
-                                }
-                            %>
-                            <p class="calendar-day-event popup-event-information-trigger" style="background-color: <%=colorPorActividad[e.getActividad().getIdActividad()]%> <%if(e.isEventoFinalizado()){%>;opacity: 0.5<%}%>" id="mostrarPopupEvento<%=listaEventos.indexOf(e)%>"><span class="calendar-day-event-text">⚔️<%=titulo%></span></p>
+                            }%>
+                            <p class="calendar-day-event popup-event-information-trigger" style="background-color: <%=colorPorActividad[e.getActividad().getIdActividad()]%> <%if(e.isEventoFinalizado()){%>;opacity: 0.5<%}%>" id="mostrarPopupEvento<%=listaEventos.indexOf(e)%>"><span class="calendar-day-event-text">⚔️<%=e.getTitulo()%></span></p>
                             <%}}if(!aux){%>
                         </div>
                             <%}}%>
@@ -1264,14 +1246,15 @@
     <div>
         <!-- POPUP EVENT COVER -->
         <figure class="popupAux-event-cover liquid">
-            <img src="css/fibraVShormigonLargo.png" alt="cover-33">
+            <%request.getSession().setAttribute("fotoMiniatura"+listaEventos.indexOf(e),e.getFotoMiniatura());%>
+            <img src="Imagen?tipoDeFoto=fotoMiniatura&id=Miniatura<%=listaEventos.indexOf(e)%>" style="max-height: 400px" alt="cover-33">
         </figure>
         <!-- /POPUP EVENT COVER -->
 
         <!-- POPUP EVENT INFO -->
         <div class="popupAux-event-info">
             <!-- POPUP EVENT TITLE -->
-            <p class="popupAux-event-title" style="font-size: 180%"><%=e.getTitulo()%>
+            <p class="popupAux-event-title" style="font-size: 180%">Fibra Tóxica VS <%=e.getTitulo()%>
                 <%if(e.isEventoFinalizado()){
                 if(e.getResultadoEvento().equals("Victoria")){%>
                 <span style="color: green"> (Victoria)</span>
@@ -1404,7 +1387,8 @@
         <!-- /POPUP EVENT INFO -->
 
         <p class="popupAux-event-subtitle" style="margin-left: 27px;">Último mensaje en el foro</p>
-
+        <%MensajeChat m=new DaoMensajeChat().obtenerUltimoMensajeChat(e.getIdEvento());
+        Integer[] diferenciaTiempoUltimoMensaje=new DaoEvento().obtenerDiferenciaEntre2FechasMensaje(m.getIdMensajeChat());%>
         <!-- POST COMMENT -->
         <div class="post-comment">
 
@@ -1413,7 +1397,8 @@
                 <!-- USER AVATAR CONTENT -->
                 <div class="user-avatar-content">
                     <!-- HEXAGON -->
-                    <div class="hexagon-image-30-32" data-src="css/prudencio.png"></div>
+                    <%request.getSession().setAttribute("fotoPerfil"+listaEventos.indexOf(e),m.getUsuario().getFotoPerfil());%>
+                    <div class="hexagon-image-30-32" data-src="Imagen?tipoDeFoto=fotoPerfil&id=Perfil<%=listaEventos.indexOf(e)%>"></div>
                     <!-- /HEXAGON -->
                 </div>
                 <!-- /USER AVATAR CONTENT -->
@@ -1433,41 +1418,63 @@
                     <!-- /HEXAGON -->
                 </div>
                 <!-- /USER AVATAR PROGRESS BORDER -->
-
-                <!-- USER AVATAR BADGE -->
-                <div class="user-avatar-badge">
-                    <!-- USER AVATAR BADGE BORDER -->
-                    <div class="user-avatar-badge-border">
-                        <!-- HEXAGON -->
-                        <div class="hexagon-22-24"></div>
-                        <!-- /HEXAGON -->
-                    </div>
-                    <!-- /USER AVATAR BADGE BORDER -->
-
-                    <!-- USER AVATAR BADGE CONTENT -->
-                    <div class="user-avatar-badge-content">
-                        <!-- HEXAGON -->
-                        <div class="hexagon-dark-16-18"></div>
-                        <!-- /HEXAGON -->
-                    </div>
-                    <!-- /USER AVATAR BADGE CONTENT -->
-
-                    <!-- USER AVATAR BADGE TEXT -->
-                    <p class="user-avatar-badge-text">19</p>
-                    <!-- /USER AVATAR BADGE TEXT -->
-                </div>
-                <!-- /USER AVATAR BADGE -->
             </a>
             <!-- /USER AVATAR -->
-
+            <%String mensajeAux="";
+                if(m.getMensaje().length()>=50){
+                    char[]mensajeChar=m.getMensaje().toCharArray();
+                    for(int i=0;i<50;i++){
+                        mensajeAux+=mensajeChar[i];
+                    }mensajeAux+="...";
+                }else {
+                    mensajeAux=m.getMensaje();
+                }
+            %>
             <!-- POST COMMENT TEXT -->
-            <p class="post-comment-text"><a class="post-comment-text-author">Rodrigo Prudencio</a>TelecozZz</p>
-            <!-- /POST COMMENT TEXT -->
+            <p class="post-comment-text"><a class="post-comment-text-author"><%=m.getUsuario().getNombre()%> <%=m.getUsuario().getApellido()%></a><%=mensajeAux%></p>
+            <p style="margin-top: 6px;color: #adafca;font-size: 0.75rem;font-weight: 500"></p>
+            <%if(diferenciaTiempoUltimoMensaje[0]>1){%>
+            <p style="margin-top: 6px;color: #adafca;font-size: 0.75rem;font-weight: 500"><%=m.getFecha()%> a las <%=m.getHora()%></p>
+            <%}else if(diferenciaTiempoUltimoMensaje[0]==1){%>
+            <p style="margin-top: 6px;color: #adafca;font-size: 0.75rem;font-weight: 500">Ayer a las <%=m.getHora()%></p>
+            <%}else if(diferenciaTiempoUltimoMensaje[1]>0){
+                if(diferenciaTiempoUltimoMensaje[1]==1){%>
+            <!-- USER STATUS TIMESTAMP -->
+            <p style="margin-top: 6px;color: #adafca;font-size: 0.75rem;font-weight: 500">Hace 1 hora</p>
+            <!-- /USER STATUS TIMESTAMP -->
+            <%}else{%>
+            <!-- USER STATUS TIMESTAMP -->
+            <p style="margin-top: 6px;color: #adafca;font-size: 0.75rem;font-weight: 500">Hace <%=diferenciaTiempoUltimoMensaje[1]%> horas</p>
+            <!-- /USER STATUS TIMESTAMP -->
+            <%}%>
+            <%}else if(diferenciaTiempoUltimoMensaje[2]>0){
+                if(diferenciaTiempoUltimoMensaje[2]==1){%>
+            <!-- USER STATUS TIMESTAMP -->
+            <p style="margin-top: 6px;color: #adafca;font-size: 0.75rem;font-weight: 500">Hace 1 minuto</p>
+            <!-- /USER STATUS TIMESTAMP -->
+            <%}else{%>
+            <!-- USER STATUS TIMESTAMP -->
+            <p style="margin-top: 6px;color: #adafca;font-size: 0.75rem;font-weight: 500">Hace <%=diferenciaTiempoUltimoMensaje[2]%> minutos</p>
+            <!-- /USER STATUS TIMESTAMP -->
+            <%}%>
+            <%}else if(diferenciaTiempoUltimoMensaje[3]>0){
+                if(diferenciaTiempoUltimoMensaje[3]==1){%>
+            <!-- USER STATUS TIMESTAMP -->
+            <p style="margin-top: 6px;color: #adafca;font-size: 0.75rem;font-weight: 500">Hace 1 segundo</p>
+            <!-- /USER STATUS TIMESTAMP -->
+            <%}else{%>
+            <!-- USER STATUS TIMESTAMP -->
+            <p style="margin-top: 6px;color: #adafca;font-size: 0.75rem;font-weight: 500">Hace <%=diferenciaTiempoUltimoMensaje[3]%> segundos</p>
+            <!-- /USER STATUS TIMESTAMP -->
+            <%}}else{%>
+            <!-- USER STATUS TIMESTAMP -->
+            <p style="margin-top: 6px;color: #adafca;font-size: 0.75rem;font-weight: 500">Ahora mismo</p>
+            <!-- /USER STATUS TIMESTAMP -->
+            <%}%>
         </div>
         <!-- /POST COMMENT LIST -->
     </div>
     <br>
-
 </div>
 <%}%>
 <script>

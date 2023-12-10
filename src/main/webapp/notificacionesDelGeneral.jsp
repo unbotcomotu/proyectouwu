@@ -2572,17 +2572,27 @@
                         <div class="table-column centered padded">
                             <!-- TABLE TITLE -->
                             <%if(validacion.getTipo().equals("enviarLinkACorreo")){%>
-                            <a href="mailto:<%=validacion.getCorreo()%>?subject=Solicitud de verificación de correo electrónico - Siempre Fibra&body=¡Continúa con tu registro! Haz clic en el siguiente link y completa tus datos: <%=link%>\n\n\nSiempre Fibra?">
-                                <button class="button-accept">Enviar</button>
-                            </a>
+                            <form method="post" action="?action=enviarCorreoJava">
+                                <input type="hidden" name="idCorreoValidacion" value="<%=validacion.getIdCorreoValidacion()%>">
+                                <button class="button-accept" type="submit">
+                                    Enviar
+                                </button>
+                            </form>
                             <%}else if (validacion.getTipo().equals("recuperarContrasena")){%>
-                            <a href="mailto:<%=validacion.getCorreo()%>?subject=Solicitud de recuperación de contraseña - Siempre Fibra&body=¡Continúa con el proceso de recuperación de contraseña! Haz clic en el siguiente link e ingrese su nueva contraseña: <%=link%>\n\n\nSiempre Fibra">
-                                <button class="button-accept">Enviar</button>
-                            </a>
+                            <form method="post" action="?action=enviarCorreoJava">
+                                <input type="hidden" name="idCorreoValidacion" value="<%=validacion.getIdCorreoValidacion()%>">
+                                <button class="button-accept" type="submit">
+                                    Enviar
+                                </button>
+                            </form>
+
                             <%} else {%>
-                            <a href="mailto:<%=validacion.getCorreo()%>?subject=Coordinación para el recibo de kit - Siempre Fibra&body=¡Gracias por tu colaboración! Ahora mereces tu premio: <%=link%>\n\n\nSiempre Fibra">
-                                <button class="button-accept">Enviar</button>
-                            </a>
+                                <form method="post" action="?action=enviarCorreoJava">
+                                    <input type="hidden" name="idCorreoValidacion" value="<%=validacion.getIdCorreoValidacion()%>">
+                                    <button class="button-accept" type="submit">
+                                        Enviar
+                                    </button>
+                                </form>
                             <%}%>
                             <!-- /TABLE TITLE -->
                         </div>

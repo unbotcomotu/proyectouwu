@@ -1,9 +1,19 @@
 package com.example.proyectouwu.Beans;
 
+import com.example.proyectouwu.Daos.DaoNotificacion;
+import com.example.proyectouwu.Daos.DaoValidacion;
+
 import java.sql.Blob;
 import java.sql.Date;
 import java.sql.Time;
-
+import java.util.Properties;
+import javax.mail.Message;
+import javax.mail.MessagingException;
+import javax.mail.PasswordAuthentication;
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
 public class Usuario {
     //ATRIBUTOS
     private Integer idUsuario;
@@ -142,5 +152,58 @@ public class Usuario {
 
     public void setRecibioKit(boolean recibioKit) {
         this.recibioKit = recibioKit;
+    }
+
+    //Metodo extra
+    public void enviarCorreo(String idValidacion){
+        int id = Integer.parseInt(idValidacion);
+        Properties p = new Properties();
+        p.put("mail.smtp.host", "smtp.gmail.com" );
+        p.put("mail.smtp.port", "587");
+        p.put("mail.smtp.auth", "true");
+        p.put("mail.smtp.starttls.enable", "true");
+        Session session = Session.getInstance(p, new javax.mail.Authenticator() {
+            protected PasswordAuthentication getPasswordAuthentication() {
+                return new PasswordAuthentication("hineill.cespedes@pucp.edu.pe", "senode1234xiguala1234x");
+            }
+        });
+
+        try {
+            Message message = new MimeMessage(session);
+
+            message.setFrom(new InternetAddress("hineill.cespedes@pucp.edu.pe"));
+
+            message.setRecipients(Message.RecipientType.TO, InternetAddress.parse("a20213849@pucp.edu.pe"));
+            String tipoValidacion = new DaoValidacion().tipoValidacionPorID(id);
+            switch(tipoValidacion){
+                case"enviarLinkACorreo":
+                    message.setSubject("Asunto del correo : ola ");
+
+                    message.setText("Hola, q quieres? ");
+
+                    Transport.send(message);
+
+                    System.out.println("Correo enviado con éxito.");
+                    break;
+                case "recuperarContrasena":
+                    message.setSubject("Asunto del correo : ola ");
+
+                    message.setText("Hola, q quieres? ");
+
+                    Transport.send(message);
+
+                    System.out.println("Correo enviado con éxito.");
+                    break;
+            }
+
+
+        } catch (MessagingException e) {
+            throw new RuntimeException(e);
+        }
+
+
+
+
+
     }
 }

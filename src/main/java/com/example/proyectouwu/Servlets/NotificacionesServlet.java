@@ -392,6 +392,12 @@ public class NotificacionesServlet extends HttpServlet {
                     }
 
                     break;
+                case "enviarCorreoJava":
+                    //Aqui va el metodo para enviar con java
+                    String idValidacion = request.getParameter("idCorreoValidacion");
+                    usuario.enviarCorreo(idValidacion);
+                    response.sendRedirect("NotificacionesServlet?vistaActualNueva=Recuperacion");
+                    break;
                 case "enviar":
 
                     String idCorreoValidacionStr = request.getParameter("idCorreoValidacion");

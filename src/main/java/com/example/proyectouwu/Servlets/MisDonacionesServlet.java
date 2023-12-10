@@ -81,42 +81,44 @@ public class MisDonacionesServlet extends HttpServlet {
                 case "registDon":
                     String medioPago = request.getParameter("medio");
                     String montoAux=request.getParameter("monto");
-                    try{
-                        monto = Float.parseFloat(montoAux);
-                        if(monto<0){
+                    if(medioPago!=null&&montoAux!=null){
+                        try{
+                            monto = Float.parseFloat(montoAux);
+                            if(monto<0){
+                                validacionMonto=false;
+                            }
+                        }catch (NumberFormatException e){
                             validacionMonto=false;
                         }
-                    }catch (NumberFormatException e){
-                        validacionMonto=false;
-                    }
-                    if(validacionMonto){
-                        partY = request.getPart("addFotoYape");
-                        partP = request.getPart("addFotoPlin");
-                        if(partY!=null){
-                            inputY = partY.getInputStream();
-                            String nombreY= partY.getSubmittedFileName();
-                            if(inputY.available()<10||!io.isImageFile(nombreY)){
-                                request.getSession().setAttribute("extensionInvalidaY","1");
-                            }else{
-                                request.getSession().setAttribute("confirmacion","1");
-                                daoDonacion.agregarDonacionUsuario(usuario.getIdUsuario(),medioPago,monto,inputY);
+                        if(validacionMonto){
+                            partY = request.getPart("addFotoYape");
+                            partP = request.getPart("addFotoPlin");
+                            if(partY!=null){
+                                inputY = partY.getInputStream();
+                                String nombreY= partY.getSubmittedFileName();
+                                if(inputY.available()<10||!io.isImageFile(nombreY)){
+                                    request.getSession().setAttribute("extensionInvalidaY","1");
+                                }else{
+                                    request.getSession().setAttribute("confirmacion","1");
+                                    daoDonacion.agregarDonacionUsuario(usuario.getIdUsuario(),medioPago,monto,inputY);
+                                }
+                                inputY.close();
                             }
-                            inputY.close();
-                        }
-                        if(partP!=null){
-                            inputP = partP.getInputStream();
-                            String nombreP= partP.getSubmittedFileName();
-                            if(inputP.available()<10||!io.isImageFile(nombreP)){
-                                request.getSession().setAttribute("extensionInvalidaP","1");
-                            }else{
-                                request.getSession().setAttribute("confirmacion","1");
-                                daoDonacion.agregarDonacionUsuario(usuario.getIdUsuario(),medioPago,monto,inputP);
+                            if(partP!=null){
+                                inputP = partP.getInputStream();
+                                String nombreP= partP.getSubmittedFileName();
+                                if(inputP.available()<10||!io.isImageFile(nombreP)){
+                                    request.getSession().setAttribute("extensionInvalidaP","1");
+                                }else{
+                                    request.getSession().setAttribute("confirmacion","1");
+                                    daoDonacion.agregarDonacionUsuario(usuario.getIdUsuario(),medioPago,monto,inputP);
+                                }
+                                inputP.close();
                             }
-                            inputP.close();
+                        }else {
+                            request.getSession().setAttribute("errorMonto","1");
+                            request.getSession().setAttribute("medio",medioPago);
                         }
-                    }else {
-                        request.getSession().setAttribute("errorMonto","1");
-                        request.getSession().setAttribute("medio",medioPago);
                     }
                     break;
                 case "default":

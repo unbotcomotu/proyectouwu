@@ -101,6 +101,24 @@ public class DaoActividad extends DaoPadre {
             throw new RuntimeException(e);
         }
     }
+
+    public int obtenerIdActividadPorIdEvento(int idEvento){
+        String sql = "select idActividad from evento where idEvento=?";
+        try(Connection conn = getConnection();
+            PreparedStatement pstmt = conn.prepareStatement(sql)){
+            pstmt.setInt(1,idEvento);
+            try(ResultSet rs = pstmt.executeQuery()){
+                if(rs.next()){
+                    return rs.getInt(1);
+                }else{
+                    return 0;
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     public ArrayList<Actividad>listarActividades(String idFiltroActividades,String idOrdenarActividades,int idUsuario){
         ArrayList<Actividad>listaActividades=new ArrayList<>();
         String sql="";

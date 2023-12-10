@@ -19,6 +19,7 @@ public class EventoServlet extends HttpServlet {
         response.setContentType("text/html");
         DaoUsuario dUsuario=new DaoUsuario();
         DaoEvento dEvento=new DaoEvento();
+        DaoActividad dActividad = new DaoActividad();
         Usuario usuario=(Usuario) request.getSession().getAttribute("usuario");
         if(usuario==null){
             response.sendRedirect("InicioSesionServlet");
@@ -26,28 +27,36 @@ public class EventoServlet extends HttpServlet {
             String idEventoAux=request.getParameter("idEvento");
             if(dEvento.existeEvento(idEventoAux)){
                 int idEvento=Integer.parseInt(request.getParameter("idEvento"));
-                String rolUsuario=dUsuario.rolUsuarioPorId(usuario.getIdUsuario());
-                request.setAttribute("rolUsuario",rolUsuario);
-                request.setAttribute("nombreCompletoUsuario",dUsuario.nombreCompletoUsuarioPorId(usuario.getIdUsuario()));
-                request.setAttribute("vistaActual","listaDeActividades");
-                request.setAttribute("correosDelegadosGenerales",dUsuario.listarCorreosDelegadosGenerales());
-                request.setAttribute("evento",dEvento.eventoPorIDsinMiniatura(idEvento));
-                request.setAttribute("actividad",dEvento.actividadDeEventoPorID(idEvento));
-                request.setAttribute("estadoApoyoAlumnoEvento",new DaoAlumnoPorEvento().verificarApoyo(idEvento,usuario.getIdUsuario()));
-                request.setAttribute("lugar",dEvento.lugarPorEventoID(idEvento));
-                request.setAttribute("delegadoDeEstaActividadID",dEvento.idDelegadoDeActividadPorEvento(idEvento));
-                request.setAttribute("cantidadApoyos",dEvento.cantidadApoyosBarraEquipoPorEvento(idEvento));
-                request.setAttribute("solicitudesApoyoPendientes",dEvento.solicitudesSinAtenderPorEvento(idEvento));
-                request.setAttribute("listaDeMensajes",dEvento.listarMensajes(idEvento));
-                if(rolUsuario.equals("Delegado General")){
-                    request.setAttribute("listaNotificacionesCampanita",new DaoNotificacion().listarNotificacionesDelegadoGeneral());
-                } else if (rolUsuario.equals("Delegado de Actividad")) {
-                    request.setAttribute("listaNotificacionesDelegadoDeActividad",new DaoNotificacion().listarNotificacionesDelegadoDeActividad(usuario.getIdUsuario()));
-                }
-                String action = request.getParameter("action") == null ? "default" : request.getParameter("action");
-                switch (action){
-                    case "default":
-                        request.getRequestDispatcher("evento.jsp").forward(request,response);
+                String idActividad = String.valueOf(dActividad.obtenerIdActividadPorIdEvento(idEvento));
+                if(dActividad.actividadOcultaPorId(idActividad) && usuario.getRol().equals("Alumno")){
+                    response.sendRedirect("ListaDeActividadesServlet");
+                }else {
+                    String rolUsuario = dUsuario.rolUsuarioPorId(usuario.getIdUsuario());
+                    request.setAttribute("rolUsuario", rolUsuario);
+                    request.setAttribute("nombreCompletoUsuario", dUsuario.nombreCompletoUsuarioPorId(usuario.getIdUsuario()));
+                    request.setAttribute("vistaActual", "listaDeActividades");
+                    request.setAttribute("correosDelegadosGenerales", dUsuario.listarCorreosDelegadosGenerales());
+                    request.setAttribute("evento", dEvento.eventoPorIDsinMiniatura(idEvento));
+                    request.setAttribute("actividad", dEvento.actividadDeEventoPorID(idEvento));
+                    request.setAttribute("estadoApoyoAlumnoEvento", new DaoAlumnoPorEvento().verificarApoyo(idEvento, usuario.getIdUsuario()));
+                    request.setAttribute("lugar", dEvento.lugarPorEventoID(idEvento));
+                    request.setAttribute("delegadoDeEstaActividadID", dEvento.idDelegadoDeActividadPorEvento(idEvento));
+                    request.setAttribute("cantidadApoyos", dEvento.cantidadApoyosBarraEquipoPorEvento(idEvento));
+                    request.setAttribute("solicitudesApoyoPendientes", dEvento.solicitudesSinAtenderPorEvento(idEvento));
+                    request.setAttribute("listaDeMensajes", dEvento.listarMensajes(idEvento));
+                    if (rolUsuario.equals("Delegado General")) {
+                        request.setAttribute("listaNotificacionesCampanita", new DaoNotificacion().listarNotificacionesDelegadoGeneral());
+                    } else if (rolUsuario.equals("Delegado de Actividad")) {
+                        request.setAttribute("listaNotificacionesDelegadoDeActividad", new DaoNotificacion().listarNotificacionesDelegadoDeActividad(usuario.getIdUsuario()));
+                    }
+                    String action = request.getParameter("action") == null ? "default" : request.getParameter("action");
+                    if(!action.equals("default")){
+                        action="default";
+                    }
+                    switch (action) {
+                        case "default":
+                            request.getRequestDispatcher("evento.jsp").forward(request, response);
+                    }
                 }
             }else{
                 response.sendRedirect("PaginaNoExisteServlet");
@@ -74,6 +83,9 @@ public class EventoServlet extends HttpServlet {
                     DaoReporte dR=new DaoReporte();
                     Imagen io=new Imagen();
                     String action = request.getParameter("action") == null ? "default" : request.getParameter("action");
+                    if(!(action.equals("apoyoEvento") || action.equals("editarCarrusel") || action.equals("enviarMensaje") || action.equals("reportar"))){
+                        action="default";
+                    }
                     switch (action){
                         default:
                         case "default":

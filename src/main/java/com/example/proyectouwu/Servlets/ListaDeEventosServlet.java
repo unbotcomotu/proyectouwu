@@ -321,6 +321,9 @@ public class ListaDeEventosServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.setContentType("text/html");
         String action = request.getParameter("action") == null ? "default" : request.getParameter("action");
+        if(!(action.equals("addConfirm") || action.equals("updateConfirm") || action.equals("finConfirm"))){
+            action="default";
+        }
         String pag = request.getParameter("p") == null ? "1" : request.getParameter("p");
         DaoUsuario dUsuario=new DaoUsuario();
         DaoActividad daoActividad = new DaoActividad();
@@ -356,7 +359,12 @@ public class ListaDeEventosServlet extends HttpServlet {
                     equipos.add("Fibra Tóxica VS Naranja Mecánica");
                     equipos.add("Fibra Tóxica VS PXO Industrial");
                     equipos.add("Fibra Tóxica VS Todos");
+
                     switch (action) {
+
+                        case "default":
+                            response.sendRedirect("ListaDeEventosServlet?idActividad="+idActividad);
+                            break;
 
                         case "addConfirm":
                             // Parámetros:

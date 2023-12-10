@@ -72,13 +72,18 @@ public class InicioSesionServlet extends HttpServlet {
                 String correo2 = request.getParameter("correoPucp");
                 if(correo2==null){
                     correoValido=false;
+                }else{
+                    if(correo2.isEmpty()){
+                        correoValido=false;
+                    }
+                    if(correo2.length()>45){
+                        correoValido=false;
+                    }
+                    if(!correo2.split("@")[1].equals("pucp.edu.pe")){
+                        correoValido=false;
+                    }
                 }
-                if(correo2.length()>45){
-                    correoValido=false;
-                }
-                if(!correo2.split("@")[1].equals("pucp.edu.pe")){
-                    correoValido=false;
-                }
+
                 if(correoValido){
                     //Debemos guardarlo en algun lado para mandar el correo
                     //Debemos asegurarnos que el correo no tenga una cuenta ya asociada y en caso tenga que mande un mensaje de error al usuario

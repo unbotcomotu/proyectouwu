@@ -1863,6 +1863,11 @@
     <div class="grid grid-3-9">
         <!-- GRID COLUMN -->
         <div class="grid-column">
+            <form method="get" action="<%=request.getContextPath()%>/ListaDeEventosServlet">
+                <input type="hidden" name="idActividad" value="<%=actividad.getIdActividad()%>">
+                <button class="btn-primary py-2" type="submit" style="background-color: #23d2e2; font-size: 120% !important;">Regresar a la lista de eventos</button>
+            </form>
+
             <div class="streamer-box" style="background-image: linear-gradient(rgb(140, 255, 194),rgb(148, 249, 250));">
                 <%if(!rolUsuario.equals("Delegado General")){%>
                 <%if(delegadoDeEstaActividadID==idUsuario){%>

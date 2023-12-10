@@ -350,15 +350,15 @@ public class ListaDeEventosServlet extends HttpServlet {
                     Imagen io=new Imagen();
                     String rutaImagenPredeterminada = "/css/fibraVShormigon.png";
                     ArrayList<String> equipos = new ArrayList<>();
-                    equipos.add("Fibra Tóxica VS Descontrol Automático");
-                    equipos.add("Fibra Tóxica VS Electroshock");
-                    equipos.add("Fibra Tóxica VS Hormigón Armado");
-                    equipos.add("Fibra Tóxica VS Huascaminas");
-                    equipos.add("Fibra Tóxica VS Maphia Cuántica");
-                    equipos.add("Fibra Tóxica VS Memoria Caché");
-                    equipos.add("Fibra Tóxica VS Naranja Mecánica");
-                    equipos.add("Fibra Tóxica VS PXO Industrial");
-                    equipos.add("Fibra Tóxica VS Todos");
+                    equipos.add("Descontrol Automático");
+                    equipos.add("Electroshock");
+                    equipos.add("Hormigón Armado");
+                    equipos.add("Huascaminas");
+                    equipos.add("Maphia Cuántica");
+                    equipos.add("Memoria Caché");
+                    equipos.add("Naranja Mecánica");
+                    equipos.add("PXO Industrial");
+                    equipos.add("Todos");
 
                     switch (action) {
 

@@ -1,6 +1,7 @@
 <%@ page import="java.util.ArrayList" %>
 <%@ page import="com.example.proyectouwu.Beans.*" %>
 <%@ page import="com.example.proyectouwu.Daos.*" %>
+
 <%--
   Created by IntelliJ IDEA.
   User: Santiago
@@ -9,6 +10,8 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%String alerta=(String) request.getAttribute("alerta");%>
+
 <html>
 <head>
     <%Usuario usuarioActual=(Usuario) request.getSession().getAttribute("usuario");
@@ -2141,10 +2144,8 @@
                         </div>
 
                         <div class="table-column centered padded">
-                            <form method="post" action="<%=request.getContextPath()%>/NotificacionesServlet?action=editDonacion">
-                                <input type="hidden" name="id" value="<%=donacion.getIdDonacion()%>">
-                                <button class="button-accept" type="submit"><a>Editar</a></button>
-                            </form>
+
+                                <button class="button secondary" id="mostrarPopupEditarDonacion<%=donacionList.indexOf(donacion)%>" ><a>Editar</a></button>
                             <!-- TABLE TITLE -->
                             <form method="post" action="<%=request.getContextPath()%>/NotificacionesServlet?action=deleteDonacion">
                                 <input type="hidden" name="id" value="<%=donacion.getIdDonacion()%>">
@@ -2692,6 +2693,132 @@
     </div>
 </div>
 <%}%>
+
+<%for(int i=0;i<donacionList.size();i++){%>
+<div class="overlay" id="overlayPopupEditarDonacion<%=i%>"></div>
+<div class="popup" style="max-width: 30%" id="popupEditarDonacion<%=i%>">
+    <svg class="cerrarPopup" id="cerrarPopupEditarDonacion<%=i%>" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M11.4142 10L16.7071 4.70711C17.0976 4.31658 17.0976 3.68342 16.7071 3.29289C16.3166 2.90237 15.6834 2.90237 15.2929 3.29289L10 8.58579L4.70711 3.29289C4.31658 2.90237 3.68342 2.90237 3.29289 3.29289C2.90237 3.68342 2.90237 4.31658 3.29289 4.70711L8.58579 10L3.29289 15.2929C2.90237 15.6834 2.90237 16.3166 3.29289 16.7071C3.68342 17.0976 4.31658 17.0976 4.70711 16.7071L10 11.4142L15.2929 16.7071C15.6834 17.0976 16.3166 17.0976 16.7071 16.7071C17.0976 16.3166 17.0976 15.6834 16.7071 15.2929L11.4142 10Z" fill="black"/>
+    </svg>
+    <form method="post" action="<%=request.getContextPath()%>/NotificacionesServlet?action=edit" onsubmit="return validarMonto(<%=i%>)">
+        <div class="mb-3">
+            <input type="hidden" class="form-control" name="idDonacion" id="idDonacion<%=i%>" value="<%=donacionList.get(i).getIdDonacion()%>">
+        </div>
+        <div class="mb-3">
+            <label>Monto</label>
+            <div style="max-width: 70%">
+                <input type="text" class="form-control" name="montoDonacion" id="montoDonacion<%=i%>" oninput="limpiarAdvertencia(<%=i%>)" value="<%=donacionList.get(i).getMonto()%>">
+                <span id="mensajeAdvertencia<%=i%>" style="color: red;"></span>
+            </div>
+        </div>
+        <div class="mb-3">
+            <label for="estadoDonacion<%=i%>">Estado de la donación</label>
+            <select name="estadoDonacion" id="estadoDonacion<%=i%>">
+                <option value="Validado" <%if(donacionList.get(i).getEstadoDonacion().equals("Validado")){%>selected<%}%>>&nbsp;&nbsp;&nbsp; Validado</option>
+                <option value="Pendiente" <%if(donacionList.get(i).getEstadoDonacion().equals("Pendiente")){%>selected<%}%>>&nbsp;&nbsp;&nbsp; Pendiente</option>
+            </select>
+        </div>
+        <br>
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-sm-6" style="margin-top: 5px;">
+                    <button type="submit" class="button secondary" id="cerrarPopupEditar1Donacion<%=i%>">Guardar</button>
+                </div>
+                <div class="col-sm-6" style="margin-top: 5px;">
+                    <a class="button secondary" id="cerrarPopupEditar2Donacion<%=i%>" style="background-color: grey; width: 100%;color: white">Cancelar</a>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<%}%>
+
+<script>
+        function limpiarAdvertencia(index) {
+        var mensajeAdvertencia = document.getElementById('mensajeAdvertencia' + index);
+        mensajeAdvertencia.textContent = ''; // Limpiar el mensaje de advertencia
+    }
+
+        function validarMonto(index) {
+        var montoInput = document.getElementById('montoDonacion' + index).value;
+        var mensajeAdvertencia = document.getElementById('mensajeAdvertencia' + index);
+
+        if (montoInput === null || montoInput.trim() === '') {
+        mensajeAdvertencia.textContent = 'Ingrese un monto numérico';
+        return false; // Evitar que se envíe el formulario
+    }
+
+        // Validar que sea un número
+        if (isNaN(parseFloat(montoInput))) {
+        mensajeAdvertencia.textContent = 'El monto debe ser un valor numérico';
+        return false; // Evitar que se envíe el formulario
+    }
+
+        mensajeAdvertencia.textContent = ''; // Limpiar el mensaje de advertencia
+        return true; // Permitir que se envíe el formulario
+    }
+</script>
+
+<script>
+    //document.getElementById('cerrarPopupFinalizar1').addEventListener('click',document.getElementById(String(textElement.value)).style.opacity = '50%');
+    function popupFunc(popupId,abrirId,cerrarClass,overlayId){
+        const showPopup=document.getElementById(abrirId);
+        const overlay=document.getElementById(overlayId);
+        const popup=document.getElementById(popupId);
+        const mostrarPopup = () => {
+            overlay.style.display = 'block';
+            popup.style.display = 'block';
+            // Desactivar el scroll
+            document.body.style.overflow = 'hidden';
+        };
+        showPopup.addEventListener('click', mostrarPopup);
+        const cerrarPopup = () => {
+            overlay.style.display = 'none';
+            popup.style.display = 'none';
+            document.body.style.overflow = 'auto';
+
+        };
+        for(let i=0;i<cerrarClass.length;i++){
+            document.getElementById(cerrarClass[i]).addEventListener('click', cerrarPopup);
+        }
+
+        overlay.addEventListener('click', (e) => {
+            if (e.target === overlay) {
+                cerrarPopup();
+            }
+        });
+
+        document.addEventListener('keydown', (event) => {
+            if (event.key === 'Escape') {
+                cerrarPopup();
+            }
+        });
+    }
+
+    function verificarInput(elementos,idBoton) {
+        for(let i=0;i<elementos.length;i++) {
+            document.getElementById(elementos[i]).addEventListener("input", function () {
+                var boton=document.getElementById(idBoton);
+                boton.disabled=false;
+                boton.style.opacity=1;
+                for(let i=0;i<elementos.length;i++){
+                    var elemento=document.getElementById(elementos[i]);
+                    if(elemento.value===""){
+                        boton.disabled=true;
+                        boton.style.opacity=0.5;
+                    }
+                }
+            });
+        }
+    }
+    <%if(donacionList!=null){
+    for(int i=0;i<donacionList.size();i++){%>
+    var elementos<%=i%>=['montoDonacion<%=i%>','idDonacion<%=i%>','estadoDonacion<%=i%>'];
+    verificarInput(elementos<%=i%>,'cerrarPopupEditar1Donacion<%=i%>');
+    popupFunc('popupEditarDonacion<%=i%>','mostrarPopupEditarDonacion<%=i%>',['cerrarPopupEditarDonacion<%=i%>','cerrarPopupEditar1Donacion<%=i%>','cerrarPopupEditar2Donacion<%=i%>'],'overlayEditarDonacion<%=i%>');
+    <%}}%>
+</script>
+
 <script>
     function enviarFormulario(idForm) {
         var formulario = document.getElementById(idForm);
@@ -2734,6 +2861,9 @@
     }
     <%for(int i=0;i<donacionList.size();i++){%>
     popupFunc('popupImagenDonacion<%=i%>','mostrarPopupImagenDonacion<%=i%>',['cerrarPopupImagenDonacion<%=i%>'],'overlayPopupImagenDonacion<%=i%>');
+    <%}%>
+    <%for(int i=0;i<donacionList.size();i++){%>
+    popupFunc('popupEditarDonacion<%=i%>','mostrarPopupEditarDonacion<%=i%>',['cerrarPopupEditarDonacion<%=i%>'],'overlayPopupEditarDonacion<%=i%>');
     <%}%>
 </script>
     <!-- app -->

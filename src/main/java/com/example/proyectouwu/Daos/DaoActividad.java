@@ -104,42 +104,49 @@ public class DaoActividad extends DaoPadre {
     public ArrayList<Actividad>listarActividades(String idFiltroActividades,String idOrdenarActividades,int idUsuario){
         ArrayList<Actividad>listaActividades=new ArrayList<>();
         String sql="";
-        if(idFiltroActividades.equals("0")){
-            if(idOrdenarActividades.equals("0")){
-                sql="select idActividad,idDelegadoDeActividad,nombre,fotoMiniatura,cantidadPuntosPrimerLugar,actividadFinalizada,actividadOculta from actividad order by nombre desc";
-            }else{
-                sql="select idActividad,idDelegadoDeActividad,nombre,fotoMiniatura,cantidadPuntosPrimerLugar,actividadFinalizada,actividadOculta from actividad order by nombre asc";
-            }
-        }else if(idFiltroActividades.equals("1")){
-            if(idOrdenarActividades.equals("0")){
-                sql="select a.idActividad,a.idDelegadoDeActividad,a.nombre,a.fotoMiniatura,a.cantidadPuntosPrimerLugar,a.actividadFinalizada,a.actividadOculta from actividad a inner join evento e on a.idActividad=e.idActividad group by e.idActividad order by count(e.idEvento) desc";
-            }else{
-                sql="select a.idActividad,a.idDelegadoDeActividad,a.nombre,a.fotoMiniatura,a.cantidadPuntosPrimerLugar,a.actividadFinalizada,a.actividadOculta from actividad a inner join evento e on a.idActividad=e.idActividad group by e.idActividad order by count(e.idEvento) asc";
-            }
-        }else if(idFiltroActividades.equals("2")){
-            if(idOrdenarActividades.equals("0")){
-                sql="select idActividad,idDelegadoDeActividad,nombre,fotoMiniatura,cantidadPuntosPrimerLugar,actividadFinalizada,actividadOculta from actividad order by cantidadPuntosPrimerLugar desc";
-            }else{
-                sql="select idActividad,idDelegadoDeActividad,nombre,fotoMiniatura,cantidadPuntosPrimerLugar,actividadFinalizada,actividadOculta from actividad order by cantidadPuntosPrimerLugar asc";
-            }
-        }else if(idFiltroActividades.equals("3")){
-            if(idOrdenarActividades.equals("0")){
-                sql="select idActividad,idDelegadoDeActividad,nombre,fotoMiniatura,cantidadPuntosPrimerLugar,actividadFinalizada,actividadOculta from actividad order by if(actividadFinalizada is true, 0, 1)";
-            }else{
-                sql="select idActividad,idDelegadoDeActividad,nombre,fotoMiniatura,cantidadPuntosPrimerLugar,actividadFinalizada,actividadOculta from actividad order by if(actividadFinalizada is true, 1, 0)";
-            }
-        }else if(idFiltroActividades.equals("4")){
-            if(idOrdenarActividades.equals("0")){
-                sql="select idActividad,idDelegadoDeActividad,nombre,fotoMiniatura,cantidadPuntosPrimerLugar,actividadFinalizada,actividadOculta from actividad order by if(actividadOculta is true, 0, 1)";
-            }else{
-                sql="select idActividad,idDelegadoDeActividad,nombre,fotoMiniatura,cantidadPuntosPrimerLugar,actividadFinalizada,actividadOculta from actividad order by if(actividadOculta is true, 1, 0)";
-            }
-        }else{
-            if(idOrdenarActividades.equals("0")){
-                sql="select idActividad,idDelegadoDeActividad,nombre,fotoMiniatura,cantidadPuntosPrimerLugar,actividadFinalizada,actividadOculta from actividad order by if(idDelegadoDeActividad="+idUsuario+",0,1)";
-            }else{
-                sql="select idActividad,idDelegadoDeActividad,nombre,fotoMiniatura,cantidadPuntosPrimerLugar,actividadFinalizada,actividadOculta from actividad order by if(idDelegadoDeActividad="+idUsuario+",1,0)";
-            }
+        switch (idFiltroActividades) {
+            case "0":
+                if (idOrdenarActividades.equals("0")) {
+                    sql = "select idActividad,idDelegadoDeActividad,nombre,fotoMiniatura,cantidadPuntosPrimerLugar,actividadFinalizada,actividadOculta from actividad order by nombre desc";
+                } else {
+                    sql = "select idActividad,idDelegadoDeActividad,nombre,fotoMiniatura,cantidadPuntosPrimerLugar,actividadFinalizada,actividadOculta from actividad order by nombre asc";
+                }
+                break;
+            case "1":
+                if (idOrdenarActividades.equals("1")) {
+                    sql = "select a.idActividad,a.idDelegadoDeActividad,a.nombre,a.fotoMiniatura,a.cantidadPuntosPrimerLugar,a.actividadFinalizada,a.actividadOculta from actividad a left join evento e on a.idActividad=e.idActividad group by a.idActividad order by count(e.idEvento) desc";
+                } else {
+                    sql = "select a.idActividad,a.idDelegadoDeActividad,a.nombre,a.fotoMiniatura,a.cantidadPuntosPrimerLugar,a.actividadFinalizada,a.actividadOculta from actividad a left join evento e on a.idActividad=e.idActividad group by a.idActividad order by count(e.idEvento) asc";
+                }
+                break;
+            case "2":
+                if (idOrdenarActividades.equals("1")) {
+                    sql = "select idActividad,idDelegadoDeActividad,nombre,fotoMiniatura,cantidadPuntosPrimerLugar,actividadFinalizada,actividadOculta from actividad order by cantidadPuntosPrimerLugar desc";
+                } else {
+                    sql = "select idActividad,idDelegadoDeActividad,nombre,fotoMiniatura,cantidadPuntosPrimerLugar,actividadFinalizada,actividadOculta from actividad order by cantidadPuntosPrimerLugar asc";
+                }
+                break;
+            case "3":
+                if (idOrdenarActividades.equals("1")) {
+                    sql = "select idActividad,idDelegadoDeActividad,nombre,fotoMiniatura,cantidadPuntosPrimerLugar,actividadFinalizada,actividadOculta from actividad order by if(actividadFinalizada is true, 0, 1)";
+                } else {
+                    sql = "select idActividad,idDelegadoDeActividad,nombre,fotoMiniatura,cantidadPuntosPrimerLugar,actividadFinalizada,actividadOculta from actividad order by if(actividadFinalizada is true, 1, 0)";
+                }
+                break;
+            case "4":
+                if (idOrdenarActividades.equals("1")) {
+                    sql = "select idActividad,idDelegadoDeActividad,nombre,fotoMiniatura,cantidadPuntosPrimerLugar,actividadFinalizada,actividadOculta from actividad order by if(actividadOculta is true, 0, 1)";
+                } else {
+                    sql = "select idActividad,idDelegadoDeActividad,nombre,fotoMiniatura,cantidadPuntosPrimerLugar,actividadFinalizada,actividadOculta from actividad order by if(actividadOculta is true, 1, 0)";
+                }
+                break;
+            default:
+                if (idOrdenarActividades.equals("0")) {
+                    sql = "select idActividad,idDelegadoDeActividad,nombre,fotoMiniatura,cantidadPuntosPrimerLugar,actividadFinalizada,actividadOculta from actividad order by if(idDelegadoDeActividad=" + idUsuario + ",0,1)";
+                } else {
+                    sql = "select idActividad,idDelegadoDeActividad,nombre,fotoMiniatura,cantidadPuntosPrimerLugar,actividadFinalizada,actividadOculta from actividad order by if(idDelegadoDeActividad=" + idUsuario + ",1,0)";
+                }
+                break;
         }
         try(Connection conn=this.getConnection(); ResultSet rs=conn.createStatement().executeQuery(sql);){
             while (rs.next()){

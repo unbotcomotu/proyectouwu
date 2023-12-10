@@ -152,6 +152,8 @@ public class NotificacionesServlet extends HttpServlet {
                         request.setAttribute("reportList", reportList);
                         request.setAttribute("donacionList",donacionList);
                         request.setAttribute("recuperacionList",recuperacionList);
+                        request.setAttribute("alerta","monto");
+
                         request.getRequestDispatcher("notificacionesDelGeneral.jsp").forward(request,response);
 
                     }else if (usuario.getRol().equals("Delegado de Actividad")){
@@ -205,6 +207,7 @@ public class NotificacionesServlet extends HttpServlet {
 
 
 
+                    request.setAttribute("alerta","monto");
 
                     ArrayList<Usuario> listaSolicitudes = daoNotificacion.listarSolicitudesRegistroPorPage(pagina-1);
                     ArrayList<Reporte> reportList = daoNotificacion.listarNotificacionesReporte();
@@ -223,6 +226,7 @@ public class NotificacionesServlet extends HttpServlet {
                     request.setAttribute("recuperacionList",recuperacionList);
                     request.getRequestDispatcher("notificacionesDelGeneral.jsp").forward(request,response);
                     break;
+
                 case "filtrarDonaciones":
                     request.setAttribute("vistaActualNueva","Donaciones");
                     buscar = request.getParameter("buscar");
@@ -299,9 +303,19 @@ public class NotificacionesServlet extends HttpServlet {
                     String donacionId = request.getParameter("idDonacion");
                     String montoDonacion = request.getParameter("montoDonacion");
                     String estadoDonacion = request.getParameter("estadoDonacion");
+                    if (montoDonacion == null || montoDonacion.trim().isEmpty()) {
+                        // Manejar el caso en que el montoDonacion es nulo o está vacío
+                        request.setAttribute("alerta", "monto");
+                        request.getRequestDispatcher("notificacionesDelGeneral.jsp").forward(request, response);
+                        return; // Salir del método para evitar continuar con el flujo normal
+                    }
+
                     try{
+
+
                         int donacionId_int = Integer.parseInt(donacionId);
                         float monto = Float.parseFloat(montoDonacion);
+
                         DaoNotificacion daoNotificacion = new DaoNotificacion();
                         ArrayList<Usuario> listaSolicitudes = daoNotificacion.listarSolicitudesDeRegistro();
                         ArrayList<Reporte> reportList = daoNotificacion.listarNotificacionesReporte();
@@ -311,6 +325,7 @@ public class NotificacionesServlet extends HttpServlet {
                         request.setAttribute("listaSolicitudes",listaSolicitudes);
                         request.setAttribute("reportList", reportList);
                         request.setAttribute("donacionList",donacionList);
+                        request.setAttribute("alerta","monto");
                         request.setAttribute("recuperacionList",recuperacionList);
 
                         Donacion donacion = new Donacion();
@@ -319,11 +334,13 @@ public class NotificacionesServlet extends HttpServlet {
                         donacion.setEstadoDonacion(estadoDonacion);
 
                         daoDonacion.editarDonacion(donacion);
+
                         response.sendRedirect("NotificacionesServlet?vistaActualNueva=Donaciones");
+
                     }catch (NumberFormatException e){
-                        request.setAttribute("donacion",daoDonacion.buscarPorId(donacionId));
                         request.setAttribute("alerta","monto");
-                        request.getRequestDispatcher("donacion_edit.jsp").forward(request,response);
+                        request.getRequestDispatcher("notificacionesDelGeneral.jsp").forward(request,response);
+                        response.sendRedirect("NotificacionesServlet?vistaActualNueva=Donaciones");
                     }
                     break;
                 case "editDonacion":
@@ -331,7 +348,7 @@ public class NotificacionesServlet extends HttpServlet {
                     Donacion donacion = daoDonacion.buscarPorId(id);
 
                     if(donacion != null){
-                        request.setAttribute("donacion",donacion);
+                        request.setAttribute("donacion2",donacion);
                         request.getRequestDispatcher("/donacion_edit.jsp").forward(request,response);
                     }else{
                         request.getRequestDispatcher("notificacionesDelGeneral.jsp").forward(request,response);

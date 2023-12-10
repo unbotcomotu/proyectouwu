@@ -66,76 +66,93 @@ public class EventoServlet extends HttpServlet {
         if(usuario==null){
             response.sendRedirect("InicioSesionServlet");
         }else {
-            int idEvento = Integer.parseInt(request.getParameter("idEvento"));
-            DaoNotificacion dN=new DaoNotificacion();
-            DaoReporte dR=new DaoReporte();
-            Imagen io=new Imagen();
-            String action = request.getParameter("action") == null ? "default" : request.getParameter("action");
-            switch (action){
-                case "default":
-                    //request.getRequestDispatcher("evento.jsp").forward(request,response);
-                    break;
-                case "apoyoEvento":
-                    new DaoAlumnoPorEvento().usuarioApoyaEvento(usuario.getIdUsuario(),idEvento);
-                    //<a href="/proyectouwu_war_exploded/EventoServlet?idEvento=6&amp;idUsuario=17">
-                    //http://localhost:8080/proyectouwu_war_exploded/EventoServlet?idEvento=6&idUsuario=17
-                    response.sendRedirect(request.getContextPath()+"/EventoServlet?idEvento="+idEvento);
-                    break;
-                case "editarCarrusel":
-                    ArrayList<Integer> listaIDs= dF.idsFotosCarrusel(idEvento);
-                    //asumiendo solo 3 imágenes por carrusel
-                    for(int i=0;i<3;i++){
-                        String borrar=request.getParameter("borrar"+(i+1));
-                        Part partFoto=request.getPart("foto"+(i+1));
-                        if(borrar.equals("0")){
-                            if(partFoto!=null){
-                                InputStream inputFoto=partFoto.getInputStream();
-                                String nombre= partFoto.getSubmittedFileName();
-                                if(inputFoto.available()<10){
+            String idEventoStr=request.getParameter("idEvento");
+            if(idEventoStr!=null){
+                try{
+                    int idEvento = Integer.parseInt(idEventoStr);
+                    DaoNotificacion dN=new DaoNotificacion();
+                    DaoReporte dR=new DaoReporte();
+                    Imagen io=new Imagen();
+                    String action = request.getParameter("action") == null ? "default" : request.getParameter("action");
+                    switch (action){
+                        case "default":
+                            response.sendRedirect("PaginaNoExisteServlet");
+                            break;
+                        case "apoyoEvento":
+                            new DaoAlumnoPorEvento().usuarioApoyaEvento(usuario.getIdUsuario(),idEvento);
+                            //<a href="/proyectouwu_war_exploded/EventoServlet?idEvento=6&amp;idUsuario=17">
+                            //http://localhost:8080/proyectouwu_war_exploded/EventoServlet?idEvento=6&idUsuario=17
+                            response.sendRedirect(request.getContextPath()+"/EventoServlet?idEvento="+idEvento);
+                            break;
+                        case "editarCarrusel":
+                            ArrayList<Integer> listaIDs= dF.idsFotosCarrusel(idEvento);
+                            //asumiendo solo 3 imágenes por carrusel
+                            for(int i=0;i<3;i++){
+                                String borrar=request.getParameter("borrar"+(i+1));
+                                if(borrar!=null){
+                                    Part partFoto=request.getPart("foto"+(i+1));
+                                    if(borrar.equals("0")){
+                                        if(partFoto!=null){
+                                            InputStream inputFoto=partFoto.getInputStream();
+                                            String nombre= partFoto.getSubmittedFileName();
+                                            if(inputFoto.available()<10){
 
-                                }else if(!io.isImageFile(nombre)){
-                                    request.getSession().setAttribute("extensionInvalida"+(i+1),"1");
-                                }else if(!io.betweenScales(ImageIO.read(inputFoto),1.2,1.9)) {
-                                    request.getSession().setAttribute("escalaInvalida"+(i+1), "1");
+                                            }else if(!io.isImageFile(nombre)){
+                                                request.getSession().setAttribute("extensionInvalida"+(i+1),"1");
+                                            }else if(!io.betweenScales(ImageIO.read(inputFoto),1.2,1.9)) {
+                                                request.getSession().setAttribute("escalaInvalida"+(i+1), "1");
+                                            }else {
+                                                dF.actualizarImagenCarrusel(listaIDs.get(i),partFoto.getInputStream());
+                                            }
+                                            inputFoto.close();
+                                        }
+                                    }else {
+                                        InputStream inputFoto = getServletContext().getResourceAsStream("/css/imagenBorrada.png");
+                                        dF.actualizarImagenCarrusel(listaIDs.get(i),inputFoto);
+                                        inputFoto.close();
+                                    }
                                 }else {
-                                    dF.actualizarImagenCarrusel(listaIDs.get(i),partFoto.getInputStream());
+                                    break;
                                 }
-                                inputFoto.close();
                             }
-                        }else {
-                            InputStream inputFoto = getServletContext().getResourceAsStream("/css/imagenBorrada.png");
-                            dF.actualizarImagenCarrusel(listaIDs.get(i),inputFoto);
-                            inputFoto.close();
-                        }
+                            response.sendRedirect("EventoServlet?idEvento="+idEvento);
+                            break;
+                        case "enviarMensaje":
+                            String mensaje=request.getParameter("mensaje");
+                            if(mensaje!=null){
+                                boolean validacion=true;
+                                if(mensaje.length()>1000){
+                                    request.getSession().setAttribute("mensajeLargo","1");
+                                    validacion=false;
+                                }
+                                if(validacion){
+                                    dE.enviarMensaje(usuario.getIdUsuario(),idEvento,mensaje);
+                                }
+                                request.getSession().setAttribute("abrirChat","1");
+                            }
+                            response.sendRedirect("EventoServlet?idEvento="+idEvento);
+                            break;
+                        case "reportar":
+                            String motivo=request.getParameter("motivoReporte");
+                            if(motivo!=null){
+                                boolean validacionReportar=true;
+                                if(motivo.length()>1000){
+                                    request.getSession().setAttribute("reporteLargo","1");
+                                    validacionReportar=false;
+                                }
+                                String idUsuarioAReportar=request.getParameter("idUsuarioReportado");
+                                if(idUsuarioAReportar!=null&&validacionReportar){
+                                    dR.reportarUsuario(idUsuarioAReportar,usuario.getIdUsuario(),motivo);
+                                }
+                            }
+                            response.sendRedirect("EventoServlet?idEvento="+idEvento);
+                            break;
                     }
-                    response.sendRedirect("EventoServlet?idEvento="+idEvento);
-                    break;
-                case "enviarMensaje":
-                    String mensaje=request.getParameter("mensaje");
-                    boolean validacion=true;
-                    if(mensaje.length()>1000){
-                        request.getSession().setAttribute("mensajeLargo","1");
-                        validacion=false;
-                    }
-                    if(validacion){
-                        dE.enviarMensaje(usuario.getIdUsuario(),idEvento,mensaje);
-                    }
-                    request.getSession().setAttribute("abrirChat","1");
-                    response.sendRedirect("EventoServlet?idEvento="+idEvento);
-                    break;
-                case "reportar":
-                    String motivo=request.getParameter("motivoReporte");
-                    boolean validacionReportar=true;
-                    if(motivo.length()>1000){
-                        request.getSession().setAttribute("reporteLargo","1");
-                        validacionReportar=false;
-                    }
-                    int idUsuarioAReportar=Integer.parseInt(request.getParameter("idUsuarioReportado"));
-                    if(validacionReportar){
-                        dR.reportarUsuario(idUsuarioAReportar,usuario.getIdUsuario(),motivo);
-                    }
-                    response.sendRedirect("EventoServlet?idEvento="+idEvento);
-                    break;
+                }catch (NumberFormatException e){
+                    response.sendRedirect("PaginaNoExisteServlet");
+                }
+            }else {
+                response.sendRedirect("PaginaNoExisteServlet");
             }
             request.getSession().setAttribute("usuario",dUsuario.usuarioSesion(usuario.getIdUsuario()));
         }

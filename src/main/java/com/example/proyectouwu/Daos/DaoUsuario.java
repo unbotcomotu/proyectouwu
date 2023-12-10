@@ -782,4 +782,22 @@ public class DaoUsuario extends DaoPadre {
             throw new RuntimeException(e);
         }
     }
+
+    public boolean existeUsuario(String idUsuario){
+        String sql="select * from usuario where idUsuario=?";
+        try(Connection conn=this.getConnection(); PreparedStatement pstmt= conn.prepareStatement(sql)){
+            pstmt.setString(1,idUsuario);
+            try(ResultSet rs=pstmt.executeQuery()){
+                if(rs.next()){
+                    return true;
+                }else
+                    return false;
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+
+
 }

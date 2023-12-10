@@ -16,20 +16,22 @@ public class ImagenUsuarioServlet extends HttpServlet {
         response.setContentType("image/jpeg");
 
         String idUsuario = request.getParameter("idUsuario");
+        if(idUsuario==null){
+            response.sendRedirect("PaginaNoExisteServlet");
+        }else {
+            DaoUsuario daoUsuario = new DaoUsuario();
 
-        DaoUsuario daoUsuario = new DaoUsuario();
+            try {
+                Usuario usuario = daoUsuario.getUsuarioPorIdSinFiltro(Integer.parseInt(idUsuario));
+                byte[] fotoPerfil = usuario.getFotoPerfil().getBytes(1, (int) usuario.getFotoPerfil().length());
+                ServletOutputStream output = response.getOutputStream();
+                output.write(fotoPerfil);
 
-        try {
-            Usuario usuario = daoUsuario.getUsuarioPorIdSinFiltro(Integer.parseInt(idUsuario));
-            byte[] fotoPerfil =  usuario.getFotoPerfil().getBytes(1,(int) usuario.getFotoPerfil().length());
-            ServletOutputStream output = response.getOutputStream();
-            output.write(fotoPerfil);
-
-        } catch (SQLException e) {
-            ServletOutputStream output = response.getOutputStream();
-            output.write(0);
+            } catch (SQLException e) {
+                ServletOutputStream output = response.getOutputStream();
+                output.write(0);
+            }
         }
-
     }
 
     @Override

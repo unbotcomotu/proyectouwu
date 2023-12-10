@@ -19,7 +19,7 @@
         ArrayList<LugarEvento>listaLugares=(ArrayList<LugarEvento>) request.getAttribute("listaLugares");
         int delegadoDeEstaActividadID=(int)request.getAttribute("delegadoDeEstaActividadID");
         String servletActual="ListaDeEventosServlet";
-        int cantidadTotalEventos = request.getAttribute("cantidadEventosTotal")!=null? (int)Math.ceil((int)request.getAttribute("cantidadEventosTotal")/8.0):0;
+        int cantidadTotalEventos = request.getAttribute("cantidadEventosTotal")!=null? (int)Math.ceil((int)request.getAttribute("cantidadEventosTotal")/6.0):0;
         Integer pagActual = request.getSession().getAttribute("pagActual") != null ? (Integer) request.getSession().getAttribute("pagActual") : 1;
         //String busqueda=(String) request.getAttribute("evento");
 

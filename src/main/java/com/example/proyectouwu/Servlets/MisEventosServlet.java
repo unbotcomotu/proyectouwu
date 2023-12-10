@@ -21,21 +21,25 @@ public class MisEventosServlet extends HttpServlet {
         if(usuario==null){
             response.sendRedirect("InicioSesionServlet");
         }else{
-            request.setAttribute("vistaActual","misEventos");
-            request.setAttribute("correosDelegadosGenerales",dUsuario.listarCorreosDelegadosGenerales());
-            String fechaActual[]=ZonedDateTime.now().toString().split("T")[0].split("-");
-            request.setAttribute("diaActual",fechaActual[2]);
-            request.setAttribute("mesActual",fechaActual[1]);
-            request.setAttribute("listaEventos",dAlPorEvento.listarEventosPorUsuario(usuario.getIdUsuario()));
-            if(usuario.getRol().equals("Delegado de Actividad")){
-                request.setAttribute("listaNotificacionesDelegadoDeActividad",new DaoNotificacion().listarNotificacionesDelegadoDeActividad(usuario.getIdUsuario()));
+            if(usuario.getRol().equals("Delegado General")){
+                response.sendRedirect("ListaDeActividadesServlet");
+            }else {
+                request.setAttribute("vistaActual", "misEventos");
+                request.setAttribute("correosDelegadosGenerales", dUsuario.listarCorreosDelegadosGenerales());
+                String fechaActual[] = ZonedDateTime.now().toString().split("T")[0].split("-");
+                request.setAttribute("diaActual", fechaActual[2]);
+                request.setAttribute("mesActual", fechaActual[1]);
+                request.setAttribute("listaEventos", dAlPorEvento.listarEventosPorUsuario(usuario.getIdUsuario()));
+                if (usuario.getRol().equals("Delegado de Actividad")) {
+                    request.setAttribute("listaNotificacionesDelegadoDeActividad", new DaoNotificacion().listarNotificacionesDelegadoDeActividad(usuario.getIdUsuario()));
+                }
+                String action = request.getParameter("action") == null ? "default" : request.getParameter("action");
+                switch (action) {
+                    case "default":
+                        request.getRequestDispatcher("misEventos.jsp").forward(request, response);
+                }
+                request.getSession().setAttribute("usuario", dUsuario.usuarioSesion(usuario.getIdUsuario()));
             }
-            String action = request.getParameter("action") == null ? "default" : request.getParameter("action");
-            switch (action){
-                case "default":
-                    request.getRequestDispatcher("misEventos.jsp").forward(request,response);
-            }
-            request.getSession().setAttribute("usuario",dUsuario.usuarioSesion(usuario.getIdUsuario()));
         }
     }
 

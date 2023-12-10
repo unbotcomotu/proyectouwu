@@ -19,47 +19,50 @@ public class ImagenActividadServlet extends HttpServlet {
         response.setContentType("image/png");
 
         String idActividad = request.getParameter("idActividad");
+        if(idActividad==null){
+            response.sendRedirect("PaginaNoExisteServlet");
+        }else {
+            DaoActividad dActividad = new DaoActividad();
+            String rutaImagenPredeterminada = "/css/fibraVShormigon.png";
 
-        DaoActividad dActividad = new DaoActividad();
-        String rutaImagenPredeterminada = "/css/fibraVShormigon.png";
+            try {
+                Blob fotoBytesMiniatura = dActividad.obtenerFotoMiniaturaXIdActividad(Integer.parseInt(idActividad));
+                Blob fotoBytesCabecera = dActividad.obtenerFotoCabeceraXIdActividad(Integer.parseInt(idActividad));
 
-        try {
-            Blob fotoBytesMiniatura = dActividad.obtenerFotoMiniaturaXIdActividad(Integer.parseInt(idActividad));
-            Blob fotoBytesCabecera = dActividad.obtenerFotoCabeceraXIdActividad(Integer.parseInt(idActividad));
+                int longitudMiniatura = (int) fotoBytesMiniatura.length();
+                int longitudCabecera = (int) fotoBytesCabecera.length();
 
-            int longitudMiniatura = (int) fotoBytesMiniatura.length();
-            int longitudCabecera = (int) fotoBytesCabecera.length();
+                byte[] fotoMiniatura = null;
+                byte[] fotoCabecera = null;
 
-            byte[] fotoMiniatura = null;
-            byte[] fotoCabecera = null;
+                if (longitudMiniatura <= 100) {
+                    InputStream inputMini = getServletContext().getResourceAsStream(rutaImagenPredeterminada);
+                    fotoMiniatura = new byte[inputMini.available()];
+                    inputMini.read(fotoMiniatura);
+                    inputMini.close();
+                } else {
+                    fotoMiniatura = fotoBytesMiniatura.getBytes(1, (int) fotoBytesMiniatura.length());
+                }
 
-            if(longitudMiniatura<=100){
-                InputStream inputMini = getServletContext().getResourceAsStream(rutaImagenPredeterminada);
-                fotoMiniatura = new byte[inputMini.available()];
-                inputMini.read(fotoMiniatura);
-                inputMini.close();
-            }else{
-                fotoMiniatura = fotoBytesMiniatura.getBytes(1,(int) fotoBytesMiniatura.length());
+                ServletOutputStream outputMini = response.getOutputStream();
+                outputMini.write(fotoMiniatura);
+
+                if (longitudCabecera <= 100) {
+                    InputStream inputCabecera = getServletContext().getResourceAsStream(rutaImagenPredeterminada);
+                    fotoCabecera = new byte[inputCabecera.available()];
+                    inputCabecera.read(fotoCabecera);
+                    inputCabecera.close();
+                } else {
+                    fotoCabecera = fotoBytesCabecera.getBytes(1, (int) fotoBytesCabecera.length());
+                }
+
+                ServletOutputStream outputCabecera = response.getOutputStream();
+                outputCabecera.write(fotoCabecera);
+
+            } catch (SQLException e) {
+                ServletOutputStream output = response.getOutputStream();
+                output.write(0);
             }
-
-            ServletOutputStream outputMini = response.getOutputStream();
-            outputMini.write(fotoMiniatura);
-
-            if(longitudCabecera<=100){
-                InputStream inputCabecera= getServletContext().getResourceAsStream(rutaImagenPredeterminada);
-                fotoCabecera = new byte[inputCabecera.available()];
-                inputCabecera.read(fotoCabecera);
-                inputCabecera.close();
-            }else{
-                fotoCabecera = fotoBytesCabecera.getBytes(1,(int) fotoBytesCabecera.length());
-            }
-
-            ServletOutputStream outputCabecera = response.getOutputStream();
-            outputCabecera.write(fotoCabecera);
-
-        } catch (SQLException e) {
-            ServletOutputStream output = response.getOutputStream();
-            output.write(0);
         }
     }
 

@@ -18,31 +18,34 @@ public class ImagenEventoServlet extends HttpServlet {
         response.setContentType("image/jpeg");
 
         String idEvento = request.getParameter("idEvento");
+        if(idEvento==null){
+            response.sendRedirect("PaginaNoExisteServlet");
+        }else {
+            DaoEvento daoEvento = new DaoEvento();
 
-        DaoEvento daoEvento = new DaoEvento();
+            String rutaImagenPredeterminada = "/css/fibraVShormigon.png";
+            try {
 
-        String rutaImagenPredeterminada = "/css/fibraVShormigon.png";
-        try {
+                Blob fotoBytes = daoEvento.getFotoEventoPorID(Integer.parseInt(idEvento));
+                int longitud = (int) fotoBytes.length();
+                byte[] fotoMiniatura = null;
 
-            Blob fotoBytes = daoEvento.getFotoEventoPorID(Integer.parseInt(idEvento));
-            int longitud = (int) fotoBytes.length();
-            byte[] fotoMiniatura = null;
+                if (longitud <= 100) {
+                    InputStream input = getServletContext().getResourceAsStream(rutaImagenPredeterminada);
+                    fotoMiniatura = new byte[input.available()];
+                    input.read(fotoMiniatura);
+                    input.close();
+                } else {
+                    fotoMiniatura = fotoBytes.getBytes(1, (int) fotoBytes.length());
+                }
 
-            if(longitud<=100){
-                InputStream input = getServletContext().getResourceAsStream(rutaImagenPredeterminada);
-                fotoMiniatura = new byte[input.available()];
-                input.read(fotoMiniatura);
-                input.close();
-            }else{
-                fotoMiniatura = fotoBytes.getBytes(1,(int) fotoBytes.length());
+                ServletOutputStream output = response.getOutputStream();
+                output.write(fotoMiniatura);
+
+            } catch (SQLException e) {
+                ServletOutputStream output = response.getOutputStream();
+                output.write(0);
             }
-
-            ServletOutputStream output = response.getOutputStream();
-            output.write(fotoMiniatura);
-
-        } catch (SQLException e) {
-            ServletOutputStream output = response.getOutputStream();
-            output.write(0);
         }
     }
 

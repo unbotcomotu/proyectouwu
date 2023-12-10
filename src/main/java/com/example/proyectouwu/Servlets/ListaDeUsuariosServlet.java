@@ -20,64 +20,68 @@ public class ListaDeUsuariosServlet extends HttpServlet {
         if(usuario==null){
             response.sendRedirect("InicioSesionServlet");
         }else{
-            request.setAttribute("vistaActual","listaDeUsuarios");
-            request.setAttribute("correosDelegadosGenerales",dUsuario.listarCorreosDelegadosGenerales());
-            request.setAttribute("listaNotificacionesCampanita",new DaoNotificacion().listarNotificacionesDelegadoGeneral());
-            String action = request.getParameter("action") == null ? "listarUsuarios" : request.getParameter("action");
-            String pagina;
-            String paginaPrevia = request.getParameter("p") == null ? "1" : request.getParameter("p");
+            if(!usuario.getRol().equals("Delegado General")){
+                response.sendRedirect("ListaDeActividadesServlet");
+            }else {
+                request.setAttribute("vistaActual", "listaDeUsuarios");
+                request.setAttribute("correosDelegadosGenerales", dUsuario.listarCorreosDelegadosGenerales());
+                request.setAttribute("listaNotificacionesCampanita", new DaoNotificacion().listarNotificacionesDelegadoGeneral());
+                String action = request.getParameter("action") == null ? "listarUsuarios" : request.getParameter("action");
+                String pagina;
+                String paginaPrevia = request.getParameter("p") == null ? "1" : request.getParameter("p");
 
-            if (paginaPrevia != null && paginaPrevia.matches("\\d+")) {
-                // Si es un número, asigna ese valor a la variable 'pagina'
-                pagina = paginaPrevia;
-            } else {
-                // Si no es un número, asigna el valor predeterminado '1' a 'pagina'
-                pagina = "1";
+                if (paginaPrevia != null && paginaPrevia.matches("\\d+")) {
+                    // Si es un número, asigna ese valor a la variable 'pagina'
+                    pagina = paginaPrevia;
+                } else {
+                    // Si no es un número, asigna el valor predeterminado '1' a 'pagina'
+                    pagina = "1";
+                }
+
+
+                String filtro = request.getParameter("idFiltroUsuario") != null ? request.getParameter("idFiltroUsuario") : "";
+                switch (action) {
+                    case "listarUsuarios":
+                        if (filtro.isEmpty()) {
+                            request.setAttribute("listaUsuarios", dUsuario.listarUsuarios(Integer.parseInt(pagina) - 1));
+                            request.setAttribute("cantidadUsuariosTotal", dUsuario.listarUsuarios().size());
+                            request.setAttribute("pagActual", Integer.parseInt(pagina));
+                            request.getRequestDispatcher("listaUsuarios.jsp").forward(request, response);
+                        } else {
+                            String idOrdenarUsuario = request.getParameter("idOrdenarUsuario");
+                            request.setAttribute("listaUsuarios", dUsuario.listarUsuariosFiltro(filtro, idOrdenarUsuario, Integer.parseInt(pagina) - 1));
+                            request.setAttribute("cantidadUsuariosTotal", dUsuario.listarUsuarios().size());
+                            request.setAttribute("idFiltroUsuario", filtro);//cambio aqui
+                            request.setAttribute("idOrdenarUsuario", idOrdenarUsuario);
+                            request.setAttribute("pagActual", Integer.parseInt(pagina));
+                            request.getRequestDispatcher("listaUsuarios.jsp").forward(request, response);
+                        }
+                        break;
+                    case "buscarUsuario":
+                        if (filtro.isEmpty()) {
+                            String usuario2 = request.getParameter("usuario");
+                            request.setAttribute("listaUsuarios", new DaoUsuario().listarUsuarioXnombre(usuario2, Integer.parseInt(pagina) - 1));
+                            request.setAttribute("cantidadUsuariosTotal", new DaoUsuario().listarUsuarioXnombre(usuario2).size());
+                            request.setAttribute("action", action);
+                            request.setAttribute("usuario", usuario2);
+                            request.setAttribute("pagActual", Integer.parseInt(pagina));
+                            request.getRequestDispatcher("listaUsuarios.jsp").forward(request, response);
+                        } else {
+                            String usuario2 = request.getParameter("usuario");
+                            String idOrdenarUsuario = request.getParameter("idOrdenarUsuario");
+                            request.setAttribute("listaUsuarios", dUsuario.listarUsuarioXnombre(usuario2, Integer.parseInt(pagina) - 1, filtro, idOrdenarUsuario));
+                            request.setAttribute("cantidadUsuariosTotal", new DaoUsuario().listarUsuarioXnombre(usuario2).size());
+                            request.setAttribute("idFiltroUsuario", filtro);//cambio aqui
+                            request.setAttribute("idOrdenarUsuario", idOrdenarUsuario);
+                            request.setAttribute("action", action);
+                            request.setAttribute("usuario", usuario2);
+                            request.setAttribute("pagActual", Integer.parseInt(pagina));
+                            request.getRequestDispatcher("listaUsuarios.jsp").forward(request, response);
+                        }
+                        break;
+                }
+                request.getSession().setAttribute("usuario", dUsuario.usuarioSesion(usuario.getIdUsuario()));
             }
-
-
-            String filtro = request.getParameter("idFiltroUsuario") != null ? request.getParameter("idFiltroUsuario") : "";
-            switch (action) {
-                case "listarUsuarios":
-                    if(filtro.isEmpty()){
-                        request.setAttribute("listaUsuarios", dUsuario.listarUsuarios(Integer.parseInt(pagina)-1));
-                        request.setAttribute("cantidadUsuariosTotal", dUsuario.listarUsuarios().size());
-                        request.setAttribute("pagActual", Integer.parseInt(pagina));
-                        request.getRequestDispatcher("listaUsuarios.jsp").forward(request, response);
-                    }else{
-                        String idOrdenarUsuario= request.getParameter("idOrdenarUsuario");
-                        request.setAttribute("listaUsuarios", dUsuario.listarUsuariosFiltro(filtro,idOrdenarUsuario,Integer.parseInt(pagina)-1));
-                        request.setAttribute("cantidadUsuariosTotal", dUsuario.listarUsuarios().size());
-                        request.setAttribute("idFiltroUsuario",filtro);//cambio aqui
-                        request.setAttribute("idOrdenarUsuario",idOrdenarUsuario);
-                        request.setAttribute("pagActual", Integer.parseInt(pagina));
-                        request.getRequestDispatcher("listaUsuarios.jsp").forward(request, response);
-                    }
-                    break;
-                case "buscarUsuario":
-                    if(filtro.isEmpty()) {
-                        String usuario2 = request.getParameter("usuario");
-                        request.setAttribute("listaUsuarios", new DaoUsuario().listarUsuarioXnombre(usuario2, Integer.parseInt(pagina) - 1));
-                        request.setAttribute("cantidadUsuariosTotal", new DaoUsuario().listarUsuarioXnombre(usuario2).size());
-                        request.setAttribute("action", action);
-                        request.setAttribute("usuario", usuario2);
-                        request.setAttribute("pagActual", Integer.parseInt(pagina));
-                        request.getRequestDispatcher("listaUsuarios.jsp").forward(request, response);
-                    }else{
-                        String usuario2 = request.getParameter("usuario");
-                        String idOrdenarUsuario=request.getParameter("idOrdenarUsuario");
-                        request.setAttribute("listaUsuarios", dUsuario.listarUsuarioXnombre(usuario2, Integer.parseInt(pagina) - 1,filtro,idOrdenarUsuario));
-                        request.setAttribute("cantidadUsuariosTotal", new DaoUsuario().listarUsuarioXnombre(usuario2).size());
-                        request.setAttribute("idFiltroUsuario",filtro);//cambio aqui
-                        request.setAttribute("idOrdenarUsuario",idOrdenarUsuario);
-                        request.setAttribute("action", action);
-                        request.setAttribute("usuario", usuario2);
-                        request.setAttribute("pagActual", Integer.parseInt(pagina));
-                        request.getRequestDispatcher("listaUsuarios.jsp").forward(request, response);
-                    }
-                    break;
-            }
-            request.getSession().setAttribute("usuario",dUsuario.usuarioSesion(usuario.getIdUsuario()));
         }
     }
 

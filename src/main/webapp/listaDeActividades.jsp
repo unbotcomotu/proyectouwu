@@ -1672,9 +1672,8 @@
                             <option value="3" <%if(idFiltroActividades!=null && idFiltroActividades.equals("3")){%>selected<%}%>>Finalizados primero</option>
                             <%if(rolUsuario.equals("Delegado General")){%>
                             <option value="4" <%if(idFiltroActividades!=null && idFiltroActividades.equals("4")){%>selected<%}%>>Ocultos primero</option>
-                            <%}%>
-                            <%if(rolUsuario.equals("Delegado de Actividad")){%>
-                            <option value="5" <%if(idFiltroActividades!=null && idFiltroActividades.equals("5")){%>selected<%}%>>Mi delegatura primero</option>
+                            <%}else if(rolUsuario.equals("Delegado de Actividad")){%>
+                            <option value="4" <%if(idFiltroActividades!=null && idFiltroActividades.equals("4")){%>selected<%}%>>Mi delegatura primero</option>
                             <%}%>
                         </select>
                         <!-- FORM SELECT ICON -->
@@ -1741,6 +1740,7 @@
                 }%>
         <!-- PRODUCT CATEGORY BOX -->
         <%request.getSession().setAttribute("fotoActividadMiniatura"+listaActividades.indexOf(a),a.getFotoMiniatura());%>
+        <%if(!(a.isActividadOculta()&&usuarioActual.getRol().equals("Alumno"))){%>
         <a class="product-category-box category-all" href="ListaDeEventosServlet?idActividad=<%=a.getIdActividad()%>" style="padding: 0 0 0 0 !important;background: linear-gradient(to right, <%=color1%>, <%=color2%>) <%if(a.isActividadFinalizada()||a.isActividadOculta()){%><%=";opacity: 50%;"%><%}%>">
             <div style="height: 100%;background: url('Imagen?tipoDeFoto=fotoActividadMiniatura&id=ActividadMiniatura<%=listaActividades.indexOf(a)%>') no-repeat;background-size: 40% 85%; background-position: right;padding: 26px 0 0 28px;">
                 <!-- PRODUCT CATEGORY BOX TITLE -->
@@ -1801,7 +1801,7 @@
             </div>
         </a>
         <!-- /PRODUCT CATEGORY BOX -->
-        <%aux++;}}%>
+        <%}aux++;}}%>
     </div>
     <!-- /GRID -->
 </div>

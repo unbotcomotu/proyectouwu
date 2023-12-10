@@ -1925,7 +1925,7 @@
                 <div class="col-sm-5 contenedor2" style="top: 30px">
                     <div class="container-fluid btn btn-file1">
                         <div id="contenedorImagenCabeceraCrear">
-                            <img id="imagenActualCabeceraCrear" class="img-fluid" src="css/subirArchivo.jpg" style="max-height: 600px" alt="">
+                            <img id="imagenActualCabeceraCrear" class="img-fluid" src="css/subirArchivo.jpg" style="max-height: 500px" alt="">
                         </div>
                         <p style="margin-top: 10px"><b>Agregar foto de cabecera</b></p>
                         <%if(extensionInvalidaCab!=null){%><label for="inputCabeceraCrear"><a style="color: red;">Ingrese un formato e imagen correctos</a></label><%}else if(escalaInvalidaCab!=null){%><label for="inputCabeceraCrear"><a style="color: red;">Ingrese una escala apropiada</a></label><%}%>
@@ -1934,7 +1934,7 @@
                     <br>
                     <div class="container-fluid btn btn-file1">
                         <div id="contenedorImagenCrear">
-                            <img id="imagenActualCrear" class="img-fluid" src="css/subirArchivo.jpg" style="max-height: 600px" alt="">
+                            <img id="imagenActualCrear" class="img-fluid" src="css/subirArchivo.jpg" style="max-height: 500px" alt="">
                         </div>
                         <p style="margin-top: 10px"><b>Agregar foto miniatura</b></p>
                         <%if(extensionInvalidaMin!=null){%><label for="inputCrear"><a style="color: red;">Ingrese un formato e imagen correctos</a></label><%}else if(escalaInvalidaMin!=null){%><label for="inputCabeceraCrear"><a style="color: red;">Ingrese una escala apropiada</a></label><%}%>

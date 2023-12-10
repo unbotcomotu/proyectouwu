@@ -179,7 +179,7 @@ public class ListaDeActividadesServlet extends HttpServlet {
                         if(!io.isImageFile(nombreCab)){
                             request.getSession().setAttribute("extensionInvalidaCab","1");
                             validacionCrear=false;
-                        }else if(!io.betweenScales(ImageIO.read(partCab.getInputStream()),0.5,1)) {
+                        }else if(!io.betweenScales(ImageIO.read(partCab.getInputStream()),0.5,2)) {
                             request.getSession().setAttribute("escalaInvalidaCab", "1");
                             validacionCrear = false;
                         }
@@ -202,7 +202,7 @@ public class ListaDeActividadesServlet extends HttpServlet {
                         if(!io.isImageFile(nombreMin)){
                             request.getSession().setAttribute("extensionInvalidaMin","1");
                             validacionCrear=false;
-                        }else if(!io.betweenScales(ImageIO.read(partMin.getInputStream()),0.666,1.333)) {
+                        }else if(!io.betweenScales(ImageIO.read(partMin.getInputStream()),0.666,1.5)) {
                             request.getSession().setAttribute("escalaInvalidaMin", "1");
                             validacionCrear = false;
                         }

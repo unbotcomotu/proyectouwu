@@ -318,7 +318,6 @@ public class NotificacionesServlet extends HttpServlet {
 
                             try{
 
-
                                 int donacionId_int = Integer.parseInt(donacionId);
                                 float monto = Float.parseFloat(montoDonacion);
 
@@ -418,6 +417,10 @@ public class NotificacionesServlet extends HttpServlet {
                     int idAlumnoPorEvento=Integer.parseInt(request.getParameter("idAlumnoPorEvento"));
                     String tipoDeApoyo=request.getParameter("tipoDeApoyo");
                     dN.aceptarSolicitudApoyo(idAlumnoPorEvento,tipoDeApoyo);
+                    response.sendRedirect("NotificacionesServlet");
+                    break;
+
+                default:
                     response.sendRedirect("NotificacionesServlet");
                     break;
             }

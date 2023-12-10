@@ -1,10 +1,7 @@
 package com.example.proyectouwu.Servlets;
 
 import com.example.proyectouwu.Beans.*;
-import com.example.proyectouwu.Daos.DaoDonacion;
-import com.example.proyectouwu.Daos.DaoNotificacion;
-import com.example.proyectouwu.Daos.DaoUsuario;
-import com.example.proyectouwu.Daos.DaoValidacion;
+import com.example.proyectouwu.Daos.*;
 import jakarta.servlet.*;
 import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
@@ -358,17 +355,6 @@ public class NotificacionesServlet extends HttpServlet {
 
 
                     break;
-                case "editDonacion":
-                    String id = request.getParameter("id");
-                    Donacion donacion = daoDonacion.buscarPorId(id);
-
-                    if(donacion != null){
-                        request.setAttribute("donacion2",donacion);
-                        request.getRequestDispatcher("/donacion_edit.jsp").forward(request,response);
-                    }else{
-                        request.getRequestDispatcher("notificacionesDelGeneral.jsp").forward(request,response);
-                    }
-                    break;
                 case "deleteDonacion":
 
                     String idd = request.getParameter("id");
@@ -398,26 +384,81 @@ public class NotificacionesServlet extends HttpServlet {
 
                     break;
                 case "enviar":
-                    new DaoValidacion().linkEnviado(Integer.parseInt(request.getParameter("idCorreoValidacion")));
-                    response.sendRedirect("NotificacionesServlet?vistaActualNueva=Recuperacion");
+
+                    String idCorreoValidacionStr = request.getParameter("idCorreoValidacion");
+
+                    DaoValidacion daoValidacion = new DaoValidacion();
+
+                    if (idCorreoValidacionStr!=null){
+                        if (idCorreoValidacionStr.matches("\\d+") && daoValidacion.existeValidacion(idCorreoValidacionStr)){
+                            new DaoValidacion().linkEnviado(Integer.parseInt(request.getParameter("idCorreoValidacion")));
+                            response.sendRedirect("NotificacionesServlet?vistaActualNueva=Recuperacion");
+                        }else{
+                            response.sendRedirect("NotificacionesServlet?vistaActualNueva=Recuperacion");
+                        }
+                    }else{
+                        response.sendRedirect("NotificacionesServlet?vistaActualNueva=Recuperacion");
+
+                    }
+
                     break;
                 case "aceptarRegistro":
                     String idUsuarioARegistrar = request.getParameter("idUsuarioARegistrar");
-                    new DaoUsuario().aceptarRegistro(Integer.parseInt(idUsuarioARegistrar));
-                    response.sendRedirect( "NotificacionesServlet");
+
+                    if (idUsuarioARegistrar!=null){
+                        if (idUsuarioARegistrar.matches("\\d+") && dUsuario.existeUsuario(idUsuarioARegistrar)){
+
+                            new DaoUsuario().aceptarRegistro(Integer.parseInt(idUsuarioARegistrar));
+                            response.sendRedirect( "NotificacionesServlet");
+                        }else{
+                            response.sendRedirect( "NotificacionesServlet");
+                        }
+                    }else{
+                        response.sendRedirect( "NotificacionesServlet");
+
+                    }
+
                     break;
                 case "rechazarRegistro":
                     String idUsuarioARegistrar1 = request.getParameter("idUsuarioARegistrar");
-                    new DaoUsuario().rechazarRegistro(Integer.parseInt(idUsuarioARegistrar1));
-                    response.sendRedirect("NotificacionesServlet");
+
+                    if (idUsuarioARegistrar1!=null){
+
+                        if (idUsuarioARegistrar1.matches("\\d+") && dUsuario.existeUsuario(idUsuarioARegistrar1)){
+                            new DaoUsuario().rechazarRegistro(Integer.parseInt(idUsuarioARegistrar1));
+                            response.sendRedirect("NotificacionesServlet");
+                        }else{
+                            response.sendRedirect("NotificacionesServlet");
+                        }
+
+                    }else{
+                        response.sendRedirect("NotificacionesServlet");
+                    }
+
                     break;
                 case "filtrarFechaDelegadoGeneral":
                     break;
                 case "aceptarSolicitudApoyo":
-                    int idAlumnoPorEvento=Integer.parseInt(request.getParameter("idAlumnoPorEvento"));
+
+                    String idAlumnoPorEventoStr = request.getParameter("idAlumnoPorEvento");
+                    DaoAlumnoPorEvento daoAlumnoPorEvento = new DaoAlumnoPorEvento();
                     String tipoDeApoyo=request.getParameter("tipoDeApoyo");
-                    dN.aceptarSolicitudApoyo(idAlumnoPorEvento,tipoDeApoyo);
-                    response.sendRedirect("NotificacionesServlet");
+
+                    if (idAlumnoPorEventoStr!=null && tipoDeApoyo!=null){
+
+                        if (idAlumnoPorEventoStr.matches("\\d+") && (tipoDeApoyo.equals("Barra") || tipoDeApoyo.equals("Jugador")) && daoAlumnoPorEvento.existeAlumnoPorEvento(idAlumnoPorEventoStr)){
+                            int idAlumnoPorEvento=Integer.parseInt(request.getParameter("idAlumnoPorEvento"));
+                            dN.aceptarSolicitudApoyo(idAlumnoPorEvento,tipoDeApoyo);
+                            response.sendRedirect("NotificacionesServlet");
+                        }else{
+                            response.sendRedirect("NotificacionesServlet");
+                        }
+
+                    }else{
+                        response.sendRedirect("NotificacionesServlet");
+
+                    }
+
                     break;
 
                 default:

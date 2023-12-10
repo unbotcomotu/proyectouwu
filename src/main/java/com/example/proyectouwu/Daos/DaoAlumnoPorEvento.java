@@ -141,4 +141,21 @@ public class DaoAlumnoPorEvento extends DaoPadre {
             throw new RuntimeException(e);
         }
     }
+
+    public boolean existeAlumnoPorEvento(String idAlumnoPorEvento){
+        String sql="select idAlumnoPorEvento from alumnoporevento where idAlumnoPorEvento=?";
+        try(Connection conn=this.getConnection(); PreparedStatement pstmt= conn.prepareStatement(sql)){
+            pstmt.setString(1,idAlumnoPorEvento);
+            try(ResultSet rs=pstmt.executeQuery()){
+                if(rs.next()){
+                    return true;
+                }else
+                    return false;
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+
 }

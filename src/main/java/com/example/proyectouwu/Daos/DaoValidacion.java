@@ -247,4 +247,19 @@ public class DaoValidacion extends DaoPadre {
             throw new RuntimeException(e);
         }
     }
+
+    public boolean existeValidacion(String idCorreoValidacion){
+        String sql="select idCorreoValidacion from validacion where idCorreoValidacion=?";
+        try(Connection conn=this.getConnection(); PreparedStatement pstmt= conn.prepareStatement(sql)){
+            pstmt.setString(1,idCorreoValidacion);
+            try(ResultSet rs=pstmt.executeQuery()){
+                if(rs.next()){
+                    return true;
+                }else
+                    return false;
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }

@@ -40,6 +40,10 @@
         if(mensajeLargo!=null){
             request.getSession().removeAttribute("mensajeLargo");
         }
+        String abrirChat=(String) request.getSession().getAttribute("abrirChat");
+        if(abrirChat!=null){
+            request.getSession().removeAttribute("abrirChat");
+        }
         ArrayList<String>extensionInvalida=new ArrayList<>();
         ArrayList<String>escalaInvalida=new ArrayList<>();
         //asumiendo 3 imágenes por carrusel
@@ -61,12 +65,235 @@
     <link rel="stylesheet" href="css/vendor/bootstrap.min.css">
     <!-- styles -->
     <link rel="stylesheet" href="css/raw/styles.css">
-    <!-- simplebar styles -->
-    <link rel="stylesheet" href="css/vendor/simplebar.css">
     <!-- favicon -->
     <link rel="icon" href="img/favicon.ico">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <title>Actividades - Siempre Fibra</title>
+    <style>
+        [data-simplebar] {
+            position: relative;
+            flex-direction: column;
+            flex-wrap: wrap;
+            justify-content: flex-start;
+            align-content: flex-start;
+            align-items: flex-start;
+        }
+
+        .simplebar-wrapper {
+            overflow: hidden;
+            width: inherit;
+            height: inherit;
+            max-width: inherit;
+            max-height: inherit;
+        }
+
+        .simplebar-mask {
+            direction: inherit;
+            position: absolute;
+            overflow: hidden;
+            padding: 0;
+            margin: 0;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            right: 0;
+            width: auto !important;
+            height: auto !important;
+            z-index: 0;
+        }
+
+        .simplebar-offset {
+            direction: inherit !important;
+            box-sizing: inherit !important;
+            resize: none !important;
+            position: absolute;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+            padding: 0;
+            margin: 0;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .simplebar-content-wrapper {
+            direction: inherit;
+            box-sizing: border-box !important;
+            position: relative;
+            display: block;
+            height: 100%; /* Required for horizontal native scrollbar to not appear if parent is taller than natural height */
+            width: auto;
+            /* visibility: visible; */
+            max-width: 100%; /* Not required for horizontal scroll to trigger */
+            max-height: 100%; /* Needed for vertical scroll to trigger */
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+        }
+
+        .simplebar-content-wrapper::-webkit-scrollbar,
+        .simplebar-hide-scrollbar::-webkit-scrollbar {
+            width: 0;
+            height: 0;
+        }
+
+        .simplebar-content:before,
+        .simplebar-content:after {
+            content: ' ';
+            display: table;
+        }
+
+        .simplebar-placeholder {
+            max-height: 100%;
+            max-width: 100%;
+            width: 100%;
+            pointer-events: none;
+        }
+
+        .simplebar-height-auto-observer-wrapper {
+            box-sizing: inherit !important;
+            height: 100%;
+            width: 100%;
+            max-width: 1px;
+            position: relative;
+            float: left;
+            max-height: 1px;
+            overflow: hidden;
+            z-index: -1;
+            padding: 0;
+            margin: 0;
+            pointer-events: none;
+            flex-grow: inherit;
+            flex-shrink: 0;
+            flex-basis: 0;
+        }
+
+        .simplebar-height-auto-observer {
+            box-sizing: inherit;
+            display: block;
+            opacity: 0;
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 1000%;
+            width: 1000%;
+            min-height: 1px;
+            min-width: 1px;
+            overflow: hidden;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .simplebar-track {
+            z-index: 1;
+            position: absolute;
+            right: 0;
+            bottom: 0;
+            pointer-events: none;
+            overflow: hidden;
+        }
+
+        [data-simplebar].simplebar-dragging .simplebar-content {
+            pointer-events: none;
+            user-select: none;
+            -webkit-user-select: none;
+        }
+
+        [data-simplebar].simplebar-dragging .simplebar-track {
+            pointer-events: all;
+        }
+
+        .simplebar-scrollbar {
+            position: absolute;
+            right: 2px;
+            width: 4px;
+            min-height: 10px;
+        }
+
+        .simplebar-scrollbar:before {
+            position: absolute;
+            content: '';
+            background: #adafca;
+            border-radius: 7px;
+            left: 0;
+            right: 0;
+            opacity: 0;
+            transition: opacity 0.2s linear;
+        }
+
+        .simplebar-scrollbar.simplebar-visible:before {
+            /* When hovered, remove all transitions from drag handle */
+            opacity: .4;
+            transition: opacity 0s linear;
+        }
+
+        .simplebar-track.simplebar-vertical {
+            top: 0;
+            width: 11px;
+        }
+
+        .simplebar-track.simplebar-vertical .simplebar-scrollbar:before {
+            top: 2px;
+            bottom: 2px;
+        }
+
+        .simplebar-track.simplebar-horizontal {
+            left: 0;
+            height: 11px;
+        }
+
+        .simplebar-track.simplebar-horizontal .simplebar-scrollbar:before {
+            height: 100%;
+            left: 2px;
+            right: 2px;
+        }
+
+        .simplebar-track.simplebar-horizontal .simplebar-scrollbar {
+            right: auto;
+            left: 0;
+            top: 2px;
+            height: 7px;
+            min-height: 0;
+            min-width: 10px;
+            width: auto;
+        }
+
+        /* Rtl support */
+        [data-simplebar-direction='rtl'] .simplebar-track.simplebar-vertical {
+            right: auto;
+            left: 0;
+        }
+
+        .hs-dummy-scrollbar-size {
+            direction: rtl;
+            position: fixed;
+            opacity: 0;
+            visibility: hidden;
+            height: 500px;
+            width: 500px;
+            overflow-y: hidden;
+            overflow-x: scroll;
+        }
+
+        .simplebar-hide-scrollbar {
+            position: fixed;
+            left: 0;
+            visibility: hidden;
+            overflow-y: scroll;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+        }
+
+        /*--------------------
+            CUSTOM STYLES
+        --------------------*/
+        [data-simplebar].navigation-widget {
+            position: fixed;
+        }
+
+        [data-simplebar].navigation-widget .simplebar-scrollbar {
+            right: 4px;
+        }
+    </style>
     <style>
         .carousel {
             position: relative;
@@ -785,6 +1012,7 @@
                         <%for(AlumnoPorEvento noti:listaNotificacionesDelegadoDeActividad){%>
                         <form id="notificacionLeidaDelegadoDeActividad<%=listaNotificacionesDelegadoDeActividad.indexOf(noti)%>" method="post" action="PaginaNoExisteServlet?action=notificacionLeidaCampanitaDelegadoDeActividad">
                             <input type="hidden" name="idAlumnoPorEvento" value="<%=noti.getIdAlumnoPorEvento()%>">
+                            <input type="hidden" name="idEvento" value="<%=e.getIdEvento()%>">
                             <input type="hidden" name="servletActual" value="<%=servletActual%>">
                             <!-- Reporte -->
                             <div class="dropdown-box-list-item unread">
@@ -970,6 +1198,7 @@
                         <%for(NotificacionDelegadoGeneral noti:listaNotificacionesCampanita){%>
                         <form id="notificacionLeidaCampanita<%=listaNotificacionesCampanita.indexOf(noti)%>" method="post" action="PaginaNoExisteServlet?action=notificacionLeidaCampanita">
                             <input type="hidden" name="idNotificacion" value="<%=noti.getIdNotificacion()%>">
+                            <input type="hidden" name="idEvento" value="<%=e.getIdEvento()%>">
                             <input type="hidden" name="servletActual" value="<%=servletActual%>">
                                 <%if(noti.getReporte().getIdReporte()!=0){
                                 Reporte r=new DaoReporte().reportePorIdReporteNotificacion(noti.getReporte().getIdReporte());%>
@@ -1654,12 +1883,14 @@
 <!-- /HEADER -->
 
 <!-- CHAT WIDGET -->
-<aside id="chat-widget-messages" class="chat-widget <%if(mensajeLargo==null){%>closed<%}%> sidebar right">
+<aside id="chat-widget-messages" class="chat-widget <%if(mensajeLargo==null&&abrirChat==null){%>closed<%}%> sidebar right">
     <!-- CHAT WIDGET MESSAGES -->
     <div class="chat-widget-messages" data-simplebar>
         <!-- CHAT WIDGET CONVERSATION -->
         <div class="chat-widget-conversation" id="chat" data-simplebar>
-            <%for(int i=0;i<listaDeMensajes.size();i++){
+            <%if(listaDeMensajes.isEmpty()){%>
+            <a style="color: #6c757d;text-align: center">Ningún mensaje por aquí <br> ¡Sé quien inicie la conversación!</a>
+            <%}else for(int i=0;i<listaDeMensajes.size();i++){
             if(listaDeMensajes.get(i).getUsuario().getIdUsuario()!=usuarioActual.getIdUsuario()){%>
             <!-- CHAT WIDGET SPEAKER -->
             <div class="chat-widget-speaker left">
@@ -1696,35 +1927,35 @@
                     if(diferenciaFechasChat[0]>1){%>
                 <p class="chat-widget-speaker-timestamp" style="font-size: 60%;"><%=listaDeMensajes.get(i).getFecha()%> a las <%=listaDeMensajes.get(i).getHora()%></p>
                 <%}else if(diferenciaFechasChat[0]==1){%>
-                <p class="chat-widget-speaker-timestamp" style="font-size: 60%;">Ayer a las <%=listaDeMensajes.get(i).getHora()%> <%if(rolUsuario.equals("Delegado de Actividad")&&!rolUsuarioMensaje.equals("Delegado General")){%><a id="mostrarPopupReportar<%=i%>" class="chat-widget-speaker-timestamp" style="color: red;cursor: pointer">Reportar</a><%}%></p>
+                <p class="chat-widget-speaker-timestamp" style="font-size: 60%;">Ayer a las <%=listaDeMensajes.get(i).getHora()%> <%if(idUsuario==delegadoDeEstaActividadID&&!rolUsuarioMensaje.equals("Delegado General")){%><a id="mostrarPopupReportar<%=i%>" class="chat-widget-speaker-timestamp" style="color: red;cursor: pointer">Reportar</a><%}%></p>
                 <%}else if(diferenciaFechasChat[1]>0){
                     if(diferenciaFechasChat[1]==1){%>
                 <!-- USER STATUS TIMESTAMP -->
-                <p class="chat-widget-speaker-timestamp" style="font-size: 60%;">Hace 1 hora <%if(rolUsuario.equals("Delegado de Actividad")&&!rolUsuarioMensaje.equals("Delegado General")){%><a id="mostrarPopupReportar<%=i%>" class="chat-widget-speaker-timestamp" style="color: red;cursor: pointer">Reportar</a><%}%></p>
+                <p class="chat-widget-speaker-timestamp" style="font-size: 60%;">Hace 1 hora <%if(idUsuario==delegadoDeEstaActividadID&&!rolUsuarioMensaje.equals("Delegado General")){%><a id="mostrarPopupReportar<%=i%>" class="chat-widget-speaker-timestamp" style="color: red;cursor: pointer">Reportar</a><%}%></p>
                 <!-- /USER STATUS TIMESTAMP -->
                 <%}else{%>
                 <!-- USER STATUS TIMESTAMP -->
-                <p class="chat-widget-speaker-timestamp" style="font-size: 60%;">Hace <%=diferenciaFechasChat[1]%> horas <%if(rolUsuario.equals("Delegado de Actividad")&&!rolUsuarioMensaje.equals("Delegado General")){%><a id="mostrarPopupReportar<%=i%>" class="chat-widget-speaker-timestamp" style="color: red;cursor: pointer">Reportar</a><%}%></p>
+                <p class="chat-widget-speaker-timestamp" style="font-size: 60%;">Hace <%=diferenciaFechasChat[1]%> horas <%if(idUsuario==delegadoDeEstaActividadID&&!rolUsuarioMensaje.equals("Delegado General")){%><a id="mostrarPopupReportar<%=i%>" class="chat-widget-speaker-timestamp" style="color: red;cursor: pointer">Reportar</a><%}%></p>
                 <!-- /USER STATUS TIMESTAMP -->
                 <%}%>
                 <%}else if(diferenciaFechasChat[2]>0){
                     if(diferenciaFechasChat[2]==1){%>
                 <!-- USER STATUS TIMESTAMP -->
-                <p class="chat-widget-speaker-timestamp" style="font-size: 60%;">Hace 1 minuto <%if(rolUsuario.equals("Delegado de Actividad")&&!rolUsuarioMensaje.equals("Delegado General")){%><a id="mostrarPopupReportar<%=i%>" class="chat-widget-speaker-timestamp" style="color: red;cursor: pointer">Reportar</a><%}%></p>
+                <p class="chat-widget-speaker-timestamp" style="font-size: 60%;">Hace 1 minuto <%if(idUsuario==delegadoDeEstaActividadID&&!rolUsuarioMensaje.equals("Delegado General")){%><a id="mostrarPopupReportar<%=i%>" class="chat-widget-speaker-timestamp" style="color: red;cursor: pointer">Reportar</a><%}%></p>
                 <!-- /USER STATUS TIMESTAMP -->
                 <%}else{%>
                 <!-- USER STATUS TIMESTAMP -->
-                <p class="chat-widget-speaker-timestamp" style="font-size: 60%;">Hace <%=diferenciaFechasChat[2]%> minutos <%if(rolUsuario.equals("Delegado de Actividad")&&!rolUsuarioMensaje.equals("Delegado General")){%><a id="mostrarPopupReportar<%=i%>" class="chat-widget-speaker-timestamp" style="color: red;cursor: pointer">Reportar</a><%}%></p>
+                <p class="chat-widget-speaker-timestamp" style="font-size: 60%;">Hace <%=diferenciaFechasChat[2]%> minutos <%if(idUsuario==delegadoDeEstaActividadID&&!rolUsuarioMensaje.equals("Delegado General")){%><a id="mostrarPopupReportar<%=i%>" class="chat-widget-speaker-timestamp" style="color: red;cursor: pointer">Reportar</a><%}%></p>
                 <!-- /USER STATUS TIMESTAMP -->
                 <%}%>
                 <%}else if(diferenciaFechasChat[3]>=0){
                     if(diferenciaFechasChat[3]==0){%>
                 <!-- USER STATUS TIMESTAMP -->
-                <p class="chat-widget-speaker-timestamp" style="font-size: 60%;">Ahora mismo <%if(rolUsuario.equals("Delegado de Actividad")&&!rolUsuarioMensaje.equals("Delegado General")){%><a id="mostrarPopupReportar<%=i%>" class="chat-widget-speaker-timestamp" style="color: red;cursor: pointer">Reportar</a><%}%></p>
+                <p class="chat-widget-speaker-timestamp" style="font-size: 60%;">Ahora mismo <%if(idUsuario==delegadoDeEstaActividadID&&!rolUsuarioMensaje.equals("Delegado General")){%><a id="mostrarPopupReportar<%=i%>" class="chat-widget-speaker-timestamp" style="color: red;cursor: pointer">Reportar</a><%}%></p>
                 <!-- /USER STATUS TIMESTAMP -->
                 <%}else{%>
                 <!-- USER STATUS TIMESTAMP -->
-                <p class="chat-widget-speaker-timestamp" style="font-size: 60%;">Hace <%=diferenciaFechasChat[3]%> segundos <%if(rolUsuario.equals("Delegado de Actividad")&&!rolUsuarioMensaje.equals("Delegado General")){%><a id="mostrarPopupReportar<%=i%>" class="chat-widget-speaker-timestamp" style="color: red;cursor: pointer">Reportar</a><%}%></p>
+                <p class="chat-widget-speaker-timestamp" style="font-size: 60%;">Hace <%=diferenciaFechasChat[3]%> segundos <%if(idUsuario==delegadoDeEstaActividadID&&!rolUsuarioMensaje.equals("Delegado General")){%><a id="mostrarPopupReportar<%=i%>" class="chat-widget-speaker-timestamp" style="color: red;cursor: pointer">Reportar</a><%}%></p>
                 <!-- /USER STATUS TIMESTAMP -->
                 <%}}%>
             </div>
@@ -1767,20 +1998,21 @@
                 <p class="chat-widget-speaker-timestamp" style="font-size: 60%;">Hace <%=diferenciaFechasChat[2]%> minutos</p>
                 <!-- /USER STATUS TIMESTAMP -->
                 <%}%>
-                <%}else if(diferenciaFechasChat[3]>=0){
+                <%}else if(diferenciaFechasChat[3]>0){
                     if(diferenciaFechasChat[3]==1){%>
                 <!-- USER STATUS TIMESTAMP -->
                 <p class="chat-widget-speaker-timestamp" style="font-size: 60%;">Hace 1 segundo</p>
-                <!-- /USER STATUS TIMESTAMP -->
-                <%}else if(diferenciaFechasChat[3]>1){%>
-                <!-- USER STATUS TIMESTAMP -->
-                <p class="chat-widget-speaker-timestamp" style="font-size: 60%;">Ahora mismo</p>
                 <!-- /USER STATUS TIMESTAMP -->
                 <%}else{%>
                 <!-- USER STATUS TIMESTAMP -->
                 <p class="chat-widget-speaker-timestamp" style="font-size: 60%;">Hace <%=diferenciaFechasChat[3]%> segundos</p>
                 <!-- /USER STATUS TIMESTAMP -->
-                <%}}%>
+                <%}%>
+                <%}else{%>
+                <!-- USER STATUS TIMESTAMP -->
+                <p class="chat-widget-speaker-timestamp" style="font-size: 60%;">Ahora mismo</p>
+                <!-- /USER STATUS TIMESTAMP -->
+                <%}%>
             </div>
             <!-- /CHAT WIDGET SPEAKER -->
             <%}%>
@@ -1798,7 +2030,7 @@
     <form method="post" action="?action=enviarMensaje" class="chat-widget-form">
         <!-- INTERACTIVE INPUT -->
         <div class="interactive-input small">
-            <input type="text" name="mensaje" placeholder="Escribe un mensaje..." <%if(mensaje!=null){%>value="<%=mensaje%>"<%}%>>
+            <input id="escribirMensaje" type="text" name="mensaje" placeholder="Escribe un mensaje..." <%if(mensaje!=null){%>value="<%=mensaje%>"<%}%>>
             <input type="hidden" name="idEvento" value="<%=e.getIdEvento()%>">
             <!-- INTERACTIVE INPUT ICON WRAP -->
             <button type="submit" style="background: none;border:0;color: inherit" class="interactive-input-icon-wrap">
@@ -1950,12 +2182,14 @@
                         <!-- /USER STAT -->
                     </div>
                     <!-- /USER STATS -->
-
+                    <%if(!e.isEventoFinalizado()){%>
                     <form method="post" action="<%=request.getContextPath()%>/EventoServlet?action=apoyoEvento">
                         <input type="hidden" name="idEvento" value="<%=e.getIdEvento()%>">
                         <button style="background: transparent;height: 0px" type="submit"><a class="button small twitch" style="color: white;">Apoyar al evento</a></button>
                     </form>
-
+                    <%}else{%>
+                    <button style="background: transparent;height: 0px" type="button"><a class="button small twitch" style="color: white;opacity: 0.5">Evento finalizado</a></button>
+                    <%}%>
                     <!-- BUTTON -->
                     <!-- /BUTTON -->
                 </div>
@@ -1966,7 +2200,7 @@
                     <!-- /STREAMER BOX TITLE -->
                     <%if(estadoApoyo.equals("Pendiente")){%>
                     <!-- STREAMER BOX STATUS -->
-                    <p class="mt-4" style="font-size: 150%">¡Espera hasta que el delegado de actividad revise tu solicitud y te asigne a pertenecer a la barra a al equipo!</p>
+                    <p class="mt-4" style="font-size: 150%">¡Espere hasta que el delegado de actividad revise tu solicitud y te asigne a pertenecer a la barra a al equipo!</p>
                     <!-- /STREAMER BOX STATUS -->
                     <div class="user-stats">
                         <div class="user-stat">
@@ -2513,20 +2747,6 @@ for(String es:escalaInvalida){if(es!=null){escalaInvalidaAux=true;}}%>
         }
     }
 
-    function scrollHaciaAbajo() {
-        let contenedor = document.querySelector('simplebar-wrapper');
-        contenedor.scrollTop = contenedor.scrollHeight;
-        contenedor = document.querySelector('simplebar-mask');
-        contenedor.scrollTop = contenedor.scrollHeight;
-        contenedor = document.querySelector('simplebar-offset');
-        contenedor.scrollTop = contenedor.scrollHeight;
-        contenedor = document.querySelector('simplebar-content-wrapper');
-        contenedor.scrollTop = contenedor.scrollHeight;
-        contenedor = document.querySelector('simplebar-content');
-        contenedor.scrollTop = contenedor.scrollHeight;
-    }
-    window.onload = scrollHaciaAbajo;
-
     function mostrarImagen(idImagen, idImagenContainer, idInputArchivo) {
         var imagenContainer = document.getElementById(idImagenContainer);
         var imagen = document.getElementById(idImagen);
@@ -2605,13 +2825,39 @@ for(String es:escalaInvalida){if(es!=null){escalaInvalidaAux=true;}}%>
     if(rolUsuario.equals("Delegado de Actividad")&&!rolUsuarioMensaje.equals("Delegado General")&&listaDeMensajes.get(i).getUsuario().getIdUsuario()!=usuarioActual.getIdUsuario()){%>
     popupFunc('popupReportar<%=i%>','mostrarPopupReportar<%=i%>',['cerrarPopupReportar<%=i%>','cerrarPopupReportar1<%=i%>','cerrarPopupReportar2<%=i%>'],'overlayReportar<%=i%>');
     <%}}%>
+    window.onload = function() {
+        bajarScrollChat();
+        document.getElementById('escribirMensaje').focus();
+    };
+    const bajarScrollChat = function (){
+        var elementosConClase = document.getElementsByClassName('simplebar-content-wrapper');
+        if (elementosConClase.length > 0) {
+            for(let i=0;i<elementosConClase.length;i++){
+                var miDiv = elementosConClase[i];
+                miDiv.scrollTop = miDiv.scrollHeight;
+            }
+        }
+    }
+    var miDiv = document.getElementById('chat-widget-messages');
+    var observer = new MutationObserver(function(mutations) {
+        mutations.forEach(function(mutation) {
+            if (!miDiv.classList.contains('closed')) {
+                setTimeout(function (){
+                    bajarScrollChat();
+                    document.getElementById('escribirMensaje').focus();
+                },10);
+            }
+        });
+    });
+    var config = { attributes: true, attributeFilter: ['class'] };
+    observer.observe(miDiv, config);
 </script>
 <!-- app -->
 <script src="js/utils/app.js"></script>
 <!-- page loader -->
 <script src="js/utils/page-loader.js"></script>
 <!-- simplebar -->
-<script src="js/vendor/simplebar.min.js"></script>
+<script src="js/vendor/simplebar.js"></script>
 <!-- liquidify -->
 <script src="js/utils/liquidify.js"></script>
 <!-- XM_Plugins -->

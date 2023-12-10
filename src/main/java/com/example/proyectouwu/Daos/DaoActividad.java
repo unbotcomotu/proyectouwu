@@ -61,6 +61,23 @@ public class DaoActividad extends DaoPadre {
         }
     }
 
+    public boolean actividadOcultaPorId(String idActividad){
+        String sql = "select actividadOculta from actividad where idActividad=?";
+        try(Connection conn = getConnection();
+            PreparedStatement pstmt = conn.prepareStatement(sql)){
+            pstmt.setString(1,idActividad);
+            try(ResultSet rs = pstmt.executeQuery()){
+                if(rs.next()){
+                    return rs.getBoolean(1);
+                }else{
+                    return false;
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     public ArrayList<Actividad>listarActividades(String nombre){
         ArrayList<Actividad>listaActividades=new ArrayList<>();
         String sql="select idActividad,idDelegadoDeActividad,nombre,fotoMiniatura,fotoCabecera,cantidadPuntosPrimerLugar,actividadFinalizada,actividadOculta from actividad where lower(nombre) like ?";
@@ -219,6 +236,22 @@ public class DaoActividad extends DaoPadre {
     public ArrayList<Integer[]>lugaresConMayorCantidadDeEventos_cantidad_idLugarEvento(int idActividad){
         ArrayList<Integer[]>lista=new ArrayList<>();
         String sql="select l.idLugarEvento,count(e.idEvento) from LugarEvento l inner join Evento e on l.idLugarEvento=e.idLugarEvento inner join Actividad a on e.idActividad=a.idActividad where a.idActividad=? group by e.idLugarEvento order by count(e.idEvento)";
+        try(Connection conn=this.getConnection(); PreparedStatement pstmt= conn.prepareStatement(sql)){
+            pstmt.setInt(1,idActividad);
+            try(ResultSet rs=pstmt.executeQuery()){
+                while(rs.next()){
+                    Integer[] par={rs.getInt(1),rs.getInt(2)};
+                    lista.add(par);
+                }return lista;
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public ArrayList<Integer[]>lugaresConMayorCantidadDeEventos_cantidad_idLugarEventoSinOcultos(int idActividad){
+        ArrayList<Integer[]>lista=new ArrayList<>();
+        String sql="select l.idLugarEvento,count(e.idEvento) from LugarEvento l inner join Evento e on l.idLugarEvento=e.idLugarEvento inner join Actividad a on e.idActividad=a.idActividad where a.idActividad=? and e.eventoOculto=false group by e.idLugarEvento order by count(e.idEvento)";
         try(Connection conn=this.getConnection(); PreparedStatement pstmt= conn.prepareStatement(sql)){
             pstmt.setInt(1,idActividad);
             try(ResultSet rs=pstmt.executeQuery()){

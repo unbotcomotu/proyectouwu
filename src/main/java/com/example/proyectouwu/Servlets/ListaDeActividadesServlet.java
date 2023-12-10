@@ -66,9 +66,21 @@ public class ListaDeActividadesServlet extends HttpServlet {
                     }
                     break;
                 case "filtroActividad":
-
                     String idFiltroActividades=request.getParameter("idFiltroActividades");
                     String idOrdenarActividades=request.getParameter("idOrdenarActividades");
+                    if(!(idOrdenarActividades.equals("0") || idOrdenarActividades.equals("1"))){
+                        idOrdenarActividades="0";
+                    }
+                    if(usuario.getRol().equals("Alumno")){
+                        if(!(idFiltroActividades.equals("0") || idFiltroActividades.equals("1") || idFiltroActividades.equals("2") || idFiltroActividades.equals("3"))){
+                            idFiltroActividades="0";
+                        }
+                    }else{
+                        if(!(idFiltroActividades.equals("0") || idFiltroActividades.equals("1") || idFiltroActividades.equals("2") || idFiltroActividades.equals("3") || idFiltroActividades.equals("4"))){
+                            idFiltroActividades="0";
+                        }
+                    }
+
                     request.setAttribute("listaActividades",new DaoActividad().listarActividades(idFiltroActividades,idOrdenarActividades,usuario.getIdUsuario()));
                     request.setAttribute("idFiltroActividades",idFiltroActividades);
                     request.setAttribute("idOrdenarActividades",idOrdenarActividades);

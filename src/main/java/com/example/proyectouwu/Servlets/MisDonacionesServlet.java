@@ -31,29 +31,32 @@ public class MisDonacionesServlet extends HttpServlet {
         if(usuario==null){
             response.sendRedirect("InicioSesionServlet");
         }else{
-            request.setAttribute("vistaActual","misDonaciones");
-            request.setAttribute("correosDelegadosGenerales",dUsuario.listarCorreosDelegadosGenerales());
-            request.setAttribute("listaDonaciones",dDonacion.listarDonacionesVistaUsuario(usuario.getIdUsuario()));
-            request.setAttribute("totalDonaciones",dDonacion.totalDonaciones(usuario.getIdUsuario()));
+            if(usuario.getRol().equals("Delegado General")){
+                response.sendRedirect("ListaDeActividadesServlet");
+            }else{
+                request.setAttribute("vistaActual", "misDonaciones");
+                request.setAttribute("correosDelegadosGenerales", dUsuario.listarCorreosDelegadosGenerales());
+                request.setAttribute("listaDonaciones", dDonacion.listarDonacionesVistaUsuario(usuario.getIdUsuario()));
+                request.setAttribute("totalDonaciones", dDonacion.totalDonaciones(usuario.getIdUsuario()));
+
+                if (dDonacion.totalDonaciones(usuario.getIdUsuario()) > 100 && !dV.verificarYaRecibioNotificacionKit(usuario.getIdUsuario())) {
+                    dV.agregarCorreoParaElKit(dUsuario.correoUsuarioPorId(usuario.getIdUsuario()));
+                }
 
 
-            if (dDonacion.totalDonaciones(usuario.getIdUsuario()) > 100&& !dV.verificarYaRecibioNotificacionKit(usuario.getIdUsuario())){
-                dV.agregarCorreoParaElKit(dUsuario.correoUsuarioPorId(usuario.getIdUsuario()));
+                String action = request.getParameter("action") == null ? "default" : request.getParameter("action");
+                if (request.getParameter("confirmacion") != null) {
+                    request.setAttribute("confirmacion", "1");
+                }
+                if (usuario.getRol().equals("Delegado de Actividad")) {
+                    request.setAttribute("listaNotificacionesDelegadoDeActividad", new DaoNotificacion().listarNotificacionesDelegadoDeActividad(usuario.getIdUsuario()));
+                }
+                switch (action) {
+                    case "default":
+                        request.getRequestDispatcher("donaciones.jsp").forward(request, response);
+                }
+                request.getSession().setAttribute("usuario", dUsuario.usuarioSesion(usuario.getIdUsuario()));
             }
-
-
-            String action = request.getParameter("action") == null ? "default" : request.getParameter("action");
-            if(request.getParameter("confirmacion")!=null){
-                request.setAttribute("confirmacion","1");
-            }
-            if(usuario.getRol().equals("Delegado de Actividad")){
-                request.setAttribute("listaNotificacionesDelegadoDeActividad",new DaoNotificacion().listarNotificacionesDelegadoDeActividad(usuario.getIdUsuario()));
-            }
-            switch (action){
-                case "default":
-                    request.getRequestDispatcher("donaciones.jsp").forward(request,response);
-            }
-            request.getSession().setAttribute("usuario",dUsuario.usuarioSesion(usuario.getIdUsuario()));
         }
     }
 

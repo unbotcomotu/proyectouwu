@@ -414,6 +414,32 @@ public class DaoNotificacion extends DaoPadre {
         return validacionList;
     }
 
+
+    public Validacion getValidacionxId(int idCorreoValidacion ){
+        Validacion validacion = new Validacion();
+        String sql = "select correo,tipo,codigoValidacion,fechaHora,idCorreoValidacion,linkEnviado,codigoValidacion256 from Validacion where idCorreoValidacion = ? ";
+        try (Connection conn=this.getConnection(); PreparedStatement pstmt=conn.prepareStatement(sql)){
+            pstmt.setInt(1,idCorreoValidacion);
+            try(ResultSet rs=pstmt.executeQuery()){
+                while (rs.next()) {
+                    validacion.setCorreo(rs.getString(1));
+                    validacion.setTipo(rs.getString(2));
+                    validacion.setCodigoValidacion(rs.getInt(3));
+                    validacion.setFechaHora(rs.getDate(4));
+                    validacion.setIdCorreoValidacion(rs.getInt(5));
+                    validacion.setLinkEnviado(rs.getBoolean(6));
+                    validacion.setCodigoValidacion256(rs.getString(7));
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+
+
+        return validacion;
+    }
+
     public ArrayList<AlumnoPorEvento> listarSolicitudesDeApoyo(int idDelegadoDeActividad){
 
         ArrayList<AlumnoPorEvento> listaSolicitudesApoyo = new ArrayList<>();

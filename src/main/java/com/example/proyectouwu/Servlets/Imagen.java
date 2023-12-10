@@ -17,36 +17,44 @@ public class Imagen extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String id=request.getParameter("id");
-        Blob fotoAux=(Blob) request.getSession().getAttribute("foto"+id);
-        request.getSession().removeAttribute("foto"+id);
-        if(fotoAux!=null){
-            try {
-                byte[] foto =  fotoAux.getBytes(1,(int) fotoAux.length());
-                response.getOutputStream().write(foto);
-            } catch (SQLException e) {
-                response.getOutputStream().write(0);
+        if(id==null){
+            response.sendRedirect("PaginaNoExisteServlet");
+        }else {
+            Blob fotoAux = (Blob) request.getSession().getAttribute("foto" + id);
+            request.getSession().removeAttribute("foto" + id);
+            if (fotoAux != null) {
+                try {
+                    byte[] foto = fotoAux.getBytes(1, (int) fotoAux.length());
+                    response.getOutputStream().write(foto);
+                } catch (SQLException e) {
+                    response.getOutputStream().write(0);
+                }
+            } else {
+                String tipoDeFoto = request.getParameter("tipoDeFoto");
+                if(tipoDeFoto==null){
+                    response.sendRedirect("PaginaNoExisteServlet");
+                }else {
+                    String rutaImagenPredeterminada = "";
+                    if (tipoDeFoto.equals("fotoPerfil")) {
+                        rutaImagenPredeterminada = "/css/iconoPerfil.png";
+                    } else if (tipoDeFoto.equals("fotoActividadMiniatura")) {
+                        rutaImagenPredeterminada = "/css/fotoVoleyActividades.png";
+                    } else if (tipoDeFoto.equals("fotoActividadCabecera")) {
+                        rutaImagenPredeterminada = "/css/telitoVoley.png";
+                    } else if (tipoDeFoto.equals("fotoCarrusel")) {
+                        rutaImagenPredeterminada = "/css/fotoYarleque.png";
+                    } else if (tipoDeFoto.equals("fotoSeguro")) {
+                        rutaImagenPredeterminada = "/css/sinImagen.jpg";
+                    } else {
+                        rutaImagenPredeterminada = "/css/errorImagen.jpg";
+                    }
+                    InputStream input = getServletContext().getResourceAsStream(rutaImagenPredeterminada);
+                    byte[] foto = new byte[input.available()];
+                    input.read(foto);
+                    input.close();
+                    response.getOutputStream().write(foto);
+                }
             }
-        }else{
-            String tipoDeFoto=request.getParameter("tipoDeFoto");
-            String rutaImagenPredeterminada="";
-            if(tipoDeFoto.equals("fotoPerfil")){
-                rutaImagenPredeterminada = "/css/iconoPerfil.png";
-            }else if(tipoDeFoto.equals("fotoActividadMiniatura")) {
-                rutaImagenPredeterminada = "/css/fotoVoleyActividades.png";
-            }else if(tipoDeFoto.equals("fotoActividadCabecera")){
-                rutaImagenPredeterminada = "/css/telitoVoley.png";
-            }else if(tipoDeFoto.equals("fotoCarrusel")){
-                rutaImagenPredeterminada = "/css/fotoYarleque.png";
-            }else if(tipoDeFoto.equals("fotoSeguro")){
-                rutaImagenPredeterminada = "/css/sinImagen.jpg";
-            }else{
-                rutaImagenPredeterminada = "/css/errorImagen.jpg";
-            }
-            InputStream input = getServletContext().getResourceAsStream(rutaImagenPredeterminada);
-            byte[] foto = new byte[input.available()];
-            input.read(foto);
-            input.close();
-            response.getOutputStream().write(foto);
         }
     }
 

@@ -64,7 +64,7 @@ public class DaoValidacion extends DaoPadre {
 
     public void agregarCorreoParaElKit(String correo){
 
-        String sql = "insert into validacion( correo, tipo, fechaHora, linkEnviado, idUsuario) values (?,?,?,?,?);";
+        String sql = "insert into validacion(correo, tipo, fechaHora, linkEnviado, idUsuario) values (?,?,?,?,?);";
 
         LocalDateTime fechaHoraActual = LocalDateTime.now();
         // Define el formato deseado
@@ -139,7 +139,7 @@ public class DaoValidacion extends DaoPadre {
         return 0;
     }
     public String codigoValidacion256PorID(int idCorreoValidacion){
-        String sql = "select codigoValidacion256  from validacion where idCorreoValidacion = ?";
+        String sql = "select codigoValidacion256 from validacion where idCorreoValidacion = ?";
         try (Connection conn=this.getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setInt(1, idCorreoValidacion);
             try(ResultSet rs = pstmt.executeQuery()){
@@ -242,6 +242,21 @@ public class DaoValidacion extends DaoPadre {
             pstmt.setInt(1,idUsuario);
             try(ResultSet rs = pstmt.executeQuery()){
                 return rs.next();
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public boolean existeValidacion(String idCorreoValidacion){
+        String sql="select idCorreoValidacion from validacion where idCorreoValidacion=?";
+        try(Connection conn=this.getConnection(); PreparedStatement pstmt= conn.prepareStatement(sql)){
+            pstmt.setString(1,idCorreoValidacion);
+            try(ResultSet rs=pstmt.executeQuery()){
+                if(rs.next()){
+                    return true;
+                }else
+                    return false;
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);

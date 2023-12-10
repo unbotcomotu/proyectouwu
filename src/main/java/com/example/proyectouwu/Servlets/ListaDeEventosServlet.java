@@ -68,224 +68,247 @@ public class ListaDeEventosServlet extends HttpServlet {
         }else {
             String idActividadAux=request.getParameter("idActividad");
             if(dActividad.existeActividad(idActividadAux)){
-                int idActividad=Integer.parseInt(idActividadAux);
-                request.setAttribute("idActividad",idActividad);
-                request.setAttribute("vistaActual","listaDeActividades");
-                request.setAttribute("correosDelegadosGenerales",dUsuario.listarCorreosDelegadosGenerales());
-                request.setAttribute("nombreActividad",dActividad.nombreActividadPorID(idActividad));
-                request.setAttribute("delegadoDeEstaActividadID",dActividad.idDelegadoDeActividadPorActividad(idActividad));
-                request.setAttribute("listaLugares",new DaoLugarEvento().listarLugares());
-                request.setAttribute("cantidadEventosFinalizados",dActividad.cantidadEventosFinalizadosPorActividad(idActividad));
-                request.setAttribute("cantidadEventosOcultos",dActividad.cantidadEventosOcultosPorActividad(idActividad));
-                request.setAttribute("cantidadEventosApoyando",dActividad.cantidadEventosApoyandoPorActividad(idActividad,usuario.getIdUsuario()));
-                request.getSession().setAttribute("listaLugaresCantidad",dActividad.lugaresConMayorCantidadDeEventos_cantidad_idLugarEvento(idActividad));
-                request.setAttribute("cantidadEventosHoy",dActividad.cantidadEventosEnNdiasPorActividad(idActividad,0));
-                request.setAttribute("cantidadEventosManana",dActividad.cantidadEventosEnNdiasPorActividad(idActividad,1));
-                request.setAttribute("cantidadEventos2DiasMas", dActividad.cantidadEventosEn2DiasAMasPorActividad(idActividad));
-                if(usuario.getRol().equals("Delegado General")){
-                    request.setAttribute("listaNotificacionesCampanita",new DaoNotificacion().listarNotificacionesDelegadoGeneral());
-                }else if(usuario.getRol().equals("Delegado de Actividad")){
-                    request.setAttribute("listaNotificacionesDelegadoDeActividad",new DaoNotificacion().listarNotificacionesDelegadoDeActividad(usuario.getIdUsuario()));
-                }
-                String action;
-                if(request.getParameter("action") != null){
-                    action=request.getParameter("action");
-                }else if(request.getSession().getAttribute("action") != null){
-                    action= (String) request.getSession().getAttribute("action");
-                }else{
-                    action = "default";
-                }
-                request.getSession().setAttribute("action",action);
-
-                switch (action){
-                    case "superFiltro":
-                        //Parámetros de búsqueda
-                        String textoBuscar1;
-                        if(request.getParameter("nombreEvento")!=null){
-                            textoBuscar1=request.getParameter("nombreEvento");
-                        }else if(request.getSession().getAttribute("nombreEvento")!=null){
-                            textoBuscar1= (String) request.getSession().getAttribute("nombreEvento");
+                if(dActividad.actividadOcultaPorId(idActividadAux)&&usuario.getRol().equals("Alumno")){
+                    response.sendRedirect("ListaDeActividadesServlet");
+                }else {
+                    int idActividad = Integer.parseInt(idActividadAux);
+                    request.setAttribute("idActividad", idActividad);
+                    request.setAttribute("vistaActual", "listaDeActividades");
+                    request.setAttribute("correosDelegadosGenerales", dUsuario.listarCorreosDelegadosGenerales());
+                    request.setAttribute("nombreActividad", dActividad.nombreActividadPorID(idActividad));
+                    request.setAttribute("delegadoDeEstaActividadID", dActividad.idDelegadoDeActividadPorActividad(idActividad));
+                    request.setAttribute("listaLugares", new DaoLugarEvento().listarLugares());
+                    request.setAttribute("cantidadEventosFinalizados", dActividad.cantidadEventosFinalizadosPorActividad(idActividad));
+                    request.setAttribute("cantidadEventosOcultos", dActividad.cantidadEventosOcultosPorActividad(idActividad));
+                    request.setAttribute("cantidadEventosApoyando", dActividad.cantidadEventosApoyandoPorActividad(idActividad, usuario.getIdUsuario()));
+                    if(usuario.getRol().equals("Delegado General") || usuario.getIdUsuario()==dActividad.idDelegadoDeActividadPorActividad(idActividad)) {
+                        request.getSession().setAttribute("listaLugaresCantidad", dActividad.lugaresConMayorCantidadDeEventos_cantidad_idLugarEvento(idActividad));
+                    }else{
+                        request.getSession().setAttribute("listaLugaresCantidad", dActividad.lugaresConMayorCantidadDeEventos_cantidad_idLugarEventoSinOcultos(idActividad));
+                    }
+                    request.setAttribute("cantidadEventosHoy", dActividad.cantidadEventosEnNdiasPorActividad(idActividad, 0));
+                    request.setAttribute("cantidadEventosManana", dActividad.cantidadEventosEnNdiasPorActividad(idActividad, 1));
+                    request.setAttribute("cantidadEventos2DiasMas", dActividad.cantidadEventosEn2DiasAMasPorActividad(idActividad));
+                    if (usuario.getRol().equals("Delegado General")) {
+                        request.setAttribute("listaNotificacionesCampanita", new DaoNotificacion().listarNotificacionesDelegadoGeneral());
+                    } else if (usuario.getRol().equals("Delegado de Actividad")) {
+                        request.setAttribute("listaNotificacionesDelegadoDeActividad", new DaoNotificacion().listarNotificacionesDelegadoDeActividad(usuario.getIdUsuario()));
+                    }
+                    String action;
+                    if (request.getParameter("action") != null) {
+                        if(request.getParameter("action").equals("superFiltro")){
+                            action = request.getParameter("action");
                         }else{
-                            textoBuscar1="";
+                            action = "default";
                         }
+                    } else if (request.getSession().getAttribute("action") != null) {
+                        action = (String) request.getSession().getAttribute("action");
+                    } else {
+                        action = "default";
+                    }
+                    request.getSession().setAttribute("action", action);
 
-                        request.getSession().setAttribute("nombreEvento",textoBuscar1);
-
-                        //Parámetros de filtro
-                        ArrayList<String> parametrosEstado1 = new ArrayList<>();
-                        ArrayList<Integer> parametrosLugar1 = new ArrayList<>();
-                        ArrayList<String> parametrosFecha1 = new ArrayList<>();
-
-                        if(request.getParameter("eventoFinalizado") != null){
-                            parametrosEstado1.add("Finalizado");
-                            request.getSession().setAttribute("eventoFinalizado",1);
-                        }else if(request.getSession().getAttribute("eventoFinalizado") != null && request.getParameter("vieneDelJspDeListaDeEventos")==null){
-                            parametrosEstado1.add("Finalizado");
-                            request.getSession().setAttribute("eventoFinalizado",1);
-                        }else{
-                            request.getSession().removeAttribute("eventoFinalizado");
-                        }
-
-                        if(!usuario.getRol().equals("Delegado General")){
-                            if(request.getParameter("eventoApoyando") != null){
-                                parametrosEstado1.add("Apoyando");
-                                request.getSession().setAttribute("eventoApoyando",1);
-                            }else if(request.getSession().getAttribute("eventoApoyando") != null && request.getParameter("vieneDelJspDeListaDeEventos")==null){
-                                parametrosEstado1.add("Apoyando");
-                                request.getSession().setAttribute("eventoApoyando",1);
-                            }else{
-                                request.getSession().removeAttribute("eventoApoyando");
+                    switch (action) {
+                        case "superFiltro":
+                            //Parámetros de búsqueda
+                            String textoBuscar1;
+                            if (request.getParameter("nombreEvento") != null) {
+                                textoBuscar1 = request.getParameter("nombreEvento");
+                            } else if (request.getSession().getAttribute("nombreEvento") != null) {
+                                textoBuscar1 = (String) request.getSession().getAttribute("nombreEvento");
+                            } else {
+                                textoBuscar1 = "";
                             }
-                        }
-                        if(dActividad.idDelegadoDeActividadPorActividad(idActividad) == usuario.getIdUsuario() || usuario.getRol().equals("Delegado General")){
-                            if(request.getParameter("eventoOculto") != null){
-                                parametrosEstado1.add("Oculto");
-                                request.getSession().setAttribute("eventoOculto",1);
-                            }else if(request.getSession().getAttribute("eventoOculto") != null && request.getParameter("vieneDelJspDeListaDeEventos")==null){
-                                parametrosEstado1.add("Oculto");
-                                request.getSession().setAttribute("eventoOculto",1);
-                            }else{
-                                request.getSession().removeAttribute("eventoOculto");
-                            }
-                        }
-                        String cantidad1 = request.getParameter("cantidadLugares");
-                        if(cantidad1 != null) {
-                            int cantidadLugares1 = Integer.parseInt(request.getParameter("cantidadLugares"));
-                            for (int j = 0; j < cantidadLugares1; j++) {
-                                String lugarAux1;
 
-                                if(request.getParameter("lugar" + j)!=null){
-                                    lugarAux1=request.getParameter("lugar" + j);
-                                    Integer lugar1=Integer.parseInt(lugarAux1);
-                                    parametrosLugar1.add(lugar1);
-                                    request.getSession().setAttribute("lugar" + j,lugar1);
-                                }else if(request.getSession().getAttribute("lugar"+j)!=null && request.getParameter("vieneDelJspDeListaDeEventos")==null){
-                                    lugarAux1= (String) request.getSession().getAttribute("lugar" + j);
-                                    Integer lugar1=Integer.parseInt(lugarAux1);
-                                    parametrosLugar1.add(lugar1);
-                                    request.getSession().setAttribute("lugar" + j,lugar1);
-                                }else{
-                                    request.getSession().removeAttribute("lugar"+j);
+                            request.getSession().setAttribute("nombreEvento", textoBuscar1);
+
+                            //Parámetros de filtro
+                            ArrayList<String> parametrosEstado1 = new ArrayList<>();
+                            ArrayList<Integer> parametrosLugar1 = new ArrayList<>();
+                            ArrayList<String> parametrosFecha1 = new ArrayList<>();
+
+                            if (request.getParameter("eventoFinalizado") != null) {
+                                parametrosEstado1.add("Finalizado");
+                                request.getSession().setAttribute("eventoFinalizado", 1);
+                            } else if (request.getSession().getAttribute("eventoFinalizado") != null && request.getParameter("vieneDelJspDeListaDeEventos") == null) {
+                                parametrosEstado1.add("Finalizado");
+                                request.getSession().setAttribute("eventoFinalizado", 1);
+                            } else {
+                                request.getSession().removeAttribute("eventoFinalizado");
+                            }
+
+                            if (!usuario.getRol().equals("Delegado General")) {
+                                if (request.getParameter("eventoApoyando") != null) {
+                                    parametrosEstado1.add("Apoyando");
+                                    request.getSession().setAttribute("eventoApoyando", 1);
+                                } else if (request.getSession().getAttribute("eventoApoyando") != null && request.getParameter("vieneDelJspDeListaDeEventos") == null) {
+                                    parametrosEstado1.add("Apoyando");
+                                    request.getSession().setAttribute("eventoApoyando", 1);
+                                } else {
+                                    request.getSession().removeAttribute("eventoApoyando");
                                 }
                             }
-                        }
+                            if (dActividad.idDelegadoDeActividadPorActividad(idActividad) == usuario.getIdUsuario() || usuario.getRol().equals("Delegado General")) {
+                                if (request.getParameter("eventoOculto") != null) {
+                                    parametrosEstado1.add("Oculto");
+                                    request.getSession().setAttribute("eventoOculto", 1);
+                                } else if (request.getSession().getAttribute("eventoOculto") != null && request.getParameter("vieneDelJspDeListaDeEventos") == null) {
+                                    parametrosEstado1.add("Oculto");
+                                    request.getSession().setAttribute("eventoOculto", 1);
+                                } else {
+                                    request.getSession().removeAttribute("eventoOculto");
+                                }
+                            }
+                            String cantidad1 = request.getParameter("cantidadLugares");
+                            if (cantidad1 != null) {
+                                int cantidadLugares1 = Integer.parseInt(request.getParameter("cantidadLugares"));
+                                for (int j = 0; j < cantidadLugares1; j++) {
+                                    String lugarAux1;
 
-                        if(request.getParameter("eventosHoy") != null){
-                            parametrosFecha1.add("Hoy");
-                            request.getSession().setAttribute("eventosHoy",1);
-                        }else if(request.getSession().getAttribute("eventosHoy") != null && request.getParameter("vieneDelJspDeListaDeEventos")==null){
-                            parametrosFecha1.add("Hoy");
-                            request.getSession().setAttribute("eventosHoy",1);
-                        }else{
-                            request.getSession().removeAttribute("eventosHoy");
-                        }
-
-                        if(request.getParameter("eventosManana") != null){
-                            parametrosFecha1.add("Manana");
-                            request.getSession().setAttribute("eventosManana",1);
-                        }else if(request.getSession().getAttribute("eventosManana") != null && request.getParameter("vieneDelJspDeListaDeEventos")==null){
-                            parametrosFecha1.add("Manana");
-                            request.getSession().setAttribute("eventosManana",1);
-                        }else{
-                            request.getSession().removeAttribute("eventosManana");
-                        }
-
-                        if(request.getParameter("eventosMasDias") != null){
-                            parametrosFecha1.add("MasDias");
-                            request.getSession().setAttribute("eventosMasDias",1);
-                        }else if(request.getSession().getAttribute("eventosMasDias") != null && request.getParameter("vieneDelJspDeListaDeEventos")==null){
-                            parametrosFecha1.add("MasDias");
-                            request.getSession().setAttribute("eventosMasDias",1);
-                        }else{
-                            request.getSession().removeAttribute("eventosMasDias");
-                        }
-
-                        String horaInicio;
-                        if(request.getParameter("horaInicio")!=null){
-                            horaInicio=request.getParameter("horaInicio");
-                        }else if(request.getSession().getAttribute("horaInicio")!=null){
-                            horaInicio= (String) request.getSession().getAttribute("horaInicio");
-                        }else{
-                            horaInicio="";
-                        }
-
-                        String horaFin;
-                        if(request.getParameter("horaFin")!=null){
-                            horaFin=request.getParameter("horaFin");
-                        }else if(request.getSession().getAttribute("horaFin")!=null){
-                            horaFin= (String) request.getSession().getAttribute("horaFin");
-                        }else{
-                            horaFin="";
-                        }
-
-                        request.getSession().setAttribute("horaInicio",horaInicio);
-                        request.getSession().setAttribute("horaFin",horaFin);
-
-                        //Parámetros de ordenamiento
-                        String orden;
-                        if(request.getParameter("idOrdenarEventos")!=null){
-
-                            if(request.getParameter("idOrdenarEventos").equals("1") || request.getParameter("idOrdenarEventos").equals("0")){
-                                orden=request.getParameter("idOrdenarEventos");
-
-                            }else{
-                                orden="0";
+                                    if (request.getParameter("lugar" + j) != null) {
+                                        lugarAux1 = request.getParameter("lugar" + j);
+                                        Integer lugar1 = Integer.parseInt(lugarAux1);
+                                        parametrosLugar1.add(lugar1);
+                                        request.getSession().setAttribute("lugar" + j, lugar1);
+                                    } else if (request.getSession().getAttribute("lugar" + j) != null && request.getParameter("vieneDelJspDeListaDeEventos") == null) {
+                                        lugarAux1 = (String) request.getSession().getAttribute("lugar" + j);
+                                        Integer lugar1 = Integer.parseInt(lugarAux1);
+                                        parametrosLugar1.add(lugar1);
+                                        request.getSession().setAttribute("lugar" + j, lugar1);
+                                    } else {
+                                        request.getSession().removeAttribute("lugar" + j);
+                                    }
+                                }
                             }
 
-                        }else if(request.getSession().getAttribute("idOrdenarEventos")!=null){
-                            orden= (String)request.getSession().getAttribute("idOrdenarEventos");
-
-
-                        }else{
-                            orden="0";
-                        }
-
-                        String sentido;
-                        if(request.getParameter("idSentidoEventos")!=null){
-                            if(request.getParameter("idSentidoEventos").equals("1") || request.getParameter("idSentidoEventos").equals("0")){
-                                sentido=request.getParameter("idSentidoEventos");
-
-                            }else{
-                                sentido="0";
-
+                            if (request.getParameter("eventosHoy") != null) {
+                                parametrosFecha1.add("Hoy");
+                                request.getSession().setAttribute("eventosHoy", 1);
+                            } else if (request.getSession().getAttribute("eventosHoy") != null && request.getParameter("vieneDelJspDeListaDeEventos") == null) {
+                                parametrosFecha1.add("Hoy");
+                                request.getSession().setAttribute("eventosHoy", 1);
+                            } else {
+                                request.getSession().removeAttribute("eventosHoy");
                             }
 
-                        }else if(request.getSession().getAttribute("idSentidoEventos")!=null){
+                            if (request.getParameter("eventosManana") != null) {
+                                parametrosFecha1.add("Manana");
+                                request.getSession().setAttribute("eventosManana", 1);
+                            } else if (request.getSession().getAttribute("eventosManana") != null && request.getParameter("vieneDelJspDeListaDeEventos") == null) {
+                                parametrosFecha1.add("Manana");
+                                request.getSession().setAttribute("eventosManana", 1);
+                            } else {
+                                request.getSession().removeAttribute("eventosManana");
+                            }
 
-                            sentido= (String)request.getSession().getAttribute("idSentidoEventos");
+                            if (request.getParameter("eventosMasDias") != null) {
+                                parametrosFecha1.add("MasDias");
+                                request.getSession().setAttribute("eventosMasDias", 1);
+                            } else if (request.getSession().getAttribute("eventosMasDias") != null && request.getParameter("vieneDelJspDeListaDeEventos") == null) {
+                                parametrosFecha1.add("MasDias");
+                                request.getSession().setAttribute("eventosMasDias", 1);
+                            } else {
+                                request.getSession().removeAttribute("eventosMasDias");
+                            }
+
+                            String horaInicio;
+                            if (request.getParameter("horaInicio") != null) {
+                                horaInicio = request.getParameter("horaInicio");
+                            } else if (request.getSession().getAttribute("horaInicio") != null) {
+                                horaInicio = (String) request.getSession().getAttribute("horaInicio");
+                            } else {
+                                horaInicio = "";
+                            }
+
+                            String horaFin;
+                            if (request.getParameter("horaFin") != null) {
+                                horaFin = request.getParameter("horaFin");
+                            } else if (request.getSession().getAttribute("horaFin") != null) {
+                                horaFin = (String) request.getSession().getAttribute("horaFin");
+                            } else {
+                                horaFin = "";
+                            }
+
+                            request.getSession().setAttribute("horaInicio", horaInicio);
+                            request.getSession().setAttribute("horaFin", horaFin);
+
+                            //Parámetros de ordenamiento
+                            String orden;
+                            if (request.getParameter("idOrdenarEventos") != null) {
+
+                                if (request.getParameter("idOrdenarEventos").equals("1") || request.getParameter("idOrdenarEventos").equals("0")) {
+                                    orden = request.getParameter("idOrdenarEventos");
+
+                                } else {
+                                    orden = "0";
+                                }
+
+                            } else if (request.getSession().getAttribute("idOrdenarEventos") != null) {
+                                orden = (String) request.getSession().getAttribute("idOrdenarEventos");
 
 
-                        }else{
-                            sentido="0";
-                        }
-//ayuda, aqui hice cosas
-                        request.getSession().setAttribute("idOrdenarEventos",orden);
-                        request.getSession().setAttribute("idSentidoEventos",sentido);
+                            } else {
+                                orden = "0";
+                            }
 
-                        //Lista de Eventos de búsqueda sin paginación
-                        ArrayList<Evento> listaBusqueda1 = dEvento.buscarEventoPorNombre(textoBuscar1,idActividad);
+                            String sentido;
+                            if (request.getParameter("idSentidoEventos") != null) {
+                                if (request.getParameter("idSentidoEventos").equals("1") || request.getParameter("idSentidoEventos").equals("0")) {
+                                    sentido = request.getParameter("idSentidoEventos");
 
-                        //Lista de Eventos de filtros sin paginación
-                        ArrayList<Evento> listaFiltro1 = dEvento.filtrarEventos(parametrosEstado1,parametrosLugar1,parametrosFecha1,horaInicio,horaFin,idActividad,usuario.getIdUsuario());
+                                } else {
+                                    sentido = "0";
 
-                        //Se intersecan los resultados de ambas listas (aun sin ordenamiento)
-                        ArrayList<Evento> listaEventosSinOrdenar1 = dEvento.juntarListas(listaBusqueda1,listaFiltro1);
+                                }
 
-                        //Lista de Eventos ordenada
-                        ArrayList<Evento> listaEventosOrdenada1 = dEvento.ordenarListaEventos(listaEventosSinOrdenar1,orden,sentido,pagina-1,idActividad);
+                            } else if (request.getSession().getAttribute("idSentidoEventos") != null) {
 
-                        request.setAttribute("cantidadEventosTotal", listaEventosSinOrdenar1.size());
-                        request.setAttribute("listaEventos",listaEventosOrdenada1);
+                                sentido = (String) request.getSession().getAttribute("idSentidoEventos");
 
-                        request.getRequestDispatcher("listaDeEventos.jsp").forward(request,response);
-                        break;
-                    case "default":
-                        //Lista de Eventos con paginación
-                        request.setAttribute("listaEventos",dEvento.listarEventos(idActividad,pagina-1));
-                        request.setAttribute("cantidadEventosTotal", dEvento.listarEventos(idActividad).size());
+                            } else {
+                                sentido = "0";
+                            }
+                            //ayuda, aqui hice cosas
+                            request.getSession().setAttribute("idOrdenarEventos", orden);
+                            request.getSession().setAttribute("idSentidoEventos", sentido);
 
-                        request.getRequestDispatcher("listaDeEventos.jsp").forward(request,response);
-                        break;
+                            ArrayList<Evento> listaBusqueda1;
+                            ArrayList<Evento> listaFiltro1;
+
+                            if(usuario.getRol().equals("Delegado General") || usuario.getIdUsuario()==dActividad.idDelegadoDeActividadPorActividad(idActividad)) {
+                                //Lista de Eventos de búsqueda sin paginación
+                                listaBusqueda1 = dEvento.buscarEventoPorNombre(textoBuscar1, idActividad);
+                            }else {
+                                //Lista de Eventos de búsqueda sin paginación y sin eventos ocultos
+                                listaBusqueda1 = dEvento.buscarEventoPorNombreSinOcultos(textoBuscar1, idActividad);
+                            }
+
+                            //Lista de Eventos de filtros sin paginación
+                            listaFiltro1 = dEvento.filtrarEventos(parametrosEstado1, parametrosLugar1, parametrosFecha1, horaInicio, horaFin, idActividad, usuario.getIdUsuario());
+
+                            //Se intersecan los resultados de ambas listas (aun sin ordenamiento)
+                            ArrayList<Evento> listaEventosSinOrdenar1 = dEvento.juntarListas(listaBusqueda1, listaFiltro1);
+
+                            //Lista de Eventos ordenada
+                            ArrayList<Evento> listaEventosOrdenada1 = dEvento.ordenarListaEventos(listaEventosSinOrdenar1, orden, sentido, pagina - 1, idActividad);
+
+                            request.setAttribute("cantidadEventosTotal", listaEventosSinOrdenar1.size());
+                            request.setAttribute("listaEventos", listaEventosOrdenada1);
+
+                            request.getRequestDispatcher("listaDeEventos.jsp").forward(request, response);
+                            break;
+                        case "default":
+                            //Lista de Eventos con paginación
+                            if(usuario.getRol().equals("Delegado General") || usuario.getIdUsuario()==dActividad.idDelegadoDeActividadPorActividad(idActividad)){
+                                request.setAttribute("listaEventos", dEvento.listarEventos(idActividad, pagina - 1));
+                                request.setAttribute("cantidadEventosTotal", dEvento.listarEventos(idActividad).size());
+                            }else {
+                                request.setAttribute("listaEventos", dEvento.listarEventosSinOcultos(idActividad, pagina - 1));
+                                request.setAttribute("cantidadEventosTotal", dEvento.listarEventosSinOcultos(idActividad).size());
+                            }
+                            request.getRequestDispatcher("listaDeEventos.jsp").forward(request, response);
+                            break;
+                    }
                 }
             }else {
                 response.sendRedirect("PaginaNoExisteServlet");
@@ -327,6 +350,16 @@ public class ListaDeEventosServlet extends HttpServlet {
                     boolean validarLongitud=true;
                     Imagen io=new Imagen();
                     String rutaImagenPredeterminada = "/css/fibraVShormigon.png";
+                    ArrayList<String> equipos = new ArrayList<>();
+                    equipos.add("Fibra Tóxica VS Descontrol Automático");
+                    equipos.add("Fibra Tóxica VS Electroshock");
+                    equipos.add("Fibra Tóxica VS Hormigón Armado");
+                    equipos.add("Fibra Tóxica VS Huascaminas");
+                    equipos.add("Fibra Tóxica VS Maphia Cuántica");
+                    equipos.add("Fibra Tóxica VS Memoria Caché");
+                    equipos.add("Fibra Tóxica VS Naranja Mecánica");
+                    equipos.add("Fibra Tóxica VS PXO Industrial");
+                    equipos.add("Fibra Tóxica VS Todos");
                     switch (action) {
 
                         case "addConfirm":
@@ -334,6 +367,15 @@ public class ListaDeEventosServlet extends HttpServlet {
                             boolean validacionCrear=true;
                             String addLugar = request.getParameter("addLugar");
                             String addTitulo = request.getParameter("addTitulo");
+                            int contador=0;
+                            for(String e:equipos){
+                                if(e.equals(addTitulo)){
+                                    contador++;
+                                }
+                            }
+                            if(contador==0){
+                                validacionCrear=false;
+                            }
                             String addHoraStr = request.getParameter("addHora");
                             String addDescripcionEventoActivo = request.getParameter("addDescripcionEventoActivo");
                             if(addDescripcionEventoActivo.length()>1000){
@@ -351,13 +393,19 @@ public class ListaDeEventosServlet extends HttpServlet {
                             if (!(addEventoOcultoStr == null)) {
                                 addEventoOculto = true;
                             }
-                            Date addFecha = Date.valueOf(addFechaStrAux);
-                            Time addHora = Time.valueOf(addHoraStr + ":00");
+                            Date addFecha=null;
+                            Time addHora=null;
+                            try {
+                                addFecha = Date.valueOf(addFechaStrAux);
+                                addHora = Time.valueOf(addHoraStr + ":00");
+                            }catch (IllegalArgumentException e){
+                                validacionCrear=false;
+                            }
                             // Verificar lugar:
                             int addLugarId = dLugarEvento.idLugarPorNombre(addLugar);
-                            // En caso no exista el lugar, se crea uno nuevo
+                            // En caso no exista el lugar, F
                             if (addLugarId == 0) {
-                                addLugarId = dLugarEvento.crearLugar(addLugar); // Id del nuevo lugar
+                                validacionCrear=false;
                             }
                             // Foto Miniatura
                             part = request.getPart("addfotoMiniatura");
@@ -405,6 +453,15 @@ public class ListaDeEventosServlet extends HttpServlet {
 
                                     String updateLugar = request.getParameter("updateLugar");
                                     String updateTitulo = request.getParameter("updateTitulo");
+                                    int contador1=0;
+                                    for(String e:equipos){
+                                        if(e.equals(updateTitulo)){
+                                            contador1++;
+                                        }
+                                    }
+                                    if(contador1==0){
+                                        validacionEditar=false;
+                                    }
                                     String updateFechaStr = request.getParameter("updateFecha");
                                     String updateHoraStr = request.getParameter("updateHora");
                                     String updateDescripcionEventoActivo = request.getParameter("updateDescripcionEventoActivo");
@@ -427,7 +484,9 @@ public class ListaDeEventosServlet extends HttpServlet {
                                     String updateEventoOcultoStr2 = request.getParameter("updateEventoOcultoAlt");
 
                                     if(estadoEvento.equals("true")){
-
+                                        if(!(updateResultado.equals("Victoria") || updateResultado.equals("Derrota"))){
+                                            validacionEditar=false;
+                                        }
                                         Boolean updateEventoOcultoAlt = false;
                                         if(!(updateEventoOcultoStr2 == null)){
                                             updateEventoOcultoAlt = true;
@@ -446,13 +505,20 @@ public class ListaDeEventosServlet extends HttpServlet {
                                         // Verificar lugar:
 
                                         int updateLugarId = dLugarEvento.idLugarPorNombre(updateLugar);
-                                        // En caso no exista el lugar, se crea uno nuevo
+                                        // En caso no exista el lugar, F
                                         if (updateLugarId == 0) {
-                                            updateLugarId = dLugarEvento.crearLugar(updateLugar); // Id del nuevo lugar
+                                            validacionEditar=false;
                                         }
 
-                                        Date updateFecha = Date.valueOf(updateFechaStr);
-                                        Time updateHora = Time.valueOf(updateHoraStr + ":00");
+                                        Date updateFecha=null;
+                                        Time updateHora=null;
+                                        try {
+                                            updateFecha = Date.valueOf(updateFechaStr);
+                                            updateHora = Time.valueOf(updateHoraStr + ":00");
+                                        }catch (IllegalArgumentException e){
+                                            validacionEditar=false;
+                                        }
+
                                         // Foto Miniatura
                                         part = request.getPart("updateFotoMiniatura");
 
@@ -492,7 +558,6 @@ public class ListaDeEventosServlet extends HttpServlet {
 
                             break;
                         case "finConfirm":
-
                             String idEventoFinStr = request.getParameter("idEvento");
                             String finResumen = request.getParameter("finResumen");
                             String resultado = request.getParameter("resultado");

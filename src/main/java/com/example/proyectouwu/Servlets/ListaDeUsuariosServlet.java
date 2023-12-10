@@ -98,14 +98,32 @@ public class ListaDeUsuariosServlet extends HttpServlet {
             switch(action){
                 case "banear":
                     String idUsuarioABanear=request.getParameter("idUsuarioABanear");
+
                     if(idUsuarioABanear!=null){
-                        String motivoBan=request.getParameter("motivoBan");
-                        if(motivoBan!=null&&!motivoBan.isEmpty()){
-                            new DaoBan().banearPorId(idUsuarioABanear,motivoBan);
+
+                        if (idUsuarioABanear.matches("\\d+") && dUsuario.existeUsuario(idUsuarioABanear)){
+                            String motivoBan=request.getParameter("motivoBan");
+                            if(motivoBan!=null&&!motivoBan.isEmpty()){
+                                new DaoBan().banearPorId(idUsuarioABanear,motivoBan);
+                            }
+                        }else{
+                            response.sendRedirect("ListaDeUsuariosServlet");
                         }
+
+                    }else{
+                        response.sendRedirect("ListaDeUsuariosServlet");
+
                     }
+                    break;
+
+                case "default":
                     response.sendRedirect("ListaDeUsuariosServlet");
                     break;
+
+                default:
+                    response.sendRedirect("ListaDeUsuariosServlet");
+                    break;
+
             }
             request.getSession().setAttribute("usuario",dUsuario.usuarioSesion(usuario.getIdUsuario()));
         }

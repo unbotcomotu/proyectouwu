@@ -2452,17 +2452,17 @@
         </div>
     </div>
     <br>
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-sm-6" style="margin-top: 5px;">
-                <button type="submit" class="button secondary" style="opacity: 0.5" id="cerrarPopupCrear1" disabled>Crear</button>
-            </div>
-            <div class="col-sm-6" style="margin-top: 5px;">
-                <button type="button" class="button secondary" id="cerrarPopupCrear2" style="background-color: grey;">Cancelar</button>
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-sm-6" style="margin-top: 5px;">
+                    <button type="submit" class="button secondary" style="opacity: 0.5" id="cerrarPopupCrear1" disabled>Crear</button>
+                </div>
+                <div class="col-sm-6" style="margin-top: 5px;">
+                    <button type="button" class="button secondary" id="cerrarPopupCrear2" style="background-color: grey;">Cancelar</button>
+                </div>
             </div>
         </div>
-    </div>
-</form>
+    </form>
 </div>
 <%if(!listaEventos.isEmpty()){
     for(Evento e:listaEventos){%>

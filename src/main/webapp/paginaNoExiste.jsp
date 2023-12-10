@@ -1501,7 +1501,8 @@
                             </div>
                             <!-- Validación recuperar contraseña -->
                                 <%}}%>
-                                <%}%>
+                        </form>
+                        <%}%>
                     </div>
                     <!-- /DROPDOWN BOX LIST -->
                     <!--ARRIBA ESTÁN LAS NOTIFICACIONES-->

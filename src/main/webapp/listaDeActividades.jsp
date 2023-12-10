@@ -1546,6 +1546,7 @@
                             </div>
                             <!-- Validación recuperar contraseña -->
                             <%}}%>
+                        </form>
                         <%}%>
                     </div>
                     <!-- /DROPDOWN BOX LIST -->

@@ -346,27 +346,6 @@
             </a>
             <!-- /MENU ITEM LINK -->
         </li>
-        <%if(rolUsuario.equals("Delegado General")){%>
-        <li class="menu-item <%if(vistaActual.equals("analiticas")){%>active<%}%>">
-            <!-- MENU ITEM LINK -->
-            <a class="menu-item-link text-tooltip-tfr text-center" href="AnaliticasServlet" data-title="Analíticas">
-                <!-- MENU ITEM LINK ICON -->
-                <img src="css/analiticasIcono.png" width="70%" alt="">
-                <!-- /MENU ITEM LINK ICON -->
-            </a>
-            <!-- /MENU ITEM LINK -->
-        </li>
-        <!-- /MENU ITEM -->
-        <li class="menu-item <%if(vistaActual.equals("listaDeUsuarios")){%>active<%}%>">
-            <!-- MENU ITEM LINK -->
-            <a class="menu-item-link text-tooltip-tfr text-center" href="ListaDeUsuariosServlet" data-title="Usuarios">
-                <!-- MENU ITEM LINK ICON -->
-                <img src="css/usuariosIcono.png" width="70%" alt="">
-                <!-- /MENU ITEM LINK ICON -->
-            </a>
-            <!-- /MENU ITEM LINK -->
-        </li>
-        <%}else{%>
         <li class="menu-item <%if(vistaActual.equals("misEventos")){%>active<%}%>">
             <!-- MENU ITEM LINK -->
             <a class="menu-item-link text-tooltip-tfr" href="MisEventosServlet" data-title="Mis eventos">
@@ -385,7 +364,6 @@
             </a>
             <!-- /MENU ITEM LINK -->
         </li>
-        <%}%>
     </ul>
     <!-- /MENU -->
 </nav>
@@ -624,15 +602,7 @@
         <!-- NAVIGATION WIDGET SECTION LINK -->
         <a class="navigation-widget-section-link" href="ListaDeActividadesServlet">Actividades</a>
         <!-- /NAVIGATION WIDGET SECTION LINK -->
-        <%if(rolUsuario.equals("Delegado General")){%>
-        <!-- NAVIGATION WIDGET SECTION LINK -->
-        <a class="navigation-widget-section-link" href="AnaliticasServlet">Analíticas</a>
-        <!-- /NAVIGATION WIDGET SECTION LINK -->
 
-        <!-- NAVIGATION WIDGET SECTION LINK -->
-        <a class="navigation-widget-section-link" href="ListaDeUsuariosServlet">Usuarios</a>
-        <!-- /NAVIGATION WIDGET SECTION LINK -->
-        <%}else{%>
         <!-- NAVIGATION WIDGET SECTION LINK -->
         <a class="navigation-widget-section-link" href="MisEventosServlet">Mis eventos</a>
         <!-- /NAVIGATION WIDGET SECTION LINK -->
@@ -640,7 +610,6 @@
         <!-- NAVIGATION WIDGET SECTION LINK -->
         <a class="navigation-widget-section-link" href="MisDonacionesServlet">Donaciones</a>
         <!-- /NAVIGATION WIDGET SECTION LINK -->
-        <%}%>
     </ul>
 </nav>
 <!-- /NAVIGATION WIDGET -->
@@ -908,18 +877,11 @@
             </div>
             <!-- /ACTION ITEM -->
 
-            <!-- DROPDOWN NAVIGATION -->
-
         </div>
         <!-- /ACTION ITEM WRAP -->
     </div>
     <!-- /HEADER ACTIONS -->
-    <%}else{%>
-    <!-- HEADER ACTIONS DELEGADO GENERAL -->
-
-    <!-- /HEADER ACTIONS -->
     <%}%>
-    <!-- /HEADER ACTIONS -->
 </header>
 <!-- /HEADER -->
 

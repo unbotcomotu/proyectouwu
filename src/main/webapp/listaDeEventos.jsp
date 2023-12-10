@@ -949,7 +949,7 @@
             <!-- ACTION LIST ITEM WRAP -->
             <div class="action-list-item-wrap">
                 <!-- ACTION LIST ITEM -->
-                <div class="action-list-item  <%if(!listaNotificacionesCampanita.isEmpty()){%> unread <%}%>header-dropdown-trigger">
+                <div class="action-list-item<%if(!listaNotificacionesCampanita.isEmpty()){%> unread<%}%> header-dropdown-trigger">
                     <!-- ACTION LIST ITEM ICON -->
                     <svg class="action-list-item-icon icon-notification">
                         <use xlink:href="#svg-notification"></use>
@@ -1620,7 +1620,8 @@
                             </div>
                             <!-- Validación recuperar contraseña -->
                                 <%}}%>
-                                <%}%>
+                        </form>
+                        <%}%>
                     </div>
                     <!-- /DROPDOWN BOX LIST -->
                     <!--ARRIBA ESTÁN LAS NOTIFICACIONES-->

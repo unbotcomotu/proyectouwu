@@ -1838,7 +1838,8 @@
                             </div>
                             <!-- Validación recuperar contraseña -->
                                 <%}}%>
-                                <%}%>
+                        </form>
+                        <%}%>
                     </div>
                     <!-- /DROPDOWN BOX LIST -->
                     <!--ARRIBA ESTÁN LAS NOTIFICACIONES-->
@@ -2755,15 +2756,40 @@ for(String es:escalaInvalida){if(es!=null){escalaInvalidaAux=true;}}%>
             imagenContainer.style.display = 'none';
         }
     }
-
-    function blockButton(id){
-        document.getElementById(id).style.pointerEvents = "none";
-        document.getElementById(id).style.opacity = "0.5";
-    }
     function enviarFormulario(idForm) {
         var formulario = document.getElementById(idForm);
         formulario.submit();
     }
+    function chatAux(){
+        bajarScrollChat();
+        document.getElementById('escribirMensaje').focus();
+    }
+
+    window.onload = function() {
+        chatAux();
+    };
+    const bajarScrollChat = function (){
+        var elementosConClase = document.getElementsByClassName('simplebar-content-wrapper');
+        console.log(elementosConClase);
+        if (elementosConClase.length > 0) {
+            var miDiv = elementosConClase[elementosConClase.length-2];
+            miDiv.scrollTop = miDiv.scrollHeight;
+            miDiv=elementosConClase[elementosConClase.length-3];
+            miDiv.scrollTop = miDiv.scrollHeight;
+        }
+    }
+    var miDiv = document.getElementById('chat-widget-messages');
+    var observer = new MutationObserver(function(mutations) {
+        mutations.forEach(function(mutation) {
+            if (!miDiv.classList.contains('closed')) {
+                setTimeout(function (){
+                    chatAux();
+                },10);
+            }
+        });
+    });
+    var config = { attributes: true, attributeFilter: ['class'] };
+    observer.observe(miDiv, config);
     function popupFunc(popupId,abrirId,cerrarClass,overlayId){
         const showPopup=document.getElementById(abrirId);
         const overlay=document.getElementById(overlayId);
@@ -2779,9 +2805,6 @@ for(String es:escalaInvalida){if(es!=null){escalaInvalidaAux=true;}}%>
             overlay.style.display = 'none';
             popup.style.display = 'none';
             document.body.style.overflow = 'auto';
-            if(popupId=='popupApoyar'){
-                blockButton('mostrarPopupApoyar');
-            }
         };
         for(let i=0;i<cerrarClass.length;i++){
             document.getElementById(cerrarClass[i]).addEventListener('click', cerrarPopup);
@@ -2816,32 +2839,6 @@ for(String es:escalaInvalida){if(es!=null){escalaInvalidaAux=true;}}%>
     if(rolUsuario.equals("Delegado de Actividad")&&!rolUsuarioMensaje.equals("Delegado General")&&listaDeMensajes.get(i).getUsuario().getIdUsuario()!=usuarioActual.getIdUsuario()){%>
     popupFunc('popupReportar<%=i%>','mostrarPopupReportar<%=i%>',['cerrarPopupReportar<%=i%>','cerrarPopupReportar1<%=i%>','cerrarPopupReportar2<%=i%>'],'overlayReportar<%=i%>');
     <%}}%>
-    window.onload = function() {
-        bajarScrollChat();
-        document.getElementById('escribirMensaje').focus();
-    };
-    const bajarScrollChat = function (){
-        var elementosConClase = document.getElementsByClassName('simplebar-content-wrapper');
-        if (elementosConClase.length > 0) {
-            for(let i=0;i<elementosConClase.length;i++){
-                var miDiv = elementosConClase[i];
-                miDiv.scrollTop = miDiv.scrollHeight;
-            }
-        }
-    }
-    var miDiv = document.getElementById('chat-widget-messages');
-    var observer = new MutationObserver(function(mutations) {
-        mutations.forEach(function(mutation) {
-            if (!miDiv.classList.contains('closed')) {
-                setTimeout(function (){
-                    bajarScrollChat();
-                    document.getElementById('escribirMensaje').focus();
-                },10);
-            }
-        });
-    });
-    var config = { attributes: true, attributeFilter: ['class'] };
-    observer.observe(miDiv, config);
 </script>
 <!-- app -->
 <script src="js/utils/app.js"></script>

@@ -284,7 +284,7 @@ public class DaoEvento extends DaoPadre {
         }
     }
 
-    public void crearEvento(int idActividad, int idLugarEvento, String titulo, Date fecha, Time hora, String descripcionEventoActivo, String fraseMotivacional, InputStream fotoMiniatura, Boolean eventoOculto, ServletContext sc) throws SQLException, IOException{
+    public void crearEvento(int idActividad, int idLugarEvento, String titulo, Date fecha, Time hora, String descripcionEventoActivo, String fraseMotivacional, InputStream fotoMiniatura, Boolean eventoOculto, ServletContext sc){
         String sql = "insert into evento(idActividad,idLugarEvento,titulo,fecha,hora,descripcionEventoActivo,fraseMotivacional,fotoMiniatura,eventoFinalizado,eventoOculto) values (?,?,?,?,?,?,?,?,0,?)";
         Evento e = new Evento();
         try (Connection conn=this.getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql,Statement.RETURN_GENERATED_KEYS)) {
@@ -331,12 +331,12 @@ public class DaoEvento extends DaoPadre {
                 }
             }
             input.close();
-        }catch (SQLException ee){
+        }catch (SQLException | IOException ee){
             throw new RuntimeException(ee);
         }
     }
 
-    public void editarEvento(int idEvento, int idLugarEvento, String titulo, Date fecha, Time hora, String descripcionEventoActivo, String fraseMotivacional, InputStream fotoMiniatura, Boolean eventoOculto,boolean validarLongitud) throws SQLException, IOException {
+    public void editarEvento(int idEvento, int idLugarEvento, String titulo, Date fecha, Time hora, String descripcionEventoActivo, String fraseMotivacional, InputStream fotoMiniatura, Boolean eventoOculto,boolean validarLongitud){
 
         String secFoto = "";
         if(validarLongitud){
@@ -361,6 +361,8 @@ public class DaoEvento extends DaoPadre {
             }
 
             pstmt.executeUpdate();
+        } catch (SQLException | IOException ex) {
+            throw new RuntimeException(ex);
         }
     }
 

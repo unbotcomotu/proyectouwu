@@ -50,135 +50,145 @@ public class NotificacionesServlet extends HttpServlet {
                 request.setAttribute("ip", daoNotificacion.obtenerDireccionIP());
                 switch (action) {
                     case "default":
-                        if (usuario.getRol().equals("Delegado General")) {
-                            String vistaActualNueva = request.getParameter("vistaActualNueva");
-                            request.setAttribute("vistaActualNueva", vistaActualNueva);
-                            //saca del modelo
-                            page = request.getParameter("p") == null ? "1" : request.getParameter("p");
+                        switch (usuario.getRol()) {
+                            case "Delegado General":
+                                String vistaActualNueva = request.getParameter("vistaActualNueva");
+                                request.setAttribute("vistaActualNueva", vistaActualNueva);
+                                //saca del modelo
+                                page = request.getParameter("p") == null ? "1" : request.getParameter("p");
 
-                            if (page.matches("\\d+")) {
-                                pagina = Integer.parseInt(page);
+                                if (page.matches("\\d+")) {
+                                    pagina = Integer.parseInt(page);
 
-                            } else {
-                                pagina = 1;
-                            }
-
-
-                            pageD = request.getParameter("pd") == null ? "1" : request.getParameter("pd");
-
-                            if (pageD.matches("\\d+")) {
-                                paginaD = Integer.parseInt(pageD);
-
-                            } else {
-                                paginaD = 1;
-                            }
+                                } else {
+                                    pagina = 1;
+                                }
 
 
-                            pageV = request.getParameter("pv") == null ? "1" : request.getParameter("pv");
+                                pageD = request.getParameter("pd") == null ? "1" : request.getParameter("pd");
 
-                            if (pageV.matches("\\d+")) {
-                                paginaV = Integer.parseInt(pageV);
+                                if (pageD.matches("\\d+")) {
+                                    paginaD = Integer.parseInt(pageD);
 
-                            } else {
-                                paginaV = 1;
-                            }
+                                } else {
+                                    paginaD = 1;
+                                }
 
-                            ArrayList<Usuario> listaSolicitudes = daoNotificacion.listarSolicitudesRegistroPorPage(pagina - 1);
-                            ArrayList<Reporte> reportList = daoNotificacion.listarNotificacionesReporte();
-                            ArrayList<Donacion> donacionList = daoNotificacion.listarNotificacionesDonaciones(paginaD - 1);
-                            ArrayList<Validacion> recuperacionList = daoNotificacion.listarNotificacionesRecuperacion(paginaV - 1);
-                            //mandar la lista a la vista
-                            request.setAttribute("pagActual", pagina);
-                            request.setAttribute("pagActualD", paginaD);
-                            request.setAttribute("pagActualV", paginaV);
-                            request.setAttribute("listaSolicitudes", listaSolicitudes);
-                            request.setAttribute("cantidadTotalSolicitudes", daoNotificacion.listarSolicitudesDeRegistro().size());
-                            request.setAttribute("reportList", reportList);
-                            request.setAttribute("donacionList", donacionList);
-                            request.setAttribute("cantidadTotalDonaciones", daoNotificacion.listarNotificacionesDonaciones().size());
-                            request.setAttribute("cantidadTotalValidaciones", daoNotificacion.listarNotificacionesRecuperacion().size());
-                            request.setAttribute("recuperacionList", recuperacionList);
-                            request.getRequestDispatcher("notificacionesDelGeneral.jsp").forward(request, response);
 
-                        } else if (usuario.getRol().equals("Delegado de Actividad")) {
-                            page = request.getParameter("p");
-                            if (page != null) {
-                                request.getSession().removeAttribute("pSolicitudesDeApoyo");
-                                request.getSession().setAttribute("pSolicitudesDeApoyo", page);
-                            }
-                            int pSolicitudesDeApoyo = Integer.parseInt((String) request.getSession().getAttribute("pSolicitudesDeApoyo"));
-                            DaoNotificacion daoNotificacionesDeleActividad = new DaoNotificacion();
-                            ArrayList<AlumnoPorEvento> listaSolicitudesApoyo = daoNotificacionesDeleActividad.listarSolicitudesDeApoyo(usuario.getIdUsuario(), pSolicitudesDeApoyo - 1);
-                            request.setAttribute("listaSolicitudesApoyo", listaSolicitudesApoyo);
-                            request.setAttribute("cantidadTotalSolicitudesApoyo", daoNotificacionesDeleActividad.listarSolicitudesDeApoyo(usuario.getIdUsuario()).size());
-                            request.getRequestDispatcher("NotificacionesDelActividad.jsp").forward(request, response);
-                        } else {
-                            request.getRequestDispatcher("notificacionesDelGeneral.jsp").forward(request, response);
+                                pageV = request.getParameter("pv") == null ? "1" : request.getParameter("pv");
+
+                                if (pageV.matches("\\d+")) {
+                                    paginaV = Integer.parseInt(pageV);
+
+                                } else {
+                                    paginaV = 1;
+                                }
+
+                                ArrayList<Usuario> listaSolicitudes = daoNotificacion.listarSolicitudesRegistroPorPage(pagina - 1);
+                                ArrayList<Reporte> reportList = daoNotificacion.listarNotificacionesReporte();
+                                ArrayList<Donacion> donacionList = daoNotificacion.listarNotificacionesDonaciones(paginaD - 1);
+                                ArrayList<Validacion> recuperacionList = daoNotificacion.listarNotificacionesRecuperacion(paginaV - 1);
+                                //mandar la lista a la vista
+                                request.setAttribute("pagActual", pagina);
+                                request.setAttribute("pagActualD", paginaD);
+                                request.setAttribute("pagActualV", paginaV);
+                                request.setAttribute("listaSolicitudes", listaSolicitudes);
+                                request.setAttribute("cantidadTotalSolicitudes", daoNotificacion.listarSolicitudesDeRegistro().size());
+                                request.setAttribute("reportList", reportList);
+                                request.setAttribute("donacionList", donacionList);
+                                request.setAttribute("cantidadTotalDonaciones", daoNotificacion.listarNotificacionesDonaciones().size());
+                                request.setAttribute("cantidadTotalValidaciones", daoNotificacion.listarNotificacionesRecuperacion().size());
+                                request.setAttribute("recuperacionList", recuperacionList);
+                                request.getRequestDispatcher("notificacionesDelGeneral.jsp").forward(request, response);
+
+                                break;
+                            case "Delegado de Actividad":
+                                page = request.getParameter("p");
+                                if (page != null) {
+                                    request.getSession().removeAttribute("pSolicitudesDeApoyo");
+                                    request.getSession().setAttribute("pSolicitudesDeApoyo", page);
+                                }
+                                int pSolicitudesDeApoyo = Integer.parseInt((String) request.getSession().getAttribute("pSolicitudesDeApoyo"));
+                                DaoNotificacion daoNotificacionesDeleActividad = new DaoNotificacion();
+                                ArrayList<AlumnoPorEvento> listaSolicitudesApoyo = daoNotificacionesDeleActividad.listarSolicitudesDeApoyo(usuario.getIdUsuario(), pSolicitudesDeApoyo - 1);
+                                request.setAttribute("listaSolicitudesApoyo", listaSolicitudesApoyo);
+                                request.setAttribute("cantidadTotalSolicitudesApoyo", daoNotificacionesDeleActividad.listarSolicitudesDeApoyo(usuario.getIdUsuario()).size());
+                                request.getRequestDispatcher("NotificacionesDelActividad.jsp").forward(request, response);
+                                break;
+                            default:
+                                request.getRequestDispatcher("notificacionesDelGeneral.jsp").forward(request, response);
+                                break;
                         }
                         break;
                     case "buscarUsuario":
                         request.setAttribute("vistaActualNueva", "Solicitudes");
-                        if (usuario.getRol().equals("Delegado General")) {
-                            page = request.getParameter("p") == null ? "1" : request.getParameter("p");
+                        switch (usuario.getRol()) {
+                            case "Delegado General": {
+                                page = request.getParameter("p") == null ? "1" : request.getParameter("p");
 
-                            if (page.matches("\\d+")) {
-                                pagina = Integer.parseInt(page);
+                                if (page.matches("\\d+")) {
+                                    pagina = Integer.parseInt(page);
 
-                            } else {
-                                pagina = 1;
+                                } else {
+                                    pagina = 1;
+                                }
+
+                                pageD = request.getParameter("pd") == null ? "1" : request.getParameter("pd");
+
+                                if (pageD.matches("\\d+")) {
+                                    paginaD = Integer.parseInt(pageD);
+
+                                } else {
+                                    paginaD = 1;
+                                }
+
+                                String busquedaSolicitudes = request.getParameter("busquedaSolicitudes");
+                                ArrayList<Usuario> listaSolicitudes = daoNotificacion.listarSolicitudesDeRegistro(busquedaSolicitudes, pagina - 1);
+                                ArrayList<Reporte> reportList = daoNotificacion.listarNotificacionesReporte();
+                                ArrayList<Donacion> donacionList = daoNotificacion.listarNotificacionesDonaciones(paginaD - 1);
+                                ArrayList<Validacion> recuperacionList = daoNotificacion.listarNotificacionesRecuperacion();
+
+                                request.setAttribute("cantidadTotalSolicitudes", daoNotificacion.listarSolicitudesDeRegistro(busquedaSolicitudes).size());
+                                request.setAttribute("action", action);
+                                request.setAttribute("pagActual", pagina);
+                                request.setAttribute("pagActualD", paginaD);
+                                request.setAttribute("pagActualV", paginaV);
+                                request.setAttribute("busquedaSolicitudes", busquedaSolicitudes);
+                                request.setAttribute("listaSolicitudes", listaSolicitudes);
+                                request.setAttribute("reportList", reportList);
+                                request.setAttribute("donacionList", donacionList);
+                                request.setAttribute("recuperacionList", recuperacionList);
+                                request.setAttribute("alerta", "monto");
+
+                                request.getRequestDispatcher("notificacionesDelGeneral.jsp").forward(request, response);
+
+                                break;
                             }
-
-                            pageD = request.getParameter("pd") == null ? "1" : request.getParameter("pd");
-
-                            if (pageD.matches("\\d+")) {
-                                paginaD = Integer.parseInt(pageD);
-
-                            } else {
-                                paginaD = 1;
+                            case "Delegado de Actividad": {
+                                String busquedaSolicitudes = request.getParameter("busquedaSolicitudes");
+                                DaoNotificacion daoNotificacionesDeleActividad = new DaoNotificacion();
+                                request.getSession().removeAttribute("actionNotificacionesServlet");
+                                request.getSession().setAttribute("actionNotificacionesServlet", "buscarUsuario");
+                                page = request.getParameter("p");
+                                if (page != null) {
+                                    request.getSession().removeAttribute("pSolicitudesDeApoyo");
+                                    request.getSession().setAttribute("pSolicitudesDeApoyo", page);
+                                }
+                                int pSolicitudesDeApoyo = Integer.parseInt((String) request.getSession().getAttribute("pSolicitudesDeApoyo"));
+                                if (busquedaSolicitudes != null) {
+                                    request.getSession().removeAttribute("busquedaSolicitudesApoyo");
+                                    request.getSession().setAttribute("busquedaSolicitudesApoyo", busquedaSolicitudes);
+                                }
+                                String busquedaAux = (String) request.getSession().getAttribute("busquedaSolicitudesApoyo");
+                                ArrayList<AlumnoPorEvento> listaSolicitudesApoyo = daoNotificacionesDeleActividad.listarSolicitudesDeApoyo(usuario.getIdUsuario(), busquedaAux, pSolicitudesDeApoyo - 1);
+                                request.setAttribute("listaSolicitudesApoyo", listaSolicitudesApoyo);
+                                request.setAttribute("cantidadTotalSolicitudesApoyo", daoNotificacionesDeleActividad.listarSolicitudesDeApoyo(usuario.getIdUsuario(), busquedaAux).size());
+                                request.getRequestDispatcher("NotificacionesDelActividad.jsp").forward(request, response);
+                                break;
                             }
-
-                            String busquedaSolicitudes = request.getParameter("busquedaSolicitudes");
-                            ArrayList<Usuario> listaSolicitudes = daoNotificacion.listarSolicitudesDeRegistro(busquedaSolicitudes, pagina - 1);
-                            ArrayList<Reporte> reportList = daoNotificacion.listarNotificacionesReporte();
-                            ArrayList<Donacion> donacionList = daoNotificacion.listarNotificacionesDonaciones(paginaD - 1);
-                            ArrayList<Validacion> recuperacionList = daoNotificacion.listarNotificacionesRecuperacion();
-
-                            request.setAttribute("cantidadTotalSolicitudes", daoNotificacion.listarSolicitudesDeRegistro(busquedaSolicitudes).size());
-                            request.setAttribute("action", action);
-                            request.setAttribute("pagActual", pagina);
-                            request.setAttribute("pagActualD", paginaD);
-                            request.setAttribute("pagActualV", paginaV);
-                            request.setAttribute("busquedaSolicitudes", busquedaSolicitudes);
-                            request.setAttribute("listaSolicitudes", listaSolicitudes);
-                            request.setAttribute("reportList", reportList);
-                            request.setAttribute("donacionList", donacionList);
-                            request.setAttribute("recuperacionList", recuperacionList);
-                            request.setAttribute("alerta", "monto");
-
-                            request.getRequestDispatcher("notificacionesDelGeneral.jsp").forward(request, response);
-
-                        } else if (usuario.getRol().equals("Delegado de Actividad")) {
-                            String busquedaSolicitudes = request.getParameter("busquedaSolicitudes");
-                            DaoNotificacion daoNotificacionesDeleActividad = new DaoNotificacion();
-                            request.getSession().removeAttribute("actionNotificacionesServlet");
-                            request.getSession().setAttribute("actionNotificacionesServlet", "buscarUsuario");
-                            page = request.getParameter("p");
-                            if (page != null) {
-                                request.getSession().removeAttribute("pSolicitudesDeApoyo");
-                                request.getSession().setAttribute("pSolicitudesDeApoyo", page);
-                            }
-                            int pSolicitudesDeApoyo = Integer.parseInt((String) request.getSession().getAttribute("pSolicitudesDeApoyo"));
-                            if (busquedaSolicitudes != null) {
-                                request.getSession().removeAttribute("busquedaSolicitudesApoyo");
-                                request.getSession().setAttribute("busquedaSolicitudesApoyo", busquedaSolicitudes);
-                            }
-                            String busquedaAux = (String) request.getSession().getAttribute("busquedaSolicitudesApoyo");
-                            ArrayList<AlumnoPorEvento> listaSolicitudesApoyo = daoNotificacionesDeleActividad.listarSolicitudesDeApoyo(usuario.getIdUsuario(), busquedaAux, pSolicitudesDeApoyo - 1);
-                            request.setAttribute("listaSolicitudesApoyo", listaSolicitudesApoyo);
-                            request.setAttribute("cantidadTotalSolicitudesApoyo", daoNotificacionesDeleActividad.listarSolicitudesDeApoyo(usuario.getIdUsuario(), busquedaAux).size());
-                            request.getRequestDispatcher("NotificacionesDelActividad.jsp").forward(request, response);
-                        } else {
-                            response.sendRedirect(request.getContextPath());
+                            default:
+                                response.sendRedirect(request.getContextPath());
+                                break;
                         }
                         break;
                     case "buscarDonaciones":

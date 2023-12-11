@@ -64,13 +64,10 @@
         if(escalaInvalida!=null){
             request.getSession().removeAttribute("escalaInvalida");
         }
-
         String fechaInvalida = (String) request.getSession().getAttribute("fechaInvalida");
-
         if(fechaInvalida!=null){
             request.getSession().removeAttribute("fechaInvalida");
         }
-
         ArrayList<Integer[]>listaLugaresCantidad=(ArrayList<Integer[]>) request.getSession().getAttribute("listaLugaresCantidad");
         ArrayList<Integer> listaLugaresFiltro = new ArrayList<>();
         for(int i=0;i<listaLugaresCantidad.size();i++){
@@ -2504,7 +2501,7 @@
 </footer>
 <%if(delegadoDeEstaActividadID==idUsuario){%>
 <div class="overlay" <%if((descripcionLarga!=null||fraseLarga!=null||extensionInvalida!=null||escalaInvalida!=null || fechaInvalida!=null)&&eventoElegido==null){%>style="display: block;"<%}%> id="overlayCrear"></div>
-<div class="popup contenedorCrear" style="width: 700px;<%if((descripcionLarga!=null||fraseLarga!=null)&&eventoElegido==null||extensionInvalida!=null||escalaInvalida!=null || fechaInvalida!=null){%>display: block;<%}%>" id="popupCrear">
+<div class="popup contenedorCrear" style="width: 700px;<%if((descripcionLarga!=null||fraseLarga!=null||extensionInvalida!=null||escalaInvalida!=null || fechaInvalida!=null)&&eventoElegido==null){%>display: block;<%}%>" id="popupCrear">
     <svg class="cerrarPopup" id="cerrarPopupCrear" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path d="M11.4142 10L16.7071 4.70711C17.0976 4.31658 17.0976 3.68342 16.7071 3.29289C16.3166 2.90237 15.6834 2.90237 15.2929 3.29289L10 8.58579L4.70711 3.29289C4.31658 2.90237 3.68342 2.90237 3.29289 3.29289C2.90237 3.68342 2.90237 4.31658 3.29289 4.70711L8.58579 10L3.29289 15.2929C2.90237 15.6834 2.90237 16.3166 3.29289 16.7071C3.68342 17.0976 4.31658 17.0976 4.70711 16.7071L10 11.4142L15.2929 16.7071C15.6834 17.0976 16.3166 17.0976 16.7071 16.7071C17.0976 16.3166 17.0976 15.6834 16.7071 15.2929L11.4142 10Z" fill="black"/>
     </svg>
@@ -2535,9 +2532,9 @@
                         </select>
                     </div>
                 </div>
-                <label style="margin-top: 25px;" ><b>Frase motivacional: <%if(fraseLarga!=null){%><a style="color: red;">Ingrese una frase más corta</a><%}%></b></label>
+                <label style="margin-top: 25px;" ><b>Frase motivacional: <%if(fraseLarga!=null&&eventoElegido==null){%><a style="color: red;">Ingrese una frase más corta</a><%}%></b></label>
                 <input type="text" id="fraseMotivacionalCrearEvento" name="addFraseMotivacional" placeholder="Frase motivacional" required>
-                <label style="margin-top: 25px;"><b>Descripción del evento: <%if(descripcionLarga!=null){%><a style="color: red;">Ingrese una descripción más corta</a><%}%></b></label>
+                <label style="margin-top: 25px;"><b>Descripción del evento: <%if(descripcionLarga!=null&&eventoElegido==null){%><a style="color: red;">Ingrese una descripción más corta</a><%}%></b></label>
                 <textarea type="text" id="descripcionCrearEvento" name="addDescripcionEventoActivo" placeholder="Descripción" maxlength="1000"></textarea>
                 <div class="row" style="margin-top: 25px;">
                     <div class="col-6">
@@ -2558,7 +2555,7 @@
                         <label for="fechaCrearEvento"><b>Fecha (día):</b></label>
                         <input style="height: 55px;padding-left: 20px" type="date" id="fechaCrearEvento" name="addFecha" multiple required>
                     </div>
-                    <%if (fechaInvalida!=null){%>
+                    <%if (fechaInvalida!=null&&eventoElegido==null){%>
                     <label for="inputCrear"><a style="color: red;">Ingrese una fecha válida</a></label>
                     <%}%>
                     <div class="col-6">
@@ -2573,7 +2570,7 @@
                         <img id="imagenActualCrear" class="img-fluid auxResponsive" src="css/subirArchivo.jpg" style="opacity: 50%;max-height: 600px" alt="">
                     </div>
                     <p style="margin-top: 10px"><b>Agregar foto miniatura</b></p>
-                    <%if(extensionInvalida!=null){%><label for="inputCrear"><a style="color: red;">Ingrese un formato e imagen correctos</a></label><%}else if(escalaInvalida!=null){%><label for="inputCrear"><a style="color: red;">Ingrese una escala apropiada</a></label><%}%>
+                    <%if(extensionInvalida!=null&&eventoElegido==null){%><label for="inputCrear"><a style="color: red;">Ingrese un formato e imagen correctos</a></label><%}else if(escalaInvalida!=null&&eventoElegido==null){%><label for="inputCrear"><a style="color: red;">Ingrese una escala apropiada</a></label><%}%>
                     <input type="file" id="inputCrear" name="addfotoMiniatura" style="background-color: white; margin-top: 25px;" accept="image/png, .jpeg, .jpg" onchange="mostrarImagen('imagenActualCrear','contenedorImagenCrear','inputCrear')"></input>
                 </div>
             </div>
@@ -2592,7 +2589,7 @@
         </div>
     </form>
 </div>
-<%if(!listaEventos.isEmpty()){
+<%if(listaEventos!=null&&!listaEventos.isEmpty()){
     for(Evento e:listaEventos){%>
 <div class="overlay" id="overlayFinalizarEvento<%=listaEventos.indexOf(e)%>"></div>
 <div class="popup" style="width: 500px;" id="popupFinalizarEvento<%=listaEventos.indexOf(e)%>">
@@ -2845,10 +2842,16 @@
         }
     }
     <%if(delegadoDeEstaActividadID==idUsuario){%>
+    <%if((resumenLargo!=null||descripcionLarga!=null||fraseLarga!=null||extensionInvalida!=null||escalaInvalida!=null)&&eventoElegido==null){%>
+    popupFunc('popupCrear',['cerrarPopupCrear','cerrarPopupCrear1','cerrarPopupCrear2'],'overlayCrear');
+    <%}%>
     var elementos=['nombreCrearEvento','fraseMotivacionalCrearEvento','descripcionCrearEvento','horaCrearEvento','lugarCrearEvento','fechaCrearEvento','inputCrear'];
     verificarInput(elementos,'cerrarPopupCrear1');
     <%if(listaEventos!=null){
     for(int i=0;i<listaEventos.size();i++){%>
+    <%if((resumenLargo!=null||descripcionLarga!=null||fraseLarga!=null||extensionInvalida!=null||escalaInvalida!=null)&&eventoElegido!=null&&eventoElegido==listaEventos.get(i).getIdEvento()){%>
+    popupFunc('popupEditarEvento<%=i%>',['cerrarPopupEditarEvento<%=i%>','cerrarPopupEditar1Evento<%=i%>','cerrarPopupEditar2Evento<%=i%>'],'overlayEditarEvento<%=i%>');
+    <%}%>
     <%if(listaEventos.get(i).isEventoFinalizado()){%>
     var elementos<%=i%>=['editarNombreEvento<%=i%>','editarResumenEvento<%=i%>'];
     verificarInput(elementos<%=i%>,'cerrarPopupEditar1Evento<%=i%>');
@@ -2857,6 +2860,7 @@
     verificarInput(elementos<%=i%>,'cerrarPopupEditar1Evento<%=i%>');
     <%}%>
     <%if(!listaEventos.get(i).isEventoFinalizado()){%>
+    popupFunc('popupFinalizarEvento<%=i%>',['cerrarPopupFinalizarEvento<%=i%>','cerrarPopupFinalizar1Evento<%=i%>','cerrarPopupFinalizar2Evento<%=i%>'],'overlayFinalizarEvento<%=i%>');
     var elementosFinalizar<%=i%>=['resultado2Evento<%=i%>','resumenEvento<%=i%>'];
     verificarInput(elementosFinalizar<%=i%>,'cerrarPopupFinalizar1Evento<%=i%>');
     <%}}}}%>

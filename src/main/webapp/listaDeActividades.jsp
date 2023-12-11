@@ -2031,7 +2031,7 @@
             <div class="row">
                 <div class="col-sm-7">
                     <br>
-                    <label for="nombreCrearActividad" style="margin-top: 25px;"><b>Nombre de la actividad: <%if(nombreLargo!=null){%><a style="color: red">Ingrese un nombre más corto</a><%}%></b></label>
+                    <label for="nombreCrearActividad" style="margin-top: 25px;"><b>Nombre de la actividad: <%if(nombreLargo!=null&& idActividadElegida==null){%><a style="color: red">Ingrese un nombre más corto</a><%}%></b></label>
                     <input type="text" name="nombreCrearActividad" id="nombreCrearActividad" placeholder="Actividad" required>
 
                     <label for="idDelegadoActividadCrear" style="margin-top: 25px;"><b>Seleccionar delegado de actividad:</b></label>
@@ -2046,9 +2046,9 @@
 
                     <label style="margin-top: 25px;" for="puntajeCrearActividad"><b>Puntaje para el 1er lugar:</b></label>
                     <input type="text" name="puntajeCrearActividad" id="puntajeCrearActividad" placeholder="###" required>
-                    <%if(puntajeNoNumerico!=null){%>
+                    <%if(puntajeNoNumerico!=null&& idActividadElegida==null){%>
                     <a style="color: red">Debe de ingresar un valor numérico</a>
-                    <%}else if(actividadRepetida!=null){%>
+                    <%}else if(actividadRepetida!=null&& idActividadElegida==null){%>
                     <a style="color: red">La actividad ya existe. Emplee otro nombre.</a>
                     <%}%>
                     <div style="display: flex; justify-content: left; margin-top: 25px;">
@@ -2062,7 +2062,7 @@
                             <img id="imagenActualCabeceraCrear" class="img-fluid auxResponsive" src="css/subirArchivo.jpg" style="max-height: 500px" alt="">
                         </div>
                         <p style="margin-top: 10px"><b>Agregar foto de cabecera</b></p>
-                        <%if(extensionInvalidaCab!=null){%><label for="inputCabeceraCrear"><a style="color: red;">Ingrese un formato e imagen correctos</a></label><%}else if(escalaInvalidaCab!=null){%><label for="inputCabeceraCrear"><a style="color: red;">Ingrese una escala apropiada</a></label><%}%>
+                        <%if(extensionInvalidaCab!=null&& idActividadElegida==null){%><label for="inputCabeceraCrear"><a style="color: red;">Ingrese un formato e imagen correctos</a></label><%}else if(escalaInvalidaCab!=null&& idActividadElegida==null){%><label for="inputCabeceraCrear"><a style="color: red;">Ingrese una escala apropiada</a></label><%}%>
                         <input type="file" id="inputCabeceraCrear" name="addfotoCabecera" style="background-color: white; margin-top: 25px;" accept="image/png, .jpeg, .jpg" onchange="mostrarImagen('imagenActualCabeceraCrear','contenedorImagenCabeceraCrear','inputCabeceraCrear')">
                     </div>
                     <br>
@@ -2071,7 +2071,7 @@
                             <img id="imagenActualCrear" class="img-fluid auxResponsive" src="css/subirArchivo.jpg" style="max-height: 500px" alt="">
                         </div>
                         <p style="margin-top: 10px"><b>Agregar foto miniatura</b></p>
-                        <%if(extensionInvalidaMin!=null){%><label for="inputCrear"><a style="color: red;">Ingrese un formato e imagen correctos</a></label><%}else if(escalaInvalidaMin!=null){%><label for="inputCabeceraCrear"><a style="color: red;">Ingrese una escala apropiada</a></label><%}%>
+                        <%if(extensionInvalidaMin!=null&& idActividadElegida==null){%><label for="inputCrear"><a style="color: red;">Ingrese un formato e imagen correctos</a></label><%}else if(escalaInvalidaMin!=null&& idActividadElegida==null){%><label for="inputCabeceraCrear"><a style="color: red;">Ingrese una escala apropiada</a></label><%}%>
                         <input type="file" id="inputCrear" name="addfotoMiniatura" style="background-color: white; margin-top: 25px;" accept="image/png, .jpeg, .jpg" onchange="mostrarImagen('imagenActualCrear','contenedorImagenCrear','inputCrear')">
                     </div>
                 </div>

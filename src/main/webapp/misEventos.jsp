@@ -1382,10 +1382,10 @@
 
         <p class="popupAux-event-subtitle" style="margin-left: 27px;">Último mensaje en el foro</p>
         <%MensajeChat m=new DaoMensajeChat().obtenerUltimoMensajeChat(e.getIdEvento());
+        if(m!=null){
         Integer[] diferenciaTiempoUltimoMensaje=new DaoEvento().obtenerDiferenciaEntre2FechasMensaje(m.getIdMensajeChat());%>
         <!-- POST COMMENT -->
         <div class="post-comment">
-
             <!-- USER AVATAR -->
             <a class="user-avatar small no-outline">
                 <!-- USER AVATAR CONTENT -->
@@ -1467,6 +1467,11 @@
             <%}%>
         </div>
         <!-- /POST COMMENT LIST -->
+        <%}else{%>
+        <div class="post-comment">
+            <a style="color: gray;">No hay ningún mensaje dentro del foro del evento</a>
+        </div>
+        <%}%>
     </div>
     <br>
 </div>

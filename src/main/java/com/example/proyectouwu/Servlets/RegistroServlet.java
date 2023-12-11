@@ -59,6 +59,11 @@ public class RegistroServlet extends HttpServlet {
                 break;
             case "registro":
                 boolean registroValido = true;
+                String errorNombre="";
+                String errorApellido="";
+                String errorCodigo="";
+                String errorContrasena="";
+
                 String idCorreoValidacion = request.getParameter("idCorreoValidacion")==null?"0":request.getParameter("idCorreoValidacion");
                 String correo = new DaoValidacion().buscarCorreoPorIdCorreoValidacion(idCorreoValidacion);
                 if(correo == null){
@@ -122,8 +127,14 @@ public class RegistroServlet extends HttpServlet {
                     new DaoUsuario().registroDeAlumno(request.getParameter("nombres"),request.getParameter("apellidos"),correo,request.getParameter("password"), request.getParameter("codigoPucp"),opcion);
                     //Por el momento al terminar lo hacemos saltar a la vista de inicioSesion
                     request.setAttribute("popup","5");
+                    request.getRequestDispatcher("inicioSesion.jsp").forward(request,response);
+                }else{
+                    DaoValidacion daoValidacion = new DaoValidacion();
+                    Validacion validacion = daoValidacion.obtenerValidacionPorCorreo(correo);
+                    request.setAttribute("correosDelegadosGenerales",new DaoUsuario().listarCorreosDelegadosGenerales());
+                    request.setAttribute("validacion",validacion);
+                    request.getRequestDispatcher("Registro.jsp").forward(request,response);
                 }
-                request.getRequestDispatcher("inicioSesion.jsp").forward(request,response);
                 break;
         }
 

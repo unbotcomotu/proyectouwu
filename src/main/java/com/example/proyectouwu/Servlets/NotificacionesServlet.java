@@ -281,6 +281,7 @@ public class NotificacionesServlet extends HttpServlet {
                             ArrayList<Validacion> recuperacionList2 = daoNotificacion.listarNotificacionesRecuperacion();
                             request.setAttribute("buscarReportes", buscarReportes);
                             request.setAttribute("listaSolicitudes", listaSolicitudes2);
+                            request.setAttribute("cantidadTotalSolicitudes", daoNotificacion.listarSolicitudesDeRegistro().size());
                             request.setAttribute("reportList", reportList2);
                             request.setAttribute("donacionList", donacionList2);
                             request.setAttribute("recuperacionList", recuperacionList2);

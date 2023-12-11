@@ -116,13 +116,13 @@ public class DaoNotificacion extends DaoPadre {
 
 
 
-    public ArrayList<Reporte> listarNotificacionesReporte( ){
+    public ArrayList<Reporte> listarNotificacionesReporte(){
 
         ArrayList<Reporte> reportList= new ArrayList<>();
 
         
 
-        String sql = "SELECT r.idUsuarioReportado, r.idUsuarioQueReporta, r.motivoReporte,r.fechaHora,u.fotoPerfil FROM reporte r inner join usuario u on r.idUsuarioQueReporta = u.idUsuario order by r.fechaHora desc";
+        String sql = "SELECT r.idUsuarioReportado, r.idUsuarioQueReporta, r.motivoReporte,r.fechaHora,u.fotoPerfil FROM reporte r inner join usuario u on r.idUsuarioReportado = u.idUsuario order by r.fechaHora desc";
         try (Connection conn=this.getConnection(); ResultSet rs=conn.createStatement().executeQuery(sql)){
 
             while (rs.next()) {
@@ -145,9 +145,7 @@ public class DaoNotificacion extends DaoPadre {
 
         ArrayList<Reporte> reportList= new ArrayList<>();
 
-        
-
-        String sql = "SELECT r.idUsuarioReportado, r.idUsuarioQueReporta, r.motivoReporte,r.fechaHora FROM reporte r inner join usuario u on r.idUsuarioReportado=u.idUsuario where u.nombre like ? or u.apellido like ? order by r.fechaHora desc";
+        String sql = "SELECT r.idUsuarioReportado, r.idUsuarioQueReporta, r.motivoReporte,r.fechaHora, u.fotoPerfil FROM reporte r inner join usuario u on r.idUsuarioReportado=u.idUsuario where u.nombre like ? or u.apellido like ? order by r.fechaHora desc";
         try (Connection conn=this.getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql)){
             pstmt.setString(1,"%"+buscar+"%");
             pstmt.setString(2,"%"+buscar+"%");
@@ -158,6 +156,7 @@ public class DaoNotificacion extends DaoPadre {
                     report.getUsuarioQueReporta().setIdUsuario(rs.getInt(2));
                     report.setMotivoReporte(rs.getString(3));
                     report.setFecha(rs.getDate(4));
+                    report.getUsuarioReportado().setFotoPerfil(rs.getBlob(5));
                     reportList.add(report);
                 }
             }

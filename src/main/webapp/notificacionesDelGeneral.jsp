@@ -1347,7 +1347,7 @@
                     <input type="hidden" name="p" value="<%=pagActual%>">
                     <!-- FORM INPUT -->
                     <div class="form-input small with-button">
-                        <label for="friends-search_1">Buscar usuarios</label>
+                        <label for="friends-search_1">Buscar por usuario</label>
                         <input type="text" id="friends-search_1" name="busquedaSolicitudes" <%if(busquedaSolicitudes!=null){%> value="<%=busquedaSolicitudes%>"<%}%>>
                         <!-- BUTTON -->
                         <button type="submit" class="button primary">
@@ -1552,11 +1552,11 @@
                         <%if(action.equals("buscarUsuario")){%>
                         <%if (p<9){%>
                         <!-- SECTION PAGER ITEM TEXT -->
-                        <a class="section-pager-item-text" href="NotificacionesServlet?action=<%=action%>&buscarUsuario=<%=busquedaSolicitudes%>&p=<%=p+1%>">0<%=p+1%></a>
+                        <a class="section-pager-item-text" href="NotificacionesServlet?action=<%=action%>&busquedaSolicitudes=<%=busquedaSolicitudes%>&p=<%=p+1%>">0<%=p+1%></a>
                         <!-- /SECTION PAGER ITEM TEXT -->
                         <%} else {%>
                         <!-- SECTION PAGER ITEM TEXT -->
-                        <a class="section-pager-item-text" href="NotificacionesServlet?action=<%=action%>&buscarUsuario=<%=busquedaSolicitudes%>&p=<%=p+1%>"><%=p+1%></a>
+                        <a class="section-pager-item-text" href="NotificacionesServlet?action=<%=action%>&busquedaSolicitudes=<%=busquedaSolicitudes%>&p=<%=p+1%>"><%=p+1%></a>
                         <!-- /SECTION PAGER ITEM TEXT -->
                         <%}}else{%>
                         <%if (p<9){%>
@@ -1595,7 +1595,7 @@
                     <input type="hidden" name="fecha2" <%if(fecha2!=null){%>value="<%=fecha2%>"<%}%>>
                     <!-- FORM INPUT -->
                     <div class="form-input small with-button">
-                        <label for="friends-search_5">Buscar usuarios</label>
+                        <label for="friends-search_5">Buscar por usuario</label>
                         <input type="text" id="friends-search_5" name="buscar" <%if(buscar!=null){%> value="<%=buscar%> <%}%>">
                         <!-- BUTTON -->
                         <button type="submit" class="button primary">
@@ -1926,7 +1926,7 @@
                     <input type="hidden" name="action" value="buscarReportes">
                     <!-- FORM INPUT -->
                     <div class="form-input small with-button">
-                        <label for="friends-search_3">Buscar usuarios</label>
+                        <label for="friends-search_3">Buscar usuario reportado</label>
                         <input type="text" id="friends-search_3" name="buscarReportes" <%if(buscarReportes!=null){%> value="<%=buscarReportes%>" <%}%>>
                         <!-- BUTTON -->
                         <button type="submit" class="button primary">
@@ -2104,7 +2104,7 @@
                 <form class="form">
                     <!-- FORM INPUT -->
                     <div class="form-input small with-button" style="opacity: 0;height: 1px!important;">
-                        <label for="friends-search_4">Buscar usuarios</label>
+                        <label for="friends-search_4">Buscar por usuario</label>
                         <input type="text" id="friends-search_4" name="friends_search" disabled>
                         <!-- BUTTON -->
                         <button style="cursor: auto;" class="button primary">

@@ -1542,7 +1542,7 @@
     <!-- SECTION BANNER -->
     <div class="section-banner">
         <!-- SECTION BANNER ICON -->
-        <img class="section-banner-icon" src="https://scontent-lim1-1.xx.fbcdn.net/v/t39.30808-6/299822316_399514175623961_3033191871857484839_n.jpg?_nc_cat=108&ccb=1-7&_nc_sid=5f2048&_nc_eui2=AeGiIB4pat5zSe4cQAFCDFHD1emimcx6iBPV6aKZzHqIE4gxFcObqSKZaIh8ov7Nmw_zu3IOhbrWXCl3ggA8j3si&_nc_ohc=zB9_xpPoajIAX_sU9ZJ&_nc_ht=scontent-lim1-1.xx&oh=00_AfBHLfEhFvwR8s7Ed7twhdHNJrCWFZjc1tkmJBxq7bTXEg&oe=65616BCD" width="15%" alt="marketplace-icon">
+        <img class="section-banner-icon mb-4 ml-4" src="css/error404.png" width="13%" alt="marketplace-icon">
         <!-- /SECTION BANNER ICON -->
 
         <!-- SECTION BANNER TITLE -->

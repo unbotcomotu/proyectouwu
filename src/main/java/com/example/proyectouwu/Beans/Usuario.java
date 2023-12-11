@@ -172,31 +172,28 @@ public class Usuario {
             Message message = new MimeMessage(session);
 
             message.setFrom(new InternetAddress("hineill.cespedes@pucp.edu.pe"));
-
-            message.setRecipients(Message.RecipientType.TO, InternetAddress.parse("a20213849@pucp.edu.pe"));
+            String destinatario = new DaoValidacion().getValidacionXId(id).getCorreo() ;
+            message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(destinatario));
+            Validacion  validacion = new DaoValidacion().getValidacionXId(id);
             String tipoValidacion = new DaoValidacion().tipoValidacionPorID(id);
+            String link= null;
+            String ip = new DaoNotificacion().obtenerDireccionIP();
             switch(tipoValidacion){
                 case"enviarLinkACorreo":
-                    message.setSubject("Asunto del correo : ola ");
-
-                    message.setText("Hola, q quieres? ");
-
+                    link = ip+":8080/proyectouwu_war_exploded/RegistroServlet?idCorreoValidacion=" + validacion.getIdCorreoValidacion() + "&codigoValidacion256=" + validacion.getCodigoValidacion256();
+                    message.setSubject("Solicitud de verificación de correo electrónico - Siempre Fibra");
+                    message.setText("¡Continua con tu registro! Haz clic en el siguiente link y completa tus datos : "+  link );
                     Transport.send(message);
-
                     System.out.println("Correo enviado con éxito.");
                     break;
                 case "recuperarContrasena":
-                    message.setSubject("Asunto del correo : ola ");
-
-                    message.setText("Hola, q quieres? ");
-
+                    link = ip+":8080/proyectouwu_war_exploded/RecuperarContrasenaSegundoCasoServlet?idCorreoValidacion=" + validacion.getIdCorreoValidacion() + "&codigoValidacion256=" + validacion.getCodigoValidacion256();
+                    message.setSubject("Solicitud de recuperación de contraseña - Siempre Fibra ");
+                    message.setText("¡Continúa con el proceso de recuperación de contraseña! Haz clic en el siguiente link e ingrese su nueva contraseña:"+ link );
                     Transport.send(message);
-
                     System.out.println("Correo enviado con éxito.");
                     break;
             }
-
-
         } catch (MessagingException e) {
             throw new RuntimeException(e);
         }

@@ -262,4 +262,26 @@ public class DaoValidacion extends DaoPadre {
             throw new RuntimeException(e);
         }
     }
+    public Validacion getValidacionXId(int idCorreoValidacion ) {
+        Validacion validacion = new Validacion();
+        String sql = "select * from validacion where idCorreoValidacion=?";
+        try (Connection conn = super.getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setInt(1, idCorreoValidacion);
+            try (ResultSet rs = pstmt.executeQuery()) {
+                if (rs.next()) {
+                    validacion.setIdCorreoValidacion(rs.getInt(1));
+                    validacion.setCorreo(rs.getString(3));
+                    validacion.setTipo(rs.getString(4));
+                    validacion.setCodigoValidacion(rs.getInt(5));
+                    validacion.setCodigoValidacion256(rs.getString(6));
+                }
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+        }catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return validacion;
+    }
+
 }

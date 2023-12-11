@@ -139,7 +139,7 @@
 
                         <button onclick="goBack()">Atrás</button>
                         <script>
-                            const checkboxe = document.querySelectorAll('input[name="opciones"]');
+                            const checkboxe = document.querySelectorAll('input[type=checkbox]');
                             const continuarButton = document.getElementById('continuarButton');
                             let i=true;
                             let j=true;

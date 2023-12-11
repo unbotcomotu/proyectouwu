@@ -2404,6 +2404,51 @@
     </div>
 </footer>
 
+<%for(int i=0;i<listaSolicitudes.size();i++){%>
+<div class="overlay" id="overlayPopupRechazar<%=i%>"></div>
+<div class="popup" style="max-width: 30%" id="popupRechazar<%=i%>">
+    <svg class="cerrarPopup" id="cerrarPopupRechazar<%=i%>" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M11.4142 10L16.7071 4.70711C17.0976 4.31658 17.0976 3.68342 16.7071 3.29289C16.3166 2.90237 15.6834 2.90237 15.2929 3.29289L10 8.58579L4.70711 3.29289C4.31658 2.90237 3.68342 2.90237 3.29289 3.29289C2.90237 3.68342 2.90237 4.31658 3.29289 4.70711L8.58579 10L3.29289 15.2929C2.90237 15.6834 2.90237 16.3166 3.29289 16.7071C3.68342 17.0976 4.31658 17.0976 4.70711 16.7071L10 11.4142L15.2929 16.7071C15.6834 17.0976 16.3166 17.0976 16.7071 16.7071C17.0976 16.3166 17.0976 15.6834 16.7071 15.2929L11.4142 10Z" fill="black"/>
+    </svg>
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-1"></div>
+            <div class="col-sm-10">
+                <h5 style="text-align: center;">Escribe el motivo de rechazo al usuario:</h5>
+            </div>
+            <div class="col-sm-1"></div>
+        </div>
+    </div>
+    <br>
+    <form method="post" action="NotificacionesServlet?action=rechazarRegistro">
+        <div class="row">
+            <div class="col-sm-1">
+            </div>
+            <div class="col-sm-10">
+                <textarea name="motivoRechazo" cols="15" rows="6" required></textarea>
+            </div>
+            <div class="col-sm-1">
+            </div>
+        </div>
+        <div style="margin-top: 3%" class="container-fluid">
+            <div class="row">
+                <div class="col-sm-6" style="margin-top: 5px;">
+
+                    <input type="hidden" name="idUsuarioARegistrar" value="<%=listaSolicitudes.get(i).getIdUsuario()%>">
+                    <a> <button type="submit" class="button secondary" id="cerrarPopupRechazar1<%=i%>">Rechazar</button></a>
+
+                </div>
+                <div class="col-sm-6" style="margin-top: 5px;">
+                    <button type="button" class="button secondary" id="cerrarPopupRechazar2<%=i%>" style="background-color: grey;">Cancelar</button>
+                </div>
+            </div>
+        </div>
+    </form>
+
+</div>
+<%}%>
+
 <%for(int i=0;i<donacionList.size();i++){%>
 <div class="overlay" id="overlayPopupImagenDonacion<%=i%>"></div>
 <div class="popup" style="max-width: 30%" id="popupImagenDonacion<%=i%>">
@@ -2485,66 +2530,6 @@
 </script>
 
 <script>
-    //document.getElementById('cerrarPopupFinalizar1').addEventListener('click',document.getElementById(String(textElement.value)).style.opacity = '50%');
-    function popupFunc(popupId,abrirId,cerrarClass,overlayId){
-        const showPopup=document.getElementById(abrirId);
-        const overlay=document.getElementById(overlayId);
-        const popup=document.getElementById(popupId);
-        const mostrarPopup = () => {
-            overlay.style.display = 'block';
-            popup.style.display = 'block';
-            // Desactivar el scroll
-            document.body.style.overflow = 'hidden';
-        };
-        showPopup.addEventListener('click', mostrarPopup);
-        const cerrarPopup = () => {
-            overlay.style.display = 'none';
-            popup.style.display = 'none';
-            document.body.style.overflow = 'auto';
-
-        };
-        for(let i=0;i<cerrarClass.length;i++){
-            document.getElementById(cerrarClass[i]).addEventListener('click', cerrarPopup);
-        }
-
-        overlay.addEventListener('click', (e) => {
-            if (e.target === overlay) {
-                cerrarPopup();
-            }
-        });
-
-        document.addEventListener('keydown', (event) => {
-            if (event.key === 'Escape') {
-                cerrarPopup();
-            }
-        });
-    }
-
-    function verificarInput(elementos,idBoton) {
-        for(let i=0;i<elementos.length;i++) {
-            document.getElementById(elementos[i]).addEventListener("input", function () {
-                var boton=document.getElementById(idBoton);
-                boton.disabled=false;
-                boton.style.opacity=1;
-                for(let i=0;i<elementos.length;i++){
-                    var elemento=document.getElementById(elementos[i]);
-                    if(elemento.value===""){
-                        boton.disabled=true;
-                        boton.style.opacity=0.5;
-                    }
-                }
-            });
-        }
-    }
-    <%if(donacionList!=null){
-    for(int i=0;i<donacionList.size();i++){%>
-    var elementos<%=i%>=['montoDonacion<%=i%>','idDonacion<%=i%>','estadoDonacion<%=i%>'];
-    verificarInput(elementos<%=i%>,'cerrarPopupEditar1Donacion<%=i%>');
-    popupFunc('popupEditarDonacion<%=i%>','mostrarPopupEditarDonacion<%=i%>',['cerrarPopupEditarDonacion<%=i%>','cerrarPopupEditar1Donacion<%=i%>','cerrarPopupEditar2Donacion<%=i%>'],'overlayEditarDonacion<%=i%>');
-    <%}}%>
-</script>
-
-<script>
     function enviarFormulario(idForm) {
         var formulario = document.getElementById(idForm);
         formulario.submit();
@@ -2564,9 +2549,6 @@
             overlay.style.display = 'none';
             popup.style.display = 'none';
             document.body.style.overflow = 'auto';
-            if(popupId=='popupApoyar'){
-                blockButton('mostrarPopupApoyar');
-            }
         };
         for(let i=0;i<cerrarClass.length;i++){
             document.getElementById(cerrarClass[i]).addEventListener('click', cerrarPopup);
@@ -2588,7 +2570,7 @@
     popupFunc('popupImagenDonacion<%=i%>','mostrarPopupImagenDonacion<%=i%>',['cerrarPopupImagenDonacion<%=i%>'],'overlayPopupImagenDonacion<%=i%>');
     <%}%>
     <%for(int i=0;i<donacionList.size();i++){%>
-    popupFunc('popupEditarDonacion<%=i%>','mostrarPopupEditarDonacion<%=i%>',['cerrarPopupEditarDonacion<%=i%>'],'overlayPopupEditarDonacion<%=i%>');
+    popupFunc('popupEditarDonacion<%=i%>','mostrarPopupEditarDonacion<%=i%>',['cerrarPopupEditarDonacion<%=i%>','cerrarPopupEditar1Donacion<%=i%>','cerrarPopupEditar2Donacion<%=i%>'],'overlayPopupEditarDonacion<%=i%>');
     <%}%>
 </script>
     <!-- app -->

@@ -47,14 +47,18 @@ public class DaoDonacion extends DaoPadre  {
         }
 
     }
-    //Este método se utiliza para el boton de editar donación en la vista de delegado general
-    public void editarDonacion(Donacion donacion){ //Editar donacion por Id
+    public void editarDonacion(Donacion donacion){
         String sql = "update donacion set monto = ?,estadoDonacion = ?, fechaHoraValidado = now() where idDonacion = ?";
         try(Connection conn=this.getConnection(); PreparedStatement pstmt=conn.prepareStatement(sql)){
             pstmt.setFloat(1,donacion.getMonto());
             pstmt.setString(2, donacion.getEstadoDonacion());
             pstmt.setInt(3,donacion.getIdDonacion());
             pstmt.executeUpdate();
+            int idUsuario=idUsuarioPorIdDonacion(donacion.getIdDonacion());
+            DaoValidacion dV=new DaoValidacion();
+            if(totalDonaciones(idUsuario)>100&&!dV.verificarYaRecibioNotificacionKit(idUsuario)){
+                dV.agregarCorreoParaElKit(idUsuario);
+            }
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -249,11 +253,7 @@ public class DaoDonacion extends DaoPadre  {
 
         }
     }
-
-
-
-
-    public float donacionesTotalesEgresados(){
+        public float donacionesTotalesEgresados(){
         String sql="select round(sum(d.monto),2) from donacion d inner join usuario u on d.idUsuario=u.idUsuario where u.condicion='Egresado' and d.estadoDonacion='Validado'";
         try(Connection conn=this.getConnection(); ResultSet rs=conn.createStatement().executeQuery(sql)){
             if(rs.next()){
@@ -364,10 +364,23 @@ public class DaoDonacion extends DaoPadre  {
         try(Connection conn=this.getConnection(); PreparedStatement pstmt= conn.prepareStatement(sql)){
             pstmt.setString(1,idDonacion);
             try(ResultSet rs=pstmt.executeQuery()){
+                return rs.next();
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public Integer idUsuarioPorIdDonacion(int idDonacion){
+        String sql="select idUsuario from donacion where idDonacion=?";
+        try(Connection conn=this.getConnection(); PreparedStatement pstmt= conn.prepareStatement(sql)){
+            pstmt.setInt(1,idDonacion);
+            try(ResultSet rs=pstmt.executeQuery()){
                 if(rs.next()){
-                    return true;
-                }else
-                    return false;
+                    return rs.getInt(1);
+                }else {
+                    return null;
+                }
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);

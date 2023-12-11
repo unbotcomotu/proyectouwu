@@ -2648,7 +2648,7 @@
                                 }
                             %>
                             <!-- USER STAT TITLE -->
-                            <p class="user-stat-title"><%=listaNombresActividadesOrden.get(posicionMayorCantidadApoyos)%></p>
+                            <p class="user-stat-title"><%if(!listaNombresActividadesOrden.isEmpty()){%><%=listaNombresActividadesOrden.get(posicionMayorCantidadApoyos)%><%}else{%>No hay actividades :(<%}%></p>
                             <!-- /USER STAT TITLE -->
 
                             <!-- USER STAT TEXT -->
@@ -2669,7 +2669,7 @@
                                 }
                             %>
                             <!-- USER STAT TITLE -->
-                            <p class="user-stat-title"><%=listaNombresActividadesOrden.get(posicionMenorCantidadApoyos)%></p>
+                            <p class="user-stat-title"><%if(!listaNombresActividadesOrden.isEmpty()){%><%=listaNombresActividadesOrden.get(posicionMenorCantidadApoyos)%><%}else{%>No hay actividades :(<%}%></p>
                             <!-- /USER STAT TITLE -->
 
                             <!-- USER STAT TEXT -->
@@ -2681,7 +2681,7 @@
                         <!-- USER STAT -->
                         <div class="user-stat big">
                             <!-- USER STAT TITLE -->
-                            <p class="user-stat-title"><%=(cantidadTotalApoyosEgresados+cantidadTotalApoyosEstudiantes)/listaNombresActividadesOrden.size()%></p>
+                            <p class="user-stat-title"><%if(!listaNombresActividadesOrden.isEmpty()){%><%=(cantidadTotalApoyosEgresados+cantidadTotalApoyosEstudiantes)/listaNombresActividadesOrden.size()%><%}else{%>-<%}%></p>
                             <!-- /USER STAT TITLE -->
 
                             <!-- USER STAT TEXT -->

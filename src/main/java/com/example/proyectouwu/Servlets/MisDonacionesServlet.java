@@ -39,11 +39,6 @@ public class MisDonacionesServlet extends HttpServlet {
                 request.setAttribute("listaDonaciones", dDonacion.listarDonacionesVistaUsuario(usuario.getIdUsuario()));
                 request.setAttribute("totalDonaciones", dDonacion.totalDonaciones(usuario.getIdUsuario()));
 
-                if (dDonacion.totalDonaciones(usuario.getIdUsuario()) > 100 && !dV.verificarYaRecibioNotificacionKit(usuario.getIdUsuario())) {
-                    dV.agregarCorreoParaElKit(dUsuario.correoUsuarioPorId(usuario.getIdUsuario()));
-                }
-
-
                 String action = request.getParameter("action") == null ? "default" : request.getParameter("action");
                 if (request.getParameter("confirmacion") != null) {
                     request.setAttribute("confirmacion", "1");

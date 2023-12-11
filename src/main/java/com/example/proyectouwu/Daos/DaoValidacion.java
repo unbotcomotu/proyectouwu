@@ -62,22 +62,15 @@ public class DaoValidacion extends DaoPadre {
     }
 
 
-    public void agregarCorreoParaElKit(String correo){
+    public void agregarCorreoParaElKit(int idUsuario){
 
-        String sql = "insert into validacion(correo, tipo, fechaHora, linkEnviado, idUsuario) values (?,?,?,?,?);";
+        String sql = "insert into validacion(correo, tipo, fechaHora, linkEnviado, idUsuario) values (?,?,now(),?,?);";
 
-        LocalDateTime fechaHoraActual = LocalDateTime.now();
-        // Define el formato deseado
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-        // Convierte la fecha y hora actual en un String formateado
-        String dateStr = fechaHoraActual.format(formatter);
         try (Connection conn=this.getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql,Statement.RETURN_GENERATED_KEYS)) {
-            pstmt.setString(1, correo);
+            pstmt.setString(1, new DaoUsuario().correoUsuarioPorId(idUsuario));
             pstmt.setString(2, "NecesitaUnKit");
-
-            pstmt.setString(3, dateStr);
-            pstmt.setBoolean(4, false);
-            pstmt.setInt(5, new DaoUsuario().obtenerIdPorCorreo(correo));
+            pstmt.setBoolean(3, false);
+            pstmt.setInt(4, idUsuario);
 
             pstmt.executeUpdate();
             ResultSet rskeys=pstmt.getGeneratedKeys();

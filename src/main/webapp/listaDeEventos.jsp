@@ -2860,7 +2860,7 @@
     verificarInput(elementos<%=i%>,'cerrarPopupEditar1Evento<%=i%>');
     <%}%>
     <%if(!listaEventos.get(i).isEventoFinalizado()){%>
-    popupFunc('popupFinalizarEvento<%=i%>',['cerrarPopupFinalizarEvento<%=i%>','cerrarPopupFinalizar1Evento<%=i%>','cerrarPopupFinalizar2Evento<%=i%>'],'overlayFinalizarEvento<%=i%>');
+
     var elementosFinalizar<%=i%>=['resultado2Evento<%=i%>','resumenEvento<%=i%>'];
     verificarInput(elementosFinalizar<%=i%>,'cerrarPopupFinalizar1Evento<%=i%>');
     <%}}}}%>

@@ -59,10 +59,6 @@ public class RegistroServlet extends HttpServlet {
                 break;
             case "registro":
                 boolean registroValido = true;
-                String errorNombre="";
-                String errorApellido="";
-                String errorCodigo="";
-                String errorContrasena="";
 
                 String idCorreoValidacion = request.getParameter("idCorreoValidacion")==null?"0":request.getParameter("idCorreoValidacion");
                 String correo = new DaoValidacion().buscarCorreoPorIdCorreoValidacion(idCorreoValidacion);
@@ -70,56 +66,61 @@ public class RegistroServlet extends HttpServlet {
                     registroValido = false;
                 }
                 String opcion = "";
-                if(request.getParameter("nombres").isEmpty() || request.getParameter("apellidos").isEmpty() || request.getParameter("password").isEmpty() || request.getParameter("password2").isEmpty() || request.getParameter("codigoPucp").isEmpty()){
-                    registroValido = false;
-                }
 
-                if(request.getParameter("nombres").length()>45 || request.getParameter("apellidos").length()>45 || request.getParameter("codigoPucp").length()!=8){
-                    registroValido = false;
-                }
-
-                try{
-                    int codigoPucp = Integer.parseInt(request.getParameter("codigoPucp"));
-                }catch (NumberFormatException e){
-                    registroValido = false;
-                }
-
-                if(!request.getParameter("password").equals(request.getParameter("password2"))){
+                if(request.getParameter("nombres")==null || request.getParameter("apellidos")==null || request.getParameter("password")==null || request.getParameter("password2")==null || request.getParameter("codigoPucp")==null){
                     registroValido = false;
                 }else{
-                    if(request.getParameter("password").length() < 8){
+                    if(request.getParameter("nombres").isEmpty() || request.getParameter("apellidos").isEmpty() || request.getParameter("password").isEmpty() || request.getParameter("password2").isEmpty() || request.getParameter("codigoPucp").isEmpty()){
+                        registroValido = false;
+                    }
+
+                    if(request.getParameter("nombres").length()>45 || request.getParameter("apellidos").length()>45 || request.getParameter("codigoPucp").length()!=8){
+                        registroValido = false;
+                    }
+
+                    try{
+                        int codigoPucp = Integer.parseInt(request.getParameter("codigoPucp"));
+                    }catch (NumberFormatException e){
+                        registroValido = false;
+                    }
+
+                    if(!request.getParameter("password").equals(request.getParameter("password2"))){
                         registroValido = false;
                     }else{
-                        String regexLetra = ".*[a-zA-Z]+.*";
-                        String regexNumero = ".*\\d+.*";
-                        Pattern patronLetra = Pattern.compile(regexLetra);
-                        Pattern patronNumero = Pattern.compile(regexNumero);
-                        Matcher matcherLetra = patronLetra.matcher(request.getParameter("password"));
-                        Matcher matcherNumero = patronNumero.matcher(request.getParameter("password"));
-                        boolean contieneLetra = matcherLetra.matches();
-                        boolean contieneNumero = matcherNumero.matches();
-                        if(!(contieneLetra && contieneNumero)) {
+                        if(request.getParameter("password").length() < 8){
                             registroValido = false;
+                        }else{
+                            String regexLetra = ".*[a-zA-Z]+.*";
+                            String regexNumero = ".*\\d+.*";
+                            Pattern patronLetra = Pattern.compile(regexLetra);
+                            Pattern patronNumero = Pattern.compile(regexNumero);
+                            Matcher matcherLetra = patronLetra.matcher(request.getParameter("password"));
+                            Matcher matcherNumero = patronNumero.matcher(request.getParameter("password"));
+                            boolean contieneLetra = matcherLetra.matches();
+                            boolean contieneNumero = matcherNumero.matches();
+                            if(!(contieneLetra && contieneNumero)) {
+                                registroValido = false;
+                            }
                         }
                     }
-                }
-                if(request.getParameter("opciones1") != null && request.getParameter("opciones2") != null){
-                    registroValido = false;
-                }else{
-                    if(request.getParameter("opciones1") != null){
-                        if(!request.getParameter("opciones1").equals("Estudiante")){
-                            registroValido = false;
-                        }else{
-                            opcion=request.getParameter("opciones1");
-                        }
-                    }else if(request.getParameter("opciones2") != null){
-                        if(!request.getParameter("opciones2").equals("Egresado")){
-                            registroValido = false;
-                        }else{
-                            opcion=request.getParameter("opciones2");
-                        }
-                    }else{
+                    if(request.getParameter("opciones1") != null && request.getParameter("opciones2") != null){
                         registroValido = false;
+                    }else{
+                        if(request.getParameter("opciones1") != null){
+                            if(!request.getParameter("opciones1").equals("Estudiante")){
+                                registroValido = false;
+                            }else{
+                                opcion=request.getParameter("opciones1");
+                            }
+                        }else if(request.getParameter("opciones2") != null){
+                            if(!request.getParameter("opciones2").equals("Egresado")){
+                                registroValido = false;
+                            }else{
+                                opcion=request.getParameter("opciones2");
+                            }
+                        }else{
+                            registroValido = false;
+                        }
                     }
                 }
 
@@ -128,12 +129,14 @@ public class RegistroServlet extends HttpServlet {
                     //Por el momento al terminar lo hacemos saltar a la vista de inicioSesion
                     request.setAttribute("popup","5");
                     request.getRequestDispatcher("inicioSesion.jsp").forward(request,response);
-                }else{
+                }else if(correo!=null){
                     DaoValidacion daoValidacion = new DaoValidacion();
                     Validacion validacion = daoValidacion.obtenerValidacionPorCorreo(correo);
                     request.setAttribute("correosDelegadosGenerales",new DaoUsuario().listarCorreosDelegadosGenerales());
                     request.setAttribute("validacion",validacion);
                     request.getRequestDispatcher("Registro.jsp").forward(request,response);
+                }else{
+                    response.sendRedirect("InicioSesionServlet");
                 }
                 break;
         }

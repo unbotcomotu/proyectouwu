@@ -103,6 +103,23 @@ public class DaoValidacion extends DaoPadre {
         }
     }
 
+    public String buscarCorreoPorIdCorreoValidacion2(String idCorreoValidacion){
+        String sql = "select correo from validacion where idCorreoValidacion = ? and tipo = ?";
+        try (Connection conn=this.getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setString(1, idCorreoValidacion);
+            pstmt.setString(2,"recuperarContrasena");
+            try(ResultSet rs = pstmt.executeQuery()){
+                if(rs.next()){
+                    return rs.getString(1);
+                }else{
+                    return null;
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     public String buscarCorreoPorIdCorreoValidacion(String idCorreoValidacion){
         String sql = "select correo from validacion where idCorreoValidacion = ? and tipo = ?";
         try (Connection conn=this.getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql)) {

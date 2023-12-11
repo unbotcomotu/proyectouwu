@@ -137,7 +137,7 @@
 
                         <button id="continuarButton" class="w-100 btn btn-secondary btn-lg texto" type="submit" style ="background-color: rgb(97,93,250)" disabled> <a style="color: white;" >Continuar</a> </button>
 
-                        <button onclick="goBack()">Atrás</button>
+
                         <script>
                             const checkboxe = document.querySelectorAll('input[type=checkbox]');
                             const continuarButton = document.getElementById('continuarButton');

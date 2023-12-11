@@ -69,9 +69,6 @@ public class InicioSesionServlet extends HttpServlet {
                     if(correo2.length()>45){
                         correoValido=false;
                     }
-                    if(!correo2.split("@")[1].equals("pucp.edu.pe")){
-                        correoValido=false;
-                    }
                 }
 
                 if(correoValido){

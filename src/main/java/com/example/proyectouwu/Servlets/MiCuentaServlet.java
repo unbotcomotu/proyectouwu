@@ -60,7 +60,6 @@ public class MiCuentaServlet extends HttpServlet {
                     boolean descripcionValida = true;
                     String nuevaDescripcion = request.getParameter("nuevaDescripcion");
                     if(nuevaDescripcion!=null){
-                        dUsuario.cambioDescripcion(nuevaDescripcion, usuario.getIdUsuario());
                         if(nuevaDescripcion.length()>1000 || nuevaDescripcion.isEmpty()){
                             descripcionValida=false;
                         }
@@ -103,7 +102,6 @@ public class MiCuentaServlet extends HttpServlet {
                     }
                     break;
                 case("default"):
-                    //auxilio
                     break;
             }
             request.getSession().setAttribute("usuario",dUsuario.usuarioSesion(usuario.getIdUsuario()));

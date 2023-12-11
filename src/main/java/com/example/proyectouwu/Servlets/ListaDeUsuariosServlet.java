@@ -26,6 +26,7 @@ public class ListaDeUsuariosServlet extends HttpServlet {
                 request.setAttribute("vistaActual", "listaDeUsuarios");
                 request.setAttribute("correosDelegadosGenerales", dUsuario.listarCorreosDelegadosGenerales());
                 request.setAttribute("listaNotificacionesCampanita", new DaoNotificacion().listarNotificacionesDelegadoGeneral());
+                request.setAttribute("IDyNombreDelegadosDeActividad",dUsuario.listarIDyNombreDelegadosDeActividad());
                 String action = request.getParameter("action") == null ? "listarUsuarios" : request.getParameter("action");
                 String pagina;
                 String paginaPrevia = request.getParameter("p") == null ? "1" : request.getParameter("p");
@@ -37,8 +38,6 @@ public class ListaDeUsuariosServlet extends HttpServlet {
                     // Si no es un número, asigna el valor predeterminado '1' a 'pagina'
                     pagina = "1";
                 }
-
-
                 String filtro = request.getParameter("idFiltroUsuario") != null ? request.getParameter("idFiltroUsuario") : "";
                 switch (action) {
                     case "listarUsuarios":
@@ -90,42 +89,54 @@ public class ListaDeUsuariosServlet extends HttpServlet {
         response.setContentType("text/html");
         DaoUsuario dUsuario=new DaoUsuario();
         DaoNotificacion dN=new DaoNotificacion();
+        DaoBan dB=new DaoBan();
         Usuario usuario=(Usuario) request.getSession().getAttribute("usuario");
         if(usuario==null){
             response.sendRedirect("InicioSesionServlet");
         }else {
+            String idUsuarioABanear;
+            String motivoBan;
             String action = request.getParameter("action") == null ? "default" : request.getParameter("action");
             switch(action){
                 case "banear":
-                    String idUsuarioABanear=request.getParameter("idUsuarioABanear");
-
+                    idUsuarioABanear=request.getParameter("idUsuarioABanear");
+                    motivoBan=request.getParameter("motivoBan");
                     if(idUsuarioABanear!=null){
-
-                        if (idUsuarioABanear.matches("\\d+") && dUsuario.existeUsuario(idUsuarioABanear)){
-                            String motivoBan=request.getParameter("motivoBan");
+                        if (idUsuarioABanear.matches("\\d+") && dUsuario.esBaneable(idUsuarioABanear)){
                             if(motivoBan!=null&&!motivoBan.isEmpty()){
-                                new DaoBan().banearPorId(idUsuarioABanear,motivoBan);
+                                dB.banearPorId(idUsuarioABanear,motivoBan);
                             }
-                        }else{
-                            response.sendRedirect("ListaDeUsuariosServlet");
                         }
-
-                    }else{
-                        response.sendRedirect("ListaDeUsuariosServlet");
-
                     }
                     break;
-
+                case "banearDelegadoDeActividad":
+                    idUsuarioABanear=request.getParameter("idUsuarioABanear");
+                    motivoBan=request.getParameter("motivoBan");
+                    String idDelegadoActividadReemplazar=request.getParameter("idDelegadoActividadReemplazar");
+                    String idActividad=request.getParameter("idActividad");
+                    if(idUsuarioABanear!=null) {
+                        if (idUsuarioABanear.matches("\\d+") && dUsuario.esBaneable(idUsuarioABanear)) {
+                            if(idActividad!=null&&idActividad.matches("\\d+")){
+                                if(idDelegadoActividadReemplazar!=null&&idDelegadoActividadReemplazar.matches("\\d+")&&dUsuario.esAlumnoRegistradoNoBaneado(idDelegadoActividadReemplazar)){
+                                    if(motivoBan!=null&&motivoBan.length()<=1000){
+                                        if(!motivoBan.isEmpty()){
+                                            dB.banearPorId(idUsuarioABanear,motivoBan,idDelegadoActividadReemplazar,idActividad);
+                                        }else {
+                                            request.getSession().setAttribute("motivoVacio","1");
+                                            request.getSession().setAttribute("idUsuarioElegido",idUsuarioABanear);
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    break;
                 case "default":
-                    response.sendRedirect("ListaDeUsuariosServlet");
-                    break;
-
                 default:
-                    response.sendRedirect("ListaDeUsuariosServlet");
                     break;
-
             }
             request.getSession().setAttribute("usuario",dUsuario.usuarioSesion(usuario.getIdUsuario()));
+            response.sendRedirect("ListaDeUsuariosServlet");
         }
     }
 }

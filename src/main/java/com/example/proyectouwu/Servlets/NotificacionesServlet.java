@@ -319,8 +319,8 @@ public class NotificacionesServlet extends HttpServlet {
                         if (donacionId.matches("\\d+") && (estadoDonacion.equals("Validado")|| estadoDonacion.equals("Pendiente"))&& daoDonacion.existeDonacion(donacionId)){
                             if (montoDonacion == null || montoDonacion.trim().isEmpty()) {
                                 // Manejar el caso en que el montoDonacion es nulo o está vacío
-                                request.setAttribute("alerta", "monto");
-                                request.getRequestDispatcher("notificacionesDelGeneral.jsp").forward(request, response);
+                                request.getSession().setAttribute("alerta", "monto");
+                                response.sendRedirect(request.getContextPath());
                                 return; // Salir del método para evitar continuar con el flujo normal
                             }
 
@@ -351,8 +351,7 @@ public class NotificacionesServlet extends HttpServlet {
                                 response.sendRedirect("NotificacionesServlet?vistaActualNueva=Donaciones");
 
                             }catch (NumberFormatException e){
-                                request.setAttribute("alerta","monto");
-                                request.getRequestDispatcher("notificacionesDelGeneral.jsp").forward(request,response);
+                                request.getSession().setAttribute("alerta","monto");
                                 response.sendRedirect("NotificacionesServlet?vistaActualNueva=Donaciones");
                             }
                         }else{

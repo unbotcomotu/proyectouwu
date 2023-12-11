@@ -37,31 +37,24 @@ public class InicioSesionServlet extends HttpServlet {
             case "logIn":
                 String correo = request.getParameter("correoPucp");
                 String contrasena = request.getParameter("contrasena");
-                //ArrayList <Usuario> listaUsuario = new DaoUsuario().listarUsuariosTotal();
-                Ban b= new DaoUsuario().logIn(correo,contrasena);
-                //int usuarioId = 0;
-                //boolean existeUsuario=  false;
-                //bucleUsuarios:
-                //for(Usuario user: listaUsuario){
-                //    if(correo.equals(user.getCorreo()) && contrasena.equals(user.getContrasena())){
-                 //       usuarioId = user.getIdUsuario();
-                 //       existeUsuario= true;
-                 //       break bucleUsuarios;
-                  //  }
-                //}
-                if(b==null) {
-                    request.getSession().setAttribute("popup","4");
-                    request.getRequestDispatcher("inicioSesion.jsp").forward(request,response);
-                }else if(b.getMotivoBan()!=null){
-                    request.setAttribute("motivoBan",b.getMotivoBan());
-                    request.setAttribute("correosDelegadosGenerales",new DaoUsuario().listarCorreosDelegadosGenerales());
-                    request.getSession().setAttribute("popup","6");
-                    request.getRequestDispatcher("inicioSesion.jsp").forward(request,response);
-                }else{
-                    request.getSession().setAttribute("usuario",new DaoUsuario().usuarioSesion(b.getUsuario().getIdUsuario()));
-                    request.getSession().setAttribute("pSolicitudesDeApoyo","1");
-                    request.getSession().setMaxInactiveInterval(600);
-                    response.sendRedirect("ListaDeActividadesServlet");
+                if(correo!=null&&contrasena!=null){
+                    Ban b= new DaoUsuario().logIn(correo,contrasena);
+                    if(b==null) {
+                        request.getSession().setAttribute("popup","4");
+                        response.sendRedirect(request.getContextPath());
+                    }else if(b.getMotivoBan()!=null){
+                        request.setAttribute("motivoBan",b.getMotivoBan());
+                        request.setAttribute("correosDelegadosGenerales",new DaoUsuario().listarCorreosDelegadosGenerales());
+                        request.getSession().setAttribute("popup","6");
+                        request.getRequestDispatcher("inicioSesion.jsp").forward(request,response);
+                    }else{
+                        request.getSession().setAttribute("usuario",new DaoUsuario().usuarioSesion(b.getUsuario().getIdUsuario()));
+                        request.getSession().setAttribute("pSolicitudesDeApoyo","1");
+                        request.getSession().setMaxInactiveInterval(600);
+                        response.sendRedirect("ListaDeActividadesServlet");
+                    }
+                }else {
+                    response.sendRedirect(request.getContextPath());
                 }
                 break;
             case "registro":

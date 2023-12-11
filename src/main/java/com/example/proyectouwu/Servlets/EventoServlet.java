@@ -154,9 +154,10 @@ public class EventoServlet extends HttpServlet {
                                     validacionReportar=false;
                                 }
                                 String idUsuarioAReportar=request.getParameter("idUsuarioReportado");
-                                if(idUsuarioAReportar!=null&&validacionReportar){
+                                if(idUsuarioAReportar!=null&&dUsuario.esBaneable(idUsuarioAReportar)&&validacionReportar){
                                     dR.reportarUsuario(idUsuarioAReportar,usuario.getIdUsuario(),motivo);
                                 }
+                                request.getSession().setAttribute("abrirChat","1");
                             }
                             response.sendRedirect("EventoServlet?idEvento="+idEvento);
                             break;

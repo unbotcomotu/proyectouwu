@@ -100,7 +100,7 @@ public class DaoUsuario extends DaoPadre {
 
     public ArrayList<Usuario>listarIDyNombreDelegadosDeActividad(){
         ArrayList<Usuario>listaDelegadosDeActividad=new ArrayList<>();
-        String sql="select u.idUsuario,u.nombre,u.apellido from usuario u left join ban b on u.idUsuario=b.idUsuario where rol='Alumno' and b.idUsuario is null and u.estadoRegistro='Registrado' ";
+        String sql="select u.idUsuario,u.nombre,u.apellido from usuario u left join ban b on u.idUsuario=b.idUsuario where rol='Alumno' and b.idUsuario is null and u.estadoRegistro='Registrado'";
         try(Connection conn=this.getConnection(); ResultSet rs=conn.createStatement().executeQuery(sql)){
             while(rs.next()){
                 Usuario u=new Usuario();
@@ -396,10 +396,10 @@ public class DaoUsuario extends DaoPadre {
         }
     }
 
-    public boolean usuarioEsDelegadoDeActividad(int idUsuario){
+    public boolean usuarioEsDelegadoDeActividad(String idUsuario){
         String sql = "select rol from usuario where idUsuario=?";
         try(Connection conn=this.getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql)){
-            pstmt.setInt(1,idUsuario);
+            pstmt.setString(1,idUsuario);
             try(ResultSet rs = pstmt.executeQuery()){
                 if(rs.next()){
                     return rs.getString(1).equals("Delegado de Actividad");
@@ -414,7 +414,6 @@ public class DaoUsuario extends DaoPadre {
 
     public String obtenerDelegaturaPorId(int idUsuario){
         String sql = "select nombre from actividad where idDelegadoDeActividad=?";
-
         try(Connection conn=this.getConnection(); PreparedStatement pstmt=conn.prepareStatement(sql)){
             pstmt.setInt(1,idUsuario);
             try(ResultSet rs = pstmt.executeQuery()){
@@ -635,14 +634,14 @@ public class DaoUsuario extends DaoPadre {
         return id;
     }
 
-    public boolean estaBaneadoporId(int usuarioId){
+    public boolean estaBaneadoporId(String usuarioId){
         boolean baneado = true;
         String sql = "SELECT idUsuario FROM proyecto.ban where idUsuario = ?";
         try(Connection conn=this.getConnection(); PreparedStatement pstmt=conn.prepareStatement(sql)){
-            pstmt.setInt(1,usuarioId);
+            pstmt.setString(1,usuarioId);
             try(ResultSet rs = pstmt.executeQuery()){
                 if(rs.next()) {
-                    if(rs.getInt(1) == usuarioId ){
+                    if(rs.getString(1).equals(usuarioId)){
                     return false;
                     }
                 }
@@ -804,6 +803,27 @@ public class DaoUsuario extends DaoPadre {
         }
     }
 
+    public boolean esAlumnoRegistradoNoBaneado(String idUsuario){
+        String sql="select u.idUsuario from usuario u left join ban b on u.idUsuario = b.idUsuario where u.idUsuario=? and b.idBan is null and u.rol='Alumno' and u.estadoRegistro='Registrado'";
+        try(Connection conn=this.getConnection(); PreparedStatement pstmt= conn.prepareStatement(sql)){
+            pstmt.setString(1,idUsuario);
+            try(ResultSet rs=pstmt.executeQuery()){
+                return rs.next();
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
-
+    public boolean esBaneable(String idUsuario){
+        String sql="select u.idUsuario from usuario u left join ban b on u.idUsuario = b.idUsuario where u.idUsuario=? and b.idBan is null and u.rol!='Delegado General' and u.estadoRegistro='Registrado'";
+        try(Connection conn=this.getConnection(); PreparedStatement pstmt= conn.prepareStatement(sql)){
+            pstmt.setString(1,idUsuario);
+            try(ResultSet rs=pstmt.executeQuery()){
+                return rs.next();
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }

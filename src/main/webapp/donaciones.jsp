@@ -19,14 +19,19 @@
     float totalDonaciones=(float)request.getAttribute("totalDonaciones");
     String colorRol;
     String confirmacion=(String) request.getSession().getAttribute("confirmacion");
+    if(confirmacion!=null){
+        request.getSession().removeAttribute("confirmacion");
+    }
     String errorMonto=(String) request.getSession().getAttribute("errorMonto");
-    String medioPagoError=(String) request.getSession().getAttribute("medio");
-        String servletActual="MisDonacionesServlet";
-    ArrayList<AlumnoPorEvento>listaNotificacionesDelegadoDeActividad=(ArrayList<AlumnoPorEvento>) request.getAttribute("listaNotificacionesDelegadoDeActividad");
     if(errorMonto!=null){
         request.getSession().removeAttribute("errorMonto");
-        request.getSession().removeAttribute("medio");
     }
+    String medioPagoError=(String) request.getSession().getAttribute("medioPagoError");
+    if(medioPagoError!=null){
+        request.getSession().removeAttribute("medioPagoError");
+    }
+    String servletActual="MisDonacionesServlet";
+    ArrayList<AlumnoPorEvento>listaNotificacionesDelegadoDeActividad=(ArrayList<AlumnoPorEvento>) request.getAttribute("listaNotificacionesDelegadoDeActividad");
     String extensionInvalidaY=(String) request.getSession().getAttribute("extensionInvalidaY");
     if(extensionInvalidaY!=null){
         request.getSession().removeAttribute("extensionInvalidaY");
@@ -346,6 +351,27 @@
             </a>
             <!-- /MENU ITEM LINK -->
         </li>
+        <%if(rolUsuario.equals("Delegado General")){%>
+        <li class="menu-item <%if(vistaActual.equals("analiticas")){%>active<%}%>">
+            <!-- MENU ITEM LINK -->
+            <a class="menu-item-link text-tooltip-tfr text-center" href="AnaliticasServlet" data-title="Analíticas">
+                <!-- MENU ITEM LINK ICON -->
+                <img src="css/analiticasIcono.png" width="70%" alt="">
+                <!-- /MENU ITEM LINK ICON -->
+            </a>
+            <!-- /MENU ITEM LINK -->
+        </li>
+        <!-- /MENU ITEM -->
+        <li class="menu-item <%if(vistaActual.equals("listaDeUsuarios")){%>active<%}%>">
+            <!-- MENU ITEM LINK -->
+            <a class="menu-item-link text-tooltip-tfr text-center" href="ListaDeUsuariosServlet" data-title="Usuarios">
+                <!-- MENU ITEM LINK ICON -->
+                <img src="css/usuariosIcono.png" width="70%" alt="">
+                <!-- /MENU ITEM LINK ICON -->
+            </a>
+            <!-- /MENU ITEM LINK -->
+        </li>
+        <%}else{%>
         <li class="menu-item <%if(vistaActual.equals("misEventos")){%>active<%}%>">
             <!-- MENU ITEM LINK -->
             <a class="menu-item-link text-tooltip-tfr" href="MisEventosServlet" data-title="Mis eventos">
@@ -364,6 +390,7 @@
             </a>
             <!-- /MENU ITEM LINK -->
         </li>
+        <%}%>
     </ul>
     <!-- /MENU -->
 </nav>
@@ -415,7 +442,7 @@
         <!-- /USER SHORT DESCRIPTION TITLE -->
 
         <!-- USER SHORT DESCRIPTION TEXT -->
-        <% if(new DaoUsuario().usuarioEsDelegadoDeActividad(idUsuario)){ %>
+        <% if(usuarioActual.getRol().equals("Delegado de Actividad")){ %>
         <p class="user-short-description-text"><a style="color: <%=colorRol%>;"><%=rolUsuario + ": " + new DaoUsuario().obtenerDelegaturaPorId(idUsuario)%></a></p>
         <%}else{%>
         <p class="user-short-description-text"><a style="color: <%=colorRol%>;"><%=rolUsuario%></a></p>
@@ -570,7 +597,7 @@
             <!-- /NAVIGATION WIDGET INFO TITLE -->
 
             <!-- NAVIGATION WIDGET INFO TEXT -->
-            <% if(new DaoUsuario().usuarioEsDelegadoDeActividad(idUsuario)){ %>
+            <% if(usuarioActual.getRol().equals("Delegado de Actividad")){ %>
             <p class="navigation-widget-info-text" style="color: <%=colorRol%>"><%=rolUsuario + ": " + new DaoUsuario().obtenerDelegaturaPorId(idUsuario)%></p>
             <%}else{%>
             <p class="navigation-widget-info-text" style="color: <%=colorRol%>"><%=rolUsuario%></p>
@@ -602,7 +629,15 @@
         <!-- NAVIGATION WIDGET SECTION LINK -->
         <a class="navigation-widget-section-link" href="ListaDeActividadesServlet">Actividades</a>
         <!-- /NAVIGATION WIDGET SECTION LINK -->
+        <%if(rolUsuario.equals("Delegado General")){%>
+        <!-- NAVIGATION WIDGET SECTION LINK -->
+        <a class="navigation-widget-section-link" href="AnaliticasServlet">Analíticas</a>
+        <!-- /NAVIGATION WIDGET SECTION LINK -->
 
+        <!-- NAVIGATION WIDGET SECTION LINK -->
+        <a class="navigation-widget-section-link" href="ListaDeUsuariosServlet">Usuarios</a>
+        <!-- /NAVIGATION WIDGET SECTION LINK -->
+        <%}else{%>
         <!-- NAVIGATION WIDGET SECTION LINK -->
         <a class="navigation-widget-section-link" href="MisEventosServlet">Mis eventos</a>
         <!-- /NAVIGATION WIDGET SECTION LINK -->
@@ -610,6 +645,7 @@
         <!-- NAVIGATION WIDGET SECTION LINK -->
         <a class="navigation-widget-section-link" href="MisDonacionesServlet">Donaciones</a>
         <!-- /NAVIGATION WIDGET SECTION LINK -->
+        <%}%>
     </ul>
 </nav>
 <!-- /NAVIGATION WIDGET -->
@@ -877,11 +913,17 @@
             </div>
             <!-- /ACTION ITEM -->
 
+            <!-- DROPDOWN NAVIGATION -->
+
         </div>
         <!-- /ACTION ITEM WRAP -->
     </div>
     <!-- /HEADER ACTIONS -->
+    <%}else{%>
+    <!-- HEADER ACTIONS DELEGADO GENERAL -->
+    <!-- /HEADER ACTIONS -->
     <%}%>
+    <!-- /HEADER ACTIONS -->
 </header>
 <!-- /HEADER -->
 
@@ -1192,10 +1234,7 @@
             imagenContainer.style.display = 'none';
         }
     }
-</script>
 
-<!-- Función para mostrar la imagen antes de enviarla -->
-<script type="text/javascript">
     function previewImage(event,idS) {
         var input = event.target;
         var image = document.getElementById(idS);
@@ -1207,10 +1246,10 @@
             reader.readAsDataURL(input.files[0]);
         }
     }
-</script>
-<script>
-    function enviarFormulario(idForm){
-        document.getElementById(idForm).submit;
+
+    function enviarFormulario(idForm) {
+        var formulario = document.getElementById(idForm);
+        formulario.submit();
     }
 
     function popupFunc(popupId,abrirId,cerrarClass,overlayId){
@@ -1271,7 +1310,7 @@
     }
     <%if(confirmacion!=null){%>
     popupFunc('popupConfirmacion','abrirPopupConfirmacion',['cerrarPopupConfirmacion'],'overlayConfirmacion');
-    <%request.getSession().removeAttribute("confirmacion");}%>
+    <%}%>
     popupFunc('popupYape','Ola_yape',['cerrarPopupYape','cerrarPopupYape1','cerrarPopupYape2'],'overlayYape');
     popupFunc('popupPlin','Ola_plin',['cerrarPopupPlin','cerrarPopupPlin1','cerrarPopupPlin2'],'overlayPlin');
     analizarPopupCrear('montoPlin1','montoPlin2','cerrarPopupPlin1');

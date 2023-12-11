@@ -556,5 +556,30 @@ public class DaoActividad extends DaoPadre {
             throw new RuntimeException(e);
         }
     }
+
+    public Actividad obtenerActividadPorIDDelegado(int idUsuario){
+        String sql="select * from actividad where idDelegadoDeActividad=?";
+        try(Connection conn=this.getConnection(); PreparedStatement pstmt= conn.prepareStatement(sql)){
+            pstmt.setInt(1,idUsuario);
+            try(ResultSet rs=pstmt.executeQuery()){
+                if(rs.next()){
+                    Actividad a=new Actividad();
+                    a.setIdActividad(rs.getInt(1));
+                    a.getDelegadoDeActividad().setIdUsuario(rs.getInt(2));
+                    a.setNombre(rs.getString(3));
+                    a.setFotoMiniatura(rs.getBlob(4));
+                    a.setFotoCabecera(rs.getBlob(5));
+                    a.setCantPuntosPrimerLugar(rs.getInt(6));
+                    a.setActividadFinalizada(rs.getBoolean(7));
+                    a.setActividadOculta(rs.getBoolean(8));
+                    return a;
+                }else{
+                    return null;
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }
 

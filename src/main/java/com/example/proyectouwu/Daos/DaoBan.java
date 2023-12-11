@@ -1,5 +1,6 @@
 package com.example.proyectouwu.Daos;
 
+import java.io.IOException;
 import java.sql.*;
 
 public class DaoBan extends DaoPadre {
@@ -78,4 +79,35 @@ public class DaoBan extends DaoPadre {
             throw new RuntimeException(e);
         }
     }
+
+    public void  banearPorId(String idUsuarioABanear,String motivoBan,String idDelegadoActividadReemplazar,String idActividad){
+        String sql = "insert into ban ( idUsuario, motivoBan, fechaHora) values (?, ?,Now())";
+        try (Connection conn=this.getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setString(1,idUsuarioABanear);
+            pstmt.setString(2,motivoBan);
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            return;
+        }sql="update usuario set rol='Alumno' where idUsuario=?";
+        try(Connection conn=this.getConnection(); PreparedStatement pstmt= conn.prepareStatement(sql)){
+            pstmt.setString(1,idUsuarioABanear);
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            return;
+        }sql="update usuario set rol='Delegado de Actividad' where idUsuario=?";
+        try(Connection conn=this.getConnection(); PreparedStatement pstmt= conn.prepareStatement(sql)){
+            pstmt.setString(1,idDelegadoActividadReemplazar);
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            return;
+        }sql="update actividad set idDelegadoDeActividad=? where idActividad=?";
+        try(Connection conn=this.getConnection(); PreparedStatement pstmt= conn.prepareStatement(sql)){
+            pstmt.setString(1,idDelegadoActividadReemplazar);
+            pstmt.setString(2,idActividad);
+            pstmt.executeUpdate();
+        }catch (SQLException e) {
+            return;
+        }
+    }
+
 }

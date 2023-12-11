@@ -681,7 +681,7 @@
         <!-- /USER SHORT DESCRIPTION TITLE -->
 
         <!-- USER SHORT DESCRIPTION TEXT -->
-        <% if(new DaoUsuario().usuarioEsDelegadoDeActividad(idUsuario)){ %>
+        <% if(usuarioActual.getRol().equals("Delegado de Actividad")){ %>
         <p class="user-short-description-text"><a style="color: <%=colorRol%>;"><%=rolUsuario + ": " + new DaoUsuario().obtenerDelegaturaPorId(idUsuario)%></a></p>
         <%}else{%>
         <p class="user-short-description-text"><a style="color: <%=colorRol%>;"><%=rolUsuario%></a></p>
@@ -836,7 +836,7 @@
             <!-- /NAVIGATION WIDGET INFO TITLE -->
 
             <!-- NAVIGATION WIDGET INFO TEXT -->
-            <% if(new DaoUsuario().usuarioEsDelegadoDeActividad(idUsuario)){ %>
+            <% if(usuarioActual.getRol().equals("Delegado de Actividad")){ %>
             <p class="navigation-widget-info-text" style="color: <%=colorRol%>"><%=rolUsuario + ": " + new DaoUsuario().obtenerDelegaturaPorId(idUsuario)%></p>
             <%}else{%>
             <p class="navigation-widget-info-text" style="color: <%=colorRol%>"><%=rolUsuario%></p>
@@ -1191,9 +1191,8 @@
                         <%for(NotificacionDelegadoGeneral noti:listaNotificacionesCampanita){%>
                         <form id="notificacionLeidaCampanita<%=listaNotificacionesCampanita.indexOf(noti)%>" method="post" action="PaginaNoExisteServlet?action=notificacionLeidaCampanita">
                             <input type="hidden" name="idNotificacion" value="<%=noti.getIdNotificacion()%>">
-                            <input type="hidden" name="idEvento" value="<%=e.getIdEvento()%>">
                             <input type="hidden" name="servletActual" value="<%=servletActual%>">
-                                <%if(noti.getReporte().getIdReporte()!=0){
+                            <%if(noti.getReporte().getIdReporte()!=0){
                                 Reporte r=new DaoReporte().reportePorIdReporteNotificacion(noti.getReporte().getIdReporte());%>
                             <!-- Reporte -->
                             <div class="dropdown-box-list-item unread">
@@ -1243,7 +1242,7 @@
                                     <!-- /USER STATUS AVATAR -->
 
                                     <!-- USER STATUS TITLE -->
-                                    <p class="user-status-title"><a class="bold"><%=r.getUsuarioReportado().getNombre()%> <%=r.getUsuarioReportado().getApellido()%></a> ha sido <a class="highlighted">reportado</a> por el delegado de actividad <a class="bold" style="color: #491217;"><%=r.getUsuarioQueReporta().getNombre()%> <%=r.getUsuarioQueReporta().getApellido()%></a></p>
+                                    <p class="user-status-title"><a class="bold"><%=r.getUsuarioReportado().getNombre()%> <%=r.getUsuarioReportado().getApellido()%></a> ha sido <a class="highlighted">reportado</a> por el delegado de actividad <a class="bold" style="color: #491217"><%=r.getUsuarioQueReporta().getNombre()%> <%=r.getUsuarioQueReporta().getApellido()%></a></p>
                                     <!-- /USER STATUS TITLE -->
                                     <%Integer diferenciaFechas[]=new DaoNotificacion().obtenerDiferenciaEntre2FechasNotificaciones(noti.getIdNotificacion());
                                         if(diferenciaFechas[0]>0){
@@ -1322,7 +1321,7 @@
                                 <!-- /USER STATUS -->
                             </div>
                             <!-- Reporte -->
-                                <%}else if(noti.getDonacion().getIdDonacion()!=0){
+                            <%}else if(noti.getDonacion().getIdDonacion()!=0){
                                 Donacion d=new DaoDonacion().donacionPorIDNotificacion(noti.getDonacion().getIdDonacion());%>
                             <!-- Donacion -->
                             <div class="dropdown-box-list-item unread">
@@ -1451,7 +1450,7 @@
                                 <!-- /USER STATUS -->
                             </div>
                             <!-- Donacion -->
-                                <%}else if(noti.getUsuario().getIdUsuario()!=0){
+                            <%}else if(noti.getUsuario().getIdUsuario()!=0){
                                 Usuario u=new DaoUsuario().usuarioPorIdNotificacion(noti.getUsuario().getIdUsuario());%>
                             <!-- Solicitud de registro -->
                             <div class="dropdown-box-list-item unread">
@@ -1579,7 +1578,7 @@
                                 <!-- /USER STATUS -->
                             </div>
                             <!-- Solicitud de registro -->
-                                <%}else if(noti.getValidacion().getIdCorreoValidacion()!=0){
+                            <%}else if(noti.getValidacion().getIdCorreoValidacion()!=0){
                                 if(new DaoValidacion().tipoValidacionPorID(noti.getValidacion().getIdCorreoValidacion()).equals("enviarLinkACorreo")){
                                     Validacion v1=new DaoValidacion().validacionPorIDNotificacionCorreo(noti.getValidacion().getIdCorreoValidacion());%>
                             <!-- Validación correo -->
@@ -1708,7 +1707,7 @@
                                 <!-- /USER STATUS -->
                             </div>
                             <!-- Validación correo -->
-                                <%}else{
+                            <%}else if(new DaoValidacion().tipoValidacionPorID(noti.getValidacion().getIdCorreoValidacion()).equals("recuperarContrasena")){
                                 Validacion v2=new DaoValidacion().validacionPorIDNotificacionContrasena(noti.getValidacion().getIdCorreoValidacion());%>
                             <!-- Validación recuperar contraseña -->
                             <div class="dropdown-box-list-item unread">
@@ -1837,7 +1836,136 @@
                                 <!-- /USER STATUS -->
                             </div>
                             <!-- Validación recuperar contraseña -->
-                                <%}}%>
+                            <%}else{
+                                Validacion v3=new DaoValidacion().validacionPorIDNotificacionContrasena(noti.getValidacion().getIdCorreoValidacion());%>
+                            <!-- Validación kit -->
+                            <div class="dropdown-box-list-item unread">
+                                <!-- USER STATUS -->
+                                <div class="user-status notification">
+                                    <!-- USER STATUS AVATAR -->
+                                    <a class="user-status-avatar">
+                                        <!-- USER AVATAR -->
+                                        <div class="user-avatar small no-outline">
+                                            <!-- USER AVATAR CONTENT -->
+                                            <div class="user-avatar-content">
+                                                <%request.getSession().setAttribute("foto0"+listaNotificacionesCampanita.indexOf(noti),new DaoValidacion().getFotoPerfilPorIDCorreoValidacion(noti.getValidacion().getIdCorreoValidacion()));%>
+                                                <!-- HEXAGON AQUÍ FALTA LA FOTOOOO -->
+                                                <div class="hexagon-image-30-32" data-src="Imagen?tipoDeFoto=fotoPerfil&id=0<%=listaNotificacionesCampanita.indexOf(noti)%>"></div>
+                                                <!-- /HEXAGON -->
+                                            </div>
+                                            <!-- /USER AVATAR CONTENT -->
+
+                                            <!-- USER AVATAR PROGRESS -->
+                                            <div class="user-avatar-progress">
+                                                <!-- HEXAGON -->
+                                                <div class="hexagon-progress-40-44"></div>
+                                                <!-- /HEXAGON -->
+                                            </div>
+                                            <!-- /USER AVATAR PROGRESS -->
+
+                                            <!-- USER AVATAR PROGRESS BORDER -->
+                                            <div class="user-avatar-progress-border">
+                                                <!-- HEXAGON -->
+                                                <div class="hexagon-border-40-44"></div>
+                                                <!-- /HEXAGON -->
+                                            </div>
+                                            <!-- /USER AVATAR PROGRESS BORDER -->
+
+                                            <!-- USER AVATAR BADGE -->
+                                            <div class="user-avatar-badge">
+                                                <!-- USER AVATAR BADGE BORDER -->
+                                                <div class="user-avatar-badge-border">
+                                                </div>
+                                                <!-- /USER AVATAR BADGE BORDER -->
+
+                                            </div>
+                                            <!-- /USER AVATAR BADGE -->
+                                        </div>
+                                        <!-- /USER AVATAR -->
+                                    </a>
+                                    <!-- /USER STATUS AVATAR -->
+
+                                    <!-- USER STATUS TITLE -->
+                                    <p class="user-status-title"><a class="bold"><%=v3.getUsuario().getNombre()%> <%=v3.getUsuario().getApellido()%></a> ha realizado más de <a style="color: #8d7aff">S/.100</a> en donaciones y merece recibir un <a class="highlighted">kit</a>.</p>
+                                    <!-- /USER STATUS TITLE -->
+                                    <%Integer diferenciaFechas[]=new DaoNotificacion().obtenerDiferenciaEntre2FechasNotificaciones(noti.getIdNotificacion());
+                                        if(diferenciaFechas[0]>0){
+                                            if(diferenciaFechas[0]==1){%>
+                                    <!-- USER STATUS TIMESTAMP -->
+                                    <p class="user-status-timestamp">Hace 1 año <a style="color: #20c997;cursor: pointer" onclick="enviarFormulario('notificacionLeidaCampanita<%=listaNotificacionesCampanita.indexOf(noti)%>')">Leído</a></p>
+                                    <!-- /USER STATUS TIMESTAMP -->
+                                    <%}else{%>
+                                    <!-- USER STATUS TIMESTAMP -->
+                                    <p class="user-status-timestamp">Hace <%=diferenciaFechas[0]%> años <a style="color: #20c997;cursor: pointer" onclick="enviarFormulario('notificacionLeidaCampanita<%=listaNotificacionesCampanita.indexOf(noti)%>')">Leído</a></p>
+                                    <!-- /USER STATUS TIMESTAMP -->
+                                    <%}%>
+                                    <%}else if(diferenciaFechas[1]>0){
+                                        if(diferenciaFechas[1]==1){%>
+                                    <!-- USER STATUS TIMESTAMP -->
+                                    <p class="user-status-timestamp">Hace 1 mes <a style="color: #20c997;cursor: pointer" onclick="enviarFormulario('notificacionLeidaCampanita<%=listaNotificacionesCampanita.indexOf(noti)%>')">Leído</a></p>
+                                    <!-- /USER STATUS TIMESTAMP -->
+                                    <%}else{%>
+                                    <!-- USER STATUS TIMESTAMP -->
+                                    <p class="user-status-timestamp">Hace <%=diferenciaFechas[1]%> meses <a style="color: #20c997;cursor: pointer" onclick="enviarFormulario('notificacionLeidaCampanita<%=listaNotificacionesCampanita.indexOf(noti)%>')">Leído</a></p>
+                                    <!-- /USER STATUS TIMESTAMP -->
+                                    <%}%>
+                                    <%}else if(diferenciaFechas[2]>0){
+                                        if(diferenciaFechas[2]==1){%>
+                                    <!-- USER STATUS TIMESTAMP -->
+                                    <p class="user-status-timestamp">Hace 1 día <a style="color: #20c997;cursor: pointer" onclick="enviarFormulario('notificacionLeidaCampanita<%=listaNotificacionesCampanita.indexOf(noti)%>')">Leído</a></p>
+                                    <!-- /USER STATUS TIMESTAMP -->
+                                    <%}else{%>
+                                    <!-- USER STATUS TIMESTAMP -->
+                                    <p class="user-status-timestamp">Hace <%=diferenciaFechas[2]%> días <a style="color: #20c997;cursor: pointer" onclick="enviarFormulario('notificacionLeidaCampanita<%=listaNotificacionesCampanita.indexOf(noti)%>')">Leído</a></p>
+                                    <!-- /USER STATUS TIMESTAMP -->
+                                    <%}%>
+                                    <%}else if(diferenciaFechas[3]>0){
+                                        if(diferenciaFechas[3]==1){%>
+                                    <!-- USER STATUS TIMESTAMP -->
+                                    <p class="user-status-timestamp">Hace 1 hora <a style="color: #20c997;cursor: pointer" onclick="enviarFormulario('notificacionLeidaCampanita<%=listaNotificacionesCampanita.indexOf(noti)%>')">Leído</a></p>
+                                    <!-- /USER STATUS TIMESTAMP -->
+                                    <%}else{%>
+                                    <!-- USER STATUS TIMESTAMP -->
+                                    <p class="user-status-timestamp">Hace <%=diferenciaFechas[3]%> horas <a style="color: #20c997;cursor: pointer" onclick="enviarFormulario('notificacionLeidaCampanita<%=listaNotificacionesCampanita.indexOf(noti)%>')">Leído</a></p>
+                                    <!-- /USER STATUS TIMESTAMP -->
+                                    <%}%>
+                                    <%}else if(diferenciaFechas[4]>0){
+                                        if(diferenciaFechas[4]==1){%>
+                                    <!-- USER STATUS TIMESTAMP -->
+                                    <p class="user-status-timestamp">Hace 1 minuto <a style="color: #20c997;cursor: pointer" onclick="enviarFormulario('notificacionLeidaCampanita<%=listaNotificacionesCampanita.indexOf(noti)%>')">Leído</a></p>
+                                    <!-- /USER STATUS TIMESTAMP -->
+                                    <%}else{%>
+                                    <!-- USER STATUS TIMESTAMP -->
+                                    <p class="user-status-timestamp">Hace <%=diferenciaFechas[4]%> minutos <a style="color: #20c997;cursor: pointer" onclick="enviarFormulario('notificacionLeidaCampanita<%=listaNotificacionesCampanita.indexOf(noti)%>')">Leído</a></p>
+                                    <!-- /USER STATUS TIMESTAMP -->
+                                    <%}%>
+                                    <%}else if(diferenciaFechas[5]>0){
+                                        if(diferenciaFechas[5]==1){%>
+                                    <!-- USER STATUS TIMESTAMP -->
+                                    <p class="user-status-timestamp">Hace 1 segundo <a style="color: #20c997;cursor: pointer" onclick="enviarFormulario('notificacionLeidaCampanita<%=listaNotificacionesCampanita.indexOf(noti)%>')">Leído</a></p>
+                                    <!-- /USER STATUS TIMESTAMP -->
+                                    <%}else{%>
+                                    <!-- USER STATUS TIMESTAMP -->
+                                    <p class="user-status-timestamp">Hace <%=diferenciaFechas[5]%> segundos <a style="color: #20c997;cursor: pointer" onclick="enviarFormulario('notificacionLeidaCampanita<%=listaNotificacionesCampanita.indexOf(noti)%>')">Leído</a></p>
+                                    <!-- /USER STATUS TIMESTAMP -->
+                                    <%}%>
+                                    <%}else if(diferenciaFechas[5]==0){%>
+                                    <!-- USER STATUS TIMESTAMP -->
+                                    <p class="user-status-timestamp">Ahora mismo <a style="color: #20c997;cursor: pointer" onclick="enviarFormulario('notificacionLeidaCampanita<%=listaNotificacionesCampanita.indexOf(noti)%>')">Leído</a></p>
+                                    <!-- /USER STATUS TIMESTAMP -->
+                                    <%}%>
+                                    <!-- USER STATUS ICON -->
+                                    <div class="user-status-icon">
+                                        <!-- ICON COMMENT -->
+                                        <img src="css/iconoKit.png" width="30px" style="opacity: 0.5" alt="">
+                                        <!-- /ICON COMMENT -->
+                                    </div>
+                                    <!-- /USER STATUS ICON -->
+                                </div>
+                                <!-- /USER STATUS -->
+                            </div>
+                            <!-- Validación kit -->
+                            <%}}%>
                         </form>
                         <%}%>
                     </div>
@@ -1919,35 +2047,35 @@
                     if(diferenciaFechasChat[0]>1){%>
                 <p class="chat-widget-speaker-timestamp" style="font-size: 60%;"><%=listaDeMensajes.get(i).getFecha()%> a las <%=listaDeMensajes.get(i).getHora()%></p>
                 <%}else if(diferenciaFechasChat[0]==1){%>
-                <p class="chat-widget-speaker-timestamp" style="font-size: 60%;">Ayer a las <%=listaDeMensajes.get(i).getHora()%> <%if(idUsuario==delegadoDeEstaActividadID&&!rolUsuarioMensaje.equals("Delegado General")){%><a id="mostrarPopupReportar<%=i%>" class="chat-widget-speaker-timestamp" style="color: red;cursor: pointer">Reportar</a><%}%></p>
+                <p class="chat-widget-speaker-timestamp" style="font-size: 60%;">Ayer a las <%=listaDeMensajes.get(i).getHora()%> <%if(idUsuario==delegadoDeEstaActividadID&&!rolUsuarioMensaje.equals("Delegado General")){%><a onclick="popupFunc('popupReportar<%=i%>',['cerrarPopupReportar<%=i%>','cerrarPopupReportar1<%=i%>','cerrarPopupReportar2<%=i%>'],'overlayReportar<%=i%>')" class="chat-widget-speaker-timestamp" style="color: red;cursor: pointer">Reportar</a><%}%></p>
                 <%}else if(diferenciaFechasChat[1]>0){
                     if(diferenciaFechasChat[1]==1){%>
                 <!-- USER STATUS TIMESTAMP -->
-                <p class="chat-widget-speaker-timestamp" style="font-size: 60%;">Hace 1 hora <%if(idUsuario==delegadoDeEstaActividadID&&!rolUsuarioMensaje.equals("Delegado General")){%><a id="mostrarPopupReportar<%=i%>" class="chat-widget-speaker-timestamp" style="color: red;cursor: pointer">Reportar</a><%}%></p>
+                <p class="chat-widget-speaker-timestamp" style="font-size: 60%;">Hace 1 hora <%if(idUsuario==delegadoDeEstaActividadID&&!rolUsuarioMensaje.equals("Delegado General")){%><a onclick="popupFunc('popupReportar<%=i%>',['cerrarPopupReportar<%=i%>','cerrarPopupReportar1<%=i%>','cerrarPopupReportar2<%=i%>'],'overlayReportar<%=i%>')" class="chat-widget-speaker-timestamp" style="color: red;cursor: pointer">Reportar</a><%}%></p>
                 <!-- /USER STATUS TIMESTAMP -->
                 <%}else{%>
                 <!-- USER STATUS TIMESTAMP -->
-                <p class="chat-widget-speaker-timestamp" style="font-size: 60%;">Hace <%=diferenciaFechasChat[1]%> horas <%if(idUsuario==delegadoDeEstaActividadID&&!rolUsuarioMensaje.equals("Delegado General")){%><a id="mostrarPopupReportar<%=i%>" class="chat-widget-speaker-timestamp" style="color: red;cursor: pointer">Reportar</a><%}%></p>
+                <p class="chat-widget-speaker-timestamp" style="font-size: 60%;">Hace <%=diferenciaFechasChat[1]%> horas <%if(idUsuario==delegadoDeEstaActividadID&&!rolUsuarioMensaje.equals("Delegado General")){%><a onclick="popupFunc('popupReportar<%=i%>',['cerrarPopupReportar<%=i%>','cerrarPopupReportar1<%=i%>','cerrarPopupReportar2<%=i%>'],'overlayReportar<%=i%>')" class="chat-widget-speaker-timestamp" style="color: red;cursor: pointer">Reportar</a><%}%></p>
                 <!-- /USER STATUS TIMESTAMP -->
                 <%}%>
                 <%}else if(diferenciaFechasChat[2]>0){
                     if(diferenciaFechasChat[2]==1){%>
                 <!-- USER STATUS TIMESTAMP -->
-                <p class="chat-widget-speaker-timestamp" style="font-size: 60%;">Hace 1 minuto <%if(idUsuario==delegadoDeEstaActividadID&&!rolUsuarioMensaje.equals("Delegado General")){%><a id="mostrarPopupReportar<%=i%>" class="chat-widget-speaker-timestamp" style="color: red;cursor: pointer">Reportar</a><%}%></p>
+                <p class="chat-widget-speaker-timestamp" style="font-size: 60%;">Hace 1 minuto <%if(idUsuario==delegadoDeEstaActividadID&&!rolUsuarioMensaje.equals("Delegado General")){%><a onclick="popupFunc('popupReportar<%=i%>',['cerrarPopupReportar<%=i%>','cerrarPopupReportar1<%=i%>','cerrarPopupReportar2<%=i%>'],'overlayReportar<%=i%>')" class="chat-widget-speaker-timestamp" style="color: red;cursor: pointer">Reportar</a><%}%></p>
                 <!-- /USER STATUS TIMESTAMP -->
                 <%}else{%>
                 <!-- USER STATUS TIMESTAMP -->
-                <p class="chat-widget-speaker-timestamp" style="font-size: 60%;">Hace <%=diferenciaFechasChat[2]%> minutos <%if(idUsuario==delegadoDeEstaActividadID&&!rolUsuarioMensaje.equals("Delegado General")){%><a id="mostrarPopupReportar<%=i%>" class="chat-widget-speaker-timestamp" style="color: red;cursor: pointer">Reportar</a><%}%></p>
+                <p class="chat-widget-speaker-timestamp" style="font-size: 60%;">Hace <%=diferenciaFechasChat[2]%> minutos <%if(idUsuario==delegadoDeEstaActividadID&&!rolUsuarioMensaje.equals("Delegado General")){%><a onclick="popupFunc('popupReportar<%=i%>',['cerrarPopupReportar<%=i%>','cerrarPopupReportar1<%=i%>','cerrarPopupReportar2<%=i%>'],'overlayReportar<%=i%>')" class="chat-widget-speaker-timestamp" style="color: red;cursor: pointer">Reportar</a><%}%></p>
                 <!-- /USER STATUS TIMESTAMP -->
                 <%}%>
                 <%}else if(diferenciaFechasChat[3]>=0){
                     if(diferenciaFechasChat[3]==0){%>
                 <!-- USER STATUS TIMESTAMP -->
-                <p class="chat-widget-speaker-timestamp" style="font-size: 60%;">Ahora mismo <%if(idUsuario==delegadoDeEstaActividadID&&!rolUsuarioMensaje.equals("Delegado General")){%><a id="mostrarPopupReportar<%=i%>" class="chat-widget-speaker-timestamp" style="color: red;cursor: pointer">Reportar</a><%}%></p>
+                <p class="chat-widget-speaker-timestamp" style="font-size: 60%;">Ahora mismo <%if(idUsuario==delegadoDeEstaActividadID&&!rolUsuarioMensaje.equals("Delegado General")){%><a onclick="popupFunc('popupReportar<%=i%>',['cerrarPopupReportar<%=i%>','cerrarPopupReportar1<%=i%>','cerrarPopupReportar2<%=i%>'],'overlayReportar<%=i%>')" class="chat-widget-speaker-timestamp" style="color: red;cursor: pointer">Reportar</a><%}%></p>
                 <!-- /USER STATUS TIMESTAMP -->
                 <%}else{%>
                 <!-- USER STATUS TIMESTAMP -->
-                <p class="chat-widget-speaker-timestamp" style="font-size: 60%;">Hace <%=diferenciaFechasChat[3]%> segundos <%if(idUsuario==delegadoDeEstaActividadID&&!rolUsuarioMensaje.equals("Delegado General")){%><a id="mostrarPopupReportar<%=i%>" class="chat-widget-speaker-timestamp" style="color: red;cursor: pointer">Reportar</a><%}%></p>
+                <p class="chat-widget-speaker-timestamp" style="font-size: 60%;">Hace <%=diferenciaFechasChat[3]%> segundos <%if(idUsuario==delegadoDeEstaActividadID&&!rolUsuarioMensaje.equals("Delegado General")){%><a onclick="popupFunc('popupReportar<%=i%>',['cerrarPopupReportar<%=i%>','cerrarPopupReportar1<%=i%>','cerrarPopupReportar2<%=i%>'],'overlayReportar<%=i%>')" class="chat-widget-speaker-timestamp" style="color: red;cursor: pointer">Reportar</a><%}%></p>
                 <!-- /USER STATUS TIMESTAMP -->
                 <%}}%>
             </div>
@@ -2472,7 +2600,7 @@
                 </div>
                 <%if(delegadoDeEstaActividadID==idUsuario){%>
                 <div style="position: relative;bottom: 75px;height: 0;width: 0">
-                    <img src="css/ajustesEvento.png" id="mostrarPopupImagenes" style="cursor: pointer;" width="75px" alt="">
+                    <img src="css/ajustesEvento.png" onclick="popupFunc('popupImagenes',['cerrarPopupImagenes','cerrarPopupImagenes1','cerrarPopupImagenes2'],'overlayEditarImagenes')" style="cursor: pointer;" width="75px" alt="">
                 </div>
                 <%}%>
                 <script>
@@ -2739,6 +2867,38 @@ for(String es:escalaInvalida){if(es!=null){escalaInvalidaAux=true;}}%>
         }
     }
 
+    function popupFunc(popupId,cerrarClass,overlayId){
+        const overlay=document.getElementById(overlayId);
+        const popup=document.getElementById(popupId);
+        const mostrarPopup = () => {
+            overlay.style.display = 'block';
+            popup.style.display = 'block';
+            // Desactivar el scroll
+            document.body.style.overflow = 'hidden';
+        };
+        mostrarPopup();
+        const cerrarPopup = () => {
+            overlay.style.display = 'none';
+            popup.style.display = 'none';
+            document.body.style.overflow = 'auto';
+        };
+        for(let i=0;i<cerrarClass.length;i++){
+            document.getElementById(cerrarClass[i]).addEventListener('click', cerrarPopup);
+        }
+
+        overlay.addEventListener('click', (e) => {
+            if (e.target === overlay) {
+                cerrarPopup();
+            }
+        });
+
+        document.addEventListener('keydown', (event) => {
+            if (event.key === 'Escape') {
+                cerrarPopup();
+            }
+        });
+    }
+
     function mostrarImagen(idImagen, idImagenContainer, idInputArchivo) {
         var imagenContainer = document.getElementById(idImagenContainer);
         var imagen = document.getElementById(idImagen);
@@ -2774,8 +2934,6 @@ for(String es:escalaInvalida){if(es!=null){escalaInvalidaAux=true;}}%>
         if (elementosConClase.length > 0) {
             var miDiv = elementosConClase[elementosConClase.length-2];
             miDiv.scrollTop = miDiv.scrollHeight;
-            miDiv=elementosConClase[elementosConClase.length-3];
-            miDiv.scrollTop = miDiv.scrollHeight;
         }
     }
     var miDiv = document.getElementById('chat-widget-messages');
@@ -2790,55 +2948,6 @@ for(String es:escalaInvalida){if(es!=null){escalaInvalidaAux=true;}}%>
     });
     var config = { attributes: true, attributeFilter: ['class'] };
     observer.observe(miDiv, config);
-    function popupFunc(popupId,abrirId,cerrarClass,overlayId){
-        const showPopup=document.getElementById(abrirId);
-        const overlay=document.getElementById(overlayId);
-        const popup=document.getElementById(popupId);
-        const mostrarPopup = () => {
-            overlay.style.display = 'block';
-            popup.style.display = 'block';
-            // Desactivar el scroll
-            document.body.style.overflow = 'hidden';
-        };
-        showPopup.addEventListener('click', mostrarPopup);
-        const cerrarPopup = () => {
-            overlay.style.display = 'none';
-            popup.style.display = 'none';
-            document.body.style.overflow = 'auto';
-        };
-        for(let i=0;i<cerrarClass.length;i++){
-            document.getElementById(cerrarClass[i]).addEventListener('click', cerrarPopup);
-        }
-
-        overlay.addEventListener('click', (e) => {
-            if (e.target === overlay) {
-                cerrarPopup();
-            }
-        });
-
-        document.addEventListener('keydown', (event) => {
-            if (event.key === 'Escape') {
-                cerrarPopup();
-            }
-        });
-    }
-    <%if(!(rolUsuario.equals("Delegado General")||delegadoDeEstaActividadID==idUsuario)){%>
-    popupFunc('popupApoyar','mostrarPopupApoyar',['cerrarPopupApoyar'],'overlayApoyar');
-    <%}if(delegadoDeEstaActividadID==idUsuario){%>
-    popupFunc('popupImagenes','mostrarPopupImagenes',['cerrarPopupImagenes','cerrarPopupImagenes1','cerrarPopupImagenes2'],'overlayEditarImagenes');
-    <%}%>
-    <%for(int i=0;i<listaDeMensajes.size();i++){
-     while(true){
-            if(i+1<listaDeMensajes.size()&&listaDeMensajes.get(i).getUsuario().getIdUsuario()==listaDeMensajes.get(i+1).getUsuario().getIdUsuario()){
-                i++;
-            }else{
-                break;
-            }
-        }
-    String rolUsuarioMensaje=new DaoUsuario().rolUsuarioPorId(listaDeMensajes.get(i).getUsuario().getIdUsuario());
-    if(rolUsuario.equals("Delegado de Actividad")&&!rolUsuarioMensaje.equals("Delegado General")&&listaDeMensajes.get(i).getUsuario().getIdUsuario()!=usuarioActual.getIdUsuario()){%>
-    popupFunc('popupReportar<%=i%>','mostrarPopupReportar<%=i%>',['cerrarPopupReportar<%=i%>','cerrarPopupReportar1<%=i%>','cerrarPopupReportar2<%=i%>'],'overlayReportar<%=i%>');
-    <%}}%>
 </script>
 <!-- app -->
 <script src="js/utils/app.js"></script>

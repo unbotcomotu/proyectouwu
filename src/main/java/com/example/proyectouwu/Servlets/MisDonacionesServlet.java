@@ -40,9 +40,6 @@ public class MisDonacionesServlet extends HttpServlet {
                 request.setAttribute("totalDonaciones", dDonacion.totalDonaciones(usuario.getIdUsuario()));
 
                 String action = request.getParameter("action") == null ? "default" : request.getParameter("action");
-                if (request.getParameter("confirmacion") != null) {
-                    request.setAttribute("confirmacion", "1");
-                }
                 if (usuario.getRol().equals("Delegado de Actividad")) {
                     request.setAttribute("listaNotificacionesDelegadoDeActividad", new DaoNotificacion().listarNotificacionesDelegadoDeActividad(usuario.getIdUsuario()));
                 }

@@ -143,7 +143,7 @@ public class DaoAlumnoPorEvento extends DaoPadre {
     }
 
     public boolean existeAlumnoPorEvento(String idAlumnoPorEvento){
-        String sql="select idAlumnoPorEvento from alumnoporevento where idAlumnoPorEvento=?";
+        String sql="select idAlumnoPorEvento from alumnoporevento where idAlumnoPorEvento=? and estadoApoyo='Pendiente'";
         try(Connection conn=this.getConnection(); PreparedStatement pstmt= conn.prepareStatement(sql)){
             pstmt.setString(1,idAlumnoPorEvento);
             try(ResultSet rs=pstmt.executeQuery()){

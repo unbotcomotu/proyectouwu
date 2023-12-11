@@ -10,7 +10,15 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%String alerta=(String) request.getAttribute("alerta");%>
+<%String alerta=(String) request.getSession().getAttribute("alerta");
+if(alerta!=null){
+    request.getSession().removeAttribute("alerta");
+}
+Integer idDonacionElegida=(Integer) request.getSession().getAttribute("idDonacionElegida");
+if(idDonacionElegida!=null){
+    request.getSession().removeAttribute("idDonacionElegida");
+}
+%>
 
 <html>
 <head>
@@ -2611,8 +2619,8 @@
 <%}%>
 
 <%for(int i=0;i<donacionList.size();i++){%>
-<div class="overlay" id="overlayPopupEditarDonacion<%=i%>"></div>
-<div class="popup" style="max-width: 30%" id="popupEditarDonacion<%=i%>">
+<div class="overlay" <%if(alerta!=null&&idDonacionElegida!=null&&idDonacionElegida==donacionList.get(i).getIdDonacion()){%>style="display: block"<%}%> id="overlayPopupEditarDonacion<%=i%>"></div>
+<div class="popup" style="max-width: 400px;<%if(alerta!=null&&idDonacionElegida!=null&&idDonacionElegida==donacionList.get(i).getIdDonacion()){%>display: block<%}%>" id="popupEditarDonacion<%=i%>">
     <svg class="cerrarPopup" id="cerrarPopupEditarDonacion<%=i%>" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path d="M11.4142 10L16.7071 4.70711C17.0976 4.31658 17.0976 3.68342 16.7071 3.29289C16.3166 2.90237 15.6834 2.90237 15.2929 3.29289L10 8.58579L4.70711 3.29289C4.31658 2.90237 3.68342 2.90237 3.29289 3.29289C2.90237 3.68342 2.90237 4.31658 3.29289 4.70711L8.58579 10L3.29289 15.2929C2.90237 15.6834 2.90237 16.3166 3.29289 16.7071C3.68342 17.0976 4.31658 17.0976 4.70711 16.7071L10 11.4142L15.2929 16.7071C15.6834 17.0976 16.3166 17.0976 16.7071 16.7071C17.0976 16.3166 17.0976 15.6834 16.7071 15.2929L11.4142 10Z" fill="black"/>
     </svg>
@@ -2622,14 +2630,14 @@
         </div>
         <div class="mb-3">
             <label>Monto</label>
-            <div style="max-width: 70%">
+            <div>
                 <input type="text" class="form-control" name="montoDonacion" id="montoDonacion<%=i%>" oninput="limpiarAdvertencia(<%=i%>)" value="<%=donacionList.get(i).getMonto()%>">
-                <span id="mensajeAdvertencia<%=i%>" style="color: red;"></span>
+                <%if(alerta!=null&&idDonacionElegida!=null&&idDonacionElegida==donacionList.get(i).getIdDonacion()){%><a style="color: red;">Ingrese un monto válido</a><%}%>
             </div>
         </div>
         <div class="mb-3">
             <label for="estadoDonacion<%=i%>">Estado de la donación</label>
-            <select name="estadoDonacion" id="estadoDonacion<%=i%>">
+            <select name="estadoDonacion" style="padding: 10px;" id="estadoDonacion<%=i%>">
                 <option value="Validado" <%if(donacionList.get(i).getEstadoDonacion().equals("Validado")){%>selected<%}%>>&nbsp;&nbsp;&nbsp; Validado</option>
                 <option value="Pendiente" <%if(donacionList.get(i).getEstadoDonacion().equals("Pendiente")){%>selected<%}%>>&nbsp;&nbsp;&nbsp; Pendiente</option>
             </select>
@@ -2652,15 +2660,22 @@
 <%int d=0;
     for(Donacion donacion : donacionList){if(donacion.getEstadoDonacion().equals("Pendiente")){%>
 <div class="overlay" id="overlayPopupRechazarDonacion<%=d%>"></div>
-<div class="popup" style="max-width: 30%" id="popupRechazarDonacion<%=d%>">
+<div class="popup" style="max-width: 400px" id="popupRechazarDonacion<%=d%>">
     <svg class="cerrarPopup" id="cerrarPopupRechazarDonacion<%=d%>" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path d="M11.4142 10L16.7071 4.70711C17.0976 4.31658 17.0976 3.68342 16.7071 3.29289C16.3166 2.90237 15.6834 2.90237 15.2929 3.29289L10 8.58579L4.70711 3.29289C4.31658 2.90237 3.68342 2.90237 3.29289 3.29289C2.90237 3.68342 2.90237 4.31658 3.29289 4.70711L8.58579 10L3.29289 15.2929C2.90237 15.6834 2.90237 16.3166 3.29289 16.7071C3.68342 17.0976 4.31658 17.0976 4.70711 16.7071L10 11.4142L15.2929 16.7071C15.6834 17.0976 16.3166 17.0976 16.7071 16.7071C17.0976 16.3166 17.0976 15.6834 16.7071 15.2929L11.4142 10Z" fill="black"/>
     </svg>
+    <div class="row" style="display: flex;justify-content: center">
+        <div style="margin-bottom: 10px">
+            <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" fill="currentColor" class="bi bi-exclamation-circle-fill" viewBox="0 0 16 16">
+                <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8 4a.905.905 0 0 0-.9.995l.35 3.507a.552.552 0 0 0 1.1 0l.35-3.507A.905.905 0 0 0 8 4zm.002 6a1 1 0 1 0 0 2 1 1 0 0 0 0-2z"/>
+            </svg>
+        </div>
+    </div>
     <form method="post" action="<%=request.getContextPath()%>/NotificacionesServlet?action=deleteDonacion">
         <div class="mb-3">
             <input type="hidden" class="form-control" name="id" value="<%=donacion.getIdDonacion()%>">
         </div>
-        <div class="mb-3">¿Estás seguro de rechazar esta donación? Esta acción es irrevertible</div>
+        <div class="mb-3"><h5 class="text-center">¿Estás seguro de rechazar esta donación? Esta acción es irrevertible</h5></div>
         <br>
         <div class="container-fluid">
             <div class="row">

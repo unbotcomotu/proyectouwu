@@ -78,6 +78,20 @@
         .oculto {
             display: none;
         }
+        #boton {
+            display: inline-block;
+            height: 48px;
+            border-radius: 10px;
+            background-color: #3e3f5e;
+            color: #fff;
+            font-size: 0.875rem;
+            font-weight: 700;
+            text-align: center;
+            line-height: 48px;
+            cursor: auto !important;
+            transition: background-color .2s ease-in-out, color .2s ease-in-out, border-color .2s ease-in-out, box-shadow .2s ease-in-out;
+            box-shadow: 3px 5px 10px 0 rgba(62, 63, 94, 0.2);
+        }
     </style>
     <style>
         .button-reject {
@@ -1651,10 +1665,9 @@
                                     </form>
                                 </div>
                                 <div class="col-sm-6">
-                                    <form method="post" id="formRechazar<%=listaSolicitudes.indexOf(usuario_pendiente)%>" action="<%=request.getContextPath()%>/NotificacionesServlet?action=rechazarRegistro">
-                                        <input type="hidden" name="idUsuarioARegistrar" value="<%=usuario_pendiente.getIdUsuario()%>">
-                                        <a><button onclick="enviarCorreoRechazar(('<%=usuario_pendiente.getCorreo()%>','formRechazar<%=listaSolicitudes.indexOf(usuario_pendiente)%>'))" style="background-image: linear-gradient(to right,brown,red);" type="button" class="button-accept">Rechazar</button></a>
-                                    </form>
+
+                                    <a><button style="background-image: linear-gradient(to right,brown,red);" type="button" onclick="func('popupRechazar<%=listaSolicitudes.indexOf(usuario_pendiente)%>',['cerrarPopupRechazar<%=listaSolicitudes.indexOf(usuario_pendiente)%>','cerrarPopupRechazar1Solicitud<%=listaSolicitudes.indexOf(usuario_pendiente)%>','cerrarPopupRechazar2Solicitud<%=listaSolicitudes.indexOf(usuario_pendiente)%>'],'overlayPopupRechazar<%=listaSolicitudes.indexOf(usuario_pendiente)%>')" class="button-accept">Rechazar</button></a>
+
                                 </div>
                             </div>
                         </div>
@@ -1990,14 +2003,19 @@
                             <p class="table-title"> <%=donacion.getEstadoDonacion()%> </p>
                             <!-- /TABLE TITLE -->
                         </div>
+                        <%if(donacion.getEstadoDonacion().equals("Pendiente")){%>
                         <div class="table-column centered padded">
-                                <button class="button-accept" id="mostrarPopupEditarDonacion<%=donacionList.indexOf(donacion)%>" ><a>Editar</a></button>
+                            <button class="button-accept" id="mostrarPopupEditarDonacion<%=donacionList.indexOf(donacion)%>"><a>Editar</a></button>
                             <!-- TABLE TITLE -->
-                            <form method="post" action="<%=request.getContextPath()%>/NotificacionesServlet?action=deleteDonacion">
-                                <input type="hidden" name="id" value="<%=donacion.getIdDonacion()%>">
-                                <button class="button-reject" type="submit"><a>Rechazar</a></button>
-                            </form>
+                            <button class="button-reject" type="button" onclick="func('popupRechazarDonacion<%=donacionList.indexOf(donacion)%>',['cerrarPopupRechazarDonacion<%=donacionList.indexOf(donacion)%>','cerrarPopupRechazar1Donacion<%=donacionList.indexOf(donacion)%>','cerrarPopupRechazar2Donacion<%=donacionList.indexOf(donacion)%>'],'overlayPopupRechazarDonacion<%=donacionList.indexOf(donacion)%>')"><a>Rechazar</a></button>
                         </div>
+                        <%}else{%>
+                        <div class="table-column centered padded">
+                            <button class="button-accept" type="button" style="opacity: 60%; cursor: auto !important;"><a>Editar</a></button>
+                            <!-- TABLE TITLE -->
+                            <button class="button-reject" type="button" style="opacity: 60%; cursor: auto !important;"><a>Rechazar</a></button>
+                        </div>
+                        <%}%>
                         <!-- /TABLE COLUMN -->
                     </div>
                     <!-- /TABLE ROW -->
@@ -2220,7 +2238,6 @@
             </div>
             <!-- /GRID COLUMN -->
         </div>
-
 
     </div>
 
@@ -2565,11 +2582,11 @@
                 <div class="col-sm-6" style="margin-top: 5px;">
 
                     <input type="hidden" name="idUsuarioARegistrar" value="<%=listaSolicitudes.get(i).getIdUsuario()%>">
-                    <a> <button type="submit" class="button secondary" id="cerrarPopupRechazar1<%=i%>">Rechazar</button></a>
+                    <a> <button type="submit" class="button secondary" id="cerrarPopupRechazar1Solicitud<%=i%>">Rechazar</button></a>
 
                 </div>
                 <div class="col-sm-6" style="margin-top: 5px;">
-                    <button type="button" class="button secondary" id="cerrarPopupRechazar2<%=i%>" style="background-color: grey;">Cancelar</button>
+                    <button type="button" class="button secondary" id="cerrarPopupRechazar2Solicitud<%=i%>" style="background-color: grey;">Cancelar</button>
                 </div>
             </div>
         </div>
@@ -2632,6 +2649,33 @@
 </div>
 <%}%>
 
+<%int d=0;
+    for(Donacion donacion : donacionList){if(donacion.getEstadoDonacion().equals("Pendiente")){%>
+<div class="overlay" id="overlayPopupRechazarDonacion<%=d%>"></div>
+<div class="popup" style="max-width: 30%" id="popupRechazarDonacion<%=d%>">
+    <svg class="cerrarPopup" id="cerrarPopupRechazarDonacion<%=d%>" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M11.4142 10L16.7071 4.70711C17.0976 4.31658 17.0976 3.68342 16.7071 3.29289C16.3166 2.90237 15.6834 2.90237 15.2929 3.29289L10 8.58579L4.70711 3.29289C4.31658 2.90237 3.68342 2.90237 3.29289 3.29289C2.90237 3.68342 2.90237 4.31658 3.29289 4.70711L8.58579 10L3.29289 15.2929C2.90237 15.6834 2.90237 16.3166 3.29289 16.7071C3.68342 17.0976 4.31658 17.0976 4.70711 16.7071L10 11.4142L15.2929 16.7071C15.6834 17.0976 16.3166 17.0976 16.7071 16.7071C17.0976 16.3166 17.0976 15.6834 16.7071 15.2929L11.4142 10Z" fill="black"/>
+    </svg>
+    <form method="post" action="<%=request.getContextPath()%>/NotificacionesServlet?action=deleteDonacion">
+        <div class="mb-3">
+            <input type="hidden" class="form-control" name="id" value="<%=donacion.getIdDonacion()%>">
+        </div>
+        <div class="mb-3">¿Estás seguro de rechazar esta donación? Esta acción es irrevertible</div>
+        <br>
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-sm-6" style="margin-top: 5px;">
+                    <button type="submit" class="button secondary" id="cerrarPopupRechazar1Donacion<%=d%>">Rechazar</button>
+                </div>
+                <div class="col-sm-6" style="margin-top: 5px;">
+                    <a class="button secondary" id="cerrarPopupRechazar2Donacion<%=d%>" style="background-color: grey; width: 100%;color: white">Cancelar</a>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<%}d++;}%>
+
 <script>
         function limpiarAdvertencia(index) {
         var mensajeAdvertencia = document.getElementById('mensajeAdvertencia' + index);
@@ -2663,6 +2707,39 @@
         var formulario = document.getElementById(idForm);
         formulario.submit();
     }
+
+    function func(popupId,cerrarClass,overlayId){
+        const overlay=document.getElementById(overlayId);
+        const popup=document.getElementById(popupId);
+        const mostrarPopup = () => {
+            overlay.style.display = 'block';
+            popup.style.display = 'block';
+            // Desactivar el scroll
+            document.body.style.overflow = 'hidden';
+        };
+        mostrarPopup();
+        const cerrarPopup = () => {
+            overlay.style.display = 'none';
+            popup.style.display = 'none';
+            document.body.style.overflow = 'auto';
+        };
+        for(let i=0;i<cerrarClass.length;i++){
+            document.getElementById(cerrarClass[i]).addEventListener('click', cerrarPopup);
+        }
+
+        overlay.addEventListener('click', (e) => {
+            if (e.target === overlay) {
+                cerrarPopup();
+            }
+        });
+
+        document.addEventListener('keydown', (event) => {
+            if (event.key === 'Escape') {
+                cerrarPopup();
+            }
+        });
+    }
+
     function popupFunc(popupId,abrirId,cerrarClass,overlayId){
         const showPopup=document.getElementById(abrirId);
         const overlay=document.getElementById(overlayId);
@@ -2700,6 +2777,9 @@
     <%}%>
     <%for(int i=0;i<donacionList.size();i++){%>
     popupFunc('popupEditarDonacion<%=i%>','mostrarPopupEditarDonacion<%=i%>',['cerrarPopupEditarDonacion<%=i%>','cerrarPopupEditar1Donacion<%=i%>','cerrarPopupEditar2Donacion<%=i%>'],'overlayPopupEditarDonacion<%=i%>');
+    <%}%>
+    <%for(int i=0;i<listaSolicitudes.size();i++){%>
+    popupFunc('popupRechazar<%=i%>','mostrarPopupRechazar<%=i%>',['cerrarPopupRechazar<%=i%>','cerrarPopupRechazar1Solicitud<%=i%>','cerrarPopupRechazar2Solicitud<%=i%>'],'overlayPopupRechazar<%=i%>');
     <%}%>
 </script>
     <!-- app -->

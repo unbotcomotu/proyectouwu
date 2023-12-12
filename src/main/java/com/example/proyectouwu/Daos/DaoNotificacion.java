@@ -658,7 +658,7 @@ public class DaoNotificacion extends DaoPadre {
 
     public ArrayList<NotificacionDelegadoGeneral>listarNotificacionesDelegadoGeneral(){
         ArrayList<NotificacionDelegadoGeneral>listaDeNotificaciones= new ArrayList<>();
-        String sql = "select idNotificacion,idReporte,idDonacion,idUsuario,idValidacion from notificacionDelegadoGeneral where estado='No leido' order by fechaHoraNotificacion desc limit 8";
+        String sql = "select idNotificacion,idReporte,idDonacion,idUsuario,idValidacion from notificaciondelegadogeneral where estado='No leido' order by fechaHoraNotificacion desc limit 8";
         try (Connection conn=this.getConnection(); ResultSet rs=conn.createStatement().executeQuery(sql)) {
             while (rs.next()) {
                 NotificacionDelegadoGeneral noti=new NotificacionDelegadoGeneral();

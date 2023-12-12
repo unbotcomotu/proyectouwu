@@ -1669,7 +1669,7 @@ if(idDonacionElegida!=null){
                                 <div class="col-sm-6">
                                     <form method="post" id="formAceptar<%=listaSolicitudes.indexOf(usuario_pendiente)%>" action="<%=request.getContextPath()%>/NotificacionesServlet?action=aceptarRegistro">
                                         <input type="hidden" name="idUsuarioARegistrar" value="<%=usuario_pendiente.getIdUsuario()%>">
-                                        <a><button onclick="enviarCorreoAceptar('<%=usuario_pendiente.getCorreo()%>','formAceptar<%=listaSolicitudes.indexOf(usuario_pendiente)%>')" style="background-image: linear-gradient(to right,dodgerblue,blueviolet);" type="button" class="button-accept">Aceptar</button></a>
+                                        <a><button style="background-image: linear-gradient(to right,dodgerblue,blueviolet);" type="submit" class="button-accept">Aceptar</button></a>
                                     </form>
                                 </div>
                                 <div class="col-sm-6">
@@ -3056,7 +3056,7 @@ if(idDonacionElegida!=null){
         var destinatario = correo;
         var asunto = '¡Su cuenta ha sido aprobada! - Siempre Fibra';
         var contenido = "Sus datos han sido correctamente validados dentro de la plataforma. Ahora ya puede iniciar sesión y formar parte vital del equipo en Semana de Ingeniería.\n\nIngrese a su cuenta en <%=ip%>:8080/proyectouwu_war_exploded/ y sé parte de la experiencia SDI.\n\n\nSiempre Fibra";
-        var mailtoLink = 'mailto:' + destinatario + '?subject=' + encodeURIComponent(asunto) + '&body=' + encodeURIComponent(contenido);
+        var mailtoLink = 'NotificacionesServlet?correo='+destinatario +'&subject=' + encodeURIComponent(asunto) + '&body=' + encodeURIComponent(contenido);
         window.location.href = mailtoLink;
         let form=document.getElementById(idForm);
         form.submit();
@@ -3065,7 +3065,7 @@ if(idDonacionElegida!=null){
         var destinatario = correo;
         var asunto = 'Su cuenta no consiguió ser aprobada - Siempre Fibra';
         var contenido = 'Después de dar revisión a sus datos dentro del registro en la plataforma se observó que: .Puedes contactarse con algún delegado general en caso de que consideres de que es un error:<%for(String correo:listaCorreosDelegadosGenerales){%>\nDelegado general N°<%=listaCorreosDelegadosGenerales.indexOf(correo)+1%>: <%=correo%><%}%>\nPara registrarse nuevamente puede ingresar a <%=ip%>:8080/proyectouwu_war_exploded/\n\n\nSiempre Fibra';
-        var mailtoLink = 'mailto:' + destinatario + '?subject=' + encodeURIComponent(asunto) + '&body=' + encodeURIComponent(contenido);
+        var mailtoLink = 'NotificacionesServlet?action=rechazarRegistro?motivo='+ ;//'mailto:' + destinatario + '?subject=' + encodeURIComponent(asunto) + '&body=' + encodeURIComponent(contenido);
         window.location.href = mailtoLink;
         let form=document.getElementById(idForm);
         form.submit();

@@ -158,7 +158,7 @@ public class Usuario {
     public void setRecibioKit(boolean recibioKit) {
         this.recibioKit = recibioKit;
     }
-
+    public static String  ip = "35.193.29.250";
     //Metodo extra
     public void enviarCorreo(String idValidacion){
         int id = Integer.parseInt(idValidacion);
@@ -182,7 +182,7 @@ public class Usuario {
             Validacion  validacion = new DaoValidacion().getValidacionXId(id);
             String tipoValidacion = new DaoValidacion().tipoValidacionPorID(id);
             String link= null;
-            String ip = new DaoNotificacion().obtenerDireccionIP();
+
             switch(tipoValidacion){
                 case"enviarLinkACorreo":
                     link = ip+":8080/proyectouwu_war_exploded/RegistroServlet?idCorreoValidacion=" + validacion.getIdCorreoValidacion() + "&codigoValidacion256=" + validacion.getCodigoValidacion256();
@@ -230,7 +230,6 @@ public class Usuario {
             message.setFrom(new InternetAddress("hineill.cespedes@pucp.edu.pe"));
             String destinatario = correoDestinatario ;
             message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(destinatario));
-            String ip = new DaoNotificacion().obtenerDireccionIP();
             String link = ip+":8080/proyectouwu_war_exploded/InicioSesionServlet";
             message.setSubject("Proceso de registro completado - Siempre Fibra");
             message.setText("Bienvenido a la página web de la Fibra durante semana de Ingeniería , aquí podrás observar los resultados y la gestión de todos los eventos durante la semana de ingeniería " +
@@ -261,7 +260,6 @@ public class Usuario {
             message.setFrom(new InternetAddress("hineill.cespedes@pucp.edu.pe"));
             String destinatario = correo ;
             message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(destinatario));
-            String ip = new DaoNotificacion().obtenerDireccionIP();
             String link = ip+":8080/proyectouwu_war_exploded/InicioSesionServlet";
             message.setSubject("Proceso de registro rechazado - Siempre Fibra");
             message.setText("Lamentamos informate que no podemos dejarte ingresar a la página web de la fibra por el siguiente motivo : " +  motivo );

@@ -12,7 +12,7 @@ import java.io.IOException;
 public class DaoDonacion extends DaoPadre  {
     public ArrayList<Donacion>listarDonacionesVistaUsuario(int idUsuario){
         ArrayList<Donacion>listaDonaciones=new ArrayList<>();
-        String sql="select idDonacion,idUsuario,medioPago,monto,date(fechaHora),estadoDonacion from Donacion where idUsuario=? order by fechaHora desc";
+        String sql="select idDonacion,idUsuario,medioPago,monto,date(fechaHora),estadoDonacion from donacion where idUsuario=? order by fechaHora desc";
         try(Connection conn=this.getConnection(); PreparedStatement pstmt= conn.prepareStatement(sql)){
             pstmt.setInt(1,idUsuario);
             try(ResultSet rs=pstmt.executeQuery()){
@@ -33,7 +33,7 @@ public class DaoDonacion extends DaoPadre  {
     }
 
     public float totalDonaciones(int idUsuario){
-        String sql="select sum(monto) from Donacion where idUsuario=? and estadoDonacion='Validado' group by idUsuario";
+        String sql="select sum(monto) from donacion where idUsuario=? and estadoDonacion='Validado' group by idUsuario";
         try(Connection conn=this.getConnection(); PreparedStatement pstmt= conn.prepareStatement(sql)){
             pstmt.setInt(1,idUsuario);
             try(ResultSet rs=pstmt.executeQuery()){

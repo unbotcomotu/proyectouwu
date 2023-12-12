@@ -53,7 +53,7 @@ public class DaoEvento extends DaoPadre {
 
     public ArrayList<Evento> listarEventos(int idActividad) {
         ArrayList<Evento> listaEventos = new ArrayList<>();
-        String sql = "select e.idEvento,e.idLugarEvento,e.titulo,e.fecha,e.hora,e.descripcionEventoActivo,e.fraseMotivacional,e.fotoMiniatura,e.eventoFinalizado,e.eventoOculto,e.resumen,e.resultadoEvento from Evento e inner join actividad a on e.idActividad=a.idActividad where a.idActividad=?";
+        String sql = "select e.idEvento,e.idLugarEvento,e.titulo,e.fecha,e.hora,e.descripcionEventoActivo,e.fraseMotivacional,e.fotoMiniatura,e.eventoFinalizado,e.eventoOculto,e.resumen,e.resultadoEvento from evento e inner join actividad a on e.idActividad=a.idActividad where a.idActividad=?";
         try (Connection conn=this.getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setInt(1, idActividad);
             try (ResultSet rs = pstmt.executeQuery()) {

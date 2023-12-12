@@ -15,7 +15,7 @@ import java.util.HashSet;
 public class DaoEvento extends DaoPadre {
     public Evento eventoPorIDsinMiniatura(int idEvento) {
         Evento e = new Evento();
-        String sql = "select idEvento,idActividad,idLugarEvento,titulo,fecha,hora,descripcionEventoActivo,fraseMotivacional,eventoFinalizado,eventoOculto,resumen,resultadoEvento from Evento where idEvento=?";
+        String sql = "select idEvento,idActividad,idLugarEvento,titulo,fecha,hora,descripcionEventoActivo,fraseMotivacional,eventoFinalizado,eventoOculto,resumen,resultadoEvento from evento where idEvento=?";
         try (Connection conn=this.getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setInt(1, idEvento);
             try (ResultSet rs = pstmt.executeQuery()) {
@@ -32,7 +32,7 @@ public class DaoEvento extends DaoPadre {
                     e.setEventoOculto(rs.getBoolean(10));
                     e.setResumen(rs.getString(11));
                     e.setResultadoEvento(rs.getString(12));
-                    String sql2 = "select idFotoEventoCarrusel,foto from FotoEventoCarrusel where idEvento=?";
+                    String sql2 = "select idFotoEventoCarrusel,foto from fotoeventocarrusel where idEvento=?";
                     try (PreparedStatement pstmt2=conn.prepareStatement(sql2)) {
                         pstmt2.setInt(1,idEvento);
                         try(ResultSet rs2=pstmt2.executeQuery()){
@@ -53,7 +53,7 @@ public class DaoEvento extends DaoPadre {
 
     public ArrayList<Evento> listarEventos(int idActividad) {
         ArrayList<Evento> listaEventos = new ArrayList<>();
-        String sql = "select e.idEvento,e.idLugarEvento,e.titulo,e.fecha,e.hora,e.descripcionEventoActivo,e.fraseMotivacional,e.fotoMiniatura,e.eventoFinalizado,e.eventoOculto,e.resumen,e.resultadoEvento from Evento e inner join Actividad a on e.idActividad=a.idActividad where a.idActividad=?";
+        String sql = "select e.idEvento,e.idLugarEvento,e.titulo,e.fecha,e.hora,e.descripcionEventoActivo,e.fraseMotivacional,e.fotoMiniatura,e.eventoFinalizado,e.eventoOculto,e.resumen,e.resultadoEvento from Evento e inner join actividad a on e.idActividad=a.idActividad where a.idActividad=?";
         try (Connection conn=this.getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setInt(1, idActividad);
             try (ResultSet rs = pstmt.executeQuery()) {
@@ -82,7 +82,7 @@ public class DaoEvento extends DaoPadre {
 
     public ArrayList<Evento> listarEventos(int idActividad, int pagina) {
         ArrayList<Evento> listaEventos = new ArrayList<>();
-        String sql = "select e.idEvento,e.idLugarEvento,e.titulo,e.fecha,e.hora,e.descripcionEventoActivo,e.fraseMotivacional,e.fotoMiniatura,e.eventoFinalizado,e.eventoOculto,e.resumen,e.resultadoEvento from Evento e inner join Actividad a on e.idActividad=a.idActividad where a.idActividad=? limit 6 offset ?";
+        String sql = "select e.idEvento,e.idLugarEvento,e.titulo,e.fecha,e.hora,e.descripcionEventoActivo,e.fraseMotivacional,e.fotoMiniatura,e.eventoFinalizado,e.eventoOculto,e.resumen,e.resultadoEvento from evento e inner join actividad a on e.idActividad=a.idActividad where a.idActividad=? limit 6 offset ?";
         try (Connection conn=this.getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setInt(1, idActividad);
             pstmt.setInt(2,pagina*6);
@@ -113,7 +113,7 @@ public class DaoEvento extends DaoPadre {
 
     public ArrayList<Evento> listarEventosSinOcultos(int idActividad) {
         ArrayList<Evento> listaEventos = new ArrayList<>();
-        String sql = "select e.idEvento,e.idLugarEvento,e.titulo,e.fecha,e.hora,e.descripcionEventoActivo,e.fraseMotivacional,e.fotoMiniatura,e.eventoFinalizado,e.eventoOculto,e.resumen,e.resultadoEvento from Evento e inner join Actividad a on e.idActividad=a.idActividad where a.idActividad=? and e.eventoOculto=false";
+        String sql = "select e.idEvento,e.idLugarEvento,e.titulo,e.fecha,e.hora,e.descripcionEventoActivo,e.fraseMotivacional,e.fotoMiniatura,e.eventoFinalizado,e.eventoOculto,e.resumen,e.resultadoEvento from evento e inner join actividad a on e.idActividad=a.idActividad where a.idActividad=? and e.eventoOculto=false";
         try (Connection conn=this.getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setInt(1, idActividad);
             try (ResultSet rs = pstmt.executeQuery()) {
@@ -142,7 +142,7 @@ public class DaoEvento extends DaoPadre {
 
     public ArrayList<Evento> listarEventosSinOcultos(int idActividad, int pagina) {
         ArrayList<Evento> listaEventos = new ArrayList<>();
-        String sql = "select e.idEvento,e.idLugarEvento,e.titulo,e.fecha,e.hora,e.descripcionEventoActivo,e.fraseMotivacional,e.fotoMiniatura,e.eventoFinalizado,e.eventoOculto,e.resumen,e.resultadoEvento from Evento e inner join Actividad a on e.idActividad=a.idActividad where a.idActividad=? and e.eventoOculto=false limit 6 offset ?";
+        String sql = "select e.idEvento,e.idLugarEvento,e.titulo,e.fecha,e.hora,e.descripcionEventoActivo,e.fraseMotivacional,e.fotoMiniatura,e.eventoFinalizado,e.eventoOculto,e.resumen,e.resultadoEvento from evento e inner join actividad a on e.idActividad=a.idActividad where a.idActividad=? and e.eventoOculto=false limit 6 offset ?";
         try (Connection conn=this.getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setInt(1, idActividad);
             pstmt.setInt(2,pagina*6);
@@ -174,7 +174,7 @@ public class DaoEvento extends DaoPadre {
 
     public String actividadDeEventoPorID(int idEvento) {
         //Busqueda de un evento
-        String sql = "select a.nombre from Evento e inner join Actividad a on e.idActividad=a.idActividad where idEvento=?";
+        String sql = "select a.nombre from evento e inner join actividad a on e.idActividad=a.idActividad where idEvento=?";
         try (Connection conn=this.getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setInt(1, idEvento);
             try (ResultSet rs = pstmt.executeQuery()) {
@@ -190,7 +190,7 @@ public class DaoEvento extends DaoPadre {
     }
 
     public String lugarPorEventoID(int idEvento) {
-        String sql = "select l.lugar from LugarEvento l inner join Evento e on l.idLugarEvento=e.idLugarEvento where e.idEvento=?";
+        String sql = "select l.lugar from lugarevento l inner join evento e on l.idLugarEvento=e.idLugarEvento where e.idEvento=?";
         try (Connection conn=this.getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setInt(1, idEvento);
             try (ResultSet rs = pstmt.executeQuery()) {
@@ -206,7 +206,7 @@ public class DaoEvento extends DaoPadre {
     }
 
     public Integer diferenciaDiasEventoActualidad(int idEvento) {
-        String sql = "select datediff(fecha,now()) from Evento where idEvento=?";
+        String sql = "select datediff(fecha,now()) from evento where idEvento=?";
         try (Connection conn=this.getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setInt(1, idEvento);
             try (ResultSet rs = pstmt.executeQuery()) {
@@ -222,7 +222,7 @@ public class DaoEvento extends DaoPadre {
     }
 
     public Integer idDelegadoDeActividadPorEvento(int idEvento) {
-        String sql = "select a.idDelegadoDeActividad from Actividad a inner join Evento e on e.idActividad=a.idActividad where idEvento=?";
+        String sql = "select a.idDelegadoDeActividad from actividad a inner join evento e on e.idActividad=a.idActividad where idEvento=?";
         try (Connection conn=this.getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setInt(1, idEvento);
             try (ResultSet rs = pstmt.executeQuery()) {
@@ -239,7 +239,7 @@ public class DaoEvento extends DaoPadre {
 
     public ArrayList<Integer> cantidadApoyosBarraEquipoPorEvento(int idEvento) {
         ArrayList<Integer> cantidadApoyos = new ArrayList<>();
-        String sql = "select count(estadoApoyo) from AlumnoPorEvento where idEvento=? group by estadoApoyo having estadoApoyo='Equipo'";
+        String sql = "select count(estadoApoyo) from alumnoporevento where idEvento=? group by estadoApoyo having estadoApoyo='Equipo'";
         try (Connection conn=this.getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setInt(1, idEvento);
             try (ResultSet rs = pstmt.executeQuery()) {
@@ -252,7 +252,7 @@ public class DaoEvento extends DaoPadre {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-        sql = "select count(estadoApoyo) from AlumnoPorEvento where idEvento=? group by estadoApoyo having estadoApoyo='Barra'";
+        sql = "select count(estadoApoyo) from alumnoporevento where idEvento=? group by estadoApoyo having estadoApoyo='Barra'";
         try (Connection conn=this.getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setInt(1, idEvento);
             try (ResultSet rs = pstmt.executeQuery()) {
@@ -269,7 +269,7 @@ public class DaoEvento extends DaoPadre {
     }
 
     public Integer solicitudesSinAtenderPorEvento(int idEvento) {
-        String sql = "select count(idAlumnoPorEvento) from AlumnoPorEvento where idEvento=? group by estadoApoyo having estadoApoyo='Pendiente'";
+        String sql = "select count(idAlumnoPorEvento) from alumnoporevento where idEvento=? group by estadoApoyo having estadoApoyo='Pendiente'";
         try (Connection conn=this.getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setInt(1, idEvento);
             try (ResultSet rs = pstmt.executeQuery()) {
@@ -453,7 +453,7 @@ public class DaoEvento extends DaoPadre {
 
     public ArrayList<Evento> buscarEventoPorNombre(String name,int idActividad){
         ArrayList<Evento> lista = new ArrayList<>();
-        String sql = "select e.idEvento,e.idLugarEvento,e.titulo,e.fecha,e.hora,e.descripcionEventoActivo,e.fraseMotivacional,e.fotoMiniatura,e.eventoFinalizado,e.eventoOculto,e.resumen,e.resultadoEvento from Evento e inner join Actividad a on e.idActividad=a.idActividad where a.idActividad=? and lower(titulo) like lower(?)";
+        String sql = "select e.idEvento,e.idLugarEvento,e.titulo,e.fecha,e.hora,e.descripcionEventoActivo,e.fraseMotivacional,e.fotoMiniatura,e.eventoFinalizado,e.eventoOculto,e.resumen,e.resultadoEvento from evento e inner join actividad a on e.idActividad=a.idActividad where a.idActividad=? and lower(titulo) like lower(?)";
         try(Connection conn=this.getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql)){
             pstmt.setInt(1,idActividad);
             pstmt.setString(2,"%"+name+"%");
@@ -483,7 +483,7 @@ public class DaoEvento extends DaoPadre {
 
     public ArrayList<Evento> buscarEventoPorNombreSinOcultos(String name,int idActividad){
         ArrayList<Evento> lista = new ArrayList<>();
-        String sql = "select e.idEvento,e.idLugarEvento,e.titulo,e.fecha,e.hora,e.descripcionEventoActivo,e.fraseMotivacional,e.fotoMiniatura,e.eventoFinalizado,e.eventoOculto,e.resumen,e.resultadoEvento from Evento e inner join Actividad a on e.idActividad=a.idActividad where a.idActividad=? and e.eventoOculto=false and lower(titulo) like lower(?)";
+        String sql = "select e.idEvento,e.idLugarEvento,e.titulo,e.fecha,e.hora,e.descripcionEventoActivo,e.fraseMotivacional,e.fotoMiniatura,e.eventoFinalizado,e.eventoOculto,e.resumen,e.resultadoEvento from evento e inner join actividad a on e.idActividad=a.idActividad where a.idActividad=? and e.eventoOculto=false and lower(titulo) like lower(?)";
         try(Connection conn=this.getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql)){
             pstmt.setInt(1,idActividad);
             pstmt.setString(2,"%"+name+"%");
@@ -513,7 +513,7 @@ public class DaoEvento extends DaoPadre {
 
     public ArrayList<Evento> buscarEventoPorNombre(String name,int idActividad, int pagina){
         ArrayList<Evento> lista = new ArrayList<>();
-        String sql = "select e.idEvento,e.idLugarEvento,e.titulo,e.fecha,e.hora,e.descripcionEventoActivo,e.fraseMotivacional,e.fotoMiniatura,e.eventoFinalizado,e.eventoOculto,e.resumen,e.resultadoEvento from Evento e inner join Actividad a on e.idActividad=a.idActividad where a.idActividad=? and lower(titulo) like lower(?) limit 6 offset ?";
+        String sql = "select e.idEvento,e.idLugarEvento,e.titulo,e.fecha,e.hora,e.descripcionEventoActivo,e.fraseMotivacional,e.fotoMiniatura,e.eventoFinalizado,e.eventoOculto,e.resumen,e.resultadoEvento from evento e inner join actividad a on e.idActividad=a.idActividad where a.idActividad=? and lower(titulo) like lower(?) limit 6 offset ?";
         try(Connection conn=this.getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql)){
             pstmt.setInt(1,idActividad);
             pstmt.setString(2,"%"+name+"%");
@@ -1126,7 +1126,7 @@ public class DaoEvento extends DaoPadre {
 
         //Se crea una lista ordenada con todos los Eventos
         ArrayList<Evento> listaOrdenada = new ArrayList<>();
-        String sql = "select e.idEvento,e.idLugarEvento,e.titulo,e.fecha,e.hora,e.descripcionEventoActivo,e.fraseMotivacional,e.fotoMiniatura,e.eventoFinalizado,e.eventoOculto,e.resumen,e.resultadoEvento from Evento e inner join Actividad a on e.idActividad=a.idActividad where a.idActividad=? order by";
+        String sql = "select e.idEvento,e.idLugarEvento,e.titulo,e.fecha,e.hora,e.descripcionEventoActivo,e.fraseMotivacional,e.fotoMiniatura,e.eventoFinalizado,e.eventoOculto,e.resumen,e.resultadoEvento from evento e inner join actividad a on e.idActividad=a.idActividad where a.idActividad=? order by";
         if(orden.equals("0")){
             sql+=" CONCAT(fecha,' ',hora)";
         }else{
@@ -1183,7 +1183,7 @@ public class DaoEvento extends DaoPadre {
 
     public ArrayList<Evento> ordenarEvento(String orden, String sentido,int idActividad){
         ArrayList<Evento> lista = new ArrayList<>();
-        String sql = "select e.idEvento,e.idLugarEvento,e.titulo,e.fecha,e.hora,e.descripcionEventoActivo,e.fraseMotivacional,e.fotoMiniatura,e.eventoFinalizado,e.eventoOculto,e.resumen,e.resultadoEvento from Evento e inner join Actividad a on e.idActividad=a.idActividad where a.idActividad=? order by";
+        String sql = "select e.idEvento,e.idLugarEvento,e.titulo,e.fecha,e.hora,e.descripcionEventoActivo,e.fraseMotivacional,e.fotoMiniatura,e.eventoFinalizado,e.eventoOculto,e.resumen,e.resultadoEvento from evento e inner join actividad a on e.idActividad=a.idActividad where a.idActividad=? order by";
         if(orden.equals("0")){
             sql+=" CONCAT(fecha,' ',hora)";
         }else{

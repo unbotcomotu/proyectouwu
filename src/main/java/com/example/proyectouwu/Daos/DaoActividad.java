@@ -184,7 +184,7 @@ public class DaoActividad extends DaoPadre {
     }
 
     public String nombreActividadPorID(int idActividad){
-        String sql="select nombre from Actividad where idActividad=?";
+        String sql="select nombre from actividad where idActividad=?";
         try(Connection conn=this.getConnection(); PreparedStatement pstmt= conn.prepareStatement(sql)){
             pstmt.setInt(1,idActividad );
             try(ResultSet rs=pstmt.executeQuery()){
@@ -199,7 +199,7 @@ public class DaoActividad extends DaoPadre {
     }
 
     public String cantidadEventosPorActividad(int idActividad){
-        String sql="select count(idEvento) from Actividad a inner join Evento e on a.idActividad=e.idActividad where a.idActividad=? group by a.idActividad";
+        String sql="select count(idEvento) from actividad a inner join evento e on a.idActividad=e.idActividad where a.idActividad=? group by a.idActividad";
         try(Connection conn=this.getConnection(); PreparedStatement pstmt= conn.prepareStatement(sql)){
             pstmt.setInt(1,idActividad);
             try(ResultSet rs=pstmt.executeQuery()){
@@ -214,7 +214,7 @@ public class DaoActividad extends DaoPadre {
     }
 
     public Integer cantidadEventosFinalizadosPorActividad(int idActividad){
-        String sql="select count(idEvento) from Actividad a inner join Evento e on a.idActividad=e.idActividad where a.idActividad=? and e.eventoFinalizado is true";
+        String sql="select count(idEvento) from actividad a inner join evento e on a.idActividad=e.idActividad where a.idActividad=? and e.eventoFinalizado is true";
         try(Connection conn=this.getConnection(); PreparedStatement pstmt= conn.prepareStatement(sql)){
             pstmt.setInt(1,idActividad);
             try(ResultSet rs=pstmt.executeQuery()){
@@ -229,7 +229,7 @@ public class DaoActividad extends DaoPadre {
     }
 
     public Integer cantidadEventosOcultosPorActividad(int idActividad){
-        String sql="select count(idEvento) from Actividad a inner join Evento e on a.idActividad=e.idActividad where a.idActividad=? and e.eventoOculto is true";
+        String sql="select count(idEvento) from actividad a inner join evento e on a.idActividad=e.idActividad where a.idActividad=? and e.eventoOculto is true";
         try(Connection conn=this.getConnection(); PreparedStatement pstmt= conn.prepareStatement(sql)){
             pstmt.setInt(1,idActividad);
             try(ResultSet rs=pstmt.executeQuery()){
@@ -243,7 +243,7 @@ public class DaoActividad extends DaoPadre {
         }
     }
     public Integer cantidadEventosApoyandoPorActividad(int idActividad,int idUsuario){
-        String sql="select count(ae.idEvento) from Actividad a inner join Evento e on a.idActividad=e.idActividad inner join AlumnoPorEvento ae on e.idEvento=ae.idEvento where a.idActividad=? and ae.idAlumno=? and ae.estadoApoyo!='Pendiente'";
+        String sql="select count(ae.idEvento) from actividad a inner join evento e on a.idActividad=e.idActividad inner join alumnoporevento ae on e.idEvento=ae.idEvento where a.idActividad=? and ae.idAlumno=? and ae.estadoApoyo!='Pendiente'";
         try(Connection conn=this.getConnection(); PreparedStatement pstmt= conn.prepareStatement(sql)){
             pstmt.setInt(1,idActividad);
             pstmt.setInt(2,idUsuario);
@@ -260,7 +260,7 @@ public class DaoActividad extends DaoPadre {
 
     public ArrayList<Integer[]>lugaresConMayorCantidadDeEventos_cantidad_idLugarEvento(int idActividad){
         ArrayList<Integer[]>lista=new ArrayList<>();
-        String sql="select l.idLugarEvento,count(e.idEvento) from LugarEvento l inner join Evento e on l.idLugarEvento=e.idLugarEvento inner join Actividad a on e.idActividad=a.idActividad where a.idActividad=? group by e.idLugarEvento order by count(e.idEvento)";
+        String sql="select l.idLugarEvento,count(e.idEvento) from lugarevento l inner join evento e on l.idLugarEvento=e.idLugarEvento inner join actividad a on e.idActividad=a.idActividad where a.idActividad=? group by e.idLugarEvento order by count(e.idEvento)";
         try(Connection conn=this.getConnection(); PreparedStatement pstmt= conn.prepareStatement(sql)){
             pstmt.setInt(1,idActividad);
             try(ResultSet rs=pstmt.executeQuery()){
@@ -276,7 +276,7 @@ public class DaoActividad extends DaoPadre {
 
     public ArrayList<Integer[]>lugaresConMayorCantidadDeEventos_cantidad_idLugarEventoSinOcultos(int idActividad){
         ArrayList<Integer[]>lista=new ArrayList<>();
-        String sql="select l.idLugarEvento,count(e.idEvento) from LugarEvento l inner join Evento e on l.idLugarEvento=e.idLugarEvento inner join Actividad a on e.idActividad=a.idActividad where a.idActividad=? and e.eventoOculto=false group by e.idLugarEvento order by count(e.idEvento)";
+        String sql="select l.idLugarEvento,count(e.idEvento) from lugarevento l inner join evento e on l.idLugarEvento=e.idLugarEvento inner join actividad a on e.idActividad=a.idActividad where a.idActividad=? and e.eventoOculto=false group by e.idLugarEvento order by count(e.idEvento)";
         try(Connection conn=this.getConnection(); PreparedStatement pstmt= conn.prepareStatement(sql)){
             pstmt.setInt(1,idActividad);
             try(ResultSet rs=pstmt.executeQuery()){
@@ -291,7 +291,7 @@ public class DaoActividad extends DaoPadre {
     }
 
     public Integer cantidadEventosEnNdiasPorActividad(int idActividad,int N){
-        String sql="select count(e.idEvento) from Evento e inner join Actividad a on e.idActividad=a.idActividad where a.idActividad=? and datediff(e.fecha,now())=?";
+        String sql="select count(e.idEvento) from evento e inner join actividad a on e.idActividad=a.idActividad where a.idActividad=? and datediff(e.fecha,now())=?";
         try(Connection conn=this.getConnection(); PreparedStatement pstmt= conn.prepareStatement(sql)){
             pstmt.setInt(1,idActividad);
             pstmt.setInt(2,N);
@@ -306,7 +306,7 @@ public class DaoActividad extends DaoPadre {
         }
     }
     public Integer cantidadEventosEn2DiasAMasPorActividad(int idActividad){
-        String sql="select count(e.idEvento) from Evento e inner join Actividad a on e.idActividad=a.idActividad where a.idActividad=? and datediff(e.fecha,now())>1";
+        String sql="select count(e.idEvento) from evento e inner join actividad a on e.idActividad=a.idActividad where a.idActividad=? and datediff(e.fecha,now())>1";
         try(Connection conn=this.getConnection(); PreparedStatement pstmt= conn.prepareStatement(sql)){
             pstmt.setInt(1,idActividad);
             try(ResultSet rs=pstmt.executeQuery()){
@@ -322,7 +322,7 @@ public class DaoActividad extends DaoPadre {
 
     public ArrayList<String> listaNombresActividadesOrden(){
         ArrayList<String>lista=new ArrayList<>();
-        String sql="select nombre from Actividad order by nombre";
+        String sql="select nombre from actividad order by nombre";
         try(Connection conn=this.getConnection(); ResultSet rs=conn.createStatement().executeQuery(sql)){
             while (rs.next()){
                 lista.add(rs.getString(1));
@@ -386,9 +386,7 @@ public class DaoActividad extends DaoPadre {
             throw new RuntimeException(e);
         }
     }
-    /////
     public void editarActividad(int idActividad,String nombre,int idDelegadoDeActividad,int puntaje,boolean oculto,InputStream fotoCabecera,InputStream fotoMiniatura,int idDelegadoActividadAnterior, boolean validarLongitudCab, boolean validarLongitudMin){
-
         //validar la longitud minima 10
         String secFotoCab = "";
         String secFotoMin = "";
@@ -450,38 +448,8 @@ public class DaoActividad extends DaoPadre {
         }
     }
 
-    /*public void editarActividad(int idActividad,String nombre,int idDelegadoDeActividad,int puntaje,boolean oculto,String fotoCabecera,String fotoMiniatura,int idDelegadoActividadAnterior){
-        //String sql="update actividad set idDelegadoDeActividad=?,nombre=?,fotoMiniatura=?,fotoCabecera=?,cantidadPuntosPrimerLugar=?,actividadOculta=? where idActividad=?";
-        try(Connection conn=this.getConnection(); PreparedStatement pstmt= conn.prepareStatement(sql)){
-            pstmt.setInt(1,idDelegadoDeActividad);
-            pstmt.setString(2,nombre);
-            pstmt.setString(3,fotoMiniatura);
-            pstmt.setString(4,fotoCabecera);
-            pstmt.setInt(5,puntaje);
-            pstmt.setBoolean(6,oculto);
-            pstmt.setInt(7,idActividad);
-            pstmt.executeUpdate();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-        sql="update usuario set rol='Delegado de Actividad' where idUsuario=?";
-        try(Connection conn=this.getConnection(); PreparedStatement pstmt= conn.prepareStatement(sql)){
-            pstmt.setInt(1,idDelegadoDeActividad);
-            pstmt.executeUpdate();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-        sql="update usuario set rol='Alumno' where idUsuario=?";
-        try(Connection conn=this.getConnection(); PreparedStatement pstmt= conn.prepareStatement(sql)){
-            pstmt.setInt(1,idDelegadoActividadAnterior);
-            pstmt.executeUpdate();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }*/
-
     public Integer eventosNoFinalizadosActividad(int idActividad){
-        String sql="select count(e.idEvento) from Evento e inner join Actividad a on e.idActividad=a.idActividad where e.eventoFinalizado=false and a.idActividad=?";
+        String sql="select count(e.idEvento) from evento e inner join actividad a on e.idActividad=a.idActividad where e.eventoFinalizado=false and a.idActividad=?";
         try(Connection conn=this.getConnection(); PreparedStatement pstmt= conn.prepareStatement(sql)){
             pstmt.setInt(1,idActividad);
             try(ResultSet rs=pstmt.executeQuery()){
@@ -496,7 +464,7 @@ public class DaoActividad extends DaoPadre {
     }
 
     public boolean verificarActividadRepetida(String nombre,int idActividad){
-        String sql="select idActividad from Actividad where lower(nombre)=lower(?) and idActividad!=?";
+        String sql="select idActividad from actividad where lower(nombre)=lower(?) and idActividad!=?";
         try(Connection conn=this.getConnection(); PreparedStatement pstmt= conn.prepareStatement(sql)){
             pstmt.setString(1,nombre);
             pstmt.setInt(2,idActividad);

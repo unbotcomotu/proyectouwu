@@ -9,7 +9,7 @@ import java.util.ArrayList;
 
 public class DaoAlumnoPorEvento extends DaoPadre {
     public String verificarApoyo(int idEvento, int idUsuario) {
-        String sql = "select estadoApoyo from AlumnoPorEvento where idAlumno=? and idEvento=?";
+        String sql = "select estadoApoyo from alumnoporevento where idAlumno=? and idEvento=?";
         try (Connection conn = this.getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setInt(1, idUsuario);
             pstmt.setInt(2, idEvento);
@@ -27,7 +27,7 @@ public class DaoAlumnoPorEvento extends DaoPadre {
 
     public ArrayList<Evento> listarEventosPorUsuario(int idUsuario) {
         ArrayList<Evento> listaEventos = new ArrayList<>();
-        String sql = "select e.idEvento,e.idActividad,e.idLugarEvento,e.titulo,e.fecha,e.hora,e.descripcionEventoActivo,e.fraseMotivacional,e.eventoFinalizado,e.eventoOculto,e.resumen,e.resultadoEvento,e.fotoMiniatura from AlumnoPorEvento ae inner join Evento e on ae.idEvento=e.idEvento where idAlumno=?";
+        String sql = "select e.idEvento,e.idActividad,e.idLugarEvento,e.titulo,e.fecha,e.hora,e.descripcionEventoActivo,e.fraseMotivacional,e.eventoFinalizado,e.eventoOculto,e.resumen,e.resultadoEvento,e.fotoMiniatura from alumnoporevento ae inner join evento e on ae.idEvento=e.idEvento where idAlumno=?";
         try (Connection conn = this.getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setInt(1, idUsuario);
             try (ResultSet rs = pstmt.executeQuery()) {
@@ -56,7 +56,7 @@ public class DaoAlumnoPorEvento extends DaoPadre {
     }
 
     public Integer cantidadTotalApoyosEstudiantes() {
-        String sql = "select count(ae.idAlumnoPorEvento) from AlumnoPorEvento ae inner join Usuario u on ae.idAlumno=u.idUsuario where ae.estadoApoyo!='Pendiente' and u.condicion='Estudiante'";
+        String sql = "select count(ae.idAlumnoPorEvento) from alumnoporevento ae inner join usuario u on ae.idAlumno=u.idUsuario where ae.estadoApoyo!='Pendiente' and u.condicion='Estudiante'";
         try (Connection conn = this.getConnection(); ResultSet rs = conn.createStatement().executeQuery(sql);) {
             if (rs.next()) {
                 return rs.getInt(1);
@@ -69,7 +69,7 @@ public class DaoAlumnoPorEvento extends DaoPadre {
     }
 
     public Integer cantidadTotalApoyosEgresados() {
-        String sql = "select count(ae.idAlumnoPorEvento) from AlumnoPorEvento ae inner join Usuario u on ae.idAlumno=u.idUsuario where ae.estadoApoyo!='Pendiente' and u.condicion='Egresado'";
+        String sql = "select count(ae.idAlumnoPorEvento) from alumnoporevento ae inner join usuario u on ae.idAlumno=u.idUsuario where ae.estadoApoyo!='Pendiente' and u.condicion='Egresado'";
         try (Connection conn = this.getConnection(); ResultSet rs = conn.createStatement().executeQuery(sql);) {
             if (rs.next()) {
                 return rs.getInt(1);
@@ -82,7 +82,7 @@ public class DaoAlumnoPorEvento extends DaoPadre {
     }
 
     public Integer solicitudesApoyoHaceNdias(int n) {
-        String sql = "select count(idAlumnoPorEvento) from AlumnoPorEvento where day(now())-day(fechaHoraSolicitud)=? group by day(fechaHoraSolicitud)";
+        String sql = "select count(idAlumnoPorEvento) from alumnoporevento where day(now())-day(fechaHoraSolicitud)=? group by day(fechaHoraSolicitud)";
         try (Connection conn = this.getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setInt(1, n);
             try (ResultSet rs = pstmt.executeQuery()) {

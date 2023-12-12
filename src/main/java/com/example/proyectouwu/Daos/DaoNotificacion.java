@@ -19,7 +19,7 @@ public class DaoNotificacion extends DaoPadre {
 
         ArrayList<Usuario> listaSolicitudes = new ArrayList<>();
 
-        String sql = "select nombre, apellido, correo, codigoPUCP, condicion ,idUsuario from Usuario where estadoRegistro = 'Pendiente' order by fechaHoraRegistro desc";
+        String sql = "select nombre, apellido, correo, codigoPUCP, condicion ,idUsuario from usuario where estadoRegistro = 'Pendiente' order by fechaHoraRegistro desc";
 
 
         try (Connection conn=this.getConnection(); ResultSet rs=conn.createStatement().executeQuery(sql)) {
@@ -43,7 +43,7 @@ public class DaoNotificacion extends DaoPadre {
     public ArrayList<Usuario>listarSolicitudesDeRegistro(String busqueda){
         ArrayList<Usuario> listaSolicitudes = new ArrayList<>();
 
-        String sql = "select nombre, apellido, correo, codigoPUCP, condicion, idUsuario  from Usuario where estadoRegistro = 'Pendiente' and concat(nombre,' ',apellido) like ? order by fechaHoraRegistro desc";
+        String sql = "select nombre, apellido, correo, codigoPUCP, condicion, idUsuario  from usuario where estadoRegistro = 'Pendiente' and concat(nombre,' ',apellido) like ? order by fechaHoraRegistro desc";
         try (Connection conn=this.getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql)){
             pstmt.setString(1,"%"+busqueda+"%");
             try(ResultSet rs=pstmt.executeQuery()){
@@ -67,7 +67,7 @@ public class DaoNotificacion extends DaoPadre {
     public ArrayList<Usuario>listarSolicitudesDeRegistro(String busqueda, int pagina){
         ArrayList<Usuario> listaSolicitudes = new ArrayList<>();
 
-        String sql = "select nombre, apellido, correo, codigoPUCP, condicion, idUsuario  from Usuario where estadoRegistro = 'Pendiente' and concat(nombre,' ',apellido) like ? order by fechaHoraRegistro desc limit 8 offset ?";
+        String sql = "select nombre, apellido, correo, codigoPUCP, condicion, idUsuario  from usuario where estadoRegistro = 'Pendiente' and concat(nombre,' ',apellido) like ? order by fechaHoraRegistro desc limit 8 offset ?";
         try (Connection conn=this.getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql)){
             pstmt.setString(1,"%"+busqueda+"%");
             pstmt.setInt(2,pagina*8);
@@ -122,7 +122,7 @@ public class DaoNotificacion extends DaoPadre {
 
         
 
-        String sql = "SELECT r.idUsuarioReportado, r.idUsuarioQueReporta, r.motivoReporte,r.fechaHora,u.fotoPerfil FROM reporte r inner join usuario u on r.idUsuarioReportado = u.idUsuario order by r.fechaHora desc";
+        String sql = "select r.idUsuarioReportado, r.idUsuarioQueReporta, r.motivoReporte,r.fechaHora,u.fotoPerfil from reporte r inner join usuario u on r.idUsuarioReportado = u.idUsuario order by r.fechaHora desc";
         try (Connection conn=this.getConnection(); ResultSet rs=conn.createStatement().executeQuery(sql)){
 
             while (rs.next()) {
@@ -145,7 +145,7 @@ public class DaoNotificacion extends DaoPadre {
 
         ArrayList<Reporte> reportList= new ArrayList<>();
 
-        String sql = "SELECT r.idUsuarioReportado, r.idUsuarioQueReporta, r.motivoReporte,r.fechaHora, u.fotoPerfil FROM reporte r inner join usuario u on r.idUsuarioReportado=u.idUsuario where u.nombre like ? or u.apellido like ? order by r.fechaHora desc";
+        String sql = "select r.idUsuarioReportado, r.idUsuarioQueReporta, r.motivoReporte,r.fechaHora, u.fotoPerfil FROM reporte r inner join usuario u on r.idUsuarioReportado=u.idUsuario where u.nombre like ? or u.apellido like ? order by r.fechaHora desc";
         try (Connection conn=this.getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql)){
             pstmt.setString(1,"%"+buscar+"%");
             pstmt.setString(2,"%"+buscar+"%");
@@ -168,7 +168,7 @@ public class DaoNotificacion extends DaoPadre {
 
     public ArrayList<Donacion> listarNotificacionesDonaciones(){
         ArrayList<Donacion> donacionList= new ArrayList<>();
-        String sql = "SELECT idDonacion, idUsuario, medioPago, monto,fechaHora,estadoDonacion,captura FROM donacion order by if(estadoDonacion='Pendiente',0,1),fechaHora desc";
+        String sql = "select idDonacion, idUsuario, medioPago, monto,fechaHora,estadoDonacion,captura from donacion order by if(estadoDonacion='Pendiente',0,1),fechaHora desc";
         try (Connection conn=this.getConnection(); ResultSet rs=conn.createStatement().executeQuery(sql)) {
 
             while (rs.next()) {
@@ -193,7 +193,7 @@ public class DaoNotificacion extends DaoPadre {
 
     public ArrayList<Donacion> listarNotificacionesDonaciones(int pagina){
         ArrayList<Donacion> donacionList= new ArrayList<>();
-        String sql = "SELECT idDonacion, idUsuario, medioPago, monto,fechaHora,captura,estadoDonacion,date(fechaHoraValidado),time(fechaHoraValidado) FROM donacion order by if(estadoDonacion='Pendiente',0,1),fechaHora desc limit 8 offset ?";
+        String sql = "select idDonacion, idUsuario, medioPago, monto,fechaHora,captura,estadoDonacion,date(fechaHoraValidado),time(fechaHoraValidado) from donacion order by if(estadoDonacion='Pendiente',0,1),fechaHora desc limit 8 offset ?";
         try (Connection conn=this.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)){
             pstmt.setInt(1,pagina*8);
@@ -221,7 +221,7 @@ public class DaoNotificacion extends DaoPadre {
 
     public ArrayList<Donacion> listarNotificacionesDonaciones(String buscar, int pagina){
         ArrayList<Donacion> donacionList= new ArrayList<>();
-        String sql = "SELECT d.idDonacion, d.idUsuario, d.medioPago, d.monto,d.fechaHora,d.estadoDonacion FROM donacion d inner join usuario u on d.idUsuario=u.idUsuario where concat(u.nombre,' ',u.apellido) like ? order by if(d.estadoDonacion='Pendiente',0,1),fechaHora desc limit 8 offset ?";
+        String sql = "select d.idDonacion, d.idUsuario, d.medioPago, d.monto,d.fechaHora,d.estadoDonacion FROM donacion d inner join usuario u on d.idUsuario=u.idUsuario where concat(u.nombre,' ',u.apellido) like ? order by if(d.estadoDonacion='Pendiente',0,1),fechaHora desc limit 8 offset ?";
         try (Connection conn=this.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setString(1,"%"+buscar+"%");
@@ -246,7 +246,7 @@ public class DaoNotificacion extends DaoPadre {
 
     public ArrayList<Donacion> listarNotificacionesDonaciones(String buscar){
         ArrayList<Donacion> donacionList= new ArrayList<>();
-        String sql = "SELECT d.idDonacion, d.idUsuario, d.medioPago, d.monto,d.fechaHora,d.estadoDonacion FROM donacion d inner join usuario u on d.idUsuario=u.idUsuario where u.nombre like ? or u.apellido like ? order by if(d.estadoDonacion='Pendiente',0,1),fechaHora desc";
+        String sql = "select d.idDonacion, d.idUsuario, d.medioPago, d.monto,d.fechaHora,d.estadoDonacion from donacion d inner join usuario u on d.idUsuario=u.idUsuario where u.nombre like ? or u.apellido like ? order by if(d.estadoDonacion='Pendiente',0,1),fechaHora desc";
         try (Connection conn=this.getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setString(1,"%"+buscar+"%");
             pstmt.setString(2,"%"+buscar+"%");
@@ -270,7 +270,7 @@ public class DaoNotificacion extends DaoPadre {
 
     public ArrayList<Donacion> listarNotificacionesDonaciones(String fecha1,String fecha2, int pagina){
         ArrayList<Donacion> donacionList= new ArrayList<>();
-        String sql = "SELECT idDonacion, idUsuario, medioPago, monto,fechaHora,estadoDonacion FROM donacion where date(fechaHora) between ? and ? order by if(estadoDonacion='Pendiente',0,1),fechaHora desc limit 8 offset ?";
+        String sql = "select idDonacion, idUsuario, medioPago, monto,fechaHora,estadoDonacion from donacion where date(fechaHora) between ? and ? order by if(estadoDonacion='Pendiente',0,1),fechaHora desc limit 8 offset ?";
         try (Connection conn=this.getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setString(1,fecha1);
             pstmt.setString(2,fecha2);
@@ -299,7 +299,7 @@ public class DaoNotificacion extends DaoPadre {
         String fecha2aux[]=fecha2.split("/");
         String fecha2final=fecha2aux[2]+"/"+fecha2aux[1]+"/"+fecha2aux[0];
         ArrayList<Donacion> donacionList= new ArrayList<>();
-        String sql = "SELECT idDonacion, idUsuario, medioPago, monto,fechaHora,estadoDonacion FROM donacion where date(fechaHora) between ? and ? order by if(estadoDonacion='Pendiente',0,1),fechaHora desc";
+        String sql = "select idDonacion, idUsuario, medioPago, monto,fechaHora,estadoDonacion from donacion where date(fechaHora) between ? and ? order by if(estadoDonacion='Pendiente',0,1),fechaHora desc";
         try (Connection conn=this.getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setString(1,fecha1final);
             pstmt.setString(2,fecha2final);
@@ -340,7 +340,7 @@ public class DaoNotificacion extends DaoPadre {
 
     public Donacion obtenerDonacionPorID(int idDonacion){
         Donacion donacion = new Donacion();
-        String sql = "SELECT idDonacion, idUsuario, medioPago, monto,fechaHora,estadoDonacion FROM donacion where idDonacion=?";
+        String sql = "select idDonacion, idUsuario, medioPago, monto,fechaHora,estadoDonacion from donacion where idDonacion=?";
         try(Connection conn = getConnection();
             PreparedStatement pstmt = conn.prepareStatement(sql)){
             pstmt.setInt(1,idDonacion);
@@ -416,7 +416,7 @@ public class DaoNotificacion extends DaoPadre {
 
     public Validacion getValidacionxId(int idCorreoValidacion ){
         Validacion validacion = new Validacion();
-        String sql = "select correo,tipo,codigoValidacion,fechaHora,idCorreoValidacion,linkEnviado,codigoValidacion256 from Validacion where idCorreoValidacion = ? ";
+        String sql = "select correo,tipo,codigoValidacion,fechaHora,idCorreoValidacion,linkEnviado,codigoValidacion256 from validacion where idCorreoValidacion = ? ";
         try (Connection conn=this.getConnection(); PreparedStatement pstmt=conn.prepareStatement(sql)){
             pstmt.setInt(1,idCorreoValidacion);
             try(ResultSet rs=pstmt.executeQuery()){
@@ -560,7 +560,7 @@ public class DaoNotificacion extends DaoPadre {
         ArrayList<Integer> listaSegundoMinutoHoraDiaMes= new ArrayList<>();
         
 
-        String sql = "SELECT fechaHora FROM donacion";
+        String sql = "select fechaHora from donacion";
         try (Connection conn=this.getConnection(); ResultSet rs=conn.createStatement().executeQuery(sql)) {
 
             if (rs.next()) {
@@ -606,7 +606,7 @@ public class DaoNotificacion extends DaoPadre {
     }
 
     public void aceptarSolicitudApoyo(int idAlumnoPorEvento,String tipoDeApoyo){
-        String sql="update alumnoPorEvento set estadoApoyo=? where idAlumnoPorEvento=?";
+        String sql="update alumnoporevento set estadoApoyo=? where idAlumnoPorEvento=?";
         try(Connection conn=this.getConnection(); PreparedStatement pstmt= conn.prepareStatement(sql)){
             pstmt.setString(1,tipoDeApoyo);
             pstmt.setInt(2,idAlumnoPorEvento);
@@ -658,7 +658,7 @@ public class DaoNotificacion extends DaoPadre {
 
     public ArrayList<NotificacionDelegadoGeneral>listarNotificacionesDelegadoGeneral(){
         ArrayList<NotificacionDelegadoGeneral>listaDeNotificaciones= new ArrayList<>();
-        String sql = "select idNotificacion,idReporte,idDonacion,idUsuario,idValidacion from notificacionDelegadoGeneral where estado='No leido' order by fechaHoraNotificacion desc LIMIT 8";
+        String sql = "select idNotificacion,idReporte,idDonacion,idUsuario,idValidacion from notificacionDelegadoGeneral where estado='No leido' order by fechaHoraNotificacion desc limit 8";
         try (Connection conn=this.getConnection(); ResultSet rs=conn.createStatement().executeQuery(sql)) {
             while (rs.next()) {
                 NotificacionDelegadoGeneral noti=new NotificacionDelegadoGeneral();
@@ -722,7 +722,7 @@ public class DaoNotificacion extends DaoPadre {
     }
 
     public void notificacionLeida(String idNotificacion){
-        String sql="update notificacionDelegadoGeneral set estado='Leido' where idNotificacion=?";
+        String sql="update notificaciondelegadogeneral set estado='Leido' where idNotificacion=?";
         try(Connection conn=this.getConnection(); PreparedStatement pstmt= conn.prepareStatement(sql)){
             pstmt.setString(1,idNotificacion);
             pstmt.executeUpdate();
@@ -744,7 +744,7 @@ public class DaoNotificacion extends DaoPadre {
 
     public ArrayList<AlumnoPorEvento>listarNotificacionesDelegadoDeActividad(int idDelegadoDeActividad){
         ArrayList<AlumnoPorEvento>listaNotificaciones= new ArrayList<>();
-        String sql="select ae.idAlumnoPorEvento,ae.idAlumno,ae.idEvento,ae.fechaHoraSolicitud,u.nombre,u.apellido,u.fotoPerfil,e.titulo from AlumnoPorEvento ae inner join usuario u on ae.idAlumno=u.idUsuario inner join evento e on ae.idEvento=e.idEvento inner join actividad a on e.idActividad = a.idActividad where ae.notificacionLeida=false and a.idDelegadoDeActividad=?";
+        String sql="select ae.idAlumnoPorEvento,ae.idAlumno,ae.idEvento,ae.fechaHoraSolicitud,u.nombre,u.apellido,u.fotoPerfil,e.titulo from alumnoporevento ae inner join usuario u on ae.idAlumno=u.idUsuario inner join evento e on ae.idEvento=e.idEvento inner join actividad a on e.idActividad = a.idActividad where ae.notificacionLeida=false and a.idDelegadoDeActividad=?";
         try (Connection conn=this.getConnection();PreparedStatement pstmt= conn.prepareStatement(sql)) {
             pstmt.setInt(1,idDelegadoDeActividad);
             try(ResultSet rs=pstmt.executeQuery()){

@@ -9,7 +9,7 @@ public class DaoLugarEvento extends DaoPadre  {
 
     public ArrayList<LugarEvento> listarLugares(){
         ArrayList<LugarEvento>listaLugares=new ArrayList<>();
-        String sql="select * from LugarEvento";
+        String sql="select * from lugarevento";
         try(Connection conn=this.getConnection(); ResultSet rs=conn.createStatement().executeQuery(sql)){
             while(rs.next()){
                 LugarEvento l=new LugarEvento();
@@ -22,7 +22,7 @@ public class DaoLugarEvento extends DaoPadre  {
         }
     }
     public String lugarPorID(int idLugarEvento){
-        String sql="select lugar from LugarEvento where idLugarEvento=?";
+        String sql="select lugar from lugarevento where idLugarEvento=?";
         try(Connection conn=this.getConnection(); PreparedStatement pstmt= conn.prepareStatement(sql)){
             pstmt.setInt(1,idLugarEvento);
             try(ResultSet rs=pstmt.executeQuery()){

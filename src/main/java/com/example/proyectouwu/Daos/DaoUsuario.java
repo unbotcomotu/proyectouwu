@@ -500,12 +500,7 @@ public class DaoUsuario extends DaoPadre {
 
     //CRUD
     public void cambioDescripcion(String nuevaDescripcion , Integer idUsuario){
-        try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
-        } catch (ClassNotFoundException e) {
-            throw new RuntimeException(e);
-        }
-        String sql = "update usuario set descripcionPerfil = ? where idusuario = ?";
+        String sql = "update usuario set descripcionPerfil = ? where idUsuario = ?";
 
         try(Connection conn=this.getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql)){
 
@@ -620,7 +615,7 @@ public class DaoUsuario extends DaoPadre {
 
     public int obtenerIdPorCorreo (String correo){
         int id = 0;
-        String sql = "select idusuario from usuario where correo =?";
+        String sql = "select idUsuario from usuario where correo =?";
         try(Connection conn=this.getConnection(); PreparedStatement pstmt=conn.prepareStatement(sql)){
             pstmt.setString(1,correo);
             try(ResultSet rs = pstmt.executeQuery()){
@@ -636,7 +631,7 @@ public class DaoUsuario extends DaoPadre {
 
     public boolean estaBaneadoporId(String usuarioId){
         boolean baneado = true;
-        String sql = "SELECT idUsuario FROM proyecto.ban where idUsuario = ?";
+        String sql = "select idUsuario from ban where idUsuario = ?";
         try(Connection conn=this.getConnection(); PreparedStatement pstmt=conn.prepareStatement(sql)){
             pstmt.setString(1,usuarioId);
             try(ResultSet rs = pstmt.executeQuery()){

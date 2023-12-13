@@ -82,8 +82,8 @@ public class InicioSesionServlet extends HttpServlet {
                         daoValidacion.agregarCorreoParaEnviarLink(correo2);
 
                         //AQUI VA EL METODO PARA ENVIAR CORREO
-                        new Usuario().enviarCorreo(""+ new DaoValidacion().obtenerValidacionPorCorreo(correo2).getIdCorreoValidacion());
-                        new DaoValidacion().linkEnviado((int) Integer.parseInt(new DaoValidacion().obtenerValidacionPorCorreo(correo2).getIdCorreoValidacion()));
+                        new Usuario().enviarCorreo(""+new DaoValidacion().obtenerValidacionPorCorreo(correo2).getIdCorreoValidacion());
+                        new DaoValidacion().linkEnviado( (int)  new DaoValidacion().obtenerValidacionPorCorreo(correo2).getIdCorreoValidacion());
                         String popup=request.getParameter("popup");
                         if(popup!=null) {
                             request.getSession().setAttribute("popup", popup);

@@ -241,4 +241,16 @@ public class DaoAlumnoPorEvento extends DaoPadre {
         }
         return verificacion;
     }
+    public boolean verificarUsuarioApoyaActividad(int idActividad,int idUsuario) {
+        String sql = "select a.idActividad from actividad a inner join evento e on a.idActividad=e.idActividad inner join alumnoPorEvento ae on e.idEvento=ae.idEvento where ae.idAlumno=? and a.idActividad=?";
+        try (Connection conn=this.getConnection(); PreparedStatement pstmt= conn.prepareStatement(sql)) {
+            pstmt.setInt(1,idUsuario);
+            pstmt.setInt(2,idActividad);
+            try(ResultSet rs=pstmt.executeQuery()){
+                return rs.next();
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }

@@ -56,7 +56,8 @@ public class DaoDonacion extends DaoPadre  {
             pstmt.executeUpdate();
             int idUsuario=idUsuarioPorIdDonacion(donacion.getIdDonacion());
             DaoValidacion dV=new DaoValidacion();
-            if(totalDonaciones(idUsuario)>100&&!dV.verificarYaRecibioNotificacionKit(idUsuario)){
+            DaoUsuario dU=new DaoUsuario();
+            if(totalDonaciones(idUsuario)>100&&!dV.verificarYaRecibioNotificacionKit(idUsuario)&&dU.esEgresado(idUsuario)){
                 dV.agregarCorreoParaElKit(idUsuario);
             }
         } catch (SQLException e) {

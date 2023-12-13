@@ -42,7 +42,7 @@
   <!-- bootstrap 4.3.1 -->
   <link rel="stylesheet" href="css/vendor/bootstrap.min.css">
   <!-- styles -->
-  <link rel="stylesheet" href="css/raw/stylesAlex2.css">
+  <link rel="stylesheet" href="css/raw/styles.css">
   <!-- simplebar styles -->
   <link rel="stylesheet" href="css/vendor/simplebar.css">
   <!-- tiny-slider styles -->
@@ -1696,9 +1696,10 @@ if(u.getRol().equals("Delegado de Actividad")){%>
                         <label for="idDelegadoActividadReemplazar<%=l%>"><b>Seleccionar delegado de actividad:</b></label>
                         <select name="idDelegadoActividadReemplazar" style="padding: 10px" id="idDelegadoActividadReemplazar<%=l%>" required>
                             <%if(!IDyNombreDelegadosDeActividad.isEmpty()){
-                                for(Usuario u2:IDyNombreDelegadosDeActividad){%>
+                                for(Usuario u2:IDyNombreDelegadosDeActividad){
+                                    if(!new DaoAlumnoPorEvento().verificarUsuarioApoyaActividad(a.getIdActividad(),u.getIdUsuario())){%>
                             <option value="<%=u2.getIdUsuario()%>"><%=u2.getNombre()%> <%=u2.getApellido()%></option>
-                            <%}}else{%>
+                            <%}}}else{%>
                             <option value="xd">--No hay alumnos disponibles--</option>
                            <%}%>
                         </select>

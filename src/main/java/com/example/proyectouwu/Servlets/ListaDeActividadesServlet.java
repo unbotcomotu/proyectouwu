@@ -286,7 +286,7 @@ public class ListaDeActividadesServlet extends HttpServlet {
                                             if(idDelegadoActividadEditarStr!=null){
                                                 if (idDelegadoActividadEditarStr.matches("\\d+") && dUsuario.existeUsuario(idDelegadoActividadEditarStr)){
                                                     Integer idDelegadoActividadEditar=Integer.parseInt(request.getParameter("idDelegadoActividadEditar"));
-                                                    if(idDelegadoActividadEditar==idDelegadoActividadAnterior || !dUsuario.esDelegado(idActividadEditarStr)){
+                                                    if(idDelegadoActividadEditar==idDelegadoActividadAnterior || !dUsuario.esDelegado(idDelegadoActividadEditarStr)){
                                                         String puntajeEditarActividad=request.getParameter("puntajeEditarActividad");
                                                         if(puntajeEditarActividad!=null){
                                                             try{

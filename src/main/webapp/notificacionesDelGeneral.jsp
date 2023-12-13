@@ -2335,7 +2335,7 @@ if(idDonacionElegida!=null){
                     <!-- /TABLE HEADER COLUMN -->
 
                     <!-- TABLE HEADER COLUMN -->
-                    <div class="table-header-column">
+                    <div class="table-header-column centered padded">
                         <!-- TABLE HEADER TITLE -->
                         <p class="table-header-title">Correo</p>
                         <!-- /TABLE HEADER TITLE -->
@@ -2439,43 +2439,46 @@ if(idDonacionElegida!=null){
                         <div class="table-column centered padded">
                             <!-- TABLE TITLE -->
                             <%if(validacion.getTipo().equals("enviarLinkACorreo")){%>
-                            <form method="post" action="?action=enviarCorreoJava">
-                                <input type="hidden" name="idCorreoValidacion" value="<%=validacion.getIdCorreoValidacion()%>">
-                                <button class="button-accept" type="submit">
-                                    Enviar
-                                </button>
-                            </form>
-                            <%}else if (validacion.getTipo().equals("recuperarContrasena")){%>
-                            <form method="post" action="?action=enviarCorreoJava">
-                                <input type="hidden" name="idCorreoValidacion" value="<%=validacion.getIdCorreoValidacion()%>">
-                                <button class="button-accept" type="submit">
-                                    Enviar
-                                </button>
-                            </form>
-
-                            <%} else {%>
-                                <form method="post" action="?action=enviarCorreoJava">
-                                    <input type="hidden" name="idCorreoValidacion" value="<%=validacion.getIdCorreoValidacion()%>">
-                                    <button class="button-accept" type="submit">
-                                        Enviar
+                                <%if(!validacion.isLinkEnviado()){%>
+                                    <form method="post" action="?action=enviarCorreoJava">
+                                        <input type="hidden" name="idCorreoValidacion" value="<%=validacion.getIdCorreoValidacion()%>">
+                                        <button class="button-accept" type="submit">
+                                            Enviar
+                                        </button>
+                                    </form>
+                                <%}else{%>
+                                    <button class="button-accept" style="opacity: 0.5">
+                                        Enviado
                                     </button>
-                                </form>
+                                <%}%>
+                            <%}else if (validacion.getTipo().equals("recuperarContrasena")){%>
+                                <%if(!validacion.isLinkEnviado()){%>
+                                    <form method="post" action="?action=enviarCorreoJava">
+                                        <input type="hidden" name="idCorreoValidacion" value="<%=validacion.getIdCorreoValidacion()%>">
+                                        <button class="button-accept" type="submit">
+                                            Enviar
+                                        </button>
+                                    </form>
+                                <%}else{%>
+                                    <button class="button-accept" style="opacity: 0.5">
+                                        Enviado
+                                    </button>
+                                <%}%>
+                            <%} else {%>
+                                <%if(!validacion.isLinkEnviado()){%>
+                                    <form method="post" action="?action=enviarCorreoJava">
+                                        <input type="hidden" name="idCorreoValidacion" value="<%=validacion.getIdCorreoValidacion()%>">
+                                        <button class="button-accept" type="submit">
+                                            Enviar
+                                        </button>
+                                    </form>
+                                <%}else{%>
+                                    <button class="button-accept" style="opacity: 0.5">
+                                        Enviado
+                                    </button>
+                                <%}%>
                             <%}%>
                             <!-- /TABLE TITLE -->
-                        </div>
-                        <div class="table-column centered padded" style="width: 20%">
-                            <%if(!validacion.isLinkEnviado()){%>
-                            <form method="post" action="?action=enviar">
-                                <input type="hidden" name="idCorreoValidacion" value="<%=validacion.getIdCorreoValidacion()%>">
-                                <button class="button-accept" type="submit">
-                                    Marcar como enviado
-                                </button>
-                            </form>
-                            <%}else{%>
-                                <button class="button-accept" style="opacity: 0.5">
-                                    Enviado
-                                </button>
-                            <%}%>
                         </div>
                         <!-- /TABLE COLUMN -->
                     </div>

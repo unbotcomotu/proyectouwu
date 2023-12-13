@@ -378,14 +378,10 @@ public class NotificacionesServlet extends HttpServlet {
                     break;
                 case "enviarCorreoJava":
                     //Aqui va el metodo para enviar con java
-                    String idValidacion = request.getParameter("idCorreoValidacion");
-                    usuario.enviarCorreo(idValidacion);
-                    response.sendRedirect("NotificacionesServlet?vistaActualNueva=Recuperacion");
-                    break;
-                case "enviar":
                     String idCorreoValidacionStr = request.getParameter("idCorreoValidacion");
                     DaoValidacion daoValidacion = new DaoValidacion();
                     if (idCorreoValidacionStr!=null&&idCorreoValidacionStr.matches("\\d+") && daoValidacion.existeValidacion(idCorreoValidacionStr)){
+                        usuario.enviarCorreo(idCorreoValidacionStr);
                         new DaoValidacion().linkEnviado(Integer.parseInt(request.getParameter("idCorreoValidacion")));
                     }
                     response.sendRedirect("NotificacionesServlet?vistaActualNueva=Recuperacion");

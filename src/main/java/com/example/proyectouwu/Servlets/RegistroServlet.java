@@ -167,7 +167,7 @@ public class RegistroServlet extends HttpServlet {
                     }
                     if(registroValido){
                         new DaoUsuario().registroDeAlumno(nombres,apellidos,correo,password,codigoPUCP,opcion);
-                        new DaoValidacion().updateLinkUsado((int) Integer.parseInt(request.getParameter("idCorreoValidacion")));
+                        new DaoValidacion().updateLinkUsado(Integer.parseInt(idCorreoValidacion));
                         //Por el momento al terminar lo hacemos saltar a la vista de inicioSesion
                         request.getSession().setAttribute("popup","5");
                         response.sendRedirect("InicioSesionServlet");

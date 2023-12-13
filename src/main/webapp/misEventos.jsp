@@ -42,7 +42,7 @@
     <link rel="stylesheet" href="css/vendor/simplebar.css">
     <!-- favicon -->
     <link rel="icon" href="img/favicon.ico">
-    <title>Actividades - Siempre Fibra</title>
+    <title>Mis eventos - Siempre Fibra</title>
     <style>
         /* Estilo para el overlay del popup */
         .overlay {

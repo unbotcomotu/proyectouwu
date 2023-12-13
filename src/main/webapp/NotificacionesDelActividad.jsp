@@ -911,6 +911,11 @@
                     <!-- USER SHORT DESCRIPTION TEXT -->
                     <p class="user-short-description-text" style="text-transform: lowercase;"> <%= usuarioOWO.correoUsuarioPorId(alumnoPorEvento.getAlumno().getIdUsuario())%>  </p>
                     <!-- /USER SHORT DESCRIPTION TEXT -->
+
+                    <!-- USER SHORT DESCRIPTION TEXT -->
+                    <p class="user-short-description-text" style="text-transform: lowercase;"> <%= alumnoPorEvento.getFechaSolicitud()%>  </p>
+                    <!-- /USER SHORT DESCRIPTION TEXT -->
+
                     <div style="display: flex;justify-content: center;margin-top: 20px">
                         <button onclick="popupFunc('popupSeguro<%=listaSolicitudesApoyo.indexOf(alumnoPorEvento)%>',['cerrarPopupSeguro<%=listaSolicitudesApoyo.indexOf(alumnoPorEvento)%>'],'overlaySeguro<%=listaSolicitudesApoyo.indexOf(alumnoPorEvento)%>')" style="width: 40px;background: none;border:0;color: inherit"><img src="css/iconoSeguro.png" style="width: 100%;" alt=""></button>
                     </div>

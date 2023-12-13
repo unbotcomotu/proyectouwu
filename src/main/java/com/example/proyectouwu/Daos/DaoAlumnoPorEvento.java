@@ -172,14 +172,34 @@ public class DaoAlumnoPorEvento extends DaoPadre {
                     alumnoPorEvento.setAlumno(new DaoUsuario().getUsuarioPorId(rs.getInt(2)));
                     alumnoPorEvento.setEvento(new DaoEvento().obtenerEventoPorId(rs.getInt(3)));
                 }
-            } catch (SQLException e) {
-                throw new RuntimeException(e);
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
 
         return alumnoPorEvento;
+    }
 
+    public ArrayList<AlumnoPorEvento> listaDeApoyosPorEvento(int idEvento) {
+        ArrayList<AlumnoPorEvento>lista = new ArrayList<>();
+        String sql = "select ae.idAlumnoPorEvento,ae.idAlumno,u.nombre,u.apellido,u.fotoPerfil,ae.estadoApoyo from alumnoporevento ae inner join usuario u on ae.idAlumno = u.idUsuario where ae.idEvento=? and estadoApoyo!='Pendiente' ";
+        try (Connection conn = this.getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setInt(1, idEvento);
+            try (ResultSet rs = pstmt.executeQuery()) {
+                while (rs.next()){
+                    AlumnoPorEvento ae=new AlumnoPorEvento();
+                    ae.setIdAlumnoPorEvento(rs.getInt(1));
+                    ae.getAlumno().setIdUsuario(rs.getInt(2));
+                    ae.getAlumno().setNombre(rs.getString(3));
+                    ae.getAlumno().setApellido(rs.getString(4));
+                    ae.getAlumno().setFotoPerfil(rs.getBlob(5));
+                    ae.setEstadoApoyo(rs.getString(6));
+                    lista.add(ae);
+                }
+                return lista;
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

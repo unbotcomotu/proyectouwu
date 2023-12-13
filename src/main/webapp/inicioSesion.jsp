@@ -15,6 +15,10 @@ ArrayList<String>listaCorreosDelegadosGenerales=(ArrayList<String>)request.getSe
 if(listaCorreosDelegadosGenerales!=null){
     request.getSession().removeAttribute("correosDelegadosGenerales");
 }
+String motivoBan=(String) request.getSession().getAttribute("motivoBan");
+if(motivoBan!=null){
+    request.getSession().removeAttribute("motivoBan");
+}
 %>
 <html>
 <head>
@@ -166,7 +170,7 @@ if(listaCorreosDelegadosGenerales!=null){
             <%}else if(popup.equals("6")){%>
                 Usted se encuentra actualmente baneado en la plataforma debido al siguiente motivo:
         <hr>
-            <%=request.getAttribute("motivoBan")%>
+            <%=motivoBan%>
         <hr>
         Contáctese con algún delegado general:
         <ul class="lista" style="font-size: 75%;padding-left: 10%">

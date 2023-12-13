@@ -23,29 +23,33 @@ public class RegistroServlet extends HttpServlet {
         response.setContentType("text/html");
         request.setAttribute("correosDelegadosGenerales",new DaoUsuario().listarCorreosDelegadosGenerales());
         String action = request.getParameter("action") == null ? "default" : request.getParameter("action");
-        switch(action){
-            case "default" :
-                //Alex auxilio
-                //int codigoValidacion = Integer.parseInt(request.getParameter("codigoValidacion"));
-                Validacion validacion= new Validacion();
-                String idCorreoValidacion = request.getParameter("idCorreoValidacion") == null ? "simplebar.js" : request.getParameter("idCorreoValidacion");
-                String codigoValidacion256 = request.getParameter("codigoValidacion256") == null ? "simplebar.js" : request.getParameter("codigoValidacion256");
-                try{
-                    validacion.setIdCorreoValidacion(Integer.parseInt(idCorreoValidacion));
-                    if(codigoValidacion256.equals(new DaoValidacion().codigoValidacion256PorID(Integer.parseInt(idCorreoValidacion)))){
-                        request.setAttribute("validacion",validacion);
-                        request.setAttribute("codigoValidacion256",codigoValidacion256);
-                        request.getRequestDispatcher("Registro.jsp").forward(request,response);
-                    }else{
+        boolean linkUsado = new DaoValidacion().getLinkUsadoxIdCorreoValidacion((int) Integer.parseInt(request.getParameter("idCorreoValidacion")));
+        if( !linkUsado ) {
+            switch (action) {
+                case "default":
+                    //Alex auxilio
+                    //int codigoValidacion = Integer.parseInt(request.getParameter("codigoValidacion"));
+                    Validacion validacion = new Validacion();
+                    String idCorreoValidacion = request.getParameter("idCorreoValidacion") == null ? "simplebar.js" : request.getParameter("idCorreoValidacion");
+                    String codigoValidacion256 = request.getParameter("codigoValidacion256") == null ? "simplebar.js" : request.getParameter("codigoValidacion256");
+                    try {
+                        validacion.setIdCorreoValidacion(Integer.parseInt(idCorreoValidacion));
+                        if (codigoValidacion256.equals(new DaoValidacion().codigoValidacion256PorID(Integer.parseInt(idCorreoValidacion)))) {
+                            request.setAttribute("validacion", validacion);
+                            request.setAttribute("codigoValidacion256", codigoValidacion256);
+                            request.getRequestDispatcher("Registro.jsp").forward(request, response);
+                        } else {
+                            response.sendRedirect("InicioSesionServlet");
+                        }
+                    } catch (NumberFormatException e) {
                         response.sendRedirect("InicioSesionServlet");
                     }
-                }catch (NumberFormatException e){
+                    break;
+                default:
                     response.sendRedirect("InicioSesionServlet");
-                }
-                break;
-            default:
-                response.sendRedirect("InicioSesionServlet");
-        }
+            }
+        }else{
+            response.sendRedirect("InicioSesionServlet");        }
     }
 
     @Override
@@ -163,6 +167,7 @@ public class RegistroServlet extends HttpServlet {
                     }
                     if(registroValido){
                         new DaoUsuario().registroDeAlumno(nombres,apellidos,correo,password,codigoPUCP,opcion);
+                        new DaoValidacion().updateLinkUsado((int) Integer.parseInt(request.getParameter("idCorreoValidacion")));
                         //Por el momento al terminar lo hacemos saltar a la vista de inicioSesion
                         request.getSession().setAttribute("popup","5");
                         response.sendRedirect("InicioSesionServlet");

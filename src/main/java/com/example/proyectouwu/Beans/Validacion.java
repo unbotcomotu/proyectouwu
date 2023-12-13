@@ -11,6 +11,7 @@ public class Validacion {
     private String codigoValidacion256;
     private Date  fechaHora;
     private boolean  linkEnviado;
+    private boolean linkUsado;
     //METODOS OTROS
 
 
@@ -79,5 +80,13 @@ public class Validacion {
 
     public void setLinkEnviado(boolean linkEnviado) {
         this.linkEnviado = linkEnviado;
+    }
+
+    public boolean isLinkUsado() {
+        return linkUsado;
+    }
+
+    public void setLinkUsado(boolean linkUsado) {
+        this.linkUsado = linkUsado;
     }
 }

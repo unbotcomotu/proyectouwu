@@ -8,7 +8,7 @@ import java.util.Random;
 
 public class DaoValidacion extends DaoPadre {
     public void agregarCorreoParaEnviarLink(String correo){
-        String sql = "insert into validacion( correo, tipo, codigoValidacion, fechaHora, linkEnviado,codigoValidacion256) values (?,?,?,?,?,sha2(?,256));";
+        String sql = "insert into validacion( correo, tipo, codigoValidacion, fechaHora, linkEnviado,codigoValidacion256, linkUsado) values (?,?,?,?,?,sha2(?,256), false);";
         LocalDateTime fechaHoraActual = LocalDateTime.now();
         // Define el formato deseado
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
@@ -34,7 +34,7 @@ public class DaoValidacion extends DaoPadre {
 
     public void agregarCorreoParaRecuperarContrasena(String correo){
 
-            String sql = "insert into validacion( correo, tipo, codigoValidacion, fechaHora, linkEnviado, idUsuario,codigoValidacion256) values (?,?,?,?,?,?,sha2(?,256));";
+            String sql = "insert into validacion( correo, tipo, codigoValidacion, fechaHora, linkEnviado, idUsuario,codigoValidacion256, linkUsado) values (?,?,?,?,?,?,sha2(?,256), false);";
 
             LocalDateTime fechaHoraActual = LocalDateTime.now();
             // Define el formato deseado
@@ -311,6 +311,51 @@ public class DaoValidacion extends DaoPadre {
             throw new RuntimeException(e);
         }
         return validacion;
+    }
+
+    public void updateLinkUsado(int idCorreoValidacion){
+        String sql = "update validacion set linkUsado = true where idCorreoValidacion = ?";
+        try (Connection conn=this.getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setInt(1,idCorreoValidacion);
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+
+    public boolean getLinkUsadoxIdCorreoValidacion( int idCorreoValidacion ){
+        String sql = "select linkUsado from validacion where idCorreoValidacion=?";
+        try (Connection conn = super.getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setInt(1, idCorreoValidacion);
+            try (ResultSet rs = pstmt.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getBoolean(1);
+                }
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+        }catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return false;
+    }
+
+    public int cantidadValidacionXCorreoTipo(String correo , String tipo){
+       int cantidad= 0;
+        String sql = "select count(*) from validacion where tipo = ?  and  linkUsado = false group by correo having correo = ?";
+        try (Connection conn = super.getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setString(1, tipo);
+            pstmt.setString(2, correo);
+            try (ResultSet rs = pstmt.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt(1);
+                }
+            }
+        }catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+       return cantidad;
     }
 
 }

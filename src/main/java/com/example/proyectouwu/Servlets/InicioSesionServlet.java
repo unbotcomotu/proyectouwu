@@ -74,20 +74,28 @@ public class InicioSesionServlet extends HttpServlet {
                 if(correoValido){
                     //Debemos guardarlo en algun lado para mandar el correo
                     //Debemos asegurarnos que el correo no tenga una cuenta ya asociada y en caso tenga que mande un mensaje de error al usuario
-                    if(new DaoUsuario().obtenerIdPorCorreo(correo2) != 0) {
+                    if(new DaoUsuario().obtenerIdRegistradoPorCorreo(correo2) != 0) {
                         //
                         request.getSession().setAttribute("popup","3");
                     }else{
+                    if(  new DaoValidacion().cantidadValidacionXCorreoTipo(correo2, "enviarLinkACorreo") == 0 ) {
+
+
                         DaoValidacion daoValidacion = new DaoValidacion();
                         daoValidacion.agregarCorreoParaEnviarLink(correo2);
-
-                        //AQUI VA EL METODO PARA ENVIAR CORREO
-                        new Usuario().enviarCorreo(""+new DaoValidacion().obtenerValidacionPorCorreo(correo2).getIdCorreoValidacion());
-                        new DaoValidacion().linkEnviado( (int)  new DaoValidacion().obtenerValidacionPorCorreo(correo2).getIdCorreoValidacion());
-                        String popup=request.getParameter("popup");
-                        if(popup!=null) {
-                            request.getSession().setAttribute("popup", popup);
-                        }
+                            //AQUI VA EL METODO PARA ENVIAR CORREO
+                            new Usuario().enviarCorreo("" + new DaoValidacion().obtenerValidacionPorCorreo(correo2).getIdCorreoValidacion());
+                            new DaoValidacion().linkEnviado((int) new DaoValidacion().obtenerValidacionPorCorreo(correo2).getIdCorreoValidacion());
+                            String popup = request.getParameter("popup");
+                            if (popup != null) {
+                                request.getSession().setAttribute("popup", popup);
+                            }
+                        }else{
+                            String popup = request.getParameter("popup");
+                            if (popup != null) {
+                                request.getSession().setAttribute("popup", popup);
+                            }
+                    }
                     }
                 }
                 request.getRequestDispatcher("inicioSesion.jsp").forward(request,response);
@@ -99,4 +107,5 @@ public class InicioSesionServlet extends HttpServlet {
         }
     }
 }
+
 

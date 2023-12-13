@@ -176,9 +176,20 @@ public class ListaDeActividadesServlet extends HttpServlet {
                         }
                     }
                     String idDelegadoActividadCrear=request.getParameter("idDelegadoActividadCrear");
+
                     if(idDelegadoActividadCrear==null){
                         validacionCrear=false;
                     }
+
+                    if (!dUsuario.existeUsuario(idDelegadoActividadCrear)){
+                        validacionCrear=false;
+
+                    }
+
+                    if (dUsuario.esDelegado(idDelegadoActividadCrear)){
+                        validacionCrear=false;
+                    }
+
                     String puntajeCrearActividad=request.getParameter("puntajeCrearActividad");
                     if(puntajeCrearActividad==null){
                         validacionCrear=false;
@@ -266,7 +277,8 @@ public class ListaDeActividadesServlet extends HttpServlet {
                                             if(nombreEditarActividad.length()>45){
                                                 request.getSession().setAttribute("nombreLargo","1");
                                                 validacionEditar=false;
-                                            }if(dActividad.verificarActividadRepetida(nombreEditarActividad,idActividadEditar)){
+                                            }
+                                            if(dActividad.verificarActividadRepetida(nombreEditarActividad,idActividadEditar)){
                                                 request.getSession().setAttribute("actividadRepetida","1");
                                                 validacionEditar=false;
                                             }
@@ -274,7 +286,7 @@ public class ListaDeActividadesServlet extends HttpServlet {
                                             if(idDelegadoActividadEditarStr!=null){
                                                 if (idDelegadoActividadEditarStr.matches("\\d+") && dUsuario.existeUsuario(idDelegadoActividadEditarStr)){
                                                     Integer idDelegadoActividadEditar=Integer.parseInt(request.getParameter("idDelegadoActividadEditar"));
-                                                    if(!dUsuario.usuarioEsDelegadoDeActividad(idDelegadoActividadEditar.toString())||idDelegadoActividadEditar==idDelegadoActividadAnterior){
+                                                    if(idDelegadoActividadEditar==idDelegadoActividadAnterior || !dUsuario.esDelegado(idActividadEditarStr)){
                                                         String puntajeEditarActividad=request.getParameter("puntajeEditarActividad");
                                                         if(puntajeEditarActividad!=null){
                                                             try{

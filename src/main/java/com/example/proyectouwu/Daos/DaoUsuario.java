@@ -798,6 +798,19 @@ public class DaoUsuario extends DaoPadre {
         }
     }
 
+
+    public boolean esDelegado(String idUsuario){
+        String sql="select * from usuario where idUsuario=? and (rol='Delegado General' || rol = 'Delegado de Actividad')";
+        try(Connection conn=this.getConnection(); PreparedStatement pstmt= conn.prepareStatement(sql)){
+            pstmt.setString(1,idUsuario);
+            try(ResultSet rs=pstmt.executeQuery()){
+                return rs.next();
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     public boolean esAlumnoRegistradoNoBaneado(String idUsuario){
         String sql="select u.idUsuario from usuario u left join ban b on u.idUsuario = b.idUsuario where u.idUsuario=? and b.idBan is null and u.rol='Alumno' and u.estadoRegistro='Registrado'";
         try(Connection conn=this.getConnection(); PreparedStatement pstmt= conn.prepareStatement(sql)){

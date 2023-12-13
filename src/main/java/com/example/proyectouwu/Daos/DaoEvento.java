@@ -422,7 +422,7 @@ public class DaoEvento extends DaoPadre {
         }
     }
     public void finalizarEvento(int idEvento, String resumen, String resultado){ //finaliza evento
-        String sql = "update evento set eventoFinalizado=1, resumen = ?, resultadoEvento = ? where idEvento=?";
+        String sql = "update evento set eventoFinalizado=1, resumen = ?, resultadoEvento = ? where idEvento=? and eventoFinalizado=false";
 
         try (Connection conn=this.getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
             if(!eventoEstaFinalizado(idEvento)){
@@ -1328,6 +1328,4 @@ public class DaoEvento extends DaoPadre {
             throw new RuntimeException(e);
         }
     }
-
-    
 }

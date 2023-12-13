@@ -202,4 +202,43 @@ public class DaoAlumnoPorEvento extends DaoPadre {
             throw new RuntimeException(e);
         }
     }
+    public boolean verificacionParaApoyarEvento(int idUsuario,int idEvento){
+        boolean verificacion=true;
+        String sql ="select idEvento from evento where eventoFinalizado=false and eventoOculto=false and idEvento=?";
+        try (Connection conn=this.getConnection(); PreparedStatement pstmt= conn.prepareStatement(sql)) {
+            pstmt.setInt(1,idEvento);
+            try(ResultSet rs=pstmt.executeQuery()){
+                if(!rs.next()){
+                    verificacion=false;
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        sql ="select idAlumnoPorEvento from alumnoporevento where idAlumno=? and idEvento=?";
+        try (Connection conn=this.getConnection(); PreparedStatement pstmt= conn.prepareStatement(sql)) {
+            pstmt.setInt(1,idUsuario);
+            pstmt.setInt(2,idEvento);
+            try(ResultSet rs=pstmt.executeQuery()){
+                if(rs.next()){
+                    verificacion=false;
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        sql="select a.idActividad from actividad a inner join evento e on a.idActividad = e.idActividad inner join usuario u on a.idDelegadoDeActividad = u.idUsuario where e.idEvento=? and a.idDelegadoDeActividad=?";
+        try (Connection conn=this.getConnection(); PreparedStatement pstmt= conn.prepareStatement(sql)) {
+            pstmt.setInt(1,idEvento);
+            pstmt.setInt(2,idUsuario);
+            try(ResultSet rs=pstmt.executeQuery()){
+                if(rs.next()){
+                    verificacion=false;
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return verificacion;
+    }
 }

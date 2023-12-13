@@ -676,7 +676,7 @@ public class DaoUsuario extends DaoPadre {
     }
 
     public void aceptarRegistro(int idUsuario){
-        String sql = "update usuario set estadoRegistro = ? where idUsuario = ?";
+        String sql = "update usuario set estadoRegistro = ? where idUsuario = ? and rol!='Delegado General' and estadoRegistro='Pendiente'";
         try(Connection conn=this.getConnection(); PreparedStatement pstmt=conn.prepareStatement(sql)){
             pstmt.setString(1,"Registrado");
             pstmt.setInt(2,idUsuario);
@@ -687,7 +687,7 @@ public class DaoUsuario extends DaoPadre {
     }
 
     public void rechazarRegistro(int idUsuario){
-        String sql = "update usuario set estadoRegistro = ? where idUsuario = ?";
+        String sql = "update usuario set estadoRegistro = ? where idUsuario = ? and rol!='Delegado General' and estadoRegistro='Pendiente'";
         try(Connection conn=this.getConnection(); PreparedStatement pstmt=conn.prepareStatement(sql)){
             pstmt.setString(1,"No registrado");
             pstmt.setInt(2,idUsuario);

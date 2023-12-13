@@ -74,6 +74,7 @@ public class EventoServlet extends HttpServlet {
         Usuario usuario=(Usuario) request.getSession().getAttribute("usuario");
         DaoFotoEventoCarrusel dF=new DaoFotoEventoCarrusel();
         DaoEvento dE=new DaoEvento();
+        DaoAlumnoPorEvento dAE=new DaoAlumnoPorEvento();
         if(usuario==null){
             response.sendRedirect("InicioSesionServlet");
         }else {
@@ -94,7 +95,9 @@ public class EventoServlet extends HttpServlet {
                             response.sendRedirect("PaginaNoExisteServlet");
                             break;
                         case "apoyoEvento":
-                            new DaoAlumnoPorEvento().usuarioApoyaEvento(usuario.getIdUsuario(),idEvento);
+                            if(dAE.verificacionParaApoyarEvento(usuario.getIdUsuario(), idEvento)){
+                                dAE.usuarioApoyaEvento(usuario.getIdUsuario(),idEvento);
+                            }
                             //<a href="/proyectouwu_war_exploded/EventoServlet?idEvento=6&amp;idUsuario=17">
                             //http://localhost:8080/proyectouwu_war_exploded/EventoServlet?idEvento=6&idUsuario=17
                             response.sendRedirect(request.getContextPath()+"/EventoServlet?idEvento="+idEvento);

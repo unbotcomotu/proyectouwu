@@ -27,7 +27,7 @@ public class RecuperarContrasenaPrimerPasoServlet extends HttpServlet {
              String correo2 = request.getParameter("correoPucp");
              if(correo2!=null){
                  DaoValidacion daoValidacion = new DaoValidacion();
-                 if(new DaoUsuario().obtenerIdPorCorreo(correo2) != 0) {
+                 if(new DaoUsuario().obtenerIdRegistradoPorCorreo(correo2) != 0) {
                      daoValidacion.agregarCorreoParaRecuperarContrasena(correo2);
                      request.getSession().setAttribute("popup","2");
                      response.sendRedirect("InicioSesionServlet");

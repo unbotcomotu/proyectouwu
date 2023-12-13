@@ -1906,8 +1906,8 @@
                         <div class="form-select small">
                             <label for="items-filter-order">Sentido</label>
                             <select id="items-filter-order" name="idSentidoEventos">
-                                <option value="0" <%if(idSentidoEventos!=null){if(idSentidoEventos.equals("0")){%>selected<%}}%>>Ascendente</option>
-                                <option value="1" <%if(idSentidoEventos!=null){if(idSentidoEventos.equals("1")){%>selected<%}}%>>Descendente</option>
+                                <option value="0" <%if(idSentidoEventos!=null){if(idSentidoEventos.equals("0")){%>selected<%}}%>>Primero -> Último</option>
+                                <option value="1" <%if(idSentidoEventos!=null){if(idSentidoEventos.equals("1")){%>selected<%}}%>>Último -> Primero</option>
                             </select>
                             <!-- FORM SELECT ICON -->
                             <svg class="form-select-icon icon-small-arrow">

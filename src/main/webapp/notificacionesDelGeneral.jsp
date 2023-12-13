@@ -3061,15 +3061,6 @@ if(idDonacionElegida!=null){
         let form=document.getElementById(idForm);
         form.submit();
     }
-    function enviarCorreoRechazar(correo,idForm){
-        var destinatario = correo;
-        var asunto = 'Su cuenta no consiguió ser aprobada - Siempre Fibra';
-        var contenido = 'Después de dar revisión a sus datos dentro del registro en la plataforma se observó que: .Puedes contactarse con algún delegado general en caso de que consideres de que es un error:<%for(String correo:listaCorreosDelegadosGenerales){%>\nDelegado general N°<%=listaCorreosDelegadosGenerales.indexOf(correo)+1%>: <%=correo%><%}%>\nPara registrarse nuevamente puede ingresar a <%=ip%>:8080/proyectouwu_war_exploded/\n\n\nSiempre Fibra';
-        var mailtoLink = 'NotificacionesServlet?action=rechazarRegistro?motivo='+ ;//'mailto:' + destinatario + '?subject=' + encodeURIComponent(asunto) + '&body=' + encodeURIComponent(contenido);
-        window.location.href = mailtoLink;
-        let form=document.getElementById(idForm);
-        form.submit();
-    }
 </script>
 
 </body>

@@ -1802,11 +1802,11 @@
                             <option value="0" <%if(idFiltroActividades!=null && idFiltroActividades.equals("0")){%>selected<%}%>>Orden alfabético</option>
                             <option value="1" <%if(idFiltroActividades!=null && idFiltroActividades.equals("1")){%>selected<%}%>>Cantidad de eventos</option>
                             <option value="2" <%if(idFiltroActividades!=null && idFiltroActividades.equals("2")){%>selected<%}%>>Cantidad de puntos por primer lugar</option>
-                            <option value="3" <%if(idFiltroActividades!=null && idFiltroActividades.equals("3")){%>selected<%}%>>Finalizados primero</option>
+                            <option value="3" <%if(idFiltroActividades!=null && idFiltroActividades.equals("3")){%>selected<%}%>>Finalizados</option>
                             <%if(rolUsuario.equals("Delegado General")){%>
-                            <option value="4" <%if(idFiltroActividades!=null && idFiltroActividades.equals("4")){%>selected<%}%>>Ocultos primero</option>
+                            <option value="4" <%if(idFiltroActividades!=null && idFiltroActividades.equals("4")){%>selected<%}%>>Ocultos</option>
                             <%}else if(rolUsuario.equals("Delegado de Actividad")){%>
-                            <option value="4" <%if(idFiltroActividades!=null && idFiltroActividades.equals("4")){%>selected<%}%>>Mi delegatura primero</option>
+                            <option value="4" <%if(idFiltroActividades!=null && idFiltroActividades.equals("4")){%>selected<%}%>>Mi delegatura</option>
                             <%}%>
                         </select>
                         <!-- FORM SELECT ICON -->

@@ -629,6 +629,22 @@ public class DaoUsuario extends DaoPadre {
         return id;
     }
 
+    public int obtenerIdRegistradoPorCorreo (String correo){
+        int id = 0;
+        String sql = "select idUsuario from usuario where correo =? and estadoRegistro='Registrado'";
+        try(Connection conn=this.getConnection(); PreparedStatement pstmt=conn.prepareStatement(sql)){
+            pstmt.setString(1,correo);
+            try(ResultSet rs = pstmt.executeQuery()){
+                if(rs.next()) {
+                    id = rs.getInt(1);
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return id;
+    }
+
     public boolean estaBaneadoporId(String usuarioId){
         boolean baneado = true;
         String sql = "select idUsuario from ban where idUsuario = ?";

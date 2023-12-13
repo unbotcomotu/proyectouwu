@@ -1997,10 +1997,9 @@
                     <label class="auxLabel" for="idDelegadoActividadEditar<%=i%>" style="margin-top: 25px;"><b>Seleccionar delegado de actividad:</b></label>
                     <select style="height: 55px;padding-left: 20px" name="idDelegadoActividadEditar" id="idDelegadoActividadEditar<%=i%>" required>
                         <option value="<%=listaActividades.get(i).getDelegadoDeActividad().getIdUsuario()%>" selected><%=new DaoUsuario().nombreCompletoUsuarioPorId(listaActividades.get(i).getDelegadoDeActividad().getIdUsuario())%></option>
-                        <%for(Usuario u:listaIDyNombresDelegadosDeActividad){
-                        if(!new DaoAlumnoPorEvento().verificarUsuarioApoyaActividad(listaActividades.get(i).getIdActividad(),u.getIdUsuario())){%>
+                        <%for(Usuario u:listaIDyNombresDelegadosDeActividad){%>
                         <option value="<%=u.getIdUsuario()%>"><%=u.getNombre()%> <%=u.getApellido()%></option>
-                        <%}}%>
+                        <%}%>
                     </select>
 
                     <label class="auxLabel" style="margin-top: 25px;"><b>Puntaje para el 1er lugar:</b></label>

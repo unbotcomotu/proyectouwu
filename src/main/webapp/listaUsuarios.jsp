@@ -1696,10 +1696,9 @@ if(u.getRol().equals("Delegado de Actividad")){%>
                         <label for="idDelegadoActividadReemplazar<%=l%>"><b>Seleccionar delegado de actividad:</b></label>
                         <select name="idDelegadoActividadReemplazar" style="padding: 10px" id="idDelegadoActividadReemplazar<%=l%>" required>
                             <%if(!IDyNombreDelegadosDeActividad.isEmpty()){
-                                for(Usuario u2:IDyNombreDelegadosDeActividad){
-                                    if(!new DaoAlumnoPorEvento().verificarUsuarioApoyaActividad(a.getIdActividad(),u2.getIdUsuario())){%>
+                                for(Usuario u2:IDyNombreDelegadosDeActividad){%>
                             <option value="<%=u2.getIdUsuario()%>"><%=u2.getNombre()%> <%=u2.getApellido()%></option>
-                            <%}}}else{%>
+                            <%}}else{%>
                             <option value="xd">--No hay alumnos disponibles--</option>
                            <%}%>
                         </select>

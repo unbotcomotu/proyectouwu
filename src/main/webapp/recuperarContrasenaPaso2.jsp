@@ -74,7 +74,7 @@ String codigoValidacion256=(String) request.getAttribute("codigoValidacion256");
 <div class="container">
 <form method  = "post" action="<%=request.getContextPath()%>/RecuperarContrasenaSegundoCasoServlet?action=correoRecuperarContrasenaSegundoPaso" >
     <div class="py-5 text-center">
-        <img class="d-block mx-auto mb-4" src="css/telito.png" alt="" width="50%" height="50%">
+        <img class="d-block mx-auto mb-4" src="css/telito.png" alt="" style="max-width: 80%">
         <h2 class="texto"> RECUPERACIÓN DE CONTRASEÑA</h2>
         <!--<p class="lead">Bienvenido y gracias por animarte a participar de la semana de ingeniería. Ahora solo necesitas crear una cuenta regirtrando tus datos</p>-->
     </div>

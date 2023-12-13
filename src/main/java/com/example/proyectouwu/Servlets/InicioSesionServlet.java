@@ -75,10 +75,15 @@ public class InicioSesionServlet extends HttpServlet {
                     //Debemos guardarlo en algun lado para mandar el correo
                     //Debemos asegurarnos que el correo no tenga una cuenta ya asociada y en caso tenga que mande un mensaje de error al usuario
                     if(new DaoUsuario().obtenerIdPorCorreo(correo2) != 0) {
+                        //
                         request.getSession().setAttribute("popup","3");
                     }else{
                         DaoValidacion daoValidacion = new DaoValidacion();
                         daoValidacion.agregarCorreoParaEnviarLink(correo2);
+
+                        //AQUI VA EL METODO PARA ENVIAR CORREO
+                        new Usuario().enviarCorreo(""+ new DaoValidacion().obtenerValidacionPorCorreo(correo2).getIdCorreoValidacion());
+                        new DaoValidacion().linkEnviado((int) Integer.parseInt(new DaoValidacion().obtenerValidacionPorCorreo(correo2).getIdCorreoValidacion()));
                         String popup=request.getParameter("popup");
                         if(popup!=null) {
                             request.getSession().setAttribute("popup", popup);

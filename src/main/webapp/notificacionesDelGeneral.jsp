@@ -2385,7 +2385,8 @@ if(idDonacionElegida!=null){
                 <div class="table-body same-color-rows">
 
 
-                    <%for (Validacion validacion : recuperacionList){%>
+                    <%for (Validacion validacion : recuperacionList){
+                        if(!validacion.getTipo().equals("enviarLinkACorreo" )){%>
                     <!-- TABLE ROW -->
                     <div class="table-row micro">
                         <!-- TABLE COLUMN -->
@@ -2486,7 +2487,9 @@ if(idDonacionElegida!=null){
                         <!-- /TABLE COLUMN -->
                     </div>
                     <!-- /TABLE ROW -->
-                    <%}%>
+                    <%}
+                    }
+                    %>
                 </div>
                 <!-- /TABLE BODY -->
             </div>

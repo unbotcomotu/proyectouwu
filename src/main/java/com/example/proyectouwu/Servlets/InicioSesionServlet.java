@@ -43,11 +43,11 @@ public class InicioSesionServlet extends HttpServlet {
                     Ban b= new DaoUsuario().logIn(correo,contrasena);
                     if(b==null) {
                         request.getSession().setAttribute("popup","4");
-                        response.sendRedirect(request.getContextPath());
+                        response.sendRedirect("InicioSesionServlet");
                     }else if(b.getMotivoBan()!=null){
                         request.getSession().setAttribute("motivoBan",b.getMotivoBan());
                         request.getSession().setAttribute("popup","6");
-                        response.sendRedirect(request.getContextPath());
+                        response.sendRedirect("InicioSesionServlet");
                     }else{
                         request.getSession().setAttribute("usuario",new DaoUsuario().usuarioSesion(b.getUsuario().getIdUsuario()));
                         request.getSession().setAttribute("pSolicitudesDeApoyo","1");

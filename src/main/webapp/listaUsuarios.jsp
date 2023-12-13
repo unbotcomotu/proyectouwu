@@ -7,7 +7,7 @@
     <%String idFiltroUsuario=(String) request.getAttribute("idFiltroUsuario");%>
     <%String idOrdenarUsuario=(String) request.getAttribute("idOrdenarUsuario");%>
     <%Usuario usuarioActual=(Usuario) request.getSession().getAttribute("usuario");
-  int cantidadTotalUsuarios = (int)Math.ceil((int)request.getAttribute("cantidadUsuariosTotal")/8.0);
+  int cantidadTotalUsuarios = (int)Math.ceil((int)request.getAttribute("cantidadUsuariosTotal")/12.0);
   String action = request.getParameter("action") != null ? request.getParameter("action") : "";
   Integer idUsuario=usuarioActual.getIdUsuario();
   String rolUsuario=usuarioActual.getRol();
@@ -1517,12 +1517,12 @@
 
                     <!-- FORM SELECT -->
                     <div class="form-select small">
-                        <label for="items-filter-category">Filtrar por</label>
+                        <label for="items-filter-category">Ordenar por</label>
                         <select id="items-filter-category" name="idFiltroUsuario">
                             <option value="0"<%if(idFiltroUsuario!=null && idFiltroUsuario.equals("0")){%>selected<%}%>>Orden alfabético</option>
                             <option value="1"<%if(idFiltroUsuario!=null && idFiltroUsuario.equals("1")){%>selected<%}%>>Código PUCP</option>
-                            <option value="2"<%if(idFiltroUsuario!=null && idFiltroUsuario.equals("2")){%>selected<%}%>>Estudiantes primero</option>
-                            <option value="3"<%if(idFiltroUsuario!=null && idFiltroUsuario.equals("3")){%>selected<%}%>>Baneados primero</option>
+                            <option value="2"<%if(idFiltroUsuario!=null && idFiltroUsuario.equals("2")){%>selected<%}%>>Estudiantes</option>
+                            <option value="3"<%if(idFiltroUsuario!=null && idFiltroUsuario.equals("3")){%>selected<%}%>>Baneados</option>
                         </select>
                         <!-- FORM SELECT ICON -->
                         <svg class="form-select-icon icon-small-arrow">
@@ -1534,7 +1534,7 @@
 
                     <!-- FORM SELECT -->
                     <div class="form-select small">
-                        <label for="items-filter-order">Ordenar por</label>
+                        <label for="items-filter-order">Sentido</label>
                         <select id="items-filter-order" name="idOrdenarUsuario">
                             <option value="0"<%if(idOrdenarUsuario!=null){if(idOrdenarUsuario.equals("0")){%>selected<%}}%>>Primero -> Último</option>
                             <option value="1"<%if(idOrdenarUsuario!=null){if(idOrdenarUsuario.equals("1")){%>selected<%}}%>>Último -> Primero</option>

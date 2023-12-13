@@ -29,9 +29,9 @@ if(idDonacionElegida!=null){
         String action = request.getParameter("action") != null ? request.getParameter("action") : "";
         String nombreCompletoUsuario=usuarioActual.getNombre()+" "+usuarioActual.getApellido();
         ArrayList<Usuario> listaSolicitudes=(ArrayList<Usuario>) request.getAttribute("listaSolicitudes");
-        int cantidadTotalPageSolicitudes =request.getAttribute("cantidadTotalSolicitudes")!= null ? (int)Math.ceil((int)request.getAttribute("cantidadTotalSolicitudes")/8.0):0;
-        int cantidadTotalPageDonaciones = request.getAttribute("cantidadTotalDonaciones") != null ? (int)Math.ceil((int)request.getAttribute("cantidadTotalDonaciones")/8.0):0;
-        int cantidadTotalPageValidacion = request.getAttribute("cantidadTotalValidaciones") != null ? (int)Math.ceil((int)request.getAttribute("cantidadTotalValidaciones")/8.0):0;
+        int cantidadTotalPageSolicitudes =request.getAttribute("cantidadTotalSolicitudes")!= null ? (int)Math.ceil((int)request.getAttribute("cantidadTotalSolicitudes")/12.0):0;
+        int cantidadTotalPageDonaciones = request.getAttribute("cantidadTotalDonaciones") != null ? (int)Math.ceil((int)request.getAttribute("cantidadTotalDonaciones")/12.0):0;
+        int cantidadTotalPageValidacion = request.getAttribute("cantidadTotalValidaciones") != null ? (int)Math.ceil((int)request.getAttribute("cantidadTotalValidaciones")/12.0):0;
         Integer pagActual = request.getAttribute("pagActual") != null ? (Integer) request.getAttribute("pagActual") : 1;
         Integer pagActualD = request.getAttribute("pagActualD") != null ? (Integer) request.getAttribute("pagActualD") : 1;
         Integer pagActualV = request.getAttribute("pagActualV") != null ? (Integer) request.getAttribute("pagActualV") : 1;
@@ -3060,15 +3060,6 @@ if(idDonacionElegida!=null){
         var asunto = '¡Su cuenta ha sido aprobada! - Siempre Fibra';
         var contenido = "Sus datos han sido correctamente validados dentro de la plataforma. Ahora ya puede iniciar sesión y formar parte vital del equipo en Semana de Ingeniería.\n\nIngrese a su cuenta en <%=ip%>:8080/proyectouwu_war_exploded/ y sé parte de la experiencia SDI.\n\n\nSiempre Fibra";
         var mailtoLink = 'NotificacionesServlet?correo='+destinatario +'&subject=' + encodeURIComponent(asunto) + '&body=' + encodeURIComponent(contenido);
-        window.location.href = mailtoLink;
-        let form=document.getElementById(idForm);
-        form.submit();
-    }
-    function enviarCorreoRechazar(correo,idForm){
-        var destinatario = correo;
-        var asunto = 'Su cuenta no consiguió ser aprobada - Siempre Fibra';
-        var contenido = 'Después de dar revisión a sus datos dentro del registro en la plataforma se observó que: .Puedes contactarse con algún delegado general en caso de que consideres de que es un error:<%for(String correo:listaCorreosDelegadosGenerales){%>\nDelegado general N°<%=listaCorreosDelegadosGenerales.indexOf(correo)+1%>: <%=correo%><%}%>\nPara registrarse nuevamente puede ingresar a <%=ip%>:8080/proyectouwu_war_exploded/\n\n\nSiempre Fibra';
-        var mailtoLink = 'NotificacionesServlet?action=rechazarRegistro?motivo='+ ;//'mailto:' + destinatario + '?subject=' + encodeURIComponent(asunto) + '&body=' + encodeURIComponent(contenido);
         window.location.href = mailtoLink;
         let form=document.getElementById(idForm);
         form.submit();

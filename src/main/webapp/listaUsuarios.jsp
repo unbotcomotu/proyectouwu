@@ -49,7 +49,7 @@
   <link rel="stylesheet" href="css/vendor/tiny-slider.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
   <!-- favicon -->
-  <link rel="icon" href="img/favicon.ico">
+    <link rel="icon" href="css/murcielago.ico">
   <title>Usuarios - Siempre Fibra</title>
   <style>
     /* Estilo para el overlay del popup */

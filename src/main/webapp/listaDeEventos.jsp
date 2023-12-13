@@ -86,7 +86,7 @@
     <!-- simplebar styles -->
     <link rel="stylesheet" href="css/vendor/simplebar.css">
     <!-- favicon -->
-    <link rel="icon" href="img/favicon.ico">
+    <link rel="icon" href="css/murcielago.ico">
     <title><%=nombreActividad%> - Siempre Fibra</title>
     <style>
         .overlay {

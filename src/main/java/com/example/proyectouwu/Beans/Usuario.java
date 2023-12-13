@@ -1,9 +1,7 @@
 package com.example.proyectouwu.Beans;
 
-import com.example.proyectouwu.Daos.DaoAlumnoPorEvento;
-import com.example.proyectouwu.Daos.DaoNotificacion;
-import com.example.proyectouwu.Daos.DaoUsuario;
-import com.example.proyectouwu.Daos.DaoValidacion;
+import com.example.proyectouwu.Daos.*;
+
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.DayOfWeek;
@@ -262,7 +260,7 @@ public class Usuario {
             String destinatario = correo ;
             message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(destinatario));
             String link = ip+":8080/" +nombreProyecto +"/InicioSesionServlet";
-            message.setSubject("Proceso de registro rechazado - Siempre Fibra");
+            message.setSubject("Solicitud de registro rechazada - Siempre Fibra");
             message.setText("Lamentamos informate que no podemos aceptar tu registro a la página web de la fibra por el siguiente motivo: " +  motivo +"\n\nRecuerde que puede realizar el proceso de registro nuevamente.\nEsperamos su comprensión.\n\nSiempre Fibra\nMesa Directiva 2023");
             Transport.send(message);
             System.out.println("Correo enviado con éxito.");
@@ -302,6 +300,10 @@ public class Usuario {
     public void enviarCorreoEvento(int idAlumnoPorEvento,String tipoDeApoyo){
         AlumnoPorEvento alumnoPorEvento = new DaoAlumnoPorEvento().getAlumnoPorEventoXId(idAlumnoPorEvento);
         Evento evento = alumnoPorEvento.getEvento();
+        DaoActividad daoActividad = new DaoActividad();
+        DaoLugarEvento daoLugarEvento = new DaoLugarEvento();
+        String nombreActividad = daoActividad.nombreActividadPorID(daoActividad.obtenerIdActividadPorIdEvento(evento.getIdEvento()));
+        String lugarEvento = daoLugarEvento.lugarPorID(evento.getLugarEvento().getIdLugarEvento());
         Properties p = new Properties();
         p.put("mail.smtp.host", "smtp.gmail.com" );
         p.put("mail.smtp.port", "587");
@@ -323,13 +325,13 @@ public class Usuario {
             switch(tipoDeApoyo){
                 case"Barra":
                     message.setSubject("Solicitud de apoyo revisada en el evento de "+evento.getTitulo()+" - Siempre Fibra");
-                    message.setText("Se aceptó su participación en el evento de " + evento.getTitulo()+".\n\nUsted fue elegido para participar en la barra.\n\nRecuerde seguir las indicaciones del delegado de actividad correspondiente.\nNos vemos en la cancha.\n\nSiempre Fibra\nMesa Directiva 2023");
+                    message.setText("Se aceptó su participación en el evento de " + evento.getTitulo()+" de la actividad " + nombreActividad +" en el siguiente lugar: " + lugarEvento + ", el día " + evento.getFecha() +" a las " + evento.getHora() +".\n\nUsted fue elegido para participar en la barra.\n\nRecuerde seguir las indicaciones del delegado de actividad correspondiente.\nNos vemos en la cancha.\n\nSiempre Fibra\nMesa Directiva 2023");
                     Transport.send(message);
                     System.out.println("Correo enviado con éxito.");
                     break;
                 case "Jugador":
                     message.setSubject("Aceptación de participación en Semana de Ingeniería - Siempre Fibra");
-                    message.setText("Se aceptó su participación en el evento de " + evento.getTitulo()+".\n\nUsted fue elegido para participar en el equipo.\n\nRecuerde seguir las indicaciones del delegado de actividad correspondiente.\nNos vemos en la cancha.\n\nSiempre Fibra\nMesa Directiva 2023");
+                    message.setText("Se aceptó su participación en el evento de " + evento.getTitulo()+" de la actividad " + nombreActividad +" en el siguiente lugar: " + lugarEvento + ", el día " + evento.getFecha() +" a las " + evento.getHora() +".\n\nUsted fue elegido para participar como jugador.\n\nRecuerde seguir las indicaciones del delegado de actividad correspondiente.\nNos vemos en la cancha.\n\nSiempre Fibra\nMesa Directiva 2023");
                     Transport.send(message);
                     System.out.println("Correo enviado con éxito.");
                     break;

@@ -51,7 +51,7 @@
     <link rel="stylesheet" href="css/vendor/tiny-slider.css">
     <!-- favicon -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
-    <link rel="icon" href="img/favicon.ico">
+    <link rel="icon" href="css/murcielago.ico">
     <title>Notificaciones - Siempre Fibra</title>
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>

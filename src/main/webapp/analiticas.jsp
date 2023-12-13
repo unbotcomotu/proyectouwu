@@ -76,7 +76,7 @@
     <!-- simplebar styles -->
     <link rel="stylesheet" href="css/vendor/simplebar.css">
     <!-- favicon -->
-    <link rel="icon" href="img/favicon.ico">
+    <link rel="icon" href="css/murcielago.ico">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <title>Analíticas - Siempre Fibra</title>
     <style>

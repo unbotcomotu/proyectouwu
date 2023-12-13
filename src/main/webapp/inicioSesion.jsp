@@ -107,7 +107,7 @@ if(popup!=null){
                                                 var input = document.getElementById("miInputInicioSesion");
                                                 var boton = document.getElementById("miBotonInicioSesion");
 
-                                                if (input.checkValidity() && input.value.endsWith("@pucp.edu.pe")) { // Verificar el campo de entrada
+                                                if (input.checkValidity() && (input.value.endsWith("@pucp.edu.pe") || input.value.endsWith("@pucp.pe")) ){ // Verificar el campo de entrada
                                                     boton.disabled = false; // Habilitar el botón
                                                 } else {
                                                     boton.disabled = true; // Deshabilitar el botón
@@ -118,7 +118,7 @@ if(popup!=null){
                                                 var input = document.getElementById("miInputRegistro");
                                                 var boton = document.getElementById("miBotonRegistro");
 
-                                                if (input.checkValidity() && input.value.endsWith("@pucp.edu.pe")) { // Verificar el campo de entrada
+                                                if (input.checkValidity() && (input.value.endsWith("@pucp.edu.pe")) || input.value.endsWith("@pucp.pe")) { // Verificar el campo de entrada
                                                     boton.disabled = false; // Habilitar el botón
                                                 } else {
                                                     boton.disabled = true; // Deshabilitar el botón

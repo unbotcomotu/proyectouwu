@@ -1998,7 +1998,7 @@
                     <select style="height: 55px;padding-left: 20px" name="idDelegadoActividadEditar" id="idDelegadoActividadEditar<%=i%>" required>
                         <option value="<%=listaActividades.get(i).getDelegadoDeActividad().getIdUsuario()%>" selected><%=new DaoUsuario().nombreCompletoUsuarioPorId(listaActividades.get(i).getDelegadoDeActividad().getIdUsuario())%></option>
                         <%for(Usuario u:listaIDyNombresDelegadosDeActividad){
-                        if(new DaoAlumnoPorEvento().verificarUsuarioApoyaActividad(listaActividades.get(i).getIdActividad(),u.getIdUsuario())){%>
+                        if(!new DaoAlumnoPorEvento().verificarUsuarioApoyaActividad(listaActividades.get(i).getIdActividad(),u.getIdUsuario())){%>
                         <option value="<%=u.getIdUsuario()%>"><%=u.getNombre()%> <%=u.getApellido()%></option>
                         <%}}%>
                     </select>

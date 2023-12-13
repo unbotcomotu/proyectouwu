@@ -7,7 +7,7 @@
     <%String idFiltroUsuario=(String) request.getAttribute("idFiltroUsuario");%>
     <%String idOrdenarUsuario=(String) request.getAttribute("idOrdenarUsuario");%>
     <%Usuario usuarioActual=(Usuario) request.getSession().getAttribute("usuario");
-  int cantidadTotalUsuarios = (int)Math.ceil((int)request.getAttribute("cantidadUsuariosTotal")/8.0);
+  int cantidadTotalUsuarios = (int)Math.ceil((int)request.getAttribute("cantidadUsuariosTotal")/12.0);
   String action = request.getParameter("action") != null ? request.getParameter("action") : "";
   Integer idUsuario=usuarioActual.getIdUsuario();
   String rolUsuario=usuarioActual.getRol();

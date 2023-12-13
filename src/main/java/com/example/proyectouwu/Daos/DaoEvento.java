@@ -82,10 +82,10 @@ public class DaoEvento extends DaoPadre {
 
     public ArrayList<Evento> listarEventos(int idActividad, int pagina) {
         ArrayList<Evento> listaEventos = new ArrayList<>();
-        String sql = "select e.idEvento,e.idLugarEvento,e.titulo,e.fecha,e.hora,e.descripcionEventoActivo,e.fraseMotivacional,e.fotoMiniatura,e.eventoFinalizado,e.eventoOculto,e.resumen,e.resultadoEvento from evento e inner join actividad a on e.idActividad=a.idActividad where a.idActividad=? limit 6 offset ?";
+        String sql = "select e.idEvento,e.idLugarEvento,e.titulo,e.fecha,e.hora,e.descripcionEventoActivo,e.fraseMotivacional,e.fotoMiniatura,e.eventoFinalizado,e.eventoOculto,e.resumen,e.resultadoEvento from evento e inner join actividad a on e.idActividad=a.idActividad where a.idActividad=? limit 12 offset ?";
         try (Connection conn=this.getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setInt(1, idActividad);
-            pstmt.setInt(2,pagina*6);
+            pstmt.setInt(2,pagina*12);
 
             try (ResultSet rs = pstmt.executeQuery()) {
                 while (rs.next()) {
@@ -142,10 +142,10 @@ public class DaoEvento extends DaoPadre {
 
     public ArrayList<Evento> listarEventosSinOcultos(int idActividad, int pagina) {
         ArrayList<Evento> listaEventos = new ArrayList<>();
-        String sql = "select e.idEvento,e.idLugarEvento,e.titulo,e.fecha,e.hora,e.descripcionEventoActivo,e.fraseMotivacional,e.fotoMiniatura,e.eventoFinalizado,e.eventoOculto,e.resumen,e.resultadoEvento from evento e inner join actividad a on e.idActividad=a.idActividad where a.idActividad=? and e.eventoOculto=false limit 6 offset ?";
+        String sql = "select e.idEvento,e.idLugarEvento,e.titulo,e.fecha,e.hora,e.descripcionEventoActivo,e.fraseMotivacional,e.fotoMiniatura,e.eventoFinalizado,e.eventoOculto,e.resumen,e.resultadoEvento from evento e inner join actividad a on e.idActividad=a.idActividad where a.idActividad=? and e.eventoOculto=false limit 12 offset ?";
         try (Connection conn=this.getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setInt(1, idActividad);
-            pstmt.setInt(2,pagina*6);
+            pstmt.setInt(2,pagina*12);
 
             try (ResultSet rs = pstmt.executeQuery()) {
                 while (rs.next()) {
@@ -513,11 +513,11 @@ public class DaoEvento extends DaoPadre {
 
     public ArrayList<Evento> buscarEventoPorNombre(String name,int idActividad, int pagina){
         ArrayList<Evento> lista = new ArrayList<>();
-        String sql = "select e.idEvento,e.idLugarEvento,e.titulo,e.fecha,e.hora,e.descripcionEventoActivo,e.fraseMotivacional,e.fotoMiniatura,e.eventoFinalizado,e.eventoOculto,e.resumen,e.resultadoEvento from evento e inner join actividad a on e.idActividad=a.idActividad where a.idActividad=? and lower(titulo) like lower(?) limit 6 offset ?";
+        String sql = "select e.idEvento,e.idLugarEvento,e.titulo,e.fecha,e.hora,e.descripcionEventoActivo,e.fraseMotivacional,e.fotoMiniatura,e.eventoFinalizado,e.eventoOculto,e.resumen,e.resultadoEvento from evento e inner join actividad a on e.idActividad=a.idActividad where a.idActividad=? and lower(titulo) like lower(?) limit 12 offset ?";
         try(Connection conn=this.getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql)){
             pstmt.setInt(1,idActividad);
             pstmt.setString(2,"%"+name+"%");
-            pstmt.setInt(3,pagina*6);
+            pstmt.setInt(3,pagina*12);
             try(ResultSet rs=pstmt.executeQuery()){
                 while(rs.next()){
                     Evento e = new Evento();
@@ -1037,10 +1037,10 @@ public class DaoEvento extends DaoPadre {
         //Se obtiene la lista total de Eventos filtrados
         ArrayList<Evento> lista = new ArrayList<>();
         for(Integer stuardotqm : idsEvento){
-            String sql = "select idEvento,idLugarEvento,titulo,fecha,hora,descripcionEventoActivo,fraseMotivacional,fotoMiniatura,eventoFinalizado,eventoOculto,resumen,resultadoEvento from evento where idEvento=? limit 6 offset ?";
+            String sql = "select idEvento,idLugarEvento,titulo,fecha,hora,descripcionEventoActivo,fraseMotivacional,fotoMiniatura,eventoFinalizado,eventoOculto,resumen,resultadoEvento from evento where idEvento=? limit 12 offset ?";
             try (Connection conn=this.getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
                 pstmt.setInt(1,stuardotqm);
-                pstmt.setInt(2,pagina*6);
+                pstmt.setInt(2,pagina*12);
                 try (ResultSet rs = pstmt.executeQuery()) {
                     if(rs.next()) {
                         Evento e = new Evento();
@@ -1171,11 +1171,11 @@ public class DaoEvento extends DaoPadre {
         }
 
         ArrayList<Evento> listaFinal = new ArrayList<>();
-        int limSup = (pagina*6) + 6;
-        if((pagina*6)+6>lista.size()){
+        int limSup = (pagina*12) + 12;
+        if((pagina*12)+12>lista.size()){
             limSup=lista.size();
         }
-        for(int i=pagina*6;i<limSup;i++){
+        for(int i=pagina*12;i<limSup;i++){
             listaFinal.add(lista.get(i));
         }
         return listaFinal;

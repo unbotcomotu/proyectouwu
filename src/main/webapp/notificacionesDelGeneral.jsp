@@ -29,9 +29,9 @@ if(idDonacionElegida!=null){
         String action = request.getParameter("action") != null ? request.getParameter("action") : "";
         String nombreCompletoUsuario=usuarioActual.getNombre()+" "+usuarioActual.getApellido();
         ArrayList<Usuario> listaSolicitudes=(ArrayList<Usuario>) request.getAttribute("listaSolicitudes");
-        int cantidadTotalPageSolicitudes =request.getAttribute("cantidadTotalSolicitudes")!= null ? (int)Math.ceil((int)request.getAttribute("cantidadTotalSolicitudes")/8.0):0;
-        int cantidadTotalPageDonaciones = request.getAttribute("cantidadTotalDonaciones") != null ? (int)Math.ceil((int)request.getAttribute("cantidadTotalDonaciones")/8.0):0;
-        int cantidadTotalPageValidacion = request.getAttribute("cantidadTotalValidaciones") != null ? (int)Math.ceil((int)request.getAttribute("cantidadTotalValidaciones")/8.0):0;
+        int cantidadTotalPageSolicitudes =request.getAttribute("cantidadTotalSolicitudes")!= null ? (int)Math.ceil((int)request.getAttribute("cantidadTotalSolicitudes")/12.0):0;
+        int cantidadTotalPageDonaciones = request.getAttribute("cantidadTotalDonaciones") != null ? (int)Math.ceil((int)request.getAttribute("cantidadTotalDonaciones")/12.0):0;
+        int cantidadTotalPageValidacion = request.getAttribute("cantidadTotalValidaciones") != null ? (int)Math.ceil((int)request.getAttribute("cantidadTotalValidaciones")/12.0):0;
         Integer pagActual = request.getAttribute("pagActual") != null ? (Integer) request.getAttribute("pagActual") : 1;
         Integer pagActualD = request.getAttribute("pagActualD") != null ? (Integer) request.getAttribute("pagActualD") : 1;
         Integer pagActualV = request.getAttribute("pagActualV") != null ? (Integer) request.getAttribute("pagActualV") : 1;

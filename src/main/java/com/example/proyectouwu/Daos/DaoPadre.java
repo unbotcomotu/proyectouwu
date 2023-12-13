@@ -18,7 +18,7 @@ public abstract class DaoPadre {
         String url = "jdbc:mysql://localhost:3306/proyecto";
         String  user = "root";
         String password = "root";
-        //return DriverManager.getConnection(url,user,password);
-    return DriverManager.getConnection("jdbc:mysql://34.133.55.193:3306/proyecto","root","nJz43/:='CEFDnO~");
+        return DriverManager.getConnection(url,user,password);
+    //return DriverManager.getConnection("jdbc:mysql://34.133.55.193:3306/proyecto","root","nJz43/:='CEFDnO~");
     }
 }

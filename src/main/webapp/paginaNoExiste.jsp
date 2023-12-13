@@ -23,7 +23,7 @@
         }
     %>
     <meta charset="utf-8">
-    <meta name="viewport" content= +"width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <!-- bootstrap 4.3.1 -->
     <link rel="stylesheet" href="css/vendor/bootstrap.min.css">
     <!-- styles -->
@@ -36,6 +36,9 @@
     <link rel="icon" href="img/favicon.ico">
     <title>Actividades - Siempre Fibra</title>
     <style>
+        .campanita{
+            width: 500px;
+        }
         .overlay {
             display: none;
             position: fixed;
@@ -144,9 +147,15 @@
         .lista a:hover {
             text-decoration: underline; /* Subrayar en el hover */
         }
-        @media screen and (max-width: 680px) {
+        @media screen and (max-width: 576px) {
             .auxResponsiveUwu{
                 display: none;
+            }
+            .popup{
+                max-width: 90%!important;
+            }
+            .campanita{
+                width: 345px;
             }
         }
         @media screen and (max-width: 777px) {
@@ -658,7 +667,7 @@
                 <!-- /ACTION LIST ITEM -->
 
                 <!-- DROPDOWN BOX -->
-                <div class="dropdown-box header-dropdown">
+                <div class="dropdown-box header-dropdown campanita">
                     <!-- DROPDOWN BOX HEADER -->
                     <div class="dropdown-box-header">
                         <!-- DROPDOWN BOX HEADER TITLE -->
@@ -841,7 +850,7 @@
                 <!-- /ACTION LIST ITEM -->
 
                 <!-- DROPDOWN BOX -->
-                <div class="dropdown-box header-dropdown">
+                <div class="dropdown-box header-dropdown campanita">
                     <!-- DROPDOWN BOX HEADER -->
                     <div class="dropdown-box-header">
                         <!-- DROPDOWN BOX HEADER TITLE -->

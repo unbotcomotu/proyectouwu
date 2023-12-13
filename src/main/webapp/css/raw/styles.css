@@ -1864,6 +1864,11 @@ textarea::placeholder {
 }
 
 @media screen and (max-width: 1070px) {
+  .grid.grid-6-6 {
+    grid-template-columns: 100%;
+    grid-template-areas: 'sidebar1'
+ 'sidebar2';
+  }
   .grid.grid-3-6-3 {
     grid-template-columns: 100%;
     grid-template-areas: 'sidebar1'

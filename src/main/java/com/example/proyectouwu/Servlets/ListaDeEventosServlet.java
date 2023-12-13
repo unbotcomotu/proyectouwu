@@ -494,53 +494,52 @@ public class ListaDeEventosServlet extends HttpServlet {
                                             request.getSession().setAttribute("escalaInvalida", "1");
                                             validacionEditar = false;
                                         }
-                                        input.close();
-                                    }
-                                    if (estadoEvento.equals("true")) {
-                                        if (updateResumen != null && updateResultado != null) {
-                                            if (updateResumen.length() > 1000) {
-                                                request.getSession().setAttribute("resumenLargo", "1");
-                                                validacionEditar = false;
+                                        if (estadoEvento.equals("true")) {
+                                            if (updateResumen != null && updateResultado != null) {
+                                                if (updateResumen.length() > 1000) {
+                                                    request.getSession().setAttribute("resumenLargo", "1");
+                                                    validacionEditar = false;
+                                                }
+                                                if (!(updateResultado.equals("Victoria") || updateResultado.equals("Derrota"))) {
+                                                    validacionEditar = false;
+                                                }
+                                                boolean updateEventoOcultoAlt = (updateEventoOcultoStr2 != null);
+                                                if (validacionEditar) {
+                                                    dEvento.editarEvento(idEvento, updateTitulo, updateResumen, updateResultado, updateEventoOcultoAlt);
+                                                } else {
+                                                    request.getSession().setAttribute("eventoElegido", idEvento);
+                                                }
                                             }
-                                            if (!(updateResultado.equals("Victoria") || updateResultado.equals("Derrota"))) {
-                                                validacionEditar = false;
+                                        } else {
+                                            if (updateLugar != null && updateDescripcionEventoActivo != null && updateFechaStr != null && updateHoraStr != null && updateFraseMotivacional != null) {
+                                                if (updateDescripcionEventoActivo.length() > 1000) {
+                                                    request.getSession().setAttribute("descripcionLarga", "1");
+                                                    validacionEditar = false;
+                                                }
+                                                if (updateFraseMotivacional.length() > 45) {
+                                                    request.getSession().setAttribute("fraseLarga", "1");
+                                                    validacionEditar = false;
+                                                }
+                                                boolean updateEventoOculto = (updateEventoOcultoStr1 != null);
+                                                int updateLugarId = dLugarEvento.idLugarPorNombre(updateLugar);
+                                                if (updateLugarId == 0) {
+                                                    validacionEditar = false;
+                                                }
+                                                Date updateFecha = null;
+                                                Time updateHora = null;
+                                                try {
+                                                    updateFecha = Date.valueOf(updateFechaStr);
+                                                    updateHora = Time.valueOf(updateHoraStr + ":00");
+                                                } catch (IllegalArgumentException e) {
+                                                    validacionEditar = false;
+                                                }
+                                                if (validacionEditar) {
+                                                    dEvento.editarEvento(idEvento, updateLugarId, updateTitulo, updateFecha, updateHora, updateDescripcionEventoActivo, updateFraseMotivacional, input, updateEventoOculto, validarLongitud);
+                                                } else {
+                                                    request.getSession().setAttribute("eventoElegido", idEvento);
+                                                }
                                             }
-                                            boolean updateEventoOcultoAlt = (updateEventoOcultoStr2 != null);
-                                            if (validacionEditar) {
-                                                dEvento.editarEvento(idEvento, updateTitulo, updateResumen, updateResultado, updateEventoOcultoAlt);
-                                            } else {
-                                                request.getSession().setAttribute("eventoElegido", idEvento);
-                                            }
-                                        }
-                                    } else {
-                                        if (updateLugar != null && updateDescripcionEventoActivo != null && updateFechaStr != null && updateHoraStr != null && updateFraseMotivacional != null) {
-                                            if (updateDescripcionEventoActivo.length() > 1000) {
-                                                request.getSession().setAttribute("descripcionLarga", "1");
-                                                validacionEditar = false;
-                                            }
-                                            if (updateFraseMotivacional.length() > 45) {
-                                                request.getSession().setAttribute("fraseLarga", "1");
-                                                validacionEditar = false;
-                                            }
-                                            boolean updateEventoOculto = (updateEventoOcultoStr1 != null);
-                                            int updateLugarId = dLugarEvento.idLugarPorNombre(updateLugar);
-                                            if (updateLugarId == 0) {
-                                                validacionEditar = false;
-                                            }
-                                            Date updateFecha = null;
-                                            Time updateHora = null;
-                                            try {
-                                                updateFecha = Date.valueOf(updateFechaStr);
-                                                updateHora = Time.valueOf(updateHoraStr + ":00");
-                                            } catch (IllegalArgumentException e) {
-                                                validacionEditar = false;
-                                            }
-                                            if (validacionEditar) {
-                                                dEvento.editarEvento(idEvento, updateLugarId, updateTitulo, updateFecha, updateHora, updateDescripcionEventoActivo, updateFraseMotivacional, input, updateEventoOculto, validarLongitud);
-                                            } else {
-                                                request.getSession().setAttribute("eventoElegido", idEvento);
-                                            }
-                                        }
+                                        }input.close();
                                     }
                                 }
                             }

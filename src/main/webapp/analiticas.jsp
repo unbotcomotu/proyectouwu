@@ -135,13 +135,41 @@
             color: #EDE8DF;
             font-weight: bold;
         }
-
+        .campanita{
+            width: 500px;
+        }
         .lista a:hover {
             text-decoration: underline; /* Subrayar en el hover */
         }
-        @media screen and (max-width: 680px) {
+        @media screen and (max-width: 576px) {
             .auxResponsiveUwu{
                 display: none;
+            }
+            .campanita{
+                 width: 345px;
+             }
+        }
+        @media screen and (max-width: 805px) {
+            .auxColumnas{
+                width: 100%!important;
+            }
+        }
+        .grid.grid-6-6{
+            grid-template-areas: 'sidebar1 sidebar2';
+            grid-template-columns: 49.3% 49.3%;
+        }
+
+        .grid.grid-6-6 > .grid-column:nth-child(1) {
+            grid-area: sidebar1;
+        }
+
+        .grid.grid-6-6 > .grid-column:nth-child(2) {
+            grid-area: sidebar2;
+        }@media screen and (max-width: 1070px) {
+            .grid.grid-6-6 {
+                grid-template-columns: 100%;
+                grid-template-areas: 'sidebar1'
+                'sidebar2';
             }
         }
     </style>
@@ -626,7 +654,7 @@
                 <!-- /ACTION LIST ITEM -->
 
                 <!-- DROPDOWN BOX -->
-                <div class="dropdown-box header-dropdown">
+                <div class="dropdown-box header-dropdown campanita">
                     <!-- DROPDOWN BOX HEADER -->
                     <div class="dropdown-box-header">
                         <!-- DROPDOWN BOX HEADER TITLE -->
@@ -1752,7 +1780,7 @@
         <!-- GRID -->
         <div class="grid grid-6-6 stretched">
             <!-- GRID COLUMN -->
-            <div class="grid-column">
+            <div class="grid-column auxColumnas">
                 <!-- widget BOX -->
                 <div class="widget-box">
                     <!-- widget BOX ACTIONS -->
@@ -1834,7 +1862,7 @@
             <!-- /GRID COLUMN -->
 
             <!-- GRID COLUMN -->
-            <div class="grid-column">
+            <div class="grid-column auxColumnas">
                 <!-- widget BOX -->
                 <div class="widget-box">
                     <!-- widget BOX ACTIONS -->

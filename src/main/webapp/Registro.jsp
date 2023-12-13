@@ -8,7 +8,64 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%Validacion validacion=(Validacion) request.getAttribute("validacion");
-    ArrayList<String> listaCorreosDelegadosGenerales=(ArrayList<String>)request.getAttribute("correosDelegadosGenerales");
+String codigoValidacion256=(String) request.getAttribute("codigoValidacion256");
+ArrayList<String> listaCorreosDelegadosGenerales=(ArrayList<String>)request.getAttribute("correosDelegadosGenerales");
+String nombresVacios=(String) request.getSession().getAttribute("nombresVacios");
+    if(nombresVacios!=null){
+        request.getSession().removeAttribute("nombresVacios");
+    }
+    String nombresLargos=(String) request.getSession().getAttribute("nombresLargos");
+    if(nombresLargos!=null){
+        request.getSession().removeAttribute("nombresLargos");
+    }
+    String apellidosVacios=(String) request.getSession().getAttribute("apellidosVacios");
+    if(apellidosVacios!=null){
+        request.getSession().removeAttribute("apellidosVacios");
+    }
+    String apellidosLargos=(String) request.getSession().getAttribute("apellidosLargos");
+    if(apellidosLargos!=null){
+        request.getSession().removeAttribute("apellidosLargos");
+    }
+    String codigoPucpVacio=(String) request.getSession().getAttribute("codigoPucpVacio");
+    if(codigoPucpVacio!=null){
+        request.getSession().removeAttribute("codigoPucpVacio");
+    }
+    String codigoPucpInvalido=(String) request.getSession().getAttribute("codigoPucpInvalido");
+    if(codigoPucpInvalido!=null){
+        request.getSession().removeAttribute("codigoPucpInvalido");
+    }
+    String codigoPucpNoNumerico=(String) request.getSession().getAttribute("codigoPucpNoNumerico");
+    if(codigoPucpNoNumerico!=null){
+        request.getSession().removeAttribute("codigoPucpNoNumerico");
+    }
+    String passwordVacio=(String) request.getSession().getAttribute("passwordVacio");
+    if(passwordVacio!=null){
+        request.getSession().removeAttribute("passwordVacio");
+    }
+    String passwordCorto=(String) request.getSession().getAttribute("passwordCorto");
+    if(passwordCorto!=null){
+        request.getSession().removeAttribute("passwordCorto");
+    }
+    String password2Vacio=(String) request.getSession().getAttribute("password2Vacio");
+    if(password2Vacio!=null){
+        request.getSession().removeAttribute("password2Vacio");
+    }
+    String passwordNoCoincide=(String) request.getSession().getAttribute("passwordNoCoincide");
+    if(passwordNoCoincide!=null){
+        request.getSession().removeAttribute("passwordNoCoincide");
+    }
+    String passwordNoValida=(String) request.getSession().getAttribute("passwordNoValida");
+    if(passwordNoValida!=null){
+        request.getSession().removeAttribute("passwordNoValida");
+    }
+    String errorRegistro=(String) request.getSession().getAttribute("errorRegistro");
+    if(errorRegistro!=null){
+        request.getSession().removeAttribute("errorRegistro");
+    }
+    String condicionNoEscogida=(String) request.getSession().getAttribute("condicionNoEscogida");
+    if(condicionNoEscogida!=null){
+        request.getSession().removeAttribute("condicionNoEscogida");
+    }
 %>
 
 <html>
@@ -74,7 +131,7 @@
                     <div class="row g-3">
 
                         <div class="col-sm-6">
-                            <label for="firstName" class="form-label texto">Nombres</label>
+                            <label for="firstName" class="form-label texto">Nombres <a style="color: red;"><%if(nombresVacios!=null){%>Ingrese su nombre<%}else if(nombresLargos!=null){%>Ingrese un nombre más corto<%}%></a></label>
                             <input type="text" class="form-control" name = "nombres" id="firstName" placeholder="" value="" required>
                             <div class="invalid-feedback texto">
                                 Por favor ingrese un nombre.
@@ -82,7 +139,7 @@
                         </div>
 
                         <div class="col-sm-6">
-                            <label for="lastName" class="form-label texto">Apellidos</label>
+                            <label for="lastName" class="form-label texto">Apellidos <a style="color: red;"><%if(apellidosVacios!=null){%>Ingrese su apellido<%}else if(apellidosLargos!=null){%>Ingrese un apellido más corto<%}%></a></label>
                             <input type="text" class="form-control" id="lastName" name="apellidos" placeholder="" value="" required>
                             <div class="invalid-feedback texto">
                                 Por favor ingrese sus apellidos.
@@ -92,7 +149,7 @@
 
 
                         <div class="col-12">
-                          <!--for="email", decia eso dentro del label-->  <label class="form-label texto">Código <span class="text-muted"></span></label>
+                          <!--for="email", decia eso dentro del label-->  <label class="form-label texto">Código <a style="color: red;"><%if(codigoPucpVacio!=null){%>Ingrese su código PUCP<%}else if(codigoPucpNoNumerico!=null){%>El código PUCP debería de contener solo dígitos<%}else if(codigoPucpInvalido!=null){%>El código PUCP debe contener 8 dígitos<%}%></a></label>
                             <input type="text" class="form-control" name ="codigoPucp" required>
                             <div class="invalid-feedback texto">
                                 Por favor ingrese un código válido.
@@ -100,7 +157,7 @@
                         </div>
 
                         <div class="col-12">
-                            <label for="password" class="form-label texto">Contraseña</label>
+                            <label for="password" class="form-label texto">Contraseña <a style="color: red;"><%if(passwordVacio!=null){%>Ingrese una contraseña<%}else if(passwordCorto!=null){%>Su contraseña debe de contener al menos 8 caracteres y un número<%}else if(passwordNoCoincide!=null){%>Las contraseñas no coinciden<%}%></a></label>
                             <input type="password" class="form-control" id="password" name="password" required>
                             <div class="invalid-feedback texto">
                                 Por favor ingrese una contraseña válida.
@@ -108,7 +165,7 @@
                         </div>
 
                         <div class="col-12">
-                            <label for="password2" class="form-label texto">Repetir Contraseña</label>
+                            <label for="password2" class="form-label texto">Repetir Contraseña <a style="color: red;"><%if(password2Vacio!=null){%>Repita su contraseña<%}else if(passwordNoCoincide!=null){%>Las contraseñas no coinciden<%}%></a></label>
                             <input type="password" class="form-control" id="password2" name="password2" required>
                             <div class="invalid-feedback texto" id="password-error">
                                 Las contraseñas no coinciden.
@@ -118,6 +175,7 @@
 
                         <div class="mb-3">
                             <input type="hidden" class="form-control" name="idCorreoValidacion" value="<%=validacion.getIdCorreoValidacion()%>">
+                            <input type="hidden" class="form-control" name="codigoValidacion256" value="<%=codigoValidacion256%>">
                         </div>
 
                         <div class="form-check">
@@ -131,12 +189,16 @@
                         </div>
 
 
-
+                        <%if(condicionNoEscogida!=null){%>
+                        <a style="color: red;">Seleccione una condición</a>
+                        <%}%>
                         <!--<button class="w-100 btn btn-primary btn-lg" type="submit">Continuar</button>-->
 
 
                         <button id="continuarButton" class="w-100 btn btn-secondary btn-lg texto" type="submit" style ="background-color: rgb(97,93,250)" disabled> <a style="color: white;" >Continuar</a> </button>
-
+                        <%if(errorRegistro!=null){%>
+                        <a class="text-center" style="color: red;font-size: 200%">Ocurrió un error desconocido durante el registro</a>
+                        <%}%>
 
                         <script>
                             const checkboxe = document.querySelectorAll('input[type=checkbox]');

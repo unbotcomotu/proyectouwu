@@ -109,9 +109,15 @@ if(idDonacionElegida!=null){
         }
     </style>
     <style>
-        @media screen and (max-width: 680px) {
+        .campanita{
+            width: 500px;
+        }
+        @media screen and (max-width: 576px) {
             .auxResponsiveUwu{
                 display: none;
+            }
+            .campanita{
+                width: 345px;
             }
         }
     </style>
@@ -643,7 +649,7 @@ if(idDonacionElegida!=null){
                 <!-- /ACTION LIST ITEM -->
 
                 <!-- DROPDOWN BOX -->
-                <div class="dropdown-box header-dropdown">
+                <div class="dropdown-box header-dropdown campanita">
                     <!-- DROPDOWN BOX HEADER -->
                     <div class="dropdown-box-header">
                         <!-- DROPDOWN BOX HEADER TITLE -->
@@ -1480,7 +1486,7 @@ if(idDonacionElegida!=null){
         <!-- /SECTION BANNER TITLE -->
 
         <!-- SECTION BANNER TEXT -->
-        <p class="section-banner-text">Aquí podrá ver las nuevas solicitudes de registro, las donaciones y los reportes</p>
+        <p class="section-banner-text">Aquí podrá ver las nuevas solicitudes de registro, las donaciones, los reportes y ¡más solicitudes!</p>
         <!-- /SECTION BANNER TEXT -->
     </div>
     <!-- /SECTION BANNER -->
@@ -2230,19 +2236,6 @@ if(idDonacionElegida!=null){
 
                 </div>
                 <!-- /NOTIFICATION BOX LIST -->
-
-                <!-- LOADER BARS -->
-                <div class="loader-bars">
-                    <div class="loader-bar"></div>
-                    <div class="loader-bar"></div>
-                    <div class="loader-bar"></div>
-                    <div class="loader-bar"></div>
-                    <div class="loader-bar"></div>
-                    <div class="loader-bar"></div>
-                    <div class="loader-bar"></div>
-                    <div class="loader-bar"></div>
-                </div>
-                <!-- /LOADER BARS -->
             </div>
             <!-- /GRID COLUMN -->
         </div>

@@ -488,9 +488,18 @@
         .bloque-derecha:hover {
             opacity: 0.5;
         }
+        .campanita{
+             width: 500px;
+         }
         @media screen and (max-width: 680px) {
             .auxResponsiveUwu{
                 display: none;
+            }
+            .campanita{
+                width: 345px;
+            }
+            .popup{
+                width: 90%!important;
             }
         }
     </style>
@@ -993,7 +1002,7 @@
                 <!-- /ACTION LIST ITEM -->
 
                 <!-- DROPDOWN BOX -->
-                <div class="dropdown-box header-dropdown">
+                <div class="dropdown-box header-dropdown campanita">
                     <!-- DROPDOWN BOX HEADER -->
                     <div class="dropdown-box-header">
                         <!-- DROPDOWN BOX HEADER TITLE -->
@@ -1177,7 +1186,7 @@
                 <!-- /ACTION LIST ITEM -->
 
                 <!-- DROPDOWN BOX -->
-                <div class="dropdown-box header-dropdown">
+                <div class="dropdown-box header-dropdown campanita">
                     <!-- DROPDOWN BOX HEADER -->
                     <div class="dropdown-box-header">
                         <!-- DROPDOWN BOX HEADER TITLE -->
@@ -1191,6 +1200,7 @@
                         <%for(NotificacionDelegadoGeneral noti:listaNotificacionesCampanita){%>
                         <form id="notificacionLeidaCampanita<%=listaNotificacionesCampanita.indexOf(noti)%>" method="post" action="PaginaNoExisteServlet?action=notificacionLeidaCampanita">
                             <input type="hidden" name="idNotificacion" value="<%=noti.getIdNotificacion()%>">
+                            <input type="hidden" name="idEvento" value="<%=e.getIdEvento()%>">
                             <input type="hidden" name="servletActual" value="<%=servletActual%>">
                             <%if(noti.getReporte().getIdReporte()!=0){
                                 Reporte r=new DaoReporte().reportePorIdReporteNotificacion(noti.getReporte().getIdReporte());%>

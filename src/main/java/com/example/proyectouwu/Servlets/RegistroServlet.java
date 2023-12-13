@@ -34,6 +34,7 @@ public class RegistroServlet extends HttpServlet {
                     validacion.setIdCorreoValidacion(Integer.parseInt(idCorreoValidacion));
                     if(codigoValidacion256.equals(new DaoValidacion().codigoValidacion256PorID(Integer.parseInt(idCorreoValidacion)))){
                         request.setAttribute("validacion",validacion);
+                        request.setAttribute("codigoValidacion256",codigoValidacion256);
                         request.getRequestDispatcher("Registro.jsp").forward(request,response);
                     }else{
                         response.sendRedirect("InicioSesionServlet");
@@ -42,10 +43,9 @@ public class RegistroServlet extends HttpServlet {
                     response.sendRedirect("InicioSesionServlet");
                 }
                 break;
-            case "registro" :
-                break;
+            default:
+                response.sendRedirect("InicioSesionServlet");
         }
-
     }
 
     @Override
@@ -54,93 +54,126 @@ public class RegistroServlet extends HttpServlet {
         //Para que un usuario se cree su cuenta
         String action = request.getParameter("action") == null ? "default" : request.getParameter("action");
         switch (action){
+            default:
             case "default":
-                //No hay nada aquí pero porsiacaso
+                response.sendRedirect("InicioSesionServlet");
                 break;
             case "registro":
                 boolean registroValido = true;
-
                 String idCorreoValidacion = request.getParameter("idCorreoValidacion")==null?"0":request.getParameter("idCorreoValidacion");
+                String codigoValidacion256 = request.getParameter("codigoValidacion256") == null ?"0": request.getParameter("codigoValidacion256");
                 String correo = new DaoValidacion().buscarCorreoPorIdCorreoValidacion(idCorreoValidacion);
-                if(correo == null){
-                    registroValido = false;
-                }
-                String opcion = "";
-
-                if(request.getParameter("nombres")==null || request.getParameter("apellidos")==null || request.getParameter("password")==null || request.getParameter("password2")==null || request.getParameter("codigoPucp")==null){
-                    registroValido = false;
-                }else{
-                    if(request.getParameter("nombres").isEmpty() || request.getParameter("apellidos").isEmpty() || request.getParameter("password").isEmpty() || request.getParameter("password2").isEmpty() || request.getParameter("codigoPucp").isEmpty()){
-                        registroValido = false;
-                    }
-
-                    if(request.getParameter("nombres").length()>45 || request.getParameter("apellidos").length()>45 || request.getParameter("codigoPucp").length()!=8){
-                        registroValido = false;
-                    }
-
-                    try{
-                        int codigoPucp = Integer.parseInt(request.getParameter("codigoPucp"));
-                    }catch (NumberFormatException e){
-                        registroValido = false;
-                    }
-
-                    if(!request.getParameter("password").equals(request.getParameter("password2"))){
-                        registroValido = false;
-                    }else{
-                        if(request.getParameter("password").length() < 8){
+                if(correo != null) {
+                    String opcion = "";
+                    String nombres=request.getParameter("nombres");
+                    String apellidos=request.getParameter("apellidos");
+                    String password=request.getParameter("password");
+                    String password2=request.getParameter("password2");
+                    String codigoPUCP=request.getParameter("codigoPucp");
+                    String opciones1=request.getParameter("opciones1");
+                    String opciones2=request.getParameter("opciones2");
+                    if(nombres!=null&&apellidos!=null&&password!=null&&password2!=null&&codigoPUCP!=null){
+                        if(nombres.isEmpty()){
+                            request.getSession().setAttribute("nombresVacios","1");
+                            registroValido=false;
+                        }else if(nombres.length()>45){
+                            request.getSession().setAttribute("nombresLargos","1");
+                            registroValido=false;
+                        }
+                        if (apellidos.isEmpty()) {
+                            request.getSession().setAttribute("apellidosVacios","1");
+                            registroValido=false;
+                        }else if(apellidos.length()>45){
+                            request.getSession().setAttribute("apellidosLargos","1");
+                            registroValido=false;
+                        }
+                        if(codigoPUCP.isEmpty()){
+                            request.getSession().setAttribute("codigoPucpVacio","1");
+                            registroValido=false;
+                        }else{
+                            try{
+                                int codigoAux=Integer.parseInt(codigoPUCP);
+                                if(codigoPUCP.length()!=8){
+                                    request.getSession().setAttribute("codigoPucpInvalido","1");
+                                    registroValido=false;
+                                }
+                            }catch (NumberFormatException e){
+                                request.getSession().setAttribute("codigoPucpNoNumerico","1");
+                                registroValido=false;
+                            }
+                        }
+                        if(password.isEmpty()||password2.isEmpty()){
+                            if(password.isEmpty()){
+                                request.getSession().setAttribute("passwordVacio","1");
+                                registroValido=false;
+                            }else if(password.length()<8){
+                                request.getSession().setAttribute("passwordCorto","1");
+                                registroValido=false;
+                            }
+                            if (password2.isEmpty()) {
+                                request.getSession().setAttribute("password2Vacio","1");
+                                registroValido=false;
+                            }
+                        }else {
+                            if(password.length()<8){
+                                request.getSession().setAttribute("passwordCorto","1");
+                                registroValido=false;
+                            }
+                            if(!password.equals(password2)){
+                                request.getSession().setAttribute("passwordNoCoincide","1");
+                                registroValido=false;
+                            }else{
+                                String regexLetra = ".*[a-zA-Z]+.*";
+                                String regexNumero = ".*\\d+.*";
+                                Pattern patronLetra = Pattern.compile(regexLetra);
+                                Pattern patronNumero = Pattern.compile(regexNumero);
+                                Matcher matcherLetra = patronLetra.matcher(password);
+                                Matcher matcherNumero = patronNumero.matcher(password);
+                                boolean contieneLetra = matcherLetra.matches();
+                                boolean contieneNumero = matcherNumero.matches();
+                                if(!(contieneLetra && contieneNumero)) {
+                                    request.getSession().setAttribute("passwordNoValida","1");
+                                    registroValido = false;
+                                }
+                            }
+                        }
+                        if(opciones1!= null &&opciones2!= null){
+                            request.getSession().setAttribute("errorRegistro","1");
                             registroValido = false;
                         }else{
-                            String regexLetra = ".*[a-zA-Z]+.*";
-                            String regexNumero = ".*\\d+.*";
-                            Pattern patronLetra = Pattern.compile(regexLetra);
-                            Pattern patronNumero = Pattern.compile(regexNumero);
-                            Matcher matcherLetra = patronLetra.matcher(request.getParameter("password"));
-                            Matcher matcherNumero = patronNumero.matcher(request.getParameter("password"));
-                            boolean contieneLetra = matcherLetra.matches();
-                            boolean contieneNumero = matcherNumero.matches();
-                            if(!(contieneLetra && contieneNumero)) {
+                            if(opciones1 != null){
+                                if(!opciones1.equals("Estudiante")){
+                                    request.getSession().setAttribute("errorRegistro","1");
+                                    registroValido = false;
+                                }else{
+                                    opcion=opciones1;
+                                }
+                            }else if(opciones2 != null){
+                                if(!opciones2.equals("Egresado")){
+                                    request.getSession().setAttribute("errorRegistro","1");
+                                    registroValido = false;
+                                }else{
+                                    opcion=opciones2;
+                                }
+                            }else{
+                                request.getSession().setAttribute("condicionNoEscogida","1");
                                 registroValido = false;
                             }
                         }
                     }
-                    if(request.getParameter("opciones1") != null && request.getParameter("opciones2") != null){
-                        registroValido = false;
-                    }else{
-                        if(request.getParameter("opciones1") != null){
-                            if(!request.getParameter("opciones1").equals("Estudiante")){
-                                registroValido = false;
-                            }else{
-                                opcion=request.getParameter("opciones1");
-                            }
-                        }else if(request.getParameter("opciones2") != null){
-                            if(!request.getParameter("opciones2").equals("Egresado")){
-                                registroValido = false;
-                            }else{
-                                opcion=request.getParameter("opciones2");
-                            }
-                        }else{
-                            registroValido = false;
-                        }
+                    if(registroValido){
+                        new DaoUsuario().registroDeAlumno(nombres,apellidos,correo,password,codigoPUCP,opcion);
+                        //Por el momento al terminar lo hacemos saltar a la vista de inicioSesion
+                        request.getSession().setAttribute("popup","5");
+                        response.sendRedirect("InicioSesionServlet");
+                    }else {
+                        response.sendRedirect("RegistroServlet?idCorreoValidacion="+idCorreoValidacion+"&codigoValidacion256="+codigoValidacion256);
                     }
-                }
-
-                if(registroValido){
-                    new DaoUsuario().registroDeAlumno(request.getParameter("nombres"),request.getParameter("apellidos"),correo,request.getParameter("password"), request.getParameter("codigoPucp"),opcion);
-                    //Por el momento al terminar lo hacemos saltar a la vista de inicioSesion
-                    request.setAttribute("popup","5");
-                    request.getRequestDispatcher("inicioSesion.jsp").forward(request,response);
-                }else if(correo!=null){
-                    DaoValidacion daoValidacion = new DaoValidacion();
-                    Validacion validacion = daoValidacion.obtenerValidacionPorCorreo(correo);
-                    request.setAttribute("correosDelegadosGenerales",new DaoUsuario().listarCorreosDelegadosGenerales());
-                    request.setAttribute("validacion",validacion);
-                    request.getRequestDispatcher("Registro.jsp").forward(request,response);
-                }else{
-                    response.sendRedirect("InicioSesionServlet");
+                }else {
+                    response.sendRedirect("RegistroServlet?idCorreoValidacion="+idCorreoValidacion+"&codigoValidacion256="+codigoValidacion256);
                 }
                 break;
         }
-
     }
 }
 

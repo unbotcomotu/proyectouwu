@@ -1469,7 +1469,7 @@
         <!-- /POST COMMENT LIST -->
         <%}else{%>
         <div class="post-comment">
-            <a style="color: gray;">No hay ningún mensaje dentro del foro del evento</a>
+            <a style="color: #6c757d;">No hay ningún mensaje dentro del foro del evento</a>
         </div>
         <%}%>
     </div>

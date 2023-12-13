@@ -27,6 +27,7 @@ public class RecuperarContrasenaSegundoCasoServlet extends HttpServlet {
                 try{
                     if(codigoValidacion256.equals(new DaoValidacion().codigoValidacion256PorID(Integer.parseInt(idCorreoValidacion)))){
                         request.setAttribute("idCorreoValidacion",Integer.parseInt(idCorreoValidacion));
+                        request.setAttribute("codigoValidacion256",codigoValidacion256);
                         RequestDispatcher rd = request.getRequestDispatcher("recuperarContrasenaPaso2.jsp");
                         //Se manda a la vista con un parametro id que lo reconocerá más adelante
                         rd.forward(request,response);
@@ -47,51 +48,64 @@ public class RecuperarContrasenaSegundoCasoServlet extends HttpServlet {
         switch (action){
             default:
             case "default":
+                response.sendRedirect("InicioSesionServlet");
                 break;
             case "correoRecuperarContrasenaSegundoPaso":
                 boolean cambioValido = true;
                 String idCorreoValidacion = request.getParameter("idCorreoValidacion")==null?"0":request.getParameter("idCorreoValidacion");
-
+                String codigoValidacion256= request.getParameter("codigoValidacion256")==null?"0":request.getParameter("codigoValidacion256");
                 String correo = new DaoValidacion().buscarCorreoPorIdCorreoValidacion2(idCorreoValidacion);
-                if(correo == null){
-                    cambioValido = false;
-                }
-
-                String password = request.getParameter("password");
-
-                if(password==null){
-                    cambioValido = false;
-                }else{
-                    if(password.isEmpty()){
-                        cambioValido = false;
-                    }
-                    if(!request.getParameter("password").equals(request.getParameter("password2"))){
-                        cambioValido = false;
-                    }else{
-                        if(request.getParameter("password").length() < 8){
-                            cambioValido = false;
-                        }else{
-                            String regexLetra = ".*[a-zA-Z]+.*";
-                            String regexNumero = ".*\\d+.*";
-                            Pattern patronLetra = Pattern.compile(regexLetra);
-                            Pattern patronNumero = Pattern.compile(regexNumero);
-                            Matcher matcherLetra = patronLetra.matcher(request.getParameter("password"));
-                            Matcher matcherNumero = patronNumero.matcher(request.getParameter("password"));
-                            boolean contieneLetra = matcherLetra.matches();
-                            boolean contieneNumero = matcherNumero.matches();
-                            if(!(contieneLetra && contieneNumero)) {
+                String password=request.getParameter("password");
+                String password2=request.getParameter("password2");
+                if(correo != null){
+                    if(password!=null&&password2!=null) {
+                        if (password.isEmpty() || password2.isEmpty()) {
+                            if (password.isEmpty()) {
+                                request.getSession().setAttribute("passwordVacio", "1");
+                                cambioValido = false;
+                            } else if (password.length() < 8) {
+                                request.getSession().setAttribute("passwordCorto", "1");
                                 cambioValido = false;
                             }
+                            if (password2.isEmpty()) {
+                                request.getSession().setAttribute("password2Vacio", "1");
+                                cambioValido = false;
+                            }
+                        } else {
+                            if (password.length() < 8) {
+                                request.getSession().setAttribute("passwordCorto", "1");
+                                cambioValido = false;
+                            }
+                            if (!password.equals(password2)) {
+                                request.getSession().setAttribute("passwordNoCoincide", "1");
+                                cambioValido = false;
+                            } else {
+                                String regexLetra = ".*[a-zA-Z]+.*";
+                                String regexNumero = ".*\\d+.*";
+                                Pattern patronLetra = Pattern.compile(regexLetra);
+                                Pattern patronNumero = Pattern.compile(regexNumero);
+                                Matcher matcherLetra = patronLetra.matcher(password);
+                                Matcher matcherNumero = patronNumero.matcher(password);
+                                boolean contieneLetra = matcherLetra.matches();
+                                boolean contieneNumero = matcherNumero.matches();
+                                if (!(contieneLetra && contieneNumero)) {
+                                    request.getSession().setAttribute("passwordNoValida", "1");
+                                    cambioValido = false;
+                                }
+                            }
                         }
+                        if(cambioValido){
+                            new DaoUsuario().actualizarContrasena(Integer.parseInt(idCorreoValidacion),password);
+                            request.getSession().setAttribute("popup","7");
+                            response.sendRedirect("InicioSesionServlet");
+                        }else {
+                            response.sendRedirect("RecuperarContrasenaSegundoCasoServlet?idCorreoValidacion="+idCorreoValidacion+"&codigoValidacion256="+codigoValidacion256);
+                        }
+                    }else {
+                        request.getSession().setAttribute("errorDesconocido","1");
+                        response.sendRedirect("RecuperarContrasenaSegundoCasoServlet?idCorreoValidacion="+idCorreoValidacion+"&codigoValidacion256="+codigoValidacion256);
                     }
-                }
-                if(cambioValido){
-                    new DaoUsuario().actualizarContrasena(Integer.parseInt(idCorreoValidacion),password);
-                    response.sendRedirect(request.getContextPath());
-                }else if(correo!=null){
-                    request.setAttribute("idCorreoValidacion",Integer.parseInt(idCorreoValidacion));
-                    request.getRequestDispatcher("recuperarContrasenaPaso2.jsp").forward(request,response);
-                }else{
+                }else {
                     response.sendRedirect("InicioSesionServlet");
                 }
                 break;

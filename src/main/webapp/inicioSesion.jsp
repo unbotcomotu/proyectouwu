@@ -10,7 +10,12 @@
 <%String popup=(String) request.getSession().getAttribute("popup");
 if(popup!=null){
     request.getSession().removeAttribute("popup");
-}%>
+}
+ArrayList<String>listaCorreosDelegadosGenerales=(ArrayList<String>)request.getSession().getAttribute("correosDelegadosGenerales");
+if(listaCorreosDelegadosGenerales!=null){
+    request.getSession().removeAttribute("correosDelegadosGenerales");
+}
+%>
 <html>
 <head>
     <meta charset="utf-8">
@@ -164,12 +169,13 @@ if(popup!=null){
             <%=request.getAttribute("motivoBan")%>
         <hr>
         Contáctese con algún delegado general:
-        <%ArrayList<String>listaCorreosDelegadosGenerales=(ArrayList<String>)request.getAttribute("correosDelegadosGenerales");%>
         <ul class="lista" style="font-size: 75%;padding-left: 10%">
             <%for(int i=0;i<listaCorreosDelegadosGenerales.size();i++){%>
             <li>Delegado general <%=(i+1)%>: <a href="mailto:<%=listaCorreosDelegadosGenerales.get(i)%>"><%=listaCorreosDelegadosGenerales.get(i)%></a></li>
             <%}%>
         </ul>
+            <%}else if(popup.equals("7")){%>
+                ¡Contraseña actualizada exitosamente!
             <%}%>
         </p>
     </div>

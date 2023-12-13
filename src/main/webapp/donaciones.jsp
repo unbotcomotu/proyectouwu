@@ -67,11 +67,16 @@
                 grid-template-columns: 49% 49% !important;
             }
         }
-
-        @media screen and (max-width: 680px) {
+        .campanita{
+            width: 500px;
+        }
+        @media screen and (max-width: 576px) {
             .auxResponsiveUwu{
                 display: none;
             }
+            .campanita{
+                 width: 345px;
+             }
         }
         /* Estilo para el overlay del popup */
         .overlay {
@@ -172,6 +177,9 @@
         @media screen and (max-width: 680px) {
             .auxResponsiveUwu{
                 display: none;
+            }
+            .popup{
+                width: 90%!important;
             }
         }
         .btn-file1 {
@@ -754,7 +762,7 @@
                 <!-- /ACTION LIST ITEM -->
 
                 <!-- DROPDOWN BOX -->
-                <div class="dropdown-box header-dropdown">
+                <div class="dropdown-box header-dropdown campanita">
                     <!-- DROPDOWN BOX HEADER -->
                     <div class="dropdown-box-header">
                         <!-- DROPDOWN BOX HEADER TITLE -->

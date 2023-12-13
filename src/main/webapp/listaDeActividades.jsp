@@ -176,17 +176,34 @@
         .lista a:hover {
             text-decoration: underline; /* Subrayar en el hover */
         }
-        @media screen and (max-width: 680px) {
+        .auxColumnas{
+             width: 100%!important;
+        }
+        .campanita{
+            width: 500px;
+        }
+        @media screen and (max-width: 576px) {
             .auxResponsiveUwu{
                 display: none;
             }
             .auxResponsive{
-                max-height: 150px!important;
+                max-height: 75px!important;
             }
             .popup{
                 max-width: 500px!important;
             }
+            .auxColumnas{
+                margin-bottom: 10px;
+                width: 50%!important;
+            }
+            .auxLabel{
+                margin-top: 10px!important;
+            }
+            .campanita{
+                 width: 345px;
+            }
         }
+
         @media screen and (max-width: 777px) {
             .recuadroTexto {
                 margin-bottom: 15px;
@@ -396,7 +413,6 @@
 
     <hr>
     <!-- MENU -->
-    <ul>
     <!-- MENU ITEM -->
     <li class="menu-item">
         <!-- MENU ITEM LINK -->
@@ -482,12 +498,6 @@
     <!-- /MENU -->
 </nav>
 <!-- /NAVIGATION WIDGET -->
-<script>
-    function enviarFormulario(idForm) {
-        var formulario = document.getElementById(idForm);
-        formulario.submit();
-    }
-</script>
 
 <!-- NAVIGATION WIDGET -->
 <nav id="navigation-widget-mobile" class="navigation-widget navigation-widget-mobile sidebar left hidden" data-simplebar>
@@ -703,7 +713,7 @@
                 <!-- /ACTION LIST ITEM -->
 
                 <!-- DROPDOWN BOX -->
-                <div class="dropdown-box header-dropdown">
+                <div class="dropdown-box header-dropdown campanita">
                     <!-- DROPDOWN BOX HEADER -->
                     <div class="dropdown-box-header">
                         <!-- DROPDOWN BOX HEADER TITLE -->
@@ -886,7 +896,7 @@
                 <!-- /ACTION LIST ITEM -->
 
                 <!-- DROPDOWN BOX -->
-                <div class="dropdown-box header-dropdown">
+                <div class="dropdown-box header-dropdown campanita">
                     <!-- DROPDOWN BOX HEADER -->
                     <div class="dropdown-box-header">
                         <!-- DROPDOWN BOX HEADER TITLE -->
@@ -2031,10 +2041,10 @@
             <div class="row">
                 <div class="col-sm-7">
                     <br>
-                    <label for="nombreCrearActividad" style="margin-top: 25px;"><b>Nombre de la actividad: <%if(nombreLargo!=null&& idActividadElegida==null){%><a style="color: red">Ingrese un nombre más corto</a><%}%></b></label>
+                    <label class="auxLabel" for="nombreCrearActividad" style="margin-top: 25px;"><b>Nombre de la actividad: <%if(nombreLargo!=null&& idActividadElegida==null){%><a style="color: red">Ingrese un nombre más corto</a><%}%></b></label>
                     <input type="text" name="nombreCrearActividad" id="nombreCrearActividad" placeholder="Actividad" required>
 
-                    <label for="idDelegadoActividadCrear" style="margin-top: 25px;"><b>Seleccionar delegado de actividad:</b></label>
+                    <label class="auxLabel" for="idDelegadoActividadCrear" style="margin-top: 25px;"><b>Seleccionar delegado de actividad:</b></label>
                     <select style="height: 55px;padding-left: 20px" name="idDelegadoActividadCrear" id="idDelegadoActividadCrear" required>
                         <%if(!listaIDyNombresDelegadosDeActividad.isEmpty()){
                             for(Usuario u:listaIDyNombresDelegadosDeActividad){%>
@@ -2044,7 +2054,7 @@
                         <%}%>
                     </select>
 
-                    <label style="margin-top: 25px;" for="puntajeCrearActividad"><b>Puntaje para el 1er lugar:</b></label>
+                    <label class="auxLabel" style="margin-top: 25px;" for="puntajeCrearActividad"><b>Puntaje para el 1er lugar:</b></label>
                     <input type="text" name="puntajeCrearActividad" id="puntajeCrearActividad" placeholder="###" required>
                     <%if(puntajeNoNumerico!=null&& idActividadElegida==null){%>
                     <a style="color: red">Debe de ingresar un valor numérico</a>
@@ -2057,22 +2067,24 @@
                     </div>
                 </div>
                 <div class="col-sm-5 contenedor2" style="top: 30px">
-                    <div class="container-fluid btn btn-file1">
-                        <div id="contenedorImagenCabeceraCrear">
-                            <img id="imagenActualCabeceraCrear" class="img-fluid auxResponsive" src="css/subirArchivo.jpg" style="max-height: 500px" alt="">
+                    <div class="row">
+                        <div class="container-fluid btn btn-file1 auxColumnas">
+                            <div id="contenedorImagenCabeceraCrear">
+                                <img id="imagenActualCabeceraCrear" class="img-fluid auxResponsive" src="css/subirArchivo.jpg" style="max-height: 500px" alt="">
+                            </div>
+                            <p style="margin-top: 10px"><b>Agregar foto de cabecera</b></p>
+                            <%if(extensionInvalidaCab!=null&& idActividadElegida==null){%><label for="inputCabeceraCrear"><a style="color: red;">Ingrese un formato e imagen correctos</a></label><%}else if(escalaInvalidaCab!=null&& idActividadElegida==null){%><label for="inputCabeceraCrear"><a style="color: red;">Ingrese una escala apropiada</a></label><%}%>
+                            <input type="file" id="inputCabeceraCrear" name="addfotoCabecera" style="background-color: white; margin-top: 25px;" accept="image/png, .jpeg, .jpg" onchange="mostrarImagen('imagenActualCabeceraCrear','contenedorImagenCabeceraCrear','inputCabeceraCrear')">
                         </div>
-                        <p style="margin-top: 10px"><b>Agregar foto de cabecera</b></p>
-                        <%if(extensionInvalidaCab!=null&& idActividadElegida==null){%><label for="inputCabeceraCrear"><a style="color: red;">Ingrese un formato e imagen correctos</a></label><%}else if(escalaInvalidaCab!=null&& idActividadElegida==null){%><label for="inputCabeceraCrear"><a style="color: red;">Ingrese una escala apropiada</a></label><%}%>
-                        <input type="file" id="inputCabeceraCrear" name="addfotoCabecera" style="background-color: white; margin-top: 25px;" accept="image/png, .jpeg, .jpg" onchange="mostrarImagen('imagenActualCabeceraCrear','contenedorImagenCabeceraCrear','inputCabeceraCrear')">
-                    </div>
-                    <br>
-                    <div class="container-fluid btn btn-file1">
-                        <div id="contenedorImagenCrear">
-                            <img id="imagenActualCrear" class="img-fluid auxResponsive" src="css/subirArchivo.jpg" style="max-height: 500px" alt="">
+                        <br>
+                        <div class="container-fluid btn btn-file1 auxColumnas">
+                            <div id="contenedorImagenCrear">
+                                <img id="imagenActualCrear" class="img-fluid auxResponsive" src="css/subirArchivo.jpg" style="max-height: 500px" alt="">
+                            </div>
+                            <p style="margin-top: 10px"><b>Agregar foto miniatura</b></p>
+                            <%if(extensionInvalidaMin!=null&& idActividadElegida==null){%><label for="inputCrear"><a style="color: red;">Ingrese un formato e imagen correctos</a></label><%}else if(escalaInvalidaMin!=null&& idActividadElegida==null){%><label for="inputCabeceraCrear"><a style="color: red;">Ingrese una escala apropiada</a></label><%}%>
+                            <input type="file" id="inputCrear" name="addfotoMiniatura" style="background-color: white; margin-top: 25px;" accept="image/png, .jpeg, .jpg" onchange="mostrarImagen('imagenActualCrear','contenedorImagenCrear','inputCrear')">
                         </div>
-                        <p style="margin-top: 10px"><b>Agregar foto miniatura</b></p>
-                        <%if(extensionInvalidaMin!=null&& idActividadElegida==null){%><label for="inputCrear"><a style="color: red;">Ingrese un formato e imagen correctos</a></label><%}else if(escalaInvalidaMin!=null&& idActividadElegida==null){%><label for="inputCabeceraCrear"><a style="color: red;">Ingrese una escala apropiada</a></label><%}%>
-                        <input type="file" id="inputCrear" name="addfotoMiniatura" style="background-color: white; margin-top: 25px;" accept="image/png, .jpeg, .jpg" onchange="mostrarImagen('imagenActualCrear','contenedorImagenCrear','inputCrear')">
                     </div>
                 </div>
             </div>
@@ -2106,10 +2118,10 @@
             <div class="row">
                 <div class="col-sm-7">
                     <br>
-                    <label style="margin-top: 25px;"><b>Nombre de la actividad: <%if(nombreLargo!=null&& idActividadElegida!=null && idActividadElegida==listaActividades.get(i).getIdActividad()){%> <a style="color: red;">Ingrese un nombre más corto</a><%}%></b></label>
+                    <label class="auxLabel" style="margin-top: 25px;"><b>Nombre de la actividad: <%if(nombreLargo!=null&& idActividadElegida!=null && idActividadElegida==listaActividades.get(i).getIdActividad()){%> <a style="color: red;">Ingrese un nombre más corto</a><%}%></b></label>
                     <input type="text" name="nombreEditarActividad" id="nombreEditarActividad<%=i%>" value="<%=listaActividades.get(i).getNombre()%>" placeholder="Actividad" required>
 
-                    <label for="idDelegadoActividadEditar<%=i%>" style="margin-top: 25px;"><b>Seleccionar delegado de actividad:</b></label>
+                    <label class="auxLabel" for="idDelegadoActividadEditar<%=i%>" style="margin-top: 25px;"><b>Seleccionar delegado de actividad:</b></label>
                     <select style="height: 55px;padding-left: 20px" name="idDelegadoActividadEditar" id="idDelegadoActividadEditar<%=i%>" required>
                         <option value="<%=listaActividades.get(i).getDelegadoDeActividad().getIdUsuario()%>" selected><%=new DaoUsuario().nombreCompletoUsuarioPorId(listaActividades.get(i).getDelegadoDeActividad().getIdUsuario())%></option>
                         <%for(Usuario u:listaIDyNombresDelegadosDeActividad){%>
@@ -2117,7 +2129,7 @@
                         <%}%>
                     </select>
 
-                    <label style="margin-top: 25px;"><b>Puntaje para el 1er lugar:</b></label>
+                    <label class="auxLabel" style="margin-top: 25px;"><b>Puntaje para el 1er lugar:</b></label>
                     <input type="text" name="puntajeEditarActividad" id="puntajeEditarActividad<%=i%>" value="<%=listaActividades.get(i).getCantPuntosPrimerLugar()%>" placeholder="###" required>
                     <%if(puntajeNoNumerico!=null && idActividadElegida!=null && idActividadElegida==listaActividades.get(i).getIdActividad()){%>
                     <a style="color: red">Debe de ingresar un valor numérico</a>
@@ -2130,24 +2142,26 @@
                     </div>
                 </div>
                 <div class="col-sm-5 contenedor2" style="top: 30px">
-                    <div class="container-fluid btn btn-file1">
-                        <div id="contenedorImagenEditar<%=i%>">
-                            <%request.getSession().setAttribute("fotoActividadCabecera"+i,listaActividades.get(i).getFotoCabecera());%>
-                            <img id="imagenActualEditar<%=i%>" class="img-fluid auxResponsive" src="Imagen?tipoDeFoto=fotoActividadCabecera&id=ActividadCabecera<%=i%>" style="max-height: 600px" alt="">
+                    <div class="row">
+                        <div class="container-fluid btn btn-file1 auxColumnas">
+                            <div id="contenedorImagenEditar<%=i%>">
+                                <%request.getSession().setAttribute("fotoActividadCabecera"+i,listaActividades.get(i).getFotoCabecera());%>
+                                <img id="imagenActualEditar<%=i%>" class="img-fluid auxResponsive" src="Imagen?tipoDeFoto=fotoActividadCabecera&id=ActividadCabecera<%=i%>" style="max-height: 600px" alt="">
+                            </div>
+                            <p style="margin-top: 10px"><b>Editar foto cabecera</b></p>
+                            <%if(extensionInvalidaCab!=null&& idActividadElegida!=null && idActividadElegida==listaActividades.get(i).getIdActividad()){%><label for="inputEditar<%=i%>"><a style="color: red;">Ingrese un formato e imagen correctos</a></label><%}else if(escalaInvalidaCab!=null&& idActividadElegida!=null && idActividadElegida==listaActividades.get(i).getIdActividad()){%><label for="inputCabeceraCrear"><a style="color: red;">Ingrese una escala apropiada</a></label><%}%>
+                            <input type="file" id="inputEditar<%=i%>" style="background-color: white; margin-top: 25px;" accept="image/png, .jpeg, .jpg" name="updateFotoCabecera" onchange="mostrarImagen('imagenActualEditar<%=i%>','contenedorImagenEditar<%=i%>','inputEditar<%=i%>')">
                         </div>
-                        <p style="margin-top: 10px"><b>Editar foto cabecera</b></p>
-                        <%if(extensionInvalidaCab!=null&& idActividadElegida!=null && idActividadElegida==listaActividades.get(i).getIdActividad()){%><label for="inputEditar<%=i%>"><a style="color: red;">Ingrese un formato e imagen correctos</a></label><%}else if(escalaInvalidaCab!=null&& idActividadElegida!=null && idActividadElegida==listaActividades.get(i).getIdActividad()){%><label for="inputCabeceraCrear"><a style="color: red;">Ingrese una escala apropiada</a></label><%}%>
-                        <input type="file" id="inputEditar<%=i%>" style="background-color: white; margin-top: 25px;" accept="image/png, .jpeg, .jpg" name="updateFotoCabecera" onchange="mostrarImagen('imagenActualEditar<%=i%>','contenedorImagenEditar<%=i%>','inputEditar<%=i%>')">
-                    </div>
-                    <br>
-                    <div class="container-fluid btn btn-file1">
-                        <div id="contenedorImagenMinEditar<%=i%>">
-                            <%request.getSession().setAttribute("fotoActividadMiniaturaEditar"+i,listaActividades.get(i).getFotoMiniatura());%>
-                            <img id="imagenActualMinEditar<%=i%>" class="img-fluid auxResponsive" src="Imagen?tipoDeFoto=fotoActividadMiniatura&id=ActividadMiniaturaEditar<%=i%>" style="max-height: 600px" alt="">
+                        <br>
+                        <div class="container-fluid btn btn-file1 auxColumnas">
+                            <div id="contenedorImagenMinEditar<%=i%>">
+                                <%request.getSession().setAttribute("fotoActividadMiniaturaEditar"+i,listaActividades.get(i).getFotoMiniatura());%>
+                                <img id="imagenActualMinEditar<%=i%>" class="img-fluid auxResponsive" src="Imagen?tipoDeFoto=fotoActividadMiniatura&id=ActividadMiniaturaEditar<%=i%>" style="max-height: 600px" alt="">
+                            </div>
+                            <p style="margin-top: 10px"><b>Editar foto miniatura</b></p>
+                            <%if(extensionInvalidaMin!=null&& idActividadElegida!=null && idActividadElegida==listaActividades.get(i).getIdActividad()){%><label for="inputMinEditar<%=i%>"><a style="color: red;">Ingrese un formato e imagen correctos</a></label><%}else if(escalaInvalidaMin!=null&& idActividadElegida!=null && idActividadElegida==listaActividades.get(i).getIdActividad()){%><label for="inputCabeceraCrear"><a style="color: red;">Ingrese una escala apropiada</a></label><%}%>
+                            <input type="file" id="inputMinEditar<%=i%>" style="background-color: white; margin-top: 25px;" accept="image/png, .jpeg, .jpg" name="updateFotoMiniatura" onchange="mostrarImagen('imagenActualMinEditar<%=i%>','contenedorImagenMinEditar<%=i%>','inputMinEditar<%=i%>')">
                         </div>
-                        <p style="margin-top: 10px"><b>Editar foto miniatura</b></p>
-                        <%if(extensionInvalidaMin!=null&& idActividadElegida!=null && idActividadElegida==listaActividades.get(i).getIdActividad()){%><label for="inputMinEditar<%=i%>"><a style="color: red;">Ingrese un formato e imagen correctos</a></label><%}else if(escalaInvalidaMin!=null&& idActividadElegida!=null && idActividadElegida==listaActividades.get(i).getIdActividad()){%><label for="inputCabeceraCrear"><a style="color: red;">Ingrese una escala apropiada</a></label><%}%>
-                        <input type="file" id="inputMinEditar<%=i%>" style="background-color: white; margin-top: 25px;" accept="image/png, .jpeg, .jpg" name="updateFotoMiniatura" onchange="mostrarImagen('imagenActualMinEditar<%=i%>','contenedorImagenMinEditar<%=i%>','inputMinEditar<%=i%>')">
                     </div>
                 </div>
             </div>
@@ -2167,6 +2181,10 @@
 </div>
 <%}}}%>
 <script>
+    function enviarFormulario(idForm) {
+        var formulario = document.getElementById(idForm);
+        formulario.submit();
+    }
     function mostrarImagen(idImagen, idImagenContainer, idInputArchivo) {
         var imagenContainer = document.getElementById(idImagenContainer);
         var imagen = document.getElementById(idImagen);

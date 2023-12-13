@@ -246,15 +246,7 @@
         .lista a:hover {
             text-decoration: underline; /* Subrayar en el hover */
         }
-        @media screen and (max-width: 577px) {
-            .contenedor2{
-                top:20px !important;
-            }
-        }
         @media screen and (max-width: 680px) {
-            .auxResponsiveUwu{
-                display: none;
-            }
             .auxResponsive{
                 max-height: 150px!important;
             }
@@ -270,6 +262,32 @@
 
             .contenedorCrear {
                 width: 80% !important;
+            }
+            .auxOption{
+                font-size: 75%;
+            }
+        }
+        .campanita{
+            width: 500px;
+        }
+        @media screen and (max-width: 576px) {
+            .auxResponsiveUwu{
+                display: none;
+            }
+            .auxResponsive{
+                max-height: 75px!important;
+            }
+            .popup{
+                max-width: 500px!important;
+            }
+            .auxLabel{
+                margin-top: 10px!important;
+            }
+            .campanita{
+                width: 345px;
+            }
+            .contenedor2{
+                top:20px !important;
             }
         }
     </style>
@@ -772,7 +790,7 @@
                 <!-- /ACTION LIST ITEM -->
 
                 <!-- DROPDOWN BOX -->
-                <div class="dropdown-box header-dropdown">
+                <div class="dropdown-box header-dropdown campanita">
                     <!-- DROPDOWN BOX HEADER -->
                     <div class="dropdown-box-header">
                         <!-- DROPDOWN BOX HEADER TITLE -->
@@ -956,7 +974,7 @@
                 <!-- /ACTION LIST ITEM -->
 
                 <!-- DROPDOWN BOX -->
-                <div class="dropdown-box header-dropdown">
+                <div class="dropdown-box header-dropdown campanita">
                     <!-- DROPDOWN BOX HEADER -->
                     <div class="dropdown-box-header">
                         <!-- DROPDOWN BOX HEADER TITLE -->
@@ -970,6 +988,7 @@
                         <%for(NotificacionDelegadoGeneral noti:listaNotificacionesCampanita){%>
                         <form id="notificacionLeidaCampanita<%=listaNotificacionesCampanita.indexOf(noti)%>" method="post" action="PaginaNoExisteServlet?action=notificacionLeidaCampanita">
                             <input type="hidden" name="idNotificacion" value="<%=noti.getIdNotificacion()%>">
+                            <input type="hidden" name="idActividad" value="<%=idActividad%>">
                             <input type="hidden" name="servletActual" value="<%=servletActual%>">
                             <%if(noti.getReporte().getIdReporte()!=0){
                                 Reporte r=new DaoReporte().reportePorIdReporteNotificacion(noti.getReporte().getIdReporte());%>
@@ -2513,30 +2532,30 @@
                 <br>
                 <input hidden name="idUsuario" value=<%=idUsuario%>>
                 <input hidden name="idActividad" value=<%=idActividad%>>
-                <label for="nombreCrearEvento" style="margin-top: 25px;"><b>Nombre del evento:</b></label>
+                <label class="auxLabel" for="nombreCrearEvento" style="margin-top: 25px;"><b>Nombre del evento:</b></label>
                 <div class="row">
                     <div class="col-5">
                         <input style="font-size: 80%" type="text" value="Fibra Tóxica VS" disabled>
                     </div>
                     <div class="col-7">
-                        <select name="addTitulo" style="height: 55px;padding-left: 20px" id="nombreCrearEvento" required>
-                            <option value="Descontrol Automático">Descontrol Automático</option>
-                            <option value="Electroshock">Electroshock</option>
-                            <option value="Hormigón Armado">Hormigón Armado</option>
-                            <option value="Huascaminas">Huascaminas</option>
-                            <option value="Maphia Cuántica">Maphia Cuántica</option>
-                            <option value="Memoria Caché">Memoria Caché</option>
-                            <option value="Naranja Mecánica">Naranja Mecánica</option>
-                            <option value="PXO Industrial">PXO Industrial</option>
-                            <option value="Todos">Todos</option>
+                        <select class="auxOption" name="addTitulo" style="height: 55px;padding-left: 20px" id="nombreCrearEvento" required>
+                            <option class="auxOption" value="Descontrol Automático">Descontrol Automático</option>
+                            <option class="auxOption" value="Electroshock">Electroshock</option>
+                            <option class="auxOption" value="Hormigón Armado">Hormigón Armado</option>
+                            <option class="auxOption" value="Huascaminas">Huascaminas</option>
+                            <option class="auxOption" value="Maphia Cuántica">Maphia Cuántica</option>
+                            <option class="auxOption" value="Memoria Caché">Memoria Caché</option>
+                            <option class="auxOption" value="Naranja Mecánica">Naranja Mecánica</option>
+                            <option class="auxOption" value="PXO Industrial">PXO Industrial</option>
+                            <option class="auxOption" value="Todos">Todos</option>
                         </select>
                     </div>
                 </div>
-                <label style="margin-top: 25px;" ><b>Frase motivacional: <%if(fraseLarga!=null&&eventoElegido==null){%><a style="color: red;">Ingrese una frase más corta</a><%}%></b></label>
+                <label class="auxLabel" style="margin-top: 25px;" ><b>Frase motivacional: <%if(fraseLarga!=null&&eventoElegido==null){%><a style="color: red;">Ingrese una frase más corta</a><%}%></b></label>
                 <input type="text" id="fraseMotivacionalCrearEvento" name="addFraseMotivacional" placeholder="Frase motivacional" required>
-                <label style="margin-top: 25px;"><b>Descripción del evento: <%if(descripcionLarga!=null&&eventoElegido==null){%><a style="color: red;">Ingrese una descripción más corta</a><%}%></b></label>
+                <label class="auxLabel" style="margin-top: 25px;"><b>Descripción del evento: <%if(descripcionLarga!=null&&eventoElegido==null){%><a style="color: red;">Ingrese una descripción más corta</a><%}%></b></label>
                 <textarea type="text" id="descripcionCrearEvento" name="addDescripcionEventoActivo" placeholder="Descripción" maxlength="1000"></textarea>
-                <div class="row" style="margin-top: 25px;">
+                <div class="row auxLabel" style="margin-top: 25px;">
                     <div class="col-6">
                         <label for="horaCrearEvento"><b>Hora:</b></label>
                         <input style="height: 55px;padding-left: 20px" type="time" id="horaCrearEvento" name="addHora" required>
@@ -2550,7 +2569,7 @@
                         </select>
                     </div>
                 </div>
-                <div class="row" style="margin-top: 25px;">
+                <div class="row auxLabel" style="margin-top: 25px;">
                     <div class="col-6">
                         <label for="fechaCrearEvento"><b>Fecha (día):</b></label>
                         <input style="height: 55px;padding-left: 20px" type="date" id="fechaCrearEvento" name="addFecha" multiple required>
@@ -2622,9 +2641,9 @@
                     <input type="hidden" name="idActividad" value=<%=idActividad%>>
                     <input type="hidden" name="idEvento" value="<%=e.getIdEvento()%>">
                     <a class="text-center"><h5>Finalizar el evento <span style="color: steelblue;">Fibra Tóxica VS </span><span style="color: #0b2e13;"><%=e.getTitulo()%></span></h5></a>
-                    <label for="resumenEvento<%=listaEventos.indexOf(e)%>" style="margin-top: 25px;"><b>Resumen:</b></label>
+                    <label class="auxLabel" for="resumenEvento<%=listaEventos.indexOf(e)%>" style="margin-top: 25px;"><b>Resumen:</b></label>
                     <textarea id="resumenEvento<%=listaEventos.indexOf(e)%>" name="finResumen" placeholder="Resumen" required></textarea>
-                    <label for="resultado2Evento<%=listaEventos.indexOf(e)%>" style="margin-top: 25px;"><b>Resultado:</b></label>
+                    <label class="auxLabel" for="resultado2Evento<%=listaEventos.indexOf(e)%>" style="margin-top: 25px;"><b>Resultado:</b></label>
                     <select style="padding: 12.5px" name="resultado" id="resultado2Evento<%=listaEventos.indexOf(e)%>" required>
                         <option value="Victoria">Victoria</option>
                         <option value="Derrota">Derrota</option>
@@ -2662,29 +2681,29 @@
                 <input hidden name="idActividad" value=<%=idActividad%>>
                 <input hidden name="idEvento" value=<%=e.getIdEvento()%>>
                 <input hidden name="estadoEvento" value=<%=e.isEventoFinalizado()%>>
-                <label for="editarNombreEvento<%=listaEventos.indexOf(e)%>" style="margin-top: 25px;"><b>Nombre del evento:</b></label>
+                <label class="auxLabel" for="editarNombreEvento<%=listaEventos.indexOf(e)%>" style="margin-top: 25px;"><b>Nombre del evento:</b></label>
                 <div class="row">
                     <div class="col-5">
                         <input style="font-size: 80%" type="text" value="Fibra Tóxica VS" disabled>
                     </div>
                     <div class="col-7">
-                        <select style="height: 55px;padding-left: 20px" name="updateTitulo" id="editarNombreEvento<%=listaEventos.indexOf(e)%>" required>
-                            <option value="Descontrol Automático" <%if(e.getTitulo().equals("Descontrol Automático")){%>selected<%}%>>Descontrol Automático</option>
-                            <option value="Electroshock" <%if(e.getTitulo().equals("Electroshock")){%>selected<%}%>>Electroshock</option>
-                            <option value="Hormigón Armado" <%if(e.getTitulo().equals("Hormigón Armado")){%>selected<%}%>>Hormigón Armado</option>
-                            <option value="Huascaminas" <%if(e.getTitulo().equals("Huascaminas")){%>selected<%}%>>Huascaminas</option>
-                            <option value="Maphia Cuántica" <%if(e.getTitulo().equals("Maphia Cuántica")){%>selected<%}%>>Maphia Cuántica</option>
-                            <option value="Memoria Caché" <%if(e.getTitulo().equals("Memoria Caché")){%>selected<%}%>>Memoria Caché</option>
-                            <option value="Naranja Mecánica" <%if(e.getTitulo().equals("Naranja Mecánica")){%>selected<%}%>>Naranja Mecánica</option>
-                            <option value="PXO Industrial" <%if(e.getTitulo().equals("PXO Industrial")){%>selected<%}%>>PXO Industrial</option>
-                            <option value="Todos" <%if(e.getTitulo().equals("Todos")){%>selected<%}%>>Todos</option>
+                        <select class="auxOption" style="height: 55px;padding-left: 20px" name="updateTitulo" id="editarNombreEvento<%=listaEventos.indexOf(e)%>" required>
+                            <option class="auxOption" value="Descontrol Automático" <%if(e.getTitulo().equals("Descontrol Automático")){%>selected<%}%>>Descontrol Automático</option>
+                            <option class="auxOption" value="Electroshock" <%if(e.getTitulo().equals("Electroshock")){%>selected<%}%>>Electroshock</option>
+                            <option class="auxOption" value="Hormigón Armado" <%if(e.getTitulo().equals("Hormigón Armado")){%>selected<%}%>>Hormigón Armado</option>
+                            <option class="auxOption" value="Huascaminas" <%if(e.getTitulo().equals("Huascaminas")){%>selected<%}%>>Huascaminas</option>
+                            <option class="auxOption" value="Maphia Cuántica" <%if(e.getTitulo().equals("Maphia Cuántica")){%>selected<%}%>>Maphia Cuántica</option>
+                            <option class="auxOption" value="Memoria Caché" <%if(e.getTitulo().equals("Memoria Caché")){%>selected<%}%>>Memoria Caché</option>
+                            <option class="auxOption" value="Naranja Mecánica" <%if(e.getTitulo().equals("Naranja Mecánica")){%>selected<%}%>>Naranja Mecánica</option>
+                            <option class="auxOption" value="PXO Industrial" <%if(e.getTitulo().equals("PXO Industrial")){%>selected<%}%>>PXO Industrial</option>
+                            <option class="auxOption" value="Todos" <%if(e.getTitulo().equals("Todos")){%>selected<%}%>>Todos</option>
                         </select>
                     </div>
                 </div>
                 <%if(e.isEventoFinalizado()){%>
-                <label style="margin-top: 25px;" ><b>Resumen: <%if(resumenLargo!=null&&eventoElegido!=null&&eventoElegido==e.getIdEvento()){%><a style="color: red;">Ingrese un resumen más corto</a><%}%></b></label>
+                <label class="auxLabel" style="margin-top: 25px;" ><b>Resumen: <%if(resumenLargo!=null&&eventoElegido!=null&&eventoElegido==e.getIdEvento()){%><a style="color: red;">Ingrese un resumen más corto</a><%}%></b></label>
                 <input type="text" id="editarResumenEvento<%=listaEventos.indexOf(e)%>" name="updateResumen" placeholder="Resumen" value="<%=e.getResumen()%>" required>
-                <label for="resultado" style="margin-top: 25px;" ><b>Resultado:</b></label>
+                <label class="auxLabel" for="resultado" style="margin-top: 25px;" ><b>Resultado:</b></label>
                 <select style="padding: 12.5px" name="updateResultado" id="resultado" required>
                     <%if(e.getResultadoEvento().equals("Derrota")){%>
                     <option value="Derrota">Derrota</option>
@@ -2697,11 +2716,11 @@
                 <p style="width: 100%; margin-top: 25px;"><b>Ocultar evento:</b></p>
                 <input type="checkbox" name="updateEventoOcultoAlt" style="width: 30%; position: relative; top: 15px; left: 120px;" <%if(e.isEventoOculto()){%>checked<%}%>>
                 <%}else{%>
-                <label style="margin-top: 25px;" ><b>Frase motivacional: <%if(fraseLarga!=null&&eventoElegido!=null&&eventoElegido==e.getIdEvento()){%><a style="color: red;">Ingrese una frase más corta</a><%}%></b></label>
+                <label class="auxLabel" style="margin-top: 25px;" ><b>Frase motivacional: <%if(fraseLarga!=null&&eventoElegido!=null&&eventoElegido==e.getIdEvento()){%><a style="color: red;">Ingrese una frase más corta</a><%}%></b></label>
                 <input type="text" id="editarFraseMotivacionalEvento<%=listaEventos.indexOf(e)%>" name="updateFraseMotivacional" placeholder="Frase motivacional" value="<%=e.getFraseMotivacional()%>" required>
-                <label style="margin-top: 25px;"><b>Descripción del evento: <%if(descripcionLarga!=null&&eventoElegido!=null&&eventoElegido==e.getIdEvento()){%><a style="color: red;">Ingrese una descripción más corta</a><%}%></b></label>
+                <label class="auxLabel" style="margin-top: 25px;"><b>Descripción del evento: <%if(descripcionLarga!=null&&eventoElegido!=null&&eventoElegido==e.getIdEvento()){%><a style="color: red;">Ingrese una descripción más corta</a><%}%></b></label>
                 <textarea type="text" id="editarDescripcionEvento<%=listaEventos.indexOf(e)%>" name="updateDescripcionEventoActivo" placeholder="Descripción" ><%=e.getDescripcionEventoActivo()%></textarea>
-                <div class="row" style="margin-top: 25px;">
+                <div class="row auxLabel" style="margin-top: 25px;">
                     <div class="col-6">
                         <label for="editarHoraEvento<%=listaEventos.indexOf(e)%>"><b>Hora:</b></label>
                         <input style="height: 55px;padding-left: 20px;font-size: 0.875rem;line-height: 1.7142857143em;font-weight: 500;" type="time" id="editarHoraEvento<%=listaEventos.indexOf(e)%>" name="updateHora" value="<%=e.getHora().toString().split(":")[0]+":"+e.getHora().toString().split(":")[1]%>" maxlength="1000" required>
@@ -2715,7 +2734,7 @@
                         </select>
                     </div>
                 </div>
-                <div class="row" style="margin-top: 25px;">
+                <div class="row auxLabel" style="margin-top: 25px;">
                     <div class="col-6">
                         <label><b>Fecha (día):</b></label>
                         <input style="height: 55px;padding-left: 20px;font-size: 0.875rem;line-height: 1.7142857143em;font-weight: 500;" type="date" name="updateFecha" multiple id="editarFechaEvento<%=listaEventos.indexOf(e)%>" value="<%=e.getFecha()%>" required>

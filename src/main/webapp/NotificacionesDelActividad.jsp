@@ -56,9 +56,18 @@
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <style>
+        .campanita{
+            width: 500px;
+        }
         @media screen and (max-width: 680px) {
             .auxResponsiveUwu{
                 display: none;
+            }
+            .popup{
+                max-width: 90%!important;
+            }
+            .campanita{
+                width: 345px;
             }
         }
         .overlay {
@@ -606,7 +615,7 @@
                 <!-- /ACTION LIST ITEM -->
 
                 <!-- DROPDOWN BOX -->
-                <div class="dropdown-box header-dropdown">
+                <div class="dropdown-box header-dropdown campanita">
                     <!-- DROPDOWN BOX HEADER -->
                     <div class="dropdown-box-header">
                         <!-- DROPDOWN BOX HEADER TITLE -->

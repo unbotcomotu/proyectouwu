@@ -144,6 +144,20 @@
     .lista a:hover {
       text-decoration: underline; /* Subrayar en el hover */
     }
+    .campanita{
+        width: 500px;
+    }
+    @media screen and (max-width:576px){
+        .auxResponsiveUwu{
+            display: none;
+        }
+        .popup{
+            width: 90%!important;
+        }
+        .campanita{
+            width: 345px;
+        }
+    }
   </style>
 </head>
 <body>
@@ -627,7 +641,7 @@
                 <!-- /ACTION LIST ITEM -->
 
                 <!-- DROPDOWN BOX -->
-                <div class="dropdown-box header-dropdown">
+                <div class="dropdown-box header-dropdown campanita">
                     <!-- DROPDOWN BOX HEADER -->
                     <div class="dropdown-box-header">
                         <!-- DROPDOWN BOX HEADER TITLE -->

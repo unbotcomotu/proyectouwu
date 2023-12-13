@@ -28,9 +28,11 @@ public class RecuperarContrasenaPrimerPasoServlet extends HttpServlet {
              if(correo2!=null){
                  DaoValidacion daoValidacion = new DaoValidacion();
                  if(new DaoUsuario().obtenerIdRegistradoPorCorreo(correo2) != 0) {
-                     daoValidacion.agregarCorreoParaRecuperarContrasena(correo2);
-                     request.getSession().setAttribute("popup","2");
-                     response.sendRedirect("InicioSesionServlet");
+                     if( new DaoValidacion().cantidadValidacionXCorreoTipo(correo2, "recuperarContrasena") == 0){
+                         daoValidacion.agregarCorreoParaRecuperarContrasena(correo2);
+                     }
+                         request.getSession().setAttribute("popup", "2");
+                         response.sendRedirect("InicioSesionServlet");
                  }else{
                      request.getSession().setAttribute("correoNoExiste","1");
                      response.sendRedirect("RecuperarContrasenaPrimerPasoServlet");

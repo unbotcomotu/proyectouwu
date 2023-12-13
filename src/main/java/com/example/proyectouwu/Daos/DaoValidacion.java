@@ -85,7 +85,7 @@ public class DaoValidacion extends DaoPadre {
 
     public Validacion obtenerValidacionPorCorreo(String correo){
         Validacion validacion = new Validacion();
-        String sql = "select idCorreoValidacion, codigoValidacion256 from validacion where correo = ? and tipo = ?";
+        String sql = "select idCorreoValidacion, codigoValidacion256 from validacion where correo = ? and tipo = ? and linkUsado = false";
         try (Connection conn=this.getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setString(1, correo);
             pstmt.setString(2, "enviarLinkACorreo");

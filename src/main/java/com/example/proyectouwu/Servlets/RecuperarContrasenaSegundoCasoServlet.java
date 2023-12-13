@@ -18,26 +18,31 @@ public class RecuperarContrasenaSegundoCasoServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.setContentType("text/html");
         String action = request.getParameter("action") == null ? "default" : request.getParameter("action");
-        switch (action) {
-            default:
-            case "default":
+        boolean linkUsado = new DaoValidacion().getLinkUsadoxIdCorreoValidacion((int) Integer.parseInt(request.getParameter("idCorreoValidacion")));
+        if( !linkUsado ) {
+            switch (action) {
+                default:
+                case "default":
 //                request.getRequestDispatcher("inicioSesion.jsp").forward(request,response);
-                String idCorreoValidacion = request.getParameter("idCorreoValidacion");
-                String codigoValidacion256 = request.getParameter("codigoValidacion256");
-                try{
-                    if(codigoValidacion256.equals(new DaoValidacion().codigoValidacion256PorID(Integer.parseInt(idCorreoValidacion)))){
-                        request.setAttribute("idCorreoValidacion",Integer.parseInt(idCorreoValidacion));
-                        request.setAttribute("codigoValidacion256",codigoValidacion256);
-                        RequestDispatcher rd = request.getRequestDispatcher("recuperarContrasenaPaso2.jsp");
-                        //Se manda a la vista con un parametro id que lo reconocerá más adelante
-                        rd.forward(request,response);
-                    }else{
+                    String idCorreoValidacion = request.getParameter("idCorreoValidacion");
+                    String codigoValidacion256 = request.getParameter("codigoValidacion256");
+                    try {
+                        if (codigoValidacion256.equals(new DaoValidacion().codigoValidacion256PorID(Integer.parseInt(idCorreoValidacion)))) {
+                            request.setAttribute("idCorreoValidacion", Integer.parseInt(idCorreoValidacion));
+                            request.setAttribute("codigoValidacion256", codigoValidacion256);
+                            RequestDispatcher rd = request.getRequestDispatcher("recuperarContrasenaPaso2.jsp");
+                            //Se manda a la vista con un parametro id que lo reconocerá más adelante
+                            rd.forward(request, response);
+                        } else {
+                            response.sendRedirect("InicioSesionServlet");
+                        }
+                    } catch (NumberFormatException e) {
                         response.sendRedirect("InicioSesionServlet");
                     }
-                }catch (NumberFormatException e){
-                    response.sendRedirect("InicioSesionServlet");
-                }
-                break;
+                    break;
+            }
+        }else{
+            response.sendRedirect("InicioSesionServlet");
         }
     }
 
@@ -96,6 +101,7 @@ public class RecuperarContrasenaSegundoCasoServlet extends HttpServlet {
                         }
                         if(cambioValido){
                             new DaoUsuario().actualizarContrasena(Integer.parseInt(idCorreoValidacion),password);
+                            new DaoValidacion().updateLinkUsado((int) Integer.parseInt(request.getParameter("idCorreoValidacion")));
                             request.getSession().setAttribute("popup","7");
                             response.sendRedirect("InicioSesionServlet");
                         }else {

@@ -20,6 +20,7 @@ public class EventoServlet extends HttpServlet {
         DaoUsuario dUsuario=new DaoUsuario();
         DaoEvento dEvento=new DaoEvento();
         DaoActividad dActividad = new DaoActividad();
+        DaoAlumnoPorEvento dAE=new DaoAlumnoPorEvento();
         Usuario usuario=(Usuario) request.getSession().getAttribute("usuario");
         if(usuario==null){
             response.sendRedirect("InicioSesionServlet");
@@ -44,6 +45,7 @@ public class EventoServlet extends HttpServlet {
                     request.setAttribute("cantidadApoyos", dEvento.cantidadApoyosBarraEquipoPorEvento(idEvento));
                     request.setAttribute("solicitudesApoyoPendientes", dEvento.solicitudesSinAtenderPorEvento(idEvento));
                     request.setAttribute("listaDeMensajes", dEvento.listarMensajes(idEvento));
+                    request.setAttribute("listaDeApoyos",dAE.listaDeApoyosPorEvento(idEvento));
                     if (rolUsuario.equals("Delegado General")) {
                         request.setAttribute("listaNotificacionesCampanita", new DaoNotificacion().listarNotificacionesDelegadoGeneral());
                     } else if (rolUsuario.equals("Delegado de Actividad")) {
@@ -72,6 +74,7 @@ public class EventoServlet extends HttpServlet {
         Usuario usuario=(Usuario) request.getSession().getAttribute("usuario");
         DaoFotoEventoCarrusel dF=new DaoFotoEventoCarrusel();
         DaoEvento dE=new DaoEvento();
+        DaoAlumnoPorEvento dAE=new DaoAlumnoPorEvento();
         if(usuario==null){
             response.sendRedirect("InicioSesionServlet");
         }else {
@@ -92,7 +95,9 @@ public class EventoServlet extends HttpServlet {
                             response.sendRedirect("PaginaNoExisteServlet");
                             break;
                         case "apoyoEvento":
-                            new DaoAlumnoPorEvento().usuarioApoyaEvento(usuario.getIdUsuario(),idEvento);
+                            if(dAE.verificacionParaApoyarEvento(usuario.getIdUsuario(), idEvento)){
+                                dAE.usuarioApoyaEvento(usuario.getIdUsuario(),idEvento);
+                            }
                             //<a href="/proyectouwu_war_exploded/EventoServlet?idEvento=6&amp;idUsuario=17">
                             //http://localhost:8080/proyectouwu_war_exploded/EventoServlet?idEvento=6&idUsuario=17
                             response.sendRedirect(request.getContextPath()+"/EventoServlet?idEvento="+idEvento);
@@ -136,6 +141,7 @@ public class EventoServlet extends HttpServlet {
                                 boolean validacion=true;
                                 if(mensaje.length()>1000){
                                     request.getSession().setAttribute("mensajeLargo","1");
+                                    request.getSession().setAttribute("mensaje",mensaje);
                                     validacion=false;
                                 }
                                 if(validacion){
@@ -147,14 +153,17 @@ public class EventoServlet extends HttpServlet {
                             break;
                         case "reportar":
                             String motivo=request.getParameter("motivoReporte");
-                            if(motivo!=null){
+                            String tipoReporte=request.getParameter("tipoReporte");
+                            String idUsuarioAReportar=request.getParameter("idUsuarioReportado");
+                            if(motivo!=null&&tipoReporte!=null&&idUsuarioAReportar!=null){
                                 boolean validacionReportar=true;
                                 if(motivo.length()>1000){
                                     request.getSession().setAttribute("reporteLargo","1");
+                                    request.getSession().setAttribute("motivo",motivo);
+                                    request.getSession().setAttribute("isUsuarioReportado",idUsuarioAReportar);
                                     validacionReportar=false;
                                 }
-                                String idUsuarioAReportar=request.getParameter("idUsuarioReportado");
-                                if(idUsuarioAReportar!=null&&dUsuario.esBaneable(idUsuarioAReportar)&&validacionReportar){
+                                if(dUsuario.esBaneable(idUsuarioAReportar)&&validacionReportar){
                                     dR.reportarUsuario(idUsuarioAReportar,usuario.getIdUsuario(),motivo);
                                 }
                                 request.getSession().setAttribute("abrirChat","1");

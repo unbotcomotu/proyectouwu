@@ -69,6 +69,7 @@ String codigoValidacion256=(String) request.getAttribute("codigoValidacion256");
 
     <!-- Custom styles for this template -->
     <link href="form-validation.css" rel="stylesheet">
+    <link rel="icon" href="css/murcielago.ico">
 </head>
 <body> <!--class="bg-light", no se porque dice eso-->
 <div class="container">

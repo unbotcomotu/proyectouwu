@@ -91,6 +91,7 @@ if(correoNoExiste!=null){
 
     <!-- Custom styles for this template -->
     <link href="form-validation.css" rel="stylesheet">
+    <link rel="icon" href="css/murcielago.ico">
 </head>
 <body>
 

@@ -242,7 +242,7 @@ public class DaoDonacion extends DaoPadre  {
         }
     }
 
-    public void borrar(String idDonacion) throws SQLException {
+    public void borrar(String idDonacion){
 
         String sql = "update donacion set estadoDonacion = 'Rechazado', fechaHoraValidado = now() where idDonacion = ?";
 
@@ -251,6 +251,8 @@ public class DaoDonacion extends DaoPadre  {
             pstmt.setString(1,idDonacion);
             pstmt.executeUpdate();
 
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
         }
     }
         public float donacionesTotalesEgresados(){

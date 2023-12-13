@@ -15,12 +15,17 @@ ArrayList<String>listaCorreosDelegadosGenerales=(ArrayList<String>)request.getSe
 if(listaCorreosDelegadosGenerales!=null){
     request.getSession().removeAttribute("correosDelegadosGenerales");
 }
+String motivoBan=(String) request.getSession().getAttribute("motivoBan");
+if(motivoBan!=null){
+    request.getSession().removeAttribute("motivoBan");
+}
 %>
 <html>
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="css/style_aux.css" type="text/css">
+    <link rel="icon" href="css/murcielago.ico">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
     <title>Inicio de sesión - Siempre Fibra</title>
     <style>
@@ -166,7 +171,7 @@ if(listaCorreosDelegadosGenerales!=null){
             <%}else if(popup.equals("6")){%>
                 Usted se encuentra actualmente baneado en la plataforma debido al siguiente motivo:
         <hr>
-            <%=request.getAttribute("motivoBan")%>
+            <%=motivoBan%>
         <hr>
         Contáctese con algún delegado general:
         <ul class="lista" style="font-size: 75%;padding-left: 10%">

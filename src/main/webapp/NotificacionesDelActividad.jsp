@@ -51,7 +51,7 @@
     <link rel="stylesheet" href="css/vendor/tiny-slider.css">
     <!-- favicon -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
-    <link rel="icon" href="img/favicon.ico">
+    <link rel="icon" href="css/murcielago.ico">
     <title>Notificaciones - Siempre Fibra</title>
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -911,6 +911,11 @@
                     <!-- USER SHORT DESCRIPTION TEXT -->
                     <p class="user-short-description-text" style="text-transform: lowercase;"> <%= usuarioOWO.correoUsuarioPorId(alumnoPorEvento.getAlumno().getIdUsuario())%>  </p>
                     <!-- /USER SHORT DESCRIPTION TEXT -->
+
+                    <!-- USER SHORT DESCRIPTION TEXT -->
+                    <p class="user-short-description-text" style="text-transform: lowercase;"> <%= alumnoPorEvento.getFechaSolicitud()%>  </p>
+                    <!-- /USER SHORT DESCRIPTION TEXT -->
+
                     <div style="display: flex;justify-content: center;margin-top: 20px">
                         <button onclick="popupFunc('popupSeguro<%=listaSolicitudesApoyo.indexOf(alumnoPorEvento)%>',['cerrarPopupSeguro<%=listaSolicitudesApoyo.indexOf(alumnoPorEvento)%>'],'overlaySeguro<%=listaSolicitudesApoyo.indexOf(alumnoPorEvento)%>')" style="width: 40px;background: none;border:0;color: inherit"><img src="css/iconoSeguro.png" style="width: 100%;" alt=""></button>
                     </div>

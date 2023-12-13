@@ -358,11 +358,7 @@ public class NotificacionesServlet extends HttpServlet {
                             Donacion donacion1 = daoDonacion.buscarPorId(idd);
 
                             if(donacion1 != null){
-                                try {
-                                    daoDonacion.borrar(idd);
-                                } catch (SQLException e) {
-                                    System.out.println("Log: excepcion: " + e.getMessage());
-                                }
+                                daoDonacion.borrar(idd);
                             }
                             response.sendRedirect("NotificacionesServlet?vistaActualNueva=Donaciones");
                         }else{
@@ -423,14 +419,11 @@ public class NotificacionesServlet extends HttpServlet {
                     }
 
                     break;
-                case "filtrarFechaDelegadoGeneral":
-                    break;
                 case "aceptarSolicitudApoyo":
 
                     String idAlumnoPorEventoStr = request.getParameter("idAlumnoPorEvento");
                     DaoAlumnoPorEvento daoAlumnoPorEvento = new DaoAlumnoPorEvento();
                     String tipoDeApoyo=request.getParameter("tipoDeApoyo");
-
                     if (idAlumnoPorEventoStr!=null && tipoDeApoyo!=null){
 
                         if (idAlumnoPorEventoStr.matches("\\d+") && (tipoDeApoyo.equals("Barra") || tipoDeApoyo.equals("Jugador")) && daoAlumnoPorEvento.existeAlumnoPorEvento(idAlumnoPorEventoStr)){

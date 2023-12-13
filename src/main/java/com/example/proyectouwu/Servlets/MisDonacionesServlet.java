@@ -93,7 +93,7 @@ public class MisDonacionesServlet extends HttpServlet {
                                 String nombreY= partY.getSubmittedFileName();
                                 if(inputY.available()<10||!io.isImageFile(nombreY)){
                                     request.getSession().setAttribute("extensionInvalidaY","1");
-                                }else{
+                                }else if(medioPago.equals("Yape")){
                                     request.getSession().setAttribute("confirmacion","1");
                                     daoDonacion.agregarDonacionUsuario(usuario.getIdUsuario(),medioPago,monto,inputY);
                                 }
@@ -104,7 +104,7 @@ public class MisDonacionesServlet extends HttpServlet {
                                 String nombreP= partP.getSubmittedFileName();
                                 if(inputP.available()<10||!io.isImageFile(nombreP)){
                                     request.getSession().setAttribute("extensionInvalidaP","1");
-                                }else{
+                                }else if(medioPago.equals("Plin")){
                                     request.getSession().setAttribute("confirmacion","1");
                                     daoDonacion.agregarDonacionUsuario(usuario.getIdUsuario(),medioPago,monto,inputP);
                                 }

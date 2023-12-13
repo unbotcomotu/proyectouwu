@@ -1,9 +1,7 @@
 package com.example.proyectouwu.Beans;
 
-import com.example.proyectouwu.Daos.DaoAlumnoPorEvento;
-import com.example.proyectouwu.Daos.DaoNotificacion;
-import com.example.proyectouwu.Daos.DaoUsuario;
-import com.example.proyectouwu.Daos.DaoValidacion;
+import com.example.proyectouwu.Daos.*;
+
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.DayOfWeek;
@@ -158,7 +156,7 @@ public class Usuario {
     public void setRecibioKit(boolean recibioKit) {
         this.recibioKit = recibioKit;
     }
-    public static String  ip = "35.193.29.250";
+    public static String  ip = "34.136.47.112";
     public static String nombreProyecto="SemanaDeIngenieria" ;
     //Metodo extra
     public void enviarCorreo(String idValidacion){
@@ -187,23 +185,23 @@ public class Usuario {
             switch(tipoValidacion){
                 case"enviarLinkACorreo":
                     link = ip+":8080/"+ nombreProyecto +"/RegistroServlet?idCorreoValidacion=" + validacion.getIdCorreoValidacion() + "&codigoValidacion256=" + validacion.getCodigoValidacion256();
-                    message.setSubject("Solicitud de verificación de correo electrónico - Siempre Fibra");
-                    message.setText("¡Continua con tu registro! Haz clic en el siguiente link y completa tus datos : "+  link );
+                    message.setSubject("Verificación de correo electrónico durante registro - Siempre Fibra");
+                    message.setText("¡Continua con tu registro! Haz clic en el siguiente link y completa tus datos: \n" +  link +"\n\nRecuerde que el uso de este link es único por solicitud de registro\n\nSiempre Fibra\nMesa Directiva 2023");
                     Transport.send(message);
                     System.out.println("Correo enviado con éxito.");
                     break;
                 case "recuperarContrasena":
                     link = ip+":8080/"+ nombreProyecto +"/RecuperarContrasenaSegundoCasoServlet?idCorreoValidacion=" + validacion.getIdCorreoValidacion() + "&codigoValidacion256=" + validacion.getCodigoValidacion256();
                     message.setSubject("Solicitud de recuperación de contraseña - Siempre Fibra ");
-                    message.setText("¡Continúa con el proceso de recuperación de contraseña! Haz clic en el siguiente link e ingrese su nueva contraseña:"+ link );
+                    message.setText("¡Continúa con el proceso de recuperación de contraseña! Haz clic en el siguiente link e ingrese su nueva contraseña:\n"+ link +"\n\nSiempre Fibra\nMesa Directiva 2023");
                     Transport.send(message);
                     System.out.println("Correo enviado con éxito.");
                     break;
                 case "NecesitaUnKit":
                     String fecha = obtenerFechaManana() ;
-                    message.setSubject("Te ganaste el kit-teleco - Siempre Fibra");
-                    message.setText("Felicidades , demostraste ser un real seguidor de la fibra con tu constante apoyo . Por tal motivo , queremos recompensarte con un kit teleco. \n" +
-                            "Podrás recojer  tu kit en la bati (primer piso del V) , el día : "+ fecha + " a las 3pm");
+                    message.setSubject("Te ganaste el kit teleco - Siempre Fibra");
+                    message.setText("¡Felicidades! Demostraste ser un real seguidor de la fibra con tu constante apoyo. Por tal motivo, queremos recompensarte con un kit teleco. \n" +
+                            "Podrás recoger tu kit en la bati (primer piso del V) el día : "+ fecha + " a las 3pm.\n\nEn caso no sea posible su asistencia tal día, responda el correo indicando sus fechas tentativas.\n\nSiempre Fibra\nMesa Directiva 2023");
                     Transport.send(message);
                     System.out.println("Correo enviado con éxito.");
                     break;
@@ -233,8 +231,8 @@ public class Usuario {
             message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(destinatario));
             String link = ip+":8080/"+nombreProyecto + "/InicioSesionServlet";
             message.setSubject("Proceso de registro completado - Siempre Fibra");
-            message.setText("Bienvenido a la página web de la Fibra durante semana de Ingeniería , aquí podrás observar los resultados y la gestión de todos los eventos durante la semana de ingeniería " +
-                    " Dale clic aquí para continuar : " +  link );
+            message.setText("¡Bienvenido a la plataforma web de la Fibra!\nAquí podrás observar los resultados y la gestión de todos los eventos durante la realización de las actividades.\n\nEsperamos su participación activa durante Semana de Ingeniería." +
+                    " Dale clic aquí para continuar: \n" +  link +"\n\nSiempre Fibra\nMesa Directiva 2023");
             Transport.send(message);
             System.out.println("Correo enviado con éxito.");
 
@@ -262,8 +260,8 @@ public class Usuario {
             String destinatario = correo ;
             message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(destinatario));
             String link = ip+":8080/" +nombreProyecto +"/InicioSesionServlet";
-            message.setSubject("Proceso de registro rechazado - Siempre Fibra");
-            message.setText("Lamentamos informate que no podemos dejarte ingresar a la página web de la fibra por el siguiente motivo : " +  motivo );
+            message.setSubject("Solicitud de registro rechazada - Siempre Fibra");
+            message.setText("Lamentamos informate que no podemos aceptar tu registro a la página web de la fibra por el siguiente motivo: " +  motivo +"\n\nRecuerde que puede realizar el proceso de registro nuevamente.\nEsperamos su comprensión.\n\nSiempre Fibra\nMesa Directiva 2023");
             Transport.send(message);
             System.out.println("Correo enviado con éxito.");
 
@@ -302,6 +300,10 @@ public class Usuario {
     public void enviarCorreoEvento(int idAlumnoPorEvento,String tipoDeApoyo){
         AlumnoPorEvento alumnoPorEvento = new DaoAlumnoPorEvento().getAlumnoPorEventoXId(idAlumnoPorEvento);
         Evento evento = alumnoPorEvento.getEvento();
+        DaoActividad daoActividad = new DaoActividad();
+        DaoLugarEvento daoLugarEvento = new DaoLugarEvento();
+        String nombreActividad = daoActividad.nombreActividadPorID(daoActividad.obtenerIdActividadPorIdEvento(evento.getIdEvento()));
+        String lugarEvento = daoLugarEvento.lugarPorID(evento.getLugarEvento().getIdLugarEvento());
         Properties p = new Properties();
         p.put("mail.smtp.host", "smtp.gmail.com" );
         p.put("mail.smtp.port", "587");
@@ -322,14 +324,14 @@ public class Usuario {
 
             switch(tipoDeApoyo){
                 case"Barra":
-                    message.setSubject("Aceptación de participación en Semana de ingeniería- Siempre Fibra");
-                    message.setText("Se aceptó su participación como barra en el evento de " + evento.getTitulo());
+                    message.setSubject("Solicitud de apoyo revisada en el evento de "+evento.getTitulo()+" - Siempre Fibra");
+                    message.setText("Se aceptó su participación en el evento de " + evento.getTitulo()+" de la actividad " + nombreActividad +" en el siguiente lugar: " + lugarEvento + ", el día " + evento.getFecha() +" a las " + evento.getHora() +".\n\nUsted fue elegido para participar en la barra.\n\nRecuerde seguir las indicaciones del delegado de actividad correspondiente.\nNos vemos en la cancha.\n\nSiempre Fibra\nMesa Directiva 2023");
                     Transport.send(message);
                     System.out.println("Correo enviado con éxito.");
                     break;
                 case "Jugador":
-                    message.setSubject("Aceptación de participación en Semana de ingeniería- Siempre Fibra");
-                    message.setText("Se aceptó su participación como jugador en el evento de " + evento.getTitulo() );
+                    message.setSubject("Aceptación de participación en Semana de Ingeniería - Siempre Fibra");
+                    message.setText("Se aceptó su participación en el evento de " + evento.getTitulo()+" de la actividad " + nombreActividad +" en el siguiente lugar: " + lugarEvento + ", el día " + evento.getFecha() +" a las " + evento.getHora() +".\n\nUsted fue elegido para participar como jugador.\n\nRecuerde seguir las indicaciones del delegado de actividad correspondiente.\nNos vemos en la cancha.\n\nSiempre Fibra\nMesa Directiva 2023");
                     Transport.send(message);
                     System.out.println("Correo enviado con éxito.");
                     break;

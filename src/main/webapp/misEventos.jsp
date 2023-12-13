@@ -41,8 +41,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <link rel="stylesheet" href="css/vendor/simplebar.css">
     <!-- favicon -->
-    <link rel="icon" href="img/favicon.ico">
-    <title>Actividades - Siempre Fibra</title>
+    <link rel="icon" href="css/murcielago.ico">
+    <title>Mis eventos - Siempre Fibra</title>
     <style>
         /* Estilo para el overlay del popup */
         .overlay {

@@ -32,7 +32,9 @@ public class InicioSesionServlet extends HttpServlet {
 
         String action = request.getParameter("action") == null ? "default" : request.getParameter("action");
         switch (action){
+            default:
             case "default":
+                response.sendRedirect(request.getContextPath());
                 break;
             case "logIn":
                 String correo = request.getParameter("correoPucp");
@@ -41,12 +43,11 @@ public class InicioSesionServlet extends HttpServlet {
                     Ban b= new DaoUsuario().logIn(correo,contrasena);
                     if(b==null) {
                         request.getSession().setAttribute("popup","4");
-                        response.sendRedirect(request.getContextPath());
+                        response.sendRedirect("InicioSesionServlet");
                     }else if(b.getMotivoBan()!=null){
-                        request.setAttribute("motivoBan",b.getMotivoBan());
-                        request.setAttribute("correosDelegadosGenerales",new DaoUsuario().listarCorreosDelegadosGenerales());
+                        request.getSession().setAttribute("motivoBan",b.getMotivoBan());
                         request.getSession().setAttribute("popup","6");
-                        request.getRequestDispatcher("inicioSesion.jsp").forward(request,response);
+                        response.sendRedirect("InicioSesionServlet");
                     }else{
                         request.getSession().setAttribute("usuario",new DaoUsuario().usuarioSesion(b.getUsuario().getIdUsuario()));
                         request.getSession().setAttribute("pSolicitudesDeApoyo","1");
@@ -54,7 +55,7 @@ public class InicioSesionServlet extends HttpServlet {
                         response.sendRedirect("ListaDeActividadesServlet");
                     }
                 }else {
-                    response.sendRedirect(request.getContextPath());
+                    response.sendRedirect("InicioSesionServlet");
                 }
                 break;
             case "registro":
@@ -85,7 +86,7 @@ public class InicioSesionServlet extends HttpServlet {
                         daoValidacion.agregarCorreoParaEnviarLink(correo2);
                             //AQUI VA EL METODO PARA ENVIAR CORREO
                             new Usuario().enviarCorreo("" + new DaoValidacion().obtenerValidacionPorCorreo(correo2).getIdCorreoValidacion());
-                            new DaoValidacion().linkEnviado((int) new DaoValidacion().obtenerValidacionPorCorreo(correo2).getIdCorreoValidacion());
+                            new DaoValidacion().linkEnviado(new DaoValidacion().obtenerValidacionPorCorreo(correo2).getIdCorreoValidacion());
                             String popup = request.getParameter("popup");
                             if (popup != null) {
                                 request.getSession().setAttribute("popup", popup);
@@ -98,7 +99,7 @@ public class InicioSesionServlet extends HttpServlet {
                     }
                     }
                 }
-                request.getRequestDispatcher("inicioSesion.jsp").forward(request,response);
+                response.sendRedirect("InicioSesionServlet");
                 break;
             case "logOut":
                 request.getSession().invalidate();

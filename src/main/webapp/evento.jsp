@@ -36,9 +36,18 @@
         }
 
         ArrayList<MensajeChat>listaDeMensajes=(ArrayList<MensajeChat>) request.getAttribute("listaDeMensajes");
+        ArrayList<AlumnoPorEvento>listaDeApoyos=(ArrayList<AlumnoPorEvento>) request.getAttribute("listaDeApoyos");
         String mensajeLargo=(String) request.getSession().getAttribute("mensajeLargo");
         if(mensajeLargo!=null){
             request.getSession().removeAttribute("mensajeLargo");
+        }
+        String idUsuarioElegido=(String) request.getSession().getAttribute("idUsuarioElegido");
+        if(idUsuarioElegido!=null){
+            request.getSession().removeAttribute("idUsuarioElegido");
+        }
+        String tipoReporte=(String) request.getSession().getAttribute("tipoReporte");
+        if(tipoReporte!=null){
+            request.getSession().removeAttribute("tipoReporte");
         }
         String abrirChat=(String) request.getSession().getAttribute("abrirChat");
         if(abrirChat!=null){
@@ -57,7 +66,14 @@
                 request.getSession().removeAttribute("escalaInvalida"+(i+1));
             }
         }
-        String mensaje=(String) request.getAttribute("mensaje");
+        String mensaje=(String) request.getSession().getAttribute("mensaje");
+        if(mensaje!=null){
+            request.getSession().removeAttribute("mensaje");
+        }
+        String motivo=(String) request.getSession().getAttribute("motivo");
+        if(motivo!=null){
+            request.getSession().removeAttribute("motivo");
+        }
     %>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -66,9 +82,9 @@
     <!-- styles -->
     <link rel="stylesheet" href="css/raw/styles.css">
     <!-- favicon -->
-    <link rel="icon" href="img/favicon.ico">
+    <link rel="icon" href="css/murcielago.ico">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
-    <title>Actividades - Siempre Fibra</title>
+    <title><%=e.getTitulo()%> - Siempre Fibra</title>
     <style>
         [data-simplebar] {
             position: relative;
@@ -1589,133 +1605,9 @@
                             </div>
                             <!-- Solicitud de registro -->
                             <%}else if(noti.getValidacion().getIdCorreoValidacion()!=0){
-                                if(new DaoValidacion().tipoValidacionPorID(noti.getValidacion().getIdCorreoValidacion()).equals("enviarLinkACorreo")){
-                                    Validacion v1=new DaoValidacion().validacionPorIDNotificacionCorreo(noti.getValidacion().getIdCorreoValidacion());%>
+                                if(new DaoValidacion().tipoValidacionPorID(noti.getValidacion().getIdCorreoValidacion()).equals("teamogineil")){%>
                             <!-- Validación correo -->
-                            <div class="dropdown-box-list-item unread">
-                                <!-- USER STATUS -->
-                                <div class="user-status notification">
-                                    <!-- USER STATUS AVATAR -->
-                                    <a class="user-status-avatar">
-                                        <!-- USER AVATAR -->
-                                        <div class="user-avatar small no-outline">
-                                            <!-- USER AVATAR CONTENT -->
-                                            <div class="user-avatar-content">
-                                                <!-- HEXAGON AQUÍ ESTA FOTO ES ESTÁTICA -->
-                                                <div class="hexagon-image-30-32" data-src="css/iconoPerfil.png"></div>
-                                                <!-- /HEXAGON -->
-                                            </div>
-                                            <!-- /USER AVATAR CONTENT -->
 
-                                            <!-- USER AVATAR PROGRESS -->
-                                            <div class="user-avatar-progress">
-                                                <!-- HEXAGON -->
-                                                <div class="hexagon-progress-40-44"></div>
-                                                <!-- /HEXAGON -->
-                                            </div>
-                                            <!-- /USER AVATAR PROGRESS -->
-
-                                            <!-- USER AVATAR PROGRESS BORDER -->
-                                            <div class="user-avatar-progress-border">
-                                                <!-- HEXAGON -->
-                                                <div class="hexagon-border-40-44"></div>
-                                                <!-- /HEXAGON -->
-                                            </div>
-                                            <!-- /USER AVATAR PROGRESS BORDER -->
-
-                                            <!-- USER AVATAR BADGE -->
-                                            <div class="user-avatar-badge">
-                                                <!-- USER AVATAR BADGE BORDER -->
-                                                <div class="user-avatar-badge-border">
-                                                </div>
-                                                <!-- /USER AVATAR BADGE BORDER -->
-
-                                            </div>
-                                            <!-- /USER AVATAR BADGE -->
-                                        </div>
-                                        <!-- /USER AVATAR -->
-                                    </a>
-                                    <!-- /USER STATUS AVATAR -->
-
-                                    <!-- USER STATUS TITLE -->
-                                    <p class="user-status-title">Un nuevo usuario <a class="bold"><%=v1.getCorreo()%></a> está solicitando la verificación de su <a class="highlighted">correo electrónico</a> con el código de validación <a style="color: #8d7aff"><%=v1.getCodigoValidacion()%></a>.</p>
-                                    <!-- /USER STATUS TITLE -->
-                                    <%Integer diferenciaFechas[]=new DaoNotificacion().obtenerDiferenciaEntre2FechasNotificaciones(noti.getIdNotificacion());
-                                        if(diferenciaFechas[0]>0){
-                                            if(diferenciaFechas[0]==1){%>
-                                    <!-- USER STATUS TIMESTAMP -->
-                                    <p class="user-status-timestamp">Hace 1 año <a style="color: #20c997;cursor: pointer" onclick="enviarFormulario('notificacionLeidaCampanita<%=listaNotificacionesCampanita.indexOf(noti)%>')">Leído</a></p>
-                                    <!-- /USER STATUS TIMESTAMP -->
-                                    <%}else{%>
-                                    <!-- USER STATUS TIMESTAMP -->
-                                    <p class="user-status-timestamp">Hace <%=diferenciaFechas[0]%> años <a style="color: #20c997;cursor: pointer" onclick="enviarFormulario('notificacionLeidaCampanita<%=listaNotificacionesCampanita.indexOf(noti)%>')">Leído</a></p>
-                                    <!-- /USER STATUS TIMESTAMP -->
-                                    <%}%>
-                                    <%}else if(diferenciaFechas[1]>0){
-                                        if(diferenciaFechas[1]==1){%>
-                                    <!-- USER STATUS TIMESTAMP -->
-                                    <p class="user-status-timestamp">Hace 1 mes <a style="color: #20c997;cursor: pointer" onclick="enviarFormulario('notificacionLeidaCampanita<%=listaNotificacionesCampanita.indexOf(noti)%>')">Leído</a></p>
-                                    <!-- /USER STATUS TIMESTAMP -->
-                                    <%}else{%>
-                                    <!-- USER STATUS TIMESTAMP -->
-                                    <p class="user-status-timestamp">Hace <%=diferenciaFechas[1]%> meses <a style="color: #20c997;cursor: pointer" onclick="enviarFormulario('notificacionLeidaCampanita<%=listaNotificacionesCampanita.indexOf(noti)%>')">Leído</a></p>
-                                    <!-- /USER STATUS TIMESTAMP -->
-                                    <%}%>
-                                    <%}else if(diferenciaFechas[2]>0){
-                                        if(diferenciaFechas[2]==1){%>
-                                    <!-- USER STATUS TIMESTAMP -->
-                                    <p class="user-status-timestamp">Hace 1 día <a style="color: #20c997;cursor: pointer" onclick="enviarFormulario('notificacionLeidaCampanita<%=listaNotificacionesCampanita.indexOf(noti)%>')">Leído</a></p>
-                                    <!-- /USER STATUS TIMESTAMP -->
-                                    <%}else{%>
-                                    <!-- USER STATUS TIMESTAMP -->
-                                    <p class="user-status-timestamp">Hace <%=diferenciaFechas[2]%> días <a style="color: #20c997;cursor: pointer" onclick="enviarFormulario('notificacionLeidaCampanita<%=listaNotificacionesCampanita.indexOf(noti)%>')">Leído</a></p>
-                                    <!-- /USER STATUS TIMESTAMP -->
-                                    <%}%>
-                                    <%}else if(diferenciaFechas[3]>0){
-                                        if(diferenciaFechas[3]==1){%>
-                                    <!-- USER STATUS TIMESTAMP -->
-                                    <p class="user-status-timestamp">Hace 1 hora <a style="color: #20c997;cursor: pointer" onclick="enviarFormulario('notificacionLeidaCampanita<%=listaNotificacionesCampanita.indexOf(noti)%>')">Leído</a></p>
-                                    <!-- /USER STATUS TIMESTAMP -->
-                                    <%}else{%>
-                                    <!-- USER STATUS TIMESTAMP -->
-                                    <p class="user-status-timestamp">Hace <%=diferenciaFechas[3]%> horas <a style="color: #20c997;cursor: pointer" onclick="enviarFormulario('notificacionLeidaCampanita<%=listaNotificacionesCampanita.indexOf(noti)%>')">Leído</a></p>
-                                    <!-- /USER STATUS TIMESTAMP -->
-                                    <%}%>
-                                    <%}else if(diferenciaFechas[4]>0){
-                                        if(diferenciaFechas[4]==1){%>
-                                    <!-- USER STATUS TIMESTAMP -->
-                                    <p class="user-status-timestamp">Hace 1 minuto <a style="color: #20c997;cursor: pointer" onclick="enviarFormulario('notificacionLeidaCampanita<%=listaNotificacionesCampanita.indexOf(noti)%>')">Leído</a></p>
-                                    <!-- /USER STATUS TIMESTAMP -->
-                                    <%}else{%>
-                                    <!-- USER STATUS TIMESTAMP -->
-                                    <p class="user-status-timestamp">Hace <%=diferenciaFechas[4]%> minutos <a style="color: #20c997;cursor: pointer" onclick="enviarFormulario('notificacionLeidaCampanita<%=listaNotificacionesCampanita.indexOf(noti)%>')">Leído</a></p>
-                                    <!-- /USER STATUS TIMESTAMP -->
-                                    <%}%>
-                                    <%}else if(diferenciaFechas[5]>0){
-                                        if(diferenciaFechas[5]==1){%>
-                                    <!-- USER STATUS TIMESTAMP -->
-                                    <p class="user-status-timestamp">Hace 1 segundo <a style="color: #20c997;cursor: pointer" onclick="enviarFormulario('notificacionLeidaCampanita<%=listaNotificacionesCampanita.indexOf(noti)%>')">Leído</a></p>
-                                    <!-- /USER STATUS TIMESTAMP -->
-                                    <%}else{%>
-                                    <!-- USER STATUS TIMESTAMP -->
-                                    <p class="user-status-timestamp">Hace <%=diferenciaFechas[5]%> segundos <a style="color: #20c997;cursor: pointer" onclick="enviarFormulario('notificacionLeidaCampanita<%=listaNotificacionesCampanita.indexOf(noti)%>')">Leído</a></p>
-                                    <!-- /USER STATUS TIMESTAMP -->
-                                    <%}%>
-                                    <%}else if(diferenciaFechas[5]==0){%>
-                                    <!-- USER STATUS TIMESTAMP -->
-                                    <p class="user-status-timestamp">Ahora mismo <a style="color: #20c997;cursor: pointer" onclick="enviarFormulario('notificacionLeidaCampanita<%=listaNotificacionesCampanita.indexOf(noti)%>')">Leído</a></p>
-                                    <!-- /USER STATUS TIMESTAMP -->
-                                    <%}%>
-                                    <!-- USER STATUS ICON -->
-                                    <div class="user-status-icon">
-                                        <!-- ICON COMMENT -->
-                                        <img src="css/iconoVerificarCorreo.png" width="30px" style="opacity: 0.5" alt="">
-                                        <!-- /ICON COMMENT -->
-                                    </div>
-                                    <!-- /USER STATUS ICON -->
-                                </div>
-                                <!-- /USER STATUS -->
-                            </div>
                             <!-- Validación correo -->
                             <%}else if(new DaoValidacion().tipoValidacionPorID(noti.getValidacion().getIdCorreoValidacion()).equals("recuperarContrasena")){
                                 Validacion v2=new DaoValidacion().validacionPorIDNotificacionContrasena(noti.getValidacion().getIdCorreoValidacion());%>
@@ -2017,7 +1909,7 @@
     <!-- CHAT WIDGET MESSAGES -->
     <div class="chat-widget-messages" data-simplebar>
         <!-- CHAT WIDGET CONVERSATION -->
-        <div class="chat-widget-conversation" id="chat" data-simplebar>
+        <div id="mensajes" class="chat-widget-conversation" id="chat" data-simplebar>
             <%if(listaDeMensajes.isEmpty()){%>
             <a style="color: #6c757d;text-align: center">Ningún mensaje por aquí <br> ¡Sé quien inicie la conversación!</a>
             <%}else for(int i=0;i<listaDeMensajes.size();i++){
@@ -2150,46 +2042,122 @@
             <%}%>
         </div>
         <!-- /CHAT WIDGET CONVERSATION -->
-        <!-- /CHAT WIDGET HEADER -->
+
+        <div id="participantes" style="display: none;">
+            <!-- WIDGET BOX -->
+            <div class="widget-box">
+                <!-- WIDGET BOX CONTENT -->
+                <div class="widget-box-content">
+                    <!-- USER STATUS LIST -->
+                    <div class="user-status-list">
+                        <%if(!listaDeApoyos.isEmpty()){
+                            for(AlumnoPorEvento ae:listaDeApoyos){%>
+                        <!-- USER STATUS -->
+                        <div class="user-status request-small">
+                            <!-- USER STATUS AVATAR -->
+                            <a class="user-status-avatar">
+                                <!-- USER AVATAR -->
+                                <div class="user-avatar small no-outline">
+                                    <!-- USER AVATAR CONTENT -->
+                                    <div class="user-avatar-content">
+                                        <!-- HEXAGON -->
+                                        <%request.getSession().setAttribute("fotoPerfilApoyo"+listaDeApoyos.indexOf(ae),ae.getAlumno().getFotoPerfil());%>
+                                        <div class="hexagon-image-30-32" data-src="Imagen?tipoDeFoto=fotoPerfil&id=PerfilApoyo<%=listaDeApoyos.indexOf(ae)%>"></div>
+                                        <!-- /HEXAGON -->
+                                    </div>
+                                    <!-- /USER AVATAR CONTENT -->
+                                    <!-- USER AVATAR PROGRESS -->
+                                    <div class="user-avatar-progress">
+                                        <!-- HEXAGON -->
+                                        <div class="hexagon-progress-40-44"></div>
+                                        <!-- /HEXAGON -->
+                                    </div>
+                                    <!-- /USER AVATAR PROGRESS -->
+                                    <!-- USER AVATAR PROGRESS BORDER -->
+                                    <div class="user-avatar-progress-border">
+                                        <!-- HEXAGON -->
+                                        <div class="hexagon-border-40-44"></div>
+                                        <!-- /HEXAGON -->
+                                    </div>
+                                    <!-- /USER AVATAR PROGRESS BORDER -->
+                                </div>
+                                <!-- /USER AVATAR -->
+                            </a>
+                            <!-- /USER STATUS AVATAR -->
+                            <!-- USER STATUS TITLE -->
+                            <p class="user-status-title"><a class="bold"><%=ae.getAlumno().getNombre()%> <%=ae.getAlumno().getApellido()%></a></p>
+                            <!-- /USER STATUS TITLE -->
+                            <!-- USER STATUS TEXT -->
+                            <p class="user-status-text small"><%=ae.getEstadoApoyo()%></p>
+                            <!-- /USER STATUS TEXT -->
+                            <%if(idUsuario==delegadoDeEstaActividadID){%>
+                            <!-- ACTION REQUEST LIST -->
+                            <div class="action-request-list">
+                                <!-- ACTION REQUEST -->
+                                <div onclick="popupFunc('popupReportarApoyo<%=listaDeApoyos.indexOf(ae)%>',['cerrarPopupReportarApoyo<%=listaDeApoyos.indexOf(ae)%>','cerrarPopupReportar1Apoyo<%=listaDeApoyos.indexOf(ae)%>','cerrarPopupReportar2Apoyo<%=listaDeApoyos.indexOf(ae)%>'],'overlayReportarApoyo<%=listaDeApoyos.indexOf(ae)%>')" class="action-request accept">
+                                    <!-- ACTION REQUEST ICON -->
+                                    <svg class="action-request-icon icon-add-friend">
+                                        <img src="css/iconoReportar.png" style="padding: 5px" class="img-fluid" alt="">
+                                    </svg>
+                                    <!-- /ACTION REQUEST ICON -->
+                                </div>
+                                <!-- /ACTION REQUEST -->
+                            </div>
+                            <!-- ACTION REQUEST LIST -->
+                            <%}%>
+                        </div>
+                        <!-- /USER STATUS -->
+                        <%}}else{%>
+                        <a style="color: #6c757d">No existen apoyos dentro de este evento</a>
+                        <%}%>
+                    </div>
+                    <!-- /USER STATUS LIST -->
+                </div>
+                <!-- WIDGET BOX CONTENT -->
+            </div>
+            <!-- /WIDGET BOX -->
+        </div>
+
     </div>
     <!-- CHAT WIDGET HEADER -->
 
 
-
     <!-- CHAT WIDGET FORM -->
-    <form method="post" action="?action=enviarMensaje" class="chat-widget-form">
-        <!-- INTERACTIVE INPUT -->
-        <div class="interactive-input small">
-            <input id="escribirMensaje" type="text" name="mensaje" placeholder="Escribe un mensaje..." <%if(mensaje!=null){%>value="<%=mensaje%>"<%}%>>
-            <input type="hidden" name="idEvento" value="<%=e.getIdEvento()%>">
-            <!-- INTERACTIVE INPUT ICON WRAP -->
-            <button type="submit" style="background: none;border:0;color: inherit" class="interactive-input-icon-wrap">
-                <!-- INTERACTIVE INPUT ICON -->
-                <svg class="interactive-input-icon icon-send-message">
-                    <use xlink:href="#svg-send-message"></use>
-                </svg>
-                <!-- /INTERACTIVE INPUT ICON -->
-            </button>
-            <!-- /INTERACTIVE INPUT ICON WRAP -->
-            <!-- INTERACTIVE INPUT ACTION -->
-            <div class="interactive-input-action">
-                <!-- INTERACTIVE INPUT ACTION ICON -->
-                <svg class="interactive-input-action-icon icon-cross-thin">
-                    <use xlink:href="#svg-cross-thin"></use>
-                </svg>
-                <!-- /INTERACTIVE INPUT ACTION ICON -->
+    <div id="enviarMensaje">
+        <form method="post" action="?action=enviarMensaje" class="chat-widget-form">
+            <!-- INTERACTIVE INPUT -->
+            <div class="interactive-input small">
+                <input id="escribirMensaje" type="text" name="mensaje" placeholder="Escribe un mensaje..." <%if(mensaje!=null){%>value="<%=mensaje%>"<%}%>>
+                <input type="hidden" name="idEvento" value="<%=e.getIdEvento()%>">
+                <!-- INTERACTIVE INPUT ICON WRAP -->
+                <button type="submit" style="background: none;border:0;color: inherit" class="interactive-input-icon-wrap">
+                    <!-- INTERACTIVE INPUT ICON -->
+                    <svg class="interactive-input-icon icon-send-message">
+                        <use xlink:href="#svg-send-message"></use>
+                    </svg>
+                    <!-- /INTERACTIVE INPUT ICON -->
+                </button>
+                <!-- /INTERACTIVE INPUT ICON WRAP -->
+                <!-- INTERACTIVE INPUT ACTION -->
+                <div class="interactive-input-action">
+                    <!-- INTERACTIVE INPUT ACTION ICON -->
+                    <svg class="interactive-input-action-icon icon-cross-thin">
+                        <use xlink:href="#svg-cross-thin"></use>
+                    </svg>
+                    <!-- /INTERACTIVE INPUT ACTION ICON -->
+                </div>
+                <!-- /INTERACTIVE INPUT ACTION -->
             </div>
-            <!-- /INTERACTIVE INPUT ACTION -->
-        </div>
-        <!-- /INTERACTIVE INPUT -->
-        <%if(mensajeLargo!=null){%><a style="color: red;">Escriba un mensaje más corto</a><%}%>
-    </form>
+            <!-- /INTERACTIVE INPUT -->
+            <%if(mensajeLargo!=null){%><a style="color: red;">Escriba un mensaje más corto</a><%}%>
+        </form>
+    </div>
     <!-- /CHAT WIDGET FORM -->
 
 
 
     <!-- CHAT WIDGET BUTTON -->
-    <div class="chat-widget-button">
+    <div id="botonChat" class="chat-widget-button">
         <!-- CHAT WIDGET BUTTON ICON -->
         <div class="chat-widget-button-icon">
             <img src="css/chatWhiteIcon.png" width="28px" alt="">
@@ -2197,7 +2165,7 @@
         <!-- /CHAT WIDGET BUTTON ICON -->
 
         <!-- CHAT WIDGET BUTTON TEXT -->
-        <p class="chat-widget-button-text" style="font-size: 140%;">Foro del evento</p>
+        <p class="chat-widget-button-text" style="font-size: 140%;"><a style="color: red;font-weight: bold" onclick="mostrarOcultarCambiarColor(['participantes'],['mensajes','enviarMensaje'],'participantesClick','foroClick',event)" id="foroClick">Foro</a> / <a onclick="mostrarOcultarCambiarColor(['mensajes','enviarMensaje'],['participantes'],'foroClick','participantesClick',event)" id="participantesClick">Participantes</a></p>
         <!-- /CHAT WIDGET BUTTON TEXT -->
     </div>
     <!-- /CHAT WIDGET BUTTON -->
@@ -2820,8 +2788,8 @@ for(String es:escalaInvalida){if(es!=null){escalaInvalidaAux=true;}}%>
     }
     String rolUsuarioMensaje=new DaoUsuario().rolUsuarioPorId(listaDeMensajes.get(i).getUsuario().getIdUsuario());
     if(rolUsuario.equals("Delegado de Actividad")&&!rolUsuarioMensaje.equals("Delegado General")&&listaDeMensajes.get(i).getUsuario().getIdUsuario()!=usuarioActual.getIdUsuario()){%>
-<div class="overlay" <%if(reporteLargo!=null){%>style="display: block"<%}%> id="overlayReportar<%=i%>"></div>
-<div class="popup" style="width: 50%;<%if(reporteLargo!=null){%>display: block<%}%>" id="popupReportar<%=i%>">
+<div class="overlay" <%if(reporteLargo!=null&&idUsuarioElegido!=null&&idUsuarioElegido.equals(listaDeMensajes.get(i).getUsuario().getIdUsuario().toString())&&tipoReporte!=null&&tipoReporte.equals("1")){%>style="display: block"<%}%> id="overlayReportar<%=i%>"></div>
+<div class="popup" style="width: 50%;<%if(reporteLargo!=null&&idUsuarioElegido!=null&&idUsuarioElegido.equals(listaDeMensajes.get(i).getUsuario().getIdUsuario().toString())&&tipoReporte!=null&&tipoReporte.equals("1")){%>display: block<%}%>" id="popupReportar<%=i%>">
     <svg class="cerrar-btn" id="cerrarPopupReportar<%=i%>" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path d="M11.4142 10L16.7071 4.70711C17.0976 4.31658 17.0976 3.68342 16.7071 3.29289C16.3166 2.90237 15.6834 2.90237 15.2929 3.29289L10 8.58579L4.70711 3.29289C4.31658 2.90237 3.68342 2.90237 3.29289 3.29289C2.90237 3.68342 2.90237 4.31658 3.29289 4.70711L8.58579 10L3.29289 15.2929C2.90237 15.6834 2.90237 16.3166 3.29289 16.7071C3.68342 17.0976 4.31658 17.0976 4.70711 16.7071L10 11.4142L15.2929 16.7071C15.6834 17.0976 16.3166 17.0976 16.7071 16.7071C17.0976 16.3166 17.0976 15.6834 16.7071 15.2929L11.4142 10Z" fill="black"/>
     </svg>
@@ -2829,7 +2797,7 @@ for(String es:escalaInvalida){if(es!=null){escalaInvalidaAux=true;}}%>
         <div class="row">
             <div class="col-sm-1"></div>
             <div class="col-sm-10">
-                <h5 style="text-align: center;">Escribe el motivo de reporte al usuario: <%if(reporteLargo!=null){%><a style="color: red;">Ingrese un motivo más corto</a><%}%></h5>
+                <h5 style="text-align: center;">Escribe el motivo de reporte al usuario: <%if(reporteLargo!=null&&idUsuarioElegido!=null&&idUsuarioElegido.equals(listaDeMensajes.get(i).getUsuario().getIdUsuario().toString())&&tipoReporte!=null&&tipoReporte.equals("1")){%><a style="color: red;">Ingrese un motivo más corto</a><%}%></h5>
             </div>
             <div class="col-sm-1"></div>
         </div>
@@ -2850,6 +2818,7 @@ for(String es:escalaInvalida){if(es!=null){escalaInvalidaAux=true;}}%>
                 <div class="col-sm-6" style="margin-top: 5px;">
                     <input type="hidden" name="idEvento" value="<%=e.getIdEvento()%>">
                     <input type="hidden" name="idUsuarioReportado" value="<%=listaDeMensajes.get(i).getUsuario().getIdUsuario()%>">
+                    <input type="hidden" name="tipoReporte" value="1">
                     <a> <button type="submit" class="button secondary" id="cerrarPopupReportar1<%=i%>">Reportar</button></a>
                 </div>
                 <div class="col-sm-6" style="margin-top: 5px;">
@@ -2859,8 +2828,68 @@ for(String es:escalaInvalida){if(es!=null){escalaInvalidaAux=true;}}%>
         </div>
     </form>
 </div>
+<%}}
+if(!listaDeApoyos.isEmpty()&&idUsuario==delegadoDeEstaActividadID){
+    for(int i=0;i<listaDeApoyos.size();i++){%>
+<div class="overlay" <%if(reporteLargo!=null&&idUsuarioElegido!=null&&idUsuarioElegido.equals(listaDeMensajes.get(i).getUsuario().getIdUsuario().toString())&&tipoReporte!=null&&tipoReporte.equals("2")){%>style="display: block"<%}%> id="overlayReportarApoyo<%=i%>"></div>
+<div class="popup" style="width: 50%;<%if(reporteLargo!=null&&idUsuarioElegido!=null&&idUsuarioElegido.equals(listaDeMensajes.get(i).getUsuario().getIdUsuario().toString())&&tipoReporte!=null&&tipoReporte.equals("2")){%>display: block<%}%>" id="popupReportarApoyo<%=i%>">
+    <svg class="cerrar-btn" id="cerrarPopupReportarApoyo<%=i%>" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M11.4142 10L16.7071 4.70711C17.0976 4.31658 17.0976 3.68342 16.7071 3.29289C16.3166 2.90237 15.6834 2.90237 15.2929 3.29289L10 8.58579L4.70711 3.29289C4.31658 2.90237 3.68342 2.90237 3.29289 3.29289C2.90237 3.68342 2.90237 4.31658 3.29289 4.70711L8.58579 10L3.29289 15.2929C2.90237 15.6834 2.90237 16.3166 3.29289 16.7071C3.68342 17.0976 4.31658 17.0976 4.70711 16.7071L10 11.4142L15.2929 16.7071C15.6834 17.0976 16.3166 17.0976 16.7071 16.7071C17.0976 16.3166 17.0976 15.6834 16.7071 15.2929L11.4142 10Z" fill="black"/>
+    </svg>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-1"></div>
+            <div class="col-sm-10">
+                <h5 style="text-align: center;">Escribe el motivo de reporte al usuario: <%if(reporteLargo!=null&&idUsuarioElegido!=null&&idUsuarioElegido.equals(listaDeMensajes.get(i).getUsuario().getIdUsuario().toString())&&tipoReporte!=null&&tipoReporte.equals("2")){%><a style="color: red;">Ingrese un motivo más corto</a><%}%></h5>
+            </div>
+            <div class="col-sm-1"></div>
+        </div>
+    </div>
+    <br>
+    <form method="post" action="?action=reportar">
+        <div class="row">
+            <div class="col-sm-1">
+            </div>
+            <div class="col-sm-10">
+                <textarea name="motivoReporte" cols="15" rows="6"></textarea>
+            </div>
+            <div class="col-sm-1">
+            </div>
+        </div>
+        <div style="margin-top: 3%" class="container-fluid">
+            <div class="row">
+                <div class="col-sm-6" style="margin-top: 5px;">
+                    <input type="hidden" name="idEvento" value="<%=e.getIdEvento()%>">
+                    <input type="hidden" name="idUsuarioReportado" value="<%=listaDeApoyos.get(i).getAlumno().getIdUsuario()%>">
+                    <input type="hidden" name="tipoReporte" value="2">
+                    <a> <button type="submit" class="button secondary" id="cerrarPopupReportar1Apoyo<%=i%>">Reportar</button></a>
+                </div>
+                <div class="col-sm-6" style="margin-top: 5px">
+                    <button type="button" class="button secondary" id="cerrarPopupReportar2Apoyo<%=i%>" style="background-color: grey;">Cancelar</button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
 <%}}%>
 <script>
+    function mostrarOcultarCambiarColor(idsOcultar,idsMostrar,idTexto1,idTexto2){
+        event.stopPropagation();
+        for(let i=0;i<idsOcultar.length;i++){
+            let elementoOcultar=document.getElementById(idsOcultar[i]);
+            elementoOcultar.style.display="none";
+        }
+        for(let i=0;i<idsMostrar.length;i++){
+            let elementoMostrar=document.getElementById(idsMostrar[i]);
+            elementoMostrar.style.display="block";
+        }
+        let elementoDeTexto=document.getElementById(idTexto1);
+        elementoDeTexto.style.color="white";
+        elementoDeTexto.style.fontWeight="normal";
+        elementoDeTexto=document.getElementById(idTexto2);
+        elementoDeTexto.style.color="red";
+        elementoDeTexto.style.fontWeight="bold";
+    }
     function activarSeleccion(idInput) {
         // Simular un clic en el input de tipo "file"
         document.getElementById(idInput).click();

@@ -356,7 +356,7 @@ public class DaoActividad extends DaoPadre {
     }
 
     public void finalizarActividad(int idActividad){
-        String sql="update actividad set actividadFinalizada=1 where idActividad=?";
+        String sql="update actividad set actividadFinalizada=1 where idActividad=? and actividadFinalizada=0";
         try(Connection conn=this.getConnection(); PreparedStatement pstmt= conn.prepareStatement(sql)){
             pstmt.setInt(1,idActividad);
             pstmt.executeUpdate();

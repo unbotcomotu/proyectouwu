@@ -164,14 +164,16 @@ public class RegistroServlet extends HttpServlet {
                                 registroValido = false;
                             }
                         }
-                    }
-                    if(registroValido){
-                        new DaoUsuario().registroDeAlumno(nombres,apellidos,correo,password,codigoPUCP,opcion);
-                        new DaoValidacion().updateLinkUsado(Integer.parseInt(idCorreoValidacion));
-                        //Por el momento al terminar lo hacemos saltar a la vista de inicioSesion
-                        request.getSession().setAttribute("popup","5");
-                        response.sendRedirect("InicioSesionServlet");
-                    }else {
+                        if(registroValido){
+                            new DaoUsuario().registroDeAlumno(nombres,apellidos,correo,password,codigoPUCP,opcion);
+                            new DaoValidacion().updateLinkUsado(Integer.parseInt(idCorreoValidacion));
+                            //Por el momento al terminar lo hacemos saltar a la vista de inicioSesion
+                            request.getSession().setAttribute("popup","5");
+                            response.sendRedirect("InicioSesionServlet");
+                        }else {
+                            response.sendRedirect("RegistroServlet?idCorreoValidacion="+idCorreoValidacion+"&codigoValidacion256="+codigoValidacion256);
+                        }
+                    }else{
                         response.sendRedirect("RegistroServlet?idCorreoValidacion="+idCorreoValidacion+"&codigoValidacion256="+codigoValidacion256);
                     }
                 }else {
